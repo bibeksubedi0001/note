@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Chapter 5: Numerical Methods - Past Board Exam Solutions</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true,
+ tags: 'ams'
+ },
+ svg: {
+ // CRITICAL FOR PDF PRINTING: Prevents equations from disappearing on multi-page PDFs
+ fontCache: 'global'
+ },
+ startup: {
+ typeset: false,
+ ready: () => {
+ // This ensures MathJax is fully built before React tries to use it
+ MathJax.startup.defaultReady();
+ MathJax.startup.promise.then(() => {
+ window.isMathJaxReady = true;
+ document.dispatchEvent(new Event('mathjax-ready'));
+ });
+ }
+ }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+ <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+ <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+ <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        
+
+
+    </style>
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="water-override.css">
+</head>
+
+<body>
+
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<div id="root"></div>
+
+ <script type="text/babel">
+ // Math Component
+ const MathText = ({ content, block = false }) => {
+ const el = React.useRef(null);
+
+ React.useEffect(() => {
+ if (!el.current) return;
+
+ // Inject the raw content into the span
+ el.current.innerHTML = content;
+
+ const renderMath = () => {
+ if (window.MathJax && window.MathJax.typesetPromise) {
+ window.MathJax.typesetPromise([el.current]).catch(err => console.log(err.message));
+ }
+ };
+
+ // Using the strict initialization flag eliminates the TypeError
+ if (window.isMathJaxReady) {
+ renderMath();
+ } else {
+ document.addEventListener('mathjax-ready', renderMath);
+ return () => document.removeEventListener('mathjax-ready', renderMath);
+ }
+ }, [content]);
+
+ return <span ref={el} className={block ? 'math-container text-[1.15rem] avoid-break' : 'math-inline'} />;
+ };
+
+ // Question Box Component
+ const QuestionBox = ({ title, questions }) => (
+ <div className="bg-[#e2e8f0]/50 border-[3px] border-slate-400 p-6 mb-8 italic shadow-sm relative avoid-break mt-6">
+ <span className="absolute -top-3 -left-3 bg-slate-800 text-white font-bold px-3 py-1 text-sm not-italic uppercase tracking-widest print:border print:border-black">
+ {title}
+ </span>
+ <p className="font-bold mb-2 not-italic text-slate-700">Exam Questions Addressed:</p>
+ <ul className="list-disc list-inside space-y-1 text-[0.95rem] text-slate-800">
+ {questions.map((q, i) => <li key={i}>{q}</li>)}
+ </ul>
+ </div>
+ );
+
+ // First Order Stencil SVG (FTBS)
+ const FirstOrderStencil = () => (
+ <div className="flex flex-col items-center my-6 avoid-break">
+ <svg width="350" height="200" viewBox="0 0 350 200" className="bg-[#f8fafc] border border-slate-300 p-4">
+ <defs>
+ <marker id="arrowhead2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+ <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+ </marker>
+ </defs>
+ {/* Axes */}
+ <line x1="30" y1="160" x2="320" y2="160" stroke="#94a3b8" strokeWidth="2" markerEnd="url(#arrowhead2)" />
+ <line x1="50" y1="180" x2="50" y2="20" stroke="#94a3b8" strokeWidth="2" markerEnd="url(#arrowhead2)" />
+ <text x="310" y="180" fontSize="14" fontStyle="italic">x</text>
+ <text x="10" y="30" fontSize="14" fontStyle="italic">t</text>
+
+ {/* Grid lines */}
+ <line x1="50" y1="120" x2="280" y2="120" stroke="#cbd5e1" strokeWidth="1.5" />
+ <line x1="50" y1="60" x2="280" y2="60" stroke="#cbd5e1" strokeWidth="1.5" />
+ <line x1="120" y1="160" x2="120" y2="40" stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray="4" />
+ <line x1="220" y1="160" x2="220" y2="40" stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray="4" />
+
+ {/* Nodes */}
+ <circle cx="120" cy="120" r="5" fill="#333" /> <text x="80" y="135" fontSize="12">i-1, n</text>
+ <circle cx="220" cy="120" r="5" fill="#333" /> <text x="230" y="135" fontSize="12">i, n</text>
+
+ <circle cx="220" cy="60" r="6" fill="#dc2626" /> <text x="230" y="55" fontSize="12" fill="#dc2626" fontWeight="bold">i, n+1 (Unknown)</text>
+
+ {/* Evaluation Vectors */}
+ <line x1="220" y1="110" x2="220" y2="70" stroke="#dc2626" strokeWidth="2" strokeDasharray="3" markerEnd="url(#arrowhead2)" />
+ <line x1="130" y1="120" x2="210" y2="120" stroke="#dc2626" strokeWidth="2" strokeDasharray="3" markerEnd="url(#arrowhead2)" />
+ </svg>
+ <p className="text-sm text-slate-500 mt-2 font-bold">Figure: First-Order Explicit Stencil (Forward Time, Backward Space)</p>
+ </div>
+ );
+
+ // Preissmann SVG
+ const PreissmannStencil = () => (
+ <div className="flex flex-col items-center my-6 avoid-break">
+ <svg width="350" height="220" viewBox="0 0 350 220" className="bg-[#f8fafc] border border-slate-300 p-4">
+ <defs>
+ <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+ <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+ </marker>
+ </defs>
+ {/* Axes */}
+ <line x1="30" y1="180" x2="320" y2="180" stroke="#94a3b8" strokeWidth="2" markerEnd="url(#arrowhead)" />
+ <line x1="50" y1="200" x2="50" y2="20" stroke="#94a3b8" strokeWidth="2" markerEnd="url(#arrowhead)" />
+ <text x="310" y="200" fontSize="14" fontStyle="italic">x (Space)</text>
+ <text x="10" y="30" fontSize="14" fontStyle="italic">t (Time)</text>
+
+ {/* Grid lines */}
+ <line x1="50" y1="150" x2="280" y2="150" stroke="#cbd5e1" strokeWidth="1.5" />
+ <line x1="50" y1="70" x2="280" y2="70" stroke="#cbd5e1" strokeWidth="1.5" />
+ <line x1="120" y1="180" x2="120" y2="50" stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray="4" />
+ <line x1="240" y1="180" x2="240" y2="50" stroke="#cbd5e1" strokeWidth="1.5" strokeDasharray="4" />
+
+ {/* Nodes */}
+ <circle cx="120" cy="150" r="5" fill="#333" /> <text x="85" y="165" fontSize="13">i, n</text>
+ <circle cx="240" cy="150" r="5" fill="#333" /> <text x="250" y="165" fontSize="13">i+1, n</text>
+ <circle cx="120" cy="70" r="5" fill="#333" /> <text x="85" y="60" fontSize="13">i, n+1</text>
+ <circle cx="240" cy="70" r="5" fill="#333" /> <text x="250" y="60" fontSize="13">i+1, n+1</text>
+
+ {/* Evaluation Point */}
+ <circle cx="180" cy="94" r="5" fill="#dc2626" />
+ <text x="195" y="100" fontSize="13" fill="#dc2626" fontWeight="bold">M (Evaluation Point)</text>
+ <line x1="120" y1="94" x2="240" y2="94" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="3" />
+ <text x="70" y="115" fontSize="12" fill="#dc2626">θ = Weight</text>
+ </svg>
+ <p className="text-sm text-slate-500 mt-2 font-bold">Figure: Preissmann Implicit Four-Point Stencil</p>
+ </div>
+ );
+
+ // Leapfrog SVG
+ const LeapFrogStencil = () => (
+ <div className="flex flex-col items-center my-6 avoid-break">
+ <svg width="350" height="250" viewBox="0 0 350 250" className="bg-[#f8fafc] border border-slate-300 p-4">
+ <defs>
+ <marker id="bluearrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+ <polygon points="0 0, 8 4, 0 8" fill="#2563eb" />
+ </marker>
+ </defs>
+ <line x1="30" y1="210" x2="320" y2="210" stroke="#94a3b8" strokeWidth="2" />
+ <text x="310" y="230" fontSize="14" fontStyle="italic">x</text>
+
+ <line x1="50" y1="180" x2="280" y2="180" stroke="#cbd5e1" />
+ <line x1="50" y1="120" x2="280" y2="120" stroke="#cbd5e1" />
+ <line x1="50" y1="60" x2="280" y2="60" stroke="#cbd5e1" />
+ <text x="20" y="185" fontSize="12">n-1</text>
+ <text x="20" y="125" fontSize="12">n</text>
+ <text x="20" y="65" fontSize="12">n+1</text>
+
+ <circle cx="170" cy="180" r="5" fill="#333" /> <text x="180" y="195" fontSize="12">i, n-1</text>
+ <circle cx="90" cy="120" r="5" fill="#333" /> <text x="40" y="110" fontSize="12">i-1, n</text>
+ <circle cx="250" cy="120" r="5" fill="#333" /> <text x="255" y="110" fontSize="12">i+1, n</text>
+ <circle cx="170" cy="120" r="5" fill="white" stroke="#333" strokeWidth="2" /> <text x="180" y="135" fontSize="12">i, n</text>
+
+ <circle cx="170" cy="60" r="6" fill="#2563eb" /> <text x="185" y="55" fontSize="12" fill="#2563eb" fontWeight="bold">i, n+1 (Unknown)</text>
+
+ {/* Flow Arrows */}
+ <line x1="170" y1="170" x2="170" y2="72" stroke="#2563eb" strokeWidth="2" strokeDasharray="4" markerEnd="url(#bluearrow)" />
+ <line x1="98" y1="115" x2="160" y2="66" stroke="#2563eb" strokeWidth="2" strokeDasharray="4" markerEnd="url(#bluearrow)" />
+ <line x1="242" y1="115" x2="180" y2="66" stroke="#2563eb" strokeWidth="2" strokeDasharray="4" markerEnd="url(#bluearrow)" />
+ </svg>
+ <p className="text-sm text-slate-500 mt-2 font-bold">Figure: Second-Order Leap-Frog Explicit Stencil (CTCS)</p>
+ </div>
+ );
+
+ const App = () => {
+ return (
+ <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+ {/* Action Bar */}
+ <div className="no-print flex justify-end mb-8">
+ <button onClick={() => window.print()} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold shadow-md transition-colors">
+ <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+ Export / Print PDF
+ </button>
+ </div>
+
+ <div className="text-center mb-12 no-print">
+ <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight uppercase">Study Guide & Solution Manual</h1>
+ <p className="text-slate-600 mt-2 font-medium text-lg">Chapter 5: Finite Difference Method (FDM)</p>
+ </div>
+
+ <main className="w-full bg-[#fdfdfc] p-8 md:p-14 rounded-sm book-shadow textbook-font text-[1.15rem] leading-relaxed relative">
+ <div className="binding-edge absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-gray-200 to-transparent border-l-[5px] border-gray-300"></div>
+
+ <div className="pl-0 md:pl-8">
+
+ {/* SECTION 5.1 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="5.1 Introduction"
+ questions={[
+ "Write the principle of finite difference method. [2079 Shrawan]",
+ "Explain the concept of finite difference method. [2078 Chaitra, 2077 Chaitra, 2073 Bhadra]",
+ "Explain forward, backward and central difference approximations. [2076 Bhadra]",
+ "Describe basic steps in finite difference method. [2075 Bhadra]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">5.1 Concept & Principle of Finite Difference Method (FDM)</h3>
+
+ <p className="mb-2 font-bold">Concept of FDM:</p>
+ <p className="mb-4">
+ The fundamental concept of the Finite Difference Method (FDM) is to replace continuous domains (such as space and time) with a discrete grid of points. The continuous partial differential equations (PDEs) are then approximated pointwise by algebraic "difference equations" derived from Taylor series expansions.
+ </p>
+
+ <p className="mb-2 font-bold">Principle of FDM:</p>
+ <p className="mb-4">
+ The principle lies in substituting exact, continuous derivatives (which measure instant rates of change) with finite difference quotients over small steps (<MathText content={"$\\Delta x, \\Delta t$"} />). This effectively transforms unsolvable continuous calculus problems into a large system of linear algebraic equations that can be solved numerically by computers.
+ </p>
+
+ <p className="mb-2 font-bold">Basic Steps in FDM:</p>
+ <ol className="list-decimal list-inside space-y-2 mb-6 pl-4">
+ <li><strong>Domain Discretization:</strong> Divide the physical domain into a discrete grid in space (<MathText content={"$\\Delta x$"} />) and time (<MathText content={"$\\Delta t$"} />).</li>
+ <li><strong>PDE Discretization:</strong> Replace the governing PDEs with algebraic finite difference equations (FDEs).</li>
+ <li><strong>Solution Algorithm:</strong> Specify initial/boundary conditions and solve the resulting system of algebraic equations iteratively at each grid point.</li>
+ </ol>
+
+ <p className="mb-2 font-bold">Difference Approximations:</p>
+ <p className="mb-4">For a function <MathText content={"$f(x)$"} />, ignoring higher-order truncation errors, the first-order derivatives are approximated as:</p>
+ <div className="grid md:grid-cols-3 gap-4 mb-6 text-[1rem]">
+ <div className="bg-slate-50 border border-slate-200 p-4 rounded text-center">
+ <p className="font-bold mb-2 border-b pb-1">Forward Difference</p>
+ <MathText content={"$\\frac{\\partial f}{\\partial x} \\approx \\frac{f_{i+1} - f_i}{\\Delta x}$"} />
+ </div>
+ <div className="bg-slate-50 border border-slate-200 p-4 rounded text-center">
+ <p className="font-bold mb-2 border-b pb-1">Backward Difference</p>
+ <MathText content={"$\\frac{\\partial f}{\\partial x} \\approx \\frac{f_i - f_{i-1}}{\\Delta x}$"} />
+ </div>
+ <div className="bg-slate-50 border border-slate-200 p-4 rounded text-center">
+ <p className="font-bold mb-2 border-b pb-1">Central Difference</p>
+ <MathText content={"$\\frac{\\partial f}{\\partial x} \\approx \\frac{f_{i+1} - f_{i-1}}{2\\Delta x}$"} />
+ </div>
+ </div>
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 5.2 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="5.2 Explicit and Implicit Scheme"
+ questions={[
+ "What do you mean explicit and implicit scheme in finite difference method? [2078 Chaitra]",
+ "Explain explicit and implicit finite difference schemes with examples. [2077 Chaitra, 2075 Bhadra]",
+ "What are the differences between explicit and implicit schemes? [2076 Bhadra]",
+ "Discretize using explicit and implicit scheme using forward, backward and central difference. [2073 Bhadra]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">5.2 Explicit and Implicit Schemes</h3>
+
+ <p className="mb-4 font-bold text-blue-700">1. Explicit Scheme:</p>
+ <p className="mb-4">
+ In an explicit scheme, the unknown variables at the future time level (<MathText content={"$n+1$"} />) are computed exclusively using known values from the current or past time levels (<MathText content={"$n, n-1$"} />).
+ </p>
+ <ul className="list-disc list-inside space-y-2 mb-4 pl-4">
+ <li><strong>Advantage:</strong> Very simple to program. Equations are solved sequentially point-by-point.</li>
+ <li><strong>Disadvantage:</strong> Conditionally stable. The time step <MathText content={"$\\Delta t$"} /> is strictly limited by the Courant condition to prevent numerical instability.</li>
+ </ul>
+ <p className="mb-4 italic">Example Expression (Forward Time, Central Space):</p>
+ <MathText block content={"$$ u_i^{n+1} = u_i^n + \\alpha \\frac{\\Delta t}{(\\Delta x)^2} (u_{i+1}^n - 2u_i^n + u_{i-1}^n) $$"} />
+
+ <p className="mb-4 font-bold text-emerald-700 mt-8">2. Implicit Scheme:</p>
+ <p className="mb-4">
+ In an implicit scheme, the unknown variables at the future time level (<MathText content={"$n+1$"} />) are coupled with other <em>unknown</em> variables at the same future time level.
+ </p>
+ <ul className="list-disc list-inside space-y-2 mb-4 pl-4">
+ <li><strong>Advantage:</strong> Generally unconditionally stable. Allows for much larger computational time steps (<MathText content={"$\\Delta t$"} />).</li>
+ <li><strong>Disadvantage:</strong> Mathematically complicated and computationally heavy. Requires solving a system of simultaneous equations at every step (e.g., using Newton-Raphson or matrix inversion).</li>
+ </ul>
+ <p className="mb-4 italic">Example Expression (Backward Time, Central Space):</p>
+ <MathText block content={"$$ u_i^{n+1} = u_i^n + \\alpha \\frac{\\Delta t}{(\\Delta x)^2} (u_{i+1}^{n+1} - 2u_i^{n+1} + u_{i-1}^{n+1}) $$"} />
+
+ <p className="mb-4 font-bold mt-8">Spatial Discretization Expressions for <MathText content={"$\\frac{\\partial f}{\\partial x}$"} />:</p>
+ <div className="grid md:grid-cols-2 gap-6 bg-slate-50 p-4 border border-slate-200">
+ <div>
+ <p className="font-bold border-b border-slate-300 pb-1 mb-2 text-blue-700">Explicit FDEs (Evaluated at time <MathText content={"$n$"} />)</p>
+ <ul className="space-y-4">
+ <li>Forward: <MathText content={"$\\frac{f_{i+1}^{n}-f_{i}^{n}}{\\Delta x}$"} /></li>
+ <li>Backward: <MathText content={"$\\frac{f_{i}^{n}-f_{i-1}^{n}}{\\Delta x}$"} /></li>
+ <li>Central: <MathText content={"$\\frac{f_{i+1}^{n}-f_{i-1}^{n}}{2\\Delta x}$"} /></li>
+ </ul>
+ </div>
+ <div>
+ <p className="font-bold border-b border-slate-300 pb-1 mb-2 text-emerald-700">Implicit FDEs (Evaluated at time <MathText content={"$n+1$"} />)</p>
+ <ul className="space-y-4">
+ <li>Forward: <MathText content={"$\\frac{f_{i+1}^{n+1}-f_{i}^{n+1}}{\\Delta x}$"} /></li>
+ <li>Backward: <MathText content={"$\\frac{f_{i}^{n+1}-f_{i-1}^{n+1}}{\\Delta x}$"} /></li>
+ <li>Central: <MathText content={"$\\frac{f_{i+1}^{n+1}-f_{i-1}^{n+1}}{2\\Delta x}$"} /></li>
+ </ul>
+ </div>
+ </div>
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 5.3 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="5.3 Unsteady Non-Uniform Flow: Saint-Venant Equations"
+ questions={[
+ "Write down the governing equations describing movement of fluid. [2078 Chaitra, 2078 Kartik, 2074 Magh, 2071 Magh, 2070 Bhadra]",
+ "What are the Kinematic wave approximations of these governing equations? [Multiple Years]",
+ "Describe first-order and second-order schemes with graphs. [2079 Jestha, 2073 Magh]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">5.3 Governing Equations & Kinematic Approximation</h3>
+ <p className="mb-4">
+ The movement of fluid in open channels is governed by the 1D Saint-Venant Equations, derived from the conservation of mass and momentum:
+ </p>
+ <p className="mb-2 font-bold">1. Continuity Equation (Conservation of Mass):</p>
+ <MathText block content={"$$ \\frac{\\partial A}{\\partial t} + \\frac{\\partial Q}{\\partial x} = q_L $$"} />
+ <p className="mb-4 mt-6 font-bold">2. Momentum Equation (Conservation of Momentum):</p>
+ <MathText block content={"$$ \\underbrace{\\frac{1}{g} \\frac{\\partial V}{\\partial t}}_{\\text{Local Accel.}} + \\underbrace{\\frac{V}{g} \\frac{\\partial V}{\\partial x}}_{\\text{Convective Accel.}} + \\underbrace{\\frac{\\partial y}{\\partial x}}_{\\text{Pressure Gradient}} = \\underbrace{S_0 - S_f}_{\\text{Gravity & Friction}} $$"} />
+
+ <p className="mb-4 mt-8 font-bold text-lg">Kinematic Wave Approximation:</p>
+ <p className="mb-4">
+ In steep channels or slow-rising floods, the local acceleration, convective acceleration, and pressure gradient terms are negligibly small compared to the bed slope and friction. By dropping them, we get the <strong>Kinematic Wave Approximation</strong>:
+ </p>
+ <MathText block content={"$$ S_0 = S_f $$"} />
+ <p className="mb-4">
+ This implies that the gravitational force perfectly balances the frictional force, meaning discharge <MathText content={"$Q$"} /> is strictly a function of flow area <MathText content={"$A$"} /> (e.g., <MathText content={"$Q = \\alpha A^m$"} />).
+ </p>
+
+ <h3 className="font-bold text-xl border-b border-slate-300 pb-2 mb-4 mt-10 text-slate-900">First-Order and Second-Order Schemes</h3>
+
+ <p className="mb-4 font-bold text-blue-700">1. First-Order Accurate Scheme (e.g., FTBS Explicit)</p>
+ <p className="mb-4">
+ A first-order scheme uses a two-point difference approximation (forward or backward) for the derivatives, resulting in a truncation error of <MathText content={"$O(\\Delta x, \\Delta t)$"} />.
+ </p>
+ <MathText block content={"$$ \\text{Forward Time: } \\frac{\\partial f}{\\partial t} \\approx \\frac{f_i^{n+1} - f_i^n}{\\Delta t}, \\quad \\text{Backward Space: } \\frac{\\partial f}{\\partial x} \\approx \\frac{f_i^n - f_{i-1}^n}{\\Delta x} $$"} />
+ <FirstOrderStencil />
+
+ <p className="mb-4 font-bold text-red-700 mt-10">2. Second-Order Accurate Scheme (e.g., CTCS Leap-Frog Explicit)</p>
+ <p className="mb-4">
+ A second-order scheme uses a three-point central difference approximation, yielding a much smaller truncation error of <MathText content={"$O(\\Delta x^2, \\Delta t^2)$"} />.
+ </p>
+ <MathText block content={"$$ \\text{Central Time: } \\frac{\\partial f}{\\partial t} \\approx \\frac{f_i^{n+1} - f_i^{n-1}}{2\\Delta t}, \\quad \\text{Central Space: } \\frac{\\partial f}{\\partial x} \\approx \\frac{f_{i+1}^n - f_{i-1}^n}{2\\Delta x} $$"} />
+ <LeapFrogStencil />
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 5.4.1 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="5.4.1 Linear Scheme for Kinematic Wave"
+ questions={[
+ "Derive the kinematic wave approximation for movement of fluid. [2070 Bhadra]",
+ "Derive 1st-order accurate implicit FDE for linear kinematic wave + parameters of momentum eq. [2080 Chaitra]",
+ "Write an algorithm for the 2nd order accurate solution of kinematic wave. [2071 Magh]",
+ "Derive a 2nd order accurate finite difference scheme of linear kinematic wave. [2070 Bhadra]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">5.4.1 Linear Kinematic Wave Model</h3>
+ <p className="mb-4">
+ By taking the kinematic approximation (<MathText content={"$S_0=S_f$"} />), we find <MathText content={"$Q = \\alpha A^m$"} />. Differentiating w.r.t. time yields <MathText content={"$\\frac{\\partial A}{\\partial t} = \\frac{1}{c} \\frac{\\partial Q}{\\partial t}$"} />, where <MathText content={"$c = \\frac{dQ}{dA}$"} /> is the wave celerity. Substituting this into the continuity equation gives the <strong>Linear Kinematic Wave Equation</strong>:
+ </p>
+ <MathText block content={"$$ \\frac{\\partial Q}{\\partial t} + c\\frac{\\partial Q}{\\partial x} = 0 $$"} />
+
+ <p className="mb-2 font-bold mt-6">1. First-Order Accurate Implicit Scheme (Backward Space, Backward Time):</p>
+ <p className="mb-4">Evaluating the spatial derivative at the unknown future time level <MathText content={"$n+1$"} /> guarantees an unconditionally stable implicit formulation:</p>
+ <MathText block content={"$$ \\begin{aligned} \\frac{Q_i^{n+1} - Q_i^n}{\\Delta t} + c \\left(\\frac{Q_i^{n+1} - Q_{i-1}^{n+1}}{\\Delta x}\\right) &= 0 \\\\ Q_i^{n+1} - Q_i^n + C_r (Q_i^{n+1} - Q_{i-1}^{n+1}) &= 0 \\quad (\\text{where } C_r = c\\Delta t/\\Delta x) \\\\ Q_i^{n+1}(1 + C_r) &= Q_i^n + C_r Q_{i-1}^{n+1} \\\\ Q_i^{n+1} &= \\frac{Q_i^n + C_r Q_{i-1}^{n+1}}{1 + C_r} \\end{aligned} $$"} />
+
+ <p className="mb-2 font-bold mt-8">2. Second-Order Accurate Scheme (Central Time, Central Space):</p>
+ <p className="mb-4">Using central differences gives a second-order accurate formulation computing discharge for unknown time and location:</p>
+ <MathText block content={"$$ \\begin{aligned} \\frac{Q_i^{n+1} - Q_i^{n-1}}{2\\Delta t} + c \\left(\\frac{Q_{i+1}^n - Q_{i-1}^n}{2\\Delta x}\\right) &= 0 \\\\ Q_i^{n+1} &= Q_i^{n-1} - C_r (Q_{i+1}^n - Q_{i-1}^n) \\end{aligned} $$"} />
+
+ <p className="mb-2 font-bold mt-8">3. Parameters of the Momentum Equation:</p>
+ <p className="mb-2">For a wide rectangular channel, <MathText content={"$R \\approx y$"} /> and Area <MathText content={"$A = b y$"} />. From Manning's equation:</p>
+ <MathText block content={"$$ Q = \\frac{1}{n} A R^{2/3} S_0^{1/2} = \\frac{1}{n} A \\left(\\frac{A}{b}\\right)^{2/3} \\sqrt{S_0} = \\left(\\frac{\\sqrt{S_0}}{n b^{2/3}}\\right) A^{5/3} $$"} />
+ <p className="mb-4">Comparing this to the general kinematic momentum equation <MathText content={"$Q = \\alpha A^m$"} />, the parameters are:</p>
+ <div className="bg-slate-100 border border-slate-300 p-4 text-center">
+ <MathText content={"$\\alpha = \\frac{\\sqrt{S_0}}{n b^{2/3}} \\quad \\text{and} \\quad m = \\frac{5}{3}$"} />
+ </div>
+
+ <p className="mb-2 font-bold mt-8">4. Algorithm for Second-Order Accurate Solution:</p>
+ <ol className="list-decimal list-inside space-y-2 mb-6 pl-4 bg-slate-50 p-4 border border-slate-200">
+ <li>Supply initial conditions <MathText content={"$Q_i^0$"} /> at time <MathText content={"$t=0$"} /> for all spatial points <MathText content={"$i$"} />.</li>
+ <li>Supply upstream boundary conditions <MathText content={"$Q_1^n$"} /> for all time steps.</li>
+ <li>Advance time step <MathText content={"$t = t + \\Delta t$"} />.</li>
+ <li>For interior nodes (<MathText content={"$i=2$"} /> to <MathText content={"$N-1$"} />), compute <MathText content={"$Q_i^{n+1}$"} /> using the second-order CTCS equation: <br /> <MathText content={"$Q_i^{n+1} = Q_i^{n-1} - C_r(Q_{i+1}^n - Q_{i-1}^n)$"} />.</li>
+ <li>For the downstream boundary node (<MathText content={"$N$"} />), use a first-order backward space approximation to compute the unknown boundary.</li>
+ <li>Repeat steps 3 to 5 until the final simulation time is reached.</li>
+ </ol>
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 5.4.2 & 5.4.3 & 5.4.4 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="5.4.2 to 5.4.4 Non-Linearity, Stability & Dispersion"
+ questions={[
+ "Derive the space-time discretization of a second-order non-linear kinematic wave. [2079 Shrawan]",
+ "Derive the 1st order accurate implicit FDE for kinematic wave model in non-linear form. [2071 Bhadra]",
+ "Define Courant number and condition. [2078 Kartik, 2077 Chaitra]",
+ "Describe numerical dispersion, diffusion, and stability. [2079 Jestha, 2074 Bhadra, 2077 Chaitra]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">5.4.2 Non-Linear Scheme for Kinematic Wave</h3>
+
+ <p className="mb-2 font-bold">1. First-Order Accurate Implicit Scheme (Non-Linear):</p>
+ <p className="mb-4">
+ The non-linear continuity equation is <MathText content={"$\\frac{\\partial A}{\\partial t} + \\frac{\\partial Q}{\\partial x} = q_L$"} />. Using a first-order fully implicit backward-time, backward-space scheme:
+ </p>
+ <MathText block content={"$$ \\frac{A_{i+1}^{n+1} - A_{i+1}^n}{\\Delta t} + \\frac{Q_{i+1}^{n+1} - Q_i^{n+1}}{\\Delta x} = q_{L, i+1}^{n+1} $$"} />
+ <p className="mb-4">Substituting the non-linear area-discharge relationship <MathText content={"$A = \\alpha Q^\\beta$"} /> evaluated at the future time step:</p>
+ <div className="bg-[#f8fafc] border border-slate-300 p-2 mb-6 text-center">
+ <MathText content={"$$ \\frac{\\alpha (Q_{i+1}^{n+1})^\\beta - \\alpha (Q_{i+1}^n)^\\beta}{\\Delta t} + \\frac{Q_{i+1}^{n+1} - Q_i^{n+1}}{\\Delta x} = q_{L, i+1}^{n+1} $$"} />
+ </div>
+ <p className="mb-6">This produces a non-linear algebraic equation for <MathText content={"$Q_{i+1}^{n+1}$"} /> that must be solved using Newton-Raphson iteration.</p>
+
+ <p className="mb-2 font-bold">2. Second-Order Accurate Implicit Scheme (Non-Linear):</p>
+ <p className="mb-4">
+ To achieve second-order accuracy in space and time, the Preissmann 4-point implicit scheme is used with a weighting factor <MathText content={"$\\theta = 0.5$"} />:
+ </p>
+ <div className="bg-[#f8fafc] border border-slate-300 p-2 mb-6">
+ <MathText block content={"$$ \\frac{A_{i+1}^{n+1} + A_i^{n+1} - A_{i+1}^n - A_i^n}{2\\Delta t} + \\frac{Q_{i+1}^{n+1} - Q_i^{n+1}}{\\Delta x} = \\bar{q}_L $$"} />
+ </div>
+
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 mt-10 text-slate-900">5.4.3 & 5.4.4 Stability, Diffusion, and Dispersion</h3>
+
+ <p className="mb-2 font-bold text-lg text-emerald-800">Stability & Courant Condition:</p>
+ <p className="mb-4">
+ <strong>Stability</strong> ensures that numerical errors (round-off and truncation) do not grow exponentially during the simulation. <br /><br />
+ <strong>Courant Number (<MathText content={"$C_r$"} />)</strong> is defined as the ratio of the physical wave celerity (<MathText content={"$c$"} />) to the numerical grid speed (<MathText content={"$\\Delta x / \\Delta t$"} />).
+ </p>
+ <MathText block content={"$$ C_r = \\frac{c \\Delta t}{\\Delta x} $$"} />
+ <p className="mb-6">
+ <strong>Courant Condition</strong> requires that for explicit schemes to remain stable, the Courant number must be less than or equal to 1 (<MathText content={"$C_r \\le 1$"} />).
+ </p>
+
+ <p className="mb-2 font-bold text-lg text-purple-800">Numerical Diffusion & Dispersion:</p>
+ <ul className="list-disc list-inside space-y-4 pl-4">
+ <li><strong>Numerical Diffusion:</strong> Caused by even-order truncation errors (e.g., <MathText content={"$\\partial^2/\\partial x^2$"} />) inherent in the difference approximation. It artificially "smears", flattens, or attenuates the peak of a passing wave, simulating an artificial physical friction.</li>
+ <li><strong>Numerical Dispersion:</strong> Caused by odd-order truncation errors (e.g., <MathText content={"$\\partial^3/\\partial x^3$"} />). It forces different frequency components of the numerical wave to travel at slightly different speeds, resulting in artificial "wiggles" or oscillations trailing or leading the main wave front.</li>
+ </ul>
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 5.5 */}
+ <section className="avoid-break mb-8">
+ <QuestionBox
+ title="5.5 Dynamic Wave Model (Saint-Venant Solvers)"
+ questions={[
+ "Derive the expression for Leap frog explicit finite equation for dynamic wave model. [2079 Chaitra]",
+ "Derive FDE for full Saint-Venant equations using 2nd order accurate explicit scheme. [2074 Bhadra, 2072 Ashwin]",
+ "Discretize the Saint Venant equations using implicit four point method. [2072 Magh]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">5.5 Solutions to Dynamic Wave Model</h3>
+
+ <p className="mb-2 font-bold text-xl text-blue-800">1. Solution by Explicit Scheme (Leap-Frog Method)</p>
+ <p className="mb-4">
+ The Leap-Frog scheme utilizes Central-Time, Central-Space (CTCS) approximations. It is second-order accurate in both space and time, <MathText content={"$O(\\Delta x^2, \\Delta t^2)$"} />.
+ </p>
+ <MathText block content={"$$ \\begin{aligned} \\frac{\\partial f}{\\partial t} &\\approx \\frac{f_i^{n+1} - f_i^{n-1}}{2\\Delta t} \\\\ \\frac{\\partial f}{\\partial x} &\\approx \\frac{f_{i+1}^n - f_{i-1}^n}{2\\Delta x} \\end{aligned} $$"} />
+ <p className="mb-4">Substituting into the full Saint-Venant continuity equation (<MathText content={"$\\frac{\\partial A}{\\partial t} + \\frac{\\partial Q}{\\partial x} = q$"} />):</p>
+ <MathText block content={"$$ \\frac{A_i^{n+1} - A_i^{n-1}}{2\\Delta t} + \\frac{Q_{i+1}^n - Q_{i-1}^n}{2\\Delta x} = q_i^n $$"} />
+ <p className="mb-6 text-center italic">Solving explicitly for the future area <MathText content={"$A_i^{n+1}$"} />:</p>
+ <div className="bg-[#f8fafc] border border-slate-300 p-2 mb-6">
+ <MathText block content={"$$ A_i^{n+1} = A_i^{n-1} - \\frac{\\Delta t}{\\Delta x}(Q_{i+1}^n - Q_{i-1}^n) + 2\\Delta t q_i^n $$"} />
+ </div>
+ <p className="mb-4">Similarly, substituting CTCS into the momentum equation (<MathText content={"$\\frac{\\partial Q}{\\partial t} + \\frac{\\partial (Q^2/A)}{\\partial x} + gA\\frac{\\partial y}{\\partial x} - gA(S_0 - S_f) = 0$"} />) allows explicit isolation of <MathText content={"$Q_i^{n+1}$"} />.</p>
+ <LeapFrogStencil />
+
+ <div className="page-break"></div>
+
+ <p className="mb-2 font-bold text-xl text-red-800 mt-12">2. Solution by Implicit Four-Point Method (Preissmann Scheme)</p>
+ <p className="mb-4">
+ This scheme evaluates spatial derivatives, time derivatives, and function values at an interior point <MathText content={"$M$"} /> defined by a temporal weighting factor <MathText content={"$\\theta$"} /> (typically <MathText content={"$0.5 \\le \\theta \\le 1.0$"} />) and a spatial weighting factor of 0.5.
+ </p>
+ <MathText block content={"$$ \\begin{aligned} f(x,t) &\\approx \\frac{\\theta}{2} (f_{i+1}^{n+1} + f_i^{n+1}) + \\frac{1-\\theta}{2} (f_{i+1}^n + f_i^n) \\\\ \\frac{\\partial f}{\\partial t} &\\approx \\frac{f_{i+1}^{n+1} + f_i^{n+1} - f_{i+1}^n - f_i^n}{2\\Delta t} \\\\ \\frac{\\partial f}{\\partial x} &\\approx \\theta \\left[ \\frac{f_{i+1}^{n+1} - f_i^{n+1}}{\\Delta x} \\right] + (1-\\theta) \\left[ \\frac{f_{i+1}^n - f_i^n}{\\Delta x} \\right] \\end{aligned} $$"} />
+ <PreissmannStencil />
+ <p className="mb-4">
+ Substituting these approximations into the non-linear Saint-Venant equations generates a large system of simultaneous algebraic equations, which is unconditionally stable for <MathText content={"$\\theta \\ge 0.5$"} />.
+ </p>
+ </section>
+
+ </div>
+ </main>
+
+ <div className="text-center mt-12 text-slate-500 text-sm font-medium no-print">
+ — End of Chapter 5 Study Guide —
+ </div>
+ </div>
+ );
+ };
+
+ const root = ReactDOM.createRoot(document.getElementById('root'));
+ root.render(<App />);
+ </script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

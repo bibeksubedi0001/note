@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Exam Question Bank - Computational Techniques</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true,
+ tags: 'ams'
+ },
+ svg: { fontCache: 'global' }, // Prevents missing equations on PDF export
+ startup: {
+ typeset: false,
+ ready: () => {
+ MathJax.startup.defaultReady();
+ MathJax.startup.promise.then(() => {
+ window.isMathJaxReady = true;
+ document.dispatchEvent(new Event('mathjax-ready'));
+ });
+ }
+ }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+ <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+ <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+ <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        
+
+
+    </style>
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="water-override.css">
+</head>
+
+<body>
+
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<div id="root"></div>
+
+ <script type="text/babel">
+ // Safe Math Component (Prevents Babel \uXXXX errors)
+ const MathText = ({ content, block = false }) => {
+ const el = React.useRef(null);
+ 
+ React.useEffect(() => {
+ if (!el.current) return;
+ el.current.innerHTML = content;
+ 
+ const renderMath = () => {
+ if (window.MathJax && window.MathJax.typesetPromise) {
+ window.MathJax.typesetPromise([el.current]).catch(err => console.log(err.message));
+ }
+ };
+
+ if (window.isMathJaxReady) {
+ renderMath();
+ } else {
+ document.addEventListener('mathjax-ready', renderMath);
+ return () => document.removeEventListener('mathjax-ready', renderMath);
+ }
+ }, [content]);
+
+ return <span ref={el} className={block ? 'math-block' : 'math-inline'} />;
+ };
+
+ // --- CUSTOM SVG FIGURES RECREATED FROM EXAM PAPERS ---
+
+ const Figure2080Q2 = () => (
+ <div className="flex justify-center my-6 avoid-break">
+ <svg width="450" height="280" viewBox="0 0 450 280" className="font-sans text-sm">
+ <defs>
+ <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+ <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+ </marker>
+ <marker id="arrow-both" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+ <polygon points="0 3.5, 10 0, 10 7" fill="#333" />
+ </marker>
+ </defs>
+ 
+ {/* Axes */}
+ <line x1="80" y1="240" x2="400" y2="240" stroke="#333" strokeWidth="1.5" markerEnd="url(#arrow)" />
+ <line x1="100" y1="260" x2="100" y2="20" stroke="#333" strokeWidth="1.5" markerEnd="url(#arrow)" />
+ <text x="410" y="245" fontStyle="italic">X</text>
+ <text x="85" y="30" fontStyle="italic">t</text>
+ 
+ {/* Main Grid Box */}
+ <rect x="150" y="80" width="160" height="110" fill="none" stroke="#333" strokeWidth="1.5" />
+ 
+ {/* Internal Point P */}
+ <circle cx="220" cy="140" r="3" fill="#333" />
+ <text x="230" y="145" fontStyle="italic">P</text>
+ 
+ {/* Labels & Values */}
+ <text x="130" y="210" fontStyle="italic">n</text>
+ <text x="110" y="85" fontStyle="italic">n+1</text>
+ <text x="145" y="260" fontStyle="italic">j-1</text>
+ <text x="305" y="260" fontStyle="italic">j</text>
+
+ <text x="140" y="205" fontSize="12">97 m³/s</text>
+ <text x="290" y="205" fontSize="12">90 m³/s</text>
+ <text x="130" y="70" fontSize="12">100 m³/s</text>
+ <text x="290" y="70" fontSize="12">98 m³/s</text>
+
+ {/* Dimension Lines X */}
+ <line x1="150" y1="40" x2="310" y2="40" stroke="#333" strokeWidth="0.5" />
+ <line x1="150" y1="35" x2="150" y2="70" stroke="#333" strokeWidth="0.5" />
+ <line x1="310" y1="35" x2="310" y2="70" stroke="#333" strokeWidth="0.5" />
+ <text x="220" y="35" fontSize="11" textAnchor="middle">Δx</text>
+ <polygon points="150,40 155,38 155,42" fill="#333" />
+ <polygon points="310,40 305,38 305,42" fill="#333" />
+
+ <line x1="150" y1="55" x2="310" y2="55" stroke="#333" strokeWidth="0.5" strokeDasharray="3" />
+ <line x1="220" y1="50" x2="220" y2="140" stroke="#333" strokeWidth="0.5" strokeDasharray="2" />
+ <text x="180" y="50" fontSize="11" textAnchor="middle">(1-Ψ)Δx</text>
+ <text x="265" y="50" fontSize="11" textAnchor="middle">ΨΔx</text>
+ 
+ {/* Dimension Lines T */}
+ <line x1="340" y1="80" x2="340" y2="190" stroke="#333" strokeWidth="0.5" />
+ <line x1="315" y1="80" x2="345" y2="80" stroke="#333" strokeWidth="0.5" />
+ <line x1="315" y1="190" x2="345" y2="190" stroke="#333" strokeWidth="0.5" />
+ <text x="350" y="140" fontSize="11">Δt</text>
+ <polygon points="340,80 338,85 342,85" fill="#333" />
+ <polygon points="340,190 338,185 342,185" fill="#333" />
+
+ <line x1="315" y1="140" x2="345" y2="140" stroke="#333" strokeWidth="0.5" />
+ <text x="315" y="115" fontSize="11">(1-θ)Δt</text>
+ <text x="320" y="175" fontSize="11">θΔt</text>
+ </svg>
+ </div>
+ );
+
+ const Table2080Q4b = () => (
+ <div className="flex justify-center my-6 avoid-break font-sans">
+ <table className="border-collapse border-2 border-slate-700 text-center">
+ <tbody>
+ <tr>
+ <td className="border border-slate-700 w-16 py-2">0</td>
+ <td className="border border-slate-700 w-16 py-2">0</td>
+ <td className="border border-slate-700 w-16 py-2">0</td>
+ <td className="border border-slate-700 w-16 py-2">0</td>
+ </tr>
+ <tr>
+ <td className="border border-slate-700 py-2">2.99</td>
+ <td className="border border-slate-700 py-2">2.92</td>
+ <td className="border border-slate-700 py-2">2.81</td>
+ <td className="border border-slate-700 py-2">2.08</td>
+ </tr>
+ <tr>
+ <td className="border border-slate-700 py-2">2.97</td>
+ <td className="border border-slate-700 py-2">2.83</td>
+ <td className="border border-slate-700 py-2 bg-gray-400 font-bold text-white">2.66</td>
+ <td className="border border-slate-700 py-2">2.51</td>
+ </tr>
+ <tr>
+ <td className="border border-slate-700 py-2">2.92</td>
+ <td className="border border-slate-700 py-2">2.74</td>
+ <td className="border border-slate-700 py-2">2.53</td>
+ <td className="border border-slate-700 py-2">2.27</td>
+ </tr>
+ <tr>
+ <td className="border border-slate-700 py-2">0</td>
+ <td className="border border-slate-700 py-2">0</td>
+ <td className="border border-slate-700 py-2">0</td>
+ <td className="border border-slate-700 py-2">0</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ );
+
+ const Figure2079Q2 = () => (
+ <div className="flex justify-center my-6 avoid-break">
+ <svg width="400" height="250" viewBox="0 0 400 250" className="font-sans text-sm">
+ <defs>
+ <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+ <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
+ </marker>
+ </defs>
+ {/* Axes */}
+ <line x1="80" y1="200" x2="350" y2="200" stroke="#333" strokeWidth="1.5" markerEnd="url(#arrow)" />
+ <line x1="100" y1="220" x2="100" y2="40" stroke="#333" strokeWidth="1.5" markerEnd="url(#arrow)" />
+ <text x="360" y="205" fontStyle="italic">Distance (x)</text>
+ <text x="90" y="20" fontStyle="italic" textAnchor="middle">Time (t)</text>
+ 
+ {/* Grid Box */}
+ <rect x="150" y="80" width="140" height="120" fill="none" stroke="#333" strokeWidth="1.5" />
+ 
+ {/* Points */}
+ <circle cx="150" cy="200" r="4" fill="#333" />
+ <circle cx="290" cy="200" r="4" fill="#333" />
+ <circle cx="150" cy="80" r="4" fill="#333" />
+ <circle cx="290" cy="80" r="4" fill="#333" />
+ 
+ {/* Dashed guidelines */}
+ <line x1="95" y1="200" x2="150" y2="200" stroke="#333" strokeWidth="1" strokeDasharray="4" />
+ <line x1="95" y1="80" x2="150" y2="80" stroke="#333" strokeWidth="1" strokeDasharray="4" />
+ 
+ {/* Labels */}
+ <text x="85" y="205" fontStyle="italic" textAnchor="end">n</text>
+ <text x="85" y="85" fontStyle="italic" textAnchor="end">n+1</text>
+ <text x="150" y="220" fontStyle="italic" textAnchor="middle">i</text>
+ <text x="290" y="220" fontStyle="italic" textAnchor="middle">i+1</text>
+
+ {/* Values */}
+ <text x="150" y="215" fontSize="12" textAnchor="start" dx="10" dy="-25">93 m³/sec</text>
+ <text x="290" y="215" fontSize="12" textAnchor="start" dx="10" dy="-25">89 m³/sec</text>
+ <text x="150" y="70" fontSize="12" textAnchor="middle">95 m³/sec</text>
+ <text x="290" y="70" fontSize="12" textAnchor="middle">92 m³/sec</text>
+ </svg>
+ </div>
+ );
+
+ const Figure2079Q3 = () => (
+ <div className="flex justify-center my-6 avoid-break">
+ <svg width="400" height="150" viewBox="0 0 400 150" className="font-sans text-sm">
+ {/* Water level symbol */}
+ <polygon points="120,20 130,20 125,30" fill="none" stroke="#333" strokeWidth="1.5" />
+ <line x1="100" y1="20" x2="150" y2="20" stroke="#333" strokeWidth="1.5" />
+ 
+ {/* Reservoir Tank */}
+ <polyline points="150,20 150,100 200,100" fill="none" stroke="#333" strokeWidth="2" />
+ 
+ {/* Pipe */}
+ <line x1="150" y1="120" x2="350" y2="120" stroke="#333" strokeWidth="3" />
+ 
+ {/* Labels */}
+ <text x="100" y="90" fontSize="13">120 m</text>
+ <text x="160" y="110" fontSize="13">L = 500 m, Dia. = 400 mm</text>
+ <text x="155" y="140" fontWeight="bold">A</text>
+ <text x="340" y="140" fontWeight="bold">B</text>
+ 
+ {/* Dashed lines */}
+ <line x1="90" y1="20" x2="90" y2="120" stroke="#333" strokeWidth="0.5" strokeDasharray="4" />
+ <line x1="90" y1="120" x2="150" y2="120" stroke="#333" strokeWidth="0.5" strokeDasharray="4" />
+ <line x1="85" y1="20" x2="95" y2="20" stroke="#333" strokeWidth="1" />
+ </svg>
+ </div>
+ );
+
+ const Figure2078Q4a = () => (
+ <div className="flex justify-center my-6 avoid-break font-sans">
+ <svg width="400" height="150" viewBox="0 0 400 150">
+ {/* River bounds */}
+ <path d="M 60 20 Q 80 80 60 140" fill="none" stroke="#333" strokeWidth="1.5" />
+ <path d="M 100 20 Q 120 80 100 140" fill="none" stroke="#333" strokeWidth="1.5" />
+ <text x="65" y="40" fontSize="14">River</text>
+ 
+ {/* Block diagram */}
+ <rect x="106" y="60" width="40" height="40" fill="none" stroke="#333" strokeWidth="1.5" />
+ <text x="120" y="85" fontSize="14" fontStyle="italic">h<sub>L</sub></text>
+ 
+ <rect x="146" y="60" width="50" height="40" fill="none" stroke="#333" strokeWidth="1.5" />
+ <text x="166" y="85" fontSize="14">1</text>
+ 
+ <rect x="196" y="60" width="50" height="40" fill="none" stroke="#333" strokeWidth="1.5" />
+ <text x="216" y="85" fontSize="14">2</text>
+ 
+ <rect x="246" y="60" width="50" height="40" fill="none" stroke="#333" strokeWidth="1.5" />
+ <text x="266" y="85" fontSize="14">3</text>
+ 
+ <rect x="296" y="60" width="40" height="40" fill="none" stroke="#333" strokeWidth="1.5" />
+ <text x="310" y="85" fontSize="14" fontStyle="italic">h<sub>R</sub></text>
+ 
+ {/* Barrier */}
+ <line x1="296" y1="30" x2="296" y2="130" stroke="#333" strokeWidth="2.5" />
+ <text x="290" y="40" fontSize="14">Barrier</text>
+ </svg>
+ </div>
+ );
+
+ // --- EXAM PAPER LAYOUT COMPONENTS ---
+
+ const ExamHeader = ({ year }) => (
+ <div className="exam-header mb-8 pb-4 border-b-2 border-slate-800 text-center avoid-break">
+ <h1 className="text-xl font-bold uppercase tracking-wide">Tribhuvan University</h1>
+ <h2 className="text-lg font-bold uppercase tracking-wider">Institute of Engineering</h2>
+ <h3 className="text-2xl font-bold mt-2">Examination Control Division</h3>
+ <h4 className="text-xl font-bold mt-1">{year}</h4>
+ <div className="mt-4 pt-4 border-t border-slate-400 font-bold italic text-lg">
+ Subject: - Computational Techniques in Civil Engineering (CE 751)
+ </div>
+ </div>
+ );
+
+ const Question = ({ number, text, marks, children }) => (
+ <div className="flex flex-col mb-6 avoid-break text-[1.1rem]">
+ <div className="flex items-start gap-4">
+ <span className="font-bold min-w-[20px]">{number}.</span>
+ <div className="flex-1">
+ <span dangerouslySetInnerHTML={{ __html: text }} />
+ {children}
+ </div>
+ {marks && <span className="font-bold whitespace-nowrap ml-4">[{marks}]</span>}
+ </div>
+ </div>
+ );
+
+ const App = () => {
+ return (
+ <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+ 
+ {/* Action Bar */}
+ <div className="no-print flex justify-end mb-8">
+ <button onClick={() => window.print()} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded font-bold shadow-md transition-colors font-sans">
+ <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+ Print to PDF
+ </button>
+ </div>
+
+ <main className="w-full bg-white p-8 md:p-14 paper-shadow leading-relaxed">
+ 
+ {/* ==================================================== */}
+ {/* 2080 Chaitra */}
+ {/* ==================================================== */}
+ <div className="mb-16">
+ <ExamHeader year="2080 Chaitra (Regular)" />
+ 
+ <Question number="1" marks="6+2" text={`Derive the expression for first-order accurate implicit finite difference equation for the kinematic wave model in the linear form. Also, derive the expression for parameters of the momentum equation of the kinematic wave model.`} />
+ 
+ <Question number="2" marks="2+2">
+ <span>Determine the values of first order partial derivative of discharge with respect to time and space using four-point implicit method. The discharges at four points in the space-time grid are shown in figure below. Take <MathText content={String.raw`$\Delta t = 1 \text{ hour}, \Delta x = 500 \text{ m}, \theta = 0.55, \Psi = 0.45$`}/>.</span>
+ <Figure2080Q2 />
+ </Question>
+
+ <Question number="3" marks="1+7" text={`Define Method of Characteristics (MOC). Derive the expressions for the application of MOC to unsteady pipe flow problems.`} />
+
+ <Question number="4. a)" marks="2" text={`Draw a neat sketch presenting the finite difference grid, showing possible boundary conditions, for 2D steady state seepage analysis under a dam.`} />
+
+ <Question number="4. b)" marks="6">
+ <span>Table below shows the 2D grid with values of a potential head in m for simulating groundwater seepage. Determine the vertical and horizontal seepage into and out of the highlighted grid. Transmissivity in the x-direction and y-direction are <MathText content={String.raw`$2700 \text{ m}^2/\text{day}$`}/> and <MathText content={String.raw`$3200 \text{ m}^2/\text{day}$`}/>, respectively, for all grids. Use <MathText content={String.raw`$\Delta x = 85 \text{ m}$`}/> and <MathText content={String.raw`$\Delta y = 75 \text{ m}$`}/>.</span>
+ <Table2080Q4b />
+ </Question>
+ </div>
+
+ <div className="page-break"></div>
+
+ {/* ==================================================== */}
+ {/* 2079 Chaitra */}
+ {/* ==================================================== */}
+ <div className="mb-16 mt-8">
+ <ExamHeader year="2079 Chaitra (Regular)" />
+ 
+ <Question number="1" marks="6" text={`Derive the expression for Leap frog explicit finite equation for dynamic wave modal.`} />
+ 
+ <Question number="2" marks="6">
+ <span>The value of flow rate Q at four points in the space time grid are shown in the figure below. Determine the value of first-order derivates <MathText content={String.raw`$\frac{\partial Q}{\partial t}$`}/> and <MathText content={String.raw`$\frac{\partial Q}{\partial x}$`}/> by using four-point implicit method. Given: <MathText content={String.raw`$dt = 1 \text{ hr}$`}/>, <MathText content={String.raw`$dx = 500 \text{ m}$`}/> and <MathText content={String.raw`$\theta = 0.47$`}/>.</span>
+ <Figure2079Q2 />
+ </Question>
+
+ <Question number="3" marks="8">
+ <span>A pipe conveys water from a reservoir as shown in the figure below. Take <MathText content={String.raw`$f = 0.02$`}/>, <MathText content={String.raw`$C = 1200 \text{ m/s}$`}/>. The HGL at the reservoir is given as <MathText content={String.raw`$H_{PA} = 120 + 3 \sin(\pi t)$`}/>. The discharge at the downstream end is zero at all times. By using only one reach, compute discharge from A and elevation of hydraulic grad line at B at 3 sec using a discretized equation of the method of characteristics in the form of HGL and discharge.</span>
+ <Figure2079Q3 />
+ </Question>
+
+ <Question number="4" marks="8" text={`Derive finite difference equation to evaluate river stage-water table interaction for one dimensional flow along a river and express in terms of tridiagonal coefficient matrix.`} />
+ </div>
+
+ <div className="page-break"></div>
+
+ {/* ==================================================== */}
+ {/* 2078 Chaitra */}
+ {/* ==================================================== */}
+ <div className="mt-8">
+ <ExamHeader year="2078 Chaitra (Regular)" />
+ 
+ <Question number="1" marks="2+3" text={`Write down the governing equations used for analyzing the moment of fluid. Discuss forward, backward and central differencing with expressions.`} />
+ 
+ <Question number="2" marks="6">
+ <span>Following are data pertaining to a rectangular channel:</span>
+ <ul className="list-disc list-inside ml-4 my-2">
+ <li>Width of channel = 200 ft</li>
+ <li>Length of Channel = 15000 ft</li>
+ <li>Bed Slope, <MathText content={String.raw`$S_0$`} /> = 1%</li>
+ <li>Manning's n = 0.035</li>
+ </ul>
+ <span>At the <MathText content={String.raw`$t = 0$`}/>, there is a uniform flow of <MathText content={String.raw`$2000 \text{ cfs}$`}/> along the channel. The discharge value at the upstream boundary from inflow hydrograph at time <MathText content={String.raw`$t = 3 \text{ min}$`}/> is obtained as <MathText content={String.raw`$2250 \text{ cfs}$`}/>. Determine the discharge at a distance of 3000 ft downstream along the channel. Use the linear kinematics wave modal. Take <MathText content={String.raw`$\Delta x = 3000\text{ft}$`}/> and <MathText content={String.raw`$\Delta t = 3 \text{ min}$`}/>. There is no lateral inflow (<MathText content={String.raw`$q = 0$`}/>).</span>
+ </Question>
+
+ <Question number="3" marks="2+6" text={`What do you understand by Method of characteristics? Derive the finite difference form of characteristic equations for unsteady pipe flow in terms of head and discharge.`} />
+
+ <Question number="4. a)" marks="5">
+ <span>A schematic for simulating river stage water table fluctuation is shown in figure. The following data are given for the simulation of homogenous and isotropic aquifer, river stage (<MathText content={String.raw`$h_L$`}/>) = 365m, length of aquifer = 1200 m, <MathText content={String.raw`$\Delta t$`}/> = 1 day, <MathText content={String.raw`$\Delta x$`}/> = 400 m, transmissivity of aquifer = <MathText content={String.raw`$600 \text{ m}^2/\text{day}$`}/>, storage coefficient = 0.15. The initial value of water table at 3 grids as 349.13, 347.97, 339.36 respectively. Calculate water table elevation in each grid.</span>
+ <Figure2078Q4a />
+ </Question>
+
+ <Question number="4. b)" marks="2+1+1" text={`Explain the concept of finite difference method. What are explicit and implicit schemes in finite difference method?`} />
+ </div>
+
+ </main>
+ </div>
+ );
+ };
+
+ const root = ReactDOM.createRoot(document.getElementById('root'));
+ root.render(<App />);
+ </script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

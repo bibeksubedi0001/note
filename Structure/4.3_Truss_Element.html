@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>4.3 Truss Element | Finite Element Method</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+MathJax = {
+ tex: {
+ inlineMath: [['$','$'],['\\(','\\)']],
+ displayMath: [['$$','$$'],['\\[','\\]']],
+ processEscapes: true
+ }
+};
+</script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<nav class="topbar">
+ <a href="index.html" style="font-weight:700">← Study Guide</a>
+ <span style="opacity:.65">Computational Technique</span>
+</nav>
+
+<header class="ch-header">
+ <h1>Chapter 4: Finite Element Method</h1>
+ <div class="meta">4.3 &mdash; Truss Element</div>
+ <div class="author">Collected &amp; Prepared By: Er. Sanjay Kumar Sah (Lecturer, Department of Civil Engineering, Pulchowk Campus)</div>
+</header>
+
+<div class="content">
+
+<!-- ===== TRUSS ELEMENT INTRO ===== -->
+<h2>Truss Element (Bar Element in 2D and 3D)</h2>
+
+<h3>Truss Element in 2D</h3>
+
+<p>A typical plane truss element is shown in local and global co-ordinate systems as shown below. In the local co-ordinate system, two nodes are numbered as 1 &amp; 2. The local co-ordinate system will be denoted by $x'$ &amp; $y'$ and the global co-ordinate system as $x$ &amp; $y$ respectively.</p>
+
+<!-- Fig 1: Truss element in local co-ordinate -->
+<div class="figure">
+<svg viewBox="0 0 420 200" style="max-width:440px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <defs>
+ <marker id="arw" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#1a365d"/></marker>
+ <marker id="arwr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+ </defs>
+ <!-- y' axis -->
+ <line x1="60" y1="170" x2="60" y2="30" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arw)"/>
+ <text x="45" y="25" fill="#1a365d" font-style="italic">y'</text>
+ <!-- x' axis -->
+ <line x1="60" y1="170" x2="380" y2="170" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arw)"/>
+ <text x="385" y="175" fill="#1a365d" font-style="italic">x'</text>
+ <!-- Bar element -->
+ <line x1="100" y1="150" x2="300" y2="150" stroke="#2c5282" stroke-width="3"/>
+ <!-- Node 1 -->
+ <circle cx="100" cy="150" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="100" y="154" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="11">1</text>
+ <text x="85" y="140" fill="#555" font-size="11">u₁'</text>
+ <!-- Node 2 -->
+ <circle cx="300" cy="150" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="300" y="154" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="11">2</text>
+ <!-- u2' arrow -->
+ <line x1="312" y1="150" x2="360" y2="150" stroke="#c0392b" stroke-width="2" marker-end="url(#arwr)"/>
+ <text x="340" y="140" fill="#c0392b" font-size="11">u₂'</text>
+</svg>
+<div class="caption">Fig 1: Truss element in local co-ordinate</div>
+</div>
+
+<!-- Fig 2: Truss element in global co-ordinate -->
+<div class="figure">
+<svg viewBox="0 0 460 340" style="max-width:480px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <defs>
+ <marker id="arw2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#1a365d"/></marker>
+ <marker id="arwr2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+ </defs>
+ <!-- y axis -->
+ <line x1="60" y1="290" x2="60" y2="30" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arw2)"/>
+ <text x="45" y="25" fill="#1a365d" font-style="italic">y</text>
+ <!-- x axis -->
+ <line x1="60" y1="290" x2="420" y2="290" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arw2)"/>
+ <text x="425" y="295" fill="#1a365d" font-style="italic">x</text>
+ <!-- Truss member -->
+ <line x1="140" y1="230" x2="320" y2="100" stroke="#2c5282" stroke-width="3"/>
+ <!-- Node 1 -->
+ <circle cx="140" cy="230" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="140" y="234" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="11">1</text>
+ <!-- u1 arrow -->
+ <line x1="152" y1="230" x2="195" y2="230" stroke="#c0392b" stroke-width="2" marker-end="url(#arwr2)"/>
+ <text x="180" y="248" fill="#c0392b" font-size="11">u₁</text>
+ <!-- v1 arrow -->
+ <line x1="140" y1="218" x2="140" y2="185" stroke="#c0392b" stroke-width="2" marker-end="url(#arwr2)"/>
+ <text x="125" y="200" fill="#c0392b" font-size="11">v₁</text>
+ <!-- Node 2 -->
+ <circle cx="320" cy="100" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="320" y="104" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="11">2</text>
+ <!-- u2 arrow -->
+ <line x1="332" y1="100" x2="375" y2="100" stroke="#c0392b" stroke-width="2" marker-end="url(#arwr2)"/>
+ <text x="360" y="118" fill="#c0392b" font-size="11">u₂</text>
+ <!-- v2 arrow -->
+ <line x1="320" y1="88" x2="320" y2="55" stroke="#c0392b" stroke-width="2" marker-end="url(#arwr2)"/>
+ <text x="305" y="70" fill="#c0392b" font-size="11">v₂</text>
+ <!-- Angle theta -->
+ <path d="M 190,230 A 55,55 0 0,1 175,200" fill="none" stroke="#555" stroke-width="1"/>
+ <text x="200" y="215" fill="#555" font-size="12" font-style="italic">&theta;</text>
+</svg>
+<div class="caption">Fig 2: Truss element in global co-ordinate</div>
+</div>
+
+<p>In global co-ordinate, each node has two degrees of freedom. Let $u_1, v_1$ and $u_2, v_2$ be the nodal displacements at node 1 &amp; 2 respectively along $x$ &amp; $y$ directions. Let the truss member be inclined with angle $\theta$ with x-axis, as shown in figure.</p>
+
+<p>Clearly, we have</p>
+<div class="eq-block">
+$$u_1' = u_1 \cos\theta + v_1 \sin\theta$$
+</div>
+<p>and</p>
+<div class="eq-block">
+$$u_2' = u_2 \cos\theta + v_2 \sin\theta$$
+</div>
+
+<!-- ===== DISPLACEMENT TRANSFORMATION ===== -->
+<h3>Displacement Transformation Matrix</h3>
+
+<p>Introducing direction cosines: $l = \cos\theta$ &amp; $m = \cos(90^\circ - \theta) = \sin\theta$</p>
+
+<p>The above equations can be written as:</p>
+<div class="eq-block">
+$$u_1' = u_1 \cdot l + v_1 \cdot m$$
+</div>
+<div class="eq-block">
+$$u_2' = u_2 \cdot l + v_2 \cdot m$$
+</div>
+
+<p>In matrix form:</p>
+<div class="eq-block hl">
+$$\begin{Bmatrix} u_1' \\ u_2' \end{Bmatrix} = \begin{bmatrix} l & m & 0 & 0 \\ 0 & 0 & l & m \end{bmatrix} \begin{Bmatrix} u_1 \\ v_1 \\ u_2 \\ v_2 \end{Bmatrix}$$
+</div>
+
+<div class="def-box">
+<div class="dt">Displacement Transformation Matrix</div>
+$$\Rightarrow \{u'\} = [T]\{u\}$$
+<p>where</p>
+$$[T] = \begin{bmatrix} l & m & 0 & 0 \\ 0 & 0 & l & m \end{bmatrix}$$
+<p>is the displacement transformation matrix, which transforms the four displacement components in global co-ordinate to only two displacement components in local co-ordinate along the length of the bar element/truss element only, i.e., one at each node.</p>
+</div>
+
+<!-- ===== HOW TO CALCULATE l & m ===== -->
+<h3>How to Calculate $l$ &amp; $m$</h3>
+
+<div class="figure">
+<svg viewBox="0 0 300 220" style="max-width:320px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <defs>
+ <marker id="arw3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#1a365d"/></marker>
+ </defs>
+ <!-- Triangle -->
+ <line x1="60" y1="180" x2="240" y2="180" stroke="#555" stroke-width="1.5" stroke-dasharray="5,3"/>
+ <line x1="240" y1="180" x2="240" y2="50" stroke="#555" stroke-width="1.5" stroke-dasharray="5,3"/>
+ <line x1="60" y1="180" x2="240" y2="50" stroke="#2c5282" stroke-width="3"/>
+ <!-- Node 1 -->
+ <circle cx="60" cy="180" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="30" y="200" fill="#1a365d" font-size="11">(1)</text>
+ <text x="20" y="215" fill="#555" font-size="10">(x₁, y₁)</text>
+ <!-- Node 2 -->
+ <circle cx="240" cy="50" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="248" y="45" fill="#1a365d" font-size="11">(2)</text>
+ <text x="248" y="60" fill="#555" font-size="10">(x₂, y₂)</text>
+ <!-- Labels -->
+ <text x="130" y="105" fill="#2c5282" font-size="12" font-style="italic">l<tspan baseline-shift="sub" font-size="9">e</tspan></text>
+ <text x="250" y="125" fill="#555" font-size="11">(y₂ &minus; y₁)</text>
+ <text x="130" y="200" fill="#555" font-size="11">(x₂ &minus; x₁)</text>
+ <!-- Angle theta -->
+ <path d="M 100,180 A 42,42 0 0,1 92,165" fill="none" stroke="#555" stroke-width="1"/>
+ <text x="105" y="172" fill="#555" font-size="12" font-style="italic">&theta;</text>
+</svg>
+<div class="caption">Fig 3: Calculating direction cosines</div>
+</div>
+
+<div class="eq-block">
+$$l_e = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$
+</div>
+<div class="eq-block">
+$$l = \cos\theta = \frac{x_2 - x_1}{l_e}$$
+</div>
+<div class="eq-block">
+$$m = \cos(90^\circ - \theta) = \sin\theta = \frac{y_2 - y_1}{l_e}$$
+</div>
+
+<!-- ===== FORCE TRANSFORMATION MATRIX ===== -->
+<h2>Force Transformation Matrix</h2>
+
+<p>Let $P_1'$ &amp; $P_2'$ be the forces in truss member at node 1 &amp; 2 respectively producing displacements $u_1'$ &amp; $u_2'$ in local co-ordinate system, and $P_{1x}, P_{1y}, P_{2x}$ &amp; $P_{2y}$ are the forces in global co-ordinate system at node 1 and 2 producing displacements $u_1, v_1, u_2$ &amp; $v_2$ respectively.</p>
+
+<div class="figure">
+<svg viewBox="0 0 360 340" style="max-width:380px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <defs>
+ <marker id="arwf" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+ <marker id="arwb" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="10 0,0 3.5,10 7" fill="#2980b9"/></marker>
+ </defs>
+ <!-- Truss member -->
+ <line x1="100" y1="260" x2="240" y2="80" stroke="#2c5282" stroke-width="3"/>
+ <!-- Node 1 -->
+ <circle cx="100" cy="260" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="80" y="270" fill="#1a365d" font-weight="bold" font-size="11">(1)</text>
+ <!-- P1x -->
+ <line x1="112" y1="260" x2="160" y2="260" stroke="#c0392b" stroke-width="2" marker-end="url(#arwf)"/>
+ <text x="165" y="265" fill="#c0392b" font-size="11">P₁ₓ</text>
+ <!-- P1y -->
+ <line x1="100" y1="248" x2="100" y2="205" stroke="#c0392b" stroke-width="2" marker-end="url(#arwf)"/>
+ <text x="82" y="210" fill="#c0392b" font-size="11">P₁ᵧ</text>
+ <!-- P1' -->
+ <line x1="87" y1="270" x2="60" y2="295" stroke="#2980b9" stroke-width="2" marker-end="url(#arwb)"/>
+ <text x="35" y="305" fill="#2980b9" font-size="11">P₁'</text>
+ <!-- Node 2 -->
+ <circle cx="240" cy="80" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="220" y="70" fill="#1a365d" font-weight="bold" font-size="11">(2)</text>
+ <!-- P2x -->
+ <line x1="252" y1="80" x2="300" y2="80" stroke="#c0392b" stroke-width="2" marker-end="url(#arwf)"/>
+ <text x="305" y="85" fill="#c0392b" font-size="11">P₂ₓ</text>
+ <!-- P2y -->
+ <line x1="240" y1="68" x2="240" y2="30" stroke="#c0392b" stroke-width="2" marker-end="url(#arwf)"/>
+ <text x="248" y="40" fill="#c0392b" font-size="11">P₂ᵧ</text>
+ <!-- P2' -->
+ <line x1="253" y1="70" x2="275" y2="50" stroke="#2980b9" stroke-width="2" marker-end="url(#arwf)"/>
+ <text x="280" y="48" fill="#2980b9" font-size="11">P₂'</text>
+ <!-- Angle -->
+ <path d="M 140,260 A 42,42 0 0,1 132,240" fill="none" stroke="#555" stroke-width="1"/>
+ <text x="143" y="248" fill="#555" font-size="12" font-style="italic">&theta;</text>
+</svg>
+<div class="caption">Fig 4: Force components in local and global co-ordinates</div>
+</div>
+
+<p>Clearly,</p>
+<div class="eq-block">
+$$P_{1x} = P_1' \cos\theta = P_1' \cdot l$$
+</div>
+<div class="eq-block">
+$$P_{1y} = P_1' \sin\theta = P_1' \cdot \cos(90^\circ - \theta) = P_1' \cdot m$$
+</div>
+<p>Similarly,</p>
+<div class="eq-block">
+$$P_{2x} = P_2' \cdot l \qquad \text{&} \qquad P_{2y} = P_2' \cdot m$$
+</div>
+
+<p>In matrix form:</p>
+<div class="eq-block hl">
+$$\begin{Bmatrix} P_{1x} \\ P_{1y} \\ P_{2x} \\ P_{2y} \end{Bmatrix} = \begin{bmatrix} l & 0 \\ m & 0 \\ 0 & l \\ 0 & m \end{bmatrix} \begin{Bmatrix} P_1' \\ P_2' \end{Bmatrix}$$
+</div>
+
+<div class="def-box">
+<div class="dt">Force Transformation Matrix</div>
+$$\therefore \{P\} = [T]^T \{P'\}$$
+<p>where,<br>
+$\{P\}$ = global components of forces at nodes 1 &amp; 2<br>
+$\{P'\}$ = local components of forces</p>
+<p>$[T]^T$ is the force transformation matrix to find component of global component of forces from local component of forces.</p>
+</div>
+
+<div class="note">
+<strong>Note:</strong> Force transformation matrix is transpose of displacement transformation matrix $[T]$ which transforms global displacement components to local displacement components.
+</div>
+
+<!-- ===== GLOBAL STIFFNESS MATRIX ===== -->
+<h2>Global Stiffness Matrix for Truss Element in 2D</h2>
+
+<p>We know,</p>
+<div class="eq-block">
+$$\{P'\} = [K']\{u'\} \quad --- (i)$$
+</div>
+<p>where,<br>
+$\{P'\}$ = column matrix/vector for local component of forces.<br>
+$\{u'\}$ = column matrix/vector for local component of displacements.<br>
+$[K'] = k \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix} = \frac{AE}{l_e} \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$ (element stiffness matrix in local co-ordinate system)</p>
+
+<p>Also,</p>
+<div class="eq-block">
+$$\{u'\} = [T]\{u\} \quad --- (ii)$$
+</div>
+<p>and</p>
+<div class="eq-block">
+$$\{P\} = [T]^T \{P'\} \quad --- (iii)$$
+</div>
+
+<p>Putting (i) into (iii):</p>
+<div class="eq-block">
+$$\{P\} = [T]^T [K'] \{u'\}$$
+</div>
+<div class="eq-block">
+$$\Rightarrow \{P\} = [T]^T [K'] [T] \{u\} \quad (\text{from ii})$$
+</div>
+<div class="eq-block">
+$$\therefore \{P\} = [K] \{u\} \quad --- (iv)$$
+</div>
+
+<p>Eq. (iv) represents the force-displacement relation in global co-ordinate and hence</p>
+<div class="eq-block hl">
+$$[K] = [T]^T [K'] [T]$$
+</div>
+<p>represents the stiffness matrix in global co-ordinates.</p>
+
+<h3>Derivation of $[K]$</h3>
+
+<div class="eq-block">
+$$[K] = [T]^T [K'] [T]$$
+</div>
+<div class="eq-block">
+$$= \begin{bmatrix} l & 0 \\ m & 0 \\ 0 & l \\ 0 & m \end{bmatrix}_{4 \times 2} \frac{AE}{l_e} \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}_{2 \times 2} \begin{bmatrix} l & m & 0 & 0 \\ 0 & 0 & l & m \end{bmatrix}_{2 \times 4}$$
+</div>
+<div class="eq-block">
+$$= \frac{AE}{l_e} \begin{bmatrix} l & 0 \\ m & 0 \\ 0 & l \\ 0 & m \end{bmatrix} \begin{bmatrix} l & m & -l & -m \\ -l & -m & l & m \end{bmatrix}$$
+</div>
+
+<div class="eq-block hl">
+$$[K] = \frac{AE}{l_e} \begin{bmatrix} l^2 & lm & -l^2 & -lm \\ lm & m^2 & -lm & -m^2 \\ -l^2 & -lm & l^2 & lm \\ -lm & -m^2 & lm & m^2 \end{bmatrix}$$
+</div>
+
+<div class="note">
+Each element of stiffness matrix $[K]$ i.e. $K_{ij}$ in global coordinates represents the forces in x- and y-direction at node i required due to unit displacement at node j.
+</div>
+
+<!-- ===== STRESS & STRAIN ===== -->
+<h2>Stress &amp; Strain Calculation</h2>
+
+<div class="eq-block">
+$$\sigma = \frac{E}{l_e} \begin{bmatrix} -1 & 1 \end{bmatrix} \{u'\}$$
+</div>
+<div class="eq-block">
+$$= \frac{E}{l_e} \begin{bmatrix} -1 & 1 \end{bmatrix} [T] \{u\}$$
+</div>
+<div class="eq-block">
+$$= \frac{E}{l_e} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} l & m & 0 & 0 \\ 0 & 0 & l & m \end{bmatrix} \{u\}$$
+</div>
+<div class="eq-block hl">
+$$\therefore \sigma = \frac{E}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \{u\}$$
+</div>
+
+<p>i.e., $\sigma = E[B]\{u\}$</p>
+
+<p>and Strain,</p>
+<div class="eq-block">
+$$\epsilon = \frac{\sigma}{E} = \frac{1}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \{u\} = [B]\{u\}$$
+</div>
+
+<div class="def-box">
+<div class="dt">Strain-Displacement Matrix</div>
+$$[B] = \frac{1}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix}$$
+</div>
+
+<!-- ===== TEMPERATURE EFFECT ===== -->
+<h2>Temperature Effect</h2>
+
+<p>Element load vector due to temperature change in local co-ordinate is given by</p>
+<div class="eq-block">
+$$\{f_t'\} = \begin{Bmatrix} f_{t1}' \\ f_{t2}' \end{Bmatrix} = AE\alpha \cdot \Delta t \begin{Bmatrix} -1 \\ 1 \end{Bmatrix}$$
+</div>
+
+<p>But in global co-ordinate, element load vector is given by</p>
+<div class="eq-block hl">
+$$\{f_t^e\} = \begin{Bmatrix} f_{t1x} \\ f_{t1y} \\ f_{t2x} \\ f_{t2y} \end{Bmatrix} = AE\alpha \cdot \Delta t \begin{Bmatrix} -\cos\theta \\ -\sin\theta \\ \cos\theta \\ \sin\theta \end{Bmatrix} = AE\alpha \cdot \Delta t \begin{Bmatrix} -l \\ -m \\ l \\ m \end{Bmatrix}$$
+</div>
+
+<h4>Stress in element (with temperature):</h4>
+<div class="eq-block hl">
+$$\sigma = \frac{E}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \{u\} - E\alpha \cdot \Delta t$$
+$$\therefore \sigma = E[B]\{u\} - E\alpha \cdot \Delta t$$
+</div>
+<p>where, $[B] = \frac{1}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix}$ and $\{u\} = \begin{Bmatrix} u_1 \\ v_1 \\ u_2 \\ v_2 \end{Bmatrix}$</p>
+
+<h4>Strain in element (with temperature):</h4>
+<div class="eq-block hl">
+$$\epsilon = \frac{1}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \begin{Bmatrix} u_1 \\ v_1 \\ u_2 \\ v_2 \end{Bmatrix} - \alpha \cdot \Delta t$$
+$$\therefore \epsilon = [B]\{u\} - \alpha \cdot \Delta t$$
+</div>
+
+<!-- ===== EFFECT OF LACK OF FIT ===== -->
+<h2>Effect of Lack of Fit</h2>
+
+<div class="eq-block hl">
+$$\{f_\delta^e\} = \begin{Bmatrix} f_{\delta1x} \\ f_{\delta1y} \\ f_{\delta2x} \\ f_{\delta2y} \end{Bmatrix} = \frac{AE\delta}{l_e} \begin{Bmatrix} -l \\ -m \\ l \\ m \end{Bmatrix}$$
+</div>
+
+<div class="note">
+$\delta$ is +ve when element is longer and &minus;ve if element is shorter.
+</div>
+
+<h4>Stress (with lack of fit):</h4>
+<div class="eq-block hl">
+$$\sigma = \frac{E}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \{u\} - E \cdot \frac{\delta}{l_e}$$
+$$\therefore \sigma = E[B]\{u\} - E \cdot \frac{\delta}{l_e}$$
+</div>
+
+<h4>Strain (with lack of fit):</h4>
+<div class="eq-block hl">
+$$\epsilon = \frac{1}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \{u\} - \frac{\delta}{l_e}$$
+$$\therefore \epsilon = [B]\{u\} - \frac{\delta}{l_e}$$
+</div>
+
+<!-- ===== EXAMPLE 1 ===== -->
+<div class="example">
+<div class="ex-title">Example 1</div>
+<div class="ex-q">
+<p>Two element truss in figure shown below is subjected to loading as shown. Determine the displacement component at node 3, the reaction force components at nodes 1 and 2, and element displacements, stresses and forces. Take $A_1 = A_2 = 1.5 \text{ in}^2$ and $E_1 = E_2 = 10 \times 10^6 \text{ lb/in}^2$.</p>
+</div>
+
+<!-- Fig: Example 1 Truss -->
+<div class="figure">
+<svg viewBox="0 0 440 360" style="max-width:460px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <defs>
+ <marker id="arwe1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#1a365d"/></marker>
+ <marker id="arwe1r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+ </defs>
+ <!-- Axes -->
+ <line x1="40" y1="310" x2="40" y2="20" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arwe1)"/>
+ <text x="25" y="18" fill="#1a365d" font-style="italic">y</text>
+ <line x1="40" y1="310" x2="420" y2="310" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arwe1)"/>
+ <text x="425" y="315" fill="#1a365d" font-style="italic">x</text>
+ <!-- Node 1 at (0,0) → (100, 280) -->
+ <circle cx="100" cy="280" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="110" y="298" fill="#1a365d" font-weight="bold">(1)</text>
+ <text x="88" y="305" fill="#555" font-size="10">(0,0)</text>
+ <!-- Support at node 1 -->
+ <line x1="85" y1="290" x2="75" y2="300" stroke="#555" stroke-width="1.5"/>
+ <line x1="95" y1="290" x2="85" y2="300" stroke="#555" stroke-width="1.5"/>
+ <line x1="105" y1="290" x2="95" y2="300" stroke="#555" stroke-width="1.5"/>
+ <!-- Node 2 at (40,40) → (300, 80) -->
+ <circle cx="100" cy="80" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="75" y="75" fill="#1a365d" font-weight="bold">(2)</text>
+ <text x="68" y="65" fill="#555" font-size="10">(0,40)</text>
+ <!-- Support at node 2 -->
+ <line x1="85" y1="75" x2="75" y2="65" stroke="#555" stroke-width="1.5"/>
+ <line x1="85" y1="85" x2="75" y2="75" stroke="#555" stroke-width="1.5"/>
+ <line x1="85" y1="95" x2="75" y2="85" stroke="#555" stroke-width="1.5"/>
+ <!-- Node 3 at (40,40) → (300, 80) -->
+ <circle cx="300" cy="80" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="308" y="75" fill="#1a365d" font-weight="bold">(3)</text>
+ <text x="305" y="65" fill="#555" font-size="10">(40,40)</text>
+ <!-- Element 1: 1→3 -->
+ <line x1="100" y1="280" x2="300" y2="80" stroke="#2c5282" stroke-width="2.5"/>
+ <text x="170" y="185" fill="#2c5282" font-size="11" font-weight="bold">elem 1</text>
+ <!-- Element 2: 2→3 -->
+ <line x1="100" y1="80" x2="300" y2="80" stroke="#27ae60" stroke-width="2.5"/>
+ <text x="180" y="72" fill="#27ae60" font-size="11" font-weight="bold">elem 2</text>
+ <!-- 500 lb force at node 3 (horizontal) -->
+ <line x1="310" y1="80" x2="370" y2="80" stroke="#c0392b" stroke-width="2" marker-end="url(#arwe1r)"/>
+ <text x="375" y="85" fill="#c0392b" font-size="11" font-weight="bold">500 lb</text>
+ <!-- 300 lb force at node 3 (upward) -->
+ <line x1="300" y1="68" x2="300" y2="30" stroke="#c0392b" stroke-width="2" marker-end="url(#arwe1r)"/>
+ <text x="310" y="35" fill="#c0392b" font-size="11" font-weight="bold">300 lb</text>
+ <!-- Dimensions -->
+ <line x1="100" y1="320" x2="300" y2="320" stroke="#888" stroke-width="1"/>
+ <line x1="100" y1="315" x2="100" y2="325" stroke="#888" stroke-width="1"/>
+ <line x1="300" y1="315" x2="300" y2="325" stroke="#888" stroke-width="1"/>
+ <text x="185" y="338" fill="#888" font-size="11">40 in</text>
+ <line x1="320" y1="280" x2="320" y2="80" stroke="#888" stroke-width="1"/>
+ <line x1="315" y1="280" x2="325" y2="280" stroke="#888" stroke-width="1"/>
+ <line x1="315" y1="80" x2="325" y2="80" stroke="#888" stroke-width="1"/>
+ <text x="330" y="185" fill="#888" font-size="11">40 in</text>
+</svg>
+<div class="caption">Fig 5: Two-element truss structure</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p><strong>For element 1 (1 to 3):</strong></p>
+<ul>
+ <li>$\theta = \tan^{-1}\left(\frac{40}{40}\right) = 45^\circ$</li>
+ <li>$l = \cos 45^\circ = 0.707$</li>
+ <li>$m = \sin 45^\circ = 0.707$</li>
+ <li>$l_e = \sqrt{40^2 + 40^2} = 56.568 \text{ inch}$</li>
+</ul>
+
+<p><strong>For element 2 (2 to 3):</strong></p>
+<ul>
+ <li>$\theta = 0^\circ$</li>
+ <li>$l = \cos 0^\circ = 1$</li>
+ <li>$m = \sin 0^\circ = 0$</li>
+ <li>$l_e = 40 \text{ inch}$</li>
+</ul>
+
+<p><strong>Force vector:</strong></p>
+<div class="eq-block">
+$$\{F\} = \begin{Bmatrix} f_{1x} \\ f_{1y} \\ f_{2x} \\ f_{2y} \\ f_{3x} \\ f_{3y} \end{Bmatrix} = \begin{Bmatrix} R_{1x} \\ R_{1y} \\ R_{2x} \\ R_{2y} \\ 500 \\ 300 \end{Bmatrix} \text{ lb}$$
+</div>
+
+<p><strong>Displacement vector:</strong></p>
+<div class="eq-block">
+$$\{u\} = \begin{Bmatrix} u_1 \\ v_1 \\ u_2 \\ v_2 \\ u_3 \\ v_3 \end{Bmatrix} = \begin{Bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ u_3 \\ v_3 \end{Bmatrix}$$
+</div>
+
+<h4>Stiffness Matrix for Element 1:</h4>
+<div class="eq-block">
+$$[K^1] = \frac{A_1 E_1}{l_{e1}} \begin{bmatrix} l^2 & lm & -l^2 & -lm \\ lm & m^2 & -lm & -m^2 \\ -l^2 & -lm & l^2 & lm \\ -lm & -m^2 & lm & m^2 \end{bmatrix} \begin{matrix} u_1 \\ v_1 \\ u_3 \\ v_3 \end{matrix}$$
+</div>
+<div class="eq-block">
+$$= \frac{1.5 \times 10 \times 10^6}{56.568} \begin{bmatrix} (0.707)^2 & (0.707)^2 & -(0.707)^2 & -(0.707)^2 \\ (0.707)^2 & (0.707)^2 & -(0.707)^2 & -(0.707)^2 \\ -(0.707)^2 & -(0.707)^2 & (0.707)^2 & (0.707)^2 \\ -(0.707)^2 & -(0.707)^2 & (0.707)^2 & (0.707)^2 \end{bmatrix}$$
+</div>
+<div class="eq-block">
+$$= 2.65165 \times 10^5 \begin{bmatrix} 0.5 & 0.5 & -0.5 & -0.5 \\ 0.5 & 0.5 & -0.5 & -0.5 \\ -0.5 & -0.5 & 0.5 & 0.5 \\ -0.5 & -0.5 & 0.5 & 0.5 \end{bmatrix}$$
+</div>
+<div class="eq-block hl">
+$$[K^1] = 10^5 \begin{bmatrix} 1.326 & 1.326 & -1.326 & -1.326 \\ 1.326 & 1.326 & -1.326 & -1.326 \\ -1.326 & -1.326 & 1.326 & 1.326 \\ -1.326 & -1.326 & 1.326 & 1.326 \end{bmatrix} \begin{matrix} u_1 \\ v_1 \\ u_3 \\ v_3 \end{matrix}$$
+</div>
+
+<h4>Stiffness Matrix for Element 2:</h4>
+<div class="eq-block">
+$$[K^2] = \frac{A_2 E_2}{l_{e2}} \begin{bmatrix} l^2 & lm & -l^2 & -lm \\ lm & m^2 & -lm & -m^2 \\ -l^2 & -lm & l^2 & lm \\ -lm & -m^2 & lm & m^2 \end{bmatrix} \begin{matrix} u_2 \\ v_2 \\ u_3 \\ v_3 \end{matrix}$$
+</div>
+<div class="eq-block">
+$$= \frac{1.5 \times 10 \times 10^6}{40} \begin{bmatrix} 1 & 0 & -1 & 0 \\ 0 & 0 & 0 & 0 \\ -1 & 0 & 1 & 0 \\ 0 & 0 & 0 & 0 \end{bmatrix}$$
+</div>
+<div class="eq-block hl">
+$$[K^2] = 10^5 \begin{bmatrix} 3.75 & 0 & -3.75 & 0 \\ 0 & 0 & 0 & 0 \\ -3.75 & 0 & 3.75 & 0 \\ 0 & 0 & 0 & 0 \end{bmatrix} \begin{matrix} u_2 \\ v_2 \\ u_3 \\ v_3 \end{matrix}$$
+</div>
+
+<h4>Global Stiffness Matrix:</h4>
+<p>$[K] = [K^1] + [K^2]$</p>
+<div class="eq-block hl">
+$$[K] = 10^5 \begin{bmatrix} 1.326 & 1.326 & 0 & 0 & -1.326 & -1.326 \\ 1.326 & 1.326 & 0 & 0 & -1.326 & -1.326 \\ 0 & 0 & 3.75 & 0 & -3.75 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 \\ -1.326 & -1.326 & -3.75 & 0 & 5.076 & 1.326 \\ -1.326 & -1.326 & 0 & 0 & 1.326 & 1.326 \end{bmatrix} \begin{matrix} u_1 \\ v_1 \\ u_2 \\ v_2 \\ u_3 \\ v_3 \end{matrix}$$
+</div>
+<div class="note">Note: $K_{55} = 1.326 + 3.75 = 5.076$</div>
+
+<h4>Force-Displacement Relationship:</h4>
+<p>$\{F\} = [K]\{u\}$</p>
+<div class="eq-block">
+$$\begin{Bmatrix} R_{1x} \\ R_{1y} \\ R_{2x} \\ R_{2y} \\ 500 \\ 300 \end{Bmatrix} = 10^5 \begin{bmatrix} 1.326 & 1.326 & 0 & 0 & -1.326 & -1.326 \\ 1.326 & 1.326 & 0 & 0 & -1.326 & -1.326 \\ 0 & 0 & 3.75 & 0 & -3.75 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 \\ -1.326 & -1.326 & -3.75 & 0 & 5.076 & 1.326 \\ -1.326 & -1.326 & 0 & 0 & 1.326 & 1.326 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ u_3 \\ v_3 \end{Bmatrix}$$
+</div>
+
+<p>After elimination (since $u_1 = v_1 = u_2 = v_2 = 0$, only rows/columns 5 &amp; 6 remain); reduced matrix relation is:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} 500 \\ 300 \end{Bmatrix} = 10^5 \begin{bmatrix} 5.076 & 1.326 \\ 1.326 & 1.326 \end{bmatrix} \begin{Bmatrix} u_3 \\ v_3 \end{Bmatrix}$$
+</div>
+
+<p><strong>Solving the 2&times;2 system</strong> using matrix inversion: $\{u\} = [K_r]^{-1}\{F_r\}$.</p>
+<p>Determinant: $|K_r| = (10^5)^2 \times (5.076 \times 1.326 - 1.326 \times 1.326) = 10^{10} \times (6.7308 - 1.7583) = 4.9725 \times 10^{10}$</p>
+<div class="eq-block">
+$$[K_r]^{-1} = \frac{1}{4.9725 \times 10^{10}} \begin{bmatrix} 1.326 \times 10^5 & -1.326 \times 10^5 \\ -1.326 \times 10^5 & 5.076 \times 10^5 \end{bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$u_3 = \frac{1}{4.9725 \times 10^{10}} \left(1.326 \times 10^5 \times 500 + (-1.326 \times 10^5) \times 300\right)$$
+$$= \frac{1.326 \times 10^5 \times 200}{4.9725 \times 10^{10}} = \frac{2.652 \times 10^7}{4.9725 \times 10^{10}} = 5.333 \times 10^{-4} \text{ in.}$$
+</div>
+<div class="eq-block">
+$$v_3 = \frac{1}{4.9725 \times 10^{10}} \left(-1.326 \times 10^5 \times 500 + 5.076 \times 10^5 \times 300\right)$$
+$$= \frac{-6.63 \times 10^7 + 15.228 \times 10^7}{4.9725 \times 10^{10}} = \frac{8.598 \times 10^7}{4.9725 \times 10^{10}} = 1.729 \times 10^{-3} \text{ in.}$$
+</div>
+
+<div class="result-box">
+$$\begin{Bmatrix} u_3 \\ v_3 \end{Bmatrix} = \begin{Bmatrix} 5.333 \times 10^{-4} \\ 1.729 \times 10^{-3} \end{Bmatrix} \text{ in.}$$
+</div>
+
+<h4>Reaction Forces:</h4>
+<p>Back-substituting the computed displacements into the full equation $\{F\} = [K]\{u\}$:</p>
+
+<p>Row 1 ($R_{1x}$): $R_{1x} = 10^5 \times (-1.326 \times u_3 + (-1.326) \times v_3)$</p>
+<div class="eq-block">
+$$= 10^5 \times (-1.326)(5.333 \times 10^{-4} + 1.729 \times 10^{-3}) = 10^5 \times (-1.326)(2.2623 \times 10^{-3}) = -300.0 \text{ lb}$$
+</div>
+
+<p>Row 2 ($R_{1y}$): $R_{1y} = 10^5 \times (-1.326 \times u_3 + (-1.326) \times v_3)$</p>
+<div class="eq-block">
+$$= 10^5 \times (-1.326)(2.2623 \times 10^{-3}) = -300.0 \text{ lb}$$
+</div>
+
+<p>Row 3 ($R_{2x}$): $R_{2x} = 10^5 \times (-3.75 \times u_3 + 0 \times v_3)$</p>
+<div class="eq-block">
+$$= 10^5 \times (-3.75)(5.333 \times 10^{-4}) = -200.0 \text{ lb}$$
+</div>
+
+<p>Row 4 ($R_{2y}$): $R_{2y} = 10^5 \times (0 \times u_3 + 0 \times v_3) = 0$</p>
+
+<div class="result-box">
+$$R_{1x} = -300 \text{ lb}, \quad R_{1y} = -300 \text{ lb}, \quad R_{2x} = -200 \text{ lb}, \quad R_{2y} = 0$$
+</div>
+
+<p><strong>Equilibrium check:</strong></p>
+<p>$\sum F_x = R_{1x} + R_{2x} + 500 = -300 - 200 + 500 = 0$ &ensp; $\checkmark$</p>
+<p>$\sum F_y = R_{1y} + R_{2y} + 300 = -300 + 0 + 300 = 0$ &ensp; $\checkmark$</p>
+
+<h4>Element Displacement in Local Co-ordinates:</h4>
+<p>$\{u'\} = [T]\{u\}$</p>
+
+<p><strong>For element 1:</strong></p>
+<div class="eq-block">
+$$\begin{Bmatrix} u_1' \\ u_3' \end{Bmatrix} = \begin{bmatrix} 0.707 & 0.707 & 0 & 0 \\ 0 & 0 & 0.707 & 0.707 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 5.333 \times 10^{-4} \\ 1.729 \times 10^{-3} \end{Bmatrix} = \begin{Bmatrix} 0 \\ 1.6 \times 10^{-3} \end{Bmatrix} \text{ inch}$$
+</div>
+
+<p><strong>For element 2:</strong></p>
+<div class="eq-block">
+$$\begin{Bmatrix} u_2' \\ u_3' \end{Bmatrix} = \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 5.333 \times 10^{-4} \\ 1.729 \times 10^{-3} \end{Bmatrix} = \begin{Bmatrix} 0 \\ 5.333 \times 10^{-4} \end{Bmatrix} \text{ inch}$$
+</div>
+
+<h4>Element Stress:</h4>
+<p>Using $\sigma = \frac{E}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \{u\}$:</p>
+
+<p><strong>For element 1</strong> ($l = m = 0.707$, $l_e = 56.568$):</p>
+<div class="eq-block">
+$$\sigma_1 = \frac{10 \times 10^6}{56.568} \begin{bmatrix} -0.707 & -0.707 & 0.707 & 0.707 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 5.333 \times 10^{-4} \\ 1.729 \times 10^{-3} \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$= 1.7678 \times 10^5 \times [0 + 0 + 0.707 \times 5.333 \times 10^{-4} + 0.707 \times 1.729 \times 10^{-3}]$$
+$$= 1.7678 \times 10^5 \times [3.7704 \times 10^{-4} + 1.2224 \times 10^{-3}]$$
+$$= 1.7678 \times 10^5 \times 1.5994 \times 10^{-3}$$
+</div>
+<div class="result-box">
+$$\sigma_1 = 282.75 \text{ lb/in}^2 \text{ (Tensile)}$$
+</div>
+
+<p><strong>For element 2</strong> ($l = 1, m = 0$, $l_e = 40$):</p>
+<div class="eq-block">
+$$\sigma_2 = \frac{10 \times 10^6}{40} \begin{bmatrix} -1 & 0 & 1 & 0 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 5.333 \times 10^{-4} \\ 1.729 \times 10^{-3} \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$= 2.5 \times 10^5 \times [0 + 0 + 1 \times 5.333 \times 10^{-4} + 0] = 2.5 \times 10^5 \times 5.333 \times 10^{-4}$$
+</div>
+<div class="result-box">
+$$\sigma_2 = 133.325 \text{ lb/in}^2 \text{ (Tensile)}$$
+</div>
+
+<h4>Element Forces:</h4>
+<div class="result-box">
+$$F_1 = A_1 \times \sigma_1 = 1.5 \times 282.75 = 424.125 \text{ lb}$$
+$$F_2 = A_2 \times \sigma_2 = 1.5 \times 133.325 = 200 \text{ lb}$$
+</div>
+</div><!-- /example 1 -->
+
+
+<!-- ===== EXAMPLE 2 ===== -->
+<div class="example">
+<div class="ex-title">Example 2</div>
+<div class="ex-q">
+<p>Determine the nodal displacements, reaction forces and member forces of the given truss structure. Given that $A = 2 \times 10^{-3} \text{ m}^2$ &amp; $E = 2 \times 10^5 \text{ MPa}$ for each member.</p>
+</div>
+
+<!-- Fig: Example 2 Truss -->
+<div class="figure">
+<svg viewBox="0 0 420 320" style="max-width:440px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <defs>
+ <marker id="arwe2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#1a365d"/></marker>
+ <marker id="arwe2r" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+ </defs>
+ <!-- Axes -->
+ <line x1="50" y1="270" x2="50" y2="20" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arwe2)"/>
+ <text x="35" y="18" fill="#1a365d" font-style="italic">y</text>
+ <line x1="50" y1="270" x2="400" y2="270" stroke="#1a365d" stroke-width="1.5" marker-end="url(#arwe2)"/>
+ <text x="405" y="275" fill="#1a365d" font-style="italic">x</text>
+ <!-- Node 1 at (0,3) → (100, 60) -->
+ <circle cx="100" cy="60" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="72" y="55" fill="#1a365d" font-weight="bold">(1)</text>
+ <text x="65" y="45" fill="#555" font-size="10">(0,3)</text>
+ <!-- Support at node 1 (pin) -->
+ <polygon points="100,67 88,85 112,85" fill="none" stroke="#555" stroke-width="1.5"/>
+ <line x1="84" y1="85" x2="116" y2="85" stroke="#555" stroke-width="1.5"/>
+ <!-- Node 2 at (0,0) → (100, 250) -->
+ <circle cx="100" cy="250" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="72" y="260" fill="#1a365d" font-weight="bold">(2)</text>
+ <text x="65" y="245" fill="#555" font-size="10">(0,0)</text>
+ <!-- Support at node 2 (pin) -->
+ <polygon points="100,257 88,275 112,275" fill="none" stroke="#555" stroke-width="1.5"/>
+ <line x1="84" y1="275" x2="116" y2="275" stroke="#555" stroke-width="1.5"/>
+ <!-- Node 3 at (4,0) → (340, 250) -->
+ <circle cx="340" cy="250" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="348" y="248" fill="#1a365d" font-weight="bold">(3)</text>
+ <text x="338" y="238" fill="#555" font-size="10">(4,0)</text>
+ <!-- Element 1: 2→1 (vertical) -->
+ <line x1="100" y1="250" x2="100" y2="60" stroke="#2c5282" stroke-width="2.5"/>
+ <text x="60" y="155" fill="#2c5282" font-size="11" font-weight="bold">(1)</text>
+ <!-- Element 2: 2→3 (horizontal) -->
+ <line x1="100" y1="250" x2="340" y2="250" stroke="#27ae60" stroke-width="2.5"/>
+ <text x="210" y="265" fill="#27ae60" font-size="11" font-weight="bold">(2)</text>
+ <!-- Element 3: 1→3 (diagonal) -->
+ <line x1="100" y1="60" x2="340" y2="250" stroke="#e67e22" stroke-width="2.5"/>
+ <text x="240" y="145" fill="#e67e22" font-size="11" font-weight="bold">(3)</text>
+ <!-- 100 kN force at node 3 (horizontal) -->
+ <line x1="350" y1="250" x2="400" y2="250" stroke="#c0392b" stroke-width="2" marker-end="url(#arwe2r)"/>
+ <text x="360" y="265" fill="#c0392b" font-size="11" font-weight="bold">100 kN</text>
+ <!-- 50 kN force at node 3 (upward) -->
+ <line x1="340" y1="238" x2="340" y2="200" stroke="#c0392b" stroke-width="2" marker-end="url(#arwe2r)"/>
+ <text x="348" y="210" fill="#c0392b" font-size="11" font-weight="bold">50 kN</text>
+ <!-- Dimension labels -->
+ <text x="108" y="155" fill="#888" font-size="11">3m</text>
+ <text x="210" y="288" fill="#888" font-size="11">4m</text>
+</svg>
+<div class="caption">Fig 6: Three-element truss structure</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p><strong>Force Vector:</strong></p>
+<div class="eq-block">
+$$\{F\} = \begin{Bmatrix} f_{1x} \\ f_{1y} \\ f_{2x} \\ f_{2y} \\ f_{3x} \\ f_{3y} \end{Bmatrix} = \begin{Bmatrix} R_{1x} \\ R_{1y} \\ R_{2x} \\ R_{2y} \\ 100 \\ 50 \end{Bmatrix} \text{ kN}$$
+</div>
+
+<p><strong>Displacement vector:</strong></p>
+<div class="eq-block">
+$$\{u\} = \begin{Bmatrix} u_1 \\ v_1 \\ u_2 \\ v_2 \\ u_3 \\ v_3 \end{Bmatrix} = \begin{Bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ u_3 \\ v_3 \end{Bmatrix}$$
+</div>
+
+<h4>Element 1 (2 to 1):</h4>
+<p>$\theta = 90^\circ$, $l = \cos 90^\circ = 0$, $m = \sin 90^\circ = 1$, $l_e = 3\text{m}$</p>
+<p>$AE = 2 \times 10^{-3} \text{ m}^2 \times 2 \times 10^5 \times 10^6 \text{ N/m}^2 = 4 \times 10^8 \text{ N}$</p>
+
+<div class="eq-block">
+$$[K^1] = \frac{4 \times 10^8}{3} \begin{bmatrix} 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & -1 \\ 0 & 0 & 0 & 0 \\ 0 & -1 & 0 & 1 \end{bmatrix}$$
+</div>
+<div class="eq-block hl">
+$$[K^1] = 4 \times 10^8 \begin{bmatrix} 0 & 0 & 0 & 0 \\ 0 & 0.333 & 0 & -0.333 \\ 0 & 0 & 0 & 0 \\ 0 & -0.333 & 0 & 0.333 \end{bmatrix} \text{ N/m} \quad \begin{matrix} u_2 \\ v_2 \\ u_1 \\ v_1 \end{matrix}$$
+</div>
+
+<h4>Element 2 (2 to 3):</h4>
+<p>$\theta = 0^\circ$, $l = \cos 0^\circ = 1$, $m = \sin 0^\circ = 0$, $l_e = 4\text{m}$</p>
+
+<div class="eq-block hl">
+$$[K^2] = 4 \times 10^8 \begin{bmatrix} 0.25 & 0 & -0.25 & 0 \\ 0 & 0 & 0 & 0 \\ -0.25 & 0 & 0.25 & 0 \\ 0 & 0 & 0 & 0 \end{bmatrix} \text{ N/m} \quad \begin{matrix} u_2 \\ v_2 \\ u_3 \\ v_3 \end{matrix}$$
+</div>
+
+<h4>Element 3 (1 to 3):</h4>
+<p>$\theta = 360^\circ - \tan^{-1}(3/4) = 323.13^\circ$</p>
+<p>$l = \cos(323.13^\circ) = 0.8$, $m = \sin(323.13^\circ) = -0.6$, $l_e = \sqrt{3^2 + 4^2} = 5\text{m}$</p>
+
+<div class="eq-block">
+$$[K^3] = \frac{4 \times 10^8}{5} \begin{bmatrix} 0.64 & -0.48 & -0.64 & 0.48 \\ -0.48 & 0.36 & 0.48 & -0.36 \\ -0.64 & 0.48 & 0.64 & -0.48 \\ 0.48 & -0.36 & -0.48 & 0.36 \end{bmatrix}$$
+</div>
+<div class="eq-block hl">
+$$[K^3] = 4 \times 10^8 \begin{bmatrix} 0.128 & -0.096 & -0.128 & 0.096 \\ -0.096 & 0.072 & 0.096 & -0.072 \\ -0.128 & 0.096 & 0.128 & -0.096 \\ 0.096 & -0.072 & -0.096 & 0.072 \end{bmatrix} \text{ N/m} \quad \begin{matrix} u_1 \\ v_1 \\ u_3 \\ v_3 \end{matrix}$$
+</div>
+
+<h4>Global Stiffness Matrix:</h4>
+<p>$[K] = [K^1] + [K^2] + [K^3]$</p>
+<div class="eq-block hl">
+$$[K] = 4 \times 10^8 \begin{bmatrix} 0.128 & -0.096 & 0 & 0 & -0.128 & 0.096 \\ -0.096 & 0.405 & 0 & -0.333 & 0.096 & -0.072 \\ 0 & 0 & 0.25 & 0 & -0.25 & 0 \\ 0 & -0.333 & 0 & 0.333 & 0 & 0 \\ -0.128 & 0.096 & -0.25 & 0 & 0.378 & -0.096 \\ 0.096 & -0.072 & 0 & 0 & -0.096 & 0.072 \end{bmatrix} \begin{matrix} u_1 \\ v_1 \\ u_2 \\ v_2 \\ u_3 \\ v_3 \end{matrix} \text{ N/m}$$
+</div>
+
+<h4>Force-Displacement Relationship:</h4>
+<p>$\{F\} = [K]\{u\}$</p>
+<div class="eq-block">
+$$\begin{Bmatrix} R_{1x} \\ R_{1y} \\ R_{2x} \\ R_{2y} \\ 100 \\ 50 \end{Bmatrix} = 4 \times 10^8 \begin{bmatrix} 0.128 & -0.096 & 0 & 0 & -0.128 & 0.096 \\ -0.096 & 0.405 & 0 & -0.333 & 0.096 & -0.072 \\ 0 & 0 & 0.25 & 0 & -0.25 & 0 \\ 0 & -0.333 & 0 & 0.333 & 0 & 0 \\ -0.128 & 0.096 & -0.25 & 0 & 0.378 & -0.096 \\ 0.096 & -0.072 & 0 & 0 & -0.096 & 0.072 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ u_3 \\ v_3 \end{Bmatrix}$$
+</div>
+
+<p>After elimination (since $u_1 = v_1 = u_2 = v_2 = 0$, only rows/columns for $u_3$ &amp; $v_3$ remain):</p>
+<div class="eq-block">
+$$\begin{Bmatrix} 100 \\ 50 \end{Bmatrix} = 4 \times 10^5 \begin{bmatrix} 0.378 & -0.096 \\ -0.096 & 0.072 \end{bmatrix} \begin{Bmatrix} u_3 \\ v_3 \end{Bmatrix} \text{ (Converting } 4\times 10^8 \text{ N/m to } 4\times 10^5 \text{ kN/m)}$$
+</div>
+
+<p><strong>Solving the 2&times;2 system</strong> using $\{u\} = [K_r]^{-1}\{F_r\}$:</p>
+<p>Determinant: $|K_r| = (4 \times 10^5)^2 (0.378 \times 0.072 - (-0.096)(-0.096))$</p>
+<div class="eq-block">
+$$= 16 \times 10^{10} \times (0.027216 - 0.009216) = 16 \times 10^{10} \times 0.018 = 2.88 \times 10^9$$
+</div>
+<div class="eq-block">
+$$[K_r]^{-1} = \frac{1}{2.88 \times 10^9} \begin{bmatrix} 0.072 \times 4 \times 10^5 & 0.096 \times 4 \times 10^5 \\ 0.096 \times 4 \times 10^5 & 0.378 \times 4 \times 10^5 \end{bmatrix} = \frac{1}{2.88 \times 10^9} \begin{bmatrix} 28800 & 38400 \\ 38400 & 151200 \end{bmatrix}$$
+</div>
+
+<p>Therefore:</p>
+<div class="eq-block">
+$$u_3 = \frac{28800 \times 100 + 38400 \times 50}{2.88 \times 10^9} = \frac{2{,}880{,}000 + 1{,}920{,}000}{2.88 \times 10^9} = \frac{4{,}800{,}000}{2.88 \times 10^9} = 1.6667 \times 10^{-3} \text{ m}$$
+</div>
+<div class="eq-block">
+$$v_3 = \frac{38400 \times 100 + 151200 \times 50}{2.88 \times 10^9} = \frac{3{,}840{,}000 + 7{,}560{,}000}{2.88 \times 10^9} = \frac{11{,}400{,}000}{2.88 \times 10^9} = 3.9583 \times 10^{-3} \text{ m}$$
+</div>
+
+<div class="result-box">
+$$\begin{Bmatrix} u_3 \\ v_3 \end{Bmatrix} = \begin{Bmatrix} 1.6667 \times 10^{-3} \\ 3.9583 \times 10^{-3} \end{Bmatrix} \text{ m} = \begin{Bmatrix} 1.667 \\ 3.958 \end{Bmatrix} \text{ mm}$$
+</div>
+
+<h4>Reaction Forces:</h4>
+<p>Back-substituting into the full equation $\{F\} = [K]\{u\}$. Since only $u_3$ and $v_3$ are non-zero, we use the corresponding columns 5 &amp; 6 of $[K]$:</p>
+
+<p>Row 1 ($R_{1x}$): $R_{1x} = 4 \times 10^5 \times (-0.128 \times u_3 + 0.096 \times v_3)$</p>
+<div class="eq-block">
+$$= 4 \times 10^5 \times \{-0.128 \times 1.6667 \times 10^{-3} + 0.096 \times 3.9583 \times 10^{-3}\}$$
+$$= 4 \times 10^5 \times \{-2.1333 \times 10^{-4} + 3.8 \times 10^{-4}\} = 4 \times 10^5 \times 1.6667 \times 10^{-4} = 66.667 \text{ kN}$$
+</div>
+
+<p>Row 2 ($R_{1y}$): $R_{1y} = 4 \times 10^5 \times (0.096 \times u_3 + (-0.072) \times v_3)$</p>
+<div class="eq-block">
+$$= 4 \times 10^5 \times \{0.096 \times 1.6667 \times 10^{-3} - 0.072 \times 3.9583 \times 10^{-3}\}$$
+$$= 4 \times 10^5 \times \{1.6 \times 10^{-4} - 2.85 \times 10^{-4}\} = 4 \times 10^5 \times (-1.25 \times 10^{-4}) = -50 \text{ kN}$$
+</div>
+
+<p>Row 3 ($R_{2x}$): $R_{2x} = 4 \times 10^5 \times (-0.25 \times u_3 + 0 \times v_3)$</p>
+<div class="eq-block">
+$$= 4 \times 10^5 \times (-0.25 \times 1.6667 \times 10^{-3}) = 4 \times 10^5 \times (-4.1667 \times 10^{-4}) = -166.667 \text{ kN}$$
+</div>
+
+<p>Row 4 ($R_{2y}$): $R_{2y} = 4 \times 10^5 \times (-0.333 \times v_1 + 0.333 \times v_2)$. Since $v_1 = v_2 = 0$:</p>
+<div class="eq-block">
+$$R_{2y} = 0 \text{ kN}$$
+</div>
+
+<div class="result-box">
+$$R_{1x} = 66.667 \text{ kN}, \quad R_{1y} = -50 \text{ kN}, \quad R_{2x} = -166.667 \text{ kN}, \quad R_{2y} = 0 \text{ kN}$$
+</div>
+
+<p><strong>Equilibrium check:</strong></p>
+<p>$\sum F_x = R_{1x} + R_{2x} + 100 = 66.667 - 166.667 + 100 = 0$ &ensp; $\checkmark$</p>
+<p>$\sum F_y = R_{1y} + R_{2y} + 50 = -50 + 0 + 50 = 0$ &ensp; $\checkmark$</p>
+
+<h4>Member Forces:</h4>
+<p>Using the formula: $f_e = \frac{EA}{l_e} \begin{bmatrix} -l & -m & l & m \end{bmatrix} \{u\}$ (positive = tension, negative = compression).</p>
+
+<p><strong>Element 1 (nodes 2&rarr;1):</strong> $l=0, m=1, l_e=3$ m, $\frac{EA}{l_e} = \frac{4\times 10^5}{3}$ kN/m</p>
+<p>Node displacements: $u_2 = 0, v_2 = 0, u_1 = 0, v_1 = 0$</p>
+<div class="eq-block">
+$$f_1 = \frac{4 \times 10^5}{3} \begin{bmatrix} 0 & -1 & 0 & 1 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 0 \\ 0 \end{Bmatrix} = 0$$
+</div>
+<div class="result-box">$$f_1 = 0 \text{ kN}$$ (No force &mdash; nodes 1 and 2 have zero displacement)</div>
+
+<p><strong>Element 2 (nodes 2&rarr;3):</strong> $l=1, m=0, l_e=4$ m, $\frac{EA}{l_e} = \frac{4\times 10^5}{4} = 1 \times 10^5$ kN/m</p>
+<p>Node displacements: $u_2 = 0, v_2 = 0, u_3 = 1.6667\times10^{-3}, v_3 = 3.9583\times10^{-3}$</p>
+<div class="eq-block">
+$$f_2 = 1 \times 10^5 \begin{bmatrix} -1 & 0 & 1 & 0 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 1.6667 \times 10^{-3} \\ 3.9583 \times 10^{-3} \end{Bmatrix}$$
+$$= 10^5 \times (0 + 0 + 1.6667 \times 10^{-3} + 0) = 10^5 \times 1.6667 \times 10^{-3}$$
+</div>
+<div class="result-box">$$f_2 = 166.667 \text{ kN (Tensile)}$$</div>
+
+<p><strong>Element 3 (nodes 1&rarr;3):</strong> $l=0.8, m=-0.6, l_e=5$ m, $\frac{EA}{l_e} = \frac{4\times 10^5}{5} = 0.8 \times 10^5$ kN/m</p>
+<p>Node displacements: $u_1 = 0, v_1 = 0, u_3 = 1.6667\times10^{-3}, v_3 = 3.9583\times10^{-3}$</p>
+<div class="eq-block">
+$$f_3 = 0.8 \times 10^5 \begin{bmatrix} -0.8 & 0.6 & 0.8 & -0.6 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 1.6667 \times 10^{-3} \\ 3.9583 \times 10^{-3} \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$= 0.8 \times 10^5 \times \{0 + 0 + 0.8 \times 1.6667 \times 10^{-3} + (-0.6) \times 3.9583 \times 10^{-3}\}$$
+$$= 0.8 \times 10^5 \times \{1.3333 \times 10^{-3} - 2.375 \times 10^{-3}\} = 0.8 \times 10^5 \times (-1.0417 \times 10^{-3})$$
+</div>
+<div class="result-box">$$f_3 = -83.333 \text{ kN} = 83.333 \text{ kN (Compression)}$$</div>
+</div><!-- /example 2 -->
+
+
+<!-- ===== NAVIGATION ===== -->
+<div class="ch-nav">
+ <a href="4.2_Bar_Element.html"><span style="font-size:1.2rem;font-weight:700">&larr;</span> <span>4.2 Bar Element</span></a>
+ <a href="4.4_Shape_Functions.html" class="next"><span>4.4 Shape Functions</span> <span style="font-size:1.2rem;font-weight:700">&rarr;</span></a>
+</div>
+
+</div><!-- /content -->
+
+<footer class="footer">
+ <p><strong>4.3 Truss Element</strong> &mdash; Finite Element Method</p>
+ <p>Collected &amp; Prepared By: Er. Sanjay Kumar Sah | Pulchowk Campus</p>
+ <p style="margin-top:8px"><a href="index.html">&larr; Table of Contents</a></p>
+</footer>
+
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr;</button>
+<script>
+window.addEventListener('scroll',function(){document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

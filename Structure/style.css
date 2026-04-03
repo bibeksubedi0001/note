@@ -1,0 +1,592 @@
+/* ============================================================
+   Structure – Unified Textbook Stylesheet
+   Clean academic formatting with modern touches
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --base: 12pt;
+  --ink: #111;
+  --muted: #666;
+  --line: #e5e7eb;
+  --soft: #f8f9fa;
+  --page-w: 820px;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --accent: #4f46e5;
+  --accent-soft: rgba(79,70,229,.06);
+  --accent-glow: rgba(79,70,229,.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+/* ── Dark Mode ── */
+[data-theme="dark"] {
+  --ink: #e0ddd5;
+  --muted: #9ca3af;
+  --line: #2a2d35;
+  --soft: #1a1d24;
+  --accent: #818cf8;
+  --accent-soft: rgba(129,140,248,.08);
+  --accent-glow: rgba(129,140,248,.15);
+}
+[data-theme="dark"] body {
+  background: #0f1015 !important;
+  color: var(--ink);
+}
+[data-theme="dark"] h1, [data-theme="dark"] h2 {
+  border-color: #333;
+}
+[data-theme="dark"] th {
+  background: #1f2128;
+  color: #e0ddd5;
+}
+[data-theme="dark"] td {
+  background: transparent;
+}
+[data-theme="dark"] table {
+  border-color: var(--line);
+}
+[data-theme="dark"] th, [data-theme="dark"] td {
+  border-color: var(--line);
+}
+[data-theme="dark"] .exam-note {
+  border-color: var(--line);
+  background: var(--soft);
+}
+[data-theme="dark"] .callout {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+[data-theme="dark"] .figure-container {
+  border-color: var(--line);
+}
+[data-theme="dark"] pre, [data-theme="dark"] code {
+  background: var(--soft);
+}
+[data-theme="dark"] .print-btn {
+  background: rgba(20,20,30,.8);
+  color: var(--ink);
+  border-color: var(--line);
+}
+[data-theme="dark"] svg text {
+  fill: var(--ink);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── Body ── */
+body {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: var(--base);
+  color: var(--ink);
+  background: #fafafa;
+  line-height: 1.7;
+  max-width: var(--page-w);
+  margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s var(--ease), color .3s var(--ease);
+}
+
+/* ── Topbar Nav ── */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9990;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  transition: background .3s, border-color .3s;
+}
+.topbar a {
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  transition: all .2s var(--ease);
+  font-weight: 600;
+}
+.topbar a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.topbar span {
+  color: var(--muted);
+  font-weight: 400;
+}
+[data-theme="dark"] .topbar {
+  background: rgba(15,16,21,.78);
+  border-color: rgba(255,255,255,.05);
+}
+body:has(.topbar) {
+  padding-top: calc(2rem + 44px);
+}
+
+/* ── Chapter Header ── */
+.ch-header {
+  text-align: center;
+  padding: 2.5rem 0 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--line);
+  animation: ch-fade-in .6s var(--ease) both;
+}
+@keyframes ch-fade-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ch-header h1 {
+  font-size: 18pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0;
+  border-bottom: none;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--muted) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+[data-theme="dark"] .ch-header h1 {
+  background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.ch-header .meta {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11pt;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+.ch-header .author {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10pt;
+  color: var(--muted);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ── TOC Card ── */
+.toc-card {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.6rem;
+  margin: 1.5rem 0 2rem;
+  animation: ch-fade-in .6s var(--ease) .1s both;
+}
+.toc-card h3 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.toc-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.toc-grid a {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10.5pt;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  transition: all .2s var(--ease);
+  display: block;
+}
+.toc-grid a:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  padding-left: 18px;
+}
+[data-theme="dark"] .toc-card {
+  background: var(--soft);
+  border-color: var(--line);
+}
+
+/* ── Content wrapper ── */
+.content {
+  animation: ch-fade-in .6s var(--ease) .2s both;
+}
+
+/* ── SVG Wrapper ── */
+.svg-wrap {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1.2rem;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  break-inside: avoid;
+}
+[data-theme="dark"] .svg-wrap {
+  background: var(--soft);
+  border-color: var(--line);
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Times New Roman', Times, serif;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: 16pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 0 1.5rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--line);
+  letter-spacing: 0.03em;
+}
+
+h2 {
+  font-size: 13pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+  letter-spacing: 0.02em;
+  position: relative;
+}
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: 700;
+  margin: 1.8rem 0 0.6rem;
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--accent);
+}
+
+h4 {
+  font-size: 12pt;
+  font-weight: 700;
+  font-style: italic;
+  margin: 1.2rem 0 0.5rem;
+}
+
+h5 {
+  font-size: 11pt;
+  font-weight: 600;
+  margin: 1rem 0 0.4rem;
+}
+
+/* ── Body text ── */
+p {
+  font-size: var(--base);
+  text-align: justify;
+  margin: 0 0 1rem;
+  hyphens: auto;
+}
+
+/* Book-style indent for consecutive paragraphs */
+p + p {
+  text-indent: 1.5em;
+}
+
+/* ── Lists ── */
+ul, ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 2rem;
+}
+
+li {
+  font-size: var(--base);
+  text-align: justify;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+ul > li { list-style-type: disc; }
+ul > li > ul > li { list-style-type: circle; }
+
+/* ── Equations ── */
+.equation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+/* ── Exam note boxes ── */
+.exam-note {
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0;
+  background: var(--accent-soft);
+  break-inside: avoid;
+  transition: border-color .2s var(--ease);
+}
+
+.exam-note h4 {
+  margin-top: 0;
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 0.3rem;
+  color: var(--accent);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10.5pt;
+}
+
+/* ── Callout boxes ── */
+.callout {
+  border-left: 3px solid var(--accent);
+  padding: 1rem 1.2rem 1rem 1.4rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  background: var(--soft);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* ── Blockquote ── */
+blockquote {
+  border-left: 3px solid var(--line);
+  padding: 1rem 1.2rem 1rem 1.4rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--muted);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--soft);
+}
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: var(--base);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+table.info-table { /* alias used in some files */ }
+
+th, td {
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: top;
+  font-size: var(--base);
+}
+
+th {
+  font-weight: 700;
+  background: var(--soft);
+  text-transform: uppercase;
+  font-size: 10.5pt;
+  font-family: 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+caption {
+  caption-side: bottom;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 10pt;
+  padding-top: 0.4rem;
+}
+
+/* ── Figures ── */
+.figure-container, figure {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--soft);
+  break-inside: avoid;
+  transition: border-color .2s var(--ease);
+}
+.figure-container:hover, figure:hover {
+  border-color: var(--accent-glow);
+}
+
+.figcaption, figcaption {
+  font-style: italic;
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 10pt;
+  color: var(--muted);
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ── Images ── */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+}
+
+/* ── Code ── */
+code {
+  font-family: 'Consolas', 'Monaco', monospace;
+  background: var(--soft);
+  padding: 1px 5px;
+  border: 0.5px solid var(--line);
+  font-size: 10pt;
+}
+
+pre {
+  background: var(--soft);
+  padding: 1rem;
+  border-left: 3px solid var(--ink);
+  overflow-x: auto;
+  margin: 1rem 0;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ── Print button ── */
+.print-btn {
+  position: fixed;
+  top: 12px;
+  right: 68px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--ink);
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  z-index: 9995;
+  transition: all .25s var(--ease);
+}
+
+.print-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(79,70,229,.25);
+}
+
+/* ── Links ── */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color .2s var(--ease);
+}
+
+a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+}
+
+/* ── Horizontal rule ── */
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2rem 0;
+}
+
+/* ── Strong / emphasis ── */
+strong, b { font-weight: 700; }
+em, i { font-style: italic; }
+
+/* ── MathJax overrides ── */
+mjx-container, .MathJax, .MathJax_Display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── Print styles ── */
+@media print {
+  body {
+    padding: 0;
+    max-width: 100%;
+    background: white;
+    color: black;
+  }
+  .print-btn, .cm-dm-toggle, .cm-nav-bar, .topbar,
+  .dw-btn, .dw-tb, .dw-cv, .cm-scroll-progress, .cm-scroll-top {
+    display: none !important;
+  }
+  h1, h2, h3 { page-break-after: avoid; }
+  .figure-container, figure, .exam-note, .callout, table {
+    page-break-inside: avoid;
+  }
+  h2::after { display: none; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+    font-size: 11pt;
+  }
+  h1 { font-size: 14pt; }
+  h2 { font-size: 12pt; }
+  .topbar { padding: 8px 12px; font-size: 12px; }
+  .toc-card { padding: 1rem; }
+  .ch-header { padding: 1.5rem 0 1rem; }
+}
