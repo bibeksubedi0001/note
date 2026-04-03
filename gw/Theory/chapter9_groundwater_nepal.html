@@ -119,7 +119,6 @@ input,select,textarea,button{
 </style>
 </head>
 <body>
-<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
 
 <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
     <defs>
@@ -1120,71 +1119,6 @@ input,select,textarea,button{
   }
   cv.addEventListener('pointerup', stop);
   cv.addEventListener('pointercancel', stop);
-})();
-</script>
-
-<!-- ═══ DARK MODE JS v3 ═══ -->
-<script>
-(function(){
-  var t=document.getElementById('dmToggle'),h=document.documentElement,
-      s=localStorage.getItem('theme');
-  if(s)h.setAttribute('data-theme',s);
-  function updateIcon(){
-    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
-  }
-  updateIcon();
-  if(t){
-    t.addEventListener('click',function(){
-      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
-      h.setAttribute('data-theme',n);
-      localStorage.setItem('theme',n);
-      updateIcon();
-      fixInline(n==='dark');
-    });
-  }
-  function fixInline(dark){
-    var els=document.querySelectorAll('[style]');
-    for(var i=0;i<els.length;i++){
-      var el=els[i];
-      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
-      if(el.closest&&el.closest('svg'))continue;
-      var st=el.style;
-      if(dark){
-        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
-          el.setAttribute('data-dm-bg',st.backgroundColor);
-          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
-        }
-        if(st.background&&!el.getAttribute('data-dm-bgf')){
-          el.setAttribute('data-dm-bgf',st.background);
-          if(lum(st.background)>160)st.background='#1e222a';
-        }
-        if(st.color&&!el.getAttribute('data-dm-fg')){
-          el.setAttribute('data-dm-fg',st.color);
-          if(lum(st.color)<100)st.color='#d0cdc5';
-        }
-      }else{
-        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
-        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
-        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
-      }
-    }
-  }
-  function lum(c){
-    if(!c)return -1;c=c.trim().toLowerCase();
-    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
-    if(c==='black'||c==='#000'||c==='#000000')return 0;
-    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
-    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
-    var hx=c.match(/^#([0-9a-f]{3,8})$/);
-    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
-      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
-    return -1;
-  }
-  if(h.getAttribute('data-theme')==='dark'){
-    if(document.readyState==='loading')
-      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
-    else fixInline(true);
-  }
 })();
 </script>
 

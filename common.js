@@ -7,28 +7,31 @@
 
   /* ═══════════════════════════════════════════════
      1. DARK MODE
-     Pages with #dark-mode-styles already have full dark CSS + fixInline — skip.
-     Pages without it get common.js dark mode CSS + button + fixInline.
+     Toggle button + fixInline always injected.
+     Dark content CSS only for pages without #dark-mode-styles.
      ═══════════════════════════════════════════════ */
   var html = document.documentElement;
   var saved = localStorage.getItem('theme');
   if (saved) html.setAttribute('data-theme', saved);
 
-  var hasOwnDarkMode = !!document.getElementById('dark-mode-styles');
+  // Toggle button styles (always needed)
+  var btnCSS = document.createElement('style');
+  btnCSS.textContent =
+    '.cm-dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;' +
+    'border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;' +
+    'cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;' +
+    'box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1)}' +
+    '.cm-dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}' +
+    '[data-theme="dark"] .cm-dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}' +
+    '[data-theme="dark"] .cm-dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}' +
+    '@media print{.cm-dm-toggle{display:none!important}}';
+  document.head.appendChild(btnCSS);
 
-  if (!hasOwnDarkMode) {
-    // Inject dark-mode CSS for pages that don't have their own
+  // Dark content CSS — only if page doesn't have its own comprehensive dark styles
+  if (!document.getElementById('dark-mode-styles')) {
     var dmCSS = document.createElement('style');
     dmCSS.id = 'common-dark-mode';
     dmCSS.textContent =
-      '.cm-dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;' +
-      'border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;' +
-      'cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;' +
-      'box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1)}' +
-      '.cm-dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}' +
-      '[data-theme="dark"] .cm-dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}' +
-      '[data-theme="dark"] .cm-dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}' +
-      /* Core dark overrides */
       '[data-theme="dark"]{color-scheme:dark}' +
       '[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}' +
       '[data-theme="dark"] body div,[data-theme="dark"] body p,' +
@@ -55,84 +58,81 @@
       '[data-theme="dark"] hr{border-color:#3a3d44!important}' +
       '[data-theme="dark"] .print-btn{background:#22262e!important;color:#d8d5cd!important;border-color:#3a3d44!important}' +
       '[data-theme="dark"] svg text{fill:#d8d5cd}' +
-      '[data-theme="dark"] input,[data-theme="dark"] textarea,[data-theme="dark"] select{background:#22262e!important;color:#d8d5cd!important;border-color:#3a3d44!important}' +
-      '@media print{.cm-dm-toggle{display:none!important}}';
+      '[data-theme="dark"] input,[data-theme="dark"] textarea,[data-theme="dark"] select{background:#22262e!important;color:#d8d5cd!important;border-color:#3a3d44!important}';
     document.head.appendChild(dmCSS);
+  }
 
-    // Inject toggle button only if page doesn't already have one
-    if (!document.querySelector('.dm-toggle') && !document.getElementById('themeToggle')) {
-      var dmBtn = document.createElement('button');
-      dmBtn.className = 'cm-dm-toggle';
-      dmBtn.setAttribute('aria-label', 'Toggle dark mode');
-      dmBtn.innerHTML = html.getAttribute('data-theme') === 'dark' ? '&#9788;' : '&#9790;';
-      document.body.appendChild(dmBtn);
+  // Always inject toggle button
+  var dmBtn = document.createElement('button');
+  dmBtn.className = 'cm-dm-toggle';
+  dmBtn.setAttribute('aria-label', 'Toggle dark mode');
+  dmBtn.innerHTML = html.getAttribute('data-theme') === 'dark' ? '&#9788;' : '&#9790;';
+  document.body.appendChild(dmBtn);
 
-      dmBtn.addEventListener('click', function () {
-        var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        dmBtn.innerHTML = next === 'dark' ? '&#9788;' : '&#9790;';
-        cmFixInline(next === 'dark');
-      });
-    }
+  dmBtn.addEventListener('click', function () {
+    var next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    dmBtn.innerHTML = next === 'dark' ? '&#9788;' : '&#9790;';
+    cmFixInline(next === 'dark');
+  });
 
-    /* fixInline — flip inline style="color/background" for dark mode */
-    function cmLum(c) {
-      if (!c) return -1;
-      c = c.trim().toLowerCase();
-      if (c === 'white' || c === '#fff' || c === '#ffffff') return 255;
-      if (c === 'black' || c === '#000' || c === '#000000') return 0;
-      var m = c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
-      if (m) return (+m[1] + +m[2] + +m[3]) / 3;
-      var hx = c.match(/^#([0-9a-f]{3,8})$/);
-      if (hx) { var x = hx[1]; if (x.length === 3) x = x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
-        return (parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3; }
-      return -1;
-    }
-    function cmFixInline(dark) {
-      var els = document.querySelectorAll('[style]');
-      for (var i = 0; i < els.length; i++) {
-        var el = els[i];
-        if (el.namespaceURI && el.namespaceURI.indexOf('svg') !== -1) continue;
-        if (el.closest && el.closest('svg')) continue;
-        var st = el.style;
-        if (dark) {
-          if (st.backgroundColor && !el.getAttribute('data-dm-bg')) {
-            el.setAttribute('data-dm-bg', st.backgroundColor);
-            if (cmLum(st.backgroundColor) > 160) st.backgroundColor = '#1e222a';
-          }
-          if (st.background && !el.getAttribute('data-dm-bgf')) {
-            el.setAttribute('data-dm-bgf', st.background);
-            if (cmLum(st.background) > 160) st.background = '#1e222a';
-          }
-          if (st.color && !el.getAttribute('data-dm-fg')) {
-            el.setAttribute('data-dm-fg', st.color);
-            if (cmLum(st.color) < 100) st.color = '#d0cdc5';
-          }
-        } else {
-          if (el.getAttribute('data-dm-bg')) { st.backgroundColor = el.getAttribute('data-dm-bg'); el.removeAttribute('data-dm-bg'); }
-          if (el.getAttribute('data-dm-bgf')) { st.background = el.getAttribute('data-dm-bgf'); el.removeAttribute('data-dm-bgf'); }
-          if (el.getAttribute('data-dm-fg')) { st.color = el.getAttribute('data-dm-fg'); el.removeAttribute('data-dm-fg'); }
+  /* fixInline — flip inline style="color/background" for dark mode */
+  function cmLum(c) {
+    if (!c) return -1;
+    c = c.trim().toLowerCase();
+    if (c === 'white' || c === '#fff' || c === '#ffffff') return 255;
+    if (c === 'black' || c === '#000' || c === '#000000') return 0;
+    var m = c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if (m) return (+m[1] + +m[2] + +m[3]) / 3;
+    var hx = c.match(/^#([0-9a-f]{3,8})$/);
+    if (hx) { var x = hx[1]; if (x.length === 3) x = x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return (parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3; }
+    return -1;
+  }
+  function cmFixInline(dark) {
+    var els = document.querySelectorAll('[style]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (el.namespaceURI && el.namespaceURI.indexOf('svg') !== -1) continue;
+      if (el.closest && el.closest('svg')) continue;
+      var st = el.style;
+      if (dark) {
+        if (st.backgroundColor && !el.getAttribute('data-dm-bg')) {
+          el.setAttribute('data-dm-bg', st.backgroundColor);
+          if (cmLum(st.backgroundColor) > 160) st.backgroundColor = '#1e222a';
         }
+        if (st.background && !el.getAttribute('data-dm-bgf')) {
+          el.setAttribute('data-dm-bgf', st.background);
+          if (cmLum(st.background) > 160) st.background = '#1e222a';
+        }
+        if (st.color && !el.getAttribute('data-dm-fg')) {
+          el.setAttribute('data-dm-fg', st.color);
+          if (cmLum(st.color) < 100) st.color = '#d0cdc5';
+        }
+      } else {
+        if (el.getAttribute('data-dm-bg')) { st.backgroundColor = el.getAttribute('data-dm-bg'); el.removeAttribute('data-dm-bg'); }
+        if (el.getAttribute('data-dm-bgf')) { st.background = el.getAttribute('data-dm-bgf'); el.removeAttribute('data-dm-bgf'); }
+        if (el.getAttribute('data-dm-fg')) { st.color = el.getAttribute('data-dm-fg'); el.removeAttribute('data-dm-fg'); }
       }
     }
-    /* Run fixInline on load if dark */
-    if (html.getAttribute('data-theme') === 'dark') {
-      if (document.readyState === 'loading')
-        document.addEventListener('DOMContentLoaded', function () { cmFixInline(true); });
-      else cmFixInline(true);
-    }
-    /* Watch for theme changes */
-    if (typeof MutationObserver !== 'undefined') {
-      new MutationObserver(function (muts) {
-        for (var i = 0; i < muts.length; i++) {
-          if (muts[i].attributeName === 'data-theme') {
-            cmFixInline(html.getAttribute('data-theme') === 'dark');
+  }
+  /* Run fixInline on load if dark */
+  if (html.getAttribute('data-theme') === 'dark') {
+    if (document.readyState === 'loading')
+      document.addEventListener('DOMContentLoaded', function () { cmFixInline(true); });
+    else cmFixInline(true);
+  }
+  /* Watch for theme changes */
+  if (typeof MutationObserver !== 'undefined') {
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        if (muts[i].attributeName === 'data-theme') {
+          cmFixInline(html.getAttribute('data-theme') === 'dark');
             break;
           }
         }
       }).observe(html, { attributes: true, attributeFilter: ['data-theme'] });
-    }
   }
 
   /* ═══════════════════════════════════════════════
