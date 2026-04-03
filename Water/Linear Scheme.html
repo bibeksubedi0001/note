@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Kinematic Wave Routing: Corrected IOE Method</title>
+
+ <!-- MathJax / KaTeX -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+ <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+ <script>
+ document.addEventListener("DOMContentLoaded", function () {
+ renderMathInElement(document.body, {
+ delimiters: [
+ { left: '$$', right: '$$', display: true },
+ { left: '$', right: '$', display: false },
+ { left: '\\(', right: '\\)', display: false },
+ { left: '\\[', right: '\\]', display: true }
+ ],
+ throwOnError: false
+ });
+ });
+ </script>
+
+ <script src="https://cdn.tailwindcss.com"></script>
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        /* ── Water section B&W overrides ── */
+        .math-block, .math-display { 
+            margin: 1rem 0; padding: 0.8rem; background: white;
+            border: 1px solid black; overflow-x: auto;
+        }
+        .math-final {
+            margin: 1rem 0; padding: 1rem; background: white;
+            border: 2px solid black; text-align: center;
+        }
+        .container, .solution { background: white !important; color: black !important; }
+        .question-box {
+            background: white !important; border: 1px solid black !important;
+            padding: 1rem; margin: 1rem 0;
+        }
+        .given-data-table, .grid-table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0;
+        }
+        .given-data-table th, .grid-table th {
+            background: white !important; color: black !important;
+            border: 1px solid black; padding: 6px 10px; font-weight: bold;
+        }
+        .given-data-table td, .grid-table td {
+            border: 1px solid black; padding: 6px 10px;
+        }
+        /* Kill ALL Tailwind background colors */
+        [class*="bg-blue"], [class*="bg-sky"], [class*="bg-indigo"],
+        [class*="bg-emerald"], [class*="bg-green"], [class*="bg-amber"],
+        [class*="bg-yellow"], [class*="bg-red"], [class*="bg-rose"],
+        [class*="bg-orange"], [class*="bg-teal"], [class*="bg-cyan"],
+        [class*="bg-purple"], [class*="bg-pink"], [class*="bg-stone"],
+        [class*="bg-slate"], [class*="bg-gray"],
+        [class*="bg-gradient"] {
+            background: white !important;
+        }
+        .bg-white { background: white !important; }
+        /* Kill colored text from Tailwind */
+        [class*="text-blue"], [class*="text-sky"], [class*="text-indigo"],
+        [class*="text-emerald"], [class*="text-green"], [class*="text-amber"],
+        [class*="text-red"], [class*="text-rose"], [class*="text-orange"],
+        [class*="text-teal"], [class*="text-cyan"], [class*="text-purple"],
+        [class*="text-pink"] {
+            color: black !important;
+        }
+        /* Kill colored borders */
+        [class*="border-blue"], [class*="border-sky"], [class*="border-indigo"],
+        [class*="border-emerald"], [class*="border-green"], [class*="border-amber"],
+        [class*="border-red"], [class*="border-rose"], [class*="border-orange"],
+        [class*="border-teal"], [class*="border-cyan"], [class*="border-purple"],
+        [class*="border-pink"], [class*="border-yellow"] {
+            border-color: black !important;
+        }
+        /* Kill shadows - keep it flat */
+        [class*="shadow"] { box-shadow: none !important; }
+        /* Kill rounded corners for textbook style */
+        [class*="rounded-xl"], [class*="rounded-2xl"], [class*="rounded-3xl"] {
+            border-radius: 0 !important;
+        }
+        [class*="rounded-lg"] { border-radius: 0 !important; }
+
+
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+ border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+ cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+ box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+ --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+ --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+ --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+ --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+ --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+ This single rule ensures NO text stays dark on dark bg.
+ Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+ box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+ .dm-toggle{display:none!important}
+ [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+ transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+
+ <!-- Header -->
+ <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white p-8 md:p-12 shadow-inner">
+ <h1 class="text-3xl md:text-5xl font-bold mb-4 tracking-tight">Kinematic Wave Routing</h1>
+ <p class="text-blue-200 text-lg md:text-xl font-light">Corrected Theory and Solutions (Matching Course
+ Manual Formula)</p>
+ </header>
+
+ <div class="p-8 md:p-12 space-y-16">
+
+ <!-- Section 1: Theoretical Background -->
+ <section>
+ <div class="flex items-center mb-6">
+ <div
+ class="bg-blue-100 text-blue-700 rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl mr-4 shadow-sm">
+ 1</div>
+ <h2 class="text-3xl font-bold text-gray-900">Theoretical Background (Corrected)</h2>
+ </div>
+
+ <p class="mb-4 text-gray-700 text-lg">The Governing Equation for the kinematic wave model is the
+ continuity equation:</p>
+ <div class="math-display">
+ $$ \frac{\partial Q}{\partial x} + \frac{\partial A}{\partial t} = 0 $$
+ </div>
+
+ <div class="grid md:grid-cols-2 gap-8 items-start mt-8">
+ <div>
+ <h3 class="text-xl font-bold mb-3 text-blue-800">The $A = \alpha Q^\beta$ Relationship</h3>
+ <p class="mb-2 text-gray-700">Using Manning's equation for a wide channel ($R \approx y = A/P$),
+ we can relate Area and Discharge as:</p>
+
+ <div class="math-display">
+ $$ Q = \frac{1}{n} A \left(\frac{A}{P}\right)^{2/3} \sqrt{S_0} = \frac{\sqrt{S_0}}{n
+ P^{2/3}} A^{5/3} $$
+ </div>
+
+ <p class="mt-4 mb-2 text-gray-700">Rearranging this to solve for $A$ gives the specific
+ formulation used in your course:</p>
+
+ <div class="math-display border-green-500 bg-green-50">
+ $$ A = \left( \frac{n P^{2/3}}{\sqrt{S_0}} \right)^{0.6} Q^{0.6} $$
+ </div>
+ <p class="mt-2 text-sm text-gray-500 italic">This is in the form $A = \alpha Q^\beta$, where
+ $\beta = 0.6$ and $\alpha = \left( \frac{n P^{2/3}}{\sqrt{S_0}} \right)^{0.6}$.</p>
+ </div>
+
+ <!-- Discretization -->
+ <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 shadow-inner">
+ <h4 class="font-bold text-gray-800 mb-4 text-lg">Discretizing the Equation</h4>
+ <p class="text-sm text-gray-700 mb-2">Using the chain rule, $\frac{\partial A}{\partial t} =
+ \frac{dA}{dQ} \frac{\partial Q}{\partial t} = \alpha \beta Q^{\beta-1} \frac{\partial
+ Q}{\partial t}$. The PDE becomes:</p>
+
+ <div class="math-display">
+ $$ \frac{\partial Q}{\partial x} + \alpha \beta Q^{\beta-1} \frac{\partial Q}{\partial t} =
+ 0 $$
+ </div>
+ <p class="text-sm text-gray-700 mt-4 mb-2">We approximate the derivatives and evaluate the
+ coefficient $\alpha \beta Q^{\beta-1}$ at the average known flow $\overline{Q} =
+ \frac{Q_i^{n+1} + Q_{i+1}^n}{2}$:</p>
+
+ <div class="math-display">
+ $$ \frac{Q_{i+1}^{n+1} - Q_i^{n+1}}{\Delta x} + \alpha \beta \overline{Q}^{\beta-1}
+ \frac{Q_{i+1}^{n+1} - Q_{i+1}^n}{\Delta t} = 0 $$
+ </div>
+ </div>
+ </div>
+
+ <!-- NEW SECTION: 5.4.2 Non-Linear Scheme -->
+ <div class="mt-12 bg-indigo-50 p-8 rounded-xl border border-indigo-200 shadow-sm">
+ <h3 class="text-2xl font-bold mb-4 text-indigo-900">5.4.2 Non-Linear Scheme (Precise Geometry)</h3>
+ <p class="mb-4 text-gray-800 text-lg">The Kinematic Wave Equation is inherently non-linear because
+ Area and Discharge are related by a power law ($A = \alpha Q^\beta$, where $\beta = 0.6$).</p>
+
+ <p class="mb-4 text-gray-800">In simpler linear problems (like Questions 2-5), we assume a "wide
+ rectangular channel" where the wetted perimeter $P$ is roughly equal to the width $B$. This
+ allows us to treat $P$ as a constant, thus making $\alpha$ a constant.</p>
+
+ <p class="mb-4 text-gray-800">In the formal <strong>Non-Linear Scheme</strong>, we do not make this
+ simplifying assumption. Instead, we compute the true geometry of the channel iteratively:</p>
+
+ <ol
+ class="list-decimal list-inside space-y-3 text-gray-800 bg-white p-5 rounded-lg border border-indigo-100">
+ <li><strong>Find Normal Depth:</strong> Use Manning's equation iteratively to calculate the
+ exact normal depth ($y$) for the initial base discharge ($Q_{initial}$).</li>
+ <li><strong>Exact Wetted Perimeter:</strong> Compute the exact Wetted Perimeter ($P$) using this
+ depth (e.g., $P = B + 2y\sqrt{1+z^2}$ for a trapezoid).</li>
+ <li><strong>Precise $\alpha$:</strong> Calculate a highly precise $\alpha$ coefficient using
+ this exact $P$.</li>
+ <li><strong>Linearized Application:</strong> Apply the same finite difference fractional formula
+ to advance the solution in time, utilizing the non-linear relationship via the localized $C$
+ coefficient.</li>
+ </ol>
+ </div>
+ </section>
+
+ <!-- Section 2: Finite Difference Scheme -->
+ <section>
+ <div class="flex items-center mb-6">
+ <div
+ class="bg-blue-100 text-blue-700 rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl mr-4 shadow-sm">
+ 2</div>
+ <h2 class="text-3xl font-bold text-gray-900">The Exact Course Formula</h2>
+ </div>
+
+ <p class="mb-6 text-gray-700 text-lg">Rearranging the discretized equation to solve for the unknown
+ future downstream flow $Q_{i+1}^{n+1}$ yields the exact formula found in your
+ <strong>CH-V.pdf</strong> notes:</p>
+
+ <div class="math-display border-purple-500 bg-purple-50 py-6 text-center text-xl overflow-x-auto">
+ $$ Q_{i+1}^{n+1} = \frac{\frac{\Delta t}{\Delta x}Q_{i}^{n+1} + \alpha \beta Q_{i+1}^n
+ \left(\frac{Q_{i+1}^n + Q_i^{n+1}}{2}\right)^{\beta-1}}{\frac{\Delta t}{\Delta x} + \alpha \beta
+ \left(\frac{Q_{i+1}^n + Q_i^{n+1}}{2}\right)^{\beta-1}} $$
+ </div>
+ </section>
+
+ <!-- Section 3: Universal Algorithm -->
+ <section class="bg-gray-900 text-white rounded-2xl p-8 md:p-10 shadow-2xl">
+ <h2 class="text-3xl font-bold mb-8 border-b border-gray-700 pb-4 text-blue-300">The Simplified 5-Step
+ Process</h2>
+
+ <p class="mb-6 text-gray-300 text-lg">To make calculations easier and less prone to calculator errors,
+ we can break that massive formula down into clean, intermediate variables:</p>
+
+ <div class="space-y-8 step-container">
+ <div>
+ <h4 class="font-bold text-blue-400 text-xl flex items-center"><span
+ class="bg-blue-500 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3 text-sm">1</span>
+ Calculate $\alpha$ and $\beta$</h4>
+ <div class="bg-gray-800 p-4 rounded-lg mt-3 overflow-x-auto text-xl text-center">
+ $$ \alpha = \left( \frac{n \cdot P^{2/3}}{\sqrt{S_0}} \right)^{0.6} \quad \text{and} \quad
+ \beta = 0.6 $$
+ </div>
+ <p class="text-gray-400 mt-2 text-sm text-center">*(If specified as "Non-Linear Scheme", find
+ $P$ using normal depth first. Otherwise, $P \approx B$)*</p>
+ </div>
+
+ <div>
+ <h4 class="font-bold text-blue-400 text-xl flex items-center"><span
+ class="bg-blue-500 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3 text-sm">2</span>
+ Calculate Average Flow ($\overline{Q}$)</h4>
+ <div class="bg-gray-800 p-4 rounded-lg mt-3 overflow-x-auto text-xl text-center">
+ $$ \overline{Q} = \frac{Q_i^{n+1} + Q_{i+1}^n}{2} $$
+ </div>
+ </div>
+
+ <div>
+ <h4 class="font-bold text-blue-400 text-xl flex items-center"><span
+ class="bg-blue-500 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3 text-sm">3</span>
+ Calculate Celerity Coefficient ($C$)</h4>
+ <p class="text-gray-300 mt-2 text-lg">This represents the entire $\alpha \beta
+ \overline{Q}^{\beta-1}$ term from the formula.</p>
+ <div class="bg-gray-800 p-4 rounded-lg mt-3 overflow-x-auto text-xl text-center">
+ $$ C = \alpha \cdot \beta \cdot (\overline{Q})^{\beta-1} = \alpha \cdot 0.6 \cdot
+ (\overline{Q})^{-0.4} $$
+ </div>
+ </div>
+
+ <div>
+ <h4 class="font-bold text-blue-400 text-xl flex items-center"><span
+ class="bg-blue-500 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3 text-sm">4</span>
+ Calculate Grid Ratio ($R$)</h4>
+ <div class="bg-gray-800 p-4 rounded-lg mt-3 overflow-x-auto text-xl text-center">
+ $$ R = \frac{\Delta t}{\Delta x} $$
+ </div>
+ </div>
+
+ <div>
+ <h4 class="font-bold text-blue-400 text-xl flex items-center"><span
+ class="bg-blue-500 text-white rounded-full w-8 h-8 inline-flex items-center justify-center mr-3 text-sm">5</span>
+ Compute Final Discharge</h4>
+ <div
+ class="bg-gray-800 p-4 rounded-lg mt-3 overflow-x-auto text-xl text-center space-y-4 text-green-400 font-bold border border-green-500">
+ $$ Q_{i+1}^{n+1} = \frac{R \cdot Q_i^{n+1} + C \cdot Q_{i+1}^n}{R + C} $$
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Solutions Section -->
+ <div class="text-center mt-16 mb-10">
+ <h1 class="text-4xl font-black text-gray-800 border-b-4 border-blue-500 inline-block pb-2">Step-by-Step
+ Solutions</h1>
+ </div>
+
+ <!-- QUESTION 2 -->
+ <article class="bg-white border-2 border-gray-200 rounded-xl shadow-lg overflow-hidden mb-16">
+ <div class="bg-gray-100 p-5 border-b border-gray-200">
+ <h3 class="text-2xl font-bold text-gray-800">Question 2 <span
+ class="text-lg font-normal text-gray-500">(2077 Chaitra, Q2, Group A)</span></h3>
+ </div>
+ <div class="p-6 md:p-8">
+ <!-- Added Question Text Block -->
+ <div class="bg-gray-50 p-5 rounded-lg mb-6 border-l-4 border-gray-400">
+ <h4 class="font-bold text-gray-700 mb-2">Question Text:</h4>
+ <p class="text-gray-700 italic">For a $30 \text{ m}$ wide and $0.015$ bed slope rectangular
+ channel following flow rates are given: $Q_i^n = 20 \text{ m}^3\text{/s}$, $Q_i^{n+1} = 28
+ \text{ m}^3\text{/s}$ and $Q_{i+1}^n = 18 \text{ m}^3\text{/s}$. Taking Manning's $n =
+ 0.025$, $\Delta x = 1200 \text{ m}$ and $\Delta t = 10 \text{ min}$, determine
+ $Q_{i+1}^{n+1}$ using finite difference scheme for linear kinematic wave model. Assume
+ lateral inflow to be zero. Take wetted perimeter is approximately equal to the width of the
+ channel. [6]</p>
+ </div>
+
+ <div class="bg-blue-50 p-5 rounded-lg mb-8 border border-blue-200 shadow-inner">
+ <h4 class="font-bold text-blue-900 mb-3 text-lg border-b border-blue-200 pb-2">Given Data:</h4>
+ <ul class="grid grid-cols-2 md:grid-cols-4 gap-4 text-base text-gray-800">
+ <li>$B \approx P = 30 \text{ m}$</li>
+ <li>$S_0 = 0.015$</li>
+ <li>$n = 0.025$</li>
+ <li>$Q_i^{n+1} = 28 \text{ m}^3\text{/s}$</li>
+ <li>$Q_{i+1}^n = 18 \text{ m}^3\text{/s}$</li>
+ <li>$\Delta x = 1200 \text{ m}$</li>
+ <li>$\Delta t = 10 \text{ min} = 600 \text{ s}$</li>
+ </ul>
+ </div>
+
+ <div class="space-y-2">
+ <p class="font-semibold text-lg text-gray-800">Step 1: Calculate $\alpha$</p>
+ <div class="math-display">
+ $$ \alpha = \left( \frac{0.025 \times 30^{2/3}}{\sqrt{0.015}} \right)^{0.6} = \left(
+ \frac{0.025 \times 9.655}{0.12247} \right)^{0.6} = (1.9708)^{0.6} = 1.5076 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 2: Average Flow ($\overline{Q}$)</p>
+ <div class="math-display">
+ $$ \overline{Q} = \frac{28 + 18}{2} = 23 \text{ m}^3\text{/s} $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 3: Celerity Coefficient ($C$)</p>
+ <div class="math-display">
+ $$ C = 1.5076 \times 0.6 \times (23)^{-0.4} = 0.90456 \times 0.28475 = 0.2576 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 4: Grid Ratio ($R$)</p>
+ <div class="math-display">
+ $$ R = \frac{600}{1200} = 0.5 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 5: Final Discharge</p>
+ <div class="math-final">
+ $$ Q_{i+1}^{n+1} = \frac{0.5(28) + 0.2576(18)}{0.5 + 0.2576} = \frac{14 + 4.6368}{0.7576} $$
+ <div class="mt-4 pt-4 border-t border-green-300 font-bold text-green-800">
+ $$ Q_{i+1}^{n+1} = 24.60 \text{ m}^3\text{/s} $$
+ </div>
+ </div>
+ </div>
+ </div>
+ </article>
+
+ <!-- QUESTION 3 -->
+ <article class="bg-white border-2 border-gray-200 rounded-xl shadow-lg overflow-hidden mb-16">
+ <div class="bg-gray-100 p-5 border-b border-gray-200">
+ <h3 class="text-2xl font-bold text-gray-800">Question 3 <span
+ class="text-lg font-normal text-gray-500">(2073 Bhadra, Q2, Group A)</span></h3>
+ </div>
+ <div class="p-6 md:p-8">
+ <!-- Added Question Text Block -->
+ <div class="bg-gray-50 p-5 rounded-lg mb-6 border-l-4 border-gray-400">
+ <h4 class="font-bold text-gray-700 mb-2">Question Text:</h4>
+ <p class="text-gray-700 italic">A river which is generalized as trapezoidal channel is $300
+ \text{ m}$ wide with side slope $5:1$, has bed slope $1\%$ and Manning's $n = 0.04$.
+ Initially discharge through the river is $100 \text{ m}^3\text{/s}$. Due to a flood the
+ discharge observed at the upstream section of the river is $300\text{m}^3\text{/s}$, compute
+ discharge at $2650\text{m}$ downstream from upstream section. Take $\Delta x = 2650\text{m}$
+ and $\Delta t = 1\text{hr}$. Use linear kinematic wave solution. [6]</p>
+ </div>
+
+ <div class="bg-yellow-50 p-4 rounded-lg mb-6 border-l-4 border-yellow-400 text-sm text-yellow-800">
+ <strong>Note on Geometry:</strong> Because the channel is exceptionally wide ($300\text{m}$)
+ relative to typical depths, the friction from the side slopes is negligible. It is standard
+ practice to use the wide channel approximation ($P \approx B = 300\text{m}$) here to avoid
+ solving complex implicit equations for normal depth without a computer.
+ </div>
+
+ <div class="bg-blue-50 p-5 rounded-lg mb-8 border border-blue-200 shadow-inner">
+ <h4 class="font-bold text-blue-900 mb-3 text-lg border-b border-blue-200 pb-2">Given Data:</h4>
+ <ul class="grid grid-cols-2 md:grid-cols-4 gap-4 text-base text-gray-800">
+ <li>$B \approx P = 300 \text{ m}$</li>
+ <li>$S_0 = 1\% = 0.01$</li>
+ <li>$n = 0.04$</li>
+ <li>$Q_i^{n+1} = 300 \text{ m}^3\text{/s}$</li>
+ <li>$Q_{i+1}^n = 100 \text{ m}^3\text{/s}$</li>
+ <li>$\Delta x = 2650 \text{ m}$</li>
+ <li>$\Delta t = 1 \text{ hr} = 3600 \text{ s}$</li>
+ </ul>
+ </div>
+
+ <div class="space-y-2">
+ <p class="font-semibold text-lg text-gray-800">Step 1: Calculate $\alpha$</p>
+ <div class="math-display">
+ $$ \alpha = \left( \frac{0.04 \times 300^{2/3}}{\sqrt{0.01}} \right)^{0.6} = \left(
+ \frac{0.04 \times 44.814}{0.1} \right)^{0.6} = (17.9256)^{0.6} = 5.645 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 2: Average Flow ($\overline{Q}$)</p>
+ <div class="math-display">
+ $$ \overline{Q} = \frac{300 + 100}{2} = 200 \text{ m}^3\text{/s} $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 3: Celerity Coefficient ($C$)</p>
+ <div class="math-display">
+ $$ C = 5.645 \times 0.6 \times (200)^{-0.4} = 3.387 \times 0.1201 = 0.4068 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 4: Grid Ratio ($R$)</p>
+ <div class="math-display">
+ $$ R = \frac{3600}{2650} = 1.3585 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 5: Final Discharge</p>
+ <div class="math-final">
+ $$ Q_{i+1}^{n+1} = \frac{1.3585(300) + 0.4068(100)}{1.3585 + 0.4068} = \frac{407.55 +
+ 40.68}{1.7653} $$
+ <div class="mt-4 pt-4 border-t border-green-300 font-bold text-green-800">
+ $$ Q_{i+1}^{n+1} = 253.9 \text{ m}^3\text{/s} $$
+ </div>
+ </div>
+ </div>
+ </div>
+ </article>
+
+ <!-- QUESTION 4 -->
+ <article class="bg-white border-2 border-gray-200 rounded-xl shadow-lg overflow-hidden mb-16">
+ <div class="bg-gray-100 p-5 border-b border-gray-200">
+ <h3 class="text-2xl font-bold text-gray-800">Question 4 <span
+ class="text-lg font-normal text-gray-500">(2072 Magh, Q1b, Group A)</span></h3>
+ </div>
+ <div class="p-6 md:p-8">
+ <!-- Added Question Text Block -->
+ <div class="bg-gray-50 p-5 rounded-lg mb-6 border-l-4 border-gray-400">
+ <h4 class="font-bold text-gray-700 mb-2">Question Text:</h4>
+ <p class="text-gray-700 italic">Water flows through a rectangular channel $25 \text{ m}$ wide,
+ having bed slope $0.015$ and Manning's $n = 0.035$. The following flow rates are given:
+ $Q_i^{n+1} = 30 \text{ m}^3\text{/s}$, $Q_i^n = 22 \text{ m}^3\text{/s}$ and $Q_{i+1}^n = 20
+ \text{ m}^3\text{/s}$, where $\text{i} =$ index for space and $\text{n} =$ index for time.
+ Taking $\Delta x = 1500\text{m}$ and $\Delta t = 10 \text{ min}$, determine $Q_{i+1}^{n+1}$
+ using first order accurate linear kinematic wave model. Assume lateral flow to be zero and
+ wetted perimeter is equal to width of the channel. [6]</p>
+ </div>
+
+ <div class="bg-blue-50 p-5 rounded-lg mb-8 border border-blue-200 shadow-inner">
+ <h4 class="font-bold text-blue-900 mb-3 text-lg border-b border-blue-200 pb-2">Given Data:</h4>
+ <ul class="grid grid-cols-2 md:grid-cols-4 gap-4 text-base text-gray-800">
+ <li>$B \approx P = 25 \text{ m}$</li>
+ <li>$S_0 = 0.015$</li>
+ <li>$n = 0.035$</li>
+ <li>$Q_i^{n+1} = 30 \text{ m}^3\text{/s}$</li>
+ <li>$Q_{i+1}^n = 20 \text{ m}^3\text{/s}$</li>
+ <li>$\Delta x = 1500 \text{ m}$</li>
+ <li>$\Delta t = 10 \text{ min} = 600 \text{ s}$</li>
+ </ul>
+ </div>
+
+ <div class="space-y-2">
+ <p class="font-semibold text-lg text-gray-800">Step 1: Calculate $\alpha$</p>
+ <div class="math-display">
+ $$ \alpha = \left( \frac{0.035 \times 25^{2/3}}{\sqrt{0.015}} \right)^{0.6} = \left(
+ \frac{0.035 \times 8.5499}{0.12247} \right)^{0.6} = (2.4435)^{0.6} = 1.7145 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 2: Average Flow ($\overline{Q}$)</p>
+ <div class="math-display">
+ $$ \overline{Q} = \frac{30 + 20}{2} = 25 \text{ m}^3\text{/s} $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 3: Celerity Coefficient ($C$)</p>
+ <div class="math-display">
+ $$ C = 1.7145 \times 0.6 \times (25)^{-0.4} = 1.0287 \times 0.2759 = 0.2838 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 4: Grid Ratio ($R$)</p>
+ <div class="math-display">
+ $$ R = \frac{600}{1500} = 0.4 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 5: Final Discharge</p>
+ <div class="math-final">
+ $$ Q_{i+1}^{n+1} = \frac{0.4(30) + 0.2838(20)}{0.4 + 0.2838} = \frac{12 + 5.676}{0.6838} $$
+ <div class="mt-4 pt-4 border-t border-green-300 font-bold text-green-800">
+ $$ Q_{i+1}^{n+1} = 25.85 \text{ m}^3\text{/s} $$
+ </div>
+ </div>
+ </div>
+ </div>
+ </article>
+
+ <!-- QUESTION 5 -->
+ <article class="bg-white border-2 border-gray-200 rounded-xl shadow-lg overflow-hidden mb-16">
+ <div class="bg-gray-100 p-5 border-b border-gray-200">
+ <h3 class="text-2xl font-bold text-gray-800">Question 5 <span
+ class="text-lg font-normal text-gray-500">(2071 Bhadra, Q1b, Group A)</span></h3>
+ </div>
+ <div class="p-6 md:p-8">
+ <!-- Added Question Text Block -->
+ <div class="bg-gray-50 p-5 rounded-lg mb-6 border-l-4 border-gray-400">
+ <h4 class="font-bold text-gray-700 mb-2">Question Text:</h4>
+ <p class="text-gray-700 italic">Using the Finite Difference equation developed in question (a)
+ (First order accurate implicit equation for kinematic wave model), compute the discharge at
+ $1 \text{ km d/s}$ of location X at time $14:00 \text{ hrs}$, for the following data:
+ [6]<br><br>
+ Rectangular channel, width $= 20 \text{ m}$, Bed slope $= 0.001$, Manning's $n = 0.03$<br>
+ Discharge at location X at time $14:00 \text{ hrs} = 14 \text{ m}^3\text{/s}$<br>
+ Discharge at location X at time $13:45 \text{ hrs} = 12 \text{ m}^3\text{/s}$<br>
+ Discharge at $1 \text{ km d/s}$ of location X at time $13:45 \text{ hrs} = 11 \text{
+ m}^3\text{/s}$<br>
+ No lateral flow, wetted perimeter approximately equal to width of channel.</p>
+ </div>
+
+ <div class="bg-blue-50 p-5 rounded-lg mb-8 border border-blue-200 shadow-inner">
+ <h4 class="font-bold text-blue-900 mb-3 text-lg border-b border-blue-200 pb-2">Given Data:</h4>
+ <ul class="grid grid-cols-2 md:grid-cols-4 gap-4 text-base text-gray-800">
+ <li>$B \approx P = 20 \text{ m}$</li>
+ <li>$S_0 = 0.001$</li>
+ <li>$n = 0.03$</li>
+ <li>$Q_i^{n+1} \text{ (14:00)} = 14 \text{ m}^3\text{/s}$</li>
+ <li>$Q_{i+1}^n \text{ (13:45)} = 11 \text{ m}^3\text{/s}$</li>
+ <li>$\Delta x = 1 \text{ km} = 1000 \text{ m}$</li>
+ <li>$\Delta t = 15 \text{ min} = 900 \text{ s}$</li>
+ </ul>
+ </div>
+
+ <div class="space-y-2">
+ <p class="font-semibold text-lg text-gray-800">Step 1: Calculate $\alpha$</p>
+ <div class="math-display">
+ $$ \alpha = \left( \frac{0.03 \times 20^{2/3}}{\sqrt{0.001}} \right)^{0.6} = \left(
+ \frac{0.03 \times 7.368}{0.03162} \right)^{0.6} = (6.99)^{0.6} = 3.22 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 2: Average Flow ($\overline{Q}$)</p>
+ <div class="math-display">
+ $$ \overline{Q} = \frac{14 + 11}{2} = 12.5 \text{ m}^3\text{/s} $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 3: Celerity Coefficient ($C$)</p>
+ <div class="math-display">
+ $$ C = 3.22 \times 0.6 \times (12.5)^{-0.4} = 1.932 \times 0.364 = 0.703 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 4: Grid Ratio ($R$)</p>
+ <div class="math-display">
+ $$ R = \frac{900}{1000} = 0.9 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 5: Final Discharge</p>
+ <div class="math-final">
+ $$ Q_{i+1}^{n+1} = \frac{0.9(14) + 0.703(11)}{0.9 + 0.703} = \frac{12.6 + 7.733}{1.603} $$
+ <div class="mt-4 pt-4 border-t border-green-300 font-bold text-green-800">
+ $$ Q_{i+1}^{n+1} = 12.68 \text{ m}^3\text{/s} $$
+ </div>
+ </div>
+ </div>
+ </div>
+ </article>
+
+ <!-- QUESTION 6 -->
+ <article class="bg-white border-2 border-gray-200 rounded-xl shadow-lg overflow-hidden mb-16">
+ <div class="bg-gray-100 p-5 border-b border-gray-200">
+ <h3 class="text-2xl font-bold text-gray-800">Question 6 <span
+ class="text-lg font-normal text-gray-500">(2070 Magh, Q1b, Group B)</span></h3>
+ </div>
+ <div class="p-6 md:p-8">
+ <!-- Added Question Text Block -->
+ <div class="bg-gray-50 p-5 rounded-lg mb-6 border-l-4 border-gray-400">
+ <h4 class="font-bold text-gray-700 mb-2">Question Text:</h4>
+ <p class="text-gray-700 italic">A flood of $150 \text{ m}^3\text{/s}$ peak discharges passed a
+ gaging station at 12:00 noon on a river. There is a community adjacent to the river $7.2
+ \text{ km}$ downstream. What will be the value of peak discharge at that community at 12:00
+ noon of the velocity of flow is $1.2\text{m/s}$ and peak discharge at that community at 9:00
+ A.M is $100\text{m}^3\text{/s}$. Assume width of river as inside and use first order
+ accurate numerical scheme of kinematic wave equation, Take $\Delta x = 7.2\text{km}$ and
+ $\Delta t = 1 \text{ hrs}$. [6]</p>
+ </div>
+
+ <div class="bg-yellow-50 p-4 rounded-lg mb-6 border-l-4 border-yellow-400 text-sm text-yellow-800">
+ <strong>The "Trick" in this Question:</strong> We are given the Velocity ($V = 1.2 \text{ m/s}$)
+ directly. Because the celerity coefficient $C = \alpha \beta \overline{Q}^{\beta-1}$ is
+ mathematically exactly equal to $\frac{1}{\text{celerity } (c)}$, and we know $c =
+ \frac{5}{3}V$, we can completely bypass calculating $\alpha$ and area!
+ </div>
+
+ <div class="bg-blue-50 p-5 rounded-lg mb-8 border border-blue-200 shadow-inner">
+ <h4 class="font-bold text-blue-900 mb-3 text-lg border-b border-blue-200 pb-2">Given Data:</h4>
+ <ul class="grid grid-cols-2 md:grid-cols-4 gap-4 text-base text-gray-800">
+ <li>$Q_i^{n+1} = 150 \text{ m}^3\text{/s}$</li>
+ <li>$Q_{i+1}^n = 100 \text{ m}^3\text{/s}$</li>
+ <li>$V = 1.2 \text{ m/s}$</li>
+ <li>$\Delta x = 7.2 \text{ km} = 7200 \text{ m}$</li>
+ <li>$\Delta t = 1 \text{ hr} = 3600 \text{ s}$</li>
+ </ul>
+ </div>
+
+ <div class="space-y-2">
+ <p class="font-semibold text-lg text-gray-800">Steps 1-2: Skipped</p>
+ <p class="text-gray-600 mb-4 text-base">Because Velocity ($V$) is given directly, we don't need
+ channel geometry.</p>
+
+ <p class="font-semibold text-lg text-gray-800">Step 3: Celerity Coefficient ($C$)</p>
+ <div class="math-display">
+ $$ c = \frac{5}{3} V = \frac{5}{3}(1.2) = 2.0 \text{ m/s} $$
+ $$ C = \frac{1}{c} = \frac{1}{2.0} = 0.5 \text{ s/m} $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 4: Grid Ratio ($R$)</p>
+ <div class="math-display">
+ $$ R = \frac{\Delta t}{\Delta x} = \frac{3600}{7200} = 0.5 \text{ s/m} $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 5: Final Discharge</p>
+ <div class="math-final">
+ $$ Q_{i+1}^{n+1} = \frac{0.5(150) + 0.5(100)}{0.5 + 0.5} = \frac{75 + 50}{1.0} $$
+ <div class="mt-4 pt-4 border-t border-green-300 font-bold text-green-800">
+ $$ Q_{i+1}^{n+1} = 125 \text{ m}^3\text{/s} $$
+ </div>
+ </div>
+ </div>
+ </div>
+ </article>
+
+ <!-- QUESTION 7 -->
+ <article class="bg-white border-4 border-indigo-400 rounded-xl shadow-2xl overflow-hidden">
+ <div class="bg-indigo-100 p-5 border-b border-indigo-200">
+ <h3 class="text-2xl font-bold text-indigo-900">Question 7 <span
+ class="text-lg font-normal text-indigo-700">(2079 Shrawan, Q1b, Group A) - Non-Linear
+ Solution</span></h3>
+ </div>
+ <div class="p-6 md:p-8">
+ <!-- Added Question Text Block -->
+ <div class="bg-gray-50 p-5 rounded-lg mb-6 border-l-4 border-gray-400">
+ <h4 class="font-bold text-gray-700 mb-2">Question Text:</h4>
+ <p class="text-gray-700 italic">A river which can be generalized as a trapezoidal channel is
+ $350 \text{ m}$ wide with side slope $6:1$, has a bed slope $1.5\%$, and Manning’s
+ $n=0.0359$. The initial discharge through the river is $420 \text{ cumecs}$. Due to a flood
+ observed at upstream, the value of discharge rises to $580 \text{ cumecs}$. Calculate the
+ discharge that will occur at $4.65 \text{ km}$ downstream. Take $\Delta x=4650 \text{ m}$
+ and $\Delta t=1.5 \text{ hours}$. Use non-linear kinematic wave solution. [6]</p>
+ </div>
+
+ <div class="bg-indigo-50 p-5 rounded-lg mb-8 border border-indigo-200 shadow-inner">
+ <h4 class="font-bold text-indigo-900 mb-3 text-lg border-b border-indigo-200 pb-2">Given Data:
+ </h4>
+ <ul class="grid grid-cols-2 md:grid-cols-4 gap-4 text-base text-gray-800">
+ <li>$B = 350 \text{ m}$</li>
+ <li>$z = 6 \text{ (Side Slope 6H:1V)}$</li>
+ <li>$S_0 = 1.5\% = 0.015$</li>
+ <li>$n = 0.0359$</li>
+ <li>$Q_i^{n+1} = 580 \text{ m}^3\text{/s}$</li>
+ <li>$Q_{i+1}^n = 420 \text{ m}^3\text{/s}$</li>
+ <li>$\Delta x = 4650 \text{ m}$</li>
+ <li>$\Delta t = 1.5 \text{ hr} = 5400 \text{ s}$</li>
+ </ul>
+ </div>
+
+ <div class="space-y-4">
+ <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 mb-4">
+ <p class="font-bold text-lg text-yellow-800 mb-2">Step 0: Exact Geometry (Non-Linear Scheme
+ Preparation)</p>
+ <p class="text-gray-700 mb-2">Unlike previous questions, the instruction <em>"Use non-linear
+ kinematic wave solution"</em> requires us to compute the exact normal depth ($y$)
+ and exact wetted perimeter ($P$) for the initial flow ($Q = 420 \text{ m}^3\text{/s}$),
+ rather than assuming $P \approx B$.</p>
+
+ <p class="text-gray-700 font-medium mt-4">1. Setting up Manning's Equation for $y$:</p>
+ <div class="math-display">
+ $$ Q = \frac{\sqrt{S_0}}{n} \frac{(By + zy^2)^{5/3}}{(B + 2y\sqrt{1+z^2})^{2/3}} $$
+ $$ 420 = \frac{\sqrt{0.015}}{0.0359} \frac{(350y + 6y^2)^{5/3}}{(350 +
+ 2y\sqrt{37})^{2/3}} $$
+ </div>
+
+ <p class="text-gray-700 font-medium mt-4">2. Solving iteratively yields the exact normal
+ depth:</p>
+ <div class="math-display">
+ $$ y \approx 0.533 \text{ m} $$
+ </div>
+
+ <p class="text-gray-700 font-medium mt-4">3. Calculate Exact Wetted Perimeter ($P$):</p>
+ <div class="math-display">
+ $$ P = B + 2y\sqrt{1+z^2} = 350 + 2(0.533)\sqrt{37} = 356.48 \text{ m} $$
+ </div>
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 1: Calculate precise $\alpha$</p>
+ <div class="math-display">
+ $$ \alpha = \left( \frac{n \cdot P^{2/3}}{\sqrt{S_0}} \right)^{0.6} = \left( \frac{0.0359
+ \times 356.48^{2/3}}{\sqrt{0.015}} \right)^{0.6} = (14.736)^{0.6} = 5.024 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 2: Average Flow ($\overline{Q}$)</p>
+ <div class="math-display">
+ $$ \overline{Q} = \frac{580 + 420}{2} = 500 \text{ m}^3\text{/s} $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 3: Celerity Coefficient ($C$)</p>
+ <div class="math-display">
+ $$ C = \alpha \beta (\overline{Q})^{-0.4} = 5.024 \times 0.6 \times (500)^{-0.4} = 3.0144
+ \times 0.08325 = 0.2510 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 4: Grid Ratio ($R$)</p>
+ <div class="math-display">
+ $$ R = \frac{\Delta t}{\Delta x} = \frac{5400}{4650} = 1.1613 $$
+ </div>
+
+ <p class="font-semibold text-lg text-gray-800">Step 5: Final Discharge</p>
+ <div class="math-final border-indigo-400 bg-indigo-50">
+ $$ Q_{i+1}^{n+1} = \frac{1.1613(580) + 0.2510(420)}{1.1613 + 0.2510} = \frac{673.55 +
+ 105.42}{1.4123} $$
+ <div class="mt-4 pt-4 border-t border-indigo-300 font-bold text-indigo-900">
+ $$ Q_{i+1}^{n+1} = 551.56 \text{ m}^3\text{/s} $$
+ </div>
+ </div>
+ </div>
+ </div>
+ </article>
+
+ </div>
+ </div>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+ 'use strict';
+ var on = false, drawing = false, erasing = false;
+ var COLORS = [
+ '#e63946', /* red */
+ '#1a365d', /* navy */
+ '#2d6a4f', /* forest green */
+ '#e67e22', /* orange */
+ '#7c3aed', /* violet */
+ '#000000', /* black */
+ '#ffffff', /* white */
+ '#f0f0f0', /* light gray */
+ '#0ea5e9', /* sky blue */
+ '#ec4899', /* hot pink */
+ '#f59e0b', /* amber gold */
+ '#06b6d4', /* cyan */
+ '#ff6b6b', /* coral */
+ '#a855f7', /* purple glow */
+ '#22d3ee', /* electric teal */
+ '#facc15', /* yellow */
+ '#fef9c3', /* pale yellow */
+ 'gold', /* golden shimmer */
+ '#c0c0c0' /* silver */
+ ];
+ var SHIMMER = { 'gold': true, '#c0c0c0': true };
+ var color = COLORS[0], penW = 3;
+ var strokes = []; // finished: [{c,w,er,p:[x,y,x,y,...]}]
+ var pts = []; // current stroke points (flat: x,y,x,y,...)
+ var drawn = 0; // how many points already rendered
+ var raf = 0;
+
+ /* --- CSS --- */
+ var st = document.createElement('style');
+ st.textContent =
+ '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+ '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+ '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+ '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+ '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+ '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+ document.head.appendChild(st);
+
+ /* --- fixed viewport canvas (small and fast) --- */
+ var cv = document.createElement('canvas');
+ cv.className = 'dw-cv';
+ document.body.appendChild(cv);
+
+ // allow mouse wheel to scroll through the canvas
+ cv.addEventListener('wheel', function (e) {
+ window.scrollBy(0, e.deltaY);
+ paint();
+ }, { passive: true });
+ var cx = cv.getContext('2d');
+
+ function sized() {
+ var dpr = window.devicePixelRatio || 1;
+ var w = window.innerWidth, h = window.innerHeight;
+ cv.width = w * dpr; cv.height = h * dpr;
+ cv.style.width = w + 'px'; cv.style.height = h + 'px';
+ cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ paint();
+ }
+ sized();
+ window.addEventListener('resize', sized);
+
+ /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+ function paint() {
+ var sx = window.scrollX, sy = window.scrollY;
+ cx.clearRect(0, 0, cv.width, cv.height);
+ for (var s = 0; s < strokes.length; s++) {
+ var sk = strokes[s], p = sk.p;
+ if (p.length < 4) continue;
+ cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+ cx.strokeStyle = sk.c;
+ cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ cx.beginPath();
+ cx.moveTo(p[0] - sx, p[1] - sy);
+ for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+ cx.stroke();
+ }
+ }
+ window.addEventListener('scroll', paint);
+
+ /* --- UI --- */
+ var btn = document.createElement('button');
+ btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+ document.body.appendChild(btn);
+
+ var tb = document.createElement('div'); tb.className = 'dw-tb';
+ var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+ COLORS.forEach(function (c) {
+ var d = document.createElement('div');
+ d.className = 'dw-dot' + (c === color ? ' on' : '');
+ d.style.background = c;
+ d.onclick = function () {
+ color = c; erasing = false; erBtn.classList.remove('on');
+ tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+ d.classList.add('on');
+ };
+ cGrid.appendChild(d);
+ });
+ tb.appendChild(cGrid);
+ var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+ tb.appendChild(lbl);
+ var sl = document.createElement('input');
+ sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+ sl.oninput = function () { penW = +sl.value; };
+ tb.appendChild(sl);
+
+ var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+ erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+ tb.appendChild(erBtn);
+
+ var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+ unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+ tb.appendChild(unBtn);
+
+ var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+ clBtn.onclick = function () { strokes.length = 0; paint(); };
+ tb.appendChild(clBtn);
+
+ document.body.appendChild(tb);
+
+ // stop toolbar clicks from reaching canvas
+ ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+ tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+ btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+ });
+
+ btn.onclick = function () {
+ on = !on;
+ btn.classList.toggle('on', on);
+ tb.classList.toggle('show', on);
+ cv.classList.toggle('on', on);
+ };
+
+ /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+ function tick() {
+ if (!drawing) { raf = 0; return; }
+ var n = pts.length;
+ if (drawn < n) {
+ var sx = window.scrollX, sy = window.scrollY;
+ // continue the existing path from last drawn point
+ if (drawn === 0) {
+ cx.beginPath();
+ cx.moveTo(pts[0] - sx, pts[1] - sy);
+ drawn = 2;
+ }
+ for (var i = drawn; i < n; i += 2) {
+ cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+ }
+ cx.stroke();
+ // continue the SAME path (no beginPath) — keeps it connected
+ drawn = n;
+ }
+ raf = requestAnimationFrame(tick);
+ }
+
+ /* --- pointer handlers --- */
+ cv.addEventListener('pointerdown', function (e) {
+ if (!on || e.button !== 0 || e.target !== cv) return;
+ e.preventDefault();
+ cv.setPointerCapture(e.pointerId);
+ drawing = true;
+ // store document coords
+ var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+ pts = [dx, dy];
+ drawn = 0;
+ // set style once for whole stroke
+ cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+ cx.strokeStyle = color;
+ cx.lineWidth = erasing ? penW * 4 : penW;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ // start rAF loop
+ if (!raf) raf = requestAnimationFrame(tick);
+ });
+
+ cv.addEventListener('pointermove', function (e) {
+ if (!drawing) return;
+ // just push coords — rAF will render them
+ pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+ });
+
+ function stop() {
+ if (!drawing) return;
+ drawing = false;
+ if (pts.length >= 4) {
+ strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+ }
+ pts = []; drawn = 0;
+ // full repaint to clean up
+ paint();
+ }
+ cv.addEventListener('pointerup', stop);
+ cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+ var t=document.getElementById('dmToggle'),h=document.documentElement,
+ s=localStorage.getItem('theme');
+ if(s)h.setAttribute('data-theme',s);
+ function updateIcon(){
+ if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+ }
+ updateIcon();
+ if(t){
+ t.addEventListener('click',function(){
+ var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+ h.setAttribute('data-theme',n);
+ localStorage.setItem('theme',n);
+ updateIcon();
+ fixInline(n==='dark');
+ });
+ }
+ /* Fix inline and style="color:..." */
+ function fixInline(dark){
+ var els=document.querySelectorAll('[style]');
+ for(var i=0;i<els.length;i++){
+ var el=els[i];
+ /* Skip SVG internals */
+ if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+ if(el.closest&&el.closest('svg'))continue;
+ var st=el.style;
+ if(dark){
+ /* Background */
+ if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+ el.setAttribute('data-dm-bg',st.backgroundColor);
+ if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+ }
+ if(st.background&&!el.getAttribute('data-dm-bgf')){
+ el.setAttribute('data-dm-bgf',st.background);
+ if(lum(st.background)>160)st.background='#1e222a';
+ }
+ /* Text color */
+ if(st.color&&!el.getAttribute('data-dm-fg')){
+ el.setAttribute('data-dm-fg',st.color);
+ if(lum(st.color)<100)st.color='#d0cdc5';
+ }
+ }else{
+ if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+ if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+ if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+ }
+ }
+ }
+ /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+ function lum(c){
+ if(!c)return -1;
+ c=c.trim().toLowerCase();
+ if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+ if(c==='black'||c==='#000'||c==='#000000')return 0;
+ var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+ if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+ var hx=c.match(/^#([0-9a-f]{3,8})$/);
+ if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+ return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+ return -1;
+ }
+ /* Apply on load if dark */
+ if(h.getAttribute('data-theme')==='dark'){
+ if(document.readyState==='loading')
+ document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+ else fixInline(true);
+ }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

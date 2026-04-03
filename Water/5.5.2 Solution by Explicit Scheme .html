@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Explicit Scheme for Full Saint-Venant Equations</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+ MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']]
+ }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+ <script src="https://cdn.tailwindcss.com"></script>
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        /* ── Water section B&W overrides ── */
+        .math-block, .math-display { 
+            margin: 1rem 0; padding: 0.8rem; background: white;
+            border: 1px solid black; overflow-x: auto;
+        }
+        .math-final {
+            margin: 1rem 0; padding: 1rem; background: white;
+            border: 2px solid black; text-align: center;
+        }
+        .container, .solution { background: white !important; color: black !important; }
+        .question-box {
+            background: white !important; border: 1px solid black !important;
+            padding: 1rem; margin: 1rem 0;
+        }
+        .given-data-table, .grid-table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0;
+        }
+        .given-data-table th, .grid-table th {
+            background: white !important; color: black !important;
+            border: 1px solid black; padding: 6px 10px; font-weight: bold;
+        }
+        .given-data-table td, .grid-table td {
+            border: 1px solid black; padding: 6px 10px;
+        }
+        /* Kill ALL Tailwind background colors */
+        [class*="bg-blue"], [class*="bg-sky"], [class*="bg-indigo"],
+        [class*="bg-emerald"], [class*="bg-green"], [class*="bg-amber"],
+        [class*="bg-yellow"], [class*="bg-red"], [class*="bg-rose"],
+        [class*="bg-orange"], [class*="bg-teal"], [class*="bg-cyan"],
+        [class*="bg-purple"], [class*="bg-pink"], [class*="bg-stone"],
+        [class*="bg-slate"], [class*="bg-gray"],
+        [class*="bg-gradient"] {
+            background: white !important;
+        }
+        .bg-white { background: white !important; }
+        /* Kill colored text from Tailwind */
+        [class*="text-blue"], [class*="text-sky"], [class*="text-indigo"],
+        [class*="text-emerald"], [class*="text-green"], [class*="text-amber"],
+        [class*="text-red"], [class*="text-rose"], [class*="text-orange"],
+        [class*="text-teal"], [class*="text-cyan"], [class*="text-purple"],
+        [class*="text-pink"] {
+            color: black !important;
+        }
+        /* Kill colored borders */
+        [class*="border-blue"], [class*="border-sky"], [class*="border-indigo"],
+        [class*="border-emerald"], [class*="border-green"], [class*="border-amber"],
+        [class*="border-red"], [class*="border-rose"], [class*="border-orange"],
+        [class*="border-teal"], [class*="border-cyan"], [class*="border-purple"],
+        [class*="border-pink"], [class*="border-yellow"] {
+            border-color: black !important;
+        }
+        /* Kill shadows - keep it flat */
+        [class*="shadow"] { box-shadow: none !important; }
+        /* Kill rounded corners for textbook style */
+        [class*="rounded-xl"], [class*="rounded-2xl"], [class*="rounded-3xl"] {
+            border-radius: 0 !important;
+        }
+        [class*="rounded-lg"] { border-radius: 0 !important; }
+
+
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+ border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+ cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+ box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+ --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+ --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+ --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+ --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+ --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+ This single rule ensures NO text stays dark on dark bg.
+ Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+ box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+ .dm-toggle{display:none!important}
+ [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+ transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<div class="max-w-5xl mx-auto space-y-8">
+
+ <!-- Header -->
+ <header class="bg-white p-8 rounded-xl shadow-sm border border-slate-200 border-l-8 border-l-indigo-500">
+ <h1 class="text-3xl md:text-4xl font-bold mb-4 text-indigo-900">Explicit Scheme: Full Saint-Venant Equations
+ </h1>
+ <p class="text-lg text-slate-600">Theoretical background, numerical formulation (following K.N. Dulal's Lax
+ Diffusive Scheme), and detailed solutions for the 1D Dynamic Wave Model.</p>
+ </header>
+
+ <!-- Theoretical Background -->
+ <section class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+ <h2 class="text-2xl font-bold mb-6 border-b pb-2 text-slate-800">1. Theoretical Formulation (Lax Scheme)
+ </h2>
+
+ <div class="space-y-6 text-slate-700 leading-relaxed">
+ <p>Following the standard procedure in K.N. Dulal's notes, the <strong>Dynamic Wave Model</strong>
+ utilizes the full 1D Saint-Venant equations, accounting for continuity and momentum. To solve this
+ explicitly while avoiding numerical instability, the <strong>Lax Diffusive Scheme</strong> is
+ applied.</p>
+
+ <p>The governing equations (assuming no lateral inflow, $q=0$) are:</p>
+ <div class="math-block text-center shadow-sm border border-slate-100">
+ $$\textbf{Continuity:} \quad \frac{\partial A}{\partial t} + \frac{\partial Q}{\partial x} = 0$$
+ $$\textbf{Momentum:} \quad \frac{\partial Q}{\partial t} + \frac{\partial}{\partial
+ x}\left(\frac{Q^2}{A}\right) + gA\frac{\partial y}{\partial x} = gA(S_0 - S_f)$$
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-8">
+ <div>
+ <h3 class="text-lg font-bold text-slate-800 mb-3">Finite Difference Discretization</h3>
+ <p class="mb-3">The Lax scheme replaces the spatial value at the known time level $n$ with the
+ average of adjacent nodes to dampen numerical oscillations:</p>
+ <ul class="list-disc pl-5 space-y-2">
+ <li><strong>Time Derivative:</strong> $\frac{\partial f}{\partial t} \approx \frac{f_i^{n+1}
+ - \frac{f_{i-1}^n + f_{i+1}^n}{2}}{\Delta t}$</li>
+ <li><strong>Space Derivative:</strong> $\frac{\partial f}{\partial x} \approx
+ \frac{f_{i+1}^n - f_{i-1}^n}{2\Delta x}$</li>
+ </ul>
+ <p class="mt-4">Applying this gives the explicit formulas for Area ($A$) and Discharge ($Q$):
+ </p>
+ <div class="math-block text-center text-sm shadow-sm border border-slate-100">
+ $$A_i^{n+1} = \frac{A_{i-1}^n + A_{i+1}^n}{2} - \frac{\Delta t}{2\Delta x} \left( Q_{i+1}^n
+ - Q_{i-1}^n \right)$$
+ $$Q_i^{n+1} = \underbrace{\frac{Q_{i-1}^n + Q_{i+1}^n}{2}}_{\text{Avg}} -
+ \underbrace{\frac{\Delta t}{2\Delta x} \left[ \left(\frac{Q^2}{A}\right)_{i+1}^n -
+ \left(\frac{Q^2}{A}\right)_{i-1}^n \right]}_{\text{Convective Accel}} - \underbrace{g A_i^n
+ \frac{\Delta t}{2\Delta x} \left( y_{i+1}^n - y_{i-1}^n \right)}_{\text{Pressure Gradient}}
+ + \underbrace{g A_i^n \Delta t (S_0 - S_{fi}^n)}_{\text{Source (Bed - Friction)}}$$
+ </div>
+ </div>
+
+ <!-- Visual Background SVG -->
+ <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 flex flex-col items-center">
+ <h3 class="text-sm font-semibold mb-4 text-slate-500 uppercase tracking-wide">The Lax Stencil
+ </h3>
+ <svg viewBox="0 0 400 300" class="w-full max-w-sm drop-shadow-sm">
+ <line x1="50" y1="240" x2="350" y2="240" stroke="#e2e8f0" stroke-width="2" />
+ <line x1="50" y1="120" x2="350" y2="120" stroke="#e2e8f0" stroke-width="2" />
+ <line x1="100" y1="270" x2="100" y2="90" stroke="#e2e8f0" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="200" y1="270" x2="200" y2="90" stroke="#e2e8f0" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="300" y1="270" x2="300" y2="90" stroke="#e2e8f0" stroke-width="2"
+ stroke-dasharray="4,4" />
+
+ <text x="360" y="245" font-size="14" fill="#64748b">x</text>
+ <text x="40" y="80" font-size="14" fill="#64748b">t</text>
+
+ <circle cx="100" cy="240" r="7" fill="#3b82f6" />
+ <text x="80" y="265" font-size="14" fill="#1e293b" font-weight="bold">i-1</text>
+
+ <circle cx="200" cy="240" r="7" fill="#3b82f6" />
+ <text x="195" y="265" font-size="14" fill="#1e293b" font-weight="bold">i</text>
+ <text x="215" y="245" font-size="12" fill="#3b82f6">(n)</text>
+
+ <circle cx="300" cy="240" r="7" fill="#3b82f6" />
+ <text x="295" y="265" font-size="14" fill="#1e293b" font-weight="bold">i+1</text>
+
+ <circle cx="200" cy="120" r="7" fill="#ef4444" />
+ <text x="215" y="115" font-size="14" fill="#ef4444" font-weight="bold">i, n+1</text>
+
+ <path d="M 105 235 L 195 125" stroke="#6366f1" stroke-width="2"
+ marker-end="url(#arrow-indigo)" />
+ <path d="M 200 230 L 200 132" stroke="#6366f1" stroke-width="2"
+ marker-end="url(#arrow-indigo)" stroke-dasharray="3,3" />
+ <path d="M 295 235 L 205 125" stroke="#6366f1" stroke-width="2"
+ marker-end="url(#arrow-indigo)" />
+
+ <defs>
+ <marker id="arrow-indigo" markerWidth="6" markerHeight="6" refX="3" refY="3"
+ orient="auto-start-reverse">
+ <polygon points="0,0 6,3 0,6" fill="#6366f1" />
+ </marker>
+ </defs>
+ </svg>
+ <p class="text-xs text-slate-500 mt-4 text-center">Future state at node $i$ relies on $i-1$,
+ $i$, and $i+1$ at the current time level $n$.</p>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Problem 1 -->
+ <section class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+ <h2 class="text-2xl font-bold mb-4 text-slate-800 border-b pb-2">Problem 1: Standard Calculation</h2>
+ <p class="italic text-slate-600 mb-6 border-l-4 border-indigo-300 pl-4 py-2 bg-slate-50">
+ <strong>(2078 Kartik)</strong> Rectangular channel, width = 50m, Bed slope = 0.0002, Manning’s n =
+ 0.035, No lateral flow. $\Delta x = 1000\text{m}$ and $\Delta t = 600\text{s}$.<br>
+ $Q = 38\text{m}^3\text{/s}, 36\text{m}^3\text{/s}, 35\text{m}^3\text{/s}$. $y = 1.87\text{m},
+ 1.82\text{m}, 1.97\text{m}$. Compute discharge and flow depth at $(i, n+1)$.
+ </p>
+
+ <div class="solution-box p-6 rounded-lg space-y-4">
+ <div>
+ <p class="step-title">Step 1: Compute Initial Parameters at known nodes ($i-1, i, i+1$)</p>
+ <div class="math-block">
+ $$A_{i-1} = By_{i-1} = 50(1.87) = 93.5 \text{ m}^2 \quad \implies
+ \left(\frac{Q^2}{A}\right)_{i-1} = \frac{38^2}{93.5} = 15.444$$
+ $$A_i = By_i = 50(1.82) = 91.0 \text{ m}^2 \quad \implies \left(\frac{Q^2}{A}\right)_i =
+ \frac{36^2}{91.0} = 14.242$$
+ $$A_{i+1} = By_{i+1} = 50(1.97) = 98.5 \text{ m}^2 \quad \implies
+ \left(\frac{Q^2}{A}\right)_{i+1} = \frac{35^2}{98.5} = 12.437$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 2: Solve Continuity for Flow Depth ($y_i^{n+1}$)</p>
+ <div class="math-block">
+ $$A_i^{n+1} = \frac{93.5 + 98.5}{2} - \frac{600}{2000} (35 - 38) = 96.0 - 0.3(-3) = 96.9 \text{
+ m}^2$$
+ $$y_i^{n+1} = \frac{A_i^{n+1}}{B} = \frac{96.9}{50} = \mathbf{1.938 \text{ m}}$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 3: Compute Friction Slope at node $i$</p>
+ <div class="math-block">
+ $$P_i = B + 2y_i = 50 + 2(1.82) = 53.64 \text{ m} \quad \implies R_i = \frac{91.0}{53.64} =
+ 1.696 \text{ m}$$
+ $$V_i = \frac{Q_i}{A_i} = \frac{36}{91.0} = 0.3956 \text{ m/s}$$
+ $$S_{fi} = \frac{n^2 V_i^2}{R_i^{4/3}} = \frac{0.035^2 \times 0.3956^2}{1.696^{4/3}} =
+ \frac{0.0001917}{2.022} = 9.48 \times 10^{-5}$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 4: Solve Momentum for Discharge ($Q_i^{n+1}$)</p>
+ <p class="text-sm text-slate-600">Calculating individual terms of the momentum equation:</p>
+ <ul class="list-disc pl-5 mt-2 space-y-1 text-slate-700">
+ <li><strong>Avg Q:</strong> $\frac{38 + 35}{2} = 36.5$</li>
+ <li><strong>Convective:</strong> $-\frac{600}{2000}(12.437 - 15.444) = -0.3(-3.007) = 0.902$
+ </li>
+ <li><strong>Pressure:</strong> $-9.81 \times 91.0 \times \frac{600}{2000} (1.97 - 1.87) =
+ -892.71 \times 0.3 \times 0.10 = -26.781$</li>
+ <li><strong>Source:</strong> $9.81 \times 91.0 \times 600 \times (0.0002 - 0.0000948) = 535626
+ \times 0.0001052 = 56.348$</li>
+ </ul>
+ <div class="math-block text-indigo-900 font-semibold bg-white p-4 rounded mt-4">
+ $$Q_i^{n+1} = 36.5 + 0.902 - 26.781 + 56.348 = \mathbf{66.969 \text{ m}^3\text{/s}}$$
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Problem 2 -->
+ <section class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+ <h2 class="text-2xl font-bold mb-4 text-slate-800 border-b pb-2">Problem 2: Wetted Perimeter Approx ($P=B$)
+ </h2>
+ <div
+ class="mb-6 flex flex-col md:flex-row gap-6 items-start bg-slate-50 p-4 border-l-4 border-indigo-300 rounded-r-lg">
+ <div class="flex-1 italic text-slate-600">
+ <strong>(2076 Bhadra)</strong> Rectangular channel, $B=25\text{m}$, $S_0=0.015$. Assume $P=B$.
+ $\Delta x=1500\text{m}, \Delta t=600\text{s}, n=0.035$.<br>
+ $Q = 30, 22, 20$. $y = 1.25, 1.45, 1.65$. Determine depth and discharge at $(i, n+1)$.
+ </div>
+ <div
+ class="flex-shrink-0 w-full md:w-1/2 flex justify-center bg-white p-4 rounded shadow-sm border border-slate-200">
+ <svg viewBox="0 0 500 250" class="w-full h-auto max-w-lg font-sans">
+ <!-- Grid Lines -->
+ <line x1="50" y1="180" x2="450" y2="180" stroke="#cbd5e1" stroke-width="2" />
+ <line x1="50" y1="60" x2="450" y2="60" stroke="#cbd5e1" stroke-width="2" />
+ <line x1="100" y1="210" x2="100" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="250" y1="210" x2="250" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="400" y1="210" x2="400" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+
+ <!-- Axis Labels -->
+ <text x="460" y="185" font-size="14" fill="#64748b">x</text>
+ <text x="30" y="50" font-size="14" fill="#64748b">t</text>
+
+ <!-- Nodes n level -->
+ <circle cx="100" cy="180" r="6" fill="#3b82f6" />
+ <text x="100" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i-1,
+ n</text>
+ <text x="100" y="215" font-size="12" fill="#475569" text-anchor="middle">Q=30, y=1.25</text>
+
+ <circle cx="250" cy="180" r="6" fill="#3b82f6" />
+ <text x="250" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i,
+ n</text>
+ <text x="250" y="215" font-size="12" fill="#475569" text-anchor="middle">Q=22, y=1.45</text>
+
+ <circle cx="400" cy="180" r="6" fill="#3b82f6" />
+ <text x="400" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i+1,
+ n</text>
+ <text x="400" y="215" font-size="12" fill="#475569" text-anchor="middle">Q=20, y=1.65</text>
+
+ <!-- Node n+1 level -->
+ <circle cx="250" cy="60" r="6" fill="#ef4444" />
+ <text x="250" y="45" font-size="12" font-weight="bold" fill="#ef4444" text-anchor="middle">i,
+ n+1</text>
+ <text x="250" y="30" font-size="12" fill="#ef4444" text-anchor="middle">Q=?, y=?</text>
+
+ <!-- Annotations -->
+ <line x1="100" y1="140" x2="250" y2="140" stroke="#94a3b8" stroke-width="1" />
+ <line x1="100" y1="135" x2="100" y2="145" stroke="#94a3b8" stroke-width="1" />
+ <line x1="250" y1="135" x2="250" y2="145" stroke="#94a3b8" stroke-width="1" />
+ <text x="175" y="135" font-size="12" fill="#64748b" text-anchor="middle">Δx = 1500m</text>
+
+ <line x1="70" y1="60" x2="70" y2="180" stroke="#94a3b8" stroke-width="1" />
+ <line x1="65" y1="60" x2="75" y2="60" stroke="#94a3b8" stroke-width="1" />
+ <line x1="65" y1="180" x2="75" y2="180" stroke="#94a3b8" stroke-width="1" />
+ <text x="60" y="120" font-size="12" fill="#64748b" text-anchor="middle"
+ transform="rotate(-90 60,120)">Δt = 10m</text>
+
+ <!-- Arrows -->
+ <path d="M 105 175 L 245 65" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p2)" />
+ <path d="M 250 170 L 250 70" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p2)" stroke-dasharray="3,3" />
+ <path d="M 395 175 L 255 65" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p2)" />
+
+ <defs>
+ <marker id="arrow-indigo-p2" markerWidth="6" markerHeight="6" refX="5" refY="3"
+ orient="auto">
+ <polygon points="0,0 6,3 0,6" fill="#6366f1" />
+ </marker>
+ </defs>
+ </svg>
+ </div>
+ </div>
+
+ <div class="solution-box p-6 rounded-lg space-y-4">
+ <div>
+ <p class="step-title">Step 1: Compute Initial Parameters</p>
+ <div class="math-block">
+ $$A_{i-1} = 25(1.25) = 31.25 \implies \left(Q^2/A\right)_{i-1} = 30^2 / 31.25 = 28.80$$
+ $$A_i = 25(1.45) = 36.25 \implies \left(Q^2/A\right)_i = 22^2 / 36.25 = 13.35$$
+ $$A_{i+1} = 25(1.65) = 41.25 \implies \left(Q^2/A\right)_{i+1} = 20^2 / 41.25 = 9.70$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 2: Solve Continuity</p>
+ <div class="math-block">
+ $$A_i^{n+1} = \frac{31.25 + 41.25}{2} - \frac{600}{3000} (20 - 30) = 36.25 - 0.2(-10) = 38.25
+ \text{ m}^2$$
+ $$y_i^{n+1} = \frac{38.25}{25} = \mathbf{1.53 \text{ m}}$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 3: Solve Momentum (Note: $P=B \implies R=y$)</p>
+ <div class="math-block">
+ $$V_i = \frac{22}{36.25} = 0.6069 \text{ m/s}, \quad R_i = y_i = 1.45 \text{ m}$$
+ $$S_{fi} = \frac{0.035^2 \times 0.6069^2}{1.45^{4/3}} = \frac{0.000451}{1.639} = 0.000275$$
+ </div>
+ <ul class="list-disc pl-5 mt-2 space-y-1 text-slate-700">
+ <li><strong>Avg Q:</strong> $\frac{30 + 20}{2} = 25.0$</li>
+ <li><strong>Convective:</strong> $-0.2(9.70 - 28.80) = 3.82$</li>
+ <li><strong>Pressure:</strong> $-9.81 \times 36.25 \times 0.2 \times (1.65 - 1.25) = -28.45$
+ </li>
+ <li><strong>Source:</strong> $9.81 \times 36.25 \times 600 \times (0.015 - 0.000275) = 213367.5
+ \times 0.014725 = 3141.78$</li>
+ </ul>
+ <div class="math-block text-indigo-900 font-semibold bg-white p-4 rounded mt-4">
+ $$Q_i^{n+1} = 25.0 + 3.82 - 28.45 + 3141.78 = \mathbf{3142.15 \text{ m}^3\text{/s}}$$
+ <span class="text-sm font-normal text-slate-500 mt-2 block">Note: The massive increase is
+ physically consistent with the governing equations given the extremely steep slope ($1.5\%$)
+ applied over a large time step ($10$ min) with relatively low friction.</span>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Problem 3 -->
+ <section class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+ <h2 class="text-2xl font-bold mb-4 text-slate-800 border-b pb-2">Problem 3: Velocity-Depth Formulation</h2>
+ <div
+ class="mb-6 flex flex-col md:flex-row gap-6 items-start bg-slate-50 p-4 border-l-4 border-indigo-300 rounded-r-lg">
+ <div class="flex-1 italic text-slate-600">
+ <strong>(2075 Bhadra)</strong> Wide rectangular channel ($R \approx y$). $v = 2.2, 1.8, 1.5$. $y =
+ 1.6, 2.0, 2.4$. $S_0 = 0.01$, $n = 0.032$, $\Delta x = 1000\text{m}$, $\Delta t = 240\text{s}$.
+ Compute velocity and flow depth at $(i, j+1)$.
+ </div>
+ <div
+ class="flex-shrink-0 w-full md:w-1/2 flex justify-center bg-white p-4 rounded shadow-sm border border-slate-200">
+ <svg viewBox="0 0 500 250" class="w-full h-auto max-w-lg font-sans">
+ <!-- Grid Lines -->
+ <line x1="50" y1="180" x2="450" y2="180" stroke="#cbd5e1" stroke-width="2" />
+ <line x1="50" y1="60" x2="450" y2="60" stroke="#cbd5e1" stroke-width="2" />
+ <line x1="100" y1="210" x2="100" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="250" y1="210" x2="250" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="400" y1="210" x2="400" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+
+ <!-- Axis Labels -->
+ <text x="460" y="185" font-size="14" fill="#64748b">x</text>
+ <text x="30" y="50" font-size="14" fill="#64748b">t</text>
+
+ <!-- Nodes j level -->
+ <circle cx="100" cy="180" r="6" fill="#3b82f6" />
+ <text x="100" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i-1,
+ j</text>
+ <text x="100" y="215" font-size="12" fill="#475569" text-anchor="middle">v=2.2, y=1.6</text>
+
+ <circle cx="250" cy="180" r="6" fill="#3b82f6" />
+ <text x="250" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i,
+ j</text>
+ <text x="250" y="215" font-size="12" fill="#475569" text-anchor="middle">v=1.8, y=2.0</text>
+
+ <circle cx="400" cy="180" r="6" fill="#3b82f6" />
+ <text x="400" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i+1,
+ j</text>
+ <text x="400" y="215" font-size="12" fill="#475569" text-anchor="middle">v=1.5, y=2.4</text>
+
+ <!-- Node j+1 level -->
+ <circle cx="250" cy="60" r="6" fill="#ef4444" />
+ <text x="250" y="45" font-size="12" font-weight="bold" fill="#ef4444" text-anchor="middle">i,
+ j+1</text>
+ <text x="250" y="30" font-size="12" fill="#ef4444" text-anchor="middle">v=?, y=?</text>
+
+ <!-- Annotations -->
+ <line x1="100" y1="140" x2="250" y2="140" stroke="#94a3b8" stroke-width="1" />
+ <line x1="100" y1="135" x2="100" y2="145" stroke="#94a3b8" stroke-width="1" />
+ <line x1="250" y1="135" x2="250" y2="145" stroke="#94a3b8" stroke-width="1" />
+ <text x="175" y="135" font-size="12" fill="#64748b" text-anchor="middle">Δx = 1000m</text>
+
+ <line x1="70" y1="60" x2="70" y2="180" stroke="#94a3b8" stroke-width="1" />
+ <line x1="65" y1="60" x2="75" y2="60" stroke="#94a3b8" stroke-width="1" />
+ <line x1="65" y1="180" x2="75" y2="180" stroke="#94a3b8" stroke-width="1" />
+ <text x="60" y="120" font-size="12" fill="#64748b" text-anchor="middle"
+ transform="rotate(-90 60,120)">Δt = 4m</text>
+
+ <!-- Arrows -->
+ <path d="M 105 175 L 245 65" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p3)" />
+ <path d="M 250 170 L 250 70" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p3)" stroke-dasharray="3,3" />
+ <path d="M 395 175 L 255 65" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p3)" />
+
+ <defs>
+ <marker id="arrow-indigo-p3" markerWidth="6" markerHeight="6" refX="5" refY="3"
+ orient="auto">
+ <polygon points="0,0 6,3 0,6" fill="#6366f1" />
+ </marker>
+ </defs>
+ </svg>
+ </div>
+ </div>
+
+ <div class="solution-box p-6 rounded-lg space-y-4">
+ <p class="text-slate-700">Because inputs are velocities ($V$) rather than discharge ($Q$), we follow the
+ alternate formulation (often derived directly from continuity $q = Vy$) where the momentum equation
+ is explicitly defined in terms of $V$ and $y$:</p>
+ <div class="math-block text-sm">
+ $$\frac{\partial y}{\partial t} + \frac{\partial (Vy)}{\partial x} = 0 \quad \implies \quad
+ y_i^{n+1} = \frac{y_{i-1} + y_{i+1}}{2} - \frac{\Delta t}{2\Delta x}(V_{i+1}y_{i+1} -
+ V_{i-1}y_{i-1})$$
+ $$\frac{\partial V}{\partial t} + V\frac{\partial V}{\partial x} + g\frac{\partial y}{\partial x} =
+ g(S_0 - S_f) \implies V_i^{n+1} = \frac{V_{i-1} + V_{i+1}}{2} - V_i \frac{\Delta t}{2\Delta
+ x}(V_{i+1} - V_{i-1}) - g\frac{\Delta t}{2\Delta x}(y_{i+1} - y_{i-1}) + g\Delta t(S_0 - S_{fi})$$
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 1: Solve Continuity</p>
+ <div class="math-block">
+ $$q_{i-1} = 2.2(1.6) = 3.52 \quad q_i = 1.8(2.0) = 3.60 \quad q_{i+1} = 1.5(2.4) = 3.60$$
+ $$y_i^{n+1} = \frac{1.6 + 2.4}{2} - \frac{240}{2000}(3.60 - 3.52) = 2.0 - 0.12(0.08) =
+ \mathbf{1.9904 \text{ m}}$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 2: Solve Momentum</p>
+ <div class="math-block">
+ $$S_{fi} = \frac{n^2 V_i^2}{y_i^{4/3}} = \frac{0.032^2 \times 1.8^2}{2.0^{4/3}} =
+ \frac{0.003318}{2.5198} = 0.001317$$
+ </div>
+ <ul class="list-disc pl-5 mt-2 space-y-1 text-slate-700">
+ <li><strong>Avg V:</strong> $\frac{2.2 + 1.5}{2} = 1.85$</li>
+ <li><strong>Convective:</strong> $-1.8 \times \frac{240}{2000}(1.5 - 2.2) = -1.8 \times
+ 0.12(-0.7) = 0.1512$</li>
+ <li><strong>Pressure:</strong> $-9.81 \times 0.12 \times (2.4 - 1.6) = -0.9418$</li>
+ <li><strong>Source:</strong> $9.81 \times 240 \times (0.01 - 0.001317) = 2354.4 \times 0.008683
+ = 20.443$</li>
+ </ul>
+ <div class="math-block text-indigo-900 font-semibold bg-white p-4 rounded mt-4">
+ $$V_i^{n+1} = 1.85 + 0.1512 - 0.9418 + 20.443 = \mathbf{21.502 \text{ m/s}}$$
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- Problem 4 -->
+ <section class="bg-white p-8 rounded-xl shadow-sm border border-slate-200">
+ <h2 class="text-2xl font-bold mb-4 text-slate-800 border-b pb-2">Problem 4: Flow Deceleration</h2>
+ <div
+ class="mb-6 flex flex-col md:flex-row gap-6 items-start bg-slate-50 p-4 border-l-4 border-indigo-300 rounded-r-lg">
+ <div class="flex-1 italic text-slate-600">
+ <strong>(2073 Magh)</strong> Rectangular channel, $B=10\text{m}$, $S_0=0.0002$, $n=0.04$, $\Delta
+ x=1000\text{m}, \Delta t=300\text{s}$.<br>
+ $Q = 40, 38, 37.5$. $y = 1.9, 1.85, 2.0$. Compute discharge and depth at $(i, n+1)$.
+ </div>
+ <div
+ class="flex-shrink-0 w-full md:w-1/2 flex justify-center bg-white p-4 rounded shadow-sm border border-slate-200">
+ <svg viewBox="0 0 500 250" class="w-full h-auto max-w-lg font-sans">
+ <!-- Grid Lines -->
+ <line x1="50" y1="180" x2="450" y2="180" stroke="#cbd5e1" stroke-width="2" />
+ <line x1="50" y1="60" x2="450" y2="60" stroke="#cbd5e1" stroke-width="2" />
+ <line x1="100" y1="210" x2="100" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="250" y1="210" x2="250" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+ <line x1="400" y1="210" x2="400" y2="40" stroke="#cbd5e1" stroke-width="2"
+ stroke-dasharray="4,4" />
+
+ <!-- Axis Labels -->
+ <text x="460" y="185" font-size="14" fill="#64748b">x</text>
+ <text x="30" y="50" font-size="14" fill="#64748b">t</text>
+
+ <!-- Nodes n level -->
+ <circle cx="100" cy="180" r="6" fill="#3b82f6" />
+ <text x="100" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i-1,
+ n</text>
+ <text x="100" y="215" font-size="12" fill="#475569" text-anchor="middle">Q=40, y=1.9</text>
+
+ <circle cx="250" cy="180" r="6" fill="#3b82f6" />
+ <text x="250" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i,
+ n</text>
+ <text x="250" y="215" font-size="12" fill="#475569" text-anchor="middle">Q=38, y=1.85</text>
+
+ <circle cx="400" cy="180" r="6" fill="#3b82f6" />
+ <text x="400" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">i+1,
+ n</text>
+ <text x="400" y="215" font-size="12" fill="#475569" text-anchor="middle">Q=37.5, y=2.0</text>
+
+ <!-- Node n+1 level -->
+ <circle cx="250" cy="60" r="6" fill="#ef4444" />
+ <text x="250" y="45" font-size="12" font-weight="bold" fill="#ef4444" text-anchor="middle">i,
+ n+1</text>
+ <text x="250" y="30" font-size="12" fill="#ef4444" text-anchor="middle">Q=?, y=?</text>
+
+ <!-- Annotations -->
+ <line x1="100" y1="140" x2="250" y2="140" stroke="#94a3b8" stroke-width="1" />
+ <line x1="100" y1="135" x2="100" y2="145" stroke="#94a3b8" stroke-width="1" />
+ <line x1="250" y1="135" x2="250" y2="145" stroke="#94a3b8" stroke-width="1" />
+ <text x="175" y="135" font-size="12" fill="#64748b" text-anchor="middle">Δx = 1000m</text>
+
+ <line x1="70" y1="60" x2="70" y2="180" stroke="#94a3b8" stroke-width="1" />
+ <line x1="65" y1="60" x2="75" y2="60" stroke="#94a3b8" stroke-width="1" />
+ <line x1="65" y1="180" x2="75" y2="180" stroke="#94a3b8" stroke-width="1" />
+ <text x="60" y="120" font-size="12" fill="#64748b" text-anchor="middle"
+ transform="rotate(-90 60,120)">Δt = 5m</text>
+
+ <!-- Arrows -->
+ <path d="M 105 175 L 245 65" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p4)" />
+ <path d="M 250 170 L 250 70" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p4)" stroke-dasharray="3,3" />
+ <path d="M 395 175 L 255 65" stroke="#6366f1" stroke-width="1.5"
+ marker-end="url(#arrow-indigo-p4)" />
+
+ <defs>
+ <marker id="arrow-indigo-p4" markerWidth="6" markerHeight="6" refX="5" refY="3"
+ orient="auto">
+ <polygon points="0,0 6,3 0,6" fill="#6366f1" />
+ </marker>
+ </defs>
+ </svg>
+ </div>
+ </div>
+
+ <div class="solution-box p-6 rounded-lg space-y-4">
+ <div>
+ <p class="step-title">Step 1: Compute Initial Parameters</p>
+ <div class="math-block">
+ $$A_{i-1} = 10(1.9) = 19.0 \implies \left(Q^2/A\right)_{i-1} = 40^2 / 19 = 84.21$$
+ $$A_i = 10(1.85) = 18.5 \implies \left(Q^2/A\right)_i = 38^2 / 18.5 = 78.05$$
+ $$A_{i+1} = 10(2.0) = 20.0 \implies \left(Q^2/A\right)_{i+1} = 37.5^2 / 20 = 70.31$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 2: Solve Continuity</p>
+ <div class="math-block">
+ $$A_i^{n+1} = \frac{19.0 + 20.0}{2} - \frac{300}{2000} (37.5 - 40) = 19.5 - 0.15(-2.5) = 19.875
+ \text{ m}^2$$
+ $$y_i^{n+1} = \frac{19.875}{10} = \mathbf{1.9875 \text{ m}}$$
+ </div>
+ </div>
+
+ <div class="border-t border-indigo-100 pt-4">
+ <p class="step-title">Step 3: Solve Momentum</p>
+ <div class="math-block">
+ $$R_i = \frac{18.5}{10 + 2(1.85)} = \frac{18.5}{13.7} = 1.350 \text{ m}, \quad V_i =
+ \frac{38}{18.5} = 2.054 \text{ m/s}$$
+ $$S_{fi} = \frac{0.04^2 \times 2.054^2}{1.350^{4/3}} = \frac{0.00675}{1.493} = 0.00452$$
+ </div>
+ <ul class="list-disc pl-5 mt-2 space-y-1 text-slate-700">
+ <li><strong>Avg Q:</strong> $\frac{40 + 37.5}{2} = 38.75$</li>
+ <li><strong>Convective:</strong> $-0.15(70.31 - 84.21) = 2.085$</li>
+ <li><strong>Pressure:</strong> $-9.81 \times 18.5 \times 0.15 \times (2.0 - 1.9) = -2.722$</li>
+ <li><strong>Source:</strong> $9.81 \times 18.5 \times 300 \times (0.0002 - 0.00452) = 54445.5
+ \times (-0.00432) = -235.20$</li>
+ </ul>
+ <div class="math-block text-indigo-900 font-semibold bg-white p-4 rounded mt-4">
+ $$Q_i^{n+1} = 38.75 + 2.085 - 2.722 - 235.20 = \mathbf{-197.09 \text{ m}^3\text{/s}}$$
+ <span class="text-sm font-normal text-slate-500 mt-2 block">Note: The large negative value
+ indicates numerical flow reversal. The high roughness ($n=0.04$) and high velocity create a
+ friction slope ($0.0045$) massively larger than the bed slope ($0.0002$), causing aggressive
+ mathematical deceleration according to the Lax scheme.</span>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ </div>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+ 'use strict';
+ var on = false, drawing = false, erasing = false;
+ var COLORS = [
+ '#e63946', /* red */
+ '#1a365d', /* navy */
+ '#2d6a4f', /* forest green */
+ '#e67e22', /* orange */
+ '#7c3aed', /* violet */
+ '#000000', /* black */
+ '#ffffff', /* white */
+ '#f0f0f0', /* light gray */
+ '#0ea5e9', /* sky blue */
+ '#ec4899', /* hot pink */
+ '#f59e0b', /* amber gold */
+ '#06b6d4', /* cyan */
+ '#ff6b6b', /* coral */
+ '#a855f7', /* purple glow */
+ '#22d3ee', /* electric teal */
+ '#facc15', /* yellow */
+ '#fef9c3', /* pale yellow */
+ 'gold', /* golden shimmer */
+ '#c0c0c0' /* silver */
+ ];
+ var SHIMMER = { 'gold': true, '#c0c0c0': true };
+ var color = COLORS[0], penW = 3;
+ var strokes = []; // finished: [{c,w,er,p:[x,y,x,y,...]}]
+ var pts = []; // current stroke points (flat: x,y,x,y,...)
+ var drawn = 0; // how many points already rendered
+ var raf = 0;
+
+ /* --- CSS --- */
+ var st = document.createElement('style');
+ st.textContent =
+ '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+ '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+ '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+ '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+ '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+ '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+ document.head.appendChild(st);
+
+ /* --- fixed viewport canvas (small and fast) --- */
+ var cv = document.createElement('canvas');
+ cv.className = 'dw-cv';
+ document.body.appendChild(cv);
+
+ // allow mouse wheel to scroll through the canvas
+ cv.addEventListener('wheel', function (e) {
+ window.scrollBy(0, e.deltaY);
+ paint();
+ }, { passive: true });
+ var cx = cv.getContext('2d');
+
+ function sized() {
+ var dpr = window.devicePixelRatio || 1;
+ var w = window.innerWidth, h = window.innerHeight;
+ cv.width = w * dpr; cv.height = h * dpr;
+ cv.style.width = w + 'px'; cv.style.height = h + 'px';
+ cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ paint();
+ }
+ sized();
+ window.addEventListener('resize', sized);
+
+ /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+ function paint() {
+ var sx = window.scrollX, sy = window.scrollY;
+ cx.clearRect(0, 0, cv.width, cv.height);
+ for (var s = 0; s < strokes.length; s++) {
+ var sk = strokes[s], p = sk.p;
+ if (p.length < 4) continue;
+ cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+ cx.strokeStyle = sk.c;
+ cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ cx.beginPath();
+ cx.moveTo(p[0] - sx, p[1] - sy);
+ for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+ cx.stroke();
+ }
+ }
+ window.addEventListener('scroll', paint);
+
+ /* --- UI --- */
+ var btn = document.createElement('button');
+ btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+ document.body.appendChild(btn);
+
+ var tb = document.createElement('div'); tb.className = 'dw-tb';
+ var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+ COLORS.forEach(function (c) {
+ var d = document.createElement('div');
+ d.className = 'dw-dot' + (c === color ? ' on' : '');
+ d.style.background = c;
+ d.onclick = function () {
+ color = c; erasing = false; erBtn.classList.remove('on');
+ tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+ d.classList.add('on');
+ };
+ cGrid.appendChild(d);
+ });
+ tb.appendChild(cGrid);
+ var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+ tb.appendChild(lbl);
+ var sl = document.createElement('input');
+ sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+ sl.oninput = function () { penW = +sl.value; };
+ tb.appendChild(sl);
+
+ var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+ erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+ tb.appendChild(erBtn);
+
+ var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+ unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+ tb.appendChild(unBtn);
+
+ var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+ clBtn.onclick = function () { strokes.length = 0; paint(); };
+ tb.appendChild(clBtn);
+
+ document.body.appendChild(tb);
+
+ // stop toolbar clicks from reaching canvas
+ ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+ tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+ btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+ });
+
+ btn.onclick = function () {
+ on = !on;
+ btn.classList.toggle('on', on);
+ tb.classList.toggle('show', on);
+ cv.classList.toggle('on', on);
+ };
+
+ /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+ function tick() {
+ if (!drawing) { raf = 0; return; }
+ var n = pts.length;
+ if (drawn < n) {
+ var sx = window.scrollX, sy = window.scrollY;
+ // continue the existing path from last drawn point
+ if (drawn === 0) {
+ cx.beginPath();
+ cx.moveTo(pts[0] - sx, pts[1] - sy);
+ drawn = 2;
+ }
+ for (var i = drawn; i < n; i += 2) {
+ cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+ }
+ cx.stroke();
+ // continue the SAME path (no beginPath) — keeps it connected
+ drawn = n;
+ }
+ raf = requestAnimationFrame(tick);
+ }
+
+ /* --- pointer handlers --- */
+ cv.addEventListener('pointerdown', function (e) {
+ if (!on || e.button !== 0 || e.target !== cv) return;
+ e.preventDefault();
+ cv.setPointerCapture(e.pointerId);
+ drawing = true;
+ // store document coords
+ var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+ pts = [dx, dy];
+ drawn = 0;
+ // set style once for whole stroke
+ cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+ cx.strokeStyle = color;
+ cx.lineWidth = erasing ? penW * 4 : penW;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ // start rAF loop
+ if (!raf) raf = requestAnimationFrame(tick);
+ });
+
+ cv.addEventListener('pointermove', function (e) {
+ if (!drawing) return;
+ // just push coords — rAF will render them
+ pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+ });
+
+ function stop() {
+ if (!drawing) return;
+ drawing = false;
+ if (pts.length >= 4) {
+ strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+ }
+ pts = []; drawn = 0;
+ // full repaint to clean up
+ paint();
+ }
+ cv.addEventListener('pointerup', stop);
+ cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+ var t=document.getElementById('dmToggle'),h=document.documentElement,
+ s=localStorage.getItem('theme');
+ if(s)h.setAttribute('data-theme',s);
+ function updateIcon(){
+ if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+ }
+ updateIcon();
+ if(t){
+ t.addEventListener('click',function(){
+ var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+ h.setAttribute('data-theme',n);
+ localStorage.setItem('theme',n);
+ updateIcon();
+ fixInline(n==='dark');
+ });
+ }
+ /* Fix inline and style="color:..." */
+ function fixInline(dark){
+ var els=document.querySelectorAll('[style]');
+ for(var i=0;i<els.length;i++){
+ var el=els[i];
+ /* Skip SVG internals */
+ if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+ if(el.closest&&el.closest('svg'))continue;
+ var st=el.style;
+ if(dark){
+ /* Background */
+ if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+ el.setAttribute('data-dm-bg',st.backgroundColor);
+ if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+ }
+ if(st.background&&!el.getAttribute('data-dm-bgf')){
+ el.setAttribute('data-dm-bgf',st.background);
+ if(lum(st.background)>160)st.background='#1e222a';
+ }
+ /* Text color */
+ if(st.color&&!el.getAttribute('data-dm-fg')){
+ el.setAttribute('data-dm-fg',st.color);
+ if(lum(st.color)<100)st.color='#d0cdc5';
+ }
+ }else{
+ if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+ if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+ if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+ }
+ }
+ }
+ /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+ function lum(c){
+ if(!c)return -1;
+ c=c.trim().toLowerCase();
+ if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+ if(c==='black'||c==='#000'||c==='#000000')return 0;
+ var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+ if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+ var hx=c.match(/^#([0-9a-f]{3,8})$/);
+ if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+ return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+ return -1;
+ }
+ /* Apply on load if dark */
+ if(h.getAttribute('data-theme')==='dark'){
+ if(document.readyState==='loading')
+ document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+ else fixInline(true);
+ }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

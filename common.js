@@ -120,9 +120,9 @@
         index: '../index.html',
         label: 'Groundwater Theory',
         chapters: [
-          { f: 'chapter1_groundwater.html',       t: 'Ch 1: Introduction' },
-          { f: 'chapter2_groundwater_motion.html', t: 'Ch 2: Groundwater Motion' },
-          { f: 'chapter3_flow_theory.html',        t: 'Ch 3: Flow Theory' },
+          { f: 'chapter1_groundwater_old.html',       t: 'Ch 1: Introduction' },
+          { f: 'chapter2_groundwater_motion_old.html', t: 'Ch 2: Groundwater Motion' },
+          { f: 'chapter3_flow_theory_old.html',        t: 'Ch 3: Flow Theory' },
           { f: 'chapter4_well_hydraulics_old.html', t: 'Ch 4: Well Hydraulics' },
           { f: 'chapter5_pumping_test.html',       t: 'Ch 5: Pumping Test' },
           { f: 'chapter6_groundwater_exploration.html', t: 'Ch 6: GW Exploration' },
@@ -162,6 +162,20 @@
           { f: '4.5_Beam_Element_Solved_Questions.html', t: '4.5: Beam Element (Solved)' },
           { f: '4.6_CST_Element.html',       t: '4.6: CST Element' },
           { f: '4.6_CST_Element_Solved_Questions.html', t: '4.6: CST Element (Solved)' }
+        ]
+      },
+      'Water': {
+        index: 'index.html',
+        label: 'Computational Technique (Water)',
+        chapters: [
+          { f: 'chapter 5.html',  t: 'Ch 5: Numerical Methods' },
+          { f: 'chapter6.html',   t: 'Ch 6: Method of Characteristics' },
+          { f: 'chapter7.html',   t: 'Ch 7: Groundwater Flow' },
+          { f: 'dam.html',        t: 'Exam Question Bank' },
+          { f: 'rk_assignment.html', t: 'Runge-Kutta Assignment' },
+          { f: '5.4.3 Stability of Numerical Solution of Kinematic Wave Model.html', t: '5.4.3: Kinematic Wave Stability' },
+          { f: '5.5.2 Solution by Explicit Scheme .html', t: '5.5.2: Explicit Scheme' },
+          { f: 'Linear Scheme.html', t: 'Linear Scheme' }
         ]
       }
     };

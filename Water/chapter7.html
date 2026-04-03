@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Chapter 7: Groundwater Flow - Past Board Exam Solutions</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+ window.MathJax = {
+ tex: {
+ inlineMath: [['$', '$'], ['\\(', '\\)']],
+ displayMath: [['$$', '$$'], ['\\[', '\\]']],
+ processEscapes: true,
+ tags: 'ams'
+ },
+ svg: {
+ fontCache: 'global' // CRITICAL FOR PDF PRINTING
+ },
+ startup: {
+ typeset: false,
+ ready: () => {
+ MathJax.startup.defaultReady();
+ MathJax.startup.promise.then(() => {
+ window.isMathJaxReady = true;
+ document.dispatchEvent(new Event('mathjax-ready'));
+ });
+ }
+ }
+ };
+ </script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+ <script src="https://cdn.tailwindcss.com"></script>
+ <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+ <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+ <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        /* ── Water section B&W overrides ── */
+        .math-block, .math-display { 
+            margin: 1rem 0; padding: 0.8rem; background: white;
+            border: 1px solid black; overflow-x: auto;
+        }
+        .math-final {
+            margin: 1rem 0; padding: 1rem; background: white;
+            border: 2px solid black; text-align: center;
+        }
+        .container, .solution { background: white !important; color: black !important; }
+        .question-box {
+            background: white !important; border: 1px solid black !important;
+            padding: 1rem; margin: 1rem 0;
+        }
+        .given-data-table, .grid-table {
+            width: 100%; border-collapse: collapse; margin: 1rem 0;
+        }
+        .given-data-table th, .grid-table th {
+            background: white !important; color: black !important;
+            border: 1px solid black; padding: 6px 10px; font-weight: bold;
+        }
+        .given-data-table td, .grid-table td {
+            border: 1px solid black; padding: 6px 10px;
+        }
+        /* Kill ALL Tailwind background colors */
+        [class*="bg-blue"], [class*="bg-sky"], [class*="bg-indigo"],
+        [class*="bg-emerald"], [class*="bg-green"], [class*="bg-amber"],
+        [class*="bg-yellow"], [class*="bg-red"], [class*="bg-rose"],
+        [class*="bg-orange"], [class*="bg-teal"], [class*="bg-cyan"],
+        [class*="bg-purple"], [class*="bg-pink"], [class*="bg-stone"],
+        [class*="bg-slate"], [class*="bg-gray"],
+        [class*="bg-gradient"] {
+            background: white !important;
+        }
+        .bg-white { background: white !important; }
+        /* Kill colored text from Tailwind */
+        [class*="text-blue"], [class*="text-sky"], [class*="text-indigo"],
+        [class*="text-emerald"], [class*="text-green"], [class*="text-amber"],
+        [class*="text-red"], [class*="text-rose"], [class*="text-orange"],
+        [class*="text-teal"], [class*="text-cyan"], [class*="text-purple"],
+        [class*="text-pink"] {
+            color: black !important;
+        }
+        /* Kill colored borders */
+        [class*="border-blue"], [class*="border-sky"], [class*="border-indigo"],
+        [class*="border-emerald"], [class*="border-green"], [class*="border-amber"],
+        [class*="border-red"], [class*="border-rose"], [class*="border-orange"],
+        [class*="border-teal"], [class*="border-cyan"], [class*="border-purple"],
+        [class*="border-pink"], [class*="border-yellow"] {
+            border-color: black !important;
+        }
+        /* Kill shadows - keep it flat */
+        [class*="shadow"] { box-shadow: none !important; }
+        /* Kill rounded corners for textbook style */
+        [class*="rounded-xl"], [class*="rounded-2xl"], [class*="rounded-3xl"] {
+            border-radius: 0 !important;
+        }
+        [class*="rounded-lg"] { border-radius: 0 !important; }
+
+
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+ border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+ cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+ box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+ --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+ --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+ --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+ --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+ --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+ This single rule ensures NO text stays dark on dark bg.
+ Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+ box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+ .dm-toggle{display:none!important}
+ [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+ transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<div id="root"></div>
+
+ <script type="text/babel">
+ // Math Component (Double escaped strings to avoid Babel uXXXX errors)
+ const MathText = ({ content, block = false }) => {
+ const el = React.useRef(null);
+
+ React.useEffect(() => {
+ if (!el.current) return;
+ el.current.innerHTML = content;
+
+ const renderMath = () => {
+ if (window.MathJax && window.MathJax.typesetPromise) {
+ window.MathJax.typesetPromise([el.current]).catch(err => console.log(err.message));
+ }
+ };
+
+ if (window.isMathJaxReady) {
+ renderMath();
+ } else {
+ document.addEventListener('mathjax-ready', renderMath);
+ return () => document.removeEventListener('mathjax-ready', renderMath);
+ }
+ }, [content]);
+
+ return <span ref={el} className={block ? 'math-container text-[1.15rem] avoid-break' : 'math-inline'} />;
+ };
+
+ // Question Box Component
+ const QuestionBox = ({ title, questions }) => (
+ <div className="bg-[#e2e8f0]/50 border-[3px] border-slate-400 p-6 mb-8 italic shadow-sm relative avoid-break mt-6">
+ <span className="absolute -top-3 -left-3 bg-slate-800 text-white font-bold px-3 py-1 text-sm not-italic uppercase tracking-widest print:border print:border-black">
+ {title}
+ </span>
+ <p className="font-bold mb-2 not-italic text-slate-700">Exam Questions Addressed:</p>
+ <ul className="list-disc list-inside space-y-1 text-[0.95rem] text-slate-800">
+ {questions.map((q, i) => <li key={i}>{q}</li>)}
+ </ul>
+ </div>
+ );
+
+ // SVG: 2D Finite Difference Grid Cross
+ const CrossGridSVG = () => (
+ <div className="flex flex-col items-center my-6 avoid-break">
+ <svg width="400" height="240" viewBox="0 0 400 240" className="bg-[#f8fafc] border border-slate-300 p-4">
+ <defs>
+ <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+ <polygon points="0 0, 10 3.5, 0 7" fill="#2563eb" />
+ </marker>
+ </defs>
+
+ {/* Grid Blocks */}
+ <rect x="150" y="90" width="80" height="50" fill="white" stroke="#333" strokeWidth="1.5" />
+ <circle cx="190" cy="115" r="5" fill="#333" />
+
+ <rect x="70" y="90" width="80" height="50" fill="white" stroke="#333" strokeWidth="1.5" />
+ <circle cx="110" cy="115" r="5" fill="#333" />
+ <text x="100" y="105" fontSize="12" fontWeight="bold">C</text>
+
+ <rect x="230" y="90" width="80" height="50" fill="white" stroke="#333" strokeWidth="1.5" />
+ <circle cx="270" cy="115" r="5" fill="#333" />
+ <text x="265" y="105" fontSize="12" fontWeight="bold">A</text>
+
+ <rect x="150" y="40" width="80" height="50" fill="white" stroke="#333" strokeWidth="1.5" />
+ <circle cx="190" cy="65" r="5" fill="#333" />
+ <text x="185" y="55" fontSize="12" fontWeight="bold">B</text>
+
+ <rect x="150" y="140" width="80" height="50" fill="white" stroke="#333" strokeWidth="1.5" />
+ <circle cx="190" cy="165" r="5" fill="#333" />
+ <text x="185" y="185" fontSize="12" fontWeight="bold">D</text>
+
+ {/* Flow Arrows */}
+ <line x1="115" y1="115" x2="180" y2="115" stroke="#2563eb" strokeWidth="2" markerEnd="url(#arrow)" />
+ <line x1="200" y1="115" x2="260" y2="115" stroke="#2563eb" strokeWidth="2" markerEnd="url(#arrow)" />
+ <line x1="190" y1="70" x2="190" y2="105" stroke="#2563eb" strokeWidth="2" markerEnd="url(#arrow)" />
+ <line x1="190" y1="125" x2="190" y2="155" stroke="#2563eb" strokeWidth="2" markerEnd="url(#arrow)" />
+
+ {/* Withdrawal */}
+ <line x1="190" y1="115" x2="220" y2="75" stroke="#dc2626" strokeWidth="2" markerEnd="url(#arrow)" />
+
+ {/* Text Labels */}
+ <text x="140" y="110" fontSize="12" fill="#2563eb" fontWeight="bold">q_C</text>
+ <text x="225" y="110" fontSize="12" fill="#2563eb" fontWeight="bold">q_A</text>
+ <text x="195" y="85" fontSize="12" fill="#2563eb" fontWeight="bold">q_B</text>
+ <text x="195" y="145" fontSize="12" fill="#2563eb" fontWeight="bold">q_D</text>
+ <text x="225" y="70" fontSize="12" fill="#dc2626" fontWeight="bold">q_F</text>
+
+ {/* Dimensions */}
+ <line x1="70" y1="210" x2="150" y2="210" stroke="#333" />
+ <line x1="150" y1="210" x2="230" y2="210" stroke="#333" />
+ <line x1="230" y1="210" x2="310" y2="210" stroke="#333" />
+ <text x="95" y="225" fontSize="12">Δx_i-1</text>
+ <text x="180" y="225" fontSize="12">Δx_i</text>
+ <text x="255" y="225" fontSize="12">Δx_i+1</text>
+ </svg>
+ <p className="text-sm text-slate-500 mt-2 font-bold">Figure: Grid definitions for 2D flow Darcy fluxes</p>
+ </div>
+ );
+
+ // SVG: Seepage Under Dam
+ const TextbookFigure = () => (
+ <div className="w-full overflow-x-auto bg-[#fafafa] border border-gray-300 p-8 my-8 flex flex-col items-center shadow-inner avoid-break">
+ <svg width="600" height="350" viewBox="0 0 600 350" className="max-w-full h-auto text-gray-800" style={{ fontFamily: 'Times New Roman, serif' }}>
+ <g stroke="#333" strokeWidth="1.5" fill="none">
+ {[150, 180, 210, 240, 270, 300].map(y => <line key={`h${y}`} x1="100" y1={y} x2="500" y2={y} />)}
+ {[100, 140, 180, 220, 260, 300, 340, 380, 420, 460, 500].map(x => <line key={`v${x}`} x1={x} y1="150" x2={x} y2="300" />)}
+ </g>
+ <line x1="50" y1="150" x2="100" y2="150" stroke="#333" strokeWidth="1.5" />
+ <line x1="500" y1="150" x2="550" y2="150" stroke="#333" strokeWidth="1.5" />
+ <polygon points="260,150 260,50 310,50 340,150" fill="#e5e7eb" stroke="#333" strokeWidth="2" />
+ <text x="282" y="110" fontSize="14" fontWeight="bold">DAM</text>
+ <line x1="80" y1="80" x2="150" y2="80" stroke="#333" strokeWidth="1" />
+ <polygon points="115,80 125,80 120,90" fill="none" stroke="#333" strokeWidth="1" />
+ <line x1="450" y1="130" x2="520" y2="130" stroke="#333" strokeWidth="1" />
+ <polygon points="485,130 495,130 490,140" fill="none" stroke="#333" strokeWidth="1" />
+ <text x="100" y="140" fontSize="16" textAnchor="middle">A</text>
+ <text x="260" y="140" fontSize="16" textAnchor="middle">B</text>
+ <text x="340" y="140" fontSize="16" textAnchor="middle">C</text>
+ <text x="500" y="140" fontSize="16" textAnchor="middle">D</text>
+ <text x="100" y="320" fontSize="16" textAnchor="middle">E</text>
+ <text x="500" y="320" fontSize="16" textAnchor="middle">F</text>
+ <text x="300" y="320" fontSize="14" textAnchor="middle">Impervious boundary</text>
+ <g fontSize="12" textAnchor="middle">
+ <rect x="260" y="210" width="40" height="30" fill="#d1d5db" stroke="#333" />
+ <text x="280" y="230">ϕ<tspan fontSize="8" dy="3">i, j</tspan></text>
+ <rect x="220" y="210" width="40" height="30" fill="#f3f4f6" stroke="#333" />
+ <text x="240" y="230">ϕ<tspan fontSize="8" dy="3">i-1, j</tspan></text>
+ <rect x="300" y="210" width="40" height="30" fill="#f3f4f6" stroke="#333" />
+ <text x="320" y="230">ϕ<tspan fontSize="8" dy="3">i+1, j</tspan></text>
+ <rect x="260" y="180" width="40" height="30" fill="#f3f4f6" stroke="#333" />
+ <text x="280" y="200">ϕ<tspan fontSize="8" dy="3">i, j-1</tspan></text>
+ <rect x="260" y="240" width="40" height="30" fill="#f3f4f6" stroke="#333" />
+ <text x="280" y="260">ϕ<tspan fontSize="8" dy="3">i, j+1</tspan></text>
+ </g>
+ </svg>
+ <div className="font-bold text-lg mt-4 text-center">
+ Figure: Finite difference grid for seepage under dam.
+ </div>
+ </div>
+ );
+
+ // SVG: 1D River Stage
+ const RiverStageSVG = () => (
+ <div className="flex flex-col items-center my-6 avoid-break">
+ <svg width="450" height="150" viewBox="0 0 450 150" className="bg-[#f8fafc] border border-slate-300 p-4">
+ {/* River on left */}
+ <path d="M 40 20 Q 50 75 40 130" fill="none" stroke="#2563eb" strokeWidth="2" />
+ <path d="M 60 20 Q 70 75 60 130" fill="none" stroke="#2563eb" strokeWidth="2" />
+ <text x="15" y="15" fill="#2563eb" fontSize="12" fontWeight="bold">River</text>
+
+ {/* Barrier on right */}
+ <line x1="380" y1="20" x2="380" y2="130" stroke="#333" strokeWidth="3" />
+ <text x="385" y="75" fontSize="12" fontWeight="bold">Barrier</text>
+
+ {/* Grid Boxes */}
+ <rect x="60" y="60" width="50" height="30" fill="none" stroke="#333" strokeWidth="1.5" />
+ <text x="80" y="80" fontSize="12" fontWeight="bold">h_L</text>
+
+ <rect x="110" y="60" width="60" height="30" fill="none" stroke="#333" strokeWidth="1" />
+ <rect x="170" y="60" width="60" height="30" fill="none" stroke="#333" strokeWidth="1" />
+ <text x="195" y="80" fontSize="12">i-1</text>
+
+ <rect x="230" y="60" width="60" height="30" fill="none" stroke="#333" strokeWidth="1" />
+ <text x="255" y="80" fontSize="12">i</text>
+
+ <rect x="290" y="60" width="60" height="30" fill="none" stroke="#333" strokeWidth="1" />
+ <text x="310" y="80" fontSize="12">i+1</text>
+
+ <rect x="350" y="60" width="30" height="30" fill="none" stroke="#333" strokeWidth="1" />
+ <text x="390" y="100" fontSize="12" fontWeight="bold">h_R</text>
+
+ <line x1="170" y1="110" x2="230" y2="110" stroke="#333" />
+ <line x1="230" y1="110" x2="290" y2="110" stroke="#333" />
+ <line x1="290" y1="110" x2="350" y2="110" stroke="#333" />
+ <text x="190" y="125" fontSize="10">Δx_i-1</text>
+ <text x="250" y="125" fontSize="10">Δx_i</text>
+ <text x="310" y="125" fontSize="10">Δx_i+1</text>
+ </svg>
+ <p className="text-sm text-slate-500 mt-2 font-bold">Figure: 1D Finite Difference Grid for River-Aquifer Interaction</p>
+ </div>
+ );
+
+ const App = () => {
+ return (
+ <div className="max-w-4xl mx-auto px-4 py-8 md:py-12">
+ {/* Action Bar */}
+ <div className="no-print flex justify-end mb-8">
+ <button onClick={() => window.print()} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold shadow-md transition-colors">
+ <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+ Export / Print PDF
+ </button>
+ </div>
+
+ <div className="text-center mb-12 no-print">
+ <h1 className="text-3xl font-extrabold text-slate-800 tracking-tight uppercase">Study Guide & Solution Manual</h1>
+ <p className="text-slate-600 mt-2 font-medium text-lg">Chapter 7: Simulation of Groundwater Flow</p>
+ </div>
+
+ <main className="w-full bg-[#fdfdfc] p-8 md:p-14 rounded-sm book-shadow textbook-font text-[1.15rem] leading-relaxed relative">
+ <div className="binding-edge absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-gray-200 to-transparent border-l-[5px] border-gray-300"></div>
+
+ <div className="pl-0 md:pl-8">
+
+ {/* SECTION 7.1 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="7.1 Basic Governing Equations for Groundwater Flow"
+ questions={[
+ "Explain the continuity equation used in groundwater flow analysis. [2071 Bhadra]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">7.1 Continuity Equation in Groundwater Flow</h3>
+
+ <p className="mb-4">
+ The basic governing equation for groundwater flow is derived by combining the <strong>Steady Continuity Equation</strong> for incompressible flow with <strong>Darcy's Law</strong>.
+ </p>
+
+ <p className="mb-2 font-bold">1. Continuity Equation:</p>
+ <p className="mb-4">For steady, incompressible flow in three dimensions, the conservation of mass states that the net velocity divergence is zero:</p>
+ <MathText block content={"$$ \\frac{\\partial u}{\\partial x} + \\frac{\\partial v}{\\partial y} + \\frac{\\partial w}{\\partial z} = 0 $$"} />
+
+ <p className="mb-4 mt-6 font-bold">2. Darcy's Law:</p>
+ <p className="mb-4">Darcy's law states that the velocity through a porous media is directly proportional to the hydraulic gradient. For a homogeneous and isotropic formation:</p>
+ <MathText block content={"$$ u = -K\\frac{\\partial h}{\\partial x}, \\quad v = -K\\frac{\\partial h}{\\partial y}, \\quad w = -K\\frac{\\partial h}{\\partial z} $$"} />
+ <p className="mb-4">Where <MathText content={"$h$"} /> is the groundwater head (piezometric head) and <MathText content={"$K$"} /> is the hydraulic conductivity.</p>
+
+ <p className="mb-4 mt-6 font-bold">3. Laplace Equation:</p>
+ <p className="mb-4">Substituting the Darcy velocity components back into the continuity equation yields the famous <strong>Laplace Equation</strong> for groundwater head. For 2D flow in the horizontal plane:</p>
+ <div className="bg-[#f8fafc] border border-slate-300 p-2 mb-6">
+ <MathText block content={"$$ \\frac{\\partial^2 h}{\\partial x^2} + \\frac{\\partial^2 h}{\\partial y^2} = 0 $$"} />
+ </div>
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 7.2 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="7.2 Numerical Scheme for Groundwater Flow"
+ questions={[
+ "Derive finite difference scheme for 2D groundwater simulation in steady state for homogeneous & isotropic aquifer. [2076 Bhadra, 2075 Bhadra]",
+ "Describe boundary conditions and flow coefficients. [2072 Ashwin]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">7.2 Finite Difference Scheme for 2D Groundwater Flow</h3>
+
+ <p className="mb-4">
+ Consider an interior grid point <MathText content={"$(i, j)$"} /> in a 2D unconfined aquifer. Let <MathText content={"$q$"} /> represent the Darcy fluxes (per unit area) moving between adjacent grids, and <MathText content={"$q_F$"} /> represent the net volumetric withdrawal (pumping) out of the grid.
+ </p>
+ <CrossGridSVG />
+
+ <p className="mb-2 font-bold">1. Control Volume Continuity:</p>
+ <p className="mb-4">The principle of mass conservation states: <em>Inflow - Outflow = Rate of Change of Storage</em>.</p>
+ <MathText block content={"$$ \\Delta x_i \\Delta y_j [q_C - q_D - q_A + q_B - q_F] = S \\frac{\\partial \\phi}{\\partial t} $$"} />
+ <p className="mb-4 text-sm text-slate-500 italic">Where <MathText content={"$S$"} /> = Storage coefficient, and <MathText content={"$\\phi$"} /> = Potential head.</p>
+
+ <p className="mb-2 mt-8 font-bold">2. Flow Coefficients via Darcy's Equation:</p>
+ <p className="mb-4">The flow rate leaving grid <MathText content={"$i$"} /> towards grid <MathText content={"$i+1$"} /> (i.e., $Q_A$) is given by Darcy's law in terms of transmissivity (<MathText content={"$T$"} />):</p>
+ <MathText block content={"$$ Q_A = -T(\\Delta y_j)\\frac{\\phi_{i+1,j} - \\phi_{i,j}}{\\Delta x_{i+1}/2 + \\Delta x_i/2} = -2T(\\Delta y_j)\\frac{\\phi_{i+1,j} - \\phi_{i,j}}{\\Delta x_{i+1} + \\Delta x_i} $$"} />
+ <p className="mb-4">The flux per unit area is <MathText content={"$q_A = -Q_A / (\\Delta x_i \\Delta y_j)$"} />:</p>
+ <MathText block content={"$$ q_A = A_{i,j}(\\phi_{i+1,j} - \\phi_{i,j}) \\quad \\text{Where} \\quad A_{i,j} = \\frac{2T}{\\Delta x_i(\\Delta x_i + \\Delta x_{i+1})} $$"} />
+ <p className="mb-4">Similarly, the other directional fluxes and their coefficients are:</p>
+ <MathText block content={"$$ \\begin{aligned} q_C &= C_{i,j}(\\phi_{i-1,j} - \\phi_{i,j}) \\quad &\\text{Where } C_{i,j} = \\frac{2T}{\\Delta x_i(\\Delta x_i + \\Delta x_{i-1})} \\\\ q_D &= D_{i,j}(\\phi_{i,j+1} - \\phi_{i,j}) \\quad &\\text{Where } D_{i,j} = \\frac{2T}{\\Delta y_j(\\Delta y_{j+1} + \\Delta y_j)} \\\\ q_B &= B_{i,j}(\\phi_{i,j-1} - \\phi_{i,j}) \\quad &\\text{Where } B_{i,j} = \\frac{2T}{\\Delta y_j(\\Delta y_{j-1} + \\Delta y_j)} \\end{aligned} $$"} />
+
+ <p className="mb-2 mt-8 font-bold">3. Final Discretized Equation:</p>
+ <p className="mb-4">Substituting the fluxes back into the continuity equation and collecting terms around <MathText content={"$\\phi_{i,j}$"} /> gives the general implicit 2D finite difference equation:</p>
+ <MathText block content={"$$ A\\phi_{i+1,j} + B\\phi_{i,j-1} + C\\phi_{i-1,j} + D\\phi_{i,j+1} - E\\phi_{i,j} = S\\frac{\\partial \\phi}{\\partial t} + q_F $$"} />
+ <p className="mb-4 text-center">Where <MathText content={"$E = A + B + C + D$"} />.</p>
+
+ <div className="bg-[#f8fafc] border-l-4 border-emerald-500 p-4 mb-6">
+ <p className="font-bold text-emerald-800 mb-2">Steady State, Homogeneous & Isotropic Aquifer:</p>
+ <p className="mb-2">For steady flow (<MathText content={"$\\partial \\phi / \\partial t = 0$"} />), no pumping (<MathText content={"$q_F = 0$"} />), and a square isotropic grid (<MathText content={"$\\Delta x = \\Delta y$"} />, so <MathText content={"$A=B=C=D$"} />), the equation drastically simplifies to the average of the 4 neighbors:</p>
+ <MathText block content={"$$ \\phi_{i+1,j} + \\phi_{i,j-1} + \\phi_{i-1,j} + \\phi_{i,j+1} - 4\\phi_{i,j} = 0 $$"} />
+ </div>
+
+ <p className="mb-2 mt-8 font-bold">4. Boundary Conditions:</p>
+ <ul className="list-disc list-inside space-y-2 pl-4">
+ <li><strong>Impervious / Barrier Boundary:</strong> No flow occurs across the boundary. The flow coefficient from that side is forced to zero (e.g., if the left side is a barrier, <MathText content={"$C = 0$"} />).</li>
+ <li><strong>Constant Head (Equipotential) Boundary:</strong> The head value <MathText content={"$\\phi$"} /> is fixed at the boundary nodes (e.g., adjacent to a large river or lake).</li>
+ </ul>
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 7.3 */}
+ <section className="avoid-break mb-16">
+ <QuestionBox
+ title="7.3 Simulation of Seepage Under a Dam"
+ questions={[
+ "Draw a neat sketch presenting the FD grid showing boundary conditions. [2080 Chaitra]",
+ "Develop a steady-state 2D model for the simulation of seepage under a dam. [2079 Shrawan, 2074 Bhadra]",
+ "Describe the iterative procedure / write the algorithm for computing potential and seepage. [2075 Bhadra, 2071 Bhadra]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">7.3 Steady State 2D Model for Dam Seepage</h3>
+
+ <TextbookFigure />
+
+ <p className="mb-4">
+ Based on the general 2D formulation derived in 7.2, the steady state potential head at any interior grid point <MathText content={"$(i, j)$"} /> is given by:
+ </p>
+ <MathText block content={"$$ \\phi_{i,j}^{+} = \\frac{A\\phi_{i+1,j} + B\\phi_{i,j-1} + C\\phi_{i-1,j} + D\\phi_{i,j+1}}{E} $$"} />
+ <p className="mb-4">
+ For a homogeneous and isotropic soil medium under the dam, this becomes:
+ </p>
+ <MathText block content={"$$ \\phi_{i,j}^{+} = \\frac{\\phi_{i+1,j} + \\phi_{i,j-1} + \\phi_{i-1,j} + \\phi_{i,j+1}}{4} $$"} />
+
+ <p className="mb-2 font-bold mt-8">Boundary Constraints Identification:</p>
+ <ul className="list-disc list-inside space-y-2 mb-6 pl-4">
+ <li><strong>AB and CD (Upstream/Downstream beds):</strong> Constant Head boundaries (equipotential lines).</li>
+ <li><strong>BC (Dam Base) and EF (Bottom Stratum):</strong> Impervious boundaries (no vertical flow, <MathText content={"$B=0$"} /> or <MathText content={"$D=0$"} /> at these edges).</li>
+ <li><strong>AE and DF (Left/Right limits):</strong> Extended far enough to act as Barrier boundaries (no horizontal flow).</li>
+ </ul>
+
+ <p className="mb-2 font-bold mt-8">Iterative Algorithm for Computing Potential & Seepage:</p>
+ <ol className="list-decimal list-inside space-y-3 mb-6 pl-4 bg-slate-50 p-4 border border-slate-200">
+ <li><strong>Initialize:</strong> Establish the grid and apply the known constant head boundary conditions along AB and CD.</li>
+ <li><strong>Initial Guess:</strong> Assign an initial estimated value (usually 0) to all interior unknown nodes <MathText content={"$\\phi_{i,j}$"} />.</li>
+ <li><strong>Iterate:</strong> Compute the new updated potential <MathText content={"$\\phi_{i,j}^{+}$"} /> for every interior node using the surrounding 4 nodes (Gauss-Seidel method).</li>
+ <li><strong>Error Check:</strong> Compute the absolute error <MathText content={"$e = |\\phi_{i,j}^{+} - \\phi_{i,j}|$"} /> at every node.</li>
+ <li><strong>Convergence:</strong> If the maximum error across the grid is greater than a specified tolerance, repeat steps 3 and 4. Otherwise, stop the iteration.</li>
+ <li><strong>Compute Seepage Rate:</strong> Once the final potential field is converged, calculate the actual volumetric seepage using Darcy's Law across the grids:
+ <br />
+ Horizontal seepage: <MathText content={"$Q_{i,j}^H = C_{i,j} \\Delta x_i \\Delta y_j (\\phi_{i-1,j} - \\phi_{i,j})$"} />
+ <br />
+ Vertical seepage: <MathText content={"$Q_{i,j}^V = B_{i,j} \\Delta x_i \\Delta y_j (\\phi_{i,j-1} - \\phi_{i,j})$"} />
+ </li>
+ </ol>
+ </section>
+
+ <div className="page-break"></div>
+
+ {/* SECTION 7.4 */}
+ <section className="avoid-break mb-8">
+ <QuestionBox
+ title="7.4 River Stage Water Table Interaction"
+ questions={[
+ "Derive finite difference equation to evaluate river stage-water table interaction for 1D flow. [2079 Chaitra, 2070 Magh]",
+ "Express in terms of / Develop a tridiagonal coefficient matrix. [2079 Jestha, 2073 Magh]",
+ "Explain the 1D implicit model to evaluate the interaction. [2070 Bhadra]"
+ ]}
+ />
+ <h3 className="font-bold text-2xl border-b-2 border-slate-300 pb-2 mb-6 text-slate-900">7.4 1D Implicit Model for River-Aquifer Interaction</h3>
+
+ <p className="mb-4">
+ This model simulates the dynamic interaction of a river recharging a groundwater aquifer (or vice versa). The governing partial differential equation for 1D unsteady groundwater flow is:
+ </p>
+ <MathText block content={"$$ \\frac{\\partial}{\\partial x}\\left(T\\frac{\\partial\\phi}{\\partial x}\\right) = S\\frac{\\partial\\phi}{\\partial t} + q_{F} $$"} />
+
+ <RiverStageSVG />
+
+ <p className="mb-4 mt-6">By applying the continuity principle over a 1D grid space, the implicit finite difference formulation (evaluating spatial derivatives at the future time step <MathText content={"$+$"} />) for any internal grid <MathText content={"$i$"} /> is:</p>
+ <MathText block content={"$$ A_{i}(h_{i+1}^{+} - h_{i}^{+}) + C_{i}(h_{i-1}^{+} - h_{i}^{+}) = \\frac{S_{i}}{\\Delta t}(h_{i}^{+} - h_{i}) + q_{F} $$"} />
+ <p className="mb-4 text-sm text-slate-500 italic">
+ Where <MathText content={"$h$"} /> and <MathText content={"$h^{+}$"} /> represent the water table elevation at the beginning and end of time step <MathText content={"$\\Delta t$"} />, respectively.
+ </p>
+
+ <p className="mb-4">The spatial flow coefficients are defined as:</p>
+ <MathText block content={"$$ A_{i} = \\frac{2T}{\\Delta x_{i}(\\Delta x_{i} + \\Delta x_{i+1})} \\quad \\text{and} \\quad C_{i} = \\frac{2T}{\\Delta x_{i}(\\Delta x_{i} + \\Delta x_{i-1})} $$"} />
+
+ <p className="mb-4 mt-8">To simplify, we define lumped constants to collect the unknown future terms (<MathText content={"$h^+$"} />) on the LHS and known present terms (<MathText content={"$h$"} />) on the RHS:</p>
+ <MathText block content={"$$ E_{i} = -\\left(A_{i} + C_{i} + \\frac{S_{i}}{\\Delta t}\\right) \\quad \\text{and} \\quad Q_{i} = -\\frac{S_{i}}{\\Delta t}h_{i} + q_{F} $$"} />
+
+ <p className="mb-4">This reduces the continuity equation to a simple linear algebraic equation:</p>
+ <div className="bg-[#f8fafc] border border-slate-300 p-2 mb-6">
+ <MathText block content={"$$ C_{i}h_{i-1}^{+} + E_{i}h_{i}^{+} + A_{i}h_{i+1}^{+} = Q_{i} $$"} />
+ </div>
+
+ <p className="mb-2 font-bold mt-8">Tridiagonal Coefficient Matrix Formulation:</p>
+ <p className="mb-4">Writing this equation sequentially for every grid node from <MathText content={"$i=1$"} /> to <MathText content={"$n$"} /> results in a banded system of equations. Because each node only depends on its immediate left and right neighbors, it forms a <strong>Tridiagonal Matrix</strong>:</p>
+
+ <MathText block content={"$$ \\begin{bmatrix} E_{1} & A_{1} & 0 & \\dots & 0 \\\\ C_{2} & E_{2} & A_{2} & \\dots & 0 \\\\ \\vdots & \\ddots & \\ddots & \\ddots & \\vdots \\\\ 0 & \\dots & C_{n-1} & E_{n-1} & A_{n-1} \\\\ 0 & \\dots & 0 & C_{n} & E_{n} \\end{bmatrix} \\begin{bmatrix} h_{1}^{+} \\\\ h_{2}^{+} \\\\ \\vdots \\\\ h_{n-1}^{+} \\\\ h_{n}^{+} \\end{bmatrix} = \\begin{bmatrix} Q_{1} - C_{1}h_{L}^{+} \\\\ Q_{2} \\\\ \\vdots \\\\ Q_{n-1} \\\\ Q_{n} - A_{n}h_{R}^{+} \\end{bmatrix} $$"} />
+
+ <p className="mb-4 mt-6">
+ <strong>Boundary Constraints:</strong> <MathText content={"$h_{L}^{+}$"} /> is the dynamic river stage (constant head boundary) at the left. If the right boundary is a physical barrier (no-flow), then the coefficient <MathText content={"$A_{n} = 0$"} />.
+ </p>
+ <p className="mb-4">
+ This matrix system is then efficiently solved at every time step using the Thomas Algorithm to find the new groundwater head profile. The interaction (loss or gain) at the river is simply the computed seepage entering or leaving grid element 1.
+ </p>
+ </section>
+
+ </div>
+ </main>
+
+ <div className="text-center mt-12 text-slate-500 text-sm font-medium no-print">
+ — End of Chapter 7 Study Guide —
+ </div>
+ </div>
+ );
+ };
+
+ const root = ReactDOM.createRoot(document.getElementById('root'));
+ root.render(<App />);
+ </script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+ 'use strict';
+ var on = false, drawing = false, erasing = false;
+ var COLORS = [
+ '#e63946', /* red */
+ '#1a365d', /* navy */
+ '#2d6a4f', /* forest green */
+ '#e67e22', /* orange */
+ '#7c3aed', /* violet */
+ '#000000', /* black */
+ '#ffffff', /* white */
+ '#f0f0f0', /* light gray */
+ '#0ea5e9', /* sky blue */
+ '#ec4899', /* hot pink */
+ '#f59e0b', /* amber gold */
+ '#06b6d4', /* cyan */
+ '#ff6b6b', /* coral */
+ '#a855f7', /* purple glow */
+ '#22d3ee', /* electric teal */
+ '#facc15', /* yellow */
+ '#fef9c3', /* pale yellow */
+ 'gold', /* golden shimmer */
+ '#c0c0c0' /* silver */
+ ];
+ var SHIMMER = { 'gold': true, '#c0c0c0': true };
+ var color = COLORS[0], penW = 3;
+ var strokes = []; // finished: [{c,w,er,p:[x,y,x,y,...]}]
+ var pts = []; // current stroke points (flat: x,y,x,y,...)
+ var drawn = 0; // how many points already rendered
+ var raf = 0;
+
+ /* --- CSS --- */
+ var st = document.createElement('style');
+ st.textContent =
+ '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+ '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+ '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+ '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+ '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+ '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+ document.head.appendChild(st);
+
+ /* --- fixed viewport canvas (small and fast) --- */
+ var cv = document.createElement('canvas');
+ cv.className = 'dw-cv';
+ document.body.appendChild(cv);
+
+ // allow mouse wheel to scroll through the canvas
+ cv.addEventListener('wheel', function (e) {
+ window.scrollBy(0, e.deltaY);
+ paint();
+ }, { passive: true });
+ var cx = cv.getContext('2d');
+
+ function sized() {
+ var dpr = window.devicePixelRatio || 1;
+ var w = window.innerWidth, h = window.innerHeight;
+ cv.width = w * dpr; cv.height = h * dpr;
+ cv.style.width = w + 'px'; cv.style.height = h + 'px';
+ cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ paint();
+ }
+ sized();
+ window.addEventListener('resize', sized);
+
+ /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+ function paint() {
+ var sx = window.scrollX, sy = window.scrollY;
+ cx.clearRect(0, 0, cv.width, cv.height);
+ for (var s = 0; s < strokes.length; s++) {
+ var sk = strokes[s], p = sk.p;
+ if (p.length < 4) continue;
+ cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+ cx.strokeStyle = sk.c;
+ cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ cx.beginPath();
+ cx.moveTo(p[0] - sx, p[1] - sy);
+ for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+ cx.stroke();
+ }
+ }
+ window.addEventListener('scroll', paint);
+
+ /* --- UI --- */
+ var btn = document.createElement('button');
+ btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+ document.body.appendChild(btn);
+
+ var tb = document.createElement('div'); tb.className = 'dw-tb';
+ var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+ COLORS.forEach(function (c) {
+ var d = document.createElement('div');
+ d.className = 'dw-dot' + (c === color ? ' on' : '');
+ d.style.background = c;
+ d.onclick = function () {
+ color = c; erasing = false; erBtn.classList.remove('on');
+ tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+ d.classList.add('on');
+ };
+ cGrid.appendChild(d);
+ });
+ tb.appendChild(cGrid);
+ var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+ tb.appendChild(lbl);
+ var sl = document.createElement('input');
+ sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+ sl.oninput = function () { penW = +sl.value; };
+ tb.appendChild(sl);
+
+ var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+ erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+ tb.appendChild(erBtn);
+
+ var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+ unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+ tb.appendChild(unBtn);
+
+ var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+ clBtn.onclick = function () { strokes.length = 0; paint(); };
+ tb.appendChild(clBtn);
+
+ document.body.appendChild(tb);
+
+ // stop toolbar clicks from reaching canvas
+ ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+ tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+ btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+ });
+
+ btn.onclick = function () {
+ on = !on;
+ btn.classList.toggle('on', on);
+ tb.classList.toggle('show', on);
+ cv.classList.toggle('on', on);
+ };
+
+ /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+ function tick() {
+ if (!drawing) { raf = 0; return; }
+ var n = pts.length;
+ if (drawn < n) {
+ var sx = window.scrollX, sy = window.scrollY;
+ // continue the existing path from last drawn point
+ if (drawn === 0) {
+ cx.beginPath();
+ cx.moveTo(pts[0] - sx, pts[1] - sy);
+ drawn = 2;
+ }
+ for (var i = drawn; i < n; i += 2) {
+ cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+ }
+ cx.stroke();
+ // continue the SAME path (no beginPath) — keeps it connected
+ drawn = n;
+ }
+ raf = requestAnimationFrame(tick);
+ }
+
+ /* --- pointer handlers --- */
+ cv.addEventListener('pointerdown', function (e) {
+ if (!on || e.button !== 0 || e.target !== cv) return;
+ e.preventDefault();
+ cv.setPointerCapture(e.pointerId);
+ drawing = true;
+ // store document coords
+ var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+ pts = [dx, dy];
+ drawn = 0;
+ // set style once for whole stroke
+ cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+ cx.strokeStyle = color;
+ cx.lineWidth = erasing ? penW * 4 : penW;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ // start rAF loop
+ if (!raf) raf = requestAnimationFrame(tick);
+ });
+
+ cv.addEventListener('pointermove', function (e) {
+ if (!drawing) return;
+ // just push coords — rAF will render them
+ pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+ });
+
+ function stop() {
+ if (!drawing) return;
+ drawing = false;
+ if (pts.length >= 4) {
+ strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+ }
+ pts = []; drawn = 0;
+ // full repaint to clean up
+ paint();
+ }
+ cv.addEventListener('pointerup', stop);
+ cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+ var t=document.getElementById('dmToggle'),h=document.documentElement,
+ s=localStorage.getItem('theme');
+ if(s)h.setAttribute('data-theme',s);
+ function updateIcon(){
+ if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+ }
+ updateIcon();
+ if(t){
+ t.addEventListener('click',function(){
+ var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+ h.setAttribute('data-theme',n);
+ localStorage.setItem('theme',n);
+ updateIcon();
+ fixInline(n==='dark');
+ });
+ }
+ /* Fix inline and style="color:..." */
+ function fixInline(dark){
+ var els=document.querySelectorAll('[style]');
+ for(var i=0;i<els.length;i++){
+ var el=els[i];
+ /* Skip SVG internals */
+ if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+ if(el.closest&&el.closest('svg'))continue;
+ var st=el.style;
+ if(dark){
+ /* Background */
+ if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+ el.setAttribute('data-dm-bg',st.backgroundColor);
+ if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+ }
+ if(st.background&&!el.getAttribute('data-dm-bgf')){
+ el.setAttribute('data-dm-bgf',st.background);
+ if(lum(st.background)>160)st.background='#1e222a';
+ }
+ /* Text color */
+ if(st.color&&!el.getAttribute('data-dm-fg')){
+ el.setAttribute('data-dm-fg',st.color);
+ if(lum(st.color)<100)st.color='#d0cdc5';
+ }
+ }else{
+ if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+ if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+ if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+ }
+ }
+ }
+ /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+ function lum(c){
+ if(!c)return -1;
+ c=c.trim().toLowerCase();
+ if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+ if(c==='black'||c==='#000'||c==='#000000')return 0;
+ var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+ if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+ var hx=c.match(/^#([0-9a-f]{3,8})$/);
+ if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+ return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+ return -1;
+ }
+ /* Apply on load if dark */
+ if(h.getAttribute('data-theme')==='dark'){
+ if(document.readyState==='loading')
+ document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+ else fixInline(true);
+ }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>
