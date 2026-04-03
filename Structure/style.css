@@ -544,10 +544,388 @@ strong, b { font-weight: 700; }
 em, i { font-style: italic; }
 
 /* ── MathJax overrides ── */
+mjx-container[jax="CHTML"]:not([display="true"]) {
+  display: inline !important;
+  overflow-x: visible !important;
+}
 mjx-container, .MathJax, .MathJax_Display {
   overflow-x: auto;
   overflow-y: hidden;
   max-width: 100%;
+}
+
+/* ── Example / Question Card ── */
+.example {
+  margin: 2.5rem 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  break-inside: avoid;
+  background: var(--bg, #fff);
+}
+[data-theme="dark"] .example {
+  background: var(--soft);
+  border-color: var(--line);
+}
+.ex-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10.5pt;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 0.6rem 1.4rem;
+  border-bottom: 1px solid var(--line);
+  letter-spacing: 0.02em;
+}
+.ex-q {
+  padding: 1rem 1.4rem;
+  font-size: var(--base);
+  line-height: 1.8;
+  text-align: justify;
+}
+
+/* ── Equation Block ── */
+.eq-block {
+  display: block;
+  text-align: center;
+  margin: 1.2rem 0;
+  padding: 0.6rem 1rem;
+  overflow-x: auto;
+}
+.eq-block.hl {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-glow);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+}
+[data-theme="dark"] .eq-block.hl {
+  background: var(--accent-soft);
+  border-color: var(--accent-glow);
+}
+
+/* ── Definition Box ── */
+.def-box {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0;
+  background: var(--soft);
+  break-inside: avoid;
+}
+.def-box .dt,
+.dt {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+}
+[data-theme="dark"] .def-box {
+  background: var(--soft);
+  border-color: var(--line);
+  border-left-color: var(--accent);
+}
+
+/* ── Note Box ── */
+.note {
+  border: 1px solid var(--line);
+  border-left: 3px solid #d97706;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 0.8rem 1.2rem;
+  margin: 1rem 0;
+  background: rgba(217,119,6,.04);
+  font-size: 11pt;
+  line-height: 1.6;
+}
+[data-theme="dark"] .note {
+  background: rgba(217,119,6,.06);
+  border-color: var(--line);
+  border-left-color: #f59e0b;
+}
+
+/* ── Result / Answer Box ── */
+.result-box {
+  text-align: center;
+  margin: 1.5rem 0;
+  padding: 1rem 1.2rem;
+  background: linear-gradient(135deg, rgba(16,185,129,.05) 0%, rgba(5,150,105,.08) 100%);
+  border: 1px solid rgba(16,185,129,.2);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+[data-theme="dark"] .result-box {
+  background: rgba(16,185,129,.06);
+  border-color: rgba(16,185,129,.15);
+}
+
+/* ── Solution Label ── */
+.soln-label {
+  display: inline-block;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: var(--accent);
+  padding: 4px 16px;
+  border-radius: 4px;
+  margin: 1.5rem 0 1rem;
+}
+
+/* ── Figure Caption ── */
+.fig-caption {
+  font-style: italic;
+  text-align: center;
+  font-size: 10pt;
+  color: var(--muted);
+  margin: -0.5rem 0 1.5rem;
+}
+
+/* ── Step Box ── */
+.step-box {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  background: var(--soft);
+  break-inside: avoid;
+}
+
+/* ── Formula Card ── */
+.formula-card,
+.quick-formulas {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+  margin: 1.5rem 0;
+  background: var(--soft);
+  break-inside: avoid;
+}
+
+/* ── Summary Table ── */
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: var(--base);
+}
+
+/* ── Matrix Table ── */
+.matrix-table {
+  border-collapse: collapse;
+  margin: 1rem auto;
+  font-size: 10pt;
+}
+.matrix-table th,
+.matrix-table td {
+  padding: 6px 10px;
+  text-align: center;
+  border: 1px solid var(--line);
+}
+
+/* ── Visual Grid ── */
+.visual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 1.5rem 0;
+}
+.visual-card,
+.band-card,
+.hero-card,
+.hero-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.2rem;
+  background: var(--soft);
+  break-inside: avoid;
+}
+[data-theme="dark"] .visual-card,
+[data-theme="dark"] .band-card,
+[data-theme="dark"] .hero-card,
+[data-theme="dark"] .hero-panel {
+  background: var(--soft);
+  border-color: var(--line);
+}
+
+/* ── Mini Grid ── */
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 1rem 0;
+}
+.mini-note {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 1rem;
+  background: var(--soft);
+  font-size: 11pt;
+}
+
+/* ── Chips / Tags ── */
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0.5rem 0;
+}
+.chip {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 9pt;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* ── Code Block ── */
+.code-block {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 10pt;
+  line-height: 1.5;
+  margin: 1rem 0;
+}
+
+/* ── Chapter Band ── */
+.chapter-band {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-glow);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+
+/* ── Pattern (decorative) ── */
+.pattern {
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+/* ── Back to Top ── */
+.btt {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent-glow);
+  margin: 1.5rem 0;
+  transition: all .2s var(--ease);
+}
+.btt:hover {
+  background: var(--accent-soft);
+}
+
+/* ── Next link ── */
+.next {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11pt;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid var(--accent-glow);
+  border-radius: var(--radius-sm);
+  margin: 1.5rem 0;
+  transition: all .2s var(--ease);
+}
+.next:hover {
+  background: var(--accent-soft);
+}
+
+/* ── Question Index (inline styles override) ── */
+.qi-container {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0 2rem;
+}
+.qi-container h2,
+.qi-container h3 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.8rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+.qi-container h2::after {
+  display: none;
+}
+.qi-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.qi-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px dotted var(--line);
+  text-decoration: none;
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  transition: all .15s var(--ease);
+}
+.qi-item:last-child {
+  border-bottom: none;
+}
+.qi-item:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.qi-num {
+  font-weight: 700;
+  min-width: 2.5rem;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.qi-title {
+  flex: 1;
+}
+.qi-meta {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 9pt;
+  color: var(--muted);
+  font-style: italic;
+  white-space: nowrap;
+  background: var(--soft);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+[data-theme="dark"] .qi-container {
+  border-color: var(--line);
+}
+[data-theme="dark"] .qi-item {
+  color: var(--ink);
+  border-color: var(--line);
+}
+[data-theme="dark"] .qi-item:hover {
+  background: var(--accent-soft);
 }
 
 /* ── Scrollbar ── */

@@ -6,8 +6,16 @@
   'use strict';
 
   /* ═══════════════════════════════════════════════
-     0. SCROLL PROGRESS BAR (top of page)
+     0. MATHJAX INLINE FIX + SCROLL PROGRESS BAR
      ═══════════════════════════════════════════════ */
+  /* Fix MathJax inline math rendering as block */
+  var mjxFix = document.createElement('style');
+  mjxFix.textContent =
+    'mjx-container[jax="CHTML"]:not([display="true"]){display:inline!important;overflow-x:visible!important}' +
+    'mjx-container[jax="SVG"]:not([display="true"]){display:inline!important}' +
+    '.MathJax:not(.MathJax_Display){display:inline!important}';
+  document.head.appendChild(mjxFix);
+
   if (!document.querySelector('.cm-scroll-progress')) {
     var progCSS = document.createElement('style');
     progCSS.textContent =
