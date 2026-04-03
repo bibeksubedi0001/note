@@ -79,9 +79,9 @@
      ═══════════════════════════════════════════════ */
   if (!document.querySelector('.cm-nav-bar')) {
     var path = window.location.pathname.replace(/\\/g, '/');
-    var file = path.split('/').pop() || '';
+    var file = decodeURIComponent(path.split('/').pop() || '');
     var dir = '';
-    var m = path.match(/\/(gis|TES|gw\/Theory|gw\/Numerical|Structure)\//i);
+    var m = path.match(/\/(gis|TES|gw\/Theory|gw\/Numerical|Structure|Water)\//i);
     if (m) dir = m[1].replace(/\\/g, '/');
 
     var NAV = {
@@ -184,7 +184,7 @@
     if (subj && file && file !== 'index.html' && file !== 'index_tes.html') {
       var idx = -1;
       for (var i = 0; i < subj.chapters.length; i++) {
-        if (subj.chapters[i].f === file) { idx = i; break; }
+        if (subj.chapters[i].f === file || encodeURIComponent(subj.chapters[i].f) === file) { idx = i; break; }
       }
       if (idx >= 0) {
         // Inject nav CSS

@@ -1,17 +1,17 @@
 /* ============================================================
-   Water Subject — Structure-like Override
-   Forces all pages into clean B&W academic format.
-   Includes essential layout utilities (Tailwind CDN removed).
+   Water — Clean B&W Academic Override
+   Loaded AFTER Tailwind so !important wins.
+   Tailwind handles layout; this handles appearance.
    ============================================================ */
 
-/* ── Kill ALL decorative effects ── */
+/* ── Kill decorative effects ── */
 *, *::before, *::after {
   box-shadow: none !important;
   border-radius: 0 !important;
   text-shadow: none !important;
 }
 
-/* ── Base typography ── */
+/* ── Typography ── */
 body {
   font-family: 'Times New Roman', Times, serif !important;
   font-size: 12pt !important;
@@ -20,126 +20,131 @@ body {
   background: #fff !important;
   max-width: 800px !important;
   margin: 0 auto !important;
-  padding: 2rem !important;
+  padding: 2rem 2rem 4rem !important;
 }
 
 h1, h2, h3, h4, h5, h6, p, span, div, li, td, th, label,
-section, article, main, header, footer, nav, summary, details,
-blockquote, figcaption, strong, b, em, i, a, ul, ol, dl, dt, dd {
+section, article, main, header, footer, summary, details,
+blockquote, figcaption, strong, b, em, i, ul, ol, dl, dt, dd {
   font-family: 'Times New Roman', Times, serif !important;
   color: #111 !important;
-  background-color: transparent !important;
+}
+
+a {
+  font-family: 'Times New Roman', Times, serif !important;
+  color: #111 !important;
+  text-decoration: underline !important;
 }
 
 /* ── Headings ── */
 h1 {
-  font-size: 14pt !important;
+  font-size: 16pt !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
   text-align: center !important;
-  margin: 0 0 1.5rem !important;
+  margin-bottom: 1.5rem !important;
   padding-bottom: 0.5rem !important;
-  border-bottom: 2px solid #111 !important;
+  border-bottom: 2.5px solid #111 !important;
+  letter-spacing: 0.03em !important;
+  background: transparent !important;
 }
 
 h2 {
-  font-size: 12pt !important;
+  font-size: 13pt !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
-  margin: 2rem 0 1rem !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
   padding-bottom: 0.3rem !important;
   border-bottom: 1px solid #111 !important;
+  background: transparent !important;
 }
 
 h3 {
   font-size: 12pt !important;
   font-weight: bold !important;
-  margin: 1.5rem 0 0.5rem !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+  padding-left: 0.8rem !important;
+  border-left: 3px solid #111 !important;
+  background: transparent !important;
 }
 
 h4 {
   font-size: 12pt !important;
   font-weight: bold !important;
   font-style: italic !important;
-  margin: 1rem 0 0.5rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 0.5rem !important;
+  background: transparent !important;
+}
+
+h5 {
+  font-size: 11pt !important;
+  font-weight: 600 !important;
+  background: transparent !important;
 }
 
 p {
   text-align: justify !important;
-  margin: 0 0 1rem !important;
+  margin-bottom: 0.8rem !important;
   font-size: 12pt !important;
-}
-
-ul, ol {
-  margin: 0 0 1rem !important;
-  padding-left: 2rem !important;
+  background: transparent !important;
 }
 
 li {
   text-align: justify !important;
-  margin-bottom: 0.5rem !important;
+  margin-bottom: 0.4rem !important;
+  background: transparent !important;
 }
 
-a {
+/* ── Kill ALL Tailwind colored backgrounds ── */
+[class*="bg-blue"], [class*="bg-sky"], [class*="bg-indigo"],
+[class*="bg-emerald"], [class*="bg-green"], [class*="bg-amber"],
+[class*="bg-yellow"], [class*="bg-red"], [class*="bg-rose"],
+[class*="bg-orange"], [class*="bg-teal"], [class*="bg-cyan"],
+[class*="bg-purple"], [class*="bg-pink"], [class*="bg-stone"],
+[class*="bg-slate"], [class*="bg-gray"], [class*="bg-gradient"],
+[class*="bg-white"] {
+  background: transparent !important;
+}
+
+/* ── Kill Tailwind colored text ── */
+[class*="text-blue"], [class*="text-sky"], [class*="text-indigo"],
+[class*="text-emerald"], [class*="text-green"], [class*="text-amber"],
+[class*="text-red"], [class*="text-rose"], [class*="text-orange"],
+[class*="text-teal"], [class*="text-cyan"], [class*="text-purple"],
+[class*="text-pink"], [class*="text-slate"], [class*="text-gray"],
+[class*="text-stone"], [class*="text-white"] {
   color: #111 !important;
-  text-decoration: underline !important;
 }
 
-/* ── Sections — flat, no cards ── */
-section, article, div[class] {
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  background: transparent !important;
+/* ── Kill Tailwind colored borders ── */
+[class*="border-blue"], [class*="border-sky"], [class*="border-indigo"],
+[class*="border-emerald"], [class*="border-green"], [class*="border-amber"],
+[class*="border-red"], [class*="border-rose"], [class*="border-orange"],
+[class*="border-teal"], [class*="border-cyan"], [class*="border-purple"],
+[class*="border-pink"], [class*="border-yellow"], [class*="border-slate"],
+[class*="border-gray"], [class*="border-stone"] {
+  border-color: #999 !important;
 }
 
-header {
-  border: none !important;
-  padding: 0 0 1rem !important;
-  margin: 0 0 1.5rem !important;
-  background: transparent !important;
+/* ── Kill shadow/rounded ── */
+[class*="shadow"] {
+  box-shadow: none !important;
+}
+[class*="rounded"] {
+  border-radius: 0 !important;
 }
 
-main, [class*="container"] {
-  max-width: 100% !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  background: transparent !important;
+/* ── Sections — transparent backgrounds ── */
+section, article, div, header, main, footer, nav {
+  background-color: transparent !important;
 }
 
-/* ── Questions / callouts ── */
-.callout, .exam-note, .note, blockquote {
-  border: none !important;
-  border-left: 3px solid #111 !important;
-  padding: 0.5rem 1rem !important;
-  margin: 1rem 0 !important;
-  background: transparent !important;
-}
-
-.question-box, .given-data-table, .given, .answer {
-  border: 1px solid #111 !important;
-  padding: 0.8rem 1rem !important;
-  margin: 1rem 0 !important;
-  background: transparent !important;
-}
-
-/* ── Equations ── */
-.equation, .math-block, .math-display, .math-final,
-[class*="math-block"], [class*="math-display"] {
-  display: block !important;
-  margin: 1rem 0 !important;
-  padding: 0.5rem !important;
-  overflow-x: auto !important;
-  background: transparent !important;
-  border: none !important;
-  border-left: 3px solid #111 !important;
-  text-align: center !important;
-}
-
-.math-final, [class*="math-final"] {
-  border: 2px solid #111 !important;
-  border-left: 2px solid #111 !important;
+/* ── Binding edge ── */
+.binding-edge, [class*="binding-edge"], .dm-toggle {
+  display: none !important;
 }
 
 /* ── Tables ── */
@@ -161,6 +166,41 @@ th, td {
 
 th {
   font-weight: bold !important;
+  background: #f5f5f5 !important;
+}
+
+/* ── Equations ── */
+.equation, .math-block, .math-display,
+[class*="math-block"], [class*="math-display"] {
+  display: block !important;
+  margin: 1rem 0 !important;
+  padding: 0.5rem !important;
+  overflow-x: auto !important;
+  background: transparent !important;
+  border: none !important;
+  border-left: 3px solid #111 !important;
+  text-align: center !important;
+}
+
+.math-final, [class*="math-final"] {
+  border: 2px solid #111 !important;
+  border-left: 2px solid #111 !important;
+}
+
+/* ── Notes / callouts ── */
+.callout, .exam-note, .note, blockquote {
+  border: none !important;
+  border-left: 3px solid #111 !important;
+  padding: 0.5rem 1rem !important;
+  margin: 1rem 0 !important;
+  background: transparent !important;
+}
+
+.question-box, .given-data-table, .given, .answer {
+  border: 1px solid #111 !important;
+  padding: 0.8rem 1rem !important;
+  margin: 1rem 0 !important;
+  background: transparent !important;
 }
 
 /* ── Figures ── */
@@ -204,213 +244,31 @@ svg {
   color: #fff !important;
 }
 
-/* ── Binding edge / decorative elements ── */
-.binding-edge, [class*="binding-edge"], .dm-toggle {
-  display: none !important;
-}
-
-/* ── MathJax containers ── */
+/* ── MathJax ── */
 mjx-container, .MathJax, .MathJax_Display {
   overflow-x: auto !important;
   overflow-y: hidden !important;
   max-width: 100% !important;
 }
 
-/* ════════════════════════════════════════════════
-   ESSENTIAL LAYOUT UTILITIES (replacing Tailwind)
-   ════════════════════════════════════════════════ */
-
-/* Display */
-.flex { display: flex; }
-.inline-flex { display: inline-flex; }
-.block { display: block; }
-.inline-block { display: inline-block; }
-.grid { display: grid; }
-.hidden { display: none; }
-
-/* Flex direction & wrap */
-.flex-col { flex-direction: column; }
-.flex-row { flex-direction: row; }
-.flex-wrap { flex-wrap: wrap; }
-.flex-shrink-0 { flex-shrink: 0; }
-
-/* Alignment */
-.items-center { align-items: center; }
-.items-start { align-items: flex-start; }
-.items-end { align-items: flex-end; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.justify-start { justify-content: flex-start; }
-.justify-end { justify-content: flex-end; }
-
-/* Text alignment */
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.text-justify { text-align: justify; }
-
-/* Position */
-.relative { position: relative; }
-.absolute { position: absolute; }
-.fixed { position: fixed; }
-
-/* Sizing */
-.w-full { width: 100%; }
-.w-auto { width: auto; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-
-/* Overflow */
-.overflow-x-auto { overflow-x: auto; }
-.overflow-y-auto { overflow-y: auto; }
-
-/* Lists */
-.list-disc { list-style-type: disc; }
-.list-decimal { list-style-type: decimal; }
-.list-inside { list-style-position: inside; }
-
-/* Font */
-.font-bold { font-weight: bold; }
-.font-semibold { font-weight: 600; }
-.font-medium { font-weight: 500; }
-.font-normal { font-weight: normal; }
-.italic { font-style: italic; }
-.not-italic { font-style: normal; }
-.uppercase { text-transform: uppercase; }
-.lowercase { text-transform: lowercase; }
-.tracking-widest { letter-spacing: 0.1em; }
-.tracking-wide { letter-spacing: 0.025em; }
-
-/* Spacing utilities */
-.mt-1 { margin-top: 0.25rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-3 { margin-top: 0.75rem; }
-.mt-4 { margin-top: 1rem; }
-.mt-6 { margin-top: 1.5rem; }
-.mt-8 { margin-top: 2rem; }
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 0.75rem; }
-.mb-4 { margin-bottom: 1rem; }
-.mb-6 { margin-bottom: 1.5rem; }
-.mb-8 { margin-bottom: 2rem; }
-.my-2 { margin-top: 0.5rem; margin-bottom: 0.5rem; }
-.my-4 { margin-top: 1rem; margin-bottom: 1rem; }
-.my-6 { margin-top: 1.5rem; margin-bottom: 1.5rem; }
-.ml-2 { margin-left: 0.5rem; }
-.ml-4 { margin-left: 1rem; }
-.mr-2 { margin-right: 0.5rem; }
-.p-1 { padding: 0.25rem; }
-.p-2 { padding: 0.5rem; }
-.p-3 { padding: 0.75rem; }
-.p-4 { padding: 1rem; }
-.p-6 { padding: 1.5rem; }
-.px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
-.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
-.px-4 { padding-left: 1rem; padding-right: 1rem; }
-.py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
-.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-.pl-4 { padding-left: 1rem; }
-.pl-6 { padding-left: 1.5rem; }
-.gap-1 { gap: 0.25rem; }
-.gap-2 { gap: 0.5rem; }
-.gap-3 { gap: 0.75rem; }
-.gap-4 { gap: 1rem; }
-.gap-6 { gap: 1.5rem; }
-
-/* Space-y utilities */
-.space-y-1 > * + * { margin-top: 0.25rem; }
-.space-y-2 > * + * { margin-top: 0.5rem; }
-.space-y-3 > * + * { margin-top: 0.75rem; }
-.space-y-4 > * + * { margin-top: 1rem; }
-.space-y-6 > * + * { margin-top: 1.5rem; }
-.space-y-8 > * + * { margin-top: 2rem; }
-
-/* Grid columns */
-.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-
-/* Font sizes */
-.text-xs { font-size: 9pt; }
-.text-sm { font-size: 10pt; }
-.text-base { font-size: 12pt; }
-.text-lg { font-size: 13pt; }
-.text-xl { font-size: 14pt; }
-.text-2xl { font-size: 16pt; }
-.text-3xl { font-size: 18pt; }
-
-/* Text extras */
-.underline { text-decoration: underline; }
-.line-through { text-decoration: line-through; }
-.no-underline { text-decoration: none; }
-
-/* Custom / avoid-break */
-.avoid-break { break-inside: avoid; }
-
-/* Border utilities (minimal) */
-.border { border: 1px solid #999; }
-.border-2 { border: 2px solid #999; }
-.border-b { border-bottom: 1px solid #999; }
-.border-t { border-top: 1px solid #999; }
-.border-l-4 { border-left: 4px solid #111; }
-
-/* ════════════════════════════════════════════════
-   KILL ALL TAILWIND COLOR CLASSES (dead selectors)
-   These just ensure nothing leaks through
-   ════════════════════════════════════════════════ */
-
-[class*="bg-blue"], [class*="bg-sky"], [class*="bg-indigo"],
-[class*="bg-emerald"], [class*="bg-green"], [class*="bg-amber"],
-[class*="bg-yellow"], [class*="bg-red"], [class*="bg-rose"],
-[class*="bg-orange"], [class*="bg-teal"], [class*="bg-cyan"],
-[class*="bg-purple"], [class*="bg-pink"], [class*="bg-stone"],
-[class*="bg-slate"], [class*="bg-gray"], [class*="bg-gradient"],
-[class*="bg-white"], [class*="bg-\\["] {
-  background: transparent !important;
+/* ── Force max-width containers ── */
+[class*="max-w-4xl"], [class*="max-w-5xl"], [class*="max-w-3xl"],
+[class*="max-w-2xl"], [class*="max-w-6xl"] {
+  max-width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-[class*="text-blue"], [class*="text-sky"], [class*="text-indigo"],
-[class*="text-emerald"], [class*="text-green"], [class*="text-amber"],
-[class*="text-red"], [class*="text-rose"], [class*="text-orange"],
-[class*="text-teal"], [class*="text-cyan"], [class*="text-purple"],
-[class*="text-pink"], [class*="text-slate"], [class*="text-gray"],
-[class*="text-stone"], [class*="text-white"] {
-  color: #111 !important;
-}
-
-[class*="border-blue"], [class*="border-sky"], [class*="border-indigo"],
-[class*="border-emerald"], [class*="border-green"], [class*="border-amber"],
-[class*="border-red"], [class*="border-rose"], [class*="border-orange"],
-[class*="border-teal"], [class*="border-cyan"], [class*="border-purple"],
-[class*="border-pink"], [class*="border-yellow"], [class*="border-slate"],
-[class*="border-gray"], [class*="border-stone"] {
-  border-color: #999 !important;
-}
-
-/* Kill shadow/rounded utility classes */
-[class*="shadow"], [class*="rounded"] {
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-/* ════════════════════════════════════════════════
-   RESPONSIVE — Force single column on all screens
-   ════════════════════════════════════════════════ */
+/* ── Force single column grids ── */
 @media (min-width: 768px) {
   .md\:grid-cols-2 { grid-template-columns: 1fr !important; }
   .md\:grid-cols-3 { grid-template-columns: 1fr !important; }
 }
 
-/* ════════════════════════════════════════════════
-   NO-PRINT ELEMENTS
-   ════════════════════════════════════════════════ */
-.no-print {
-  display: none !important;
-}
+/* ── No-print elements ── */
+.no-print { display: none !important; }
 
-/* ════════════════════════════════════════════════
-   PRINT STYLES
-   ════════════════════════════════════════════════ */
+/* ── Print ── */
 @media print {
   body {
     padding: 0 !important;
@@ -420,17 +278,11 @@ mjx-container, .MathJax, .MathJax_Display {
   .dw-btn, .dw-tb, .dw-cv, .no-print {
     display: none !important;
   }
-  section, .figure-container, .exam-note {
-    page-break-inside: avoid;
-  }
-  h2, h3 {
-    page-break-after: avoid;
-  }
+  section, .figure-container, .exam-note { page-break-inside: avoid; }
+  h2, h3 { page-break-after: avoid; }
 }
 
-/* ════════════════════════════════════════════════
-   DARK MODE
-   ════════════════════════════════════════════════ */
+/* ════════════ DARK MODE ════════════ */
 [data-theme="dark"] body {
   background: #141720 !important;
   color: #d8d5cd !important;
@@ -457,27 +309,14 @@ mjx-container, .MathJax, .MathJax_Display {
   background-color: transparent !important;
 }
 
-[data-theme="dark"] table {
-  background: #1e2128 !important;
-}
-
-[data-theme="dark"] th {
-  background: #2a2d33 !important;
-  color: #e0ddd5 !important;
-}
-
-[data-theme="dark"] td {
-  background: #1e2128 !important;
-}
-
+[data-theme="dark"] table { background: #1e2128 !important; }
+[data-theme="dark"] th { background: #2a2d33 !important; color: #e0ddd5 !important; }
+[data-theme="dark"] td { background: #1e2128 !important; }
 [data-theme="dark"] table, [data-theme="dark"] th,
-[data-theme="dark"] td {
-  border-color: #3a3d44 !important;
-}
+[data-theme="dark"] td { border-color: #3a3d44 !important; }
 
-[data-theme="dark"] h1, [data-theme="dark"] h2 {
-  border-color: #555 !important;
-}
+[data-theme="dark"] h1, [data-theme="dark"] h2 { border-color: #555 !important; }
+[data-theme="dark"] h3 { border-color: #555 !important; }
 
 [data-theme="dark"] .callout, [data-theme="dark"] .exam-note,
 [data-theme="dark"] .note, [data-theme="dark"] blockquote,
@@ -492,17 +331,9 @@ mjx-container, .MathJax, .MathJax_Display {
   border-color: #3a3d44 !important;
 }
 
-[data-theme="dark"] svg text {
-  fill: #d8d5cd !important;
-}
+[data-theme="dark"] svg text { fill: #d8d5cd !important; }
+[data-theme="dark"] a { color: #8ab4f8 !important; }
 
-[data-theme="dark"] a {
-  color: #8ab4f8 !important;
-}
-
-[data-theme="dark"] .border, [data-theme="dark"] .border-2,
-[data-theme="dark"] .border-b, [data-theme="dark"] .border-t,
-[data-theme="dark"] .border-l-4,
 [data-theme="dark"] figure, [data-theme="dark"] .figure-container {
   border-color: #3a3d44 !important;
 }
