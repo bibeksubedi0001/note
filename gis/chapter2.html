@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 2 – GIS and Maps</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 2</div>
+    <h1>GIS and Maps</h1>
+  </header>
+  <main>
+
+    <!-- Part 1: The Fundamentals (Datums, GCS, and Projections) -->
+    <h2>Part 1: The Fundamentals (Datums, GCS, and Projections) <span class="exam-ref">Covers: 2071 Bhadra Q2a, 2073 Bhadra Q2a, 2072 Magh Q2, 2071 Magh Q1b, 2080 Chaitra Q2, 2082 Shrawan, 2071 Magh Q6c</span></h2>
+
+    <h3>1. The Relationship: Datums, GCS, and Projections (4 Marks) <span class="exam-ref">Tested in: 2080 Chaitra Q2</span></h3>
+    <p>To build a coordinate system, you must follow a strict three-step mathematical sequence:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 210" width="620" height="210" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <marker id="a2r" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#1a3c5e"/></marker>
+          <filter id="f2s"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="g2a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7ae0ff"/><stop offset="100%" stop-color="#2a90c0"/></linearGradient>
+          <linearGradient id="g2b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#5aaa30"/></linearGradient>
+          <linearGradient id="g2c" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdd56d"/><stop offset="100%" stop-color="#c09010"/></linearGradient>
+        </defs>
+
+        <!-- Title bar -->
+        <rect x="130" y="0" width="360" height="22" rx="11" fill="#1a3c5e"/>
+        <text x="310" y="15" text-anchor="middle" font-size="10" fill="white" font-weight="bold">The Three-Step Coordinate System Sequence</text>
+
+        <!-- ═══ Step 1: DATUM ═══ -->
+        <g filter="url(#f2s)">
+          <rect x="8" y="34" width="190" height="130" rx="10" fill="url(#g2a)" stroke="#2080a8" stroke-width="1.2"/>
+          <rect x="48" y="38" width="110" height="20" rx="10" fill="rgba(0,0,0,.2)"/>
+          <text x="103" y="52" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Step 1</text>
+          <!-- Ellipsoid icon -->
+          <ellipse cx="103" cy="85" rx="30" ry="22" fill="#4db8e0" fill-opacity=".4" stroke="white" stroke-width="1.5"/>
+          <ellipse cx="103" cy="85" rx="30" ry="8" fill="none" stroke="white" stroke-width=".8" opacity=".6"/>
+          <text x="103" y="90" text-anchor="middle" font-size="16"></text>
+          <text x="103" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#0e3a56">DATUM</text>
+          <text x="103" y="134" text-anchor="middle" font-size="8.5" fill="#1a5a7a">Shape &amp; size of Earth</text>
+          <text x="103" y="147" text-anchor="middle" font-size="7.5" fill="white" font-style="italic">e.g. WGS 1984, Everest 1830</text>
+        </g>
+        <!-- Detail bubble -->
+        <rect x="8" y="170" width="190" height="34" rx="6" fill="#e0f4ff" stroke="#2080a8" stroke-width=".5"/>
+        <text x="103" y="184" text-anchor="middle" font-size="7.5" fill="#0e3a56" font-weight="600">Foundation: Defines the ellipsoid</text>
+        <text x="103" y="196" text-anchor="middle" font-size="7" fill="#555">Mathematical model of Earth's surface</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="201" y1="100" x2="218" y2="100" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#a2r)"/>
+        <text x="209" y="92" text-anchor="middle" font-size="7.5" fill="#555" font-weight="600">defines</text>
+
+        <!-- ═══ Step 2: GCS ═══ -->
+        <g filter="url(#f2s)">
+          <rect x="224" y="34" width="190" height="130" rx="10" fill="url(#g2b)" stroke="#4a9020" stroke-width="1.2"/>
+          <rect x="264" y="38" width="110" height="20" rx="10" fill="rgba(0,0,0,.2)"/>
+          <text x="319" y="52" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Step 2</text>
+          <!-- Grid/globe icon -->
+          <circle cx="319" cy="82" r="20" fill="none" stroke="white" stroke-width="1.5"/>
+          <ellipse cx="319" cy="82" rx="20" ry="7" fill="none" stroke="white" stroke-width=".8" opacity=".7"/>
+          <ellipse cx="319" cy="82" rx="7" ry="20" fill="none" stroke="white" stroke-width=".8" opacity=".7"/>
+          <text x="319" y="88" text-anchor="middle" font-size="14"></text>
+          <text x="319" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a4a08">GCS</text>
+          <text x="319" y="134" text-anchor="middle" font-size="8.5" fill="#2a6a10">3D Latitude / Longitude grid</text>
+          <text x="319" y="147" text-anchor="middle" font-size="7.5" fill="white" font-style="italic">Angular units: Degrees (°)</text>
+        </g>
+        <rect x="224" y="170" width="190" height="34" rx="6" fill="#e8f8e0" stroke="#4a9020" stroke-width=".5"/>
+        <text x="319" y="184" text-anchor="middle" font-size="7.5" fill="#1a4a08" font-weight="600">Reference Frame: 3D sphere grid</text>
+        <text x="319" y="196" text-anchor="middle" font-size="7" fill="#555">Lat/Long coordinates on curved surface</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="417" y1="100" x2="434" y2="100" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#a2r)"/>
+        <text x="425" y="92" text-anchor="middle" font-size="7.5" fill="#555" font-weight="600">projects</text>
+
+        <!-- ═══ Step 3: PCS ═══ -->
+        <g filter="url(#f2s)">
+          <rect x="440" y="34" width="175" height="130" rx="10" fill="url(#g2c)" stroke="#a08010" stroke-width="1.2"/>
+          <rect x="475" y="38" width="105" height="20" rx="10" fill="rgba(0,0,0,.2)"/>
+          <text x="527" y="52" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Step 3</text>
+          <!-- Flat map icon -->
+          <rect x="505" y="70" width="40" height="30" rx="3" fill="white" fill-opacity=".4" stroke="white" stroke-width="1"/>
+          <line x1="510" y1="78" x2="540" y2="78" stroke="white" stroke-width=".5" opacity=".6"/>
+          <line x1="510" y1="85" x2="540" y2="85" stroke="white" stroke-width=".5" opacity=".6"/>
+          <line x1="520" y1="70" x2="520" y2="100" stroke="white" stroke-width=".5" opacity=".6"/>
+          <line x1="530" y1="70" x2="530" y2="100" stroke="white" stroke-width=".5" opacity=".6"/>
+          <text x="527" y="88" text-anchor="middle" font-size="14"></text>
+          <text x="527" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#5a4008">PCS</text>
+          <text x="527" y="134" text-anchor="middle" font-size="8.5" fill="#7a5a10">Flat 2D X, Y plane</text>
+          <text x="527" y="147" text-anchor="middle" font-size="7.5" fill="white" font-style="italic">Linear units: Meters (m)</text>
+        </g>
+        <rect x="440" y="170" width="175" height="34" rx="6" fill="#fdf4e0" stroke="#a08010" stroke-width=".5"/>
+        <text x="527" y="184" text-anchor="middle" font-size="7.5" fill="#5a4008" font-weight="600">Flat Map: 2D Cartesian grid</text>
+        <text x="527" y="196" text-anchor="middle" font-size="7" fill="#555">Engineering-ready X,Y coordinates</text>
+      </svg>
+      <figcaption>Fig 2.1 – The Three-Step Sequence: Datum → GCS → Projected Coordinate System (PCS)</figcaption>
+    </figure>
+
+    <ol>
+      <li><strong>Datum:</strong> You must first define the exact size and shape of the Earth (which is bumpy and irregular). A datum fits a smooth mathematical ellipsoid to the Earth and anchors it to a specific origin point.</li>
+      <li><strong>Geographic Coordinate System (GCS):</strong> Once you have a Datum, you wrap a 3D grid of intersecting lines (Latitudes and Longitudes) around it to assign angular coordinates to every place on Earth.</li>
+      <li><strong>Projected Coordinate System (PCS):</strong> Because computer screens and printed maps are flat, you use a Map Projection to mathematically flatten that 3D GCS grid into a 2D Cartesian (X, Y) plane.</li>
+    </ol>
+
+    <h3>2. Why is a Datum Important? (2 Marks) <span class="exam-ref">Tested in: 2072 Magh Q2</span></h3>
+    <p>Without a datum, coordinates mean nothing. A datum provides the foundational reference frame for all measurements. If two engineers use different datums (e.g., one uses WGS84 and the other uses Everest 1830), the exact same GPS coordinate could land hundreds of meters apart on the ground.</p>
+    <ul>
+      <li>Two common datums: WGS 1984 (the global standard used by GPS) and Everest 1830 (a local datum optimized for the Indian subcontinent and Nepal).</li>
+    </ul>
+
+    <h3>3. The Significance of the Prime Meridian and Equator in GCS <span class="exam-ref">Tested in: 2082 Shrawan</span></h3>
+    <p>In a 3D Geographic Coordinate System, you need a starting point (an origin of 0°, 0°) to measure angles from the center of the Earth.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 220" width="620" height="220" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <radialGradient id="gGlobeEq" cx="40%" cy="35%"><stop offset="0%" stop-color="#b0e0f8"/><stop offset="100%" stop-color="#2080b0"/></radialGradient>
+          <filter id="fEq"><feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.15"/></filter>
+        </defs>
+
+        <!-- ═══ GLOBE ═══ -->
+        <g transform="translate(30,10)" filter="url(#fEq)">
+          <!-- Earth sphere -->
+          <circle cx="130" cy="100" r="90" fill="url(#gGlobeEq)" stroke="#1a5a8a" stroke-width="1.5"/>
+          <!-- Latitude lines -->
+          <ellipse cx="130" cy="55" rx="72" ry="10" fill="none" stroke="white" stroke-width=".6" opacity=".5"/>
+          <ellipse cx="130" cy="145" rx="72" ry="10" fill="none" stroke="white" stroke-width=".6" opacity=".5"/>
+          <!-- Longitude lines -->
+          <ellipse cx="130" cy="100" rx="30" ry="90" fill="none" stroke="white" stroke-width=".6" opacity=".5"/>
+          <ellipse cx="130" cy="100" rx="60" ry="90" fill="none" stroke="white" stroke-width=".6" opacity=".5"/>
+
+          <!-- EQUATOR (prominent) -->
+          <ellipse cx="130" cy="100" rx="90" ry="14" fill="none" stroke="#ed5565" stroke-width="2.5"/>
+          <text x="228" y="96" font-size="9" fill="#ed5565" font-weight="bold">← Equator (0° Lat)</text>
+
+          <!-- PRIME MERIDIAN (prominent) -->
+          <ellipse cx="130" cy="100" rx="3" ry="90" fill="none" stroke="#2a8c2a" stroke-width="2.5"/>
+          <text x="140" y="20" font-size="9" fill="#2a8c2a" font-weight="bold">Prime Meridian</text>
+          <text x="140" y="30" font-size="8" fill="#2a8c2a">(0° Long, Greenwich)</text>
+
+          <!-- Origin point -->
+          <circle cx="130" cy="100" r="5" fill="#f6bb42" stroke="white" stroke-width="2"/>
+          <text x="142" y="112" font-size="8" fill="#b8860b" font-weight="bold">Origin (0°, 0°)</text>
+
+          <!-- Hemisphere labels -->
+          <text x="130" y="50" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">Northern</text>
+          <text x="130" y="160" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">Southern</text>
+          <text x="60" y="100" text-anchor="middle" font-size="7" fill="white" font-weight="bold">W</text>
+          <text x="200" y="100" text-anchor="middle" font-size="7" fill="white" font-weight="bold">E</text>
+        </g>
+
+        <!-- ═══ RIGHT: Explanation cards ═══ -->
+        <g transform="translate(310,10)">
+          <!-- Equator card -->
+          <rect x="0" y="0" width="300" height="90" rx="8" fill="#fff0f0" stroke="#ed5565" stroke-width="1" filter="url(#fEq)"/>
+          <rect x="8" y="6" width="24" height="24" rx="12" fill="#ed5565"/>
+          <text x="20" y="23" text-anchor="middle" font-size="14" fill="white">—</text>
+          <text x="42" y="20" font-size="11" fill="#a03030" font-weight="bold">The Equator (0° Latitude)</text>
+          <text x="16" y="40" font-size="8.5" fill="#555">• Physically divides Earth into N &amp; S hemispheres</text>
+          <text x="16" y="54" font-size="8.5" fill="#555">• All latitudes measured North or South from here</text>
+          <text x="16" y="68" font-size="8.5" fill="#555">• Range: 0° → 90° N/S</text>
+          <text x="16" y="82" font-size="7.5" fill="#888" font-style="italic">Nepal: ~26°N to ~30°N latitude</text>
+
+          <!-- Prime Meridian card -->
+          <rect x="0" y="100" width="300" height="90" rx="8" fill="#e8f8e8" stroke="#2a8c2a" stroke-width="1" filter="url(#fEq)"/>
+          <rect x="8" y="106" width="24" height="24" rx="12" fill="#2a8c2a"/>
+          <text x="20" y="123" text-anchor="middle" font-size="14" fill="white">|</text>
+          <text x="42" y="120" font-size="11" fill="#1a5c1a" font-weight="bold">Prime Meridian (0° Longitude)</text>
+          <text x="16" y="140" font-size="8.5" fill="#555">• Mathematically divides Earth into E &amp; W hemispheres</text>
+          <text x="16" y="154" font-size="8.5" fill="#555">• Passes through Greenwich, London</text>
+          <text x="16" y="168" font-size="8.5" fill="#555">• Range: 0° → 180° E/W</text>
+          <text x="16" y="182" font-size="7.5" fill="#888" font-style="italic">Nepal: ~80°E to ~88°E longitude</text>
+        </g>
+      </svg>
+      <figcaption>Fig 2.2 – The Equator and Prime Meridian: origin (0°, 0°) of the Geographic Coordinate System</figcaption>
+    </figure>
+    <ul>
+      <li><strong>The Equator:</strong> The 0° line of Latitude. It physically divides the Earth into the Northern and Southern Hemispheres.</li>
+      <li><strong>The Prime Meridian (Greenwich):</strong> The 0° line of Longitude. It mathematically divides the Earth into the Eastern and Western Hemispheres.</li>
+    </ul>
+
+    <!-- Part 2: Map Projections and Engineering Needs -->
+    <h2>Part 2: Map Projections and Engineering Needs <span class="exam-ref">Covers: 2072 Ashwin Q1b, 2073 Magh Q2a, 2078 Chaitra Q2b, 2071 Magh Q1b, 2081 Chaitra</span></h2>
+
+    <h3>1. What is Map Projection and Why is it Necessary? <span class="exam-ref">Tested in: 2071 Bhadra Q2a, 2072 Ashwin Q1b, 2073 Magh Q2a, 2081 Chaitra</span></h3>
+    <ul>
+      <li><strong>Definition:</strong> A map projection is a mathematical formula used to systematically transform the 3D spherical surface of the Earth onto a flat, 2D surface (a map).</li>
+      <li><strong>Why it is necessary:</strong> You cannot peel an orange and lay its skin perfectly flat without stretching or tearing it. Similarly, you cannot represent the 3D Earth on a 2D computer screen without introducing distortion. Projections are necessary to control that distortion, allowing us to print maps and perform linear mathematics on a flat Cartesian plane.</li>
+    </ul>
+
+    <h3>2. GCS vs. PCS &amp; Why Civil Engineering Requires PCS (3 to 4 Marks) <span class="exam-ref">Tested in: 2073 Magh Q2a, 2078 Chaitra Q2b</span></h3>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 200" width="620" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <linearGradient id="gGCS" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f8e0"/><stop offset="100%" stop-color="#b0e0b0"/></linearGradient>
+          <linearGradient id="gPCS" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef4e0"/><stop offset="100%" stop-color="#f0dbb0"/></linearGradient>
+          <filter id="fGP"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- VS badge -->
+        <circle cx="310" cy="100" r="22" fill="#1a3c5e" stroke="#b8860b" stroke-width="2" filter="url(#fGP)"/>
+        <text x="310" y="105" text-anchor="middle" font-size="12" fill="white" font-weight="bold">VS</text>
+
+        <!-- ═══ GCS ═══ -->
+        <g transform="translate(8,8)" filter="url(#fGP)">
+          <rect width="280" height="184" rx="10" fill="url(#gGCS)" stroke="#2a8c2a" stroke-width="1.2"/>
+          <rect x="55" y="6" width="170" height="22" rx="11" fill="#2a8c2a"/>
+          <text x="140" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Geographic (GCS)</text>
+
+          <!-- Globe illustration -->
+          <circle cx="70" cy="75" r="30" fill="#a0d8f0" stroke="#2080a8" stroke-width="1"/>
+          <ellipse cx="70" cy="75" rx="30" ry="8" fill="none" stroke="white" stroke-width=".7"/>
+          <ellipse cx="70" cy="75" rx="10" ry="30" fill="none" stroke="white" stroke-width=".7"/>
+          <text x="70" y="112" text-anchor="middle" font-size="8" fill="#2a8c2a" font-weight="bold">3D Sphere</text>
+
+          <!-- Properties list -->
+          <rect x="115" y="38" width="155" height="90" rx="6" fill="rgba(255,255,255,.5)"/>
+          <text x="125" y="54" font-size="8" fill="#1a4a08" font-weight="bold">Model:</text>
+          <text x="175" y="54" font-size="8" fill="#555">3D spherical</text>
+          <text x="125" y="70" font-size="8" fill="#1a4a08" font-weight="bold">Units:</text>
+          <text x="175" y="70" font-size="8" fill="#555">Degrees (angular)</text>
+          <text x="125" y="86" font-size="8" fill="#1a4a08" font-weight="bold">Coords:</text>
+          <text x="175" y="86" font-size="8" fill="#555">Lat / Long (°)</text>
+          <text x="125" y="102" font-size="8" fill="#1a4a08" font-weight="bold">Use:</text>
+          <text x="175" y="102" font-size="8" fill="#555">GPS positions, global ref</text>
+          <text x="125" y="118" font-size="8" fill="#1a4a08" font-weight="bold">Example:</text>
+          <text x="175" y="118" font-size="8" fill="#555">27.7°N, 85.3°E</text>
+
+          <!-- Warning -->
+          <rect x="12" y="138" width="256" height="36" rx="6" fill="rgba(237,85,101,.08)"/>
+          <text x="140" y="154" text-anchor="middle" font-size="8" fill="#a03030" font-weight="600">⚠ Cannot measure area/distance in degrees!</text>
+          <text x="140" y="166" text-anchor="middle" font-size="7" fill="#888">Not suitable for engineering calculations</text>
+        </g>
+
+        <!-- ═══ PCS ═══ -->
+        <g transform="translate(332,8)" filter="url(#fGP)">
+          <rect width="280" height="184" rx="10" fill="url(#gPCS)" stroke="#b8860b" stroke-width="1.2"/>
+          <rect x="55" y="6" width="170" height="22" rx="11" fill="#b8860b"/>
+          <text x="140" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Projected (PCS)</text>
+
+          <!-- Grid illustration -->
+          <rect x="25" y="48" width="60" height="60" rx="3" fill="white" fill-opacity=".5" stroke="#b8860b" stroke-width="1"/>
+          <line x1="25" y1="63" x2="85" y2="63" stroke="#b8860b" stroke-width=".5" opacity=".5"/>
+          <line x1="25" y1="78" x2="85" y2="78" stroke="#b8860b" stroke-width=".5" opacity=".5"/>
+          <line x1="25" y1="93" x2="85" y2="93" stroke="#b8860b" stroke-width=".5" opacity=".5"/>
+          <line x1="45" y1="48" x2="45" y2="108" stroke="#b8860b" stroke-width=".5" opacity=".5"/>
+          <line x1="65" y1="48" x2="65" y2="108" stroke="#b8860b" stroke-width=".5" opacity=".5"/>
+          <text x="28" y="46" font-size="7" fill="#b8860b">Y</text>
+          <text x="82" y="120" font-size="7" fill="#b8860b">X</text>
+          <text x="55" y="128" text-anchor="middle" font-size="8" fill="#7a5a0a" font-weight="bold">2D Flat Grid</text>
+
+          <!-- Properties list -->
+          <rect x="100" y="38" width="168" height="90" rx="6" fill="rgba(255,255,255,.5)"/>
+          <text x="110" y="54" font-size="8" fill="#5a4008" font-weight="bold">Model:</text>
+          <text x="160" y="54" font-size="8" fill="#555">2D flat plane</text>
+          <text x="110" y="70" font-size="8" fill="#5a4008" font-weight="bold">Units:</text>
+          <text x="160" y="70" font-size="8" fill="#555">Meters (linear)</text>
+          <text x="110" y="86" font-size="8" fill="#5a4008" font-weight="bold">Coords:</text>
+          <text x="160" y="86" font-size="8" fill="#555">Easting / Northing (m)</text>
+          <text x="110" y="102" font-size="8" fill="#5a4008" font-weight="bold">Use:</text>
+          <text x="160" y="102" font-size="8" fill="#555">Engineering, area calc</text>
+          <text x="110" y="118" font-size="8" fill="#5a4008" font-weight="bold">Example:</text>
+          <text x="160" y="118" font-size="8" fill="#555">500000E, 3070000N</text>
+
+          <!-- Success -->
+          <rect x="12" y="138" width="256" height="36" rx="6" fill="rgba(42,140,42,.08)"/>
+          <text x="140" y="154" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="600">✓ Required for civil engineering work</text>
+          <text x="140" y="166" text-anchor="middle" font-size="7" fill="#888">Area, distance, volume in meters on flat grid</text>
+        </g>
+      </svg>
+      <figcaption>Fig 2.3 – GCS vs. PCS: Angular degrees on a sphere vs. linear meters on a flat grid</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Differences:</strong> GCS uses a 3D spherical model and measures locations in angular units (Degrees/Minutes/Seconds). PCS uses a flat 2D model and measures locations in linear units (Meters or Feet).</li>
+      <li><strong>The Engineering Need:</strong> You cannot accurately calculate the area of a watershed, the length of a highway alignment, or the cut-and-fill volume of a construction site in "degrees." Civil engineering strictly requires linear measurements in meters on a flat Cartesian (X, Y) grid, which is only possible using a Projected Coordinate System (PCS).</li>
+    </ul>
+
+    <h3>3. Three Main Categories of Map Projections <span class="exam-ref">Tested in: 2071 Magh Q1b, 2072 Magh Q2, 2081 Chaitra</span></h3>
+    <ol>
+      <li><strong>Cylindrical (e.g., Mercator):</strong> Projects the Earth onto a cylinder wrapped around the equator. <strong>Advantage:</strong> Preserves straight lines for navigation and accurate shapes at the equator. <strong>Disadvantage:</strong> Massively distorts the size of landmasses near the poles (makes Greenland look huge).</li>
+      <li><strong>Conic (e.g., Lambert Conformal Conic):</strong> Projects the Earth onto a cone placed over a pole. <strong>Advantage:</strong> Highly accurate for mapping mid-latitude countries that stretch East-to-West (like the USA or Russia).</li>
+      <li><strong>Planar / Azimuthal:</strong> Projects the Earth onto a flat plane touching a single point. <strong>Advantage:</strong> Excellent for mapping the North and South Poles and calculating shortest-distance flight paths.</li>
+    </ol>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 260" width="620" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <filter id="f2p"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+          <radialGradient id="gGlobe1" cx="40%" cy="35%"><stop offset="0%" stop-color="#a0daf0"/><stop offset="100%" stop-color="#3898c8"/></radialGradient>
+          <radialGradient id="gGlobe2" cx="40%" cy="35%"><stop offset="0%" stop-color="#c0e8a0"/><stop offset="100%" stop-color="#5aaa5a"/></radialGradient>
+          <radialGradient id="gGlobe3" cx="40%" cy="35%"><stop offset="0%" stop-color="#fde0a0"/><stop offset="100%" stop-color="#d0a030"/></radialGradient>
+        </defs>
+
+        <!-- Title bar -->
+        <rect x="140" y="0" width="340" height="22" rx="11" fill="#1a3c5e"/>
+        <text x="310" y="15" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Three Main Categories of Map Projections</text>
+
+        <!-- ═══ CYLINDRICAL ═══ -->
+        <g transform="translate(8,30)">
+          <rect x="0" y="0" width="196" height="175" rx="8" fill="#f8fbfe" filter="url(#f2p)" stroke="#1a3c5e" stroke-width="1"/>
+          <rect x="30" y="4" width="136" height="20" rx="10" fill="#1a3c5e"/>
+          <text x="98" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Cylindrical</text>
+
+          <!-- Cylinder wireframe -->
+          <rect x="48" y="32" width="100" height="80" rx="0" fill="none" stroke="#1a3c5e" stroke-width="2"/>
+          <ellipse cx="98" cy="32" rx="50" ry="11" fill="none" stroke="#1a3c5e" stroke-width="1.5"/>
+          <ellipse cx="98" cy="112" rx="50" ry="11" fill="none" stroke="#1a3c5e" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <!-- Globe inside -->
+          <ellipse cx="98" cy="72" rx="30" ry="34" fill="url(#gGlobe1)" stroke="#198098" stroke-width="1"/>
+          <ellipse cx="98" cy="72" rx="30" ry="7" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>
+          <ellipse cx="98" cy="72" rx="10" ry="34" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>
+          <!-- Contact line -->
+          <line x1="48" y1="72" x2="148" y2="72" stroke="#ed5565" stroke-width="1.2" stroke-dasharray="4,2"/>
+          <text x="155" y="70" font-size="6.5" fill="#ed5565">contact</text>
+
+          <!-- Info box -->
+          <rect x="6" y="126" width="184" height="44" rx="5" fill="rgba(26,60,94,.05)"/>
+          <text x="98" y="139" text-anchor="middle" font-size="7.5" fill="#1a3c5e" font-weight="600">✓ Shapes at equator | ✓ Navigation</text>
+          <text x="98" y="151" text-anchor="middle" font-size="7.5" fill="#ed5565" font-weight="600">✗ Distorts size near poles</text>
+          <text x="98" y="163" text-anchor="middle" font-size="7" fill="#888" font-style="italic">e.g. Mercator, UTM</text>
+        </g>
+
+        <!-- ═══ CONIC ═══ -->
+        <g transform="translate(214,30)">
+          <rect x="0" y="0" width="196" height="175" rx="8" fill="#f8fdf5" filter="url(#f2p)" stroke="#2a8c2a" stroke-width="1"/>
+          <rect x="30" y="4" width="136" height="20" rx="10" fill="#2a8c2a"/>
+          <text x="98" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Conic</text>
+
+          <!-- Cone wireframe -->
+          <polygon points="98,28 30,118 166,118" fill="none" stroke="#2a5a10" stroke-width="2" stroke-linejoin="round"/>
+          <ellipse cx="98" cy="118" rx="68" ry="12" fill="none" stroke="#2a5a10" stroke-width="1" stroke-dasharray="4,3"/>
+          <!-- Globe inside -->
+          <ellipse cx="98" cy="78" rx="30" ry="34" fill="url(#gGlobe2)" stroke="#2a8c2a" stroke-width="1"/>
+          <ellipse cx="98" cy="78" rx="30" ry="7" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>
+          <ellipse cx="98" cy="78" rx="10" ry="34" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>
+          <!-- Standard parallel -->
+          <line x1="53" y1="62" x2="143" y2="62" stroke="#ed5565" stroke-width="1.2" stroke-dasharray="4,2"/>
+          <text x="150" y="60" font-size="6.5" fill="#ed5565">std. parallel</text>
+
+          <rect x="6" y="126" width="184" height="44" rx="5" fill="rgba(42,140,42,.05)"/>
+          <text x="98" y="139" text-anchor="middle" font-size="7.5" fill="#2a6c2a" font-weight="600">✓ Mid-latitude countries (E-W)</text>
+          <text x="98" y="151" text-anchor="middle" font-size="7.5" fill="#ed5565" font-weight="600">✗ Distorts at equator &amp; poles</text>
+          <text x="98" y="163" text-anchor="middle" font-size="7" fill="#888" font-style="italic">e.g. Lambert Conformal Conic</text>
+        </g>
+
+        <!-- ═══ PLANAR / AZIMUTHAL ═══ -->
+        <g transform="translate(420,30)">
+          <rect x="0" y="0" width="196" height="175" rx="8" fill="#fefcf5" filter="url(#f2p)" stroke="#b8860b" stroke-width="1"/>
+          <rect x="18" y="4" width="160" height="20" rx="10" fill="#b8860b"/>
+          <text x="98" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Planar / Azimuthal</text>
+
+          <!-- Flat plane -->
+          <rect x="15" y="34" width="166" height="6" rx="2" fill="#b8860b" fill-opacity=".2" stroke="#b8860b" stroke-width="1.5"/>
+          <!-- Globe below plane -->
+          <ellipse cx="98" cy="78" rx="30" ry="34" fill="url(#gGlobe3)" stroke="#ba8c20" stroke-width="1"/>
+          <ellipse cx="98" cy="78" rx="30" ry="7" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>
+          <ellipse cx="98" cy="78" rx="10" ry="34" fill="none" stroke="#fff" stroke-width=".8" opacity=".6"/>
+          <!-- Tangent point -->
+          <circle cx="98" cy="44" r="5" fill="#ed5565" stroke="white" stroke-width="1.5"/>
+          <text x="112" y="42" font-size="6.5" fill="#ed5565">tangent point</text>
+
+          <rect x="6" y="126" width="184" height="44" rx="5" fill="rgba(184,134,11,.05)"/>
+          <text x="98" y="139" text-anchor="middle" font-size="7.5" fill="#7a5a0a" font-weight="600">✓ Polar regions &amp; flight paths</text>
+          <text x="98" y="151" text-anchor="middle" font-size="7.5" fill="#ed5565" font-weight="600">✗ Distorts away from tangent</text>
+          <text x="98" y="163" text-anchor="middle" font-size="7" fill="#888" font-style="italic">e.g. Polar Stereographic</text>
+        </g>
+
+        <!-- Bottom comparison bar -->
+        <rect x="8" y="215" width="196" height="20" rx="5" fill="#1a3c5e" fill-opacity=".1"/>
+        <text x="106" y="229" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Best at Equator</text>
+        <rect x="214" y="215" width="196" height="20" rx="5" fill="#2a8c2a" fill-opacity=".1"/>
+        <text x="312" y="229" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">Best at Mid-latitudes</text>
+        <rect x="420" y="215" width="196" height="20" rx="5" fill="#b8860b" fill-opacity=".1"/>
+        <text x="518" y="229" text-anchor="middle" font-size="8" fill="#7a5a0a" font-weight="bold">Best at Poles</text>
+
+        <!-- Bottom summary -->
+        <text x="310" y="252" text-anchor="middle" font-size="8" fill="#888" font-style="italic">All projections introduce some distortion — the choice depends on the region and purpose of the map</text>
+      </svg>
+      <figcaption>Fig 2.4 – Three Main Categories of Map Projections: Cylindrical, Conic, and Planar (Azimuthal)</figcaption>
+    </figure>
+
+    <!-- Part 3: UTM vs. Nepal's MUTM System -->
+    <h2>Part 3: UTM vs. Nepal's MUTM System <span class="exam-ref">Covers: 2071 Bhadra Q2b, 2074 Magh Q2a, 2073 Bhadra Q2b, Q2c, 2076 Bhadra Q2a, 2073 Magh Q2b, 2080 Chaitra Q2, 2074 Bhadra Q6iv, 2075 Magh Q1c</span></h2>
+    <p>This is the most highly tested specific topic in this chapter.</p>
+
+    <h3>1. What is UTM? <span class="exam-ref">Tested in: 2074 Bhadra Q6iv, 2080 Chaitra Q2</span></h3>
+    <p>Universal Transverse Mercator (UTM) is a global projected coordinate system. It divides the Earth into 60 vertical zones, each being 6° of longitude wide.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 230" width="620" height="230" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <linearGradient id="gZ44" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef"/><stop offset="100%" stop-color="#2a90c0"/></linearGradient>
+          <linearGradient id="gZ45" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a0d468"/><stop offset="100%" stop-color="#5a9a20"/></linearGradient>
+          <linearGradient id="gMUTM" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdd66b"/><stop offset="100%" stop-color="#d4980a"/></linearGradient>
+          <filter id="fUTM"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- Title -->
+        <rect x="120" y="0" width="380" height="22" rx="11" fill="#1a3c5e"/>
+        <text x="310" y="15" text-anchor="middle" font-size="10" fill="white" font-weight="bold">UTM Zones &amp; Nepal's MUTM System</text>
+
+        <!-- ═══ LEFT: UTM concept ═══ -->
+        <g transform="translate(8,30)" filter="url(#fUTM)">
+          <rect width="295" height="192" rx="10" fill="#f0f8ff" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="147" y="20" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">UTM: 60 Zones × 6° Each</text>
+
+          <!-- Simplified zone strip -->
+          <rect x="10" y="32" width="275" height="70" rx="4" fill="#e8f0f8" stroke="#ccc" stroke-width=".5"/>
+          <!-- Zone markers -->
+          <rect x="10" y="32" width="46" height="70" fill="#dde8f4" stroke="#bbb" stroke-width=".3"/>
+          <text x="33" y="72" text-anchor="middle" font-size="8" fill="#888">Z42</text>
+          <rect x="56" y="32" width="46" height="70" fill="#d0e0f0" stroke="#bbb" stroke-width=".3"/>
+          <text x="79" y="72" text-anchor="middle" font-size="8" fill="#888">Z43</text>
+
+          <!-- Zone 44 (highlighted) -->
+          <rect x="102" y="32" width="46" height="70" fill="url(#gZ44)" stroke="#2a7cb5" stroke-width="1.5"/>
+          <text x="125" y="58" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Zone</text>
+          <text x="125" y="70" text-anchor="middle" font-size="9" fill="white" font-weight="bold">44N</text>
+          <text x="125" y="84" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.8)">78°–84°E</text>
+
+          <!-- Zone 45 (highlighted) -->
+          <rect x="148" y="32" width="46" height="70" fill="url(#gZ45)" stroke="#3a8a20" stroke-width="1.5"/>
+          <text x="171" y="58" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Zone</text>
+          <text x="171" y="70" text-anchor="middle" font-size="9" fill="white" font-weight="bold">45N</text>
+          <text x="171" y="84" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.8)">84°–90°E</text>
+
+          <rect x="194" y="32" width="46" height="70" fill="#d0e0f0" stroke="#bbb" stroke-width=".3"/>
+          <text x="217" y="72" text-anchor="middle" font-size="8" fill="#888">Z46</text>
+          <rect x="240" y="32" width="45" height="70" fill="#dde8f4" stroke="#bbb" stroke-width=".3"/>
+          <text x="262" y="72" text-anchor="middle" font-size="8" fill="#888">Z47</text>
+
+          <!-- Nepal bracket -->
+          <line x1="102" y1="106" x2="194" y2="106" stroke="#ed5565" stroke-width="2"/>
+          <line x1="102" y1="103" x2="102" y2="109" stroke="#ed5565" stroke-width="1.5"/>
+          <line x1="194" y1="103" x2="194" y2="109" stroke="#ed5565" stroke-width="1.5"/>
+          <text x="148" y="120" text-anchor="middle" font-size="9" fill="#ed5565" font-weight="bold">🇳🇵 Nepal spans 2 zones</text>
+          <text x="148" y="132" text-anchor="middle" font-size="7.5" fill="#555">Divided at 84°E meridian</text>
+
+          <!-- Problem callout -->
+          <rect x="10" y="140" width="275" height="44" rx="6" fill="rgba(237,85,101,.06)" stroke="#ed5565" stroke-width=".5"/>
+          <text x="147" y="155" text-anchor="middle" font-size="8" fill="#a03030" font-weight="600">⚠ Problem: 6° wide zones cause edge distortion</text>
+          <text x="147" y="168" text-anchor="middle" font-size="7.5" fill="#555">Scale error increases away from central meridian</text>
+          <text x="147" y="179" text-anchor="middle" font-size="7.5" fill="#555">Not precise enough for Nepal's cadastral surveys</text>
+        </g>
+
+        <!-- Arrow showing solution -->
+        <text x="316" y="135" text-anchor="middle" font-size="14">→</text>
+        <text x="316" y="150" text-anchor="middle" font-size="7.5" fill="#1a3c5e" font-weight="bold">Solution</text>
+
+        <!-- ═══ RIGHT: MUTM solution ═══ -->
+        <g transform="translate(332,30)" filter="url(#fUTM)">
+          <rect width="280" height="192" rx="10" fill="#fef8e8" stroke="#b8860b" stroke-width="1"/>
+          <text x="140" y="20" text-anchor="middle" font-size="10" fill="#7a5a0a" font-weight="bold">MUTM: 3° Zones (Half Width)</text>
+
+          <!-- Three MUTM zones for Nepal -->
+          <rect x="10" y="32" width="260" height="70" rx="4" fill="#f8f0e0" stroke="#ccc" stroke-width=".5"/>
+
+          <rect x="10" y="32" width="86" height="70" fill="url(#gMUTM)" fill-opacity=".7" stroke="#b8860b" stroke-width="1"/>
+          <text x="53" y="52" text-anchor="middle" font-size="8.5" fill="#5a4008" font-weight="bold">Zone 1</text>
+          <text x="53" y="65" text-anchor="middle" font-size="8" fill="#5a4008">CM: 81°E</text>
+          <text x="53" y="78" text-anchor="middle" font-size="7" fill="#888">Far-West</text>
+          <text x="53" y="90" text-anchor="middle" font-size="6.5" fill="#aaa">79.5°–82.5°E</text>
+
+          <rect x="96" y="32" width="88" height="70" fill="url(#gMUTM)" fill-opacity=".85" stroke="#b8860b" stroke-width="1"/>
+          <text x="140" y="52" text-anchor="middle" font-size="8.5" fill="#5a4008" font-weight="bold">Zone 2</text>
+          <text x="140" y="65" text-anchor="middle" font-size="8" fill="#5a4008">CM: 84°E</text>
+          <text x="140" y="78" text-anchor="middle" font-size="7" fill="#888">Mid &amp; Central</text>
+          <text x="140" y="90" text-anchor="middle" font-size="6.5" fill="#aaa">82.5°–85.5°E</text>
+
+          <rect x="184" y="32" width="86" height="70" fill="url(#gMUTM)" stroke="#b8860b" stroke-width="1"/>
+          <text x="227" y="52" text-anchor="middle" font-size="8.5" fill="#5a4008" font-weight="bold">Zone 3</text>
+          <text x="227" y="65" text-anchor="middle" font-size="8" fill="#5a4008">CM: 87°E</text>
+          <text x="227" y="78" text-anchor="middle" font-size="7" fill="#888">Eastern</text>
+          <text x="227" y="90" text-anchor="middle" font-size="6.5" fill="#aaa">85.5°–88.5°E</text>
+
+          <!-- Nepal bracket -->
+          <line x1="10" y1="106" x2="270" y2="106" stroke="#2a8c2a" stroke-width="2"/>
+          <text x="140" y="120" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">🇳🇵 Nepal: 3 narrow zones</text>
+          <text x="140" y="132" text-anchor="middle" font-size="7.5" fill="#555">3° width = minimal distortion</text>
+
+          <!-- Success callout -->
+          <rect x="10" y="140" width="260" height="44" rx="6" fill="rgba(42,140,42,.06)" stroke="#2a8c2a" stroke-width=".5"/>
+          <text x="140" y="155" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="600">✓ Half the width = near-zero scale error</text>
+          <text x="140" y="168" text-anchor="middle" font-size="7.5" fill="#555">100m on map ≈ 100m on ground</text>
+          <text x="140" y="179" text-anchor="middle" font-size="7.5" fill="#555">Perfect for cadastral &amp; engineering surveys</text>
+        </g>
+      </svg>
+      <figcaption>Fig 2.5 – UTM zones (6° wide, problem) vs. Nepal's MUTM system (3° zones, solution)</figcaption>
+    </figure>
+    <ul>
+      <li><strong>UTM in Nepal:</strong> Nepal falls across two UTM zones: Zone 44N (covers Western Nepal) and Zone 45N (covers Central and Eastern Nepal). The dividing line is the 84°E meridian.</li>
+    </ul>
+
+    <h3>2. Why does Nepal use a different system (MUTM) instead of standard UTM? <span class="exam-ref">Tested in: 2073 Magh Q2b, 2076 Bhadra Q2a</span></h3>
+    <p>While UTM is great globally, a 6° wide zone introduces scale distortion at its extreme eastern and western edges. Nepal is a highly mountainous country that requires extreme precision for cadastral (land ownership) and civil engineering surveys. To eliminate this distortion, Nepal "modified" the UTM system by cutting the zone width in half.</p>
+
+    <h3>3. Why does Nepal's MUTM use a 3° zone instead of 6°? <span class="exam-ref">Tested in: 2073 Bhadra Q2c</span></h3>
+    <p>By narrowing the projection zone from 6° to 3° of longitude, the mapped surface stays much closer to the central meridian line where distortion is mathematically zero. This modification practically eliminates scale distortion, ensuring that a 100-meter pipeline drawn on the GIS map exactly matches 100 meters on the rugged physical ground.</p>
+
+    <h3>4. Parameters of the Nepalese Projection System (MUTM) <span class="exam-ref">Tested in: 2071 Magh Q1b, 2071 Bhadra Q2b, 2074 Magh Q2a, 2073 Bhadra Q2b</span></h3>
+    <p>If asked to list the parameters of Nepal's Modified Universal Transverse Mercator (MUTM) system, you must write down these exact specifications:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 230" width="620" height="230" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <linearGradient id="gMCard" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f8f4e8"/><stop offset="100%" stop-color="#ece0c0"/></linearGradient>
+          <linearGradient id="gMHead" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1a3c5e"/><stop offset="100%" stop-color="#2a6090"/></linearGradient>
+          <filter id="fMP"><feDropShadow dx="1" dy="2" stdDeviation="3" flood-opacity="0.14"/></filter>
+        </defs>
+
+        <!-- Main card -->
+        <g filter="url(#fMP)">
+          <rect x="55" y="4" width="510" height="220" rx="12" fill="url(#gMCard)" stroke="#b8860b" stroke-width="1.5"/>
+          <!-- Header -->
+          <rect x="55" y="4" width="510" height="36" rx="12" fill="url(#gMHead)"/>
+          <rect x="55" y="28" width="510" height="12" fill="url(#gMHead)"/>
+          <text x="310" y="26" text-anchor="middle" font-size="13" fill="white" font-weight="bold">🇳🇵 Nepal MUTM — Official Parameters</text>
+
+          <!-- Parameter rows -->
+          <rect x="65" y="48" width="490" height="24" rx="4" fill="rgba(26,60,94,.05)"/>
+          <text x="80" y="64" font-size="9" fill="#1a3c5e" font-weight="bold">Datum:</text>
+          <text x="220" y="64" font-size="9.5" fill="#333">Everest 1830</text>
+          <text x="420" y="64" font-size="7.5" fill="#888" font-style="italic">Local Indian subcontinent ellipsoid</text>
+
+          <rect x="65" y="76" width="490" height="24" rx="4" fill="white" fill-opacity=".5"/>
+          <text x="80" y="92" font-size="9" fill="#1a3c5e" font-weight="bold">Projection:</text>
+          <text x="220" y="92" font-size="9.5" fill="#333">Transverse Mercator</text>
+          <text x="420" y="92" font-size="7.5" fill="#888" font-style="italic">Cylinder tangent along meridian</text>
+
+          <rect x="65" y="104" width="490" height="24" rx="4" fill="rgba(26,60,94,.05)"/>
+          <text x="80" y="120" font-size="9" fill="#1a3c5e" font-weight="bold">Zone Width:</text>
+          <text x="220" y="120" font-size="9.5" fill="#ed5565" font-weight="bold">3° Longitude</text>
+          <text x="420" y="120" font-size="7.5" fill="#888" font-style="italic">Half of standard UTM (6°)</text>
+
+          <rect x="65" y="132" width="490" height="24" rx="4" fill="white" fill-opacity=".5"/>
+          <text x="80" y="148" font-size="9" fill="#1a3c5e" font-weight="bold">False Easting:</text>
+          <text x="220" y="148" font-size="9.5" fill="#333">500,000 m</text>
+          <text x="420" y="148" font-size="7.5" fill="#888" font-style="italic">Prevents negative X coordinates</text>
+
+          <rect x="65" y="160" width="490" height="24" rx="4" fill="rgba(26,60,94,.05)"/>
+          <text x="80" y="176" font-size="9" fill="#1a3c5e" font-weight="bold">False Northing:</text>
+          <text x="220" y="176" font-size="9.5" fill="#333">0 m</text>
+          <text x="420" y="176" font-size="7.5" fill="#888" font-style="italic">Nepal is in Northern Hemisphere</text>
+
+          <rect x="65" y="188" width="490" height="24" rx="4" fill="white" fill-opacity=".5"/>
+          <text x="80" y="204" font-size="9" fill="#1a3c5e" font-weight="bold">Scale Factor:</text>
+          <text x="220" y="204" font-size="9.5" fill="#2a8c2a" font-weight="bold">0.9999</text>
+          <text x="420" y="204" font-size="7.5" fill="#888" font-style="italic">Near-unity at central meridian</text>
+        </g>
+
+        <!-- Central meridians badge -->
+        <rect x="65" y="216" width="490" height="1" fill="none"/>
+      </svg>
+      <figcaption>Fig 2.6 – Nepal MUTM Official Parameters: Central Meridians at 81°E (Far-West), 84°E (Mid/Central), 87°E (East)</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Datum:</strong> Everest 1830</li>
+      <li><strong>Projection:</strong> Transverse Mercator</li>
+      <li><strong>Zone Width:</strong> 3° Longitude</li>
+      <li><strong>False Easting:</strong> 500,000 meters (To prevent negative X coordinates)</li>
+      <li><strong>False Northing:</strong> 0 meters (Since Nepal is in the Northern Hemisphere)</li>
+      <li><strong>Scale Factor at Central Meridian:</strong> 0.9999</li>
+      <li><strong>Central Meridians Used:</strong>
+        <ul>
+          <li>81°E (For Far-Western Nepal)</li>
+          <li>84°E (For Mid-Western &amp; Central Nepal)</li>
+          <li>87°E (For Eastern Nepal)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- 2.2 Maps and Their Characteristics (Scale and Abstraction) -->
+    <h2>2.2 Maps and Their Characteristics (Scale and Abstraction)</h2>
+
+    <h3>1. What is Scale? Types of Scales with Examples (6 Marks) <span class="exam-ref">Tested in: 2071 Bhadra Q10</span></h3>
+    <p>To secure the full 6 marks, you must define scale and explicitly list the three ways it is represented on a map.</p>
+    <ul>
+      <li><strong>Definition:</strong> Map scale is the mathematical ratio between a distance measured on the map and the corresponding actual distance on the surface of the Earth. It tells the user how much the real world has been "shrunk" to fit on the paper.</li>
+    </ul>
+
+    <h4>Type 1: Representative Fraction (RF) or Ratio Scale</h4>
+    <ul>
+      <li><strong>Concept:</strong> A unitless fraction or ratio. Whatever unit you measure with on the map is the same unit on the ground.</li>
+      <li><strong>Example:</strong> 1:50,000. (This means 1 centimeter on the map equals 50,000 centimeters on the ground, or 1 inch equals 50,000 inches).</li>
+    </ul>
+
+    <h4>Type 2: Verbal Scale (Word Statement)</h4>
+    <ul>
+      <li><strong>Concept:</strong> A simple text sentence that equates a specific map unit to a different, more understandable ground unit.</li>
+      <li><strong>Example:</strong> "One centimeter equals one kilometer" or "One inch equals one mile."</li>
+    </ul>
+
+    <h4>Type 3: Graphical Scale (Bar Scale)</h4>
+    <ul>
+      <li><strong>Concept:</strong> A visual line or bar drawn on the map, divided into equally spaced segments marked with real-world distances.</li>
+      <li><strong>Example:</strong></li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 120" width="620" height="120" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <linearGradient id="gBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3a3a3a"/><stop offset="100%" stop-color="#1a1a1a"/></linearGradient>
+          <filter id="fBar"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+        </defs>
+
+        <!-- Scale bar background -->
+        <rect x="20" y="8" width="580" height="68" rx="8" fill="#f8f8f8" stroke="#ddd" stroke-width=".5" filter="url(#fBar)"/>
+
+        <!-- Title -->
+        <text x="310" y="24" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">Graphical (Bar) Scale — 1:100,000</text>
+
+        <!-- Main bar -->
+        <rect x="60" y="34" width="80" height="20" rx="1" fill="url(#gBar)"/>
+        <rect x="140" y="34" width="80" height="20" rx="1" fill="#fff" stroke="#2c2c2c" stroke-width="1"/>
+        <rect x="220" y="34" width="80" height="20" rx="1" fill="url(#gBar)"/>
+        <rect x="300" y="34" width="80" height="20" rx="1" fill="#fff" stroke="#2c2c2c" stroke-width="1"/>
+        <rect x="380" y="34" width="80" height="20" rx="1" fill="url(#gBar)"/>
+        <rect x="460" y="34" width="80" height="20" rx="1" fill="#fff" stroke="#2c2c2c" stroke-width="1"/>
+        <!-- Tick marks -->
+        <line x1="60" y1="30" x2="60" y2="58" stroke="#2c2c2c" stroke-width="1.2"/>
+        <line x1="140" y1="32" x2="140" y2="56" stroke="#2c2c2c" stroke-width=".8"/>
+        <line x1="220" y1="32" x2="220" y2="56" stroke="#2c2c2c" stroke-width=".8"/>
+        <line x1="300" y1="32" x2="300" y2="56" stroke="#2c2c2c" stroke-width=".8"/>
+        <line x1="380" y1="32" x2="380" y2="56" stroke="#2c2c2c" stroke-width=".8"/>
+        <line x1="460" y1="32" x2="460" y2="56" stroke="#2c2c2c" stroke-width=".8"/>
+        <line x1="540" y1="30" x2="540" y2="58" stroke="#2c2c2c" stroke-width="1.2"/>
+        <!-- Labels -->
+        <text x="60" y="70" text-anchor="middle" font-size="10" fill="#2c2c2c">0</text>
+        <text x="140" y="70" text-anchor="middle" font-size="10" fill="#2c2c2c">5</text>
+        <text x="220" y="70" text-anchor="middle" font-size="10" fill="#2c2c2c">10</text>
+        <text x="300" y="70" text-anchor="middle" font-size="10" fill="#2c2c2c">15</text>
+        <text x="380" y="70" text-anchor="middle" font-size="10" fill="#2c2c2c">20</text>
+        <text x="460" y="70" text-anchor="middle" font-size="10" fill="#2c2c2c">25</text>
+        <text x="540" y="70" text-anchor="middle" font-size="10" fill="#2c2c2c">30</text>
+        <text x="560" y="70" font-size="10" fill="#6b6b6b" font-style="italic">km</text>
+
+        <!-- Advantage note -->
+        <rect x="120" y="82" width="380" height="22" rx="6" fill="rgba(42,140,42,.06)"/>
+        <text x="310" y="97" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="600">✓ Survives photocopying — resizes with the map, unlike RF scale</text>
+      </svg>
+      <figcaption>Fig 2.7 – Graphical (Bar) Scale: remains valid even when the map is enlarged or reduced</figcaption>
+    </figure></li>
+      <li><strong>Major Advantage:</strong> If a printed map is photocopied and enlarged or shrunk, the RF scale becomes completely invalid, but the graphical scale changes size with the map and remains mathematically correct.</li>
+    </ul>
+
+    <h3>2. Map is a 2D model of reality. Explain this with examples. <span class="exam-ref">Tested in: 2082 Shrawan</span></h3>
+    <p>A map is not a perfect photograph of the Earth; it is a highly simplified, 2D mathematical model. You must explain this using the concepts of Selection and Abstraction:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 200" width="620" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <filter id="fAbs"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <linearGradient id="gReal" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f0f8"/><stop offset="100%" stop-color="#c8d8e8"/></linearGradient>
+          <linearGradient id="gMap" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef4e0"/><stop offset="100%" stop-color="#f0dbb0"/></linearGradient>
+          <marker id="aAbs" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+        </defs>
+
+        <rect x="120" y="0" width="380" height="22" rx="11" fill="#1a3c5e"/>
+        <text x="310" y="15" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Map Abstraction: 3D Reality → 2D Symbols</text>
+
+        <!-- REAL WORLD side -->
+        <g transform="translate(8,28)" filter="url(#fAbs)">
+          <rect width="270" height="165" rx="10" fill="url(#gReal)" stroke="#1a3c5e" stroke-width="1"/>
+          <rect x="60" y="4" width="150" height="20" rx="10" fill="#1a3c5e"/>
+          <text x="135" y="18" text-anchor="middle" font-size="9" fill="white" font-weight="bold">3D Real World</text>
+
+          <!-- Hospital building -->
+          <rect x="20" y="38" width="50" height="40" rx="3" fill="#d0d8e0" stroke="#888" stroke-width="1"/>
+          <rect x="25" y="42" width="12" height="12" rx="1" fill="#a0c8e0" stroke="#888" stroke-width=".5"/>
+          <rect x="42" y="42" width="12" height="12" rx="1" fill="#a0c8e0" stroke="#888" stroke-width=".5"/>
+          <rect x="25" y="58" width="12" height="12" rx="1" fill="#a0c8e0" stroke="#888" stroke-width=".5"/>
+          <rect x="42" y="58" width="12" height="12" rx="1" fill="#a0c8e0" stroke="#888" stroke-width=".5"/>
+          <rect x="33" y="65" width="10" height="13" rx="1" fill="#8b6914"/>
+          <text x="38" y="32" text-anchor="middle" font-size="8" fill="#555" font-weight="bold"></text>
+          <text x="45" y="92" text-anchor="middle" font-size="7" fill="#555">3D Hospital</text>
+          <text x="45" y="102" text-anchor="middle" font-size="6.5" fill="#888">Multi-story</text>
+
+          <!-- River -->
+          <path d="M95,35 Q110,50 100,65 Q90,80 105,95 Q115,108 100,120" fill="none" stroke="#4fc1e9" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+          <path d="M95,35 Q110,50 100,65 Q90,80 105,95 Q115,108 100,120" fill="none" stroke="#2080b0" stroke-width="2" stroke-linecap="round"/>
+          <text x="125" y="75" font-size="7" fill="#2080b0" font-weight="bold">3D River</text>
+          <text x="125" y="85" font-size="6.5" fill="#888">Depth, flow</text>
+
+          <!-- Mountain -->
+          <polygon points="175,108 210,42 245,108" fill="#8cc63f" fill-opacity=".5" stroke="#5a8a20" stroke-width="1.5"/>
+          <polygon points="195,108 210,60 225,108" fill="#a0d468" fill-opacity=".5" stroke="#5a8a20" stroke-width=".5"/>
+          <circle cx="210" cy="50" r="6" fill="white" fill-opacity=".6"/>
+          <text x="210" y="122" text-anchor="middle" font-size="7" fill="#555" font-weight="bold">3D Mountain</text>
+          <text x="210" y="132" text-anchor="middle" font-size="6.5" fill="#888">Elevation, terrain</text>
+
+          <!-- Footer -->
+          <rect x="10" y="140" width="250" height="18" rx="4" fill="rgba(26,60,94,.06)"/>
+          <text x="135" y="153" text-anchor="middle" font-size="7.5" fill="#1a3c5e" font-weight="600">Complex, detailed, 3-dimensional</text>
+        </g>
+
+        <!-- Arrow -->
+        <line x1="286" y1="112" x2="338" y2="112" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#aAbs)"/>
+        <text x="312" y="105" text-anchor="middle" font-size="7.5" fill="#555" font-weight="bold">Abstract</text>
+        <text x="312" y="125" text-anchor="middle" font-size="7.5" fill="#555" font-weight="bold">Simplify</text>
+
+        <!-- MAP side -->
+        <g transform="translate(345,28)" filter="url(#fAbs)">
+          <rect width="270" height="165" rx="10" fill="url(#gMap)" stroke="#b8860b" stroke-width="1"/>
+          <rect x="60" y="4" width="150" height="20" rx="10" fill="#b8860b"/>
+          <text x="135" y="18" text-anchor="middle" font-size="9" fill="white" font-weight="bold">2D Map Symbols</text>
+
+          <!-- Point symbol -->
+          <circle cx="45" cy="65" r="10" fill="#ed5565" stroke="white" stroke-width="2"/>
+          <text x="45" y="69" text-anchor="middle" font-size="12" fill="white" font-weight="bold">+</text>
+          <text x="45" y="92" text-anchor="middle" font-size="8" fill="#a03030" font-weight="bold">Point</text>
+          <text x="45" y="102" text-anchor="middle" font-size="6.5" fill="#888">Hospital symbol</text>
+
+          <!-- Line symbol -->
+          <line x1="95" y1="45" x2="95" y2="108" stroke="#2080b0" stroke-width="3" stroke-linecap="round"/>
+          <text x="120" y="75" font-size="8" fill="#2080b0" font-weight="bold">Line</text>
+          <text x="120" y="85" font-size="6.5" fill="#888">River center</text>
+
+          <!-- Polygon (contours) -->
+          <ellipse cx="200" cy="70" rx="40" ry="20" fill="none" stroke="#5a8a20" stroke-width="1.5"/>
+          <ellipse cx="200" cy="70" rx="28" ry="14" fill="none" stroke="#5a8a20" stroke-width="1.2"/>
+          <ellipse cx="200" cy="70" rx="16" ry="8" fill="none" stroke="#5a8a20" stroke-width=".8"/>
+          <text x="200" y="103" text-anchor="middle" font-size="8" fill="#5a8a20" font-weight="bold">Contours</text>
+          <text x="200" y="113" text-anchor="middle" font-size="6.5" fill="#888">Flat 2D lines</text>
+
+          <!-- Footer -->
+          <rect x="10" y="140" width="250" height="18" rx="4" fill="rgba(184,134,11,.06)"/>
+          <text x="135" y="153" text-anchor="middle" font-size="7.5" fill="#7a5a0a" font-weight="600">Simple, selected, 2-dimensional</text>
+        </g>
+      </svg>
+      <figcaption>Fig 2.8 – Map Abstraction: 3D real-world objects simplified into 2D Points, Lines, and Polygons</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Selection:</strong> A mapmaker cannot show every single rock, tree, and house, or the map would be too cluttered to read. They select only the features relevant to the map's theme.</li>
+      <li><strong>Abstraction (Dimensional Reduction):</strong> Complex 3D real-world objects are flattened into simple 2D geometric symbols (Points, Lines, and Polygons).</li>
+      <li><strong>The Example:</strong> A sprawling, multi-story 3D hospital building is abstracted into a single 2D point (a red cross symbol). A complex 3D river with varying depths and flow volumes is abstracted into a single, flat 2D blue line. A massive 3D mountain is reduced to flat 2D contour lines.</li>
+    </ul>
+
+    <!-- 2.6 Precision and Error in GIS -->
+    <h2>2.6 Precision and Error in GIS</h2>
+
+    <h3>1. Accuracy vs. Precision in GIS (3 to 5 Marks) <span class="exam-ref">Tested in: 2076 Bhadra Q2b, 2074 Magh Q2b</span></h3>
+    <p>Examiners love this question because engineers must know the difference. They are not the same thing!</p>
+    <ul>
+      <li><strong>Accuracy:</strong> This refers to the degree of truth. It is how closely a measured GIS coordinate matches the actual, true location of that object in the real physical world.
+        <ul><li><strong>Example:</strong> If a manhole is physically located exactly at coordinate X = 100, Y = 100, and your GPS records it at X = 100.1, Y = 100.1, your data is highly accurate.</li></ul>
+      </li>
+      <li><strong>Precision:</strong> This refers to the degree of exactness, detail, or repeatability. It is usually dictated by how many decimal places the system records, regardless of whether those numbers are actually correct.
+        <ul><li><strong>Example:</strong> If you use a cheap smartphone GPS and it records the manhole's location as X = 542.123456, Y = 890.123456, the data is highly precise (six decimal places of exactness!), but it is completely inaccurate because it is hundreds of meters away from the true location.</li></ul>
+      </li>
+    </ul>
+    <p>(For the exam, draw the classic "bullseye" target. Draw one target with dots tightly clustered together but far from the center—label it "High Precision, Low Accuracy". Draw another target with dots scattered widely but evenly around the center bullseye—label it "Low Precision, High Accuracy".)</p>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+          <defs>
+            <radialGradient id="gTarget1" cx="50%" cy="50%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#f0ece4"/></radialGradient>
+            <filter id="fT1"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+          </defs>
+          <!-- Card background -->
+          <rect x="2" y="2" width="276" height="256" rx="10" fill="#fff8f0" stroke="#ed5565" stroke-width="1" filter="url(#fT1)"/>
+          <rect x="50" y="6" width="180" height="22" rx="11" fill="#ed5565"/>
+          <text x="140" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">High Precision, Low Accuracy</text>
+
+          <!-- Target rings -->
+          <circle cx="140" cy="120" r="75" fill="url(#gTarget1)" stroke="#d4cfc5" stroke-width="1"/>
+          <circle cx="140" cy="120" r="58" fill="none" stroke="#d4cfc5" stroke-width=".7"/>
+          <circle cx="140" cy="120" r="40" fill="none" stroke="#d4cfc5" stroke-width=".7"/>
+          <circle cx="140" cy="120" r="22" fill="none" stroke="#d4cfc5" stroke-width=".7"/>
+          <circle cx="140" cy="120" r="6" fill="#c83848" stroke="#8b2500" stroke-width="1"/>
+          <text x="148" y="118" font-size="6" fill="#c83848">TRUE</text>
+
+          <!-- Dots clustered but off-center (top-left) — TIGHT cluster = HIGH PRECISION -->
+          <circle cx="84" cy="68" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="92" cy="62" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="80" cy="76" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="90" cy="72" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="78" cy="66" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="88" cy="78" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+
+          <!-- Annotation -->
+          <line x1="95" y1="80" x2="135" y2="115" stroke="#ed5565" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="140" y="160" text-anchor="middle" font-size="7.5" fill="#ed5565" font-weight="bold">← Far from true center</text>
+
+          <!-- Description -->
+          <rect x="12" y="200" width="256" height="48" rx="6" fill="rgba(237,85,101,.06)"/>
+          <text x="140" y="215" text-anchor="middle" font-size="8" fill="#a03030" font-weight="600">Repeatable but WRONG</text>
+          <text x="140" y="228" text-anchor="middle" font-size="7.5" fill="#555">Measurements cluster tightly together</text>
+          <text x="140" y="240" text-anchor="middle" font-size="7.5" fill="#555">but are far from the actual location</text>
+        </svg>
+      </figure>
+      <figure class="figure">
+        <svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+          <defs>
+            <radialGradient id="gTarget2" cx="50%" cy="50%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#f0ece4"/></radialGradient>
+            <filter id="fT2"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+          </defs>
+          <rect x="2" y="2" width="276" height="256" rx="10" fill="#f0fff0" stroke="#2a8c2a" stroke-width="1" filter="url(#fT2)"/>
+          <rect x="50" y="6" width="180" height="22" rx="11" fill="#2a8c2a"/>
+          <text x="140" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Low Precision, High Accuracy</text>
+
+          <!-- Target rings -->
+          <circle cx="140" cy="120" r="75" fill="url(#gTarget2)" stroke="#d4cfc5" stroke-width="1"/>
+          <circle cx="140" cy="120" r="58" fill="none" stroke="#d4cfc5" stroke-width=".7"/>
+          <circle cx="140" cy="120" r="40" fill="none" stroke="#d4cfc5" stroke-width=".7"/>
+          <circle cx="140" cy="120" r="22" fill="none" stroke="#d4cfc5" stroke-width=".7"/>
+          <circle cx="140" cy="120" r="6" fill="#2a8c2a" stroke="#1a5c1a" stroke-width="1"/>
+          <text x="148" y="118" font-size="6" fill="#2a8c2a">TRUE</text>
+
+          <!-- Dots scattered around center — SPREAD = LOW PRECISION but near center = HIGH ACCURACY -->
+          <circle cx="126" cy="92" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="162" cy="135" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="118" cy="132" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="155" cy="100" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="132" cy="148" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+          <circle cx="148" cy="112" r="6" fill="#1a3c5e" stroke="#0e2a44" stroke-width=".8"/>
+
+          <!-- Annotation -->
+          <text x="140" y="160" text-anchor="middle" font-size="7.5" fill="#2a8c2a" font-weight="bold">→ Centered around true position</text>
+
+          <!-- Description -->
+          <rect x="12" y="200" width="256" height="48" rx="6" fill="rgba(42,140,42,.06)"/>
+          <text x="140" y="215" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="600">Correct on average but SCATTERED</text>
+          <text x="140" y="228" text-anchor="middle" font-size="7.5" fill="#555">Measurements spread around but</text>
+          <text x="140" y="240" text-anchor="middle" font-size="7.5" fill="#555">average is close to the true location</text>
+        </svg>
+      </figure>
+    </div>
+
+    <h3>2. Errors in GIS data made through "Actual Changes" (Temporal Error) <span class="exam-ref">Tested in: 2075 Bhadra Q2c</span></h3>
+    <p>This question asks about a very specific type of error: Temporal (Time-based) Error.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 195" width="620" height="195" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <linearGradient id="gTempA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f0f8"/><stop offset="100%" stop-color="#c0d8f0"/></linearGradient>
+          <linearGradient id="gTempB" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff0f0"/><stop offset="100%" stop-color="#fcd8d8"/></linearGradient>
+          <filter id="fTemp"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+          <marker id="aTmp" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#ed5565"/></marker>
+        </defs>
+
+        <!-- Title -->
+        <rect x="140" y="0" width="340" height="22" rx="11" fill="#ed5565"/>
+        <text x="310" y="15" text-anchor="middle" font-size="10" fill="white" font-weight="bold">⏱Temporal Error: Reality Changes, GIS Doesn't</text>
+
+        <!-- ═══ LEFT: GIS Database (static snapshot) ═══ -->
+        <g transform="translate(8,30)" filter="url(#fTemp)">
+          <rect width="250" height="158" rx="10" fill="url(#gTempA)" stroke="#1a3c5e" stroke-width="1"/>
+          <rect x="42" y="6" width="165" height="22" rx="11" fill="#1a3c5e"/>
+          <text x="124" y="21" text-anchor="middle" font-size="9" fill="white" font-weight="bold">GIS Database (2020)</text>
+
+          <!-- Frozen/static representation -->
+          <rect x="15" y="35" width="220" height="52" rx="6" fill="white" fill-opacity=".7" stroke="#1a3c5e" stroke-width=".5"/>
+          <text x="25" y="50" font-size="8" fill="#1a3c5e" font-weight="bold">River shapefile:</text>
+          <text x="125" y="50" font-size="8" fill="#555">Koshi flows NE ✓ (correct in 2020)</text>
+          <text x="25" y="68" font-size="8" fill="#1a3c5e" font-weight="bold">Land use raster:</text>
+          <text x="125" y="68" font-size="8" fill="#555">"Dense Forest" zone ✓ (correct in 2020)</text>
+          <text x="25" y="82" font-size="8" fill="#1a3c5e" font-weight="bold">Road network:</text>
+          <text x="125" y="82" font-size="8" fill="#555">No highway through sector</text>
+
+          <!-- Frozen clock -->
+          <circle cx="125" cy="118" r="16" fill="white" stroke="#1a3c5e" stroke-width="1.5"/>
+          <line x1="125" y1="118" x2="125" y2="107" stroke="#1a3c5e" stroke-width="1.5"/>
+          <line x1="125" y1="118" x2="133" y2="118" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="125" y="145" text-anchor="middle" font-size="7.5" fill="#1a3c5e" font-weight="bold">❄ Static snapshot — frozen in time</text>
+        </g>
+
+        <!-- Arrow showing time passing -->
+        <line x1="265" y1="110" x2="358" y2="110" stroke="#ed5565" stroke-width="2.5" marker-end="url(#aTmp)"/>
+        <text x="310" y="100" text-anchor="middle" font-size="9" fill="#ed5565" font-weight="bold">5 years</text>
+        <text x="310" y="130" text-anchor="middle" font-size="7.5" fill="#888">Reality changes →</text>
+        <text x="310" y="142" text-anchor="middle" font-size="7.5" fill="#888">GIS stays old</text>
+
+        <!-- ═══ RIGHT: Real World (changed) ═══ -->
+        <g transform="translate(365,30)" filter="url(#fTemp)">
+          <rect width="250" height="158" rx="10" fill="url(#gTempB)" stroke="#ed5565" stroke-width="1"/>
+          <rect x="42" y="6" width="165" height="22" rx="11" fill="#ed5565"/>
+          <text x="124" y="21" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Real World (2025)</text>
+
+          <!-- Changed reality -->
+          <rect x="15" y="35" width="220" height="52" rx="6" fill="white" fill-opacity=".7" stroke="#ed5565" stroke-width=".5"/>
+          <text x="25" y="50" font-size="8" fill="#a03030" font-weight="bold">River:</text>
+          <text x="70" y="50" font-size="8" fill="#ed5565">Monsoon flood shifted course! ✗</text>
+          <text x="25" y="68" font-size="8" fill="#a03030" font-weight="bold">Land use:</text>
+          <text x="80" y="68" font-size="8" fill="#ed5565">Highway built through forest! ✗</text>
+          <text x="25" y="82" font-size="8" fill="#a03030" font-weight="bold">Roads:</text>
+          <text x="70" y="82" font-size="8" fill="#ed5565">New highway exists! ✗</text>
+
+          <!-- Warning -->
+          <rect x="15" y="95" width="220" height="52" rx="6" fill="rgba(237,85,101,.08)" stroke="#ed5565" stroke-width=".5"/>
+          <text x="125" y="112" text-anchor="middle" font-size="8.5" fill="#a03030" font-weight="bold">⚠ GIS analysis is now WRONG</text>
+          <text x="125" y="126" text-anchor="middle" font-size="7.5" fill="#555">Using outdated data for 2025 planning</text>
+          <text x="125" y="138" text-anchor="middle" font-size="7.5" fill="#555">leads to incorrect decisions</text>
+        </g>
+      </svg>
+      <figcaption>Fig 2.10 – Temporal Error: the physical world changes but the GIS database remains a frozen static snapshot</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Concept:</strong> The physical world is constantly changing, but a GIS database is a static snapshot of the exact moment the data was collected. If reality changes, the GIS data instantly contains an error unless it is manually updated.</li>
+      <li><strong>Examples to write down:</strong>
+        <ol>
+          <li>A massive monsoon flood causes the Koshi River to physically change its course. If your GIS uses a river shapefile from three years ago, your analysis will be completely wrong because of this "actual change."</li>
+          <li>A new highway is constructed through a forest. Your five-year-old Land Use raster will still show that area as "Dense Forest," creating a major error in any environmental impact calculation.</li>
+        </ol>
+      </li>
+    </ul>
+
+    <p class="footer-note">End of Chapter 2 – GIS and Maps</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

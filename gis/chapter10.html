@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 10 – Global Positioning System (GPS)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 10</div>
+    <h1>Global Positioning System (GPS)</h1>
+  </header>
+  <main>
+
+    <!-- 1. The Three Main Components (Segments) of GPS -->
+    <h2>1. The Three Main Components (Segments) of GPS <span class="exam-ref">Covers: 2071 Magh Q5a, 2076 Bhadra Q4a, 2075 Bhadra Q10a, 2082 Shrawan</span></h2>
+    <p>The Global Positioning System consists of three interactive segments that work together to provide location, velocity, and timing information anywhere on Earth.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 225" width="520" height="225" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a10r" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <linearGradient id="gSp" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4fc1e9"/><stop offset="100%" stop-color="#3498db"/></linearGradient>
+          <linearGradient id="gCt" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a0d468"/><stop offset="100%" stop-color="#7cb342"/></linearGradient>
+          <linearGradient id="gUs" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f6bb42"/><stop offset="100%" stop-color="#e09820"/></linearGradient>
+          <filter id="f10"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.14"/></filter>
+        </defs>
+        <!-- Space Segment -->
+        <rect x="175" y="5" width="170" height="55" rx="8" fill="url(#gSp)" stroke="#1a3c5e" stroke-width="1.2" filter="url(#f10)"/>
+        <text x="260" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Space Segment</text>
+        <text x="260" y="42" text-anchor="middle" font-size="9" fill="#e8eef4">24+ NAVSTAR Satellites</text>
+        <text x="260" y="54" text-anchor="middle" font-size="7" fill="#e8eef4">6 orbital planes · ~20,200 km altitude</text>
+        <!-- Control Segment -->
+        <rect x="15" y="148" width="170" height="55" rx="8" fill="url(#gCt)" stroke="#2a8c2a" stroke-width="1.2" filter="url(#f10)"/>
+        <text x="100" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Control Segment</text>
+        <text x="100" y="186" text-anchor="middle" font-size="9" fill="#e8f0e8">Ground Stations &amp; MCS</text>
+        <text x="100" y="198" text-anchor="middle" font-size="7" fill="#e8f0e8">Monitor • Calculate • Upload</text>
+        <!-- User Segment -->
+        <rect x="335" y="148" width="170" height="55" rx="8" fill="url(#gUs)" stroke="#b8860b" stroke-width="1.2" filter="url(#f10)"/>
+        <text x="420" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="white">User Segment</text>
+        <text x="420" y="186" text-anchor="middle" font-size="9" fill="#fff5e0">GPS Receivers (passive)</text>
+        <text x="420" y="198" text-anchor="middle" font-size="7" fill="#fff5e0">Phone • Survey rover • Navigation</text>
+        <!-- Space to User: broadcast signal -->
+        <line x1="315" y1="60" x2="395" y2="145" stroke="#1a3c5e" stroke-width="1.8" marker-end="url(#a10r)"/>
+        <text x="370" y="96" text-anchor="middle" font-size="8" fill="#1a3c5e" transform="rotate(40,370,96)">Signal broadcast</text>
+        <!-- Space to Control: monitoring -->
+        <line x1="205" y1="60" x2="125" y2="145" stroke="#555" stroke-width="1.5" marker-end="url(#a10r)"/>
+        <text x="145" y="96" text-anchor="middle" font-size="8" fill="#555" transform="rotate(-40,145,96)">Monitor signals</text>
+        <!-- Control to Space: corrections -->
+        <line x1="145" y1="148" x2="225" y2="63" stroke="#ed5565" stroke-width="1.5" marker-end="url(#a10r)" stroke-dasharray="5,3"/>
+        <text x="172" y="112" text-anchor="middle" font-size="7" fill="#ed5565" transform="rotate(-40,172,112)">⬆ Upload corrections</text>
+        <!-- Control to User: nothing direct -->
+        <line x1="185" y1="175" x2="333" y2="175" stroke="#ccc" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="260" y="170" text-anchor="middle" font-size="7" fill="#999">❌ No direct link</text>
+        <!-- Bottom note -->
+        <text x="260" y="220" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Minimum 4 satellites visible from any point on Earth at all times</text>
+      </svg>
+      <figcaption>Fig 10.1 – The Three Segments of GPS: Space, Control, and User</figcaption>
+    </figure>
+
+    <h3>A. The Space Segment</h3>
+    <ul>
+      <li><strong>What it is:</strong> A constellation of orbiting satellites (e.g., the US NAVSTAR system typically consists of a minimum of 24 active satellites) arranged in specific orbital planes around the Earth.</li>
+      <li><strong>Function/Role:</strong>
+        <ul>
+          <li>To continuously broadcast radio signals toward Earth. These signals contain the exact time the signal was transmitted (from highly accurate atomic clocks onboard) and the exact orbital position of the satellite at that time.</li>
+          <li>They ensure that at least four satellites are visible from any unobstructed point on Earth at any given time, which is the mathematical minimum required to calculate a 3D position (X, Y, Z) and correct clock errors.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>B. The Control Segment</h3>
+    <ul>
+      <li><strong>What it is:</strong> A global network of ground-based facilities, consisting of a Master Control Station, backup control stations, monitor stations, and ground antennas.</li>
+      <li><strong>Function/Role:</strong>
+        <ul>
+          <li><strong>Monitor Stations:</strong> Passively track the satellites in orbit and collect their signals, sending the data back to the Master Control Station.</li>
+          <li><strong>Master Control Station:</strong> Calculates exact orbital paths (ephemeris data) and clock synchronizations. It acts as the "brain" of the system.</li>
+          <li><strong>Ground Antennas:</strong> Upload these calculated corrections and navigational data updates back to the satellites to ensure the signals they broadcast remain perfectly accurate.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>C. The User Segment</h3>
+    <ul>
+      <li><strong>What it is:</strong> The GPS receivers and the user community. This ranges from a standard smartphone chip to a high-precision survey-grade Differential GPS (DGPS) unit.</li>
+      <li><strong>Function/Role:</strong>
+        <ul>
+          <li>The receiver's only job is to passively receive the signals broadcast by the space segment (it does not transmit anything back).</li>
+          <li>It calculates the distance (pseudorange) to each visible satellite based on how long the radio signal took to arrive.</li>
+          <li>By locking onto at least four satellites, the receiver performs a mathematical process called Trilateration to pinpoint its exact latitude, longitude, and elevation.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- 2. Advantages and Disadvantages of GPS -->
+    <h2>2. Advantages and Disadvantages of GPS (3 Marks) <span class="exam-ref">Covers: 2071 Magh Q6d</span></h2>
+    <p>If asked for short notes on the pros and cons, use these distinct technical and practical points.</p>
+
+    <h3>Advantages:</h3>
+    <ol>
+      <li><strong>Global &amp; Continuous Availability:</strong> It provides highly accurate positioning, navigation, and timing (PNT) data 24 hours a day, 7 days a week, anywhere in the world.</li>
+      <li><strong>Weather Independent:</strong> Unlike traditional optical surveying (like using a Total Station), GPS radio waves can penetrate clouds, rain, and snow, allowing for work in any weather condition.</li>
+      <li><strong>High Precision for Engineering:</strong> Advanced techniques like DGPS or RTK (Real-Time Kinematic) can achieve sub-centimeter accuracy, revolutionizing highway alignment, dam monitoring, and topographical surveying.</li>
+      <li><strong>Unlimited Users:</strong> Because the system is one-way (satellites broadcast, users only receive), an infinite number of people can use the system simultaneously without overloading it.</li>
+    </ol>
+
+    <h3>Disadvantages:</h3>
+    <ol>
+      <li><strong>Requires Clear Line of Sight:</strong> GPS signals cannot easily penetrate solid objects. It fails or severely degrades indoors, underground, in dense forests (canopy effect), or in cities with tall buildings (the "urban canyon" effect).</li>
+      <li><strong>Susceptible to Interference:</strong> The radio signals from the satellites are very weak by the time they reach Earth. They can be easily disrupted by atmospheric interference (ionospheric delays), intentional jamming, or spoofing.</li>
+      <li><strong>Battery Dependency:</strong> User receivers require continuous power to track satellites and process data, which can be a limitation during remote field surveys.</li>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s107"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">GPS: Advantages vs Disadvantages</text>
+          <!-- Advantages -->
+          <g filter="url(#s107)">
+            <rect x="15" y="30" width="325" height="160" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1.2"/>
+            <text x="177" y="52" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Advantages</text>
+            <line x1="30" y1="58" x2="325" y2="58" stroke="#2d7d46" stroke-width="0.5" opacity="0.4"/>
+            <text x="35" y="78" font-size="9" fill="#555">&#x2705; 24/7 global coverage, any weather</text>
+            <text x="35" y="98" font-size="9" fill="#555">&#x2705; Sub-cm accuracy with DGPS/RTK</text>
+            <text x="35" y="118" font-size="9" fill="#555">&#x2705; Unlimited users (passive receivers)</text>
+            <text x="35" y="138" font-size="9" fill="#555">&#x2705; No intervisibility required (vs Total Station)</text>
+            <text x="35" y="158" font-size="9" fill="#555">&#x2705; Works in rain, snow, fog, clouds</text>
+            <text x="35" y="178" font-size="8" fill="#888" font-style="italic">Radio signals penetrate atmosphere</text>
+          </g>
+          <!-- Disadvantages -->
+          <g filter="url(#s107)">
+            <rect x="360" y="30" width="325" height="160" rx="8" fill="#fdf0ec" stroke="#ed5565" stroke-width="1.2"/>
+            <text x="522" y="52" text-anchor="middle" font-size="10" font-weight="bold" fill="#ed5565">Disadvantages</text>
+            <line x1="375" y1="58" x2="670" y2="58" stroke="#ed5565" stroke-width="0.5" opacity="0.4"/>
+            <text x="380" y="78" font-size="9" fill="#555">&#x274c; Fails indoors, underground, dense forest</text>
+            <text x="380" y="98" font-size="9" fill="#555">&#x274c; Multipath errors near tall buildings</text>
+            <text x="380" y="118" font-size="9" fill="#555">&#x274c; Atmospheric delays degrade accuracy</text>
+            <text x="380" y="138" font-size="9" fill="#555">&#x274c; Battery-dependent receivers</text>
+            <text x="380" y="158" font-size="9" fill="#555">&#x274c; Vulnerable to jamming / spoofing</text>
+            <text x="380" y="178" font-size="8" fill="#888" font-style="italic">Needs clear sky view to 4+ satellites</text>
+          </g>
+        </svg>
+        <figcaption>Fig 10.7 &ndash; GPS advantages and disadvantages: strengths in coverage and weather independence vs limitations in urban canyons and indoors</figcaption>
+      </figure>
+    </div>
+    </ol>
+
+    <!-- 10.2 -->
+    <h2>10.2</h2>
+
+    <!-- Part 1: Basic Principles and How GPS Works (Trilateration) -->
+    <h3>Part 1: Basic Principles and How GPS Works (Trilateration) <span class="exam-ref">Covers: 2074 Magh Q4b, 2073 Bhadra Q4a, 2078 Chaitra Q4b, 2075 Bhadra Q10b, 2072 Magh Q11, 2073 Magh Q8</span></h3>
+
+    <h4>1. The Basic Principle: Trilateration</h4>
+    <p>GPS determines position using a mathematical principle called 3D Trilateration. Unlike triangulation (which measures angles), trilateration measures distances from known points (the satellites) to find an unknown point (the receiver).</p>
+
+    <h4>2. How GPS Finds a Position (Step-by-Step):</h4>
+    <ol>
+      <li><strong>Signal Transmission:</strong> A GPS satellite broadcasts a radio signal containing its exact location in space and the precise time the signal left the satellite.</li>
+      <li><strong>Distance Calculation (Ranging):</strong> The GPS receiver on the ground catches this signal. It compares the time the signal was transmitted with the time it arrived. By multiplying this time delay by the speed of light (c = 3×10<sup>8</sup> m/s), the receiver calculates its exact distance from that satellite.
+        <div class="formula">Distance = Speed of Light × Time Delay</div>
+      </li>
+      <li><strong>The Intersection of Spheres (The Illustration):</strong>
+        <ul>
+          <li><strong>1 Satellite:</strong> Knowing the distance from one satellite places the receiver somewhere on the surface of an enormous imaginary sphere.</li>
+          <li><strong>2 Satellites:</strong> The intersection of two spheres creates a 2D circle of possible locations.</li>
+          <li><strong>3 Satellites:</strong> Adding a third sphere intersects that circle at exactly two discrete points. (One point is usually deep in space or moving impossibly fast, so the receiver easily discards it).</li>
+          <li><strong>4 Satellites:</strong> A fourth satellite is required to perfectly confirm the correct 3D point (Latitude, Longitude, Altitude) and, crucially, to correct the clock error in the user's receiver.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 190" width="520" height="190" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f102"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gTri" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#faf8f4"/><stop offset="100%" stop-color="#f0ece4"/></linearGradient>
+        </defs>
+        <!-- Step 1 -->
+        <g transform="translate(5,5)">
+          <rect x="0" y="0" width="118" height="145" rx="6" fill="url(#gTri)" stroke="#d4cfc5" stroke-width="0.8" filter="url(#f102)"/>
+          <text x="59" y="16" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">① One Satellite</text>
+          <circle cx="59" cy="75" r="48" fill="#4fc1e9" fill-opacity="0.15" stroke="#1a3c5e" stroke-width="1.5"/>
+          <circle cx="59" cy="38" r="6" fill="#1a3c5e" stroke="white" stroke-width="1"/>
+          <text x="59" y="41" text-anchor="middle" font-size="5" fill="white">S1</text>
+          <text x="59" y="135" text-anchor="middle" font-size="8" fill="#555" font-weight="bold">= Sphere</text>
+        </g>
+        <!-- Step 2 -->
+        <g transform="translate(132,5)">
+          <rect x="0" y="0" width="118" height="145" rx="6" fill="url(#gTri)" stroke="#d4cfc5" stroke-width="0.8" filter="url(#f102)"/>
+          <text x="59" y="16" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">② Two Satellites</text>
+          <circle cx="42" cy="75" r="42" fill="#4fc1e9" fill-opacity="0.12" stroke="#1a3c5e" stroke-width="1"/>
+          <circle cx="76" cy="75" r="42" fill="#a0d468" fill-opacity="0.12" stroke="#2a8c2a" stroke-width="1"/>
+          <circle cx="42" cy="40" r="5" fill="#1a3c5e" stroke="white" stroke-width="0.8"/>
+          <circle cx="76" cy="40" r="5" fill="#2a8c2a" stroke="white" stroke-width="0.8"/>
+          <line x1="59" y1="42" x2="59" y2="108" stroke="#ed5565" stroke-width="2"/>
+          <text x="59" y="135" text-anchor="middle" font-size="8" fill="#555" font-weight="bold">= Circle</text>
+        </g>
+        <!-- Step 3 -->
+        <g transform="translate(259,5)">
+          <rect x="0" y="0" width="118" height="145" rx="6" fill="url(#gTri)" stroke="#d4cfc5" stroke-width="0.8" filter="url(#f102)"/>
+          <text x="59" y="16" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">③ Three Satellites</text>
+          <circle cx="48" cy="62" r="38" fill="#4fc1e9" fill-opacity="0.1" stroke="#1a3c5e" stroke-width="0.8"/>
+          <circle cx="72" cy="62" r="38" fill="#a0d468" fill-opacity="0.1" stroke="#2a8c2a" stroke-width="0.8"/>
+          <circle cx="59" cy="82" r="38" fill="#f6bb42" fill-opacity="0.1" stroke="#8b6914" stroke-width="0.8"/>
+          <circle cx="59" cy="56" r="6" fill="#ed5565" stroke="white" stroke-width="1.5"/>
+          <circle cx="59" cy="80" r="4" fill="#ccc" stroke="#999" stroke-width="0.5"/>
+          <text x="75" y="82" font-size="6" fill="#999">← discard</text>
+          <text x="59" y="135" text-anchor="middle" font-size="8" fill="#555" font-weight="bold">= 2 Points</text>
+        </g>
+        <!-- Step 4 -->
+        <g transform="translate(386,5)">
+          <rect x="0" y="0" width="128" height="145" rx="6" fill="url(#gTri)" stroke="#b8860b" stroke-width="1" filter="url(#f102)"/>
+          <text x="64" y="16" text-anchor="middle" font-size="8" font-weight="bold" fill="#b8860b">④ Four Satellites</text>
+          <circle cx="54" cy="62" r="32" fill="#4fc1e9" fill-opacity="0.06" stroke="#ccc" stroke-width="0.5"/>
+          <circle cx="74" cy="62" r="32" fill="#a0d468" fill-opacity="0.06" stroke="#ccc" stroke-width="0.5"/>
+          <circle cx="64" cy="78" r="32" fill="#f6bb42" fill-opacity="0.06" stroke="#ccc" stroke-width="0.5"/>
+          <circle cx="64" cy="52" r="32" fill="#ac92ec" fill-opacity="0.06" stroke="#ccc" stroke-width="0.5"/>
+          <circle cx="64" cy="64" r="9" fill="#ed5565" stroke="#c0392b" stroke-width="2" filter="url(#f102)"/>
+          <text x="64" y="67" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Fix</text>
+          <text x="64" y="107" text-anchor="middle" font-size="7" fill="#2a8c2a" font-weight="bold">✅ 3D Position</text>
+          <text x="64" y="118" text-anchor="middle" font-size="6" fill="#888">Lat, Lon, Alt</text>
+          <text x="64" y="135" text-anchor="middle" font-size="8" fill="#b8860b" font-weight="bold">= Exact Point</text>
+        </g>
+        <!-- Bottom note -->
+        <text x="260" y="170" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Progressive sphere intersection narrows location to a single 3D point</text>
+        <text x="260" y="184" text-anchor="middle" font-size="7" fill="#888" font-style="italic">4th satellite also corrects receiver clock error (Δt)</text>
+      </svg>
+      <figcaption>Fig 10.2 – GPS Trilateration: Progressive intersection of satellite spheres to determine position</figcaption>
+    </figure>
+
+    <!-- Part 2: The Basic Equation of GPS (The Pseudorange Equation) -->
+    <h3>Part 2: The Basic Equation of GPS (The Pseudorange Equation) <span class="exam-ref">Covers: 2071 Bhadra Q8b, 2075 Magh Q4c</span></h3>
+    <p>Because the clock in your GPS receiver is not perfectly synchronized with the atomic clocks on the satellites, the distance measured is not perfectly accurate. We call this estimated distance the Pseudorange.</p>
+    <p>To get full marks, you must write the fundamental equation used to solve for the receiver's position.</p>
+
+    <h4>The Pseudorange Equation:</h4>
+    <div class="formula">
+      <p>The pseudorange equation relates the measured distance to the geometric distance plus clock bias and atmospheric errors.</p>
+    </div>
+
+    <h4>The Mathematical Rule:</h4>
+    <p>Looking at the equation, we have four unknowns: X<sub>r</sub>, Y<sub>r</sub>, Z<sub>r</sub>, and dt. In algebra, to solve for four unknowns, you must have a system of at least four independent equations. This is the mathematical reason why you must have a minimum of 4 satellites locked to get a true GPS position.</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="max-width:680px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s108"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="340" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">The Pseudorange Equation (Annotated)</text>
+          <!-- Equation box -->
+          <g filter="url(#s108)">
+            <rect x="40" y="35" width="600" height="60" rx="8" fill="#faf8f4" stroke="#1a3c5e" stroke-width="1.5"/>
+            <text x="340" y="72" text-anchor="middle" font-size="16" fill="#1a3c5e">
+              P<tspan font-size="10" baseline-shift="super">i</tspan> = &#x221a;[(X<tspan font-size="9" baseline-shift="super">i</tspan>&#x2212;X<tspan font-size="9" baseline-shift="sub">r</tspan>)&#xb2; + (Y<tspan font-size="9" baseline-shift="super">i</tspan>&#x2212;Y<tspan font-size="9" baseline-shift="sub">r</tspan>)&#xb2; + (Z<tspan font-size="9" baseline-shift="super">i</tspan>&#x2212;Z<tspan font-size="9" baseline-shift="sub">r</tspan>)&#xb2;] + c&#xb7;dt
+            </text>
+          </g>
+          <!-- Annotations with lines -->
+          <!-- Pi -->
+          <line x1="80" y1="95" x2="80" y2="115" stroke="#ed5565" stroke-width="1.5"/>
+          <rect x="20" y="115" width="120" height="35" rx="5" fill="#fdf0ec" stroke="#ed5565" stroke-width="0.8"/>
+          <text x="80" y="130" text-anchor="middle" font-size="8" font-weight="bold" fill="#ed5565">P&#x2071; = Pseudorange</text>
+          <text x="80" y="142" text-anchor="middle" font-size="7" fill="#555">Measured (imperfect) distance</text>
+          <!-- Xi, Yi, Zi -->
+          <line x1="200" y1="95" x2="200" y2="160" stroke="#2d7d46" stroke-width="1.5"/>
+          <rect x="140" y="160" width="120" height="35" rx="5" fill="#edf7f0" stroke="#2d7d46" stroke-width="0.8"/>
+          <text x="200" y="175" text-anchor="middle" font-size="8" font-weight="bold" fill="#2d7d46">X&#x2071;, Y&#x2071;, Z&#x2071;</text>
+          <text x="200" y="187" text-anchor="middle" font-size="7" fill="#555">Satellite position (known)</text>
+          <!-- Xr, Yr, Zr -->
+          <line x1="370" y1="95" x2="370" y2="115" stroke="#b8860b" stroke-width="1.5"/>
+          <rect x="310" y="115" width="120" height="35" rx="5" fill="#fff5ec" stroke="#b8860b" stroke-width="0.8"/>
+          <text x="370" y="130" text-anchor="middle" font-size="8" font-weight="bold" fill="#b8860b">X&#x1d63;, Y&#x1d63;, Z&#x1d63;</text>
+          <text x="370" y="142" text-anchor="middle" font-size="7" fill="#555">Receiver position (UNKNOWN)</text>
+          <!-- c.dt -->
+          <line x1="580" y1="95" x2="580" y2="160" stroke="#8b2500" stroke-width="1.5"/>
+          <rect x="510" y="160" width="140" height="45" rx="5" fill="#fdf0ec" stroke="#8b2500" stroke-width="0.8"/>
+          <text x="580" y="175" text-anchor="middle" font-size="8" font-weight="bold" fill="#8b2500">c &#xb7; dt = Clock Bias</text>
+          <text x="580" y="187" text-anchor="middle" font-size="7" fill="#555">c = speed of light (3&#xd7;10&#x2078;)</text>
+          <text x="580" y="199" text-anchor="middle" font-size="7" fill="#555">dt = receiver clock error (UNKNOWN)</text>
+          <!-- Key insight -->
+          <text x="340" y="215" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">4 unknowns (X&#x1d63;, Y&#x1d63;, Z&#x1d63;, dt) &#x2192; Need minimum 4 satellite equations to solve</text>
+        </svg>
+        <figcaption>Fig 10.8 &ndash; The Pseudorange Equation: each term annotated showing known satellite positions, unknown receiver position, and clock bias</figcaption>
+      </figure>
+    </div>
+
+    <!-- Part 3: How Time is Maintained in GPS/GNSS -->
+    <h3>Part 3: How Time is Maintained in GPS/GNSS <span class="exam-ref">Covers: 2074 Bhadra Q6ii, 2075 Magh Q4d</span></h3>
+    <p>Time is the absolute most critical component of GNSS. Because radio waves travel at the speed of light (300,000 km per second), a clock error of just 1/1,000,000 of a second (one microsecond) translates to a positioning error of 300 meters on the ground!</p>
+    <p>Here is how the system maintains perfect time:</p>
+    <ol>
+      <li><strong>Atomic Clocks in Space:</strong> Every GPS satellite is equipped with highly precise, multi-million dollar atomic clocks (usually Rubidium or Cesium). These clocks are so stable they only lose or gain a fraction of a second over millions of years.</li>
+      <li><strong>Master Control Updates:</strong> Even atomic clocks experience slight drifts due to relativity (moving fast in orbit makes time pass differently than on Earth). The Master Control Station continuously monitors these clocks and uploads daily correction parameters to the satellites.</li>
+      <li><strong>Receiver Clock Synchronization:</strong> Consumer GPS receivers (like your phone or a survey rover) cannot afford atomic clocks; they use cheap, standard quartz clocks which are notoriously inaccurate.</li>
+      <li><strong>The Mathematical Fix:</strong> When the receiver locks onto the 4th satellite, it treats its own clock inaccuracy (Δt) as an algebraic unknown. The internal processor simultaneously solves the four pseudorange equations, perfectly calculating the exact time delay. In doing so, it mathematically forces the cheap quartz clock to perfectly synchronize with the satellite's atomic GPS time.</li>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s109"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+            <marker id="arr109" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+          </defs>
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">How GPS Maintains Perfect Time</text>
+          <!-- Satellite with atomic clock -->
+          <g filter="url(#s109)">
+            <rect x="15" y="35" width="150" height="100" rx="8" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1.2"/>
+            <text x="90" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Satellite</text>
+            <text x="90" y="75" text-anchor="middle" font-size="9" fill="#555">Atomic Clock</text>
+            <text x="90" y="90" text-anchor="middle" font-size="8" fill="#555">(Rubidium/Cesium)</text>
+            <text x="90" y="108" text-anchor="middle" font-size="7" fill="#2d7d46" font-weight="bold">Accuracy: 1ns/day</text>
+            <text x="90" y="122" text-anchor="middle" font-size="7" fill="#888">&#xb1;0.3m error/day</text>
+          </g>
+          <!-- Arrow 1 -->
+          <line x1="165" y1="85" x2="195" y2="85" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr109)"/>
+          <!-- Control Station -->
+          <g filter="url(#s109)">
+            <rect x="200" y="35" width="150" height="100" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1.2"/>
+            <text x="275" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Control Station</text>
+            <text x="275" y="75" text-anchor="middle" font-size="9" fill="#555">Monitors drift</text>
+            <text x="275" y="90" text-anchor="middle" font-size="8" fill="#555">Computes corrections</text>
+            <text x="275" y="108" text-anchor="middle" font-size="7" fill="#ed5565" font-weight="bold">Uploads daily updates</text>
+            <text x="275" y="122" text-anchor="middle" font-size="7" fill="#888">+ Relativity corrections</text>
+          </g>
+          <!-- Arrow 2 -->
+          <line x1="350" y1="85" x2="380" y2="85" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr109)"/>
+          <!-- Receiver -->
+          <g filter="url(#s109)">
+            <rect x="385" y="35" width="150" height="100" rx="8" fill="#fff5ec" stroke="#b8860b" stroke-width="1.2"/>
+            <text x="460" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#b8860b">Receiver</text>
+            <text x="460" y="75" text-anchor="middle" font-size="9" fill="#555">Quartz Clock</text>
+            <text x="460" y="90" text-anchor="middle" font-size="8" fill="#555">(cheap, inaccurate)</text>
+            <text x="460" y="108" text-anchor="middle" font-size="7" fill="#ed5565" font-weight="bold">Syncs via 4th satellite</text>
+            <text x="460" y="122" text-anchor="middle" font-size="7" fill="#888">Solves dt algebraically</text>
+          </g>
+          <!-- Arrow 3 -->
+          <line x1="535" y1="85" x2="565" y2="85" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr109)"/>
+          <!-- Result -->
+          <g filter="url(#s109)">
+            <rect x="570" y="45" width="115" height="80" rx="8" fill="#2d7d46" stroke="#2d7d46" stroke-width="1.2"/>
+            <text x="627" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Synchronized</text>
+            <text x="627" y="88" text-anchor="middle" font-size="9" fill="#e8f8e8">GPS Time</text>
+            <text x="627" y="108" text-anchor="middle" font-size="7" fill="#c8ecc8">&#xb1;10 nanoseconds</text>
+          </g>
+          <!-- Key insight -->
+          <rect x="60" y="150" width="580" height="40" rx="6" fill="#fdf0ec" stroke="#ed5565" stroke-width="0.8"/>
+          <text x="350" y="168" text-anchor="middle" font-size="9" fill="#ed5565" font-weight="bold">Critical Fact: 1 &#x3bc;s clock error = 300 m position error</text>
+          <text x="350" y="182" text-anchor="middle" font-size="8" fill="#555">This is why the 4th satellite is essential &#x2014; it solves the receiver clock bias algebraically</text>
+        </svg>
+        <figcaption>Fig 10.9 &ndash; GPS time chain: atomic clocks in satellites &#x2192; monitored by control &#x2192; receiver syncs via 4th satellite equation</figcaption>
+      </figure>
+    </div>
+    </ol>
+
+    <!-- Part 1: Differential GPS (DGPS) -->
+    <h2>Part 1: Differential GPS (DGPS) <span class="exam-ref">Covers: 2071 Bhadra Q8c, 2078 Chaitra Q4b</span></h2>
+
+    <h3>1. The Principle of DGPS (2 Marks)</h3>
+    <ul>
+      <li><strong>Concept:</strong> DGPS is an enhancement to standard GPS that provides improved location accuracy, transforming 5-meter accuracy into sub-meter or even centimeter-level precision.</li>
+      <li><strong>How it works:</strong> It uses two receivers. One is a Base Station placed on a strictly known, surveyed coordinate. The other is a Rover (the moving receiver you carry in the field).</li>
+      <li><strong>The Math:</strong> Because the Base Station knows exactly where it should be, it compares its known coordinate to the coordinate the satellites are telling it it is at. The difference between the two is the Error (Correction Factor). The Base Station instantly broadcasts this correction factor via radio to the Rover, which applies the math to correct its own position in real-time.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 215" width="520" height="215" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a10d" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <linearGradient id="gBase" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a0d468"/><stop offset="100%" stop-color="#7cb342"/></linearGradient>
+          <linearGradient id="gRov" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f6bb42"/><stop offset="100%" stop-color="#e09820"/></linearGradient>
+          <filter id="f103"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.14"/></filter>
+        </defs>
+        <!-- Satellites -->
+        <circle cx="215" cy="22" r="12" fill="#1a3c5e" stroke="white" stroke-width="1" filter="url(#f103)"/><text x="215" y="26" text-anchor="middle" font-size="7" fill="white"></text>
+        <circle cx="300" cy="18" r="12" fill="#1a3c5e" stroke="white" stroke-width="1" filter="url(#f103)"/><text x="300" y="22" text-anchor="middle" font-size="7" fill="white"></text>
+        <circle cx="140" cy="28" r="12" fill="#1a3c5e" stroke="white" stroke-width="1" filter="url(#f103)"/><text x="140" y="32" text-anchor="middle" font-size="7" fill="white"></text>
+        <!-- Signal lines -->
+        <line x1="165" y1="38" x2="110" y2="105" stroke="#4fc1e9" stroke-width="1.2" stroke-dasharray="5,3"/>
+        <line x1="215" y1="36" x2="110" y2="105" stroke="#4fc1e9" stroke-width="1.2" stroke-dasharray="5,3"/>
+        <line x1="260" y1="32" x2="385" y2="112" stroke="#4fc1e9" stroke-width="1.2" stroke-dasharray="5,3"/>
+        <line x1="300" y1="32" x2="385" y2="112" stroke="#4fc1e9" stroke-width="1.2" stroke-dasharray="5,3"/>
+        <!-- Base Station -->
+        <rect x="60" y="105" width="100" height="55" rx="8" fill="url(#gBase)" stroke="#2a8c2a" stroke-width="1.2" filter="url(#f103)"/>
+        <text x="110" y="122" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Base Station</text>
+        <text x="110" y="136" text-anchor="middle" font-size="7" fill="#e8f0e8">Known coordinate</text>
+        <text x="110" y="148" text-anchor="middle" font-size="7" fill="#ffe0e0" font-weight="bold">Computes error Δ</text>
+        <text x="110" y="156" text-anchor="middle" font-size="6" fill="#e8f0e8">True − Observed = Correction</text>
+        <!-- Rover -->
+        <rect x="340" y="112" width="90" height="50" rx="8" fill="url(#gRov)" stroke="#b8860b" stroke-width="1.2" filter="url(#f103)"/>
+        <text x="385" y="130" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Rover</text>
+        <text x="385" y="144" text-anchor="middle" font-size="7" fill="#fff5e0">Field receiver</text>
+        <text x="385" y="154" text-anchor="middle" font-size="7" fill="#fff5e0">Applies correction</text>
+        <!-- Correction signal -->
+        <path d="M 160 140 C 220 180, 290 180, 340 138" fill="none" stroke="#ed5565" stroke-width="2.5" marker-end="url(#a10d)"/>
+        <text x="250" y="185" text-anchor="middle" font-size="8" fill="#ed5565" font-weight="bold">Radio: Correction Factor (ΔX, ΔY, ΔZ)</text>
+        <!-- Ground line -->
+        <line x1="35" y1="170" x2="460" y2="170" stroke="#555" stroke-width="1.2"/>
+        <!-- Bottom note -->
+        <text x="260" y="200" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Common-mode error cancellation: same atmosphere → same error → correction works</text>
+        <text x="260" y="213" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Result: sub-meter to centimeter precision for engineering surveys</text>
+      </svg>
+      <figcaption>Fig 10.3 – DGPS Principle: Base Station at known point broadcasts corrections to Rover</figcaption>
+    </figure>
+
+    <h3>2. Why do we need DGPS even with sophisticated GPS systems? (3 Marks)</h3>
+    <p>Even the most advanced, expensive autonomous GPS receiver cannot defeat physics. Standard GPS signals must travel through 20,000 km of space and the Earth's atmosphere.</p>
+    <ul>
+      <li>As the signal passes through the Ionosphere and Troposphere, it bends and slows down unpredictably, causing significant distance calculation errors.</li>
+      <li>Sophisticated standard GPS cannot know exactly how much the atmosphere slowed the signal at that specific second.</li>
+      <li>Because the Base Station and the Rover in a DGPS setup are close to each other, their signals punch through the exact same patch of atmosphere. DGPS assumes the atmospheric error is identical for both (Common-Mode Error) and perfectly cancels it out. This is strictly required for engineering surveys, highway alignments, and dam monitoring where millimeter precision is non-negotiable.</li>
+    </ul>
+
+    <!-- Part 2: Errors in GPS and Their Corrections -->
+    <h2>Part 2: Errors in GPS and Their Corrections <span class="exam-ref">Covers: 2073 Magh Q8, 2071 Bhadra Q8a, 2071 Magh Q5a, 2073 Bhadra Q4b, 2076 Bhadra Q4b, 2072 Ashwin Q5a, 2079 Chaitra Q4a</span></h2>
+    <p>If an exam asks for an 8-mark breakdown of errors or how to increase accuracy, group the errors into three main categories.</p>
+
+    <h3>1. Atmospheric Errors (The Biggest Natural Source)</h3>
+    <ul>
+      <li><strong>Ionospheric Delay:</strong> The upper atmosphere is full of charged particles (ions) caused by solar radiation. These particles slow down and refract the GPS radio signals. This is the single largest source of error.
+        <ul><li><strong>Correction:</strong> Use a Dual-Frequency Receiver (L1 and L2 bands). Because different frequencies are slowed down differently by the ionosphere, a dual-frequency receiver can mathematically calculate the exact delay and completely remove it.</li></ul>
+      </li>
+      <li><strong>Tropospheric Delay:</strong> The lower atmosphere contains water vapor and temperature fluctuations, which also delay the signal.
+        <ul><li><strong>Correction:</strong> Apply standard mathematical tropospheric modeling algorithms, or use DGPS.</li></ul>
+      </li>
+    </ul>
+
+    <h3>2. System and Satellite Errors</h3>
+    <ul>
+      <li><strong>Satellite Clock Errors:</strong> Even atomic clocks can drift by a nanosecond, causing a few meters of distance error on the ground.
+        <ul><li><strong>Correction:</strong> The Master Control Station continuously monitors the clocks and uploads correction data to the satellites, which is passed to the receiver.</li></ul>
+      </li>
+      <li><strong>Ephemeris (Orbit) Errors:</strong> Satellites can drift slightly off their predicted orbital paths due to the gravitational pull of the moon and sun.
+        <ul><li><strong>Correction:</strong> Continuously updated orbit data from the Control Segment.</li></ul>
+      </li>
+    </ul>
+
+    <h3>3. Site and Receiver Errors</h3>
+    <ul>
+      <li><strong>Multipath Error (Crucial 3-Mark Question):</strong> This occurs when the GPS signal bounces or reflects off surrounding surfaces (like tall buildings, mountains, or water bodies) before it hits the receiver's antenna. Because the signal took a bounced, zigzag path instead of a straight line, it took longer to arrive. The receiver calculates this longer time as a longer distance, placing you in the wrong location.
+        <ul><li><strong>Correction:</strong> Avoid surveying right next to tall structures. Use advanced "Choke Ring" antennas designed to block signals bouncing up from the ground.</li></ul>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" style="max-width:600px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s1010"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+            <linearGradient id="sky10" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b3d9f7"/><stop offset="100%" stop-color="#e8f4fd"/></linearGradient>
+            <marker id="arr1010" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#ed5565"/></marker>
+            <marker id="arr1010g" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#2d7d46"/></marker>
+          </defs>
+          <rect x="0" y="0" width="600" height="240" rx="8" fill="url(#sky10)"/>
+          <text x="300" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Multipath Error: Signal Reflection Problem</text>
+          <!-- Satellite -->
+          <circle cx="120" cy="45" r="14" fill="#1a3c5e" stroke="#fff" stroke-width="1.5" filter="url(#s1010)"/>
+          <text x="120" y="49" text-anchor="middle" font-size="8" fill="#fff">SAT</text>
+          <!-- Building -->
+          <rect x="350" y="60" width="70" height="130" rx="3" fill="#d4cfc5" stroke="#888" stroke-width="1" filter="url(#s1010)"/>
+          <rect x="360" y="70" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <rect x="385" y="70" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <rect x="360" y="95" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <rect x="385" y="95" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <rect x="360" y="120" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <rect x="385" y="120" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <rect x="360" y="145" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <rect x="385" y="145" width="15" height="15" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          <text x="385" y="55" text-anchor="middle" font-size="8" fill="#555">Building</text>
+          <!-- Ground -->
+          <line x1="20" y1="190" x2="580" y2="190" stroke="#8b6914" stroke-width="2"/>
+          <!-- Receiver -->
+          <rect x="230" y="170" width="30" height="20" rx="3" fill="#b8860b" stroke="#8b6914" stroke-width="1"/>
+          <line x1="245" y1="160" x2="245" y2="170" stroke="#333" stroke-width="2"/>
+          <text x="245" y="208" text-anchor="middle" font-size="8" fill="#b8860b" font-weight="bold">Receiver</text>
+          <!-- Direct signal (correct) -->
+          <line x1="130" y1="55" x2="240" y2="165" stroke="#2d7d46" stroke-width="2.5" marker-end="url(#arr1010g)"/>
+          <text x="160" y="120" font-size="8" fill="#2d7d46" font-weight="bold" transform="rotate(48,160,120)">Direct (correct)</text>
+          <!-- Multipath signal (bounced) -->
+          <line x1="130" y1="55" x2="350" y2="120" stroke="#ed5565" stroke-width="2" stroke-dasharray="6,3"/>
+          <line x1="350" y1="120" x2="250" y2="165" stroke="#ed5565" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arr1010)"/>
+          <text x="280" y="100" font-size="8" fill="#ed5565" font-weight="bold">Reflected (wrong)</text>
+          <!-- Explanation box -->
+          <g filter="url(#s1010)">
+            <rect x="430" y="140" width="160" height="60" rx="6" fill="#fdf0ec" stroke="#ed5565" stroke-width="0.8"/>
+            <text x="510" y="158" text-anchor="middle" font-size="8" font-weight="bold" fill="#ed5565">Multipath Effect</text>
+            <text x="510" y="172" text-anchor="middle" font-size="7" fill="#555">Bounced signal travels</text>
+            <text x="510" y="184" text-anchor="middle" font-size="7" fill="#555">longer path &#x2192; longer time</text>
+            <text x="510" y="196" text-anchor="middle" font-size="7" fill="#555">&#x2192; wrong distance calculated</text>
+          </g>
+          <!-- Bottom -->
+          <text x="300" y="230" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Fix: Use choke-ring antennas, avoid surveying near reflective surfaces (buildings, water, metal)</text>
+        </svg>
+        <figcaption>Fig 10.10 &ndash; Multipath error: GPS signal bounces off a building, arriving later than the direct signal and causing position error</figcaption>
+      </figure>
+    </div>
+      </li>
+      <li><strong>Satellite Geometry (Dilution of Precision – DOP):</strong> If all the visible satellites are clustered close together in one part of the sky, the intersecting trilateration spheres form a stretched, inaccurate intersection point (High PDOP).
+        <ul><li><strong>Correction:</strong> Survey during times of the day when satellites are spread widely across the entire sky (Low PDOP).</li></ul>
+      </li>
+    </ul>
+
+
+    <!-- Fig 10.4 – GPS Error Sources & Corrections -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">GPS Error Sources &amp; Their Corrections</text>
+          <!-- Headers -->
+          <rect x="20" y="34" width="140" height="26" rx="4" fill="#8b2500"/><text x="90" y="52" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Error Source</text>
+          <rect x="165" y="34" width="85" height="26" rx="4" fill="#8b2500"/><text x="207" y="52" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Magnitude</text>
+          <rect x="255" y="34" width="200" height="26" rx="4" fill="#8b2500"/><text x="355" y="52" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Cause</text>
+          <rect x="460" y="34" width="220" height="26" rx="4" fill="#2d7d46"/><text x="570" y="52" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Correction Method</text>
+          <!-- Ionospheric -->
+          <rect x="20" y="64" width="660" height="32" rx="3" fill="#fdf0ec"/>
+          <text x="90" y="84" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#8b2500">Ionospheric Delay</text>
+          <text x="207" y="84" text-anchor="middle" font-size="8" fill="#555">&#xb1;5m</text>
+          <text x="355" y="84" text-anchor="middle" font-size="7.5" fill="#555">Charged particles slow signal in ionosphere</text>
+          <text x="570" y="84" text-anchor="middle" font-size="7.5" fill="#2d7d46">Dual-frequency receivers (L1+L2)</text>
+          <!-- Tropospheric -->
+          <rect x="20" y="100" width="660" height="32" rx="3" fill="#fff"/>
+          <text x="90" y="120" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#8b2500">Tropospheric Delay</text>
+          <text x="207" y="120" text-anchor="middle" font-size="8" fill="#555">&#xb1;0.5m</text>
+          <text x="355" y="120" text-anchor="middle" font-size="7.5" fill="#555">Water vapor &amp; temperature bend signal</text>
+          <text x="570" y="120" text-anchor="middle" font-size="7.5" fill="#2d7d46">Atmospheric models + DGPS</text>
+          <!-- Satellite Clock -->
+          <rect x="20" y="136" width="660" height="32" rx="3" fill="#fdf0ec"/>
+          <text x="90" y="156" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#8b2500">Satellite Clock Drift</text>
+          <text x="207" y="156" text-anchor="middle" font-size="8" fill="#555">&#xb1;2m</text>
+          <text x="355" y="156" text-anchor="middle" font-size="7.5" fill="#555">Atomic clock imperfections</text>
+          <text x="570" y="156" text-anchor="middle" font-size="7.5" fill="#2d7d46">Control segment uploads corrections</text>
+          <!-- Ephemeris -->
+          <rect x="20" y="172" width="660" height="32" rx="3" fill="#fff"/>
+          <text x="90" y="192" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#8b2500">Ephemeris Error</text>
+          <text x="207" y="192" text-anchor="middle" font-size="8" fill="#555">&#xb1;2.5m</text>
+          <text x="355" y="192" text-anchor="middle" font-size="7.5" fill="#555">Predicted orbit &#x2260; actual orbit position</text>
+          <text x="570" y="192" text-anchor="middle" font-size="7.5" fill="#2d7d46">Precise ephemeris + DGPS</text>
+          <!-- Multipath -->
+          <rect x="20" y="208" width="660" height="32" rx="3" fill="#fdf0ec"/>
+          <text x="90" y="228" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#8b2500">Multipath</text>
+          <text x="207" y="228" text-anchor="middle" font-size="8" fill="#555">&#xb1;1m</text>
+          <text x="355" y="228" text-anchor="middle" font-size="7.5" fill="#555">Signal bounces off buildings/surfaces</text>
+          <text x="570" y="228" text-anchor="middle" font-size="7.5" fill="#2d7d46">Choke-ring antenna + site selection</text>
+          <!-- Receiver Noise -->
+          <rect x="20" y="244" width="660" height="32" rx="3" fill="#fff"/>
+          <text x="90" y="264" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#8b2500">Receiver Noise</text>
+          <text x="207" y="264" text-anchor="middle" font-size="8" fill="#555">&#xb1;0.3m</text>
+          <text x="355" y="264" text-anchor="middle" font-size="7.5" fill="#555">Electronic noise in receiver hardware</text>
+          <text x="570" y="264" text-anchor="middle" font-size="7.5" fill="#2d7d46">Better hardware + averaging</text>
+          <!-- Total -->
+          <rect x="20" y="282" width="660" height="24" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width=".8"/>
+          <text x="90" y="298" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">TOTAL (Standalone)</text>
+          <text x="207" y="298" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">&#xb1;11m</text>
+          <text x="355" y="298" text-anchor="middle" font-size="8" fill="#555">Combined without correction</text>
+          <text x="570" y="298" text-anchor="middle" font-size="8" font-weight="bold" fill="#2d7d46">DGPS reduces to &#xb1;0.5&#x2013;2m</text>
+        </svg>
+        <figcaption>Fig 10.4 &ndash; GPS Error Sources: magnitude, cause, and correction methods. DGPS eliminates common-mode errors</figcaption>
+      </figure>
+    </div>
+
+    
+
+    <!-- Fig 10.5 – Dilution of Precision -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Dilution of Precision (DOP): Satellite Geometry Matters</text>
+          <!-- Good DOP -->
+          <rect x="30" y="30" width="280" height="160" rx="6" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+          <text x="170" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Good Geometry (Low DOP)</text>
+          <!-- Satellites spread wide -->
+          <circle cx="80" cy="70" r="8" fill="#2d7d46"/><text x="80" y="73" text-anchor="middle" font-size="6" fill="#fff">S1</text>
+          <circle cx="260" cy="70" r="8" fill="#2d7d46"/><text x="260" y="73" text-anchor="middle" font-size="6" fill="#fff">S2</text>
+          <circle cx="100" cy="160" r="8" fill="#2d7d46"/><text x="100" y="163" text-anchor="middle" font-size="6" fill="#fff">S3</text>
+          <circle cx="240" cy="160" r="8" fill="#2d7d46"/><text x="240" y="163" text-anchor="middle" font-size="6" fill="#fff">S4</text>
+          <!-- Lines to receiver -->
+          <line x1="80" y1="78" x2="170" y2="118" stroke="#2d7d46" stroke-width=".8" stroke-dasharray="4,3"/>
+          <line x1="260" y1="78" x2="170" y2="118" stroke="#2d7d46" stroke-width=".8" stroke-dasharray="4,3"/>
+          <line x1="100" y1="152" x2="170" y2="118" stroke="#2d7d46" stroke-width=".8" stroke-dasharray="4,3"/>
+          <line x1="240" y1="152" x2="170" y2="118" stroke="#2d7d46" stroke-width=".8" stroke-dasharray="4,3"/>
+          <!-- Receiver -->
+          <circle cx="170" cy="118" r="6" fill="#b8860b"/>
+          <!-- Small error zone -->
+          <circle cx="170" cy="118" r="12" fill="#2d7d46" opacity=".15" stroke="#2d7d46" stroke-width=".8"/>
+          <text x="170" y="145" text-anchor="middle" font-size="7.5" fill="#2d7d46">Small error zone</text>
+          <text x="170" y="184" text-anchor="middle" font-size="8" fill="#2d7d46" font-weight="bold">DOP = 1&#x2013;2 (Excellent)</text>
+
+          <!-- Bad DOP -->
+          <rect x="390" y="30" width="280" height="160" rx="6" fill="#fdf0ec" stroke="#8b2500" stroke-width="1"/>
+          <text x="530" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b2500">Poor Geometry (High DOP)</text>
+          <!-- Satellites clustered -->
+          <circle cx="490" cy="75" r="8" fill="#8b2500"/><text x="490" y="78" text-anchor="middle" font-size="6" fill="#fff">S1</text>
+          <circle cx="520" cy="70" r="8" fill="#8b2500"/><text x="520" y="73" text-anchor="middle" font-size="6" fill="#fff">S2</text>
+          <circle cx="550" cy="78" r="8" fill="#8b2500"/><text x="550" y="81" text-anchor="middle" font-size="6" fill="#fff">S3</text>
+          <circle cx="535" cy="100" r="8" fill="#8b2500"/><text x="535" y="103" text-anchor="middle" font-size="6" fill="#fff">S4</text>
+          <!-- Lines to receiver -->
+          <line x1="490" y1="83" x2="530" y2="130" stroke="#8b2500" stroke-width=".8" stroke-dasharray="4,3"/>
+          <line x1="520" y1="78" x2="530" y2="130" stroke="#8b2500" stroke-width=".8" stroke-dasharray="4,3"/>
+          <line x1="550" y1="86" x2="530" y2="130" stroke="#8b2500" stroke-width=".8" stroke-dasharray="4,3"/>
+          <line x1="535" y1="108" x2="530" y2="130" stroke="#8b2500" stroke-width=".8" stroke-dasharray="4,3"/>
+          <!-- Receiver -->
+          <circle cx="530" cy="130" r="6" fill="#b8860b"/>
+          <!-- Large error zone -->
+          <ellipse cx="530" cy="130" rx="40" ry="25" fill="#8b2500" opacity=".12" stroke="#8b2500" stroke-width=".8"/>
+          <text x="530" y="165" text-anchor="middle" font-size="7.5" fill="#8b2500">Large error zone</text>
+          <text x="530" y="184" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="bold">DOP = 6+ (Poor)</text>
+        </svg>
+        <figcaption>Fig 10.5 &ndash; DOP: well-spread satellites give precise fixes (low DOP); clustered satellites produce large position uncertainty</figcaption>
+      </figure>
+    </div>
+
+    <h2>Part 3: Navigation vs. Surveying (3 Marks) <span class="exam-ref">Covers: 2079 Chaitra Q4a</span></h2>
+    <p>The 2079 exam asked how GNSS/GPS usage differs between navigation and surveying.</p>
+    <ul>
+      <li><strong>For Navigation:</strong> Uses standard, autonomous, single-frequency GPS (like a car or smartphone). It prioritizes real-time, continuous tracking over absolute precision. Accuracy of 3 to 10 meters is perfectly acceptable to show a car on a road map.</li>
+      <li><strong>For Surveying:</strong> Uses dual-frequency DGPS or RTK (Real-Time Kinematic) systems. It requires the operator to remain static over a single point to collect thousands of signals and average them out, achieving sub-centimeter accuracy necessary for establishing geodetic control points and construction staking.</li>
+    </ul>
+
+    <!-- Applications of GNSS -->
+    
+
+    <!-- Fig 10.6 – Navigation vs Survey Grade GPS -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Navigation-Grade vs Survey-Grade GPS</text>
+          <!-- Nav side -->
+          <rect x="20" y="32" width="310" height="160" rx="6" fill="#f5f0e8" stroke="#b8860b" stroke-width="1"/>
+          <text x="175" y="52" text-anchor="middle" font-size="10" font-weight="bold" fill="#b8860b">Navigation Grade</text>
+          <text x="40" y="75" font-size="8" fill="#555">&#x2022; Accuracy: 3&#x2013;10 meters</text>
+          <text x="40" y="90" font-size="8" fill="#555">&#x2022; Single-frequency (L1 only)</text>
+          <text x="40" y="105" font-size="8" fill="#555">&#x2022; Real-time, autonomous positioning</text>
+          <text x="40" y="120" font-size="8" fill="#555">&#x2022; No post-processing needed</text>
+          <text x="40" y="140" font-size="8" fill="#1a3c5e" font-weight="bold">Use Cases:</text>
+          <text x="40" y="155" font-size="7.5" fill="#555">Car navigation, hiking, delivery tracking,</text>
+          <text x="40" y="168" font-size="7.5" fill="#555">fleet management, smartphone location</text>
+          <text x="40" y="183" font-size="8" fill="#b8860b" font-weight="bold">Cost: $100&#x2013;$500</text>
+          <!-- Survey side -->
+          <rect x="370" y="32" width="310" height="160" rx="6" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+          <text x="525" y="52" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Survey Grade (DGPS/RTK)</text>
+          <text x="390" y="75" font-size="8" fill="#555">&#x2022; Accuracy: 1&#x2013;5 cm (RTK)</text>
+          <text x="390" y="90" font-size="8" fill="#555">&#x2022; Dual-frequency (L1 + L2)</text>
+          <text x="390" y="105" font-size="8" fill="#555">&#x2022; Base station + rover setup</text>
+          <text x="390" y="120" font-size="8" fill="#555">&#x2022; Post-processing or RTK correction</text>
+          <text x="390" y="140" font-size="8" fill="#1a3c5e" font-weight="bold">Use Cases:</text>
+          <text x="390" y="155" font-size="7.5" fill="#555">Cadastral surveys, road design, bridge</text>
+          <text x="390" y="168" font-size="7.5" fill="#555">construction, dam monitoring, earthwork</text>
+          <text x="390" y="183" font-size="8" fill="#2d7d46" font-weight="bold">Cost: $10,000&#x2013;$50,000+</text>
+          <!-- VS -->
+          <circle cx="350" cy="112" r="14" fill="#b8860b" opacity=".15"/>
+          <text x="350" y="116" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">VS</text>
+        </svg>
+        <figcaption>Fig 10.6 &ndash; Navigation GPS (meters) vs Survey-grade RTK GPS (centimeters): accuracy, cost, and use case comparison</figcaption>
+      </figure>
+    </div>
+
+    <h2>1. Applications of GNSS (Global Navigation Satellite System) <span class="exam-ref">Covers: 2075 Magh, Q4e</span></h2>
+    <p>To secure full marks, categorize the applications so the examiner sees the breadth of your knowledge. GNSS (which includes GPS, Galileo, GLONASS, etc.) is used across various sectors:</p>
+
+    <h3>A. Surveying and Mapping</h3>
+    <ul>
+      <li>Establishing high-precision geodetic control networks.</li>
+      <li>Cadastral surveying (mapping property boundaries) with centimeter-level accuracy using RTK/DGPS.</li>
+      <li>Topographic mapping and ground-truthing for remote sensing data.</li>
+    </ul>
+
+    <h3>B. Civil Engineering and Construction</h3>
+    <ul>
+      <li>Structural health monitoring: Continuously tracking millimeter-level deformations in large structures like dams, suspension bridges, and skyscrapers.</li>
+      <li>Highway alignment and automated machine control (guiding bulldozers and excavators perfectly to grade without manual surveying stakes).</li>
+    </ul>
+
+    <h3>C. Navigation and Transportation</h3>
+    <ul>
+      <li>Turn-by-turn road navigation and fleet tracking logistics.</li>
+      <li>Aviation (autopilot routing and precision approach landings) and maritime navigation.</li>
+    </ul>
+
+    <h3>D. Precision Agriculture</h3>
+    <ul>
+      <li>Guiding tractors automatically for precise plowing, seeding, and fertilizer application to minimize overlap and waste.</li>
+    </ul>
+
+    <h3>E. Timing and Synchronization</h3>
+    <ul>
+      <li>Because GNSS satellites carry atomic clocks, their time signals are used to perfectly synchronize global financial trading networks, telecommunication cell towers, and power grids.</li>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s1011"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="350" y="20" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">GNSS Applications Across Sectors</text>
+          <!-- Central hub -->
+          <circle cx="350" cy="150" r="50" fill="#e8eef4" stroke="#1a3c5e" stroke-width="2" filter="url(#s1011)"/>
+          <text x="350" y="143" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">GNSS</text>
+          <text x="350" y="158" text-anchor="middle" font-size="8" fill="#555">GPS + GLONASS</text>
+          <text x="350" y="170" text-anchor="middle" font-size="8" fill="#555">+ Galileo + BeiDou</text>
+          <!-- Surveying -->
+          <g filter="url(#s1011)">
+            <rect x="15" y="35" width="155" height="55" rx="6" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+            <text x="92" y="55" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Surveying &amp; Mapping</text>
+            <text x="92" y="70" text-anchor="middle" font-size="7" fill="#555">Geodetic control, cadastral,</text>
+            <text x="92" y="80" text-anchor="middle" font-size="7" fill="#555">topographic, ground-truthing</text>
+          </g>
+          <line x1="170" y1="65" x2="300" y2="130" stroke="#2d7d46" stroke-width="1"/>
+          <!-- Civil Engineering -->
+          <g filter="url(#s1011)">
+            <rect x="15" y="140" width="155" height="55" rx="6" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1"/>
+            <text x="92" y="160" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Civil Engineering</text>
+            <text x="92" y="175" text-anchor="middle" font-size="7" fill="#555">Structural monitoring, highway</text>
+            <text x="92" y="185" text-anchor="middle" font-size="7" fill="#555">alignment, machine control</text>
+          </g>
+          <line x1="170" y1="167" x2="300" y2="150" stroke="#1a3c5e" stroke-width="1"/>
+          <!-- Navigation -->
+          <g filter="url(#s1011)">
+            <rect x="530" y="35" width="155" height="55" rx="6" fill="#fff5ec" stroke="#b8860b" stroke-width="1"/>
+            <text x="607" y="55" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">Navigation</text>
+            <text x="607" y="70" text-anchor="middle" font-size="7" fill="#555">Road, aviation, maritime,</text>
+            <text x="607" y="80" text-anchor="middle" font-size="7" fill="#555">fleet tracking, logistics</text>
+          </g>
+          <line x1="530" y1="65" x2="400" y2="130" stroke="#b8860b" stroke-width="1"/>
+          <!-- Agriculture -->
+          <g filter="url(#s1011)">
+            <rect x="530" y="140" width="155" height="55" rx="6" fill="#f5f0ff" stroke="#6c4f9e" stroke-width="1"/>
+            <text x="607" y="160" text-anchor="middle" font-size="9" font-weight="bold" fill="#6c4f9e">Precision Agriculture</text>
+            <text x="607" y="175" text-anchor="middle" font-size="7" fill="#555">Auto-guided tractors,</text>
+            <text x="607" y="185" text-anchor="middle" font-size="7" fill="#555">variable rate application</text>
+          </g>
+          <line x1="530" y1="167" x2="400" y2="150" stroke="#6c4f9e" stroke-width="1"/>
+          <!-- Timing -->
+          <g filter="url(#s1011)">
+            <rect x="185" y="220" width="145" height="50" rx="6" fill="#fdf0ec" stroke="#ed5565" stroke-width="1"/>
+            <text x="257" y="240" text-anchor="middle" font-size="9" font-weight="bold" fill="#ed5565">Timing &amp; Sync</text>
+            <text x="257" y="255" text-anchor="middle" font-size="7" fill="#555">Finance, telecom, power grids</text>
+          </g>
+          <line x1="310" y1="220" x2="340" y2="200" stroke="#ed5565" stroke-width="1"/>
+          <!-- Disaster -->
+          <g filter="url(#s1011)">
+            <rect x="375" y="220" width="145" height="50" rx="6" fill="#fff5ec" stroke="#8b6914" stroke-width="1"/>
+            <text x="447" y="240" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b6914">Disaster Response</text>
+            <text x="447" y="255" text-anchor="middle" font-size="7" fill="#555">SAR, earthquake monitoring</text>
+          </g>
+          <line x1="400" y1="220" x2="360" y2="200" stroke="#8b6914" stroke-width="1"/>
+        </svg>
+        <figcaption>Fig 10.11 &ndash; GNSS applications spanning surveying, civil engineering, navigation, agriculture, timing, and disaster response</figcaption>
+      </figure>
+    </div>
+    </ul>
+
+    <!-- 2. Advantages and Limitations of Smartphone Apps for GNSS Field Survey -->
+    <h2>2. Advantages and Limitations of Smartphone Apps for GNSS Field Survey (3 Marks) <span class="exam-ref">Covers: 2080 Chaitra, Q6</span></h2>
+    <p>With the rise of apps like SW Maps, QField, or Avenza, smartphones are increasingly used for preliminary field surveys. However, they cannot replace professional survey rovers for engineering work.</p>
+
+    <h3>Advantages:</h3>
+    <ol>
+      <li><strong>Cost-Effective:</strong> Eliminates the need to buy 10,000+ survey-grade equipment for simple data collection tasks. The hardware is already owned, and the apps are often free or low-cost.</li>
+      <li><strong>High Portability and Ease of Use:</strong> No need to carry heavy tripods, base stations, or external batteries. The intuitive touch interfaces make training field workers extremely fast.</li>
+      <li><strong>Instant Cloud Integration:</strong> Smartphones have built-in cellular data (4G/5G), allowing surveyors to instantly upload collected points, photos, and attribute data directly to a central GIS server in real-time.</li>
+    </ol>
+
+    <h3>Limitations:</h3>
+    <ol>
+      <li><strong>Poor Accuracy:</strong> Standard smartphone GNSS chips generally provide 3 to 10 meters of accuracy. This is strictly unacceptable for civil engineering design, cadastral mapping, or earthwork calculations, which require centimeter-level precision.</li>
+      <li><strong>Weak Antennas (Multipath Susceptibility):</strong> Smartphones lack the advanced "choke-ring" antennas found on professional gear. They suffer massively from multipath errors in "urban canyons" (tall buildings) or under dense forest canopies.</li>
+      <li><strong>Battery Drain:</strong> Running the screen at full brightness while continuously tracking GNSS satellites drains a smartphone battery in just a few hours, limiting full-day field operability.</li>
+    </ol>
+
+        <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s1012"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="350" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Smartphone GNSS vs Professional Survey Rover</text>
+          <!-- Headers -->
+          <rect x="20" y="38" width="120" height="24" rx="4" fill="#1a3c5e"/><text x="80" y="55" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Feature</text>
+          <rect x="145" y="38" width="250" height="24" rx="4" fill="#b8860b"/><text x="270" y="55" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Smartphone (SW Maps, QField)</text>
+          <rect x="400" y="38" width="280" height="24" rx="4" fill="#2d7d46"/><text x="540" y="55" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Survey Rover (RTK/DGPS)</text>
+          <!-- Rows -->
+          <rect x="20" y="66" width="660" height="26" rx="2" fill="#faf8f4"/>
+          <text x="80" y="83" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Accuracy</text>
+          <text x="270" y="83" text-anchor="middle" font-size="8" fill="#ed5565">3 &#x2013; 10 meters</text>
+          <text x="540" y="83" text-anchor="middle" font-size="8" fill="#2d7d46">1 &#x2013; 5 centimeters</text>
+
+          <rect x="20" y="96" width="660" height="26" rx="2" fill="#fff"/>
+          <text x="80" y="113" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Cost</text>
+          <text x="270" y="113" text-anchor="middle" font-size="8" fill="#555">Free &#x2013; $50 (app)</text>
+          <text x="540" y="113" text-anchor="middle" font-size="8" fill="#555">$10,000 &#x2013; $50,000+</text>
+
+          <rect x="20" y="126" width="660" height="26" rx="2" fill="#faf8f4"/>
+          <text x="80" y="143" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Antenna</text>
+          <text x="270" y="143" text-anchor="middle" font-size="8" fill="#555">Built-in patch (multipath prone)</text>
+          <text x="540" y="143" text-anchor="middle" font-size="8" fill="#555">Choke-ring / geodetic grade</text>
+
+          <rect x="20" y="156" width="660" height="26" rx="2" fill="#fff"/>
+          <text x="80" y="173" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Frequency</text>
+          <text x="270" y="173" text-anchor="middle" font-size="8" fill="#555">Single-freq (L1 only)</text>
+          <text x="540" y="173" text-anchor="middle" font-size="8" fill="#555">Dual-freq (L1 + L2)</text>
+
+          <rect x="20" y="186" width="660" height="26" rx="2" fill="#faf8f4"/>
+          <text x="80" y="203" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Battery</text>
+          <text x="270" y="203" text-anchor="middle" font-size="8" fill="#555">2&#x2013;4 hours (screen + GPS)</text>
+          <text x="540" y="203" text-anchor="middle" font-size="8" fill="#555">8&#x2013;12 hours (dedicated)</text>
+
+          <rect x="20" y="216" width="660" height="26" rx="2" fill="#fff"/>
+          <text x="80" y="233" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Best For</text>
+          <text x="270" y="233" text-anchor="middle" font-size="8" fill="#555">Reconnaissance, POI collection</text>
+          <text x="540" y="233" text-anchor="middle" font-size="8" fill="#555">Engineering design, cadastral survey</text>
+
+          <!-- Bottom note -->
+          <text x="350" y="255" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Smartphone GNSS is suitable for preliminary surveys only; engineering work requires RTK/DGPS precision</text>
+        </svg>
+        <figcaption>Fig 10.12 &ndash; Smartphone vs survey rover comparison: accuracy, cost, antenna quality, and appropriate use cases</figcaption>
+      </figure>
+    </div>
+
+<p class="footer-note">End of Chapter 10 – Global Positioning System (GPS)</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

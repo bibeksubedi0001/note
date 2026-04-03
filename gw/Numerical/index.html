@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Groundwater Engineering — All Solved Numericals</title>
+<link rel="stylesheet" href="style.css">
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:16px;left:16px;z-index:99999;color:#1a3c5e;text-decoration:none;font:14px/1 sans-serif;padding:6px 14px;border-radius:6px;background:rgba(255,255,255,.85);box-shadow:0 1px 4px rgba(0,0,0,.1);backdrop-filter:blur(6px)">&larr; GW Index</a>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT</button>
+
+<header>
+    <p style="text-align:center;font-style:italic;margin-bottom:.3rem;">CE 76509 — Groundwater Engineering</p>
+    <h1>COMPLETE SOLVED NUMERICAL PROBLEMS<br>Past Examination Questions (2071–2078)</h1>
+    <p style="text-align:center;margin-top:.5rem;font-size:1.05rem;"><strong>21 Problems</strong> across <strong>6 Chapters</strong> — fully worked with diagrams, key formulae &amp; explanations</p>
+    <p style="text-align:center;font-size:.95rem;color:#555;">Each chapter includes: expanded step-by-step solutions &bull; concept boxes &bull; derivation hints &bull; SVG diagrams &bull; exam tips &bull; physical insights &bull; comparison tables &bull; unit conversion warnings</p>
+</header>
+
+<!-- ============= CHAPTER CARDS ============= -->
+<h2>SELECT A CHAPTER</h2>
+
+<div class="card-grid">
+    <!-- Ch 2 -->
+    <div class="card">
+        <h3>Chapter 2</h3>
+        <p>Fundamentals of Groundwater Motion</p>
+        <span class="count">3</span> <small>problems</small>
+        <br><a href="chapter2.html">OPEN &rarr;</a>
+    </div>
+    <!-- Ch 3 -->
+    <div class="card">
+        <h3>Chapter 3</h3>
+        <p>Potential Flow Theory &amp; Flow Nets</p>
+        <span class="count">7</span> <small>problems</small>
+        <br><a href="chapter3.html">OPEN &rarr;</a>
+    </div>
+    <!-- Ch 4 -->
+    <div class="card">
+        <h3>Chapter 4</h3>
+        <p>Well Hydraulics</p>
+        <span class="count">2</span> <small>problems</small>
+        <br><a href="chapter4.html">OPEN &rarr;</a>
+    </div>
+    <!-- Ch 5 -->
+    <div class="card">
+        <h3>Chapter 5</h3>
+        <p>Pumping Test &amp; Aquifer Properties</p>
+        <span class="count">4</span> <small>problems</small>
+        <br><a href="chapter5.html">OPEN &rarr;</a>
+    </div>
+    <!-- Ch 7 -->
+    <div class="card">
+        <h3>Chapter 7</h3>
+        <p>Water Well Design</p>
+        <span class="count">3</span> <small>problems</small>
+        <br><a href="chapter7.html">OPEN &rarr;</a>
+    </div>
+    <!-- Ch 9 -->
+    <div class="card">
+        <h3>Chapter 9</h3>
+        <p>Groundwater Resources of Nepal</p>
+        <span class="count">2</span> <small>problems</small>
+        <br><a href="chapter9.html">OPEN &rarr;</a>
+    </div>
+</div>
+
+<!-- ============= MASTER INDEX ============= -->
+<h2>MASTER INDEX OF ALL PROBLEMS</h2>
+<table class="sum">
+<tr><th>#</th><th>Exam</th><th>Chapter</th><th>Problem Type</th><th>Key Answers</th></tr>
+<tr><td>1</td><td>2078 Q2b</td><td>2</td><td>Darcy validity r<sub>min</sub></td><td>r<sub>min</sub> = 0.33 m</td></tr>
+<tr><td>2</td><td>2073 Q2b</td><td>2</td><td>Darcy validity r<sub>min</sub></td><td>r<sub>min</sub> = 0.26 m</td></tr>
+<tr><td>3</td><td>2071 Q6</td><td>2</td><td>Darcy check + seepage velocity</td><td>Re = 0.0004; v<sub>s</sub> = 0.17 m/day</td></tr>
+<tr><td>4</td><td>2078 Q3b</td><td>3</td><td>Unconfined + recharge</td><td>q<sub>1</sub>=471.4, q<sub>2</sub>=470.6, d=784 m</td></tr>
+<tr><td>5</td><td>2073 Q3a</td><td>3</td><td>Water-table contour (4 wells)</td><td>Graphical (flow D&rarr;B)</td></tr>
+<tr><td>6</td><td>2073 Q3b</td><td>3</td><td>Dupuit (no recharge)</td><td>Q = 0.502 m&sup2;/day</td></tr>
+<tr><td>7</td><td>2072 Ash Q4</td><td>3</td><td>Water-table contour (3 wells)</td><td>Graphical</td></tr>
+<tr><td>8</td><td>2072 Ash Q5</td><td>3</td><td>Confined, variable thickness</td><td>Q = 6.95&times;10<sup>&minus;3</sup></td></tr>
+<tr><td>9</td><td>2072 Mag Q7</td><td>3</td><td>Confined, variable thickness</td><td>Q = 1.05&times;10<sup>&minus;2</sup></td></tr>
+<tr><td>10</td><td>2071 Q4</td><td>3</td><td>Unconfined + recharge + no rain</td><td>q<sub>1</sub>=172.95, d=599.5, q<sub>p=0</sub>=0.15</td></tr>
+<tr><td>11</td><td>2078 Q4b</td><td>4</td><td>Thiem confined well yield</td><td>Q = 0.0177 m&sup3;/s; &minus;4.9%</td></tr>
+<tr><td>12</td><td>2073 Q4b</td><td>4</td><td>Dupuit unconfined well</td><td>Q = 12,280 m&sup3;/day</td></tr>
+<tr><td>13</td><td>2078 Q5b</td><td>5</td><td>Cooper-Jacob (time-drawdown)</td><td>T&asymp;1000 m&sup2;/day, S&asymp;1&times;10<sup>&minus;4</sup></td></tr>
+<tr><td>14</td><td>2073 Q5b</td><td>5</td><td>Cooper-Jacob (identical data)</td><td>Same as #13</td></tr>
+<tr><td>15</td><td>2072 Ash Q6</td><td>5</td><td>Cooper-Jacob (identical data)</td><td>Same as #13</td></tr>
+<tr><td>16</td><td>2071 Q8</td><td>5</td><td>Distance-drawdown (multiple wells)</td><td>R<sub>0</sub>&asymp;613 m, T&asymp;0.0135 m&sup2;/s</td></tr>
+<tr><td>17</td><td>2078 Q7</td><td>7</td><td>Recuperation test</td><td>K=0.532/hr; Q=26.1 m&sup3;/hr</td></tr>
+<tr><td>18</td><td>2073 Q8b</td><td>7</td><td>Recuperation test (+ diameter)</td><td>K=0.70/hr; D=6.27 m</td></tr>
+<tr><td>19</td><td>2071 Q10</td><td>7</td><td>Recuperation test (identical)</td><td>Same as #18</td></tr>
+<tr><td>20</td><td>2072 Ash Q3</td><td>9</td><td>GW storage — Pokhara</td><td>V = 6.4&times;10<sup>6</sup> m&sup3;; 44 wells</td></tr>
+<tr><td>21</td><td>2072 Mag Q3</td><td>9</td><td>GW storage — Janakpur</td><td>V = 3.825&times;10<sup>6</sup> m&sup3;; 25 wells</td></tr>
+</table>
+
+<p style="text-align:center;margin-top:1.5rem;font-size:.9rem;color:#666;">
+    Note: Chapters 1 (Occurrence), 6 (Exploration) and 8 (Pumps) contain only theory questions — no numericals.
+</p>
+
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7 – Spatial Analysis</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── VS Code–style Math / Calculation blocks ── */
+    .code-editor {
+      margin: 22px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.18), 0 1px 4px rgba(0,0,0,.1);
+      font-family: "Consolas", "Fira Code", "Menlo", "Monaco", "Courier New", monospace;
+      font-size: 11pt;
+      line-height: 1.7;
+    }
+    .code-editor .editor-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #252526;
+      border-bottom: 1px solid #1e1e1e;
+      user-select: none;
+    }
+    .code-editor .editor-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .code-editor .editor-dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .code-editor .editor-dots .dot-r { background: #ff5f56; }
+    .code-editor .editor-dots .dot-y { background: #ffbd2e; }
+    .code-editor .editor-dots .dot-g { background: #27c93f; }
+    .code-editor .editor-tab {
+      padding: 3px 14px;
+      background: #1e1e1e;
+      color: #cccccc;
+      font-size: 10pt;
+      border-radius: 4px 4px 0 0;
+      border: 1px solid #333;
+      border-bottom: 1px solid #1e1e1e;
+      letter-spacing: .02em;
+    }
+    .code-editor .editor-tab .tab-icon {
+      color: #e8c96a;
+      margin-right: 4px;
+    }
+    .code-editor .editor-body {
+      display: flex;
+      background: #1e1e1e;
+      padding: 16px 0;
+      overflow-x: auto;
+    }
+    .code-editor .line-numbers {
+      padding: 0 12px 0 16px;
+      text-align: right;
+      color: #858585;
+      user-select: none;
+      border-right: 1px solid #333;
+      min-width: 44px;
+      flex-shrink: 0;
+    }
+    .code-editor .line-numbers div {
+      line-height: 1.7;
+    }
+    .code-editor .code-content {
+      padding: 0 18px;
+      color: #d4d4d4;
+      white-space: pre;
+      flex: 1;
+    }
+    .code-editor .code-content div {
+      line-height: 1.7;
+      min-height: 1.7em;
+    }
+    /* Math syntax tokens */
+    .m-cmt  { color: #6a9955; font-style: italic; }  /* Comments */
+    .m-kw   { color: #569cd6; font-weight: bold; }   /* Keywords: Given, Formula, Step */
+    .m-var  { color: #9cdcfe; }                       /* Variables */
+    .m-fn   { color: #dcdcaa; }                       /* Function names */
+    .m-num  { color: #b5cea8; }                       /* Numbers */
+    .m-op   { color: #d4d4d4; }                       /* Operators: +, -, ×, ÷, = */
+    .m-str  { color: #ce9178; }                       /* Strings / labels */
+    .m-res  { color: #4ec9b0; font-weight: bold; }    /* Result / answer highlight */
+    .m-unit { color: #c586c0; }                       /* Units: m, km, kg */
+    .m-punc { color: #d4d4d4; }                       /* Punctuation */
+    .m-sym  { color: #dcdcaa; font-style: italic; }   /* Math symbols: Σ, Δ */
+    .code-editor .editor-statusbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 14px;
+      background: #007acc;
+      color: #fff;
+      font-size: 9pt;
+      letter-spacing: .02em;
+    }
+    [data-theme="dark"] .code-editor {
+      box-shadow: 0 4px 24px rgba(0,0,0,.35), 0 1px 4px rgba(0,0,0,.2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 7</div>
+    <h1>Spatial Analysis</h1>
+  </header>
+  <main>
+
+    <!-- Part 1: Concept, Purpose, and DEM Generation -->
+    <h2>Part 1: Concept, Purpose, and DEM Generation <span class="exam-ref">Covers: 2071 Q9, 2072 Q9, 2079 Q5b, 2081</span></h2>
+
+    <h3>1. What is Spatial Interpolation?</h3>
+    <p>Spatial interpolation is the mathematical and statistical process of estimating the values of a continuous geographic phenomenon at unknown, unsampled locations based on the known values of surrounding sampled points.</p>
+
+    <h3>2. What is the purpose of spatial interpolation?</h3>
+    <p>In reality, it is impossible, physically and financially, to measure data (like elevation, rainfall, or soil strength) at every single square meter of a study area. The primary purpose of interpolation is to take isolated sample points (like weather stations, borehole logs, or GPS spot heights) and create a continuous surface (a raster grid) that models the entire region.</p>
+
+    <h3>3. Why is interpolation needed for producing a DEM?</h3>
+    <p>A Digital Elevation Model (DEM) is a continuous raster grid where every single pixel contains an elevation value. However, field surveyors and LiDAR point clouds only capture elevation at discrete, scattered points. Interpolation is absolutely strictly required to calculate the elevation of the "empty" spaces between the surveyed points, effectively creating a solid, continuous topographic surface from isolated data.</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <defs><filter id="f711"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity=".12"/></filter></defs>
+          <text x="350" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">From Scattered Points to Continuous DEM Surface</text>
+          <!-- Step 1: Survey Points -->
+          <g filter="url(#f711)"><rect x="15" y="28" width="190" height="100" rx="8" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="110" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">1. Scattered Survey Points</text>
+          <circle cx="50" cy="62" r="4" fill="#1a3c5e"/><text x="50" y="76" text-anchor="middle" font-size="6" fill="#555">820m</text>
+          <circle cx="100" cy="70" r="4" fill="#1a3c5e"/><text x="100" y="84" text-anchor="middle" font-size="6" fill="#555">785m</text>
+          <circle cx="145" cy="58" r="4" fill="#1a3c5e"/><text x="145" y="72" text-anchor="middle" font-size="6" fill="#555">910m</text>
+          <circle cx="75" cy="100" r="4" fill="#1a3c5e"/><text x="75" y="114" text-anchor="middle" font-size="6" fill="#555">750m</text>
+          <circle cx="170" cy="95" r="4" fill="#1a3c5e"/><text x="170" y="109" text-anchor="middle" font-size="6" fill="#555">860m</text>
+          <text x="110" y="126" text-anchor="middle" font-size="7" fill="#888" font-style="italic">GPS / LiDAR / Survey</text></g>
+          <!-- Arrow 1 -->
+          <polygon points="215,78 235,70 235,74 260,74 260,82 235,82 235,86" fill="#b8860b"/>
+          <text x="238" y="66" font-size="7" fill="#b8860b" font-weight="bold">Interpolation</text>
+          <!-- Step 2: Algorithm -->
+          <g filter="url(#f711)"><rect x="265" y="28" width="160" height="100" rx="8" fill="#fff5ec" stroke="#b8860b" stroke-width="1.2"/>
+          <text x="345" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">2. Algorithm Fills Gaps</text>
+          <text x="345" y="66" text-anchor="middle" font-size="8" fill="#555">IDW / Spline / Kriging</text>
+          <text x="345" y="82" text-anchor="middle" font-size="20" fill="#b8860b">&#x2234;</text>
+          <text x="345" y="106" text-anchor="middle" font-size="7.5" fill="#555">Estimates unknown</text>
+          <text x="345" y="118" text-anchor="middle" font-size="7.5" fill="#555">values between points</text></g>
+          <!-- Arrow 2 -->
+          <polygon points="435,78 455,70 455,74 480,74 480,82 455,82 455,86" fill="#2d7d46"/>
+          <text x="458" y="66" font-size="7" fill="#2d7d46" font-weight="bold">Output</text>
+          <!-- Step 3: DEM -->
+          <g filter="url(#f711)"><rect x="485" y="28" width="200" height="100" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1.2"/>
+          <text x="585" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">3. Continuous Raster DEM</text>
+          <g transform="translate(500,52)">
+            <rect x="0" y="0" width="22" height="16" fill="#2a6e2a" stroke="#fff" stroke-width=".5"/><text x="11" y="12" text-anchor="middle" font-size="6" fill="#fff">910</text>
+            <rect x="22" y="0" width="22" height="16" fill="#3a8e3a" stroke="#fff" stroke-width=".5"/><text x="33" y="12" text-anchor="middle" font-size="6" fill="#fff">880</text>
+            <rect x="44" y="0" width="22" height="16" fill="#4aae4a" stroke="#fff" stroke-width=".5"/><text x="55" y="12" text-anchor="middle" font-size="6" fill="#fff">855</text>
+            <rect x="66" y="0" width="22" height="16" fill="#5ac85a" stroke="#fff" stroke-width=".5"/><text x="77" y="12" text-anchor="middle" font-size="6" fill="#fff">830</text>
+            <rect x="88" y="0" width="22" height="16" fill="#6ae06a" stroke="#fff" stroke-width=".5"/><text x="99" y="12" text-anchor="middle" font-size="6">820</text>
+            <rect x="0" y="16" width="22" height="16" fill="#3a8e3a" stroke="#fff" stroke-width=".5"/><text x="11" y="28" text-anchor="middle" font-size="6" fill="#fff">870</text>
+            <rect x="22" y="16" width="22" height="16" fill="#5aae5a" stroke="#fff" stroke-width=".5"/><text x="33" y="28" text-anchor="middle" font-size="6">845</text>
+            <rect x="44" y="16" width="22" height="16" fill="#7ac87a" stroke="#fff" stroke-width=".5"/><text x="55" y="28" text-anchor="middle" font-size="6">810</text>
+            <rect x="66" y="16" width="22" height="16" fill="#90d890" stroke="#fff" stroke-width=".5"/><text x="77" y="28" text-anchor="middle" font-size="6">785</text>
+            <rect x="88" y="16" width="22" height="16" fill="#a8e8a8" stroke="#fff" stroke-width=".5"/><text x="99" y="28" text-anchor="middle" font-size="6">760</text>
+            <rect x="0" y="32" width="22" height="16" fill="#5aae5a" stroke="#fff" stroke-width=".5"/><text x="11" y="44" text-anchor="middle" font-size="6">840</text>
+            <rect x="22" y="32" width="22" height="16" fill="#7ac87a" stroke="#fff" stroke-width=".5"/><text x="33" y="44" text-anchor="middle" font-size="6">800</text>
+            <rect x="44" y="32" width="22" height="16" fill="#a0d468" stroke="#fff" stroke-width=".5"/><text x="55" y="44" text-anchor="middle" font-size="6">775</text>
+            <rect x="66" y="32" width="22" height="16" fill="#b8e888" stroke="#fff" stroke-width=".5"/><text x="77" y="44" text-anchor="middle" font-size="6">755</text>
+            <rect x="88" y="32" width="22" height="16" fill="#d0f0a8" stroke="#fff" stroke-width=".5"/><text x="99" y="44" text-anchor="middle" font-size="6">750</text>
+          </g>
+          <text x="585" y="120" text-anchor="middle" font-size="7" fill="#2d7d46" font-weight="bold">Every pixel has elevation</text></g>
+        </svg>
+        <figcaption>Fig 7.11 &ndash; Interpolation workflow: scattered survey points are processed by an algorithm to produce a continuous raster DEM where every pixel holds an elevation value</figcaption>
+      </figure>
+    </div>
+
+    <!-- Part 2: Classification and Types of Interpolation -->
+    <h2>Part 2: Classification and Types of Interpolation <span class="exam-ref">Covers: 2071 Q9, 2074 Q3a, 2075 Q5a</span></h2>
+    <p>If asked to classify or explain the different types, break them down into two main families:</p>
+
+    <h3>A. Deterministic Methods</h3>
+    <p>These use predefined mathematical equations based on the distance or geometric layout of the known points. They do not account for statistical probability.</p>
+    <ul>
+      <li><strong>Inverse Distance Weighted (IDW):</strong> Assigns values to unknown points by using a weighted average of the surrounding known points. The closer a known point is, the more heavily it influences the unknown value.</li>
+      <li><strong>Spline (Minimum Curvature):</strong> Fits a mathematically smooth, flexible "rubber sheet" through all the known data points, minimizing the overall curvature of the surface.</li>
+      <li><strong>Thiessen Polygons (Nearest Neighbor):</strong> Creates sharp boundaries. Any unknown location simply takes the exact value of the single nearest known point.</li>
+    </ul>
+
+    <h3>B. Geostatistical Methods</h3>
+    <p>These rely on both the distance and the statistical relationship (spatial autocorrelation) among the measured points.</p>
+    <ul>
+      <li><strong>Kriging:</strong> A highly advanced method that not only estimates the unknown values but also provides a map of the estimated error/uncertainty. It looks at the overall spatial trend and variance in the dataset.</li>
+    </ul>
+
+    <!-- Part 3: Detailed Method Comparison (IDW vs. Spline) -->
+    
+
+    <!-- Fig 7.4 -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <defs>
+            <linearGradient id="detGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8eef4"/><stop offset="100%" stop-color="#fff"/></linearGradient>
+            <linearGradient id="geoGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#edf7f0"/><stop offset="100%" stop-color="#fff"/></linearGradient>
+          </defs>
+          <text x="350" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Deterministic vs Geostatistical Interpolation</text>
+          <rect x="20" y="36" width="310" height="210" rx="8" fill="url(#detGrad)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="175" y="56" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">DETERMINISTIC</text>
+          <text x="175" y="72" text-anchor="middle" font-size="8" fill="#6b6b6b">Uses mathematical formulas only</text>
+          <line x1="40" y1="80" x2="310" y2="80" stroke="#1a3c5e" stroke-width=".5" opacity=".3"/>
+          <rect x="35" y="90" width="130" height="70" rx="5" fill="#fff" stroke="#1a3c5e" stroke-width=".8"/>
+          <text x="100" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">IDW</text>
+          <text x="100" y="122" text-anchor="middle" font-size="7.5" fill="#555">Weight = 1/d^p</text>
+          <text x="100" y="136" text-anchor="middle" font-size="7" fill="#6b6b6b">Closer points</text>
+          <text x="100" y="147" text-anchor="middle" font-size="7" fill="#6b6b6b">= more influence</text>
+          <rect x="185" y="90" width="130" height="70" rx="5" fill="#fff" stroke="#1a3c5e" stroke-width=".8"/>
+          <text x="250" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Spline</text>
+          <text x="250" y="122" text-anchor="middle" font-size="7.5" fill="#555">Min. Curvature</text>
+          <text x="250" y="136" text-anchor="middle" font-size="7" fill="#6b6b6b">Smooth surface</text>
+          <text x="250" y="147" text-anchor="middle" font-size="7" fill="#6b6b6b">through all points</text>
+          <text x="40" y="185" font-size="7.5" fill="#555">&#x2713; Fast computation</text>
+          <text x="40" y="198" font-size="7.5" fill="#555">&#x2713; Simple parameters</text>
+          <text x="40" y="211" font-size="7.5" fill="#8b2500">&#x2717; No error estimation</text>
+          <text x="40" y="224" font-size="7.5" fill="#8b2500">&#x2717; No spatial autocorrelation</text>
+          <rect x="370" y="36" width="310" height="210" rx="8" fill="url(#geoGrad)" stroke="#2d7d46" stroke-width="1.2"/>
+          <text x="525" y="56" text-anchor="middle" font-size="11" font-weight="bold" fill="#2d7d46">GEOSTATISTICAL</text>
+          <text x="525" y="72" text-anchor="middle" font-size="8" fill="#6b6b6b">Uses statistics + spatial structure</text>
+          <line x1="390" y1="80" x2="660" y2="80" stroke="#2d7d46" stroke-width=".5" opacity=".3"/>
+          <rect x="400" y="90" width="250" height="70" rx="5" fill="#fff" stroke="#2d7d46" stroke-width=".8"/>
+          <text x="525" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Kriging (BLUE)</text>
+          <text x="525" y="124" text-anchor="middle" font-size="7.5" fill="#555">Fits semivariogram &#x2192; models spatial autocorrelation</text>
+          <text x="525" y="138" text-anchor="middle" font-size="7.5" fill="#555">Weights based on distance AND spatial pattern</text>
+          <text x="525" y="150" text-anchor="middle" font-size="7.5" fill="#555">Produces prediction + error surface</text>
+          <text x="400" y="185" font-size="7.5" fill="#555">&#x2713; Error/uncertainty estimation</text>
+          <text x="400" y="198" font-size="7.5" fill="#555">&#x2713; Uses spatial autocorrelation</text>
+          <text x="400" y="211" font-size="7.5" fill="#555">&#x2713; Statistically optimal</text>
+          <text x="400" y="224" font-size="7.5" fill="#8b2500">&#x2717; Complex, needs variogram fitting</text>
+          <circle cx="350" cy="140" r="16" fill="#b8860b" opacity=".15"/>
+          <text x="350" y="144" text-anchor="middle" font-size="10" font-weight="bold" fill="#b8860b">VS</text>
+        </svg>
+        <figcaption>Fig 7.4 &ndash; Deterministic vs Geostatistical Interpolation: IDW/Spline use math formulas; Kriging uses spatial statistics with error estimates</figcaption>
+      </figure>
+    </div>
+
+    <h2>Part 3: Detailed Method Comparison (IDW vs. Spline) <span class="exam-ref">Covers: 2071 Q9, 2073 Q11c, 2081</span></h2>
+    <p>The examiners frequently ask you to describe one method in detail, discuss its pros and cons, or compare IDW and Spline directly.</p>
+
+    <h3>Inverse Distance Weighted (IDW)</h3>
+    <ul>
+      <li><strong>Concept:</strong> Assumes that "things that are closer are more alike."</li>
+      <li><strong>Advantages:</strong> Very simple to understand, fast to compute, and respects the exact values of the sampled points.</li>
+      <li><strong>Disadvantages:</strong> It cannot predict a value higher than the highest known point or lower than the lowest known point (no extrapolation). It often creates artificial "bullseye" or circular patterns around isolated data points.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 440 195" width="440" height="195" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gIDW" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#d0e8f8"/></linearGradient>
+          <radialGradient id="gPt" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#ff7a7a"/><stop offset="100%" stop-color="#c03030"/></radialGradient>
+          <radialGradient id="gTgt" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#ffe570"/><stop offset="100%" stop-color="#d4a010"/></radialGradient>
+          <filter id="fIDW"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/></filter>
+        </defs>
+        <!-- Surface panel -->
+        <rect x="12" y="8" width="225" height="150" rx="8" fill="url(#gIDW)" stroke="#1a3c5e" stroke-width="1.2" filter="url(#fIDW)"/>
+        <text x="124" y="24" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Interpolation Surface</text>
+        <!-- Known points -->
+        <circle cx="55" cy="52" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="55" y="56" text-anchor="middle" font-size="8" fill="white" font-weight="bold">160</text>
+        <circle cx="195" cy="48" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="195" y="52" text-anchor="middle" font-size="8" fill="white" font-weight="bold">170</text>
+        <circle cx="165" cy="118" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="165" y="122" text-anchor="middle" font-size="8" fill="white" font-weight="bold">180</text>
+        <circle cx="75" cy="128" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="75" y="132" text-anchor="middle" font-size="8" fill="white" font-weight="bold">90</text>
+        <!-- Unknown target -->
+        <circle cx="125" cy="85" r="9" fill="url(#gTgt)" stroke="#b8860b" stroke-width="1.5"/>
+        <text x="125" y="89" text-anchor="middle" font-size="9" font-weight="bold" fill="#333">?</text>
+        <!-- Distance lines with weights -->
+        <line x1="55" y1="52" x2="125" y2="85" stroke="#1a3c5e" stroke-width="1.5" stroke-dasharray="4,3" stroke-opacity="0.6"/>
+        <text x="82" y="62" font-size="7" fill="#1a3c5e">d₁ short → high w</text>
+        <line x1="195" y1="48" x2="125" y2="85" stroke="#1a3c5e" stroke-width="0.8" stroke-dasharray="4,3" stroke-opacity="0.4"/>
+        <text x="170" y="62" font-size="7" fill="#888">d₂ long</text>
+        <line x1="165" y1="118" x2="125" y2="85" stroke="#1a3c5e" stroke-width="1.2" stroke-dasharray="4,3" stroke-opacity="0.5"/>
+        <line x1="75" y1="128" x2="125" y2="85" stroke="#1a3c5e" stroke-width="1" stroke-dasharray="4,3" stroke-opacity="0.45"/>
+        <!-- Legend panel -->
+        <rect x="255" y="18" width="170" height="130" rx="8" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8" filter="url(#fIDW)"/>
+        <text x="340" y="36" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Legend</text>
+        <circle cx="272" cy="52" r="6" fill="url(#gPt)" stroke="#a03030" stroke-width="0.8"/>
+        <text x="285" y="56" font-size="9" fill="#333">Known point (Z)</text>
+        <circle cx="272" cy="72" r="6" fill="url(#gTgt)" stroke="#b8860b" stroke-width="0.8"/>
+        <text x="285" y="76" font-size="9" fill="#333">Unknown target</text>
+        <line x1="266" y1="90" x2="282" y2="90" stroke="#1a3c5e" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="290" y="94" font-size="9" fill="#333">Distance (d)</text>
+        <line x1="265" y1="105" x2="415" y2="105" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="340" y="120" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">w = 1/dᵐ</text>
+        <text x="340" y="134" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Closer → higher weight</text>
+        <!-- Bottom note -->
+        <text x="220" y="185" text-anchor="middle" font-size="8" fill="#888" font-style="italic">Weight decreases with distance—nearby samples dominate the estimate</text>
+      </svg>
+      <figcaption>Fig 7.1 – IDW Interpolation: Closer known points exert greater influence on the unknown value</figcaption>
+    </figure>
+
+    <h3>Spline (Minimum Curvature)</h3>
+    <ul>
+      <li><strong>Concept:</strong> Fits a smooth curve through the points, much like bending a flexible ruler.</li>
+      <li><strong>Advantages:</strong> Creates highly visually appealing, smooth surfaces. Unlike IDW, a Spline can predict values outside the range of the input data (e.g., predicting a mountain peak even if surveyors only measured points on the slopes).</li>
+      <li><strong>Disadvantages:</strong> Highly sensitive to outliers. If one data point is incorrectly recorded as extremely high, the Spline will wildly distort the surrounding surface to force the "rubber sheet" through that error.</li>
+    </ul>
+
+    <!-- Part 4: Engineering Applications -->
+    
+
+    <!-- Fig 7.5 – IDW vs Spline Surface -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">IDW vs Spline: Surface Behaviour Comparison</text>
+          <rect x="20" y="30" width="310" height="180" rx="6" fill="#fafafa" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="175" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">IDW (Inverse Distance Weighted)</text>
+          <path d="M40,170 Q80,160 120,100 Q140,80 160,85 Q200,95 220,70 Q260,50 280,80 Q300,120 310,170" fill="none" stroke="#1a3c5e" stroke-width="2"/>
+          <circle cx="120" cy="100" r="5" fill="#1a3c5e"/><text x="120" y="93" text-anchor="middle" font-size="7" fill="#1a3c5e">28&#xb0;C</text>
+          <circle cx="160" cy="85" r="5" fill="#1a3c5e"/><text x="160" y="78" text-anchor="middle" font-size="7" fill="#1a3c5e">32&#xb0;C</text>
+          <circle cx="220" cy="70" r="5" fill="#1a3c5e"/><text x="220" y="63" text-anchor="middle" font-size="7" fill="#1a3c5e">35&#xb0;C</text>
+          <circle cx="280" cy="80" r="5" fill="#1a3c5e"/><text x="280" y="73" text-anchor="middle" font-size="7" fill="#1a3c5e">30&#xb0;C</text>
+          <circle cx="120" cy="100" r="14" fill="none" stroke="#8b2500" stroke-width=".8" stroke-dasharray="3,2"/>
+          <circle cx="220" cy="70" r="14" fill="none" stroke="#8b2500" stroke-width=".8" stroke-dasharray="3,2"/>
+          <text x="175" y="148" text-anchor="middle" font-size="8" fill="#8b2500">&#x26a0; "Bull's-eye" pattern around points</text>
+          <text x="175" y="162" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; Cannot predict above max or below min</text>
+          <text x="175" y="175" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; Flat spots between distant points</text>
+          <text x="175" y="188" text-anchor="middle" font-size="7.5" fill="#2d7d46">Best for: Dense, evenly-spaced data</text>
+          <rect x="370" y="30" width="310" height="180" rx="6" fill="#fafafa" stroke="#2d7d46" stroke-width="1"/>
+          <text x="525" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Spline (Minimum Curvature)</text>
+          <path d="M390,170 C420,155 450,80 480,90 C510,100 530,50 560,60 C590,70 620,110 660,170" fill="none" stroke="#2d7d46" stroke-width="2"/>
+          <circle cx="470" cy="88" r="5" fill="#2d7d46"/><text x="470" y="81" text-anchor="middle" font-size="7" fill="#2d7d46">28&#xb0;C</text>
+          <circle cx="510" cy="92" r="5" fill="#2d7d46"/><text x="510" y="85" text-anchor="middle" font-size="7" fill="#2d7d46">32&#xb0;C</text>
+          <circle cx="555" cy="62" r="5" fill="#2d7d46"/><text x="555" y="55" text-anchor="middle" font-size="7" fill="#2d7d46">35&#xb0;C</text>
+          <circle cx="630" cy="110" r="5" fill="#2d7d46"/><text x="630" y="103" text-anchor="middle" font-size="7" fill="#2d7d46">30&#xb0;C</text>
+          <text x="525" y="142" text-anchor="middle" font-size="8" fill="#2d7d46">&#x2714; Smooth, continuous surface</text>
+          <text x="525" y="156" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; CAN predict above max / below min</text>
+          <text x="525" y="169" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; Passes exactly through known points</text>
+          <text x="525" y="182" text-anchor="middle" font-size="7.5" fill="#8b2500">&#x26a0; May overshoot at sparse areas</text>
+          <text x="525" y="195" text-anchor="middle" font-size="7.5" fill="#2d7d46">Best for: Smooth phenomena (temp, elev)</text>
+        </svg>
+        <figcaption>Fig 7.5 &ndash; IDW creates "bull's-eye" concentric patterns; Spline creates smooth surfaces but may overshoot</figcaption>
+      </figure>
+    </div>
+
+    <h2>Part 4: Engineering Applications <span class="exam-ref">Covers: 2074 Q3a, 2079 Q5b</span></h2>
+    <p>To answer "application in different engineering fields" effectively, provide these specific examples:</p>
+    <ol>
+      <li><strong>Hydrology (mHM Modeling):</strong> Interpolating isolated daily rainfall data from a few regional meteorological stations to create a continuous precipitation raster across an entire river basin.</li>
+      <li><strong>Geotechnical Engineering (Site Response Analysis):</strong> Interpolating shear wave velocity (V<sub>s30</sub>) or bedrock depth from scattered borehole logs to create a continuous subsurface vulnerability map for the Kathmandu Valley.</li>
+      <li><strong>Water Resources (HEC-RAS):</strong> Interpolating riverbed bathymetry from surveyed cross-sections to generate a continuous 3D channel terrain for 2D flood inundation modeling.</li>
+      <li><strong>Environmental Engineering:</strong> Modeling the dispersion plume of airborne pollutants or groundwater contamination spreading from an industrial site based on a few scattered air/water quality monitoring sensors.</li>
+    </ol>
+
+    
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="max-width:600px">
+          <defs><filter id="f712"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity=".12"/></filter></defs>
+          <text x="300" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Spatial Interpolation in Engineering Fields</text>
+          <!-- Central node -->
+          <circle cx="300" cy="115" r="38" fill="#1a3c5e" filter="url(#f712)"/>
+          <text x="300" y="110" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">Spatial</text>
+          <text x="300" y="122" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">Interpolation</text>
+          <!-- Hydrology -->
+          <line x1="262" y1="100" x2="120" y2="55" stroke="#1a3c5e" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="20" y="30" width="200" height="50" rx="8" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="120" y="48" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">&#x1F4A7; Hydrology</text>
+          <text x="120" y="62" text-anchor="middle" font-size="7" fill="#555">Rainfall surface from weather stations</text>
+          <text x="120" y="73" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: IDW / Kriging</text></g>
+          <!-- Geotechnical -->
+          <line x1="338" y1="100" x2="480" y2="55" stroke="#8b2500" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="380" y="30" width="200" height="50" rx="8" fill="#fdf0ec" stroke="#8b2500" stroke-width="1"/>
+          <text x="480" y="48" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">&#x1F3D7; Geotechnical</text>
+          <text x="480" y="62" text-anchor="middle" font-size="7" fill="#555">Vs30 map from borehole logs</text>
+          <text x="480" y="73" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: Kriging (with error map)</text></g>
+          <!-- Water Resources -->
+          <line x1="262" y1="130" x2="120" y2="175" stroke="#2d7d46" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="20" y="150" width="200" height="50" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+          <text x="120" y="168" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">&#x1F30A; Water Resources</text>
+          <text x="120" y="182" text-anchor="middle" font-size="7" fill="#555">Riverbed bathymetry for HEC-RAS</text>
+          <text x="120" y="193" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: Spline / TIN</text></g>
+          <!-- Environmental -->
+          <line x1="338" y1="130" x2="480" y2="175" stroke="#6c4f9e" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="380" y="150" width="200" height="50" rx="8" fill="#f5f0ff" stroke="#6c4f9e" stroke-width="1"/>
+          <text x="480" y="168" text-anchor="middle" font-size="9" font-weight="bold" fill="#6c4f9e">&#x1F32B; Environmental</text>
+          <text x="480" y="182" text-anchor="middle" font-size="7" fill="#555">Pollution plume from monitoring wells</text>
+          <text x="480" y="193" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: IDW / Kriging</text></g>
+        </svg>
+        <figcaption>Fig 7.12 &ndash; Spatial interpolation applications across four engineering disciplines, each with the most suitable interpolation method</figcaption>
+      </figure>
+    </div>
+
+    <!-- Part 5: The Numerical Question -->
+    <h2>Part 5: The Numerical Question <span class="exam-ref">Covers: 2074 Q3b – 4 Marks</span></h2>
+    <p><strong>Question:</strong> Interpolate a value using any one method if the distance from four known values 160, 170, 180, and 90 are 1000, 400, 600, and 120 m respectively.</p>
+    <p>Always use the Inverse Distance Weighted (IDW) method for manual exams, assuming a power of p=1 (or p=2, but p=1 is faster to calculate manually unless specified). Let's use p=1.</p>
+    <p>This is the linear weighting method we did earlier. It assumes influence drops off linearly with distance.</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> IDW_Power1.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── IDW Interpolation  ·  Power p = 1 ──</span></div><div></div><div><span class="m-kw">Given:</span></div><div>  <span class="m-var">Values</span>  <span class="m-op">=</span> [<span class="m-num">160</span>, <span class="m-num">170</span>, <span class="m-num">180</span>, <span class="m-num">90</span>]</div><div>  <span class="m-var">Distances</span> <span class="m-op">=</span> [<span class="m-num">1000</span>, <span class="m-num">400</span>, <span class="m-num">600</span>, <span class="m-num">120</span>] <span class="m-unit">m</span></div><div></div><div><span class="m-kw">Formula:</span></div><div>  <span class="m-fn">Z</span> <span class="m-op">=</span> <span class="m-sym">&Sigma;</span>(<span class="m-var">w<sub>i</sub></span> <span class="m-op">&times;</span> <span class="m-var">z<sub>i</sub></span>) <span class="m-op">/</span> <span class="m-sym">&Sigma;</span>(<span class="m-var">w<sub>i</sub></span>)   <span class="m-cmt">where</span>  <span class="m-var">w<sub>i</sub></span> <span class="m-op">=</span> <span class="m-num">1</span> <span class="m-op">/</span> <span class="m-var">d<sub>i</sub></span><sup><span class="m-var">p</span></sup></div><div></div><div><span class="m-kw">Step 1:</span> <span class="m-cmt">Compute weights  (p = 1)</span></div><div>  <span class="m-var">w₁</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">1000</span>  <span class="m-op">=</span> <span class="m-num">0.00100</span></div><div>  <span class="m-var">w₂</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">400</span>   <span class="m-op">=</span> <span class="m-num">0.00250</span></div><div>  <span class="m-var">w₃</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">600</span>   <span class="m-op">=</span> <span class="m-num">0.00167</span></div><div>  <span class="m-var">w₄</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">120</span>   <span class="m-op">=</span> <span class="m-num">0.00833</span></div><div></div><div><span class="m-kw">Step 2:</span> <span class="m-cmt">Weighted numerator  &Sigma;(w&#xB7;z)</span></div><div>  <span class="m-op">=</span> (<span class="m-num">0.00100</span><span class="m-op">&times;</span><span class="m-num">160</span>) <span class="m-op">+</span> (<span class="m-num">0.00250</span><span class="m-op">&times;</span><span class="m-num">170</span>) <span class="m-op">+</span> (<span class="m-num">0.00167</span><span class="m-op">&times;</span><span class="m-num">180</span>) <span class="m-op">+</span> (<span class="m-num">0.00833</span><span class="m-op">&times;</span><span class="m-num">90</span>)</div><div>  <span class="m-op">=</span> <span class="m-num">0.160</span> <span class="m-op">+</span> <span class="m-num">0.425</span> <span class="m-op">+</span> <span class="m-num">0.300</span> <span class="m-op">+</span> <span class="m-num">0.750</span>  <span class="m-op">=</span>  <span class="m-num">1.635</span></div><div></div><div><span class="m-kw">Step 3:</span> <span class="m-cmt">Sum of weights  &Sigma;w</span></div><div>  <span class="m-op">=</span> <span class="m-num">0.00100</span> <span class="m-op">+</span> <span class="m-num">0.00250</span> <span class="m-op">+</span> <span class="m-num">0.00167</span> <span class="m-op">+</span> <span class="m-num">0.00833</span>  <span class="m-op">=</span>  <span class="m-num">0.01350</span></div><div></div><div><span class="m-kw">Result:</span></div><div>  <span class="m-fn">Z</span> <span class="m-op">=</span> <span class="m-num">1.635</span> <span class="m-op">/</span> <span class="m-num">0.01350</span>  <span class="m-op">=</span>  <span class="m-res">121.11</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; IDW</span><span>Power = 1 &middot; 23 lines</span></div>
+    </div>
+
+    <h3>Inverse Distance Weighted (IDW) with Power = 2</h3>
+    <p>This is the default setting in most GIS software (like QGIS or ArcGIS). Squaring the distance means that points further away lose their influence exponentially faster.</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> IDW_Power2.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── IDW Interpolation  ·  Power p = 2 ──</span></div><div></div><div><span class="m-kw">Given:</span> <span class="m-cmt">Same data as above</span></div><div>  <span class="m-var">Values</span>  <span class="m-op">=</span> [<span class="m-num">160</span>, <span class="m-num">170</span>, <span class="m-num">180</span>, <span class="m-num">90</span>]</div><div>  <span class="m-var">Distances</span> <span class="m-op">=</span> [<span class="m-num">1000</span>, <span class="m-num">400</span>, <span class="m-num">600</span>, <span class="m-num">120</span>] <span class="m-unit">m</span></div><div></div><div><span class="m-kw">Step 1:</span> <span class="m-cmt">Compute weights  (p = 2  &rarr;  w = 1/d&sup2;)</span></div><div>  <span class="m-var">w₁</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">1000</span>&sup2;  <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">1,000,000</span>   <span class="m-op">=</span> <span class="m-num">0.00000100</span></div><div>  <span class="m-var">w₂</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">400</span>&sup2;   <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">160,000</span>     <span class="m-op">=</span> <span class="m-num">0.00000625</span></div><div>  <span class="m-var">w₃</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">600</span>&sup2;   <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">360,000</span>     <span class="m-op">=</span> <span class="m-num">0.00000278</span></div><div>  <span class="m-var">w₄</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">120</span>&sup2;   <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">14,400</span>      <span class="m-op">=</span> <span class="m-num">0.00006944</span></div><div></div><div><span class="m-kw">Step 2:</span> <span class="m-cmt">Weighted numerator  &Sigma;(w&#xB7;z)</span></div><div>  <span class="m-op">=</span> (<span class="m-num">0.00000100</span><span class="m-op">&times;</span><span class="m-num">160</span>) <span class="m-op">+</span> (<span class="m-num">0.00000625</span><span class="m-op">&times;</span><span class="m-num">170</span>) <span class="m-op">+</span> (<span class="m-num">0.00000278</span><span class="m-op">&times;</span><span class="m-num">180</span>) <span class="m-op">+</span> (<span class="m-num">0.00006944</span><span class="m-op">&times;</span><span class="m-num">90</span>)</div><div>  <span class="m-op">=</span> <span class="m-num">0.000160</span> <span class="m-op">+</span> <span class="m-num">0.001063</span> <span class="m-op">+</span> <span class="m-num">0.000500</span> <span class="m-op">+</span> <span class="m-num">0.006250</span>  <span class="m-op">=</span>  <span class="m-num">0.007973</span></div><div></div><div><span class="m-kw">Step 3:</span> <span class="m-cmt">Sum of weights  &Sigma;w</span></div><div>  <span class="m-op">=</span> <span class="m-num">0.00000100</span> <span class="m-op">+</span> <span class="m-num">0.00000625</span> <span class="m-op">+</span> <span class="m-num">0.00000278</span> <span class="m-op">+</span> <span class="m-num">0.00006944</span>  <span class="m-op">=</span>  <span class="m-num">0.00007947</span></div><div></div><div><span class="m-kw">Result:</span></div><div>  <span class="m-fn">Z</span> <span class="m-op">=</span> <span class="m-num">0.007973</span> <span class="m-op">/</span> <span class="m-num">0.00007947</span>  <span class="m-op">=</span>  <span class="m-res">100.32</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; IDW</span><span>Power = 2 &middot; 23 lines</span></div>
+    </div>
+    <p>Notice how changing the power to 2 pulled the final answer much closer to 90? That is because squaring the distance made the far-away points (like the one 1000m away) almost mathematically irrelevant.</p>
+
+    <!-- 7.2 Raster Analysis Including Topological Overlay -->
+    <h2>7.2 Raster Analysis Including Topological Overlay</h2>
+
+    <!-- Part 1: Theoretical Foundations of Raster Analysis -->
+    <h3>Part 1: Theoretical Foundations of Raster Analysis <span class="exam-ref">Covers: 2071 Magh Q8, 2072 Ashwin Q3a</span></h3>
+
+    <h4>1. Raster-Based Analysis: Advantages and Disadvantages</h4>
+    <p>To secure full marks on this recurring theory question, list these exact points:</p>
+    <ul>
+      <li><strong>Advantages:</strong>
+        <ul>
+          <li>The data structure is a simple matrix of cells, making mathematical modeling (Map Algebra) extremely fast and computationally efficient.</li>
+          <li>It is the absolute best format for representing continuous surfaces that change gradually, such as elevation (DEMs), rainfall distributions, or soil moisture content.</li>
+          <li>Cell-to-cell overlay operations are perfectly aligned, eliminating the complex geometry calculations required in vector overlay.</li>
+        </ul>
+      </li>
+      <li><strong>Disadvantages:</strong>
+        <ul>
+          <li>It suffers from the "stair-step" or pixelated effect, meaning it cannot precisely represent sharp boundaries (like a property line or a strict building footprint).</li>
+          <li>High-resolution grids (e.g., a 1m x 1m DEM) create massive file sizes that require significant storage and processing power.</li>
+          <li>It is inefficient for network analysis (like calculating traffic volume or routing).</li>
+        </ul>
+      </li>
+    </ul>
+
+    
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 650 200" xmlns="http://www.w3.org/2000/svg" style="max-width:650px">
+          <text x="325" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Raster vs Vector: Key Differences</text>
+          <!-- Headers -->
+          <rect x="20" y="28" width="130" height="24" rx="4" fill="#1a3c5e"/><text x="85" y="45" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">Property</text>
+          <rect x="155" y="28" width="230" height="24" rx="4" fill="#2d7d46"/><text x="270" y="45" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">RASTER (Grid Cells)</text>
+          <rect x="390" y="28" width="240" height="24" rx="4" fill="#8b2500"/><text x="510" y="45" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">VECTOR (Points/Lines/Polygons)</text>
+          <!-- Rows -->
+          <rect x="20" y="56" width="610" height="22" rx="2" fill="#f5f0e8"/>
+          <text x="85" y="71" text-anchor="middle" font-size="7.5" fill="#333" font-weight="bold">Data Structure</text>
+          <text x="270" y="71" text-anchor="middle" font-size="7.5" fill="#555">Regular grid of equal-sized pixels</text>
+          <text x="510" y="71" text-anchor="middle" font-size="7.5" fill="#555">Coordinate-based geometry (x,y)</text>
+          <rect x="20" y="82" width="610" height="22" rx="2" fill="#fff"/>
+          <text x="85" y="97" text-anchor="middle" font-size="7.5" fill="#333" font-weight="bold">Best For</text>
+          <text x="270" y="97" text-anchor="middle" font-size="7.5" fill="#2d7d46">Continuous surfaces (DEM, rainfall)</text>
+          <text x="510" y="97" text-anchor="middle" font-size="7.5" fill="#8b2500">Discrete features (roads, parcels)</text>
+          <rect x="20" y="108" width="610" height="22" rx="2" fill="#f5f0e8"/>
+          <text x="85" y="123" text-anchor="middle" font-size="7.5" fill="#333" font-weight="bold">Overlay Method</text>
+          <text x="270" y="123" text-anchor="middle" font-size="7.5" fill="#555">Pixel-by-pixel Map Algebra</text>
+          <text x="510" y="123" text-anchor="middle" font-size="7.5" fill="#555">Geometric intersection (Clip/Union)</text>
+          <rect x="20" y="134" width="610" height="22" rx="2" fill="#fff"/>
+          <text x="85" y="149" text-anchor="middle" font-size="7.5" fill="#333" font-weight="bold">Boundary Precision</text>
+          <text x="270" y="149" text-anchor="middle" font-size="7.5" fill="#8b2500">&#x2717; Pixelated stair-step edges</text>
+          <text x="510" y="149" text-anchor="middle" font-size="7.5" fill="#2d7d46">&#x2713; Crisp, exact boundaries</text>
+          <rect x="20" y="160" width="610" height="22" rx="2" fill="#f5f0e8"/>
+          <text x="85" y="175" text-anchor="middle" font-size="7.5" fill="#333" font-weight="bold">File Size</text>
+          <text x="270" y="175" text-anchor="middle" font-size="7.5" fill="#8b2500">&#x2717; Large at high resolution</text>
+          <text x="510" y="175" text-anchor="middle" font-size="7.5" fill="#2d7d46">&#x2713; Compact for sparse features</text>
+          <rect x="20" y="186" width="610" height="22" rx="2" fill="#fff"/>
+          <text x="85" y="201" text-anchor="middle" font-size="7.5" fill="#333" font-weight="bold">Network Analysis</text>
+          <text x="270" y="201" text-anchor="middle" font-size="7.5" fill="#8b2500">&#x2717; Inefficient</text>
+          <text x="510" y="201" text-anchor="middle" font-size="7.5" fill="#2d7d46">&#x2713; Natural fit (topology)</text>
+        </svg>
+        <figcaption>Fig 7.13 &ndash; Raster vs Vector comparison: raster excels at continuous surfaces, vector at discrete features and networks</figcaption>
+      </figure>
+    </div>
+
+    <h4>2. Map Overlay vs. Map Calculations</h4>
+    <ul>
+      <li><strong>Map Overlay (Vector Focus):</strong> Involves physically calculating the geometric intersections of polygons, lines, or points. It alters the spatial boundaries to create new shapes (e.g., cutting a land-use polygon with a flood-zone polygon).</li>
+      <li><strong>Map Calculations (Raster Focus):</strong> Also known as Map Algebra. It does not change geometry because the grid structure is fixed. Instead, it stacks identical grids on top of each other and performs pixel-by-pixel mathematical operations (e.g., taking a raster of January rainfall and a raster of February rainfall, and simply adding the overlapping pixel values to get a Total Rainfall raster).</li>
+    </ul>
+
+    
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 680 175" xmlns="http://www.w3.org/2000/svg" style="max-width:680px">
+          <text x="340" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Map Overlay (Vector) vs Map Algebra (Raster)</text>
+          <!-- Left: Vector Overlay -->
+          <rect x="15" y="28" width="310" height="135" rx="8" fill="#fdf0ec" stroke="#8b2500" stroke-width="1"/>
+          <text x="170" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">Vector Overlay (Intersect)</text>
+          <!-- Input polygons -->
+          <rect x="30" y="58" width="55" height="45" rx="4" fill="#8b2500" opacity=".15" stroke="#8b2500" stroke-width=".8"/>
+          <text x="57" y="85" text-anchor="middle" font-size="7" fill="#8b2500">Land Use</text>
+          <text x="100" y="82" font-size="14" fill="#8b2500">&#x2229;</text>
+          <rect x="112" y="58" width="55" height="45" rx="4" fill="#1a3c5e" opacity=".15" stroke="#1a3c5e" stroke-width=".8"/>
+          <text x="139" y="85" text-anchor="middle" font-size="7" fill="#1a3c5e">Flood Zone</text>
+          <text x="180" y="82" font-size="14" fill="#333">&#x2192;</text>
+          <!-- Output: new geometry -->
+          <g transform="translate(195,58)">
+            <rect x="0" y="0" width="55" height="45" rx="4" fill="#fff" stroke="#333" stroke-width=".8"/>
+            <path d="M5,20 L25,5 L50,15 L45,40 L15,40 Z" fill="#b8860b" opacity=".3" stroke="#b8860b" stroke-width=".8"/>
+          </g>
+          <text x="222" y="115" text-anchor="middle" font-size="7" fill="#b8860b" font-weight="bold">New geometry</text>
+          <text x="170" y="135" text-anchor="middle" font-size="7" fill="#8b2500">Creates new polygon shapes</text>
+          <text x="170" y="148" text-anchor="middle" font-size="7" fill="#8b2500">by cutting boundaries</text>
+          <!-- Right: Raster Map Algebra -->
+          <rect x="355" y="28" width="310" height="135" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+          <text x="510" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Raster Map Algebra (Add)</text>
+          <!-- Input grids -->
+          <g transform="translate(370,55)">
+            <rect x="0" y="0" width="18" height="14" fill="#5aae5a" stroke="#fff" stroke-width=".4"/><text x="9" y="11" text-anchor="middle" font-size="5" fill="#fff">10</text>
+            <rect x="18" y="0" width="18" height="14" fill="#7ac87a" stroke="#fff" stroke-width=".4"/><text x="27" y="11" text-anchor="middle" font-size="5">5</text>
+            <rect x="0" y="14" width="18" height="14" fill="#a0d468" stroke="#fff" stroke-width=".4"/><text x="9" y="25" text-anchor="middle" font-size="5">3</text>
+            <rect x="18" y="14" width="18" height="14" fill="#c0e8a0" stroke="#fff" stroke-width=".4"/><text x="27" y="25" text-anchor="middle" font-size="5">8</text>
+          </g>
+          <text x="413" y="95" text-anchor="middle" font-size="6" fill="#555">Jan Rain</text>
+          <text x="428" y="72" font-size="14" fill="#2d7d46">+</text>
+          <g transform="translate(445,55)">
+            <rect x="0" y="0" width="18" height="14" fill="#4488cc" stroke="#fff" stroke-width=".4"/><text x="9" y="11" text-anchor="middle" font-size="5" fill="#fff">12</text>
+            <rect x="18" y="0" width="18" height="14" fill="#6699dd" stroke="#fff" stroke-width=".4"/><text x="27" y="11" text-anchor="middle" font-size="5" fill="#fff">7</text>
+            <rect x="0" y="14" width="18" height="14" fill="#88aaee" stroke="#fff" stroke-width=".4"/><text x="9" y="25" text-anchor="middle" font-size="5">4</text>
+            <rect x="18" y="14" width="18" height="14" fill="#aaccff" stroke="#fff" stroke-width=".4"/><text x="27" y="25" text-anchor="middle" font-size="5">9</text>
+          </g>
+          <text x="488" y="95" text-anchor="middle" font-size="6" fill="#555">Feb Rain</text>
+          <text x="503" y="72" font-size="14" fill="#333">&#x2192;</text>
+          <g transform="translate(520,55)">
+            <rect x="0" y="0" width="18" height="14" fill="#b8860b" stroke="#fff" stroke-width=".4"/><text x="9" y="11" text-anchor="middle" font-size="5" fill="#fff">22</text>
+            <rect x="18" y="0" width="18" height="14" fill="#c8960b" stroke="#fff" stroke-width=".4"/><text x="27" y="11" text-anchor="middle" font-size="5" fill="#fff">12</text>
+            <rect x="0" y="14" width="18" height="14" fill="#d8a60b" stroke="#fff" stroke-width=".4"/><text x="9" y="25" text-anchor="middle" font-size="5">7</text>
+            <rect x="18" y="14" width="18" height="14" fill="#e8b60b" stroke="#fff" stroke-width=".4"/><text x="27" y="25" text-anchor="middle" font-size="5">17</text>
+          </g>
+          <text x="563" y="95" text-anchor="middle" font-size="6" fill="#555">Total</text>
+          <text x="510" y="128" text-anchor="middle" font-size="7" fill="#2d7d46">Grid structure stays fixed;</text>
+          <text x="510" y="141" text-anchor="middle" font-size="7" fill="#2d7d46">pixel-by-pixel arithmetic</text>
+        </svg>
+        <figcaption>Fig 7.14 &ndash; Vector overlay creates new geometry by intersecting boundaries; Raster Map Algebra performs pixel-by-pixel arithmetic on stacked grids</figcaption>
+      </figure>
+    </div>
+
+    <!-- Part 2: The Four Tiers of Raster Operations -->
+    <h3>Part 2: The Four Tiers of Raster Operations <span class="exam-ref">Covers: 2080 Chaitra Q8b, 2075 Magh Q5b, 2073 Magh Q11</span></h3>
+    <p>Examiners love asking about how raster tools are categorized. Raster functions are defined by how many cells the algorithm looks at to calculate a new value.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 550 130" width="550" height="130" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gLc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#d0e8f8"/></linearGradient>
+          <linearGradient id="gFc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#d0f0d0"/></linearGradient>
+          <linearGradient id="gZc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ec"/><stop offset="100%" stop-color="#fce8d8"/></linearGradient>
+          <linearGradient id="gGc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5f0ff"/><stop offset="100%" stop-color="#e8dff8"/></linearGradient>
+          <filter id="f72"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Local -->
+        <g transform="translate(5,8)" filter="url(#f72)">
+          <rect x="0" y="0" width="125" height="105" rx="8" fill="url(#gLc)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="62" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Local</text>
+          <g transform="translate(24,24)">
+            <rect x="0" y="0" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+            <rect x="18" y="0" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+            <rect x="36" y="0" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+            <rect x="0" y="18" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+            <rect x="18" y="18" width="18" height="18" rx="2" fill="#ed5565" stroke="#a03030" stroke-width="1.2"/>
+            <rect x="36" y="18" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+            <rect x="0" y="36" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+            <rect x="18" y="36" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+            <rect x="36" y="36" width="18" height="18" rx="1" fill="#e0e0e0" stroke="#bbb" stroke-width="0.5"/>
+          </g>
+          <text x="62" y="86" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">1 cell only</text>
+          <text x="62" y="98" text-anchor="middle" font-size="7" fill="#888" font-style="italic">e.g., NDVI, Reclassify</text>
+        </g>
+        <!-- Focal -->
+        <g transform="translate(142,8)" filter="url(#f72)">
+          <rect x="0" y="0" width="125" height="105" rx="8" fill="url(#gFc)" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="62" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#2a8c2a">Focal</text>
+          <g transform="translate(24,24)">
+            <rect x="0" y="0" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+            <rect x="18" y="0" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+            <rect x="36" y="0" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+            <rect x="0" y="18" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+            <rect x="18" y="18" width="18" height="18" rx="2" fill="#ed5565" stroke="#a03030" stroke-width="1.2"/>
+            <rect x="36" y="18" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+            <rect x="0" y="36" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+            <rect x="18" y="36" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+            <rect x="36" y="36" width="18" height="18" rx="1" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="0.8"/>
+          </g>
+          <text x="62" y="86" text-anchor="middle" font-size="8" fill="#2a8c2a" font-weight="bold">3×3 window</text>
+          <text x="62" y="98" text-anchor="middle" font-size="7" fill="#888" font-style="italic">e.g., Slope, Aspect</text>
+        </g>
+        <!-- Zonal -->
+        <g transform="translate(279,8)" filter="url(#f72)">
+          <rect x="0" y="0" width="125" height="105" rx="8" fill="url(#gZc)" stroke="#8b6914" stroke-width="1.2"/>
+          <text x="62" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b6914">Zonal</text>
+          <g transform="translate(12,24)">
+            <rect x="0" y="0" width="46" height="52" rx="3" fill="#f6bb42" fill-opacity="0.35" stroke="#8b6914" stroke-width="1.2"/>
+            <rect x="46" y="0" width="54" height="52" rx="3" fill="#ed5565" fill-opacity="0.15" stroke="#bbb" stroke-width="0.5" stroke-dasharray="3,2"/>
+            <text x="23" y="30" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b6914">A</text>
+            <text x="73" y="30" text-anchor="middle" font-size="9" fill="#888">B</text>
+          </g>
+          <text x="62" y="86" text-anchor="middle" font-size="8" fill="#8b6914" font-weight="bold">Defined zones</text>
+          <text x="62" y="98" text-anchor="middle" font-size="7" fill="#888" font-style="italic">e.g., Zonal Statistics</text>
+        </g>
+        <!-- Global -->
+        <g transform="translate(416,8)" filter="url(#f72)">
+          <rect x="0" y="0" width="125" height="105" rx="8" fill="url(#gGc)" stroke="#6c4f9e" stroke-width="1.2"/>
+          <text x="62" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#6c4f9e">Global</text>
+          <g transform="translate(12,24)">
+            <rect x="0" y="0" width="100" height="52" rx="3" fill="#ac92ec" fill-opacity="0.3" stroke="#6c4f9e" stroke-width="1.2"/>
+            <text x="50" y="28" text-anchor="middle" font-size="8" font-weight="bold" fill="#6c4f9e">Entire</text>
+            <text x="50" y="42" text-anchor="middle" font-size="8" fill="#6c4f9e">Raster</text>
+          </g>
+          <text x="62" y="86" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="bold">All cells</text>
+          <text x="62" y="98" text-anchor="middle" font-size="7" fill="#888" font-style="italic">e.g., Flow Direction</text>
+        </g>
+      </svg>
+      <figcaption>Fig 7.2 – The Four Tiers of Raster Operations: Local, Focal, Zonal, and Global</figcaption>
+    </figure>
+
+    <h4>1. Local Functions (Cell-by-Cell)</h4>
+    <ul>
+      <li><strong>Concept:</strong> The value of a cell in the output raster is calculated using only the value of the exact same cell location in the input raster(s). It does not care about neighboring pixels.</li>
+      <li><strong>The 2080 Chaitra Question:</strong> Why is NDVI a local function?<br>
+      Normalized Difference Vegetation Index (NDVI) is calculated using the formula (NIR - Red) / (NIR + Red). To find the NDVI of a specific 30m × 30m patch of land, the software only needs the Near-Infrared and Red band values of that exact single pixel. It performs the math purely vertically through the stacked layers.</li>
+    </ul>
+
+    <h4>2. Focal / Neighborhood Functions</h4>
+    <ul>
+      <li><strong>Concept:</strong> The output value of a cell is calculated based on the values of the cells immediately surrounding it (typically a 3 × 3 moving window).</li>
+      <li><strong>The 2080 Chaitra Question:</strong> Why are Slope and Aspect neighborhood functions?<br>
+      You cannot calculate a slope from a single isolated elevation point. To determine how steep a terrain is (Slope) or which direction it faces (Aspect), the algorithm must look at the central cell and compare its elevation to the 8 surrounding neighbor cells to calculate the rate of change.</li>
+    </ul>
+
+    <h4>3. Zonal Functions (Zonal Statistics)</h4>
+    <ul>
+      <li><strong>Concept:</strong> Calculates statistical values (Mean, Sum, Max, Min) for raster cells that fall within the boundaries of a defined "zone." A zone can be defined by another raster or a vector polygon layer.</li>
+      <li><strong>Application Example:</strong> You are conducting Site Response Analysis for your final year project. You have a continuous raster grid of shear wave velocities (V<sub>s30</sub>) for the Kathmandu Valley, and a vector polygon layer of municipal wards. By running Zonal Statistics, the software will calculate the average V<sub>s30</sub> value specifically within each ward's boundaries, outputting a table summarizing the seismic vulnerability per ward.</li>
+    </ul>
+
+    <h4>4. Global Functions</h4>
+    <ul>
+      <li><strong>Concept:</strong> The output value of each cell is potentially a function of all the cells in the entire input raster.</li>
+      <li><strong>Example:</strong> Euclidean Distance, where the distance from a source is calculated across the entire extent of the map.</li>
+    </ul>
+
+    <!-- Part 3: Deep Dive into Specific Raster Tools -->
+    <h3>Part 3: Deep Dive into Specific Raster Tools (8 to 16 Mark Questions) <span class="exam-ref">Covers: 2073, 2074, 2076, 2078, 2079, 2082</span></h3>
+    <p>When asked to explain and illustrate these tools, define the tool and provide a concrete engineering application.</p>
+
+    <h4>1. Slope and Aspect</h4>
+    <ul>
+      <li><strong>Slope:</strong> Calculates the maximum rate of change in elevation over distance (steepness), outputting values in degrees or percent rise.
+        <ul><li><strong>Application:</strong> When modeling the application of machine learning for predicting cost overruns in road construction, you use a slope raster to identify extreme terrains where excavation costs will mathematically multiply.</li></ul>
+      </li>
+      <li><strong>Aspect:</strong> Calculates the compass direction (0° to 360°) that the downward slope faces.
+        <ul><li><strong>Application:</strong> Identifying south-facing mountain slopes in rural villages to maximize the efficiency of solar panel installations.</li></ul>
+      </li>
+    </ul>
+
+    <h4>2. Hillshade and Viewshed</h4>
+    <ul>
+      <li><strong>Hillshade:</strong> Simulates the interaction of sunlight with terrain (requiring a specific sun azimuth and altitude) to create a 3D, shaded relief effect purely for visualization and cartography.</li>
+      <li><strong>Viewshed:</strong> Determines exactly which raster cells are visible from one or more observer points, accounting for the blocking effect of terrain.
+        <ul><li><strong>Application:</strong> Determining if a new telecommunication tower placed on a hill in Bhadaure will actually have a direct line-of-sight to the surrounding settlement, or if a ridge blocks the signal.</li></ul>
+      </li>
+    </ul>
+
+    
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 680 165" xmlns="http://www.w3.org/2000/svg" style="max-width:680px">
+          <text x="340" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Hillshade vs Viewshed: Two DEM-Derived Surfaces</text>
+          <!-- LEFT: Hillshade -->
+          <rect x="15" y="28" width="310" height="125" rx="8" fill="#f5f0e8" stroke="#b8860b" stroke-width="1"/>
+          <text x="170" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">Hillshade (3D Visualization)</text>
+          <!-- Sun -->
+          <circle cx="50" cy="55" r="12" fill="#e8b60b" opacity=".6"/><text x="50" y="59" text-anchor="middle" font-size="10">&#x2600;</text>
+          <line x1="62" y1="58" x2="100" y2="78" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="62" y1="62" x2="145" y2="100" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,2"/>
+          <!-- Terrain -->
+          <path d="M30,130 L80,90 L130,70 L180,85 L220,65 L260,80 L300,130" fill="#d4cfc5" stroke="#888" stroke-width="1.5"/>
+          <!-- Shadow area -->
+          <path d="M180,130 L180,85 L220,65 L220,130 Z" fill="#333" opacity=".2"/>
+          <text x="200" y="124" text-anchor="middle" font-size="6" fill="#555">Shadow</text>
+          <text x="100" y="82" font-size="6" fill="#b8860b">Lit slope</text>
+          <text x="170" y="150" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Input: DEM + Sun azimuth &amp; altitude</text>
+          <!-- RIGHT: Viewshed -->
+          <rect x="355" y="28" width="310" height="125" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+          <text x="510" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Viewshed (Line of Sight)</text>
+          <!-- Observer -->
+          <circle cx="400" cy="80" r="5" fill="#2d7d46"/><text x="400" y="74" text-anchor="middle" font-size="6" fill="#2d7d46">Observer</text>
+          <!-- Terrain -->
+          <path d="M380,130 L400,85 L440,110 L490,70 L540,90 L580,75 L640,130" fill="#d4cfc5" stroke="#888" stroke-width="1.5"/>
+          <!-- Visible lines -->
+          <line x1="400" y1="80" x2="450" y2="100" stroke="#2d7d46" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="400" y1="80" x2="580" y2="75" stroke="#2d7d46" stroke-width="1" stroke-dasharray="3,2"/>
+          <!-- Blocked -->
+          <line x1="400" y1="80" x2="490" y2="70" stroke="#8b2500" stroke-width="1"/>
+          <line x1="490" y1="70" x2="540" y2="90" stroke="#8b2500" stroke-width="1" stroke-dasharray="2,2" opacity=".4"/>
+          <rect x="520" y="88" width="30" height="12" rx="2" fill="#8b2500" opacity=".15"/>
+          <text x="535" y="97" text-anchor="middle" font-size="5" fill="#8b2500">Blocked</text>
+          <rect x="560" y="68" width="30" height="12" rx="2" fill="#2d7d46" opacity=".15"/>
+          <text x="575" y="77" text-anchor="middle" font-size="5" fill="#2d7d46">Visible</text>
+          <text x="510" y="150" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Output: Binary (Visible=1 / Not=0)</text>
+        </svg>
+        <figcaption>Fig 7.15 &ndash; Hillshade simulates sun illumination for 3D relief; Viewshed identifies which cells are visible from an observer point</figcaption>
+      </figure>
+    </div>
+
+    <h4>3. Euclidean Distance and Cost Path</h4>
+    <ul>
+      <li><strong>Euclidean Distance:</strong> Creates a raster where every single pixel's value represents its straight-line distance to the nearest source feature (like a river or a road).
+        <ul><li><strong>Application:</strong> When designing a toilet for a rural sanitation initiative, you create a Euclidean distance raster away from all groundwater wells. You then mask out any pixels with a value less than 30 meters to strictly follow contamination regulations.</li></ul>
+      </li>
+      <li><strong>Cost Path:</strong> Determines the most cost-effective or "path of least resistance" route between a source and destination, taking into account a "cost surface" (friction like steep slopes, rivers, or dense forests).
+        <ul><li><strong>Application:</strong> Modeling an optimized, physically least-strenuous new trekking route connecting the Mardi Himal trail to a neighboring valley by avoiding slopes greater than 30 degrees.</li></ul>
+      </li>
+    </ul>
+
+    
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 680 165" xmlns="http://www.w3.org/2000/svg" style="max-width:680px">
+          <text x="340" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Euclidean Distance vs Cost Path Analysis</text>
+          <!-- LEFT -->
+          <rect x="15" y="28" width="310" height="125" rx="8" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="170" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Euclidean Distance</text>
+          <!-- Concentric rings -->
+          <circle cx="140" cy="95" r="8" fill="#1a3c5e"/>
+          <text x="140" y="98" text-anchor="middle" font-size="6" fill="#fff">Source</text>
+          <circle cx="140" cy="95" r="22" fill="none" stroke="#1a3c5e" stroke-width=".8" opacity=".5"/>
+          <text x="164" y="85" font-size="5" fill="#1a3c5e">500m</text>
+          <circle cx="140" cy="95" r="36" fill="none" stroke="#1a3c5e" stroke-width=".8" opacity=".3"/>
+          <text x="178" y="78" font-size="5" fill="#1a3c5e">1km</text>
+          <circle cx="140" cy="95" r="50" fill="none" stroke="#1a3c5e" stroke-width=".6" opacity=".2"/>
+          <text x="192" y="70" font-size="5" fill="#1a3c5e">1.5km</text>
+          <text x="260" y="75" font-size="7" fill="#555">Each pixel =</text>
+          <text x="260" y="87" font-size="7" fill="#555">straight-line</text>
+          <text x="260" y="99" font-size="7" fill="#555">distance to</text>
+          <text x="260" y="111" font-size="7" fill="#555">nearest source</text>
+          <text x="170" y="148" text-anchor="middle" font-size="7" fill="#888" font-style="italic">"As the crow flies" &ndash; ignores terrain</text>
+          <!-- RIGHT -->
+          <rect x="355" y="28" width="310" height="125" rx="8" fill="#fff5ec" stroke="#b8860b" stroke-width="1"/>
+          <text x="510" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">Cost Path (Least Cost Route)</text>
+          <!-- Friction surface -->
+          <g transform="translate(375,55)">
+            <rect x="0" y="0" width="35" height="25" fill="#a0d468" opacity=".5"/><text x="17" y="16" text-anchor="middle" font-size="5" fill="#333">Low</text>
+            <rect x="35" y="0" width="35" height="25" fill="#e8b60b" opacity=".5"/><text x="52" y="16" text-anchor="middle" font-size="5" fill="#333">Med</text>
+            <rect x="70" y="0" width="35" height="25" fill="#ed5565" opacity=".5"/><text x="87" y="16" text-anchor="middle" font-size="5" fill="#fff">High</text>
+            <rect x="0" y="25" width="35" height="25" fill="#e8b60b" opacity=".5"/>
+            <rect x="35" y="25" width="35" height="25" fill="#ed5565" opacity=".5"/>
+            <rect x="70" y="25" width="35" height="25" fill="#a0d468" opacity=".5"/>
+            <rect x="0" y="50" width="35" height="25" fill="#a0d468" opacity=".5"/>
+            <rect x="35" y="50" width="35" height="25" fill="#a0d468" opacity=".5"/>
+            <rect x="70" y="50" width="35" height="25" fill="#e8b60b" opacity=".5"/>
+          </g>
+          <!-- Optimal path -->
+          <circle cx="385" cy="62" r="5" fill="#2d7d46"/><text x="385" y="65" text-anchor="middle" font-size="5" fill="#fff">A</text>
+          <path d="M385,67 L390,80 L395,95 L405,105 L420,110 L440,115 L455,110 L465,100 L470,85 L475,70" fill="none" stroke="#2d7d46" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="475" cy="70" r="5" fill="#8b2500"/><text x="475" y="73" text-anchor="middle" font-size="5" fill="#fff">B</text>
+          <text x="540" y="75" font-size="7" fill="#555">Avoids high-</text>
+          <text x="540" y="87" font-size="7" fill="#555">cost cells</text>
+          <text x="540" y="99" font-size="7" fill="#555">(steep slopes,</text>
+          <text x="540" y="111" font-size="7" fill="#555">rivers, forests)</text>
+          <text x="510" y="148" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Follows path of least resistance</text>
+        </svg>
+        <figcaption>Fig 7.16 &ndash; Euclidean Distance measures straight-line proximity; Cost Path finds the optimal route through a friction surface</figcaption>
+      </figure>
+    </div>
+
+    <h4>4. Reclassify and Map Algebra</h4>
+    <ul>
+      <li><strong>Reclassify:</strong> Reassigns ranges of continuous raster values into simplified, discrete integer classes.
+        <ul><li><strong>Application:</strong> Taking a continuous Slope raster (0 to 90 degrees) and reclassifying it into a vulnerability index: 0-15° = 1 (Safe), 15-30° = 2 (Moderate risk), &gt;30° = 3 (High landslide risk).</li></ul>
+      </li>
+      <li><strong>Map Algebra:</strong> The fundamental mathematical language of raster analysis, allowing you to add, subtract, multiply, or divide entire raster grids against each other.</li>
+    </ul>
+
+    
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 680 155" xmlns="http://www.w3.org/2000/svg" style="max-width:680px">
+          <text x="340" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Reclassification: Continuous &#x2192; Discrete Classes</text>
+          <!-- Input: continuous slope -->
+          <g transform="translate(25,30)">
+            <text x="60" y="0" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Input: Slope (0&#xb0;&#x2013;90&#xb0;)</text>
+            <rect x="0" y="6" width="24" height="20" fill="#e8f4fd"/><text x="12" y="20" text-anchor="middle" font-size="6" fill="#333">5&#xb0;</text>
+            <rect x="24" y="6" width="24" height="20" fill="#b0d4f4"/><text x="36" y="20" text-anchor="middle" font-size="6" fill="#333">12&#xb0;</text>
+            <rect x="48" y="6" width="24" height="20" fill="#88b8e8"/><text x="60" y="20" text-anchor="middle" font-size="6" fill="#fff">22&#xb0;</text>
+            <rect x="72" y="6" width="24" height="20" fill="#5588cc"/><text x="84" y="20" text-anchor="middle" font-size="6" fill="#fff">35&#xb0;</text>
+            <rect x="96" y="6" width="24" height="20" fill="#3366aa"/><text x="108" y="20" text-anchor="middle" font-size="6" fill="#fff">48&#xb0;</text>
+            <rect x="0" y="26" width="24" height="20" fill="#d0e8f8"/><text x="12" y="40" text-anchor="middle" font-size="6" fill="#333">8&#xb0;</text>
+            <rect x="24" y="26" width="24" height="20" fill="#b0d4f4"/><text x="36" y="40" text-anchor="middle" font-size="6" fill="#333">18&#xb0;</text>
+            <rect x="48" y="26" width="24" height="20" fill="#5588cc"/><text x="60" y="40" text-anchor="middle" font-size="6" fill="#fff">28&#xb0;</text>
+            <rect x="72" y="26" width="24" height="20" fill="#3366aa"/><text x="84" y="40" text-anchor="middle" font-size="6" fill="#fff">42&#xb0;</text>
+            <rect x="96" y="26" width="24" height="20" fill="#224488"/><text x="108" y="40" text-anchor="middle" font-size="6" fill="#fff">55&#xb0;</text>
+            <rect x="0" y="46" width="24" height="20" fill="#e8f4fd"/><text x="12" y="60" text-anchor="middle" font-size="6" fill="#333">3&#xb0;</text>
+            <rect x="24" y="46" width="24" height="20" fill="#d0e8f8"/><text x="36" y="60" text-anchor="middle" font-size="6" fill="#333">10&#xb0;</text>
+            <rect x="48" y="46" width="24" height="20" fill="#88b8e8"/><text x="60" y="60" text-anchor="middle" font-size="6" fill="#fff">20&#xb0;</text>
+            <rect x="72" y="46" width="24" height="20" fill="#5588cc"/><text x="84" y="60" text-anchor="middle" font-size="6" fill="#fff">32&#xb0;</text>
+            <rect x="96" y="46" width="24" height="20" fill="#3366aa"/><text x="108" y="60" text-anchor="middle" font-size="6" fill="#fff">45&#xb0;</text>
+          </g>
+          <!-- Lookup Table -->
+          <g transform="translate(220,30)">
+            <text x="80" y="0" text-anchor="middle" font-size="8" font-weight="bold" fill="#b8860b">Lookup Table</text>
+            <rect x="10" y="8" width="140" height="18" rx="3" fill="#2d7d46" opacity=".15" stroke="#2d7d46" stroke-width=".6"/>
+            <text x="80" y="21" text-anchor="middle" font-size="7" fill="#2d7d46">0&#xb0;&#x2013;15&#xb0; &#x2192; Class 1 (Safe)</text>
+            <rect x="10" y="30" width="140" height="18" rx="3" fill="#b8860b" opacity=".15" stroke="#b8860b" stroke-width=".6"/>
+            <text x="80" y="43" text-anchor="middle" font-size="7" fill="#b8860b">15&#xb0;&#x2013;30&#xb0; &#x2192; Class 2 (Moderate)</text>
+            <rect x="10" y="52" width="140" height="18" rx="3" fill="#8b2500" opacity=".15" stroke="#8b2500" stroke-width=".6"/>
+            <text x="80" y="65" text-anchor="middle" font-size="7" fill="#8b2500">&gt;30&#xb0; &#x2192; Class 3 (High Risk)</text>
+          </g>
+          <!-- Arrow -->
+          <polygon points="435,75 455,67 455,71 475,71 475,79 455,79 455,83" fill="#1a3c5e"/>
+          <!-- Output: classified -->
+          <g transform="translate(490,30)">
+            <text x="60" y="0" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Output: Risk Classes</text>
+            <rect x="0" y="6" width="24" height="20" fill="#2d7d46" opacity=".4"/><text x="12" y="20" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">1</text>
+            <rect x="24" y="6" width="24" height="20" fill="#2d7d46" opacity=".4"/><text x="36" y="20" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">1</text>
+            <rect x="48" y="6" width="24" height="20" fill="#b8860b" opacity=".4"/><text x="60" y="20" text-anchor="middle" font-size="7" font-weight="bold">2</text>
+            <rect x="72" y="6" width="24" height="20" fill="#8b2500" opacity=".4"/><text x="84" y="20" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">3</text>
+            <rect x="96" y="6" width="24" height="20" fill="#8b2500" opacity=".4"/><text x="108" y="20" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">3</text>
+            <rect x="0" y="26" width="24" height="20" fill="#2d7d46" opacity=".4"/><text x="12" y="40" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">1</text>
+            <rect x="24" y="26" width="24" height="20" fill="#b8860b" opacity=".4"/><text x="36" y="40" text-anchor="middle" font-size="7" font-weight="bold">2</text>
+            <rect x="48" y="26" width="24" height="20" fill="#b8860b" opacity=".4"/><text x="60" y="40" text-anchor="middle" font-size="7" font-weight="bold">2</text>
+            <rect x="72" y="26" width="24" height="20" fill="#8b2500" opacity=".4"/><text x="84" y="40" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">3</text>
+            <rect x="96" y="26" width="24" height="20" fill="#8b2500" opacity=".4"/><text x="108" y="40" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">3</text>
+            <rect x="0" y="46" width="24" height="20" fill="#2d7d46" opacity=".4"/><text x="12" y="60" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">1</text>
+            <rect x="24" y="46" width="24" height="20" fill="#2d7d46" opacity=".4"/><text x="36" y="60" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">1</text>
+            <rect x="48" y="46" width="24" height="20" fill="#b8860b" opacity=".4"/><text x="60" y="60" text-anchor="middle" font-size="7" font-weight="bold">2</text>
+            <rect x="72" y="46" width="24" height="20" fill="#8b2500" opacity=".4"/><text x="84" y="60" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">3</text>
+            <rect x="96" y="46" width="24" height="20" fill="#8b2500" opacity=".4"/><text x="108" y="60" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">3</text>
+          </g>
+          <!-- Legend -->
+          <g transform="translate(235,100)">
+            <rect x="0" y="0" width="14" height="10" fill="#2d7d46" opacity=".4" stroke="#2d7d46" stroke-width=".5"/><text x="20" y="9" font-size="7" fill="#333">1 = Safe (0&#xb0;&#x2013;15&#xb0;)</text>
+            <rect x="110" y="0" width="14" height="10" fill="#b8860b" opacity=".4" stroke="#b8860b" stroke-width=".5"/><text x="130" y="9" font-size="7" fill="#333">2 = Moderate (15&#xb0;&#x2013;30&#xb0;)</text>
+            <rect x="250" y="0" width="14" height="10" fill="#8b2500" opacity=".4" stroke="#8b2500" stroke-width=".5"/><text x="270" y="9" font-size="7" fill="#333">3 = High Risk (&gt;30&#xb0;)</text>
+          </g>
+        </svg>
+        <figcaption>Fig 7.17 &ndash; Reclassification transforms continuous slope values into discrete risk classes using a lookup table</figcaption>
+      </figure>
+    </div>
+
+    <!-- Part 4: The 14-Mark Numerical (Weighted Overlay) -->
+    
+
+    <!-- Fig 7.6 – Raster Analysis Toolbox -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Raster Analysis Toolbox: Quick Reference</text>
+          <rect x="20" y="30" width="120" height="28" rx="4" fill="#1a3c5e"/><text x="80" y="49" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Tool</text>
+          <rect x="145" y="30" width="200" height="28" rx="4" fill="#1a3c5e"/><text x="245" y="49" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">What It Does</text>
+          <rect x="350" y="30" width="170" height="28" rx="4" fill="#1a3c5e"/><text x="435" y="49" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Input &#x2192; Output</text>
+          <rect x="525" y="30" width="155" height="28" rx="4" fill="#1a3c5e"/><text x="602" y="49" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Example Use</text>
+          <!-- Rows -->
+          <rect x="20" y="62" width="660" height="34" rx="3" fill="#f5f0e8"/>
+          <text x="80" y="83" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Slope</text>
+          <text x="245" y="83" text-anchor="middle" font-size="7.5" fill="#555">Rate of elevation change (&#xb0; or %)</text>
+          <text x="435" y="83" text-anchor="middle" font-size="7.5" fill="#555">DEM &#x2192; Slope raster</text>
+          <text x="602" y="83" text-anchor="middle" font-size="7.5" fill="#555">Road alignment</text>
+          <rect x="20" y="100" width="660" height="34" rx="3" fill="#fff"/>
+          <text x="80" y="121" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Aspect</text>
+          <text x="245" y="121" text-anchor="middle" font-size="7.5" fill="#555">Direction of steepest downslope (0-360&#xb0;)</text>
+          <text x="435" y="121" text-anchor="middle" font-size="7.5" fill="#555">DEM &#x2192; Aspect raster</text>
+          <text x="602" y="121" text-anchor="middle" font-size="7.5" fill="#555">Solar panel siting</text>
+          <rect x="20" y="138" width="660" height="34" rx="3" fill="#f5f0e8"/>
+          <text x="80" y="159" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Hillshade</text>
+          <text x="245" y="159" text-anchor="middle" font-size="7.5" fill="#555">Simulates sun illumination (shadow/light)</text>
+          <text x="435" y="159" text-anchor="middle" font-size="7.5" fill="#555">DEM + azimuth &#x2192; Shaded relief</text>
+          <text x="602" y="159" text-anchor="middle" font-size="7.5" fill="#555">3D visualization</text>
+          <rect x="20" y="176" width="660" height="34" rx="3" fill="#fff"/>
+          <text x="80" y="197" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Viewshed</text>
+          <text x="245" y="197" text-anchor="middle" font-size="7.5" fill="#555">Visible area from an observation point</text>
+          <text x="435" y="197" text-anchor="middle" font-size="7.5" fill="#555">DEM + point &#x2192; Binary raster</text>
+          <text x="602" y="197" text-anchor="middle" font-size="7.5" fill="#555">Cell tower placement</text>
+          <rect x="20" y="214" width="660" height="34" rx="3" fill="#f5f0e8"/>
+          <text x="80" y="235" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Eucl. Dist.</text>
+          <text x="245" y="235" text-anchor="middle" font-size="7.5" fill="#555">Straight-line distance to nearest source</text>
+          <text x="435" y="235" text-anchor="middle" font-size="7.5" fill="#555">Source &#x2192; Distance raster</text>
+          <text x="602" y="235" text-anchor="middle" font-size="7.5" fill="#555">Hospital access</text>
+          <rect x="20" y="252" width="660" height="34" rx="3" fill="#fff"/>
+          <text x="80" y="273" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Cost Path</text>
+          <text x="245" y="273" text-anchor="middle" font-size="7.5" fill="#555">Least-cost route between two points</text>
+          <text x="435" y="273" text-anchor="middle" font-size="7.5" fill="#555">Cost surface &#x2192; Optimal path</text>
+          <text x="602" y="273" text-anchor="middle" font-size="7.5" fill="#555">Pipeline routing</text>
+          <rect x="20" y="290" width="660" height="30" rx="3" fill="#f5f0e8"/>
+          <text x="80" y="309" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Reclassify</text>
+          <text x="245" y="309" text-anchor="middle" font-size="7.5" fill="#555">Reassign cell values to new classes</text>
+          <text x="435" y="309" text-anchor="middle" font-size="7.5" fill="#555">Raster &#x2192; Reclassified raster</text>
+          <text x="602" y="309" text-anchor="middle" font-size="7.5" fill="#555">Suitability scoring</text>
+        </svg>
+        <figcaption>Fig 7.6 &ndash; Raster Analysis Toolbox: 7 key tools with inputs, outputs, and engineering applications</figcaption>
+      </figure>
+    </div>
+
+    <h3>Part 4: The 14-Mark Numerical (Weighted Overlay) <span class="exam-ref">Covers: 2074 Magh Q6 – 14 Marks</span></h3>
+    <p><strong>Question:</strong> Grid Code of a raster data with 25 m grid resolution is shown below. Derive a suitable map and suitable area for Rice Crop. Suitable parameters on 1 to 10 scale for slope, soil, and landuse are given in Table 1. The weightage for slope, soil, and landuse are 50%, 30%, and 20% respectively. Assume the value greater than 6 is suitable.</p>
+
+    <h4>Given Data</h4>
+
+    <!-- Input Grid Code Matrix (7×8) -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 660 340" xmlns="http://www.w3.org/2000/svg" style="max-width:660px">
+          <text x="210" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Input: Grid Code Matrix (7 &times; 8)</text>
+          <text x="210" y="34" text-anchor="middle" font-size="7.5" fill="#888">25 m cell resolution</text>
+          <!-- Grid lines -->
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="20" y1="45" x2="420" y2="45"/><line x1="20" y1="85" x2="420" y2="85"/>
+            <line x1="20" y1="125" x2="420" y2="125"/><line x1="20" y1="165" x2="420" y2="165"/>
+            <line x1="20" y1="205" x2="420" y2="205"/><line x1="20" y1="245" x2="420" y2="245"/>
+            <line x1="20" y1="285" x2="420" y2="285"/><line x1="20" y1="325" x2="420" y2="325"/>
+            <line x1="20" y1="45" x2="20" y2="325"/><line x1="70" y1="45" x2="70" y2="325"/>
+            <line x1="120" y1="45" x2="120" y2="325"/><line x1="170" y1="45" x2="170" y2="325"/>
+            <line x1="220" y1="45" x2="220" y2="325"/><line x1="270" y1="45" x2="270" y2="325"/>
+            <line x1="320" y1="45" x2="320" y2="325"/><line x1="370" y1="45" x2="370" y2="325"/>
+            <line x1="420" y1="45" x2="420" y2="325"/>
+          </g>
+          <!-- Row 1: 1 1 1 2 2 3 4 5 -->
+          <text x="45" y="70" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="95" y="70" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="145" y="70" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="195" y="70" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="245" y="70" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="295" y="70" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="345" y="70" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="395" y="70" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <!-- Row 2: 2 2 2 3 3 3 4 4 -->
+          <text x="45" y="110" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="95" y="110" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="145" y="110" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="195" y="110" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="245" y="110" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="295" y="110" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="345" y="110" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="395" y="110" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <!-- Row 3: 1 1 2 5 5 5 5 4 -->
+          <text x="45" y="150" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="95" y="150" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="145" y="150" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="195" y="150" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="245" y="150" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="295" y="150" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="345" y="150" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="395" y="150" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <!-- Row 4: 3 5 5 4 4 4 4 4 -->
+          <text x="45" y="190" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="95" y="190" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="145" y="190" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="195" y="190" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="245" y="190" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="295" y="190" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="345" y="190" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="395" y="190" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <!-- Row 5: 3 5 5 4 4 4 4 4 -->
+          <text x="45" y="230" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="95" y="230" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="145" y="230" text-anchor="middle" font-size="13" fill="#8b2500">5</text>
+          <text x="195" y="230" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="245" y="230" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="295" y="230" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="345" y="230" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="395" y="230" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <!-- Row 6: 1 3 3 3 3 3 4 4 -->
+          <text x="45" y="270" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="95" y="270" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="145" y="270" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="195" y="270" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="245" y="270" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="295" y="270" text-anchor="middle" font-size="13" fill="#2d7d46">3</text>
+          <text x="345" y="270" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <text x="395" y="270" text-anchor="middle" font-size="13" fill="#b8860b">4</text>
+          <!-- Row 7: 1 2 2 2 1 1 1 1 -->
+          <text x="45" y="310" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="95" y="310" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="145" y="310" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="195" y="310" text-anchor="middle" font-size="13" fill="#555">2</text>
+          <text x="245" y="310" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="295" y="310" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="345" y="310" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="395" y="310" text-anchor="middle" font-size="13" fill="#1a3c5e" font-weight="bold">1</text>
+
+          <!-- Table 1: Suitable Parameters -->
+          <rect x="455" y="45" width="195" height="172" rx="5" fill="#fafafa" stroke="#1a3c5e" stroke-width="1"/>
+          <rect x="455" y="45" width="195" height="24" rx="5" fill="#1a3c5e"/>
+          <text x="552" y="62" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">Table 1: Suitable Parameters</text>
+          <!-- Header row -->
+          <text x="480" y="84" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Code</text>
+          <text x="525" y="84" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Slope</text>
+          <text x="578" y="84" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Soil</text>
+          <text x="628" y="84" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Land</text>
+          <line x1="460" y1="90" x2="645" y2="90" stroke="#ccc" stroke-width=".5"/>
+          <!-- Code 1 -->
+          <text x="480" y="107" text-anchor="middle" font-size="9" fill="#333" font-weight="bold">1</text>
+          <text x="525" y="107" text-anchor="middle" font-size="9" fill="#2d7d46">10</text>
+          <text x="578" y="107" text-anchor="middle" font-size="9" fill="#2d7d46">8</text>
+          <text x="628" y="107" text-anchor="middle" font-size="9" fill="#2d7d46">8</text>
+          <!-- Code 2 -->
+          <text x="480" y="127" text-anchor="middle" font-size="9" fill="#333" font-weight="bold">2</text>
+          <text x="525" y="127" text-anchor="middle" font-size="9" fill="#555">8</text>
+          <text x="578" y="127" text-anchor="middle" font-size="9" fill="#555">4</text>
+          <text x="628" y="127" text-anchor="middle" font-size="9" fill="#8b2500">1</text>
+          <!-- Code 3 -->
+          <text x="480" y="147" text-anchor="middle" font-size="9" fill="#333" font-weight="bold">3</text>
+          <text x="525" y="147" text-anchor="middle" font-size="9" fill="#555">6</text>
+          <text x="578" y="147" text-anchor="middle" font-size="9" fill="#2d7d46">10</text>
+          <text x="628" y="147" text-anchor="middle" font-size="9" fill="#555">4</text>
+          <!-- Code 4 -->
+          <text x="480" y="167" text-anchor="middle" font-size="9" fill="#333" font-weight="bold">4</text>
+          <text x="525" y="167" text-anchor="middle" font-size="9" fill="#555">4</text>
+          <text x="578" y="167" text-anchor="middle" font-size="9" fill="#8b2500">1</text>
+          <text x="628" y="167" text-anchor="middle" font-size="9" fill="#555">8</text>
+          <!-- Code 5 -->
+          <text x="480" y="187" text-anchor="middle" font-size="9" fill="#333" font-weight="bold">5</text>
+          <text x="525" y="187" text-anchor="middle" font-size="9" fill="#8b2500">1</text>
+          <text x="578" y="187" text-anchor="middle" font-size="9" fill="#8b2500">1</text>
+          <text x="628" y="187" text-anchor="middle" font-size="9" fill="#2d7d46">10</text>
+          <line x1="460" y1="195" x2="645" y2="195" stroke="#ccc" stroke-width=".5"/>
+          <!-- Weights -->
+          <text x="552" y="210" text-anchor="middle" font-size="7.5" fill="#888">Wt: 50% &middot; 30% &middot; 20%</text>
+        </svg>
+        <figcaption>Fig 7.7 &ndash; Input Grid Code matrix (7&times;8) and Suitability Parameter table for Rice Crop suitability analysis</figcaption>
+      </figure>
+    </div>
+
+    <h4>Step 1: Write the Master Equation &amp; Compute Score per Grid Code</h4>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> weighted_overlay.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div><div>38</div><div>39</div><div>40</div><div>41</div><div>42</div><div>43</div><div>44</div><div>45</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Weighted Overlay  ·  Rice Crop Suitability  ·  2074 Magh Q6 ──</span></div><div></div><div><span class="m-kw">Master Equation:</span></div><div>  <span class="m-fn">Final_Score</span> <span class="m-op">=</span> (<span class="m-var">Slope_Suit</span> <span class="m-op">&times;</span> <span class="m-num">0.50</span>) <span class="m-op">+</span> (<span class="m-var">Soil_Suit</span> <span class="m-op">&times;</span> <span class="m-num">0.30</span>) <span class="m-op">+</span> (<span class="m-var">Landuse_Suit</span> <span class="m-op">&times;</span> <span class="m-num">0.20</span>)</div><div></div><div><span class="m-kw">Weights:</span>  <span class="m-var">Slope</span> <span class="m-op">=</span> <span class="m-num">50%</span>,  <span class="m-var">Soil</span> <span class="m-op">=</span> <span class="m-num">30%</span>,  <span class="m-var">Landuse</span> <span class="m-op">=</span> <span class="m-num">20%</span>   <span class="m-cmt">// Total = 100% ✓</span></div><div><span class="m-kw">Threshold:</span>  <span class="m-fn">Final_Score</span> <span class="m-op">&gt;</span> <span class="m-num">6</span>  <span class="m-op">&rarr;</span>  <span class="m-str">"Suitable for Rice"</span></div><div></div><div><span class="m-cmt">// ═══════════════════════════════════════════════════════</span></div><div><span class="m-cmt">// STEP 1:  Compute Final Score for each Grid Code</span></div><div><span class="m-cmt">// ═══════════════════════════════════════════════════════</span></div><div></div><div><span class="m-kw">Grid Code 1:</span>  <span class="m-var">Slope</span><span class="m-op">=</span><span class="m-num">10</span>, <span class="m-var">Soil</span><span class="m-op">=</span><span class="m-num">8</span>, <span class="m-var">Landuse</span><span class="m-op">=</span><span class="m-num">8</span></div><div>  <span class="m-fn">F</span> <span class="m-op">=</span> (<span class="m-num">10</span> <span class="m-op">&times;</span> <span class="m-num">0.50</span>) <span class="m-op">+</span> (<span class="m-num">8</span> <span class="m-op">&times;</span> <span class="m-num">0.30</span>) <span class="m-op">+</span> (<span class="m-num">8</span> <span class="m-op">&times;</span> <span class="m-num">0.20</span>)</div><div>    <span class="m-op">=</span> <span class="m-num">5.0</span> <span class="m-op">+</span> <span class="m-num">2.4</span> <span class="m-op">+</span> <span class="m-num">1.6</span>  <span class="m-op">=</span>  <span class="m-res">9.0</span>   <span class="m-cmt">// &gt; 6 → ✓ SUITABLE</span></div><div></div><div><span class="m-kw">Grid Code 2:</span>  <span class="m-var">Slope</span><span class="m-op">=</span><span class="m-num">8</span>, <span class="m-var">Soil</span><span class="m-op">=</span><span class="m-num">4</span>, <span class="m-var">Landuse</span><span class="m-op">=</span><span class="m-num">1</span></div><div>  <span class="m-fn">F</span> <span class="m-op">=</span> (<span class="m-num">8</span> <span class="m-op">&times;</span> <span class="m-num">0.50</span>) <span class="m-op">+</span> (<span class="m-num">4</span> <span class="m-op">&times;</span> <span class="m-num">0.30</span>) <span class="m-op">+</span> (<span class="m-num">1</span> <span class="m-op">&times;</span> <span class="m-num">0.20</span>)</div><div>    <span class="m-op">=</span> <span class="m-num">4.0</span> <span class="m-op">+</span> <span class="m-num">1.2</span> <span class="m-op">+</span> <span class="m-num">0.2</span>  <span class="m-op">=</span>  <span class="m-res">5.4</span>   <span class="m-cmt">// &lt; 6 → ✗ UNSUITABLE</span></div><div></div><div><span class="m-kw">Grid Code 3:</span>  <span class="m-var">Slope</span><span class="m-op">=</span><span class="m-num">6</span>, <span class="m-var">Soil</span><span class="m-op">=</span><span class="m-num">10</span>, <span class="m-var">Landuse</span><span class="m-op">=</span><span class="m-num">4</span></div><div>  <span class="m-fn">F</span> <span class="m-op">=</span> (<span class="m-num">6</span> <span class="m-op">&times;</span> <span class="m-num">0.50</span>) <span class="m-op">+</span> (<span class="m-num">10</span> <span class="m-op">&times;</span> <span class="m-num">0.30</span>) <span class="m-op">+</span> (<span class="m-num">4</span> <span class="m-op">&times;</span> <span class="m-num">0.20</span>)</div><div>    <span class="m-op">=</span> <span class="m-num">3.0</span> <span class="m-op">+</span> <span class="m-num">3.0</span> <span class="m-op">+</span> <span class="m-num">0.8</span>  <span class="m-op">=</span>  <span class="m-res">6.8</span>   <span class="m-cmt">// &gt; 6 → ✓ SUITABLE</span></div><div></div><div><span class="m-kw">Grid Code 4:</span>  <span class="m-var">Slope</span><span class="m-op">=</span><span class="m-num">4</span>, <span class="m-var">Soil</span><span class="m-op">=</span><span class="m-num">1</span>, <span class="m-var">Landuse</span><span class="m-op">=</span><span class="m-num">8</span></div><div>  <span class="m-fn">F</span> <span class="m-op">=</span> (<span class="m-num">4</span> <span class="m-op">&times;</span> <span class="m-num">0.50</span>) <span class="m-op">+</span> (<span class="m-num">1</span> <span class="m-op">&times;</span> <span class="m-num">0.30</span>) <span class="m-op">+</span> (<span class="m-num">8</span> <span class="m-op">&times;</span> <span class="m-num">0.20</span>)</div><div>    <span class="m-op">=</span> <span class="m-num">2.0</span> <span class="m-op">+</span> <span class="m-num">0.3</span> <span class="m-op">+</span> <span class="m-num">1.6</span>  <span class="m-op">=</span>  <span class="m-res">3.9</span>   <span class="m-cmt">// &lt; 6 → ✗ UNSUITABLE</span></div><div></div><div><span class="m-kw">Grid Code 5:</span>  <span class="m-var">Slope</span><span class="m-op">=</span><span class="m-num">1</span>, <span class="m-var">Soil</span><span class="m-op">=</span><span class="m-num">1</span>, <span class="m-var">Landuse</span><span class="m-op">=</span><span class="m-num">10</span></div><div>  <span class="m-fn">F</span> <span class="m-op">=</span> (<span class="m-num">1</span> <span class="m-op">&times;</span> <span class="m-num">0.50</span>) <span class="m-op">+</span> (<span class="m-num">1</span> <span class="m-op">&times;</span> <span class="m-num">0.30</span>) <span class="m-op">+</span> (<span class="m-num">10</span> <span class="m-op">&times;</span> <span class="m-num">0.20</span>)</div><div>    <span class="m-op">=</span> <span class="m-num">0.5</span> <span class="m-op">+</span> <span class="m-num">0.3</span> <span class="m-op">+</span> <span class="m-num">2.0</span>  <span class="m-op">=</span>  <span class="m-res">2.8</span>   <span class="m-cmt">// &lt; 6 → ✗ UNSUITABLE</span></div><div></div><div><span class="m-cmt">// ═══════════════════════════════════════════════════════</span></div><div><span class="m-cmt">// SUMMARY</span></div><div><span class="m-cmt">// ═══════════════════════════════════════════════════════</span></div><div><span class="m-cmt">//  Code │ Score │ Verdict</span></div><div><span class="m-cmt">//  ─────┼───────┼──────────────</span></div><div><span class="m-cmt">//    1  │  9.0  │ ✓ Suitable</span></div><div><span class="m-cmt">//    2  │  5.4  │ ✗ Unsuitable</span></div><div><span class="m-cmt">//    3  │  6.8  │ ✓ Suitable</span></div><div><span class="m-cmt">//    4  │  3.9  │ ✗ Unsuitable</span></div><div><span class="m-cmt">//    5  │  2.8  │ ✗ Unsuitable</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Map Algebra</span><span>Rice Crop Suitability &middot; 45 lines</span></div>
+    </div>
+
+    <h4>Step 2: Substitute Scores into the Grid &amp; Apply Threshold</h4>
+    <p>Replace every Grid Code in the 7&times;8 matrix with its Final Score, then shade all cells with a value &gt; 6 as <strong>Suitable</strong>.</p>
+
+    <!-- Final Score Grid + Suitability Map -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <!-- LEFT: Final Score Grid -->
+          <text x="175" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Final Score Grid</text>
+          <g stroke="#b0bec5" stroke-width=".5">
+            <line x1="10" y1="30" x2="350" y2="30"/><line x1="10" y1="70" x2="350" y2="70"/>
+            <line x1="10" y1="110" x2="350" y2="110"/><line x1="10" y1="150" x2="350" y2="150"/>
+            <line x1="10" y1="190" x2="350" y2="190"/><line x1="10" y1="230" x2="350" y2="230"/>
+            <line x1="10" y1="270" x2="350" y2="270"/><line x1="10" y1="310" x2="350" y2="310"/>
+            <line x1="10" y1="30" x2="10" y2="310"/><line x1="52" y1="30" x2="52" y2="310"/>
+            <line x1="95" y1="30" x2="95" y2="310"/><line x1="137" y1="30" x2="137" y2="310"/>
+            <line x1="180" y1="30" x2="180" y2="310"/><line x1="222" y1="30" x2="222" y2="310"/>
+            <line x1="265" y1="30" x2="265" y2="310"/><line x1="307" y1="30" x2="307" y2="310"/>
+            <line x1="350" y1="30" x2="350" y2="310"/>
+          </g>
+          <!-- Row 1: 9.0 9.0 9.0 5.4 5.4 6.8 3.9 2.8 -->
+          <text x="31" y="55" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="73" y="55" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="116" y="55" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="158" y="55" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="201" y="55" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="243" y="55" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="286" y="55" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="328" y="55" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <!-- Row 2: 5.4 5.4 5.4 6.8 6.8 6.8 3.9 3.9 -->
+          <text x="31" y="95" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="73" y="95" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="116" y="95" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="158" y="95" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="201" y="95" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="243" y="95" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="286" y="95" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="328" y="95" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <!-- Row 3: 9.0 9.0 5.4 2.8 2.8 2.8 2.8 3.9 -->
+          <text x="31" y="135" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="73" y="135" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="116" y="135" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="158" y="135" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="201" y="135" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="243" y="135" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="286" y="135" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="328" y="135" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <!-- Row 4: 6.8 2.8 2.8 3.9 3.9 3.9 3.9 3.9 -->
+          <text x="31" y="175" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="73" y="175" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="116" y="175" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="158" y="175" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="201" y="175" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="243" y="175" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="286" y="175" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="328" y="175" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <!-- Row 5: 6.8 2.8 2.8 3.9 3.9 3.9 3.9 3.9 -->
+          <text x="31" y="215" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="73" y="215" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="116" y="215" text-anchor="middle" font-size="10" fill="#8b2500">2.8</text>
+          <text x="158" y="215" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="201" y="215" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="243" y="215" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="286" y="215" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="328" y="215" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <!-- Row 6: 9.0 6.8 6.8 6.8 6.8 6.8 3.9 3.9 -->
+          <text x="31" y="255" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="73" y="255" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="116" y="255" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="158" y="255" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="201" y="255" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="243" y="255" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6.8</text>
+          <text x="286" y="255" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <text x="328" y="255" text-anchor="middle" font-size="10" fill="#8b2500">3.9</text>
+          <!-- Row 7: 9.0 5.4 5.4 5.4 9.0 9.0 9.0 9.0 -->
+          <text x="31" y="295" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="73" y="295" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="116" y="295" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="158" y="295" text-anchor="middle" font-size="10" fill="#8b2500">5.4</text>
+          <text x="201" y="295" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="243" y="295" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="286" y="295" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+          <text x="328" y="295" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">9.0</text>
+
+          <!-- Arrow -->
+          <line x1="365" y1="170" x2="385" y2="170" stroke="#1a3c5e" stroke-width="2" marker-end="url(#arrowM)"/>
+          <defs><marker id="arrowM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1a3c5e"/></marker></defs>
+
+          <!-- RIGHT: Suitability Map -->
+          <text x="535" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Suitability Map (&gt; 6)</text>
+          <g stroke="#b0bec5" stroke-width=".5">
+            <line x1="395" y1="30" x2="690" y2="30"/><line x1="395" y1="70" x2="690" y2="70"/>
+            <line x1="395" y1="110" x2="690" y2="110"/><line x1="395" y1="150" x2="690" y2="150"/>
+            <line x1="395" y1="190" x2="690" y2="190"/><line x1="395" y1="230" x2="690" y2="230"/>
+            <line x1="395" y1="270" x2="690" y2="270"/><line x1="395" y1="310" x2="690" y2="310"/>
+            <line x1="395" y1="30" x2="395" y2="310"/><line x1="432" y1="30" x2="432" y2="310"/>
+            <line x1="469" y1="30" x2="469" y2="310"/><line x1="506" y1="30" x2="506" y2="310"/>
+            <line x1="543" y1="30" x2="543" y2="310"/><line x1="580" y1="30" x2="580" y2="310"/>
+            <line x1="617" y1="30" x2="617" y2="310"/><line x1="653" y1="30" x2="653" y2="310"/>
+            <line x1="690" y1="30" x2="690" y2="310"/>
+          </g>
+          <!-- Suitable cells shaded green (score > 6) -->
+          <!-- Row 1: S S S . . S . . -->
+          <rect x="395" y="30" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="413" y="55" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="432" y="30" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="450" y="55" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="469" y="30" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="487" y="55" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="524" y="55" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="561" y="55" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <rect x="580" y="30" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="598" y="55" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="635" y="55" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="671" y="55" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <!-- Row 2: . . . S S S . . -->
+          <text x="413" y="95" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="450" y="95" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="487" y="95" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <rect x="506" y="70" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="524" y="95" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="543" y="70" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="561" y="95" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="580" y="70" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="598" y="95" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="635" y="95" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="671" y="95" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <!-- Row 3: S S . . . . . . -->
+          <rect x="395" y="110" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="413" y="135" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="432" y="110" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="450" y="135" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="487" y="135" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="524" y="135" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="561" y="135" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="598" y="135" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="635" y="135" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="671" y="135" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <!-- Row 4: S . . . . . . . -->
+          <rect x="395" y="150" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="413" y="175" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="450" y="175" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="487" y="175" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="524" y="175" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="561" y="175" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="598" y="175" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="635" y="175" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="671" y="175" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <!-- Row 5: S . . . . . . . -->
+          <rect x="395" y="190" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="413" y="215" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="450" y="215" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="487" y="215" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="524" y="215" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="561" y="215" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="598" y="215" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="635" y="215" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="671" y="215" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <!-- Row 6: S S S S S S . . -->
+          <rect x="395" y="230" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="413" y="255" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="432" y="230" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="450" y="255" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="469" y="230" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="487" y="255" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="506" y="230" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="524" y="255" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="543" y="230" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="561" y="255" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="580" y="230" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="598" y="255" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="635" y="255" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="671" y="255" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <!-- Row 7: S . . . S S S S -->
+          <rect x="395" y="270" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="413" y="295" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <text x="450" y="295" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="487" y="295" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <text x="524" y="295" text-anchor="middle" font-size="9" fill="#ccc">&middot;</text>
+          <rect x="543" y="270" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="561" y="295" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="580" y="270" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="598" y="295" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="617" y="270" width="36" height="40" fill="#2d7d46" opacity=".25"/><text x="635" y="295" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <rect x="653" y="270" width="37" height="40" fill="#2d7d46" opacity=".25"/><text x="671" y="295" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="bold">S</text>
+          <!-- Legend -->
+          <rect x="415" y="325" width="16" height="12" rx="2" fill="#2d7d46" opacity=".3" stroke="#2d7d46" stroke-width=".5"/>
+          <text x="436" y="335" font-size="8" fill="#2d7d46" font-weight="bold">S = Suitable (&gt; 6)</text>
+          <text x="565" y="335" font-size="8" fill="#999">&middot; = Unsuitable (&le; 6)</text>
+          <!-- Area calc -->
+          <text x="535" y="360" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Suitable cells = 24 out of 56</text>
+          <text x="535" y="373" text-anchor="middle" font-size="7.5" fill="#555">Suitable area = 24 &times; 25 &times; 25 = 15,000 m&sup2; = 1.5 ha</text>
+        </svg>
+        <figcaption>Fig 7.8 &ndash; Final Score grid (left) and Suitability Map for Rice Crop (right). Green shaded cells (S) have scores &gt; 6 and represent suitable areas.</figcaption>
+      </figure>
+    </div>
+
+    <h4>Step 3: Calculate the Suitable Area</h4>
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> area_calculation.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Suitable Area Calculation ──</span></div><div></div><div><span class="m-kw">Given:</span></div><div>  <span class="m-var">Cell resolution</span>   <span class="m-op">=</span>  <span class="m-num">25</span> <span class="m-unit">m</span>  <span class="m-op">&times;</span>  <span class="m-num">25</span> <span class="m-unit">m</span>  <span class="m-op">=</span>  <span class="m-num">625</span> <span class="m-unit">m&sup2;</span> <span class="m-cmt">per cell</span></div><div>  <span class="m-var">Total cells</span>       <span class="m-op">=</span>  <span class="m-num">7</span> <span class="m-op">&times;</span> <span class="m-num">8</span>  <span class="m-op">=</span>  <span class="m-num">56</span></div><div>  <span class="m-var">Suitable cells</span>    <span class="m-op">=</span>  <span class="m-num">24</span>  <span class="m-cmt">// cells with score &gt; 6 (Code 1 and Code 3)</span></div><div></div><div><span class="m-kw">Result:</span></div><div>  <span class="m-fn">Suitable Area</span> <span class="m-op">=</span> <span class="m-num">24</span> <span class="m-op">&times;</span> <span class="m-num">625</span>  <span class="m-op">=</span>  <span class="m-res">15,000 m&sup2;</span>  <span class="m-op">=</span>  <span class="m-res">1.5 ha</span></div><div>  <span class="m-fn">Unsuitable Area</span> <span class="m-op">=</span> <span class="m-num">32</span> <span class="m-op">&times;</span> <span class="m-num">625</span>  <span class="m-op">=</span>  <span class="m-num">20,000 m&sup2;</span>  <span class="m-op">=</span>  <span class="m-num">2.0 ha</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Area</span><span>Suitable Area &middot; 10 lines</span></div>
+    </div>
+
+    <!-- Additional Raster Operations -->
+    <h2>Additional Raster Operations</h2>
+
+    <h3>1. Local Operations (Mean, Sum, Max, Min) <span class="exam-ref">Asked in 2073 Magh Q11</span></h3>
+    <ul>
+      <li><strong>Concept:</strong> These are technically known as "Cell Statistics." A mathematical operation (like calculating the mean or sum) is performed on a cell-by-cell basis across multiple overlapping input raster layers. The output cell at coordinates (X,Y) is the sum or mean of all the (X,Y) cells in the input stack.</li>
+      <li><strong>Mechanism:</strong> If you stack three rasters, the software drills straight down through pixel (Row 1, Column 1) in all three layers, calculates the average, and writes that single average value into pixel (Row 1, Column 1) of the new output raster.</li>
+      <li><strong>Exam Example:</strong> When preparing meteorological data for the mHM (mesoscale Hydrologic Model), you have 12 separate raster grids, each representing the total rainfall for a specific month. To find the annual precipitation, you use the Local Sum operation. The software stacks the 12 grids and adds the pixel values together vertically, outputting a single "Total Annual Rainfall" raster grid.</li>
+    </ul>
+
+    <h3>2. Summarize Zone (Zonal Statistics) <span class="exam-ref">Asked in 2075 Magh Q5b, 2076 Bhadra Q7a, 2073 Magh Q11</span></h3>
+    <ul>
+      <li><strong>Concept:</strong> This function calculates summary statistics (like Area, Sum, Mean, Maximum, Minimum) for a continuous "Value Raster" strictly within the boundaries defined by a separate "Zone Dataset". The Zone Dataset can be either a vector polygon shapefile or an integer raster.</li>
+      <li><strong>Mechanism:</strong> The software identifies all the pixels of the Value Raster that physically fall inside Zone A, lumps them together, calculates the requested statistic (e.g., the average), and then moves on to Zone B.</li>
+      <li><strong>Exam Example:</strong> For your final year project on Site Response Analysis, you have a highly detailed, continuous raster grid showing Peak Ground Acceleration (PGA) across the Kathmandu Valley. You also have a polygon shapefile of the municipal wards. Using the Summarize Zone tool, the software will calculate and output a table showing the exact Mean and Maximum PGA specifically for each individual ward, allowing you to rank the wards by seismic vulnerability.</li>
+    </ul>
+
+    <h3>3. Proximity Map Calculation &amp; Distance <span class="exam-ref">Asked in 2075 Magh Q5b, 2076 Bhadra Q7a</span></h3>
+    <p>Distance and Proximity are often used interchangeably in raster analysis, but they represent slightly different ways of modeling "how close" something is.</p>
+
+    <h4>Distance (Euclidean Distance)</h4>
+    <ul>
+      <li><strong>Concept:</strong> Calculates the straight-line distance from every single cell center to the closest source feature.</li>
+      <li><strong>Mechanism:</strong> It generates a continuous raster where the numerical value of every single pixel represents its distance (in meters or feet) to the target.</li>
+      <li><strong>Exam Example:</strong> When mapping the "Smart Village" initiative, you need a general overview of water accessibility. You run a Distance function on the "Water Tap" point layer. The output is a gradient raster where pixels right next to the taps have values near 0m, and pixels on the outskirts of the village have values of 500m or more.</li>
+    </ul>
+
+    <h4>Proximity (Raster Buffering / Allocation)</h4>
+    <ul>
+      <li><strong>Concept:</strong> Instead of a continuous distance gradient, a Proximity calculation often groups cells into distinct bands or allocates them to the nearest source.</li>
+      <li><strong>Mechanism:</strong> It classifies pixels based on a threshold. For example, assigning a value of "1" to all pixels within 30 meters of a source, and "0" to everything else (acting like a vector buffer, but in grid format).</li>
+      <li><strong>Exam Example:</strong> To enforce sanitation regulations for a new rural toilet, it must be located at least 30 meters away from any drinking water well. You run a Proximity map calculation on the wells, instructing the tool to flag all raster cells within a 30m radius. This instantly generates a restricted "no-build" pixel zone across your study area.</li>
+    </ul>
+
+    <!-- Scenario-Based Questions -->
+    <h2>Scenario-Based Questions</h2>
+
+    <h3>1. The Environmental Impact Scenario <span class="exam-ref">2080 Chaitra, Q3 – 4 Marks</span></h3>
+    <p><strong>Question:</strong> You are working on a project to analyze the impact of deforestation on local water resources. What types of spatial data would you use, and how would you represent them in GIS? Describe with sketches.</p>
+    <p>This question aligns perfectly with soil conservation and watershed management studies. You need to list the exact data types and how the GIS software handles them.</p>
+    <p><strong>Data Types &amp; Representation:</strong></p>
+    <ol>
+      <li><strong>Land Cover / Land Use (Raster):</strong> Used to represent the changing extent of the forest over time. A raster grid where pixels are classified as "Forest" or "Deforested/Barren".</li>
+      <li><strong>Digital Elevation Model / DEM (Raster):</strong> A continuous elevation grid used to delineate the watershed boundaries and calculate terrain slopes, which directly affect surface runoff and soil erosion.</li>
+      <li><strong>River Network (Vector – Line):</strong> A polyline shapefile representing the streams and rivers to analyze where the increased runoff and sediment load will ultimately flow.</li>
+      <li><strong>Meteorological Data / Rainfall (Raster):</strong> An interpolated continuous surface (using IDW) of precipitation data to model the water input into the deforested basin.</li>
+      <li><strong>Soil Hydrologic Groups (Vector – Polygon):</strong> Polygons representing different soil types to estimate infiltration rates vs. surface runoff.</li>
+    </ol>
+    <p><strong>The Sketch:</strong> Draw a simple flowchart showing: DEM + Land Cover + Soil Type pointing into a Hydrologic Model (e.g., mHM or HEC-HMS), which then points to a River Network Line showing "Increased Peak Discharge."</p>
+
+    <h3>2. The Reservoir Site Selection Scenario <span class="exam-ref">2081 Chaitra – 10 Marks</span></h3>
+    <p><strong>Question:</strong> You are tasked with identifying suitable locations for building a new reservoir in a region. The ideal location must meet the following criteria:</p>
+    <ol>
+      <li>The area must have a slope of less than 10 degrees to ensure stability.</li>
+      <li>It must be within 1 kilometer of a river to allow for water supply.</li>
+      <li>The land cover must be non-forested (e.g., grassland or bare soil) to minimize environmental impact.</li>
+      <li>The area must have a high water-retention capacity, indicated by soil types classified as "clay" or "silt".</li>
+    </ol>
+    <p>The data provided are DEM, Soil type, River, and Land cover data. Using raster data analysis, describe the steps you would take to identify suitable locations. Include at least four raster analysis functions in your explanation.</p>
+
+    <p><strong>Approach:</strong> This is a classic <strong>Boolean Overlay</strong> (True/False) suitability model. Each dataset is independently processed, reclassified into binary (1=Suitable, 0=Unsuitable), and then multiplied cell-by-cell. The multiplication acts as a logical AND — a cell must pass <em>all</em> four tests to be marked suitable.</p>
+
+    <h4>The Four Raster Analysis Functions Used</h4>
+    <ol>
+      <li><strong>Slope (from DEM):</strong> A <em>Focal/Neighborhood</em> function that computes the rate of elevation change using a 3×3 moving window. Input: DEM raster. Output: Continuous slope raster in degrees (0°–90°). This is a neighborhood function because each pixel's slope depends on its 8 surrounding neighbors.</li>
+      <li><strong>Euclidean Distance (from River):</strong> A <em>Distance</em> function that calculates straight-line distance from every cell center to the nearest river feature. Input: River vector (or raster). Output: Continuous distance raster in meters. Cells near rivers have low values; distant cells have high values.</li>
+      <li><strong>Reclassify:</strong> A <em>Local</em> function that reassigns ranges of continuous values into discrete binary classes. Applied independently to all four datasets:
+        <ul>
+          <li>Slope: 0°–10° → 1, >10° → 0</li>
+          <li>Distance: 0–1000 m → 1, >1000 m → 0</li>
+          <li>Land Cover: Grassland/Bare soil → 1, Forest → 0</li>
+          <li>Soil Type: Clay/Silt → 1, Sand/Gravel → 0</li>
+        </ul>
+      </li>
+      <li><strong>Raster Calculator / Map Algebra:</strong> A <em>Local</em> function that performs cell-by-cell arithmetic across multiple aligned rasters. Here we multiply all four binary grids: Final = Slope_Rec × Distance_Rec × LandCover_Rec × Soil_Rec. Any cell with a 0 in any layer becomes 0 in the output (Boolean AND logic).</li>
+    </ol>
+
+    <p><strong>Workflow Overview:</strong></p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 530 235" width="530" height="235" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a7r" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <linearGradient id="gB1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef"/><stop offset="100%" stop-color="#3ba8d8"/></linearGradient>
+          <linearGradient id="gB2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#8cc63f"/></linearGradient>
+          <linearGradient id="gB3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdd66b"/><stop offset="100%" stop-color="#e8a820"/></linearGradient>
+          <linearGradient id="gB4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c4a8ed"/><stop offset="100%" stop-color="#9a72d8"/></linearGradient>
+          <filter id="f73"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Step 1: Input data -->
+        <rect x="5" y="8" width="92" height="34" rx="6" fill="url(#gB1)" stroke="#2a7cb5" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="28" text-anchor="middle" font-size="8" font-weight="bold" fill="white">🌋 DEM</text>
+        <rect x="5" y="48" width="92" height="34" rx="6" fill="url(#gB2)" stroke="#5a9a20" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="68" text-anchor="middle" font-size="8" font-weight="bold" fill="white">River</text>
+        <rect x="5" y="88" width="92" height="34" rx="6" fill="url(#gB3)" stroke="#b8860b" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="108" text-anchor="middle" font-size="8" font-weight="bold" fill="#333">Land Cover</text>
+        <rect x="5" y="128" width="92" height="34" rx="6" fill="url(#gB4)" stroke="#7b52b5" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="148" text-anchor="middle" font-size="8" font-weight="bold" fill="white">Soil Type</text>
+        <!-- Connecting lines -->
+        <line x1="100" y1="25" x2="118" y2="55" stroke="#888" stroke-width="1"/>
+        <line x1="100" y1="65" x2="118" y2="65" stroke="#888" stroke-width="1"/>
+        <line x1="100" y1="105" x2="118" y2="80" stroke="#888" stroke-width="1"/>
+        <line x1="100" y1="145" x2="118" y2="90" stroke="#888" stroke-width="1"/>
+        <!-- Step 2: Process -->
+        <rect x="120" y="38" width="105" height="50" rx="8" fill="#faf8f4" stroke="#d4cfc5" stroke-width="1" filter="url(#f73)"/>
+        <text x="172" y="56" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">⚙Slope / Distance</text>
+        <text x="172" y="70" text-anchor="middle" font-size="7.5" fill="#555">Euclidean Calc</text>
+        <!-- Step 3: Reclassify -->
+        <line x1="228" y1="63" x2="248" y2="63" stroke="#1a3c5e" stroke-width="1.8" marker-end="url(#a7r)"/>
+        <rect x="252" y="38" width="100" height="50" rx="8" fill="#fff0f0" stroke="#ed5565" stroke-width="1.2" filter="url(#f73)"/>
+        <text x="302" y="56" text-anchor="middle" font-size="8" font-weight="bold" fill="#ed5565">Reclassify</text>
+        <text x="302" y="70" text-anchor="middle" font-size="7.5" fill="#555">1=Suit, 0=Not</text>
+        <!-- Step 4: Map Algebra -->
+        <line x1="355" y1="63" x2="375" y2="63" stroke="#1a3c5e" stroke-width="1.8" marker-end="url(#a7r)"/>
+        <rect x="379" y="38" width="100" height="50" rx="8" fill="#1a3c5e" stroke="#0e2a42" stroke-width="1" filter="url(#f73)"/>
+        <text x="429" y="54" text-anchor="middle" font-size="8" font-weight="bold" fill="#f6bb42">✖ Map Algebra</text>
+        <text x="429" y="66" text-anchor="middle" font-size="7" fill="#aac8e0">A × B × C × D</text>
+        <text x="429" y="78" text-anchor="middle" font-size="7" fill="#aac8e0">(Boolean AND)</text>
+        <!-- Step 5: Output -->
+        <line x1="429" y1="91" x2="429" y2="112" stroke="#1a3c5e" stroke-width="1.8" marker-end="url(#a7r)"/>
+        <rect x="379" y="116" width="100" height="42" rx="8" fill="#a0d468" stroke="#2a8c2a" stroke-width="2" filter="url(#f73)"/>
+        <text x="429" y="134" text-anchor="middle" font-size="9" font-weight="bold" fill="white">✅ Suitable</text>
+        <text x="429" y="148" text-anchor="middle" font-size="8" fill="white">Sites (= 1)</text>
+        <!-- Bottom note -->
+        <text x="265" y="195" text-anchor="middle" font-size="9" fill="#555" font-style="italic">Only cells where ALL criteria = 1 are suitable (Boolean AND)</text>
+        <text x="265" y="210" text-anchor="middle" font-size="8" fill="#888">One criterion fails → cell becomes 0 (× 0 = 0)</text>
+      </svg>
+      <figcaption>Fig 7.3 – Boolean Overlay Suitability Model Workflow for Reservoir Site Selection</figcaption>
+    </figure>
+
+    <h4>Step 1: Calculate Slope (Tool: Slope)</h4>
+    <p>Input the DEM raster and run the Slope function to generate a continuous raster showing the steepness in degrees.</p>
+
+    <h4>Step 2: Calculate Proximity (Tool: Euclidean Distance)</h4>
+    <p>Input the River vector data and run the Euclidean Distance tool to create a raster where every pixel value represents its distance from the river.</p>
+
+    <h4>Step 3: Standardize the Criteria (Tool: Reclassify)</h4>
+    <p>You must convert all datasets into a binary scale where 1 = Suitable and 0 = Unsuitable.</p>
+    <ul>
+      <li>Reclassify Slope: 0° to 10° = 1. Greater than 10° = 0.</li>
+      <li>Reclassify Distance: 0 to 1000m = 1. Greater than 1000m = 0.</li>
+      <li>Reclassify Land Cover: Grassland/Bare soil = 1. Forested = 0.</li>
+      <li>Reclassify Soil: Clay/Silt = 1. Sand/Gravel = 0.</li>
+    </ul>
+
+    <h4>Step 4: Combine the Constraints (Tool: Raster Calculator / Map Algebra)</h4>
+    <p>Multiply all four reclassified grids together using the equation:</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> boolean_overlay.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Boolean Site Selection  ·  AND Logic ──</span></div><div></div><div><span class="m-kw">Raster Calculator:</span></div><div>  <span class="m-fn">Final_Site</span> <span class="m-op">=</span> [<span class="m-var">Slope_Rec</span>] <span class="m-op">*</span> [<span class="m-var">Distance_Rec</span>] <span class="m-op">*</span> [<span class="m-var">LandCover_Rec</span>] <span class="m-op">*</span> [<span class="m-var">Soil_Rec</span>]</div><div></div><div><span class="m-cmt">// Logic: Multiplication acts as AND operator</span></div><div><span class="m-cmt">//   1 * 1 * 1 * 1  =  1  →  All criteria met   ✓</span></div><div><span class="m-cmt">//   1 * 1 * 0 * 1  =  0  →  One criteria failed ✗</span></div><div></div><div><span class="m-kw">Output:</span></div><div>  <span class="m-var">Pixel</span> <span class="m-op">=</span> <span class="m-res">1</span>  <span class="m-op">&rarr;</span>  <span class="m-str">"Suitable site"</span>  <span class="m-cmt">// ALL four constraints passed</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Raster Calc</span><span>Boolean AND &middot; 11 lines</span></div>
+    </div>
+
+    <p>Because you are multiplying, if any single criteria fails (has a 0), the final pixel value becomes 0. The output raster will only have a value of 1 where all criteria are perfectly met.</p>
+
+    <h3>3. The Raster Condition Numerical <span class="exam-ref">2075 Bhadra</span></h3>
+    <p><strong>Question:</strong> Generate an output raster of the suitable area for landfill site from the given raster below. The values in both rasters given below denote the distances in kilometers from settlement buildings and river network. The area located farther from the buildings and closer from the river network is the suitable for it. First of all set the conditions for both raster.</p>
+
+    <!-- Given Data: Two 5×4 grids -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" style="max-width:660px">
+          <text x="155" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Distance from Buildings (km)</text>
+          <text x="500" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#2d7d46">Distance from River (km)</text>
+          <!-- LEFT GRID: Buildings -->
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="15" y1="30" x2="295" y2="30"/><line x1="15" y1="72" x2="295" y2="72"/>
+            <line x1="15" y1="114" x2="295" y2="114"/><line x1="15" y1="156" x2="295" y2="156"/>
+            <line x1="15" y1="198" x2="295" y2="198"/><line x1="15" y1="240" x2="295" y2="240"/>
+            <line x1="15" y1="30" x2="15" y2="240"/><line x1="85" y1="30" x2="85" y2="240"/>
+            <line x1="155" y1="30" x2="155" y2="240"/><line x1="225" y1="30" x2="225" y2="240"/>
+            <line x1="295" y1="30" x2="295" y2="240"/>
+          </g>
+          <!-- Row 1: 4 8 3 3 -->
+          <text x="50" y="57" text-anchor="middle" font-size="14" fill="#8b2500">4</text>
+          <text x="120" y="57" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">8</text>
+          <text x="190" y="57" text-anchor="middle" font-size="14" fill="#8b2500">3</text>
+          <text x="260" y="57" text-anchor="middle" font-size="14" fill="#8b2500">3</text>
+          <!-- Row 2: 3 1 5 5 -->
+          <text x="50" y="99" text-anchor="middle" font-size="14" fill="#8b2500">3</text>
+          <text x="120" y="99" text-anchor="middle" font-size="14" fill="#8b2500">1</text>
+          <text x="190" y="99" text-anchor="middle" font-size="14" fill="#8b2500">5</text>
+          <text x="260" y="99" text-anchor="middle" font-size="14" fill="#8b2500">5</text>
+          <!-- Row 3: 6 4 11 12 -->
+          <text x="50" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">6</text>
+          <text x="120" y="141" text-anchor="middle" font-size="14" fill="#8b2500">4</text>
+          <text x="190" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">11</text>
+          <text x="260" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">12</text>
+          <!-- Row 4: 9 5 14 15 -->
+          <text x="50" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">9</text>
+          <text x="120" y="183" text-anchor="middle" font-size="14" fill="#8b2500">5</text>
+          <text x="190" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">14</text>
+          <text x="260" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">15</text>
+          <!-- Row 5: 4 8 16 17 -->
+          <text x="50" y="225" text-anchor="middle" font-size="14" fill="#8b2500">4</text>
+          <text x="120" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">8</text>
+          <text x="190" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">16</text>
+          <text x="260" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">17</text>
+
+          <!-- RIGHT GRID: River -->
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="365" y1="30" x2="645" y2="30"/><line x1="365" y1="72" x2="645" y2="72"/>
+            <line x1="365" y1="114" x2="645" y2="114"/><line x1="365" y1="156" x2="645" y2="156"/>
+            <line x1="365" y1="198" x2="645" y2="198"/><line x1="365" y1="240" x2="645" y2="240"/>
+            <line x1="365" y1="30" x2="365" y2="240"/><line x1="435" y1="30" x2="435" y2="240"/>
+            <line x1="505" y1="30" x2="505" y2="240"/><line x1="575" y1="30" x2="575" y2="240"/>
+            <line x1="645" y1="30" x2="645" y2="240"/>
+          </g>
+          <!-- Row 1: 11 10 9 9 -->
+          <text x="400" y="57" text-anchor="middle" font-size="14" fill="#8b2500">11</text>
+          <text x="470" y="57" text-anchor="middle" font-size="14" fill="#8b2500">10</text>
+          <text x="540" y="57" text-anchor="middle" font-size="14" fill="#8b2500">9</text>
+          <text x="610" y="57" text-anchor="middle" font-size="14" fill="#8b2500">9</text>
+          <!-- Row 2: 10 9 8 7 -->
+          <text x="400" y="99" text-anchor="middle" font-size="14" fill="#8b2500">10</text>
+          <text x="470" y="99" text-anchor="middle" font-size="14" fill="#8b2500">9</text>
+          <text x="540" y="99" text-anchor="middle" font-size="14" fill="#8b2500">8</text>
+          <text x="610" y="99" text-anchor="middle" font-size="14" fill="#8b2500">7</text>
+          <!-- Row 3: 6 5 2 1 -->
+          <text x="400" y="141" text-anchor="middle" font-size="14" fill="#8b2500">6</text>
+          <text x="470" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">5</text>
+          <text x="540" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">2</text>
+          <text x="610" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">1</text>
+          <!-- Row 4: 5 4 3 2 -->
+          <text x="400" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">5</text>
+          <text x="470" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">4</text>
+          <text x="540" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">3</text>
+          <text x="610" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">2</text>
+          <!-- Row 5: 5 4 3 2 -->
+          <text x="400" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">5</text>
+          <text x="470" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">4</text>
+          <text x="540" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">3</text>
+          <text x="610" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">2</text>
+        </svg>
+        <figcaption>Fig 7.9 &ndash; Given data: Distance from settlement buildings (left, km) and Distance from river network (right, km)</figcaption>
+      </figure>
+    </div>
+
+    <h4>Step 1: Set the Conditions (Engineering Judgment)</h4>
+    <p>The question leaves the thresholds to your judgment. We must define explicit rules:</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> landfill_conditions.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Landfill Site Selection  ·  2075 Bhadra ──</span></div><div></div><div><span class="m-kw">Condition A</span> <span class="m-cmt">(Buildings): Farther = Safer</span></div><div>  <span class="m-var">Distance_Building</span>  <span class="m-op">&gt;</span>  <span class="m-num">5</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-res">1</span> <span class="m-str">(Suitable)</span></div><div>  <span class="m-var">Distance_Building</span>  <span class="m-op">&le;</span>  <span class="m-num">5</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-num">0</span> <span class="m-str">(Unsuitable)</span></div><div></div><div><span class="m-kw">Condition B</span> <span class="m-cmt">(River): Closer = Better access</span></div><div>  <span class="m-var">Distance_River</span>  <span class="m-op">&lt;</span>  <span class="m-num">6</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-res">1</span> <span class="m-str">(Suitable)</span></div><div>  <span class="m-var">Distance_River</span>  <span class="m-op">&ge;</span>  <span class="m-num">6</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-num">0</span> <span class="m-str">(Unsuitable)</span></div><div></div><div><span class="m-kw">Final Output:</span></div><div>  <span class="m-fn">Suitable</span> <span class="m-op">=</span> <span class="m-var">Building_Rec</span> <span class="m-op">&times;</span> <span class="m-var">River_Rec</span>  <span class="m-cmt">// Boolean AND</span></div><div></div><div><span class="m-cmt">// Cell is suitable ONLY if BOTH conditions are met</span></div><div><span class="m-cmt">//   Building > 5 km  AND  River &lt; 6 km  →  1 (Suitable)</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Raster Calc</span><span>Conditions &middot; 15 lines</span></div>
+    </div>
+
+    <h4>Step 2: Reclassify Both Grids to Binary (1/0)</h4>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> landfill_reclassify.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Step 2: Reclassify each cell ──</span></div><div></div><div><span class="m-kw">Building Grid</span> <span class="m-cmt">(Condition: &gt; 5 km → 1)</span></div><div><span class="m-cmt">// Original:                  Reclassified:</span></div><div>  [<span class="m-num"> 4</span>,  <span class="m-num">8</span>,  <span class="m-num">3</span>,  <span class="m-num">3</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num"> 3</span>,  <span class="m-num">1</span>,  <span class="m-num">5</span>,  <span class="m-num">5</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num"> 6</span>,  <span class="m-num">4</span>, <span class="m-num">11</span>, <span class="m-num">12</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 9</span>,  <span class="m-num">5</span>, <span class="m-num">14</span>, <span class="m-num">15</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 4</span>,  <span class="m-num">8</span>, <span class="m-num">16</span>, <span class="m-num">17</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div></div><div><span class="m-kw">River Grid</span> <span class="m-cmt">(Condition: &lt; 6 km → 1)</span></div><div><span class="m-cmt">// Original:                  Reclassified:</span></div><div>  [<span class="m-num">11</span>, <span class="m-num">10</span>, <span class="m-num">9</span>, <span class="m-num">9</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num">10</span>,  <span class="m-num">9</span>, <span class="m-num">8</span>, <span class="m-num">7</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num"> 6</span>,  <span class="m-num">5</span>, <span class="m-num">2</span>, <span class="m-num">1</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 5</span>,  <span class="m-num">4</span>, <span class="m-num">3</span>, <span class="m-num">2</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 5</span>,  <span class="m-num">4</span>, <span class="m-num">3</span>, <span class="m-num">2</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div></div><div><span class="m-cmt">// ═══════════════════════════════════════════</span></div><div><span class="m-cmt">// Step 3: Map Algebra  ·  Boolean AND</span></div><div><span class="m-cmt">// ═══════════════════════════════════════════</span></div><div><span class="m-fn">Output</span> <span class="m-op">=</span> <span class="m-var">Building_Rec</span> <span class="m-op">&times;</span> <span class="m-var">River_Rec</span></div><div></div><div><span class="m-cmt">//  Building_Rec:     River_Rec:       Output:</span></div><div>  [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div></div><div><span class="m-kw">Result:</span> <span class="m-res">8</span> <span class="m-cmt">cells out of 20 are suitable for landfill</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Raster Calc</span><span>Landfill Overlay &middot; 37 lines</span></div>
+    </div>
+
+    <!-- Output Suitability Grid Figure -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 440 260" xmlns="http://www.w3.org/2000/svg" style="max-width:440px">
+          <text x="220" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Final Output: Suitable Landfill Sites</text>
+          <text x="220" y="32" text-anchor="middle" font-size="8" fill="#888">1 = Suitable (shaded)  &middot;  0 = Unsuitable</text>
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="50" y1="42" x2="390" y2="42"/><line x1="50" y1="84" x2="390" y2="84"/>
+            <line x1="50" y1="126" x2="390" y2="126"/><line x1="50" y1="168" x2="390" y2="168"/>
+            <line x1="50" y1="210" x2="390" y2="210"/><line x1="50" y1="252" x2="390" y2="252"/>
+            <line x1="50" y1="42" x2="50" y2="252"/><line x1="135" y1="42" x2="135" y2="252"/>
+            <line x1="220" y1="42" x2="220" y2="252"/><line x1="305" y1="42" x2="305" y2="252"/>
+            <line x1="390" y1="42" x2="390" y2="252"/>
+          </g>
+          <!-- Row 1: 0 0 0 0 -->
+          <text x="92" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="177" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="262" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="347" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <!-- Row 2: 0 0 0 0 -->
+          <text x="92" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="177" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="262" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="347" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <!-- Row 3: 0 0 1 1 -->
+          <text x="92" y="153" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="177" y="153" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <rect x="220" y="126" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="262" y="153" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="305" y="126" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="347" y="153" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <!-- Row 4: 1 0 1 1 -->
+          <rect x="50" y="168" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="92" y="195" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <text x="177" y="195" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <rect x="220" y="168" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="262" y="195" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="305" y="168" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="347" y="195" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <!-- Row 5: 0 1 1 1 -->
+          <text x="92" y="237" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <rect x="135" y="210" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="177" y="237" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="220" y="210" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="262" y="237" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="305" y="210" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="347" y="237" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+        </svg>
+        <figcaption>Fig 7.10 &ndash; Output raster: 8 out of 20 cells are suitable (shaded green) for landfill site placement</figcaption>
+      </figure>
+    </div>
+
+    <p class="footer-note">End of Chapter 7 – Spatial Analysis</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

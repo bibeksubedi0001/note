@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>4.1 Introduction to FEM | Finite Element Method</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+MathJax = {
+ tex: {
+ inlineMath: [['$','$'],['\\(','\\)']],
+ displayMath: [['$$','$$'],['\\[','\\]']],
+ processEscapes: true
+ }
+};
+</script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        /* ── Topbar ── */
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            background: white; color: black;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; height: 44px;
+            border-bottom: 2px solid black;
+        }
+        .topbar a { color: black; text-decoration: none; font-weight: 700; }
+        .topbar a:hover { text-decoration: underline; }
+        .topbar span { font-size: 10pt; opacity: .65; }
+
+        /* ── Chapter Header ── */
+        .ch-header {
+            background: white; color: black;
+            text-align: center; padding: 40px 24px 32px;
+            border-bottom: 2px solid black;
+        }
+        .ch-header h1 {
+            color: black; font-size: 16pt; text-transform: uppercase;
+            border-bottom: none; margin-bottom: 6px;
+        }
+        .ch-header .meta { font-size: 11pt; font-style: italic; }
+        .ch-header .author { font-size: 9pt; opacity: .55; margin-top: 8px; }
+
+        /* ── Content wrapper ── */
+        .content { max-width: 800px; margin: 0 auto; padding: 30px 24px 50px; }
+
+        /* ── Equation blocks ── */
+        .eq-block {
+            margin: 14px 0; padding: 12px 18px;
+            background: white; border-left: 3px solid black;
+            overflow-x: auto;
+        }
+        .eq-block.hl {
+            background: white; border: 2px dashed black;
+            border-left: 4px solid black;
+        }
+
+        /* ── Definition box ── */
+        .def-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+        .def-box .dt { font-weight: 700; margin-bottom: 4px; }
+
+        /* ── Step box ── */
+        .step-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Note ── */
+        .note {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Result box ── */
+        .result-box {
+            background: white; border: 2px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Given / Answer ── */
+        .given { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+        .answer { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+
+        /* ── Example ── */
+        .example {
+            border: 1px solid black; padding: 16px; margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        .ex-title {
+            font-weight: bold; border-bottom: 1px solid black;
+            padding-bottom: 6px; margin-bottom: 10px;
+        }
+        .ex-q {
+            background: white; border-left: 3px solid black;
+            padding: 10px 14px; margin: 8px 0; font-style: italic;
+        }
+
+        /* ── Solution label ── */
+        .soln-label {
+            display: inline-block; background: black; color: white;
+            padding: 2px 10px; font-weight: bold; margin: 12px 0 6px; font-size: 10pt;
+        }
+
+        /* ── Figures ── */
+        .figure, .svg-wrap { text-align: center; margin: 16px auto; max-width: 100%; overflow-x: auto; }
+        .figure .caption, .figcaption {
+            font-style: italic; margin-top: 6px; text-align: center; font-size: 10pt;
+        }
+
+        /* ── Tables ── */
+        .matrix-table, .summary-table, .comp-table {
+            width: 100%; border-collapse: collapse; margin: 14px 0;
+        }
+        .matrix-table th, .summary-table th, .comp-table th {
+            background: white; color: black; border: 1px solid black;
+            padding: 6px 10px; text-align: center; font-weight: bold;
+        }
+        .matrix-table td, .summary-table td, .comp-table td {
+            border: 1px solid black; padding: 6px 10px; text-align: center; vertical-align: top;
+        }
+
+        /* ── Chapter navigation ── */
+        .ch-nav { display: flex; gap: 12px; margin: 30px 0; flex-wrap: wrap; }
+        .ch-nav a {
+            flex: 1; min-width: 200px; display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px; background: white; border: 1px solid black;
+            text-decoration: none; color: black; font-weight: bold;
+        }
+        .ch-nav a:hover { background: #f5f5f5; }
+        .ch-nav .next { justify-content: flex-end; text-align: right; }
+
+        /* ── Footer ── */
+        .footer {
+            background: white; color: black; text-align: center;
+            padding: 20px; font-size: 10pt; border-top: 2px solid black;
+        }
+        .footer p { color: black; text-align: center; }
+        .footer a { color: black; text-decoration: underline; }
+
+        /* ── Back to top ── */
+        .btt {
+            position: fixed; bottom: 24px; right: 80px; width: 40px; height: 40px;
+            border-radius: 50%; background: black; color: white; border: none;
+            cursor: pointer; font-size: 18px; display: none;
+            align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,.3); z-index: 90;
+        }
+        .btt.show { display: flex; }
+
+        /* ── Hero panel ── */
+        .hero-panel { margin-bottom: 24px; }
+        .hero-card { border: 1px solid black; padding: 20px; margin-bottom: 16px; }
+        .hero-card h2 { border-bottom: 2px solid black; padding-bottom: 6px; }
+        .hero-card p { margin: 8px 0; }
+
+        /* ── Chip row ── */
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .chip {
+            display: inline-block; background: white; border: 1px solid black;
+            padding: 4px 10px; font-size: 10pt;
+        }
+
+        /* ── TOC card / grid ── */
+        .toc-card { margin: 16px 0; }
+        .toc-card h3 { margin-bottom: 10px; font-weight: bold; }
+        .toc-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;
+        }
+        .toc-grid a {
+            display: block; padding: 10px 14px; background: white;
+            border: 1px solid black; text-decoration: none; color: black; font-weight: bold;
+        }
+        .toc-grid a:hover { background: #f5f5f5; }
+
+        /* ── Visual grid ── */
+        .visual-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px; margin: 16px 0;
+        }
+        .visual-card { border: 1px solid black; padding: 14px; }
+        .visual-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Chapter band ── */
+        .chapter-band { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+        .band-card {
+            flex: 1; min-width: 140px; border: 1px solid black;
+            padding: 14px; text-align: center;
+        }
+        .band-card .num { font-size: 20pt; font-weight: bold; }
+        .band-card .label { font-size: 10pt; margin-top: 4px; }
+
+        /* ── Mini grid / notes ── */
+        .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+        .mini-note { border: 1px solid black; padding: 12px; }
+        .mini-note h4 { font-weight: bold; margin-bottom: 6px; }
+
+        /* ── Quick formulas ── */
+        .quick-formulas {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px; margin: 16px 0;
+        }
+        .formula-card { border: 1px solid black; padding: 14px; }
+        .formula-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Formula box / concept box ── */
+        .formula-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .concept-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .derivation {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+
+        /* ── Question map ── */
+        .qmap { margin: 14px 0; }
+        .yr { font-size: 9pt; font-style: italic; }
+
+        /* ── Hero (index page) ── */
+        .hero {
+            background: white; color: black;
+            text-align: center; padding: 50px 24px 40px;
+            border-bottom: 2px solid black;
+        }
+        .hero h1 { color: black; border-bottom: none; text-align: center; }
+        .hero .sub { font-style: italic; }
+        .hero .author { opacity: .55; margin-top: 8px; }
+        .hero .divider { width: 80px; height: 3px; background: black; margin: 14px auto; }
+        .hero .stats { display: flex; justify-content: center; gap: 40px; margin-top: 16px; }
+        .hero .stat-val { font-size: 18pt; font-weight: bold; }
+
+        /* ── Card grid (index) ── */
+        .card { border: 1px solid black; padding: 16px; margin: 10px 0; }
+        .card h3 { font-weight: bold; margin-bottom: 6px; }
+        .card a {
+            display: inline-block; padding: 6px 14px; border: 1px solid black;
+            color: black; text-decoration: none; font-weight: bold; margin-top: 8px;
+        }
+        .card a:hover { background: black; color: white; }
+
+        /* ── Chapter card (index TOC) ── */
+        .toc-title {
+            text-transform: uppercase; border-bottom: 2px solid black;
+            padding-bottom: 8px; margin-bottom: 20px;
+        }
+        .ch-card {
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 18px; margin: 8px 0;
+            border: 1px solid black; border-left: 4px solid black;
+            text-decoration: none; color: black;
+            transition: background .15s;
+        }
+        .ch-card:hover { background: #f5f5f5; }
+        .ch-num { font-size: 16pt; font-weight: bold; min-width: 40px; text-align: center; }
+        .ch-body { flex: 1; }
+        .ch-title { font-weight: bold; }
+        .ch-pages { font-size: 10pt; margin-top: 4px; opacity: .6; }
+        .ch-arrow { font-size: 16pt; opacity: .4; }
+
+        /* ── Warning ── */
+        .warning {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Pre/diagram ── */
+        pre.diagram {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px auto; overflow-x: auto;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 11pt; line-height: 1.5; text-align: center;
+            max-width: 700px; white-space: pre;
+        }
+
+        /* ── Accordion problems ── */
+        details.problem { border: 1px solid black; margin: 10px 0; }
+        details.problem > summary {
+            background: white; color: black; padding: 10px 16px;
+            font-weight: bold; cursor: pointer;
+        }
+        details.problem[open] > summary { border-bottom: 1px solid black; }
+
+        @media (max-width: 768px) {
+            .content { padding: 16px 12px 40px; }
+            .ch-header h1 { font-size: 13pt; }
+            .visual-grid, .quick-formulas { grid-template-columns: 1fr; }
+            .mini-grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            .topbar, .btt, .ch-nav { display: none !important; }
+            .ch-header { border-bottom: 2px solid black; padding: 20px 0; }
+        }
+
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+ border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+ cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+ box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+ --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+ --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+ --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+ --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+ --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+ This single rule ensures NO text stays dark on dark bg.
+ Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .formula-box h3{color:#e8e5dd!important}
+[data-theme="dark"] .concept-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .concept-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .derivation{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .derivation h4{color:#e8e5dd!important}
+[data-theme="dark"] .warning{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .warning strong{color:#e8e5dd!important}
+[data-theme="dark"] .method-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .method-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#e0ddd5!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card h3{color:#e8e5dd!important}
+[data-theme="dark"] .card a{color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card a:hover{background:#3a3d44!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+ box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+ .dm-toggle{display:none!important}
+ [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+ transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<nav class="topbar">
+ <a href="index.html" style="font-weight:700"> FEM Textbook</a>
+ <span style="opacity:.65">Computational Technique</span>
+</nav>
+
+<header class="ch-header">
+ <h1>Chapter 4: Finite Element Method</h1>
+ <div class="meta">4.1 &mdash; Introduction to FEM</div>
+ <div class="author">Collected &amp; Prepared By: Er. Sanjay Kumar Sah (Lecturer, Department of Civil Engineering, Pulchowk Campus)</div>
+</header>
+
+<div class="content">
+
+<!-- ===== ELEMENT SHAPES ===== -->
+<h2>Element Shapes</h2>
+
+<h3>(i) One Dimensional Element</h3>
+<ul>
+ <li><strong>Two-noded bar element</strong></li>
+ <li><strong>Three-noded bar element</strong></li>
+</ul>
+
+<h3>(ii) Two Dimensional Elements</h3>
+
+<h4>a) Constant Strain Triangle (CST)</h4>
+<p>&rarr; Linear displacement triangle &mdash; 3-noded triangle.</p>
+
+<h4>b) Linear Strain Triangle (LST)</h4>
+<p>&rarr; Quadratic displacement triangle &mdash; 6-noded triangle.</p>
+
+<h4>c) Quadratic Strain Triangle</h4>
+<p>&rarr; Cubic displacement triangle &mdash; 10-noded triangle.</p>
+
+<div class="figure">
+<svg viewBox="0 0 820 220" style="max-width:820px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <!-- CST 3-Noded -->
+ <g transform="translate(10,10)">
+ <text x="90" y="12" text-anchor="middle" font-weight="bold" font-size="14" fill="#1a365d">3-Noded (CST)</text>
+ <polygon points="90,35 20,185 160,185" fill="#eef4fb" stroke="#1a365d" stroke-width="2"/>
+ <circle cx="90" cy="35" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="20" cy="185" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="160" cy="185" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="90" y="28" text-anchor="middle" font-weight="bold" fill="#1a365d">3</text>
+ <text x="8" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d">1</text>
+ <text x="172" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d">2</text>
+ </g>
+ <!-- LST 6-Noded -->
+ <g transform="translate(220,10)">
+ <text x="100" y="12" text-anchor="middle" font-weight="bold" font-size="14" fill="#1a365d">6-Noded (LST)</text>
+ <polygon points="100,35 30,185 170,185" fill="#eef4fb" stroke="#1a365d" stroke-width="2"/>
+ <circle cx="100" cy="35" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="30" cy="185" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="170" cy="185" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="65" cy="110" r="6" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="135" cy="110" r="6" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="100" cy="185" r="6" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="100" y="28" text-anchor="middle" font-weight="bold" fill="#1a365d">3</text>
+ <text x="18" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d">1</text>
+ <text x="182" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d">2</text>
+ <text x="50" y="107" text-anchor="middle" font-size="11" fill="#c0392b">6</text>
+ <text x="150" y="107" text-anchor="middle" font-size="11" fill="#c0392b">5</text>
+ <text x="100" y="200" text-anchor="middle" font-size="11" fill="#c0392b">4</text>
+ </g>
+ <!-- 10-Noded Cubic -->
+ <g transform="translate(480,10)">
+ <text x="130" y="12" text-anchor="middle" font-weight="bold" font-size="14" fill="#1a365d">10-Noded (Cubic)</text>
+ <polygon points="130,35 20,185 240,185" fill="#eef4fb" stroke="#1a365d" stroke-width="2"/>
+ <!-- Corner nodes -->
+ <circle cx="130" cy="35" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="20" cy="185" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="240" cy="185" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <!-- Edge nodes -->
+ <circle cx="93" cy="85" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="167" cy="85" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="57" cy="135" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="203" cy="135" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="93" cy="185" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <circle cx="167" cy="185" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <!-- Internal node -->
+ <circle cx="130" cy="135" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <!-- Labels -->
+ <text x="130" y="28" text-anchor="middle" font-weight="bold" fill="#1a365d">3</text>
+ <text x="8" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d">1</text>
+ <text x="252" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d">2</text>
+ <text x="78" y="82" text-anchor="middle" font-size="11" fill="#c0392b">8</text>
+ <text x="182" y="82" text-anchor="middle" font-size="11" fill="#c0392b">7</text>
+ <text x="42" y="132" text-anchor="middle" font-size="11" fill="#c0392b">9</text>
+ <text x="218" y="132" text-anchor="middle" font-size="11" fill="#c0392b">6</text>
+ <text x="93" y="200" text-anchor="middle" font-size="11" fill="#c0392b">4</text>
+ <text x="167" y="200" text-anchor="middle" font-size="11" fill="#c0392b">5</text>
+ <text x="130" y="150" text-anchor="middle" font-size="11" fill="#166534">10</text>
+ </g>
+ <!-- Legend -->
+ <g transform="translate(600,200)">
+ <circle cx="5" cy="0" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1"/><text x="15" y="4" font-size="10" fill="#555">Corner node</text>
+ <circle cx="95" cy="0" r="4" fill="#e67e22" stroke="#1a365d" stroke-width="1"/><text x="105" y="4" font-size="10" fill="#555">Mid-edge</text>
+ <circle cx="175" cy="0" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/><text x="185" y="4" font-size="10" fill="#555">Internal</text>
+ </g>
+</svg>
+<div class="caption">Fig: Visual representation of triangular elements &mdash; CST, LST, and Cubic</div>
+</div>
+
+<p>&rArr; One can also use higher-order triangular elements like <strong>cubic strain triangle</strong> (15-noded triangle) and <strong>quartic strain triangle</strong> (21-noded triangle).</p>
+
+<h4>(d) Lagrange Elements</h4>
+<p>&rarr; Elements in which nodes are in a <strong>grid pattern</strong>.</p>
+
+<h4>(e) Serendipity Elements</h4>
+<p>&rarr; Elements in which nodes are provided in <strong>boundaries only</strong>.</p>
+
+<h4>(f) Curved 2-D Elements</h4>
+<p>&rarr; Development of iso-parametric concepts has facilitated using curved elements also.</p>
+
+<h3>(iii) Three Dimensional Elements</h3>
+
+<h4>a) Tetrahedron (4-noded solid)</h4>
+<div class="figure">
+<svg viewBox="0 0 260 240" style="max-width:280px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <!-- Faces (back faces lighter) -->
+ <polygon points="130,25 40,195 220,195" fill="#dce8f5" stroke="#1a365d" stroke-width="1" opacity="0.4"/>
+ <polygon points="130,25 40,195 130,165" fill="#eef4fb" stroke="#1a365d" stroke-width="1.5" opacity="0.7"/>
+ <polygon points="130,25 220,195 130,165" fill="#d4e4f7" stroke="#1a365d" stroke-width="1.5" opacity="0.7"/>
+ <polygon points="40,195 220,195 130,165" fill="#e8eff8" stroke="#1a365d" stroke-width="1.5" opacity="0.5"/>
+ <!-- Edges -->
+ <line x1="130" y1="25" x2="40" y2="195" stroke="#1a365d" stroke-width="2"/>
+ <line x1="130" y1="25" x2="220" y2="195" stroke="#1a365d" stroke-width="2"/>
+ <line x1="130" y1="25" x2="130" y2="165" stroke="#1a365d" stroke-width="2"/>
+ <line x1="40" y1="195" x2="220" y2="195" stroke="#1a365d" stroke-width="2"/>
+ <line x1="40" y1="195" x2="130" y2="165" stroke="#1a365d" stroke-width="1.5" stroke-dasharray="6,3"/>
+ <line x1="220" y1="195" x2="130" y2="165" stroke="#1a365d" stroke-width="1.5" stroke-dasharray="6,3"/>
+ <!-- Nodes -->
+ <circle cx="130" cy="25" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <circle cx="40" cy="195" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <circle cx="220" cy="195" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <circle cx="130" cy="165" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <!-- Labels -->
+ <text x="130" y="15" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="14">4</text>
+ <text x="22" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="14">1</text>
+ <text x="238" y="200" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="14">3</text>
+ <text x="130" y="185" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="14">2</text>
+</svg>
+<div class="caption">Fig: Tetrahedron element (4-noded solid)</div>
+</div>
+
+<h4>b) Brick Element (8-noded solid)</h4>
+<p>A standard 3D rectangular box/hexahedron with 8 corner nodes.</p>
+
+<h3>(iv) Axi-symmetric Elements</h3>
+<p>&rarr; Generally 2D/3D elements having nodes all around about an axis.</p>
+
+<!-- ===== NODES ===== -->
+<h2>Nodes</h2>
+
+<div class="def-box">
+ <div class="dt">Definition</div>
+ <p>Nodes are specific finite points that are to be determined in finite element analysis. The basic unknowns at any points other than nodes are to be determined using interpolation functions in terms of nodal parameter values of elements.</p>
+</div>
+
+<h3>Types of Nodes</h3>
+<ul>
+ <li><strong>External nodes</strong> &mdash; Nodes located on the boundary/corners of the element.</li>
+ <li><strong>Internal nodes</strong> &mdash; Nodes located inside the element.</li>
+</ul>
+<p>(Example: In the 10-noded triangle shown above, nodes 1 through 9 are external boundary nodes, and node 10 is an internal node.)</p>
+
+<!-- ===== STEPS IN FEM ===== -->
+<h2>Steps Involved in FEM</h2>
+
+<div class="step-box">
+<ol type="a">
+ <li>Discretization of structure into the elements.</li>
+ <li>Selection of displacement models.</li>
+ <li>Derivation of stiffness matrix for individual element.</li>
+ <li>Assembling stiffness matrix.</li>
+ <li>Solution of unknown displacement.</li>
+ <li>Computation of element stress &amp; strain.</li>
+</ol>
+</div>
+
+<h3>a) Discretization of Structure into the Elements</h3>
+<p>The given structure is divided into an equivalent system of finite elements. The equivalent system may consist of bar, truss, triangular area, quadrilateral area, tetrahedron solid, hexahedron solids etc. in 2D or 3D coordinate systems.</p>
+
+<h3>b) Selection of Displacement Models</h3>
+<p>It is generally not possible to select the displacement function that can represent exactly the actual variation of displacement in the element. Hence, basic approximation of the FEM is introduced at this stage. There are three inter-related factors which influence the selection of the displacement models:</p>
+<ol type="i">
+ <li>The type and degree of displacement model must be chosen.</li>
+ <li>The particular displacement magnitude that describes the model must be selected. The displacements at nodal points are known after analysis, but they may also include the derivation of the displacement at some other points inside the element.</li>
+ <li>Displacement must satisfy certain requirements, which ensures that the numerical result approaches the correct solutions.</li>
+</ol>
+
+<h3>c) Derivation of the Element Stiffness Matrix</h3>
+<p>The stiffness matrix consists of the coefficients of the equilibrium equation derived from the properties of material and element and obtained by any method. The stiffness relates the displacement at the nodal points to the applied force at the corresponding nodal points. The distributed forces applied to the structure are converted into equivalent concentrated forces at nodes. The equilibrium equation relates the stiffness matrix $[K]$, nodal force vector $\{f\}$, and the nodal displacement vector $\{u\}$.</p>
+
+<div class="figure">
+<svg viewBox="0 0 520 140" style="max-width:540px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <!-- Beam -->
+ <rect x="70" y="75" width="380" height="16" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Cross-hatching -->
+ <line x1="100" y1="75" x2="100" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="140" y1="75" x2="140" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="180" y1="75" x2="180" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="220" y1="75" x2="220" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="260" y1="75" x2="260" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="300" y1="75" x2="300" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="340" y1="75" x2="340" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="380" y1="75" x2="380" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <line x1="420" y1="75" x2="420" y2="91" stroke="#a0b8d0" stroke-width="0.8"/>
+ <!-- Node 1 -->
+ <circle cx="70" cy="83" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="70" y="87" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">1</text>
+ <!-- Node 2 -->
+ <circle cx="450" cy="83" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="450" y="87" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">2</text>
+ <!-- Force arrow F1 -->
+ <defs><marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker></defs>
+ <line x1="70" y1="18" x2="70" y2="62" stroke="#c0392b" stroke-width="2" marker-end="url(#ah)"/>
+ <text x="70" y="12" text-anchor="middle" font-size="13" fill="#c0392b" font-weight="bold">F₁, V₁</text>
+ <!-- Moment M1 -->
+ <path d="M 40,55 A 20,20 0 1,1 55,38" fill="none" stroke="#2c5282" stroke-width="1.8" marker-end="url(#ah2)"/>
+ <defs><marker id="ah2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2c5282"/></marker></defs>
+ <text x="22" y="38" text-anchor="middle" font-size="12" fill="#2c5282" font-style="italic">M₁, θ₁</text>
+ <!-- Force arrow F2 -->
+ <line x1="450" y1="18" x2="450" y2="62" stroke="#c0392b" stroke-width="2" marker-end="url(#ah)"/>
+ <text x="450" y="12" text-anchor="middle" font-size="13" fill="#c0392b" font-weight="bold">F₂, V₂</text>
+ <!-- Moment M2 -->
+ <path d="M 420,55 A 20,20 0 1,1 435,38" fill="none" stroke="#2c5282" stroke-width="1.8" marker-end="url(#ah2)"/>
+ <text x="492" y="38" text-anchor="middle" font-size="12" fill="#2c5282" font-style="italic">M₂, θ₂</text>
+ <!-- Length indicator -->
+ <line x1="70" y1="110" x2="450" y2="110" stroke="#555" stroke-width="1"/>
+ <line x1="70" y1="105" x2="70" y2="115" stroke="#555" stroke-width="1"/>
+ <line x1="450" y1="105" x2="450" y2="115" stroke="#555" stroke-width="1"/>
+ <text x="260" y="128" text-anchor="middle" font-size="14" fill="#555" font-style="italic">L</text>
+</svg>
+<div class="caption">Fig: Force and displacement acting at corresponding nodes (Beam Element)</div>
+</div>
+
+<p>Displacement matrix:</p>
+<div class="eq-block">
+$$\{u\} = \begin{Bmatrix} V_1 \\ \theta_1 \\ V_2 \\ \theta_2 \end{Bmatrix}$$
+</div>
+
+<p>Force matrix:</p>
+<div class="eq-block">
+$$\{f\} = \begin{Bmatrix} F_1 \\ M_1 \\ F_2 \\ M_2 \end{Bmatrix}$$
+</div>
+
+<p>Element Stiffness Matrix (for a beam element):</p>
+<div class="eq-block hl">
+$$[K] = \frac{EI}{L^3} \begin{bmatrix} 12 & 6L & -12 & 6L \\ 6L & 4L^2 & -6L & 2L^2 \\ -12 & -6L & 12 & -6L \\ 6L & 2L^2 & -6L & 4L^2 \end{bmatrix}$$
+</div>
+
+<h3>d) Assembling Stiffness Matrix</h3>
+<p>The process includes the assemblage of the overall or global stiffness matrix for the entire body/structure from the individual element stiffness matrix. A typical assembled matrix for a structure having 2 beam elements overlaps at the common node.</p>
+
+<div class="eq-block">
+$$\{F\} = [K]\{u\}$$
+</div>
+
+<p>Visual concept of overlapping stiffness matrices:</p>
+<div class="eq-block">
+$$[K_{\text{global}}] = \begin{bmatrix} [K_1] & & \\ & [K_1] + [K_2] & \\ & & [K_2] \end{bmatrix}$$
+</div>
+
+<h3>e) Solution of Unknown Displacement</h3>
+<p>The algebraic equations obtained in the above steps are solved for the unknown displacements. In a linear equilibrium equation, there is a straightforward application of matrix algebra techniques. However, for non-linear problems, the desired solutions are obtained by a sequence of steps, each step involving the modification of the stiffness matrix.</p>
+
+<div class="eq-block hl">
+$$\text{Displacement at nodal points:} \quad \{u\} = [K]^{-1} \{F\}$$
+</div>
+
+<h3>f) Computation of the Element Stress and Strain</h3>
+<p>In some cases, the magnitude of the primary unknowns, that is the nodal displacement, will be all that is required for the engineering solutions. However, the other quantities derived from the primary unknowns like stress, strain must be computed.</p>
+<p>Force acting on each element is:</p>
+<div class="eq-block">
+$$F_i = K_i \cdot u_i$$
+</div>
+
+<!-- ===== COORDINATE SYSTEM ===== -->
+<h2>Coordinate System</h2>
+
+<h3>(i) Global Coordinate System</h3>
+<p>The coordinate system used to define the points in the entire structure is known as the global coordinate system. For a randomly oriented bar element, $X$ and $Y$ are the global coordinate axes, and the global coordinates for nodes 1 &amp; 2 are $(X_1, Y_1)$ and $(X_2, Y_2)$ respectively.</p>
+
+<h3>(ii) Local Coordinate System</h3>
+<p>For the convenience of deriving element properties in FEM, a separate coordinate system oriented with the element itself is used for each element, known as the local coordinate system. For a bar element, $x'$ and $y'$ are local coordinate axes. The local coordinates for nodes 1 &amp; 2 are $(0,0)$ and $(l,0)$ respectively.</p>
+
+<h3>(iii) Natural Coordinate System</h3>
+<p>The coordinates of nodes of an element defined by a set of dimensionless numbers is known as the natural coordinate system. The value of these dimensionless numbers at a node never exceeds unity, and the sum of all coordinate values at any point is always unity. Hence, it can also be described by weightage of a point in terms of nodal coordinates/weightage.</p>
+
+<div class="note">
+ &rArr; Natural Coordinate system can be applied in two ways:
+ <ul>
+ <li>In the form of $(L_1, L_2, \ldots)$</li>
+ <li>In the form of $(\xi, \eta)$</li>
+ </ul>
+</div>
+
+<!-- ===== NATURAL COORDINATES (L1, L2, ...) ===== -->
+<h3>1. Natural Coordinates in the Form of $(L_1, L_2, \ldots)$</h3>
+
+<p>For the element with '$n$' nodes, '$n$' variables are used to define the location of a point such that the value of its term at node '$i$' is unity with all other terms' values as zero.</p>
+<p>Total weightage (sum of all the terms) at any point within the element is always unity.</p>
+
+<h4>For a Two-Noded Bar Element</h4>
+<p>Location of a point $P$ is defined by coordinates $(L_1, L_2)$ where the value of $L_1$ is 1 at node 1 &amp; zero at node 2. Similarly, the value of $L_2$ is zero at node 1 and 1 at node 2.</p>
+
+<div class="figure">
+<svg viewBox="0 0 560 100" style="max-width:580px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <!-- Bar -->
+ <rect x="60" y="42" width="440" height="12" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Node 1 -->
+ <circle cx="60" cy="48" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="60" y="52" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">1</text>
+ <text x="60" y="30" text-anchor="middle" font-size="11" fill="#1a365d">L₁=1, L₂=0</text>
+ <!-- Node 2 -->
+ <circle cx="500" cy="48" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="500" y="52" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">2</text>
+ <text x="500" y="30" text-anchor="middle" font-size="11" fill="#1a365d">L₁=0, L₂=1</text>
+ <!-- Point P -->
+ <line x1="300" y1="38" x2="300" y2="58" stroke="#c0392b" stroke-width="2"/>
+ <circle cx="300" cy="48" r="5" fill="#e67e22" stroke="#c0392b" stroke-width="1.5"/>
+ <text x="300" y="78" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">P (L₁, L₂)</text>
+ <!-- Dimension lines -->
+ <line x1="60" y1="90" x2="300" y2="90" stroke="#888" stroke-width="1" marker-end="url(#dm)"/>
+ <line x1="300" y1="90" x2="500" y2="90" stroke="#888" stroke-width="1" marker-end="url(#dm)"/>
+ <defs><marker id="dm" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0,6 2,0 4" fill="#888"/></marker></defs>
+</svg>
+<div class="caption">Fig: Natural coordinates of a two-noded bar element</div>
+</div>
+
+<h4>For a CST Element (Constant Strain Triangle)</h4>
+<p>With three nodes, three variables are used in the form of $(L_1, L_2, L_3)$ to locate a point $P$ within the element.</p>
+
+<table>
+ <tr><th>Node</th><th>$L_1$</th><th>$L_2$</th><th>$L_3$</th></tr>
+ <tr><td>Node 1</td><td>1</td><td>0</td><td>0</td></tr>
+ <tr><td>Node 2</td><td>0</td><td>1</td><td>0</td></tr>
+ <tr><td>Node 3</td><td>0</td><td>0</td><td>1</td></tr>
+</table>
+
+<!-- ===== NATURAL COORDINATES (ξ, η) ===== -->
+<h3>2. Natural Coordinates in the Form of $(\xi, \eta)$</h3>
+
+<p>In this method, for a 1-D element, the value of $\xi$ varies from $-1$ to $+1$ from one end to another end of the element.</p>
+<p>For a 2-D element, two variables $\xi$ and $\eta$ are used; the value of both varies independently from $-1$ to $+1$ in 2-dimensions.</p>
+
+<div class="note">
+ &rArr; The number of variables in this system is independent of the number of nodes the element has, but dependent on whether the element is 1-D, 2-D, or 3-D.
+</div>
+
+<div class="figure">
+<svg viewBox="0 0 520 90" style="max-width:540px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <!-- Bar -->
+ <rect x="50" y="40" width="420" height="12" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Node 1 -->
+ <circle cx="50" cy="46" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="50" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">1</text>
+ <text x="50" y="28" text-anchor="middle" font-size="12" fill="#c0392b" font-style="italic">ξ = −1</text>
+ <!-- Node 2 (mid) -->
+ <circle cx="260" cy="46" r="9" fill="#e67e22" stroke="#1a365d" stroke-width="2"/>
+ <text x="260" y="50" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">2</text>
+ <text x="260" y="28" text-anchor="middle" font-size="12" fill="#c0392b" font-style="italic">ξ = 0</text>
+ <!-- Node 3 -->
+ <circle cx="470" cy="46" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="470" y="50" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">3</text>
+ <text x="470" y="28" text-anchor="middle" font-size="12" fill="#c0392b" font-style="italic">ξ = +1</text>
+ <!-- Arrow axis -->
+ <line x1="30" y1="74" x2="490" y2="74" stroke="#555" stroke-width="1.2" marker-end="url(#ax)"/>
+ <defs><marker id="ax" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#555"/></marker></defs>
+ <text x="505" y="78" font-size="13" fill="#555" font-style="italic">ξ</text>
+</svg>
+<div class="caption">Fig: Natural coordinates of a 3-noded bar element in terms of $\xi$</div>
+</div>
+
+<div class="figure">
+<svg viewBox="0 0 380 380" style="max-width:400px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <!-- Element fill -->
+ <rect x="60" y="60" width="260" height="260" rx="2" fill="#eef4fb" stroke="#1a365d" stroke-width="2.5"/>
+ <!-- Axis arrows -->
+ <defs><marker id="sa" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#555"/></marker></defs>
+ <line x1="190" y1="210" x2="190" y2="80" stroke="#555" stroke-width="1.2" marker-end="url(#sa)"/>
+ <line x1="170" y1="190" x2="300" y2="190" stroke="#555" stroke-width="1.2" marker-end="url(#sa)"/>
+ <text x="195" y="75" font-size="14" fill="#555" font-style="italic">η</text>
+ <text x="308" y="194" font-size="14" fill="#555" font-style="italic">ξ</text>
+ <text x="185" y="206" font-size="10" fill="#888">(0,0)</text>
+ <!-- Corner nodes -->
+ <circle cx="320" cy="320" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="340" y="340" font-size="11" fill="#1a365d" font-weight="bold">1 (1,−1)</text>
+ <circle cx="320" cy="60" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="334" y="55" font-size="11" fill="#1a365d" font-weight="bold">2 (1,1)</text>
+ <circle cx="60" cy="60" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="6" y="55" font-size="11" fill="#1a365d" font-weight="bold">4 (−1,1)</text>
+ <circle cx="60" cy="320" r="9" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="2" y="340" font-size="11" fill="#1a365d" font-weight="bold">5 (−1,−1)</text>
+ <!-- Mid-edge nodes -->
+ <circle cx="190" cy="60" r="7" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="190" y="45" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">3 (0,1)</text>
+ <circle cx="190" cy="320" r="7" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="190" y="348" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">6 (0,−1)</text>
+ <circle cx="320" cy="190" r="7" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="348" y="194" font-size="11" fill="#c0392b" font-weight="bold">7 (1,0)</text>
+ <circle cx="60" cy="190" r="7" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="6" y="194" font-size="11" fill="#c0392b" font-weight="bold">8 (−1,0)</text>
+</svg>
+<div class="caption">Fig: Natural coordinates of an 8-noded serendipity element in form of $(\xi, \eta)$</div>
+</div>
+
+<!-- ===== RELATION: NATURAL ↔ CARTESIAN ===== -->
+<h2>Relation between Natural Coordinate and Cartesian Coordinate</h2>
+
+<h3>i) For 1-D Beam Element with Natural Coordinate in $(L_1, L_2)$ Form</h3>
+
+<p>The total weightage of a point is unity:</p>
+<div class="eq-block">
+$$L_1 + L_2 = 1 \quad \text{--- (i)}$$
+</div>
+
+<div class="eq-block">
+$$L_1 x_1 + L_2 x_2 = x \quad \text{--- (ii)}$$
+</div>
+
+<p>From similar triangles:</p>
+<div class="eq-block">
+$$\frac{L_1}{x_2 - x} = \frac{1}{x_2 - x_1}$$
+</div>
+<div class="eq-block">
+$$\frac{L_2}{x - x_1} = \frac{1}{x_2 - x_1}$$
+</div>
+
+<p>Writing equations (i) &amp; (ii) in matrix form:</p>
+<div class="eq-block">
+$$\begin{bmatrix} 1 & 1 \\ x_1 & x_2 \end{bmatrix} \begin{Bmatrix} L_1 \\ L_2 \end{Bmatrix} = \begin{Bmatrix} 1 \\ x \end{Bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$\begin{Bmatrix} L_1 \\ L_2 \end{Bmatrix} = \begin{bmatrix} 1 & 1 \\ x_1 & x_2 \end{bmatrix}^{-1} \begin{Bmatrix} 1 \\ x \end{Bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$\begin{Bmatrix} L_1 \\ L_2 \end{Bmatrix} = \frac{1}{x_2 - x_1} \begin{bmatrix} x_2 & -1 \\ -x_1 & 1 \end{bmatrix} \begin{Bmatrix} 1 \\ x \end{Bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$\begin{Bmatrix} L_1 \\ L_2 \end{Bmatrix} = \frac{1}{l} \begin{Bmatrix} x_2 - x \\ x - x_1 \end{Bmatrix}$$
+</div>
+
+<div class="eq-block hl">
+$$\therefore \quad L_1 = \frac{x_2 - x}{l}, \qquad L_2 = \frac{x - x_1}{l}$$
+</div>
+
+<h3>ii) For Two-Noded Beam with Natural Coordinate in $\xi$ Form ($-1$ to $+1$)</h3>
+
+<p>From similar mapping:</p>
+<div class="eq-block">
+$$x_c = \frac{x_1 + x_2}{2}$$
+</div>
+
+<div class="eq-block">
+$$x_2 - x_c = x_c - x_1 = \frac{l}{2}$$
+</div>
+
+<div class="eq-block">
+$$\frac{\xi}{1} = \frac{x - x_c}{l/2}$$
+</div>
+
+<div class="eq-block">
+$$\xi = \frac{2}{l} \left\{ x - \left(\frac{x_1 + x_2}{2}\right) \right\}$$
+</div>
+
+<div class="eq-block">
+$$\xi = \frac{2}{l} \left\{ \frac{2x - (x_1 + x_2)}{2} \right\}$$
+</div>
+
+<div class="eq-block hl">
+$$\xi = \frac{2}{l} (x - x_c)$$
+</div>
+
+<p>Alternatively, to find $x$:</p>
+<div class="eq-block">
+$$x - x_1 = \frac{l}{2}(1 + \xi)$$
+</div>
+
+<div class="eq-block hl">
+$$x = x_1 + \frac{l}{2}(1 + \xi)$$
+</div>
+
+<h3>iii) For CST with Natural Coordinate in $(L_1, L_2, L_3)$ Form</h3>
+
+<p>From the definition of natural coordinate and displacement function:</p>
+<div class="eq-block">
+$$L_1 + L_2 + L_3 = 1$$
+$$L_1 x_1 + L_2 x_2 + L_3 x_3 = x$$
+$$L_1 y_1 + L_2 y_2 + L_3 y_3 = y$$
+</div>
+
+<p>In matrix form:</p>
+<div class="eq-block">
+$$\begin{bmatrix} 1 & 1 & 1 \\ x_1 & x_2 & x_3 \\ y_1 & y_2 & y_3 \end{bmatrix} \begin{Bmatrix} L_1 \\ L_2 \\ L_3 \end{Bmatrix} = \begin{Bmatrix} 1 \\ x \\ y \end{Bmatrix}$$
+</div>
+
+<p>Or,</p>
+<div class="eq-block">
+$$\begin{Bmatrix} L_1 \\ L_2 \\ L_3 \end{Bmatrix} = \begin{bmatrix} 1 & 1 & 1 \\ x_1 & x_2 & x_3 \\ y_1 & y_2 & y_3 \end{bmatrix}^{-1} \begin{Bmatrix} 1 \\ x \\ y \end{Bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$\begin{Bmatrix} L_1 \\ L_2 \\ L_3 \end{Bmatrix} = \frac{1}{2A} \begin{bmatrix} x_2 y_3 - x_3 y_2 & y_2 - y_3 & x_3 - x_2 \\ x_3 y_1 - x_1 y_3 & y_3 - y_1 & x_1 - x_3 \\ x_1 y_2 - x_2 y_1 & y_1 - y_2 & x_2 - x_1 \end{bmatrix} \begin{Bmatrix} 1 \\ x \\ y \end{Bmatrix}$$
+</div>
+
+<p>Where:</p>
+<div class="eq-block">
+$$2A = \det \begin{vmatrix} 1 & 1 & 1 \\ x_1 & x_2 & x_3 \\ y_1 & y_2 & y_3 \end{vmatrix} = 2 \times \text{Area of triangle}$$
+</div>
+
+<p>Or it can be written as:</p>
+<div class="eq-block">
+$$L_1 = \frac{a_1 + b_1 x + c_1 y}{2A}$$
+$$L_2 = \frac{a_2 + b_2 x + c_2 y}{2A}$$
+$$L_3 = \frac{a_3 + b_3 x + c_3 y}{2A}$$
+</div>
+
+<div class="eq-block hl">
+$$\therefore \quad \begin{Bmatrix} L_1 \\ L_2 \\ L_3 \end{Bmatrix} = \frac{1}{2A} \begin{bmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{bmatrix} \begin{Bmatrix} 1 \\ x \\ y \end{Bmatrix}$$
+</div>
+
+<p>Where:</p>
+<div class="eq-block">
+$$a_1 = x_2 y_3 - x_3 y_2; \quad b_1 = y_2 - y_3; \quad c_1 = x_3 - x_2$$
+$$a_2 = x_3 y_1 - x_1 y_3; \quad b_2 = y_3 - y_1; \quad c_2 = x_1 - x_3$$
+$$a_3 = x_1 y_2 - x_2 y_1; \quad b_3 = y_1 - y_2; \quad c_3 = x_2 - x_1$$
+</div>
+
+<!-- ===== NAVIGATION ===== -->
+<div class="ch-nav">
+ <span style="flex:1"></span>
+ <a href="4.2_Bar_Element.html" class="next"><span>4.2 Bar Element</span> <span style="font-size:1.2rem;font-weight:700">&rarr;</span></a>
+</div>
+
+</div><!-- /content -->
+
+<footer class="footer">
+ <p><strong>4.1 Introduction to Finite Element Method</strong> &mdash; Finite Element Method</p>
+ <p>Collected &amp; Prepared By: Er. Sanjay Kumar Sah | Pulchowk Campus</p>
+ <p style="margin-top:8px"><a href="index.html">&larr; Table of Contents</a></p>
+</footer>
+
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr;</button>
+<script>
+window.addEventListener('scroll',function(){document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
+</script>
+<script src="annotate.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+ 'use strict';
+ var on = false, drawing = false, erasing = false;
+ var COLORS = [
+ '#e63946', /* red */
+ '#1a365d', /* navy */
+ '#2d6a4f', /* forest green */
+ '#e67e22', /* orange */
+ '#7c3aed', /* violet */
+ '#000000', /* black */
+ '#ffffff', /* white */
+ '#f0f0f0', /* light gray */
+ '#0ea5e9', /* sky blue */
+ '#ec4899', /* hot pink */
+ '#f59e0b', /* amber gold */
+ '#06b6d4', /* cyan */
+ '#ff6b6b', /* coral */
+ '#a855f7', /* purple glow */
+ '#22d3ee', /* electric teal */
+ '#facc15', /* yellow */
+ '#fef9c3', /* pale yellow */
+ 'gold', /* golden shimmer */
+ '#c0c0c0' /* silver */
+ ];
+ var SHIMMER = { 'gold': true, '#c0c0c0': true };
+ var color = COLORS[0], penW = 3;
+ var strokes = []; // finished: [{c,w,er,p:[x,y,x,y,...]}]
+ var pts = []; // current stroke points (flat: x,y,x,y,...)
+ var drawn = 0; // how many points already rendered
+ var raf = 0;
+
+ /* --- CSS --- */
+ var st = document.createElement('style');
+ st.textContent =
+ '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+ '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+ '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+ '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+ '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+ '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+ document.head.appendChild(st);
+
+ /* --- fixed viewport canvas (small and fast) --- */
+ var cv = document.createElement('canvas');
+ cv.className = 'dw-cv';
+ document.body.appendChild(cv);
+
+ // allow mouse wheel to scroll through the canvas
+ cv.addEventListener('wheel', function (e) {
+ window.scrollBy(0, e.deltaY);
+ paint();
+ }, { passive: true });
+ var cx = cv.getContext('2d');
+
+ function sized() {
+ var dpr = window.devicePixelRatio || 1;
+ var w = window.innerWidth, h = window.innerHeight;
+ cv.width = w * dpr; cv.height = h * dpr;
+ cv.style.width = w + 'px'; cv.style.height = h + 'px';
+ cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ paint();
+ }
+ sized();
+ window.addEventListener('resize', sized);
+
+ /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+ function paint() {
+ var sx = window.scrollX, sy = window.scrollY;
+ cx.clearRect(0, 0, cv.width, cv.height);
+ for (var s = 0; s < strokes.length; s++) {
+ var sk = strokes[s], p = sk.p;
+ if (p.length < 4) continue;
+ cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+ cx.strokeStyle = sk.c;
+ cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ cx.beginPath();
+ cx.moveTo(p[0] - sx, p[1] - sy);
+ for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+ cx.stroke();
+ }
+ }
+ window.addEventListener('scroll', paint);
+
+ /* --- UI --- */
+ var btn = document.createElement('button');
+ btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+ document.body.appendChild(btn);
+
+ var tb = document.createElement('div'); tb.className = 'dw-tb';
+ var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+ COLORS.forEach(function (c) {
+ var d = document.createElement('div');
+ d.className = 'dw-dot' + (c === color ? ' on' : '');
+ d.style.background = c;
+ d.onclick = function () {
+ color = c; erasing = false; erBtn.classList.remove('on');
+ tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+ d.classList.add('on');
+ };
+ cGrid.appendChild(d);
+ });
+ tb.appendChild(cGrid);
+ var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+ tb.appendChild(lbl);
+ var sl = document.createElement('input');
+ sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+ sl.oninput = function () { penW = +sl.value; };
+ tb.appendChild(sl);
+
+ var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+ erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+ tb.appendChild(erBtn);
+
+ var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+ unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+ tb.appendChild(unBtn);
+
+ var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+ clBtn.onclick = function () { strokes.length = 0; paint(); };
+ tb.appendChild(clBtn);
+
+ document.body.appendChild(tb);
+
+ // stop toolbar clicks from reaching canvas
+ ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+ tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+ btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+ });
+
+ btn.onclick = function () {
+ on = !on;
+ btn.classList.toggle('on', on);
+ tb.classList.toggle('show', on);
+ cv.classList.toggle('on', on);
+ };
+
+ /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+ function tick() {
+ if (!drawing) { raf = 0; return; }
+ var n = pts.length;
+ if (drawn < n) {
+ var sx = window.scrollX, sy = window.scrollY;
+ // continue the existing path from last drawn point
+ if (drawn === 0) {
+ cx.beginPath();
+ cx.moveTo(pts[0] - sx, pts[1] - sy);
+ drawn = 2;
+ }
+ for (var i = drawn; i < n; i += 2) {
+ cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+ }
+ cx.stroke();
+ // continue the SAME path (no beginPath) — keeps it connected
+ drawn = n;
+ }
+ raf = requestAnimationFrame(tick);
+ }
+
+ /* --- pointer handlers --- */
+ cv.addEventListener('pointerdown', function (e) {
+ if (!on || e.button !== 0 || e.target !== cv) return;
+ e.preventDefault();
+ cv.setPointerCapture(e.pointerId);
+ drawing = true;
+ // store document coords
+ var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+ pts = [dx, dy];
+ drawn = 0;
+ // set style once for whole stroke
+ cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+ cx.strokeStyle = color;
+ cx.lineWidth = erasing ? penW * 4 : penW;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ // start rAF loop
+ if (!raf) raf = requestAnimationFrame(tick);
+ });
+
+ cv.addEventListener('pointermove', function (e) {
+ if (!drawing) return;
+ // just push coords — rAF will render them
+ pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+ });
+
+ function stop() {
+ if (!drawing) return;
+ drawing = false;
+ if (pts.length >= 4) {
+ strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+ }
+ pts = []; drawn = 0;
+ // full repaint to clean up
+ paint();
+ }
+ cv.addEventListener('pointerup', stop);
+ cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+ var t=document.getElementById('dmToggle'),h=document.documentElement,
+ s=localStorage.getItem('theme');
+ if(s)h.setAttribute('data-theme',s);
+ function updateIcon(){
+ if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+ }
+ updateIcon();
+ if(t){
+ t.addEventListener('click',function(){
+ var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+ h.setAttribute('data-theme',n);
+ localStorage.setItem('theme',n);
+ updateIcon();
+ fixInline(n==='dark');
+ });
+ }
+ /* Fix inline and style="color:..." */
+ function fixInline(dark){
+ var els=document.querySelectorAll('[style]');
+ for(var i=0;i<els.length;i++){
+ var el=els[i];
+ /* Skip SVG internals */
+ if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+ if(el.closest&&el.closest('svg'))continue;
+ var st=el.style;
+ if(dark){
+ /* Background */
+ if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+ el.setAttribute('data-dm-bg',st.backgroundColor);
+ if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+ }
+ if(st.background&&!el.getAttribute('data-dm-bgf')){
+ el.setAttribute('data-dm-bgf',st.background);
+ if(lum(st.background)>160)st.background='#1e222a';
+ }
+ /* Text color */
+ if(st.color&&!el.getAttribute('data-dm-fg')){
+ el.setAttribute('data-dm-fg',st.color);
+ if(lum(st.color)<100)st.color='#d0cdc5';
+ }
+ }else{
+ if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+ if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+ if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+ }
+ }
+ }
+ /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+ function lum(c){
+ if(!c)return -1;
+ c=c.trim().toLowerCase();
+ if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+ if(c==='black'||c==='#000'||c==='#000000')return 0;
+ var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+ if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+ var hx=c.match(/^#([0-9a-f]{3,8})$/);
+ if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+ return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+ return -1;
+ }
+ /* Apply on load if dark */
+ if(h.getAttribute('data-theme')==='dark'){
+ if(document.readyState==='loading')
+ document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+ else fixInline(true);
+ }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

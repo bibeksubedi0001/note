@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 4 — Numericals — Well Hydraulics</title>
+<link rel="stylesheet" href="style.css">
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+<pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+<pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+<marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0,10 3.5,0 7" fill="black"/></marker>
+<marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0,0 3.5,10 7" fill="black"/></marker>
+</defs></svg>
+
+<nav class="topnav"><a href="index.html">&larr; Index</a><span class="sep">|</span><span>Chapter 4: Well Hydraulics</span></nav>
+<button onclick="window.print()" class="print-btn">PRINT</button>
+
+<h1>CHAPTER 4 — NUMERICALS<br>Well Hydraulics (Thiem&rsquo;s Steady-State Equations)</h1>
+<p style="text-align:center">2 Problems — Confined &amp; Unconfined Steady-State Well Discharge</p>
+
+<!-- ============ KEY FORMULAE ============ -->
+<div class="formula-box">
+<h3>KEY FORMULAE — CHAPTER 4</h3>
+
+<p><strong>A. Thiem&rsquo;s Equation — Confined (Artesian) Aquifer:</strong></p>
+<div class="equation">$$ Q = \frac{2\pi\,K\,b\,s_w}{\ln(R/r_w)} = \frac{2\pi\,T\,s_w}{\ln(R/r_w)} $$</div>
+<ul>
+<li>\(K\) = hydraulic conductivity, \(b\) = aquifer thickness, \(T = Kb\) = transmissivity</li>
+<li>\(s_w\) = drawdown at the well, \(r_w\) = well radius, \(R\) = radius of influence</li>
+</ul>
+
+<p><strong>B. Dupuit&rsquo;s Equation — Unconfined (Water-Table) Aquifer:</strong></p>
+<div class="equation">$$ Q = \frac{\pi\,K\,(H^2 - h_w^2)}{\ln(R/r_w)} $$</div>
+<ul>
+<li>\(H\) = undisturbed saturated thickness, \(h_w\) = water height in the well</li>
+<li>\(R\) = radius of influence (where drawdown is negligible)</li>
+</ul>
+
+<p><strong>C. Key relationships:</strong></p>
+<div class="equation">$$ T = K \cdot b, \qquad s_w = H - h_w $$</div>
+<p>Note: Q depends on \(\ln(R/r_w)\), so doubling the well diameter increases Q by only a small percentage — the log function grows very slowly.</p>
+
+<table class="units">
+<tr><th>Symbol</th><th>Typical Range</th><th>SI Unit</th></tr>
+<tr><td>\(K\)</td><td>10<sup>&minus;7</sup>–10<sup>&minus;2</sup> m/s</td><td>m/s</td></tr>
+<tr><td>\(b\) (confined)</td><td>5–100 m</td><td>m</td></tr>
+<tr><td>\(T\)</td><td>10–10,000 m&sup2;/day</td><td>m&sup2;/day or m&sup2;/s</td></tr>
+<tr><td>\(R\) (influence)</td><td>100–1000 m</td><td>m</td></tr>
+<tr><td>\(r_w\)</td><td>0.05–0.50 m</td><td>m</td></tr>
+<tr><td>\(s_w\) (drawdown)</td><td>1–30 m</td><td>m</td></tr>
+</table>
+
+<div class="derivation">
+<h4>DERIVATION HINT — Thiem&rsquo;s Equation (Confined)</h4>
+<p>For steady radial flow to a well in a confined aquifer, by Darcy&rsquo;s law at radial distance r: \(Q = 2\pi r b K \cdot dh/dr\). Separating variables: \(dr/r = (2\pi bK/Q)\,dh\). Integrating from the well (\(r_w, h_w\)) to the radius of influence (\(R, H\)):</p>
+<div class="equation">$$ \ln(R/r_w) = \frac{2\pi K b}{Q}(H - h_w) = \frac{2\pi T s_w}{Q} $$</div>
+<p>Rearranging gives \(Q = 2\pi T s_w / \ln(R/r_w)\). The key insight: \(Q \propto 1/\ln(R/r_w)\), so Q is <strong>logarithmically insensitive</strong> to both R and r<sub>w</sub>.</p>
+</div>
+
+<div class="concept-box">
+<h4>CONFINED vs UNCONFINED — KEY DIFFERENCES</h4>
+<ul>
+<li><strong>Confined:</strong> Uses \(s_w\) (drawdown = depression of piezometric surface). Aquifer thickness \(b\) stays constant. Formula has \(Kbs_w\).</li>
+<li><strong>Unconfined:</strong> Uses \(H^2 - h_w^2\) (difference of squared thicknesses). The saturated thickness <strong>decreases</strong> near the well. Formula has \(K(H^2-h_w^2)\).</li>
+<li><strong>Both:</strong> Denominator is \(\ln(R/r_w)\) — insensitive to well diameter. Assumes steady state (no time dependence).</li>
+</ul>
+</div>
+</div>
+
+<div class="fig">
+<svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- LEFT: Confined well -->
+    <text x="195" y="18" text-anchor="middle" font-weight="bold" font-size="15">CONFINED WELL (Thiem)</text>
+    <!-- Confining layers -->
+    <rect x="40" y="60" width="310" height="18" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+    <rect x="40" y="240" width="310" height="18" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+    <!-- Aquifer -->
+    <rect x="40" y="78" width="310" height="162" fill="url(#dots-fine)" stroke="none"/>
+    <!-- Well -->
+    <rect x="182" y="25" width="26" height="233" fill="#ddd" stroke="black" stroke-width="2"/>
+    <text x="195" y="155" text-anchor="middle" font-weight="bold" font-size="11">Well</text>
+    <!-- Piezometric surface original -->
+    <line x1="40" y1="40" x2="350" y2="40" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="310" y="36" font-size="11">Original piezo.</text>
+    <!-- Cone of depression -->
+    <path d="M40 40 Q100 42 182 55" fill="none" stroke="black" stroke-width="2.5"/>
+    <path d="M208 55 Q290 42 350 40" fill="none" stroke="black" stroke-width="2.5"/>
+    <!-- s_w -->
+    <line x1="170" y1="40" x2="170" y2="55" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="155" y="52" text-anchor="end" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">w</tspan></text>
+    <!-- b -->
+    <line x1="365" y1="78" x2="365" y2="240" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="378" y="165" font-weight="bold" font-size="13">b</text>
+    <!-- R -->
+    <line x1="208" y1="272" x2="350" y2="272" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="280" y="290" text-anchor="middle" font-weight="bold" font-size="13">R</text>
+    <!-- r_w -->
+    <line x1="195" y1="272" x2="208" y2="272" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="202" y="290" text-anchor="middle" font-size="10">r<tspan dy="2" font-size="8">w</tspan></text>
+    <text x="195" y="315" text-anchor="middle" font-size="12">Q = 2&pi;Kbs / ln(R/r<tspan dy="2" font-size="9">w</tspan><tspan dy="-2">)</tspan></text>
+
+    <!-- RIGHT: Unconfined well -->
+    <text x="585" y="18" text-anchor="middle" font-weight="bold" font-size="15">UNCONFINED WELL (Dupuit)</text>
+    <!-- Impervious base -->
+    <rect x="430" y="240" width="310" height="18" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+    <!-- Aquifer -->
+    <rect x="430" y="78" width="310" height="162" fill="url(#dots-fine)" stroke="none"/>
+    <!-- Well -->
+    <rect x="572" y="120" width="26" height="138" fill="#ddd" stroke="black" stroke-width="2"/>
+    <text x="585" y="195" text-anchor="middle" font-weight="bold" font-size="11">Well</text>
+    <!-- Original water table -->
+    <line x1="430" y1="78" x2="740" y2="78" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="700" y="74" font-size="11">Orig. WT</text>
+    <!-- Cone -->
+    <path d="M430 78 Q500 82 572 120" fill="none" stroke="black" stroke-width="2.5"/>
+    <path d="M598 120 Q680 82 740 78" fill="none" stroke="black" stroke-width="2.5"/>
+    <!-- H -->
+    <line x1="752" y1="78" x2="752" y2="240" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="765" y="165" font-weight="bold" font-size="13">H</text>
+    <!-- h_w -->
+    <line x1="560" y1="120" x2="560" y2="240" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="545" y="185" text-anchor="end" font-weight="bold" font-size="12">h<tspan dy="3" font-size="9">w</tspan></text>
+    <!-- R -->
+    <line x1="598" y1="265" x2="740" y2="265" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="670" y="282" text-anchor="middle" font-weight="bold" font-size="13">R</text>
+    <text x="585" y="315" text-anchor="middle" font-size="12">Q = &pi;K(H&sup2;&minus;h<tspan dy="2" font-size="9">w</tspan><tspan dy="-2">&sup2;) / ln(R/r</tspan><tspan dy="2" font-size="9">w</tspan><tspan dy="-2">)</tspan></text>
+
+    <!-- Pumping arrows -->
+    <line x1="195" y1="25" x2="195" y2="8" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="195" y="6" text-anchor="middle" font-weight="bold" font-size="12">Q</text>
+    <line x1="585" y1="120" x2="585" y2="50" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="585" y="45" text-anchor="middle" font-weight="bold" font-size="12">Q</text>
+
+    <text x="390" y="360" text-anchor="middle" font-size="13" font-style="italic">Both formulae assume steady-state radial flow (Thiem/Dupuit assumptions)</text>
+</svg>
+<div class="figcap">Left: Confined (artesian) well with drawdown s<sub>w</sub>. Right: Unconfined (water-table) well with saturated thickness h<sub>w</sub>.</div>
+</div>
+
+<div class="ctrl-bar">
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=true)">Expand All</button>
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=false)">Collapse All</button>
+</div>
+
+<!-- ═══════════════════ PROBLEM 11 ═══════════════════ -->
+<details class="problem" open>
+<summary>
+    <span>Problem 11: Thiem&rsquo;s Confined Well — Maximum Yield &amp; Diameter Effect</span>
+    <span class="pill pill-yr">2078 Chaitra</span>
+    <span class="pill pill-mk">Q4(b) — 6 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> A 30 cm diameter well penetrates a 23 m thick artesian aquifer. Determine maximum yield for drawdown 3.5 m (K = 2.8&times;10<sup>&minus;4</sup> m/s, R = 450 m). Also find the percentage change in discharge if well diameter is reduced to 20 cm.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Well diameter</td><td>30 cm &rArr; \(r_w = 0.15\) m</td></tr>
+<tr><td>Aquifer thickness, \(b\)</td><td>23 m</td></tr>
+<tr><td>Drawdown, \(s_w\)</td><td>3.5 m</td></tr>
+<tr><td>Hydraulic conductivity, \(K\)</td><td>\(2.8 \times 10^{-4}\) m/s</td></tr>
+<tr><td>Radius of influence, \(R\)</td><td>450 m</td></tr>
+<tr><td>Modified diameter</td><td>20 cm &rArr; \(r_w' = 0.10\) m</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="280" viewBox="0 0 780 280" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- Confining -->
+    <rect x="80" y="50" width="620" height="16" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+    <rect x="80" y="220" width="620" height="16" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+    <!-- Aquifer -->
+    <rect x="80" y="66" width="620" height="154" fill="url(#dots-fine)" stroke="none"/>
+    <!-- Well -->
+    <rect x="377" y="16" width="26" height="220" fill="#ddd" stroke="black" stroke-width="2.5"/>
+    <text x="390" y="148" text-anchor="middle" font-weight="bold" font-size="12">30cm</text>
+    <!-- Pump -->
+    <line x1="390" y1="16" x2="390" y2="5" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="390" y="3" text-anchor="middle" font-weight="bold" font-size="14">Q = ?</text>
+    <!-- Piezo original -->
+    <line x1="80" y1="30" x2="700" y2="30" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+    <text x="650" y="26" font-size="12">Original piezometric surface</text>
+    <!-- Cone -->
+    <path d="M80 30 Q200 34 377 48" fill="none" stroke="black" stroke-width="2.5"/>
+    <path d="M403 48 Q580 34 700 30" fill="none" stroke="black" stroke-width="2.5"/>
+    <!-- s_w -->
+    <line x1="365" y1="30" x2="365" y2="48" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="320" y="32" width="42" height="16" fill="white"/><text x="341" y="44" text-anchor="middle" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">w</tspan><tspan dy="-3">=3.5</tspan></text>
+    <!-- b -->
+    <line x1="718" y1="66" x2="718" y2="220" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="735" y="148" font-weight="bold" font-size="14">b=23m</text>
+    <!-- R -->
+    <line x1="403" y1="250" x2="700" y2="250" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="530" y="242" width="55" height="20" fill="white"/><text x="558" y="257" text-anchor="middle" font-weight="bold" font-size="13">R=450m</text>
+    <!-- r_w -->
+    <line x1="390" y1="250" x2="403" y2="250" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="396" y="268" text-anchor="middle" font-size="10">r<tspan dy="2" font-size="8">w</tspan></text>
+</svg>
+<div class="figcap">Confined well with drawdown cone. Discharge is governed by Thiem&rsquo;s equation.</div>
+</div>
+
+<h4>SOLUTION — Part (a): Maximum Yield</h4>
+
+<div class="method-box">
+<h4>APPROACH</h4>
+<ol>
+<li>Identify the aquifer type (confined &rarr; Thiem&rsquo;s equation)</li>
+<li>Compute the numerator: \(2\pi K b s_w\)</li>
+<li>Compute the denominator: \(\ln(R/r_w)\)</li>
+<li>Divide to get Q</li>
+<li>For diameter effect: recompute Q with new r<sub>w</sub> and compare</li>
+</ol>
+</div>
+
+<p><span class="step">Step 1 — Apply Thiem&rsquo;s confined formula.</span> Since the aquifer is artesian (confined) and we seek steady-state discharge:</p>
+<div class="equation">$$ Q = \frac{2\pi\,K\,b\,s_w}{\ln(R/r_w)} $$</div>
+
+<p><span class="step">Step 2 — Compute numerator.</span></p>
+<p>\(K \cdot b \cdot s_w = 2.8 \times 10^{-4} \times 23 \times 3.5 = 2.8 \times 10^{-4} \times 80.5 = 0.02254\) m&sup3;/s per radian</p>
+<div class="equation">$$ 2\pi\,K\,b\,s_w = 2\pi \times 0.02254 = 0.14166 \text{ m}^3/\text{s} $$</div>
+
+<p><span class="step">Step 3 — Compute denominator.</span></p>
+<p>\(R/r_w = 450/0.15 = 3000\)</p>
+<div class="equation">$$ \ln(3000) = \ln(3 \times 10^3) = \ln 3 + 3\ln 10 = 1.099 + 6.908 = 8.006 $$</div>
+
+<p><span class="step">Step 4 — Divide.</span></p>
+<div class="equation">$$ Q = \frac{0.14166}{8.006} $$</div>
+<div class="answer">\( Q = 0.01769 \text{ m}^3/\text{s} = 17.69 \text{ lit/s} \approx 63.7 \text{ m}^3/\text{hr} \)</div>
+
+<h4>Part (b): Effect of Reducing Diameter to 20 cm</h4>
+
+<p><span class="step">Step 5 — New well radius:</span> \(r_w' = 0.10\) m.</p>
+<div class="equation">$$ \ln\!\left(\frac{450}{0.10}\right) = \ln(4500) = 8.412 $$</div>
+<div class="equation">$$ Q' = \frac{0.14166}{8.412} = 0.01684 \text{ m}^3/\text{s} $$</div>
+
+<p><span class="step">Step 6 — Percentage change.</span></p>
+<div class="equation">$$ \Delta\% = \frac{Q' - Q}{Q} \times 100 = \frac{0.01684 - 0.01769}{0.01769} \times 100 $$</div>
+<div class="answer">\( \Delta\% = -4.8\% \) — Discharge <strong>decreases</strong> by about 4.8% when diameter is halved from 30 cm to 20 cm.</div>
+
+<div class="insight"><strong>Physical insight:</strong> Well discharge depends on \(\ln(R/r_w)\). Since ln grows very slowly, even halving the well diameter only changes the denominator from 8.006 to 8.412 — a mere 5% increase. This is why increasing well diameter is an inefficient way to increase yield. Instead, increasing aquifer contact (deeper penetration, longer screens) is far more effective.</div>
+
+<div class="fig">
+<svg width="780" height="180" viewBox="0 0 780 180" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- Bar chart comparison -->
+    <rect x="150" y="30" width="250" height="35" fill="#999" stroke="black" stroke-width="2"/>
+    <text x="275" y="53" text-anchor="middle" font-weight="bold" font-size="13" fill="white">D = 30 cm &rarr; Q = 17.69 L/s</text>
+    <rect x="150" y="80" width="238" height="35" fill="#ccc" stroke="black" stroke-width="2"/>
+    <text x="269" y="103" text-anchor="middle" font-weight="bold" font-size="13">D = 20 cm &rarr; Q = 16.84 L/s</text>
+    <!-- Percentage -->
+    <text x="440" y="70" font-weight="bold" font-size="16">&minus;4.8%</text>
+    <text x="390" y="150" text-anchor="middle" font-size="13" font-style="italic">Halving diameter reduces discharge by only ~5% because Q &prop; 1/ln(R/r<tspan dy="2" font-size="10">w</tspan><tspan dy="-2">)</tspan></text>
+</svg>
+<div class="figcap">Comparison: halving well diameter causes only a minor (4.8%) reduction in yield.</div>
+</div>
+
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 12 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 12: Dupuit Unconfined Well — Steady-State Discharge</span>
+    <span class="pill pill-yr">2073 Bhadra</span>
+    <span class="pill pill-mk">Q4(b) — 7 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> A well of 0.5 m radius fully penetrates an unconfined aquifer 50 m thick (K = 30 m/day). Pumping holds the water level at 40 m above the bottom. Pumping has no effect at 500 m distance. Compute steady-state discharge.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Well radius, \(r_w\)</td><td>0.5 m</td></tr>
+<tr><td>Saturated thickness, \(H\)</td><td>50 m</td></tr>
+<tr><td>Hydraulic conductivity, \(K\)</td><td>30 m/day</td></tr>
+<tr><td>Water level in well, \(h_w\)</td><td>40 m</td></tr>
+<tr><td>Radius of influence, \(R\)</td><td>500 m</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="310" viewBox="0 0 780 310" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- Impervious base -->
+    <rect x="80" y="240" width="620" height="20" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+    <!-- Aquifer -->
+    <rect x="80" y="50" width="620" height="190" fill="url(#dots-fine)" stroke="none"/>
+    <!-- Well -->
+    <rect x="377" y="88" width="26" height="172" fill="#ddd" stroke="black" stroke-width="2.5"/>
+    <text x="390" y="180" text-anchor="middle" font-weight="bold" font-size="12">Well</text>
+    <!-- Original WT -->
+    <line x1="80" y1="50" x2="700" y2="50" stroke="black" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="650" y="42" font-size="12">Original WT (H=50m)</text>
+    <!-- Cone -->
+    <path d="M80 50 Q200 56 377 88" fill="none" stroke="black" stroke-width="3"/>
+    <path d="M403 88 Q580 56 700 50" fill="none" stroke="black" stroke-width="3"/>
+    <!-- Pump -->
+    <line x1="390" y1="88" x2="390" y2="30" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="390" y="22" text-anchor="middle" font-weight="bold" font-size="15">Q = ?</text>
+    <!-- H -->
+    <line x1="720" y1="50" x2="720" y2="240" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="738" y="150" font-weight="bold" font-size="14">H=50</text>
+    <!-- h_w -->
+    <line x1="365" y1="88" x2="365" y2="240" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="325" y="155" width="40" height="20" fill="white"/><text x="345" y="170" text-anchor="middle" font-weight="bold" font-size="13">h<tspan dy="3" font-size="10">w</tspan><tspan dy="-3">=40</tspan></text>
+    <!-- s_w label -->
+    <line x1="355" y1="50" x2="355" y2="88" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="310" y="60" width="40" height="18" fill="white"/><text x="330" y="74" text-anchor="middle" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">w</tspan><tspan dy="-3">=10</tspan></text>
+    <!-- R -->
+    <line x1="403" y1="275" x2="700" y2="275" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+    <rect x="530" y="267" width="52" height="20" fill="white"/><text x="556" y="282" text-anchor="middle" font-weight="bold" font-size="13">R=500m</text>
+</svg>
+<div class="figcap">Unconfined well: water table drops from H = 50 m to h<sub>w</sub> = 40 m at the well face.</div>
+</div>
+
+<h4>SOLUTION</h4>
+
+<p><span class="step">Step 1 — Apply Dupuit unconfined well formula.</span> Since this is a water-table (unconfined) aquifer, the saturated thickness varies with drawdown. We use the Dupuit formula which accounts for this by using squared heads:</p>
+<div class="equation">$$ Q = \frac{\pi\,K\,(H^2 - h_w^2)}{\ln(R/r_w)} $$</div>
+
+<p><span class="step">Step 2 — Compute numerator.</span></p>
+<p>\(H^2 = 50^2 = 2500\) m&sup2;, \(h_w^2 = 40^2 = 1600\) m&sup2;</p>
+<p>\(H^2 - h_w^2 = 2500 - 1600 = 900\) m&sup2;</p>
+<div class="equation">$$ \pi\,K\,(H^2 - h_w^2) = \pi \times 30 \times 900 = 84{,}823 \text{ m}^3/\text{day} $$</div>
+
+<p><span class="step">Step 3 — Compute denominator.</span></p>
+<p>\(R/r_w = 500/0.5 = 1000\)</p>
+<div class="equation">$$ \ln(1000) = 3\ln(10) = 3 \times 2.3026 = 6.908 $$</div>
+
+<p><span class="step">Step 4 — Divide and convert units.</span></p>
+<div class="equation">$$ Q = \frac{84{,}823}{6.908} $$</div>
+<div class="answer">\( Q = 12{,}280 \text{ m}^3/\text{day} \approx 511.6 \text{ m}^3/\text{hr} \approx 142.1 \text{ L/s} \)</div>
+
+<div class="insight">
+<strong>Physical insight:</strong> The large yield (12,280 m&sup3;/day) is due to three favourable factors:
+<ul style="font-style:normal;">
+<li><strong>High permeability</strong> (K = 30 m/day — typical of very coarse sand/gravel aquifers)</li>
+<li><strong>Large drawdown</strong> (10 m out of 50 m — 20% dewatering, within the Dupuit s/H &lt; 0.5 limit)</li>
+<li><strong>Thick aquifer</strong> (50 m — provides a large saturated cross-section for radial flow)</li>
+</ul>
+In practice, this would be an excellent production well. For comparison:
+<ul style="font-style:normal;">
+<li>Typical municipal well: 500–3000 m&sup3;/day (in less permeable formations)</li>
+<li>Agricultural well in Nepal&rsquo;s Terai: 200–1000 m&sup3;/day</li>
+<li>This well: 12,280 m&sup3;/day — a high-capacity industrial/municipal source</li>
+</ul>
+</div>
+
+<div class="warning"><strong>Dupuit validity check:</strong> \(s_w/H = 10/50 = 0.2 < 0.5\). The Dupuit approximation is valid. For drawdowns exceeding 50% of the saturated thickness, a correction factor should be applied, or the formula should be modified.</div>
+
+<div class="exam-note">This problem appeared in 2073 Bhadra Q4(b) for 7 marks. Always state the formula, show unit conversions, and mention whether the Dupuit assumption is valid.</div>
+
+<div class="fig">
+<svg width="780" height="140" viewBox="0 0 780 140" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="14">DUPUIT ASSUMPTIONS (for validity of this solution)</text>
+    <rect x="50" y="35" width="210" height="80" fill="white" stroke="black" stroke-width="2"/>
+    <text x="155" y="55" text-anchor="middle" font-size="12">1. Hydraulic gradient</text>
+    <text x="155" y="72" text-anchor="middle" font-size="12">= slope of water table</text>
+    <text x="155" y="92" text-anchor="middle" font-size="12">(flow is horizontal)</text>
+    <rect x="290" y="35" width="210" height="80" fill="white" stroke="black" stroke-width="2"/>
+    <text x="395" y="55" text-anchor="middle" font-size="12">2. Streamlines are</text>
+    <text x="395" y="72" text-anchor="middle" font-size="12">horizontal, equipotentials</text>
+    <text x="395" y="92" text-anchor="middle" font-size="12">are vertical</text>
+    <rect x="530" y="35" width="210" height="80" fill="white" stroke="black" stroke-width="2"/>
+    <text x="635" y="55" text-anchor="middle" font-size="12">3. Seepage face at</text>
+    <text x="635" y="72" text-anchor="middle" font-size="12">the well is neglected</text>
+    <text x="635" y="92" text-anchor="middle" font-size="12">(small error if s/H &lt; 0.5)</text>
+    <text x="390" y="132" text-anchor="middle" font-size="12" font-style="italic">These are reasonably valid for this problem since s<tspan dy="2" font-size="9">w</tspan><tspan dy="-2">/H = 10/50 = 0.2 &lt; 0.5</tspan></text>
+</svg>
+<div class="figcap">Dupuit assumptions underlying the unconfined well equation and their applicability to this problem.</div>
+</div>
+
+</div></details>
+
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

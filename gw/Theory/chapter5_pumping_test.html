@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 5: Pumping Test and Estimation of Aquifer Properties</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --base-size: 12pt; }
+        body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
+            font-family: 'Times New Roman', Times, serif; font-size: var(--base-size);
+            color: black; background-color: white; line-height: 1.5; margin: 0; padding: 0;
+        }
+        * { box-sizing: border-box; }
+        body { max-width: 860px; margin: 0 auto; padding: 2rem; }
+        h1 { font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid black; padding-bottom: 0.5rem; }
+        h2 { font-weight: bold; text-transform: uppercase; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid black; }
+        h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        h4 { font-weight: bold; font-style: italic; margin-top: 1rem; margin-bottom: 0.5rem; }
+        p { text-align: justify; margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+        li { text-align: justify; margin-bottom: 0.5rem; }
+        .equation { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; overflow-x: auto; }
+        .exam-note, .study-note, .question-card, .solution-box { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .exam-note h4, .study-note h4, .question-card h4, .solution-box h4 { margin-top: 0; border-bottom: 1px dashed black; padding-bottom: 0.25rem; }
+        .solution-box { border-width: 2px; }
+        .solution-box h4 { font-weight: bold; }
+        .callout { border-left: 3px solid black; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; }
+        .figure-container { text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid black; overflow-x: auto; }
+        .figcaption { font-style: italic; margin-top: 0.5rem; text-align: center; }
+        table.info-table, table.question-table, table.formula-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table.info-table th, table.info-table td, table.question-table th, table.question-table td, table.formula-table th, table.formula-table td { border: 1px solid black; padding: 6px 10px; text-align: left; vertical-align: top; }
+        table.info-table th, table.question-table th, table.formula-table th { font-weight: bold; background: #f5f5f5; }
+        .toc { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .toc ol { margin-bottom: 0; } .toc a { text-decoration: none; }
+        .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .mini-note { border: 1px solid black; padding: 0.85rem; margin: 1rem 0; }
+        .question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .pill { display: inline-block; border: 1px solid black; padding: 2px 8px; font-size: 0.9rem; }
+        .data-block { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid black; }
+        .print-btn { position: fixed; top: 1rem; right: 1rem; border: 2px solid black; background-color: white; color: black; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer; font-family: 'Times New Roman', Times, serif; font-size: var(--base-size); }
+        .print-btn:hover { background-color: black; color: white; }
+        @media (max-width: 720px) { body { padding: 1rem; } .grid-two { grid-template-columns: 1fr; } }
+        @media print { body { padding: 0; max-width: 100%; } .print-btn { display: none; } .figure-container, .exam-note, .study-note, .question-card, .mini-note, .solution-box { page-break-inside: avoid; } h2, h3 { page-break-after: avoid; } }
+    </style>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+        <defs>
+            <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+            <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#777"/><circle cx="9" cy="9" r="2" fill="#777"/></pattern>
+            <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+            <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse"><line x1="0" y1="10" x2="7" y2="0" stroke="black" stroke-width=".8"/><line x1="7" y1="10" x2="14" y2="0" stroke="black" stroke-width=".8"/></pattern>
+            <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="black"/></marker>
+            <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="black"/></marker>
+        </defs>
+    </svg>
+    <button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+    <main>
+        <header>
+            <p style="text-align:center;font-style:italic;margin-bottom:1rem;">Groundwater Engineering — CE 76509</p>
+            <h1>CHAPTER 5: PUMPING TEST AND ESTIMATION OF AQUIFER PROPERTIES</h1>
+            <p style="text-align:center;font-style:italic;margin-bottom:2rem;">(Syllabus Weight: 8 hours, 8 marks)</p>
+        </header>
+
+        <section class="toc">
+            <h4>CHAPTER ROADMAP</h4>
+            <ol>
+                <li><a href="#sec-5-1">Introduction — why pumping tests?</a></li>
+                <li><a href="#sec-5-2">Types of pumping tests</a></li>
+                <li><a href="#sec-5-3">Theis equation — unsteady radial flow</a></li>
+                <li><a href="#sec-5-4">Theis type-curve method for T and S</a></li>
+                <li><a href="#sec-5-5">Thiem&rsquo;s equilibrium (steady-state) method for T</a></li>
+                <li><a href="#sec-5-6">Cooper-Jacob straight-line approximation</a></li>
+                <li><a href="#sec-5-7">Cooper-Jacob time-drawdown method</a></li>
+                <li><a href="#sec-5-8">Cooper-Jacob distance-drawdown method</a></li>
+                <li><a href="#sec-5-9">Recovery test</a></li>
+                <li><a href="#sec-5-10">Image well theory and boundary effects</a></li>
+                <li><a href="#sec-5-11">Past question bank for Chapter 5</a></li>
+                <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
+            </ol>
+        </section>
+
+        <!-- ======== 5.1 INTRODUCTION ======== -->
+        <section id="sec-5-1">
+            <h2>5.1 INTRODUCTION — WHY PUMPING TESTS?</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <ol>
+                    <li>Why is the pumping test carried out in groundwater studies? [2] <em>(2073 Bhadra, Q5a)</em></li>
+                </ol>
+            </div>
+            <div class="callout">
+                <strong>CORE IDEA:</strong> A pumping test is the most reliable field method for determining aquifer hydraulic properties — transmissivity (T), storage coefficient (S), and hydraulic conductivity (K) — at realistic field scale.
+            </div>
+            <p>Laboratory tests on soil samples (e.g., constant-head or falling-head permeameter) provide values of hydraulic conductivity at a point, but they cannot capture the variability, layering, and effective connectivity of a real aquifer. A <strong>pumping test</strong> stresses the aquifer over a large volume and yields integrated (field-scale) parameters that directly govern well yield, drawdown prediction, and groundwater resource planning.</p>
+
+            <h3>Objectives of a Pumping Test</h3>
+            <ol>
+                <li><strong>Determine transmissivity (T = Kb)</strong> — the rate at which water is transmitted through a unit width of the aquifer under a unit hydraulic gradient. This controls well yield and drawdown.</li>
+                <li><strong>Determine storage coefficient (S)</strong> — the volume of water released from (or taken into) storage per unit area per unit change in head. This controls how quickly the cone of depression expands.</li>
+                <li><strong>Evaluate well performance</strong> — measure well efficiency, specific capacity, and well losses.</li>
+                <li><strong>Assess aquifer boundaries</strong> — detect impermeable barriers or recharge boundaries via deviations in the drawdown curve.</li>
+                <li><strong>Estimate radius of influence (R)</strong> — the distance beyond which pumping has negligible effect.</li>
+                <li><strong>Design production wells</strong> — determine sustainable pumping rate, well spacing, and predict long-term drawdown.</li>
+            </ol>
+
+            <div class="figure-container">
+                <svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="16">PUMPING TEST FIELD ARRANGEMENT</text>
+                    <!-- Ground surface -->
+                    <line x1="40" y1="70" x2="740" y2="70" stroke="black" stroke-width="2"/>
+                    <rect x="40" y="70" width="700" height="12" fill="url(#ground)" stroke="none"/>
+                    <text x="70" y="65" font-size="12">Ground surface</text>
+                    <!-- Confining layers -->
+                    <rect x="40" y="82" width="700" height="20" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+                    <rect x="40" y="280" width="700" height="20" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+                    <text x="760" y="96" font-size="11">Confining</text>
+                    <text x="760" y="294" font-size="11">Confining</text>
+                    <!-- Aquifer -->
+                    <rect x="40" y="102" width="700" height="178" fill="url(#dots-fine)" stroke="none"/>
+                    <text x="650" y="200" font-weight="bold" font-size="13">CONFINED AQUIFER</text>
+                    <!-- Pumping well -->
+                    <rect x="377" y="30" width="26" height="268" fill="#ddd" stroke="black" stroke-width="2.5"/>
+                    <text x="390" y="195" text-anchor="middle" font-weight="bold" font-size="12" transform="rotate(-90,390,195)">PUMPING WELL</text>
+                    <!-- Pump -->
+                    <line x1="390" y1="30" x2="390" y2="15" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="390" y="10" text-anchor="middle" font-weight="bold" font-size="15">Q (constant)</text>
+                    <!-- Original piezometric surface -->
+                    <line x1="40" y1="55" x2="740" y2="55" stroke="black" stroke-width="2" stroke-dasharray="8,5"/>
+                    <text x="460" y="50" font-size="12">Original piezometric surface</text>
+                    <!-- Cone of depression -->
+                    <path d="M40 55 Q150 58 280 66 Q340 72 377 88" fill="none" stroke="black" stroke-width="3"/>
+                    <path d="M403 88 Q440 72 500 66 Q630 58 740 55" fill="none" stroke="black" stroke-width="3"/>
+                    <!-- s_w -->
+                    <line x1="365" y1="55" x2="365" y2="88" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="350" y="76" text-anchor="end" font-weight="bold" font-size="13">s<tspan dy="3" font-size="9">w</tspan></text>
+                    <!-- Observation well 1 -->
+                    <rect x="217" y="30" width="16" height="268" fill="none" stroke="black" stroke-width="2"/>
+                    <line x1="225" y1="66" x2="225" y2="30" stroke="black" stroke-width="1.5"/>
+                    <text x="225" y="25" text-anchor="middle" font-weight="bold" font-size="12">OW1</text>
+                    <path d="M219 66 Q223 62 227 66 Q231 70 233 66" fill="none" stroke="black" stroke-width="1.5"/>
+                    <!-- s1 -->
+                    <line x1="205" y1="55" x2="205" y2="66" stroke="black" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="196" y="64" text-anchor="end" font-size="12">s<tspan dy="3" font-size="8">1</tspan></text>
+                    <!-- Observation well 2 -->
+                    <rect x="547" y="30" width="16" height="268" fill="none" stroke="black" stroke-width="2"/>
+                    <line x1="555" y1="62" x2="555" y2="30" stroke="black" stroke-width="1.5"/>
+                    <text x="555" y="25" text-anchor="middle" font-weight="bold" font-size="12">OW2</text>
+                    <path d="M549 62 Q553 58 557 62 Q561 66 563 62" fill="none" stroke="black" stroke-width="1.5"/>
+                    <!-- s2 -->
+                    <line x1="575" y1="55" x2="575" y2="62" stroke="black" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="585" y="62" font-size="12">s<tspan dy="3" font-size="8">2</tspan></text>
+                    <!-- r1, r2 -->
+                    <line x1="390" y1="320" x2="225" y2="320" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="308" y="335" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="10">1</tspan></text>
+                    <line x1="390" y1="345" x2="555" y2="345" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="472" y="360" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="10">2</tspan></text>
+                    <!-- Cone label -->
+                    <text x="160" y="78" font-style="italic" font-size="12">Cone of depression</text>
+                    <line x1="220" y1="74" x2="260" y2="68" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                </svg>
+                <div class="figcaption">Figure 5.1: Typical pumping test setup in a confined aquifer — one pumping well at constant rate Q and two observation wells (OW) at distances r<sub>1</sub> and r<sub>2</sub>. Drawdowns s<sub>1</sub> and s<sub>2</sub> are measured over time.</div>
+            </div>
+
+            <h3>Test Components</h3>
+            <table class="info-table">
+                <tr><th>Component</th><th>Purpose</th></tr>
+                <tr><td>Pumping well</td><td>Stresses the aquifer by withdrawing water at constant rate Q (m&sup3;/day or m&sup3;/s)</td></tr>
+                <tr><td>Observation well(s)</td><td>Measure drawdown s(r, t) at known distances r from the pumping well</td></tr>
+                <tr><td>Flow meter</td><td>Measures and maintains constant pumping rate Q</td></tr>
+                <tr><td>Water-level recorder</td><td>Records drawdown as a function of time — manual dip-tape or automatic transducer</td></tr>
+                <tr><td>Pre-test monitoring</td><td>Baseline water levels, tidal or barometric trends, nearby well interference</td></tr>
+            </table>
+        </section>
+
+        <!-- ======== 5.2 TYPES ======== -->
+        <section id="sec-5-2">
+            <h2>5.2 TYPES OF PUMPING TESTS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <ol>
+                    <li>Explain the types of pumping test used in the field to determine the permeability of soil. [8] <em>(2072 Magh, Q6)</em></li>
+                </ol>
+            </div>
+
+            <p>Pumping tests are classified according to the flow regime achieved during the test and the method of analysis used:</p>
+
+            <h3>A. Constant-Rate Pumping Test (Aquifer Test)</h3>
+            <p>The well is pumped at a <strong>constant discharge Q</strong> and drawdown is measured in one or more observation wells at increasing time intervals. This is the standard test for determining T and S. Two analysis approaches:</p>
+
+            <div class="grid-two">
+                <div class="mini-note">
+                    <h4>(i) Transient (Unsteady-State) Analysis</h4>
+                    <p>Drawdown changes with time. Used when the test has not reached equilibrium. Yields both T and S.</p>
+                    <ul>
+                        <li><strong>Theis type-curve method</strong> — matches field data to the Theis well function W(u)</li>
+                        <li><strong>Cooper-Jacob time-drawdown</strong> — semi-log straight-line method (late-time data)</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <h4>(ii) Steady-State (Equilibrium) Analysis</h4>
+                    <p>Drawdown stabilizes (does not change further with time). Yields only T (not S).</p>
+                    <ul>
+                        <li><strong>Thiem&rsquo;s method</strong> — uses drawdown difference between two observation wells</li>
+                        <li><strong>Distance-drawdown method</strong> — plots s vs log(r) from multiple wells</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>B. Step-Drawdown Test</h3>
+            <p>The pumping rate is increased in <strong>steps</strong> (e.g., Q, 2Q, 3Q), each maintained until drawdown stabilizes. Determines:</p>
+            <ul>
+                <li><strong>Well efficiency</strong> — ratio of theoretical to actual drawdown</li>
+                <li><strong>Well loss coefficient (C)</strong> in the equation \(s_w = BQ + CQ^2\), where BQ is the aquifer (Darcian) loss and CQ&sup2; is the well (non-Darcian) loss</li>
+                <li><strong>Optimum pumping rate</strong> for the well</li>
+            </ul>
+
+            <h3>C. Recovery Test</h3>
+            <p>After the pump is shut off, the water level <strong>recovers</strong> (rises) toward its original position. Substituting &ldquo;residual drawdown&rdquo; into the Theis/Cooper-Jacob equations yields T independently. This is a valuable check on T obtained during the pumping phase.</p>
+
+            <h3>D. Slug Test (Bail Test)</h3>
+            <p>A known volume of water is <strong>instantaneously</strong> added to or removed from a well, and the subsequent recovery is monitored. No pumping is required. Used in low-permeability formations or when observation wells are not available. Yields K at the well screen, but not T or S at field scale.</p>
+
+            <div class="figure-container">
+                <svg width="780" height="300" viewBox="0 0 780 300" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">COMPARISON OF PUMPING TEST TYPES</text>
+                    <!-- Axes -->
+                    <line x1="60" y1="45" x2="60" y2="260" stroke="black" stroke-width="2"/>
+                    <line x1="60" y1="260" x2="380" y2="260" stroke="black" stroke-width="2"/>
+                    <text x="220" y="285" text-anchor="middle" font-size="13">Time &rarr;</text>
+                    <text x="30" y="155" text-anchor="middle" font-size="13" transform="rotate(-90,30,155)">Drawdown s &darr;</text>
+                    <!-- Constant rate curve -->
+                    <path d="M70 55 Q100 95 140 130 Q200 170 260 195 Q330 215 370 220" fill="none" stroke="black" stroke-width="3"/>
+                    <text x="280" y="240" font-weight="bold" font-size="12">(A) Constant Q</text>
+                    <!-- Pump off - recovery -->
+                    <path d="M370 220 Q380 200 390 170 Q400 130 410 100 Q420 80 435 65" fill="none" stroke="black" stroke-width="3" stroke-dasharray="6,4"/>
+                    <text x="430" y="58" font-weight="bold" font-size="12">(C) Recovery</text>
+                    <!-- Step test -->
+                    <line x1="420" y1="45" x2="420" y2="260" stroke="black" stroke-width="2"/>
+                    <line x1="420" y1="260" x2="740" y2="260" stroke="black" stroke-width="2"/>
+                    <text x="580" y="285" text-anchor="middle" font-size="13">Time &rarr;</text>
+                    <text x="400" y="155" text-anchor="middle" font-size="13" transform="rotate(-90,400,155)">Drawdown s &darr;</text>
+                    <!-- Step 1 -->
+                    <path d="M430 80 Q460 115 490 120" fill="none" stroke="black" stroke-width="3"/>
+                    <line x1="490" y1="120" x2="530" y2="122" stroke="black" stroke-width="3"/>
+                    <!-- Step 2 -->
+                    <line x1="530" y1="122" x2="530" y2="155" stroke="black" stroke-width="2.5"/>
+                    <path d="M530 155 Q550 168 570 170" fill="none" stroke="black" stroke-width="3"/>
+                    <line x1="570" y1="170" x2="610" y2="172" stroke="black" stroke-width="3"/>
+                    <!-- Step 3 -->
+                    <line x1="610" y1="172" x2="610" y2="210" stroke="black" stroke-width="2.5"/>
+                    <path d="M610 210 Q630 222 660 225" fill="none" stroke="black" stroke-width="3"/>
+                    <line x1="660" y1="225" x2="720" y2="226" stroke="black" stroke-width="3"/>
+                    <!-- Labels -->
+                    <text x="470" y="110" font-size="11">Q</text>
+                    <text x="555" y="150" font-size="11">2Q</text>
+                    <text x="640" y="204" font-size="11">3Q</text>
+                    <text x="580" y="248" font-weight="bold" font-size="12">(B) Step-Drawdown</text>
+                </svg>
+                <div class="figcaption">Figure 5.2: Left: Constant-rate test with recovery phase. Right: Step-drawdown test with three pumping steps.</div>
+            </div>
+
+            <table class="info-table">
+                <tr><th>Test Type</th><th>Flow Condition</th><th>Parameters Obtained</th><th>Observation Wells Needed?</th></tr>
+                <tr><td>Constant-rate (transient)</td><td>Unsteady</td><td>T, S</td><td>Yes (at least 1)</td></tr>
+                <tr><td>Constant-rate (equilibrium)</td><td>Steady</td><td>T only</td><td>Yes (at least 2 preferred)</td></tr>
+                <tr><td>Step-drawdown</td><td>Quasi-steady at each step</td><td>Well losses B, C; well efficiency</td><td>No (pumping well data sufficient)</td></tr>
+                <tr><td>Recovery</td><td>Unsteady (recovery)</td><td>T (independent check)</td><td>No</td></tr>
+                <tr><td>Slug test</td><td>Unsteady (single pulse)</td><td>K (local, near well)</td><td>No</td></tr>
+            </table>
+        </section>
+
+        <!-- ======== 5.3 THEIS ======== -->
+        <section id="sec-5-3">
+            <h2>5.3 THEIS EQUATION — UNSTEADY RADIAL FLOW TO A WELL</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <ol>
+                    <li>Explain the Theis solution for determination of storage coefficient and transmissibility of an aquifer. [6] <em>(2072 Ashwin, Q11)</em></li>
+                </ol>
+            </div>
+            <div class="callout">
+                <strong>SIGNIFICANCE:</strong> The Theis (1935) equation was the first analytical solution for transient (time-dependent) flow to a well. It allows determination of both T and S from a single pumping test — the foundation of modern aquifer test analysis.
+            </div>
+
+            <h3>Assumptions</h3>
+            <ol>
+                <li>The aquifer is <strong>confined</strong>, homogeneous, isotropic, and of uniform thickness b.</li>
+                <li>The aquifer extends <strong>infinitely</strong> in all horizontal directions (no boundaries).</li>
+                <li>The well is <strong>fully penetrating</strong> and pumps at a constant rate Q.</li>
+                <li>Flow is <strong>horizontal</strong> and radially symmetric toward the well.</li>
+                <li>Water is released from storage <strong>instantaneously</strong> with decline in head.</li>
+                <li>The well has <strong>infinitesimal diameter</strong> (no well storage effects).</li>
+                <li><strong>No recharge</strong> occurs during the test.</li>
+            </ol>
+
+            <h3>Governing Equation</h3>
+            <p>Starting from the radial form of the confined flow equation (combining Darcy&rsquo;s law with continuity):</p>
+            <div class="equation">$$ \frac{\partial^2 h}{\partial r^2} + \frac{1}{r}\frac{\partial h}{\partial r} = \frac{S}{T}\frac{\partial h}{\partial t} $$</div>
+            <p>With boundary conditions: \(h(r, 0) = h_0\) (initial), \(h(\infty, t) = h_0\) (infinite boundary), and \(\lim_{r \to 0} r\,\partial h/\partial r = -Q/(2\pi T)\) (well discharge).</p>
+
+            <h3>Theis Solution</h3>
+            <p>Theis solved this by recognising an analogy with heat conduction in solids. The drawdown at distance r from the well at time t is:</p>
+            <div class="equation">$$ \boxed{s(r,t) = \frac{Q}{4\pi T}\,W(u)} $$</div>
+            <p>where \(W(u)\) is the <strong>Theis well function</strong>:</p>
+            <div class="equation">$$ W(u) = \int_u^{\infty} \frac{e^{-y}}{y}\,dy = -0.5772 - \ln u + u - \frac{u^2}{2 \cdot 2!} + \frac{u^3}{3 \cdot 3!} - \cdots $$</div>
+            <p>and the dimensionless time parameter u is:</p>
+            <div class="equation">$$ \boxed{u = \frac{r^2 S}{4Tt}} $$</div>
+
+            <div class="figure-container">
+                <svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">THEIS WELL FUNCTION W(u) vs 1/u</text>
+                    <!-- Axes (log-log) -->
+                    <line x1="80" y1="40" x2="80" y2="320" stroke="black" stroke-width="2"/>
+                    <line x1="80" y1="320" x2="720" y2="320" stroke="black" stroke-width="2"/>
+                    <text x="400" y="350" text-anchor="middle" font-size="14">1/u &rarr; (proportional to t)</text>
+                    <text x="30" y="180" text-anchor="middle" font-size="14" transform="rotate(-90,30,180)">W(u) &uarr; (proportional to s)</text>
+                    <!-- Log scale labels -->
+                    <text x="80" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">-1</tspan></text>
+                    <text x="240" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">0</tspan></text>
+                    <text x="400" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">1</tspan></text>
+                    <text x="560" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">2</tspan></text>
+                    <text x="720" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">3</tspan></text>
+                    <text x="67" y="54" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">1</tspan></text>
+                    <text x="67" y="124" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">0</tspan></text>
+                    <text x="67" y="194" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">-1</tspan></text>
+                    <text x="67" y="264" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">-2</tspan></text>
+                    <!-- Grid -->
+                    <line x1="240" y1="40" x2="240" y2="320" stroke="#ddd" stroke-width="1"/>
+                    <line x1="400" y1="40" x2="400" y2="320" stroke="#ddd" stroke-width="1"/>
+                    <line x1="560" y1="40" x2="560" y2="320" stroke="#ddd" stroke-width="1"/>
+                    <line x1="80" y1="124" x2="720" y2="124" stroke="#ddd" stroke-width="1"/>
+                    <line x1="80" y1="194" x2="720" y2="194" stroke="#ddd" stroke-width="1"/>
+                    <line x1="80" y1="264" x2="720" y2="264" stroke="#ddd" stroke-width="1"/>
+                    <!-- W(u) type curve -->
+                    <path d="M105 295 Q130 275 160 255 Q200 225 240 195 Q290 160 340 135 Q400 108 460 90 Q520 76 580 66 Q640 58 700 53" fill="none" stroke="black" stroke-width="3.5"/>
+                    <text x="620" y="48" font-weight="bold" font-size="14">TYPE CURVE</text>
+                    <text x="620" y="80" font-weight="bold" font-size="13">W(u) vs 1/u</text>
+                    <!-- Match point annotation -->
+                    <circle cx="400" cy="124" r="8" fill="none" stroke="black" stroke-width="2.5"/>
+                    <text x="430" y="118" font-weight="bold" font-size="13">MATCH POINT</text>
+                    <text x="430" y="136" font-size="12">W(u) = 1, 1/u = 10</text>
+                </svg>
+                <div class="figcaption">Figure 5.3: The Theis type curve — a plot of W(u) vs 1/u on log-log scale. Field data (s vs t) is overlain on this standard curve to find the match point.</div>
+            </div>
+
+            <h3>Tabulated Values of W(u)</h3>
+            <table class="info-table">
+                <tr><th>u</th><td>5.0</td><td>1.0</td><td>0.5</td><td>0.1</td><td>0.05</td><td>0.01</td><td>0.005</td><td>0.001</td><td>10<sup>&minus;4</sup></td><td>10<sup>&minus;5</sup></td></tr>
+                <tr><th>W(u)</th><td>0.0011</td><td>0.219</td><td>0.560</td><td>1.823</td><td>2.468</td><td>4.038</td><td>4.726</td><td>6.332</td><td>8.633</td><td>10.936</td></tr>
+            </table>
+
+            <h3>Physical Meaning of Parameters</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <h4>Transmissivity (T)</h4>
+                    <div class="equation">$$ T = K \cdot b \quad [\text{m}^2/\text{day}] $$</div>
+                    <p>Rate of water flow through a unit width of the full aquifer thickness under unit gradient. High T = high yield. Typical: 10–10,000 m&sup2;/day.</p>
+                </div>
+                <div class="mini-note">
+                    <h4>Storage Coefficient (S)</h4>
+                    <p><strong>Confined:</strong> S = 10<sup>&minus;5</sup> to 10<sup>&minus;3</sup> (elastic storage only). <strong>Unconfined:</strong> S = S<sub>y</sub> = 0.01 to 0.30 (gravity drainage). Small S means the cone of depression expands rapidly.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 5.4 THEIS TYPE-CURVE METHOD ======== -->
+        <section id="sec-5-4">
+            <h2>5.4 THEIS TYPE-CURVE METHOD FOR T AND S</h2>
+            <div class="callout">
+                <strong>PURPOSE:</strong> Graphical curve-matching technique that works for all pumping times, not just late-time data. Yields both T and S.
+            </div>
+
+            <h3>Step-by-Step Procedure</h3>
+            <ol>
+                <li><strong>Prepare the type curve:</strong> Plot W(u) vs 1/u on log-log paper (standard Theis curve). This is a fixed reference curve.</li>
+                <li><strong>Plot field data:</strong> On a separate sheet of log-log paper <em>at the same scale</em>, plot drawdown s (y-axis) vs time t (x-axis) for each observation well.</li>
+                <li><strong>Overlay and match:</strong> Place the field data sheet on top of the type curve. Keep axes parallel. Slide the field data sheet until the data points align with the type curve.</li>
+                <li><strong>Pick a match point:</strong> Choose any convenient point on the overlapping sheets. Read four values:
+                    <ul>
+                        <li>From the type curve sheet: \(W(u)\) and \(1/u\)</li>
+                        <li>From the field data sheet: \(s\) and \(t\)</li>
+                    </ul>
+                </li>
+                <li><strong>Calculate T:</strong>
+                    <div class="equation">$$ \boxed{T = \frac{Q \cdot W(u)}{4\pi\,s}} $$</div>
+                </li>
+                <li><strong>Calculate S:</strong>
+                    <div class="equation">$$ \boxed{S = \frac{4Tu}{r^2} = \frac{4Tt}{r^2 \cdot (1/u)}} $$</div>
+                </li>
+            </ol>
+
+            <div class="figure-container">
+                <svg width="780" height="340" viewBox="0 0 780 340" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">THEIS TYPE-CURVE MATCHING PROCEDURE</text>
+                    <!-- Type curve sheet -->
+                    <rect x="40" y="40" width="320" height="240" fill="none" stroke="black" stroke-width="2.5"/>
+                    <text x="200" y="60" text-anchor="middle" font-weight="bold" font-size="13">TYPE CURVE (log-log)</text>
+                    <text x="200" y="78" text-anchor="middle" font-size="12">W(u) vs 1/u</text>
+                    <path d="M80 250 Q120 220 170 180 Q230 140 300 100 Q340 80 350 72" fill="none" stroke="black" stroke-width="3"/>
+                    <!-- Axes labels -->
+                    <text x="200" y="270" text-anchor="middle" font-size="11">1/u &rarr;</text>
+                    <text x="50" y="150" text-anchor="middle" font-size="11" transform="rotate(-90,50,150)">W(u)</text>
+                    <!-- Arrow -->
+                    <text x="400" y="130" text-anchor="middle" font-weight="bold" font-size="16">+</text>
+                    <!-- Field data sheet -->
+                    <rect x="430" y="40" width="320" height="240" fill="none" stroke="black" stroke-width="2.5"/>
+                    <text x="590" y="60" text-anchor="middle" font-weight="bold" font-size="13">FIELD DATA (log-log)</text>
+                    <text x="590" y="78" text-anchor="middle" font-size="12">s vs t</text>
+                    <!-- Data points -->
+                    <circle cx="470" cy="240" r="4" fill="black"/><circle cx="490" cy="215" r="4" fill="black"/>
+                    <circle cx="520" cy="190" r="4" fill="black"/><circle cx="555" cy="170" r="4" fill="black"/>
+                    <circle cx="590" cy="155" r="4" fill="black"/><circle cx="630" cy="140" r="4" fill="black"/>
+                    <circle cx="660" cy="128" r="4" fill="black"/><circle cx="700" cy="115" r="4" fill="black"/>
+                    <circle cx="730" cy="108" r="4" fill="black"/>
+                    <text x="590" y="270" text-anchor="middle" font-size="11">t &rarr;</text>
+                    <text x="440" y="150" text-anchor="middle" font-size="11" transform="rotate(-90,440,150)">s</text>
+                    <!-- Result -->
+                    <rect x="140" y="290" width="520" height="40" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="400" y="307" text-anchor="middle" font-size="12">MATCH POINT &rarr; Read [W(u), 1/u] from type curve and [s, t] from field data</text>
+                    <text x="400" y="324" text-anchor="middle" font-weight="bold" font-size="13">T = Q&middot;W(u) / (4&pi;s) &nbsp;&nbsp;&nbsp; S = 4Tu / r&sup2;</text>
+                </svg>
+                <div class="figcaption">Figure 5.4: Theis type-curve matching — overlay field data on the standard type curve, find a match point, and calculate T and S.</div>
+            </div>
+
+            <div class="study-note">
+                <h4>ADVANTAGES AND LIMITATIONS</h4>
+                <p><strong>Advantages:</strong> Works for all time periods (early and late). Uses the full Theis solution without approximation. Robust for small datasets.</p>
+                <p><strong>Limitations:</strong> Subjective curve matching (different analysts may get slightly different match points). Requires log-log paper at identical scales. May be difficult when data scatter is large.</p>
+            </div>
+        </section>
+
+        <!-- ======== 5.5 THIEM ======== -->
+        <section id="sec-5-5">
+            <h2>5.5 THIEM&rsquo;S EQUILIBRIUM (STEADY-STATE) METHOD FOR T</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <ol>
+                    <li>Write the step-by-step procedure to determine transmissivity (T) by Thiem&rsquo;s method with the necessary mathematical expression. [6] <em>(2078 Chaitra, Q5a)</em></li>
+                </ol>
+            </div>
+            <div class="callout">
+                <strong>APPLICABILITY:</strong> Thiem&rsquo;s method applies when pumping has continued long enough that drawdown no longer changes with time (steady state). It yields T but not S.
+            </div>
+
+            <h3>Derivation</h3>
+            <p>At steady state, for radial flow in a confined aquifer, by Darcy&rsquo;s law at distance r from the well:</p>
+            <div class="equation">$$ Q = 2\pi\,r\,b\,K\,\frac{dh}{dr} = 2\pi\,T\,r\,\frac{dh}{dr} $$</div>
+            <p>Separating variables and integrating between two observation wells at distances \(r_1\) and \(r_2\) (with heads \(h_1\) and \(h_2\)):</p>
+            <div class="equation">$$ Q \int_{r_1}^{r_2} \frac{dr}{r} = 2\pi T \int_{h_1}^{h_2} dh $$</div>
+            <div class="equation">$$ Q \ln\frac{r_2}{r_1} = 2\pi T (h_2 - h_1) $$</div>
+            <p>Since drawdown \(s = h_0 - h\), we have \(h_2 - h_1 = s_1 - s_2\). Therefore:</p>
+            <div class="equation">$$ \boxed{T = \frac{Q \ln(r_2/r_1)}{2\pi(s_1 - s_2)} = \frac{2.303\,Q\,\log_{10}(r_2/r_1)}{2\pi(s_1 - s_2)}} $$</div>
+
+            <div class="figure-container">
+                <svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="15">THIEM&rsquo;S METHOD — STEADY-STATE RADIAL FLOW</text>
+                    <!-- Confining layers -->
+                    <rect x="60" y="70" width="660" height="18" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+                    <rect x="60" y="260" width="660" height="18" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+                    <!-- Aquifer -->
+                    <rect x="60" y="88" width="660" height="172" fill="url(#dots-fine)" stroke="none"/>
+                    <!-- Well -->
+                    <rect x="377" y="38" width="26" height="258" fill="#ddd" stroke="black" stroke-width="2.5"/>
+                    <text x="390" y="180" text-anchor="middle" font-weight="bold" font-size="11" transform="rotate(-90,390,180)">Pumping Well</text>
+                    <line x1="390" y1="38" x2="390" y2="22" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="390" y="16" text-anchor="middle" font-weight="bold" font-size="14">Q</text>
+                    <!-- Original piezometric -->
+                    <line x1="60" y1="52" x2="720" y2="52" stroke="black" stroke-width="2" stroke-dasharray="8,5"/>
+                    <text x="620" y="46" font-size="12">Piezometric surface (original)</text>
+                    <!-- Steady-state cone -->
+                    <path d="M60 52 Q180 55 300 62 Q350 66 377 76" fill="none" stroke="black" stroke-width="3"/>
+                    <path d="M403 76 Q430 66 480 62 Q600 55 720 52" fill="none" stroke="black" stroke-width="3"/>
+                    <!-- OW1 -->
+                    <line x1="220" y1="88" x2="220" y2="42" stroke="black" stroke-width="2.5"/>
+                    <line x1="220" y1="59" x2="240" y2="59" stroke="black" stroke-width="1.5"/>
+                    <text x="220" y="36" text-anchor="middle" font-weight="bold" font-size="13">OW1</text>
+                    <!-- OW2 -->
+                    <line x1="560" y1="88" x2="560" y2="42" stroke="black" stroke-width="2.5"/>
+                    <line x1="560" y1="54" x2="580" y2="54" stroke="black" stroke-width="1.5"/>
+                    <text x="560" y="36" text-anchor="middle" font-weight="bold" font-size="13">OW2</text>
+                    <!-- s1, s2 -->
+                    <line x1="195" y1="52" x2="195" y2="59" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="182" y="60" text-anchor="end" font-weight="bold" font-size="13">s<tspan dy="3" font-size="9">1</tspan></text>
+                    <line x1="585" y1="52" x2="585" y2="54.5" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="598" y="58" font-weight="bold" font-size="13">s<tspan dy="3" font-size="9">2</tspan></text>
+                    <!-- r1, r2 -->
+                    <line x1="220" y1="300" x2="390" y2="300" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="305" y="316" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="9">1</tspan></text>
+                    <line x1="390" y1="330" x2="560" y2="330" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="475" y="346" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="9">2</tspan></text>
+                    <!-- b -->
+                    <line x1="740" y1="88" x2="740" y2="260" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="755" y="180" font-weight="bold" font-size="14">b</text>
+                    <!-- Formula -->
+                    <rect x="120" y="360" width="540" height="26" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="380" text-anchor="middle" font-weight="bold" font-size="13">T = Q &middot; ln(r&#x2082;/r&#x2081;) / [2&pi;(s&#x2081; &minus; s&#x2082;)]</text>
+                </svg>
+                <div class="figcaption">Figure 5.5: Thiem&rsquo;s steady-state method — drawdowns s<sub>1</sub> and s<sub>2</sub> at distances r<sub>1</sub> and r<sub>2</sub> from the pumping well, with Q = constant.</div>
+            </div>
+
+            <h3>Step-by-Step Procedure (Exam Answer for 2078 Q5a)</h3>
+            <div class="solution-box">
+                <h4>THIEM&rsquo;S METHOD — PROCEDURE TO DETERMINE T</h4>
+                <ol>
+                    <li><strong>Install observation wells</strong> at two or more known distances \(r_1, r_2, \ldots\) from the pumping well in the confined aquifer.</li>
+                    <li><strong>Pump at constant rate Q</strong> until drawdowns \(s_1, s_2, \ldots\) stabilize (stop changing with time). This confirms steady-state conditions.</li>
+                    <li><strong>Record the steady-state drawdowns</strong> \(s_1\) at distance \(r_1\) and \(s_2\) at distance \(r_2\) (where \(r_2 > r_1\), so \(s_1 > s_2\)).</li>
+                    <li><strong>Apply Thiem&rsquo;s equation:</strong>
+                        <div class="equation">$$ T = \frac{Q}{2\pi(s_1 - s_2)} \ln\!\left(\frac{r_2}{r_1}\right) $$</div>
+                        Or equivalently, using log<sub>10</sub>:
+                        <div class="equation">$$ T = \frac{2.303\,Q}{2\pi(s_1 - s_2)} \log_{10}\!\left(\frac{r_2}{r_1}\right) $$</div>
+                    </li>
+                    <li><strong>Calculate K</strong> from \(T = Kb\), i.e., \(K = T/b\), where b is the aquifer thickness.</li>
+                </ol>
+                <p><strong>Alternative (distance-drawdown graph):</strong> If data from multiple observation wells is available, plot s vs log<sub>10</sub>(r). The data should form a straight line. From the slope (&Delta;s per log cycle of r):</p>
+                <div class="equation">$$ T = \frac{2.303\,Q}{2\pi\,\Delta s} $$</div>
+                <p>The line extended to s = 0 gives the <strong>radius of influence</strong> R<sub>0</sub>.</p>
+            </div>
+
+            <h3>Limitations of Thiem&rsquo;s Method</h3>
+            <ul>
+                <li>Requires <strong>true steady state</strong> — often takes hours to days to achieve (may never be reached in practice).</li>
+                <li>Cannot determine S (storage coefficient), only T.</li>
+                <li>Requires at least <strong>two observation wells</strong> (or the pumping well data with one observation well, although this introduces well losses).</li>
+                <li>Assumes confined aquifer with no leakage, no boundaries.</li>
+            </ul>
+        </section>
+
+        <!-- ======== 5.6 COOPER-JACOB APPROX ======== -->
+        <section id="sec-5-6">
+            <h2>5.6 COOPER-JACOB STRAIGHT-LINE APPROXIMATION</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <ol>
+                    <li>Explain the Cooper and Jacob method for determination of storage coefficient and transmissivity of an aquifer using time-drawdown data. [6] <em>(2072 Magh, Q7)</em></li>
+                </ol>
+            </div>
+            <div class="callout">
+                <strong>KEY INSIGHT:</strong> For small values of u (i.e., large time t or small distance r), the Theis well function W(u) can be approximated by a logarithmic expression, transforming the Theis curve into a <strong>straight line on semi-log paper</strong>.
+            </div>
+
+            <h3>Mathematical Basis</h3>
+            <p>Recall the series expansion of W(u):</p>
+            <div class="equation">$$ W(u) = -0.5772 - \ln u + u - \frac{u^2}{4} + \cdots $$</div>
+            <p>When \(u < 0.01\), the terms beyond \(-\ln u\) become negligible (\(u < 0.01\) contributes less than 1%), so:</p>
+            <div class="equation">$$ W(u) \approx -0.5772 - \ln u = \ln\frac{1}{u} - 0.5772 = \ln\frac{e^{-0.5772}}{u} = \ln\frac{0.5625}{u} $$</div>
+            <p>Substituting \(u = r^2S/(4Tt)\) into the Theis equation:</p>
+            <div class="equation">$$ s = \frac{Q}{4\pi T}\ln\frac{0.5625 \times 4Tt}{r^2 S} = \frac{Q}{4\pi T}\ln\frac{2.25Tt}{r^2 S} $$</div>
+            <p>Converting to log<sub>10</sub> (multiply by 2.303):</p>
+            <div class="equation">$$ \boxed{s = \frac{2.303\,Q}{4\pi\,T}\,\log_{10}\!\left(\frac{2.25\,T\,t}{r^2\,S}\right)} $$</div>
+
+            <h3>Why This Is a Straight Line</h3>
+            <p>For a fixed observation well at distance r:</p>
+            <div class="equation">$$ s = \frac{2.303\,Q}{4\pi T}\,\log_{10}(t) + \frac{2.303\,Q}{4\pi T}\,\log_{10}\!\left(\frac{2.25\,T}{r^2 S}\right) $$</div>
+            <p>This is of the form \(s = m \log_{10}(t) + c\), which is a <strong>straight line</strong> when s is plotted against log<sub>10</sub>(t). The slope m per log cycle equals:</p>
+            <div class="equation">$$ \Delta s \text{ (per log cycle)} = \frac{2.303\,Q}{4\pi\,T} $$</div>
+
+            <h3>Validity Condition</h3>
+            <div class="study-note">
+                <h4>COOPER-JACOB VALIDITY</h4>
+                <p>The approximation is valid when:</p>
+                <div class="equation">$$ u = \frac{r^2 S}{4Tt} < 0.01 $$</div>
+                <p>In practice, this means:</p>
+                <ul>
+                    <li>For an observation well at r = 100 m with T = 1000 m&sup2;/day and S = 10<sup>&minus;4</sup>: u &lt; 0.01 when t &gt; 0.0025 day = 3.6 min. So the method is valid almost from the start!</li>
+                    <li>For low-T aquifers or distant observation wells, early-time data may have u &gt; 0.01 and will deviate from the straight line.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ======== 5.7 TIME-DRAWDOWN ======== -->
+        <section id="sec-5-7">
+            <h2>5.7 COOPER-JACOB TIME-DRAWDOWN METHOD</h2>
+            <p>This is the most widely used pumping test analysis method and the most frequently examined in this course.</p>
+
+            <h3>Step-by-Step Procedure</h3>
+            <div class="solution-box">
+                <h4>PROCEDURE — COOPER-JACOB TIME-DRAWDOWN METHOD</h4>
+                <ol>
+                    <li><strong>Tabulate data:</strong> Record time t and drawdown s from the observation well at distance r from the pumping well.</li>
+                    <li><strong>Plot on semi-log paper:</strong> Plot s (linear y-axis, increasing downward) vs t (logarithmic x-axis). Alternatively, s on y vs log<sub>10</sub>(t) on x with both axes linear.</li>
+                    <li><strong>Fit a straight line</strong> through the late-time data points (where u &lt; 0.01). Early points that deviate from the line are expected and should be ignored for fitting.</li>
+                    <li><strong>Determine &Delta;s</strong> = drawdown per log cycle of time — the vertical rise of the line over one log cycle of the t-axis.</li>
+                    <li><strong>Calculate T:</strong>
+                        <div class="equation">$$ \boxed{T = \frac{2.303\,Q}{4\pi\,\Delta s}} $$</div>
+                    </li>
+                    <li><strong>Determine t<sub>0</sub></strong> = the time at which the best-fit straight line intersects s = 0 (extrapolate back if needed).</li>
+                    <li><strong>Calculate S:</strong>
+                        <div class="equation">$$ \boxed{S = \frac{2.25\,T\,t_0}{r^2}} $$</div>
+                    </li>
+                    <li><strong>Check validity:</strong> Compute \(u = r^2S/(4Tt)\) for the earliest data point used. It should be less than 0.01.</li>
+                </ol>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="420" viewBox="0 0 780 420" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">COOPER-JACOB TIME-DRAWDOWN SEMI-LOG PLOT</text>
+                    <!-- Axes -->
+                    <line x1="100" y1="45" x2="100" y2="350" stroke="black" stroke-width="2"/>
+                    <line x1="100" y1="350" x2="720" y2="350" stroke="black" stroke-width="2"/>
+                    <text x="410" y="385" text-anchor="middle" font-size="14">t (log scale) &rarr;</text>
+                    <text x="50" y="200" text-anchor="middle" font-size="14" transform="rotate(-90,50,200)">Drawdown s (m) &darr;</text>
+                    <!-- Log scale labels -->
+                    <text x="100" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">&minus;3</tspan></text>
+                    <text x="255" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">&minus;2</tspan></text>
+                    <text x="410" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">&minus;1</tspan></text>
+                    <text x="565" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">0</tspan></text>
+                    <text x="720" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">1</tspan></text>
+                    <!-- s-axis labels -->
+                    <text x="88" y="50" text-anchor="end" font-size="12">0</text>
+                    <text x="88" y="120" text-anchor="end" font-size="12">0.2</text>
+                    <text x="88" y="190" text-anchor="end" font-size="12">0.4</text>
+                    <text x="88" y="260" text-anchor="end" font-size="12">0.6</text>
+                    <text x="88" y="330" text-anchor="end" font-size="12">0.8</text>
+                    <!-- Grid -->
+                    <line x1="255" y1="45" x2="255" y2="350" stroke="#ddd" stroke-width="1"/>
+                    <line x1="410" y1="45" x2="410" y2="350" stroke="#ddd" stroke-width="1"/>
+                    <line x1="565" y1="45" x2="565" y2="350" stroke="#ddd" stroke-width="1"/>
+                    <line x1="100" y1="120" x2="720" y2="120" stroke="#ddd" stroke-width="1"/>
+                    <line x1="100" y1="190" x2="720" y2="190" stroke="#ddd" stroke-width="1"/>
+                    <line x1="100" y1="260" x2="720" y2="260" stroke="#ddd" stroke-width="1"/>
+                    <!-- Data points: typical Cooper-Jacob -->
+                    <circle cx="100" cy="82" r="5" fill="black"/>
+                    <circle cx="208" cy="122" r="5" fill="black"/>
+                    <circle cx="255" cy="148" r="5" fill="black"/>
+                    <circle cx="363" cy="195" r="5" fill="black"/>
+                    <circle cx="410" cy="218" r="5" fill="black"/>
+                    <circle cx="518" cy="268" r="5" fill="black"/>
+                    <circle cx="565" cy="290" r="5" fill="black"/>
+                    <circle cx="673" cy="338" r="5" fill="black"/>
+                    <circle cx="720" cy="348" r="5" fill="black"/>
+                    <!-- Best fit straight line -->
+                    <line x1="108" y1="82" x2="720" y2="348" stroke="black" stroke-width="3"/>
+                    <!-- Δs bracket between t=0.01 and t=0.1 -->
+                    <line x1="255" y1="148" x2="255" y2="218" stroke="black" stroke-width="2.5"/>
+                    <line x1="245" y1="148" x2="265" y2="148" stroke="black" stroke-width="1.5"/>
+                    <line x1="245" y1="218" x2="410" y2="218" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+                    <rect x="265" y="168" width="80" height="24" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="305" y="184" text-anchor="middle" font-weight="bold" font-size="14">&Delta;s</text>
+                    <text x="340" y="236" font-size="12" font-style="italic">1 log cycle</text>
+                    <!-- t0 annotation -->
+                    <circle cx="85" cy="48" r="6" fill="none" stroke="black" stroke-width="2.5"/>
+                    <text x="95" y="42" font-weight="bold" font-size="13">t<tspan dy="3" font-size="9">0</tspan></text>
+                    <line x1="85" y1="45" x2="85" y2="55" stroke="black" stroke-width="2"/>
+                    <text x="85" y="68" text-anchor="middle" font-size="11">s = 0</text>
+                    <!-- Annotations -->
+                    <rect x="445" y="70" width="250" height="65" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="570" y="90" text-anchor="middle" font-weight="bold" font-size="13">From &Delta;s:</text>
+                    <text x="570" y="108" text-anchor="middle" font-size="12">T = 2.303Q / (4&pi;&Delta;s)</text>
+                    <text x="570" y="125" text-anchor="middle" font-size="12">S = 2.25T&middot;t<tspan dy="3" font-size="8">0</tspan><tspan dy="-3"> / r&sup2;</tspan></text>
+                </svg>
+                <div class="figcaption">Figure 5.6: Cooper-Jacob time-drawdown plot. The slope (&Delta;s per log cycle) gives T; the zero-drawdown intercept t<sub>0</sub> gives S.</div>
+            </div>
+
+            <h3>Physical Interpretation</h3>
+            <ul>
+                <li><strong>&Delta;s is small</strong> &rarr; the line is flat &rarr; high T (aquifer transmits water easily, so drawdown increases slowly).</li>
+                <li><strong>&Delta;s is large</strong> &rarr; steep line &rarr; low T (aquifer resists flow, drawdown grows rapidly).</li>
+                <li><strong>t<sub>0</sub> is small</strong> &rarr; small S (little storage, cone expands quickly, intersecting s = 0 at a very early time).</li>
+                <li><strong>t<sub>0</sub> is large</strong> &rarr; large S (ample storage, takes more time for drawdown to manifest).</li>
+            </ul>
+        </section>
+
+        <!-- ======== 5.8 DISTANCE-DRAWDOWN ======== -->
+        <section id="sec-5-8">
+            <h2>5.8 COOPER-JACOB DISTANCE-DRAWDOWN METHOD</h2>
+            <p>When data from <strong>multiple observation wells at different distances</strong> is available (typically at steady or quasi-steady state), the same Cooper-Jacob logic can be applied spatially.</p>
+
+            <h3>Procedure</h3>
+            <ol>
+                <li><strong>Plot</strong> s (linear y-axis) vs r (logarithmic x-axis). Or equivalently, s vs log<sub>10</sub>(r).</li>
+                <li><strong>Fit a straight line</strong> through the data points.</li>
+                <li><strong>Read &Delta;s</strong> = drawdown change per log cycle of distance.</li>
+                <li><strong>Calculate T:</strong>
+                    <div class="equation">$$ \boxed{T = \frac{2.303\,Q}{2\pi\,\Delta s}} $$</div>
+                    <p>(Note: \(2\pi\) in denominator, not \(4\pi\), because this is the steady-state Thiem equation.)</p>
+                </li>
+                <li><strong>Extend the line to s = 0</strong> &rarr; the r-intercept is the <strong>radius of influence R<sub>0</sub></strong> (the distance at which the aquifer is unaffected by pumping).</li>
+            </ol>
+
+            <div class="figure-container">
+                <svg width="780" height="350" viewBox="0 0 780 350" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">DISTANCE-DRAWDOWN SEMI-LOG PLOT</text>
+                    <!-- Axes: s(upward) vs log(r) -->
+                    <line x1="100" y1="40" x2="100" y2="280" stroke="black" stroke-width="2"/>
+                    <line x1="100" y1="280" x2="700" y2="280" stroke="black" stroke-width="2"/>
+                    <text x="400" y="310" text-anchor="middle" font-size="14">r (m) — log scale &rarr;</text>
+                    <text x="55" y="165" text-anchor="middle" font-size="14" transform="rotate(-90,55,165)">Drawdown s (m) &uarr;</text>
+                    <!-- r-axis labels -->
+                    <text x="100" y="298" text-anchor="middle" font-size="12">1</text>
+                    <text x="300" y="298" text-anchor="middle" font-size="12">10</text>
+                    <text x="500" y="298" text-anchor="middle" font-size="12">100</text>
+                    <text x="700" y="298" text-anchor="middle" font-size="12">1000</text>
+                    <!-- s-axis labels -->
+                    <text x="88" y="280" text-anchor="end" font-size="12">0</text>
+                    <text x="88" y="200" text-anchor="end" font-size="12">0.5</text>
+                    <text x="88" y="120" text-anchor="end" font-size="12">1.0</text>
+                    <text x="88" y="44" text-anchor="end" font-size="12">1.5</text>
+                    <!-- Grid -->
+                    <line x1="300" y1="40" x2="300" y2="280" stroke="#ddd" stroke-width="1"/>
+                    <line x1="500" y1="40" x2="500" y2="280" stroke="#ddd" stroke-width="1"/>
+                    <line x1="100" y1="200" x2="700" y2="200" stroke="#ddd" stroke-width="1"/>
+                    <line x1="100" y1="120" x2="700" y2="120" stroke="#ddd" stroke-width="1"/>
+                    <!-- Data points (s decreases with r) -->
+                    <circle cx="270" cy="68" r="5" fill="black"/><text x="270" y="58" text-anchor="middle" font-size="11">r=7</text>
+                    <circle cx="395" cy="128" r="5" fill="black"/><text x="395" y="118" text-anchor="middle" font-size="11">r=30</text>
+                    <circle cx="456" cy="168" r="5" fill="black"/><text x="456" y="158" text-anchor="middle" font-size="11">r=60</text>
+                    <circle cx="500" cy="198" r="5" fill="black"/><text x="500" y="188" text-anchor="middle" font-size="11">r=100</text>
+                    <circle cx="541" cy="225" r="5" fill="black"/><text x="541" y="215" text-anchor="middle" font-size="11">r=160</text>
+                    <circle cx="560" cy="237" r="5" fill="black"/><text x="560" y="227" text-anchor="middle" font-size="11">r=200</text>
+                    <!-- Best-fit line -->
+                    <line x1="222" y1="40" x2="658" y2="280" stroke="black" stroke-width="3"/>
+                    <!-- R0 at s = 0 -->
+                    <circle cx="658" cy="280" r="7" fill="none" stroke="black" stroke-width="2.5"/>
+                    <text x="665" y="270" font-weight="bold" font-size="13">R<tspan dy="3" font-size="9">0</tspan></text>
+                    <!-- Δs bracket -->
+                    <line x1="395" y1="128" x2="395" y2="238" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+                    <line x1="395" y1="238" x2="600" y2="238" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+                    <rect x="410" y="175" width="70" height="22" fill="white" stroke="black" stroke-width="1"/>
+                    <text x="445" y="191" text-anchor="middle" font-weight="bold" font-size="13">&Delta;s</text>
+                    <text x="500" y="256" text-anchor="middle" font-size="11" font-style="italic">1 log cycle</text>
+                    <!-- Formula -->
+                    <rect x="140" y="322" width="490" height="26" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="385" y="341" text-anchor="middle" font-weight="bold" font-size="13">T = 2.303Q / (2&pi;&Delta;s) &nbsp;&nbsp;&nbsp; R&#x2080; from s = 0 intercept</text>
+                </svg>
+                <div class="figcaption">Figure 5.7: Distance-drawdown plot. The slope gives T via the Thiem formula; the zero-drawdown intercept gives the radius of influence R<sub>0</sub>.</div>
+            </div>
+
+            <h3>Time-Drawdown vs Distance-Drawdown: Key Differences</h3>
+            <table class="info-table">
+                <tr><th>Feature</th><th>Time-Drawdown (Cooper-Jacob)</th><th>Distance-Drawdown (Thiem)</th></tr>
+                <tr><td>Data source</td><td>One observation well, drawdown at multiple times</td><td>Multiple observation wells, one snapshot in time</td></tr>
+                <tr><td>Plot</td><td>s vs log(t)</td><td>s vs log(r)</td></tr>
+                <tr><td>T formula</td><td>\(T = 2.303Q/(4\pi\Delta s)\)</td><td>\(T = 2.303Q/(2\pi\Delta s)\)</td></tr>
+                <tr><td>Second parameter</td><td>S from t<sub>0</sub> intercept</td><td>R<sub>0</sub> from s = 0 intercept</td></tr>
+                <tr><td>Flow condition</td><td>Transient (time-varying)</td><td>Steady-state (or near-steady)</td></tr>
+                <tr><td>Equipment needed</td><td>1 observation well + time readings</td><td>Multiple observation wells at different r</td></tr>
+            </table>
+        </section>
+
+        <!-- ======== 5.9 RECOVERY TEST ======== -->
+        <section id="sec-5-9">
+            <h2>5.9 RECOVERY TEST</h2>
+            <p>After the pump is stopped (at time t<sub>p</sub> since pumping started), the water level recovers. By the <strong>principle of superposition</strong>, the recovery can be modelled as continuing the original pumping AND injecting at rate Q from time t<sub>p</sub>. The residual drawdown s&rsquo; at time t&rsquo; after pump shutdown is:</p>
+            <div class="equation">$$ s' = \frac{2.303\,Q}{4\pi\,T}\,\log_{10}\!\left(\frac{t}{t'}\right) $$</div>
+            <p>where \(t = t_p + t'\) = total time since pumping started, and \(t'\) = time since pumping stopped.</p>
+
+            <h3>Procedure</h3>
+            <ol>
+                <li>Plot residual drawdown s&rsquo; (y-axis, linear) vs \(t/t'\) (x-axis, log scale).</li>
+                <li>Fit a straight line through the data.</li>
+                <li>Determine &Delta;s&rsquo; per log cycle of \(t/t'\).</li>
+                <li>Compute:
+                    <div class="equation">$$ \boxed{T = \frac{2.303\,Q}{4\pi\,\Delta s'}} $$</div>
+                </li>
+            </ol>
+
+            <div class="figure-container">
+                <svg width="780" height="310" viewBox="0 0 780 310" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">RECOVERY TEST ANALYSIS</text>
+                    <!-- Left: Time history -->
+                    <text x="200" y="42" text-anchor="middle" font-weight="bold" font-size="13">WATER LEVEL vs TIME</text>
+                    <line x1="60" y1="55" x2="60" y2="230" stroke="black" stroke-width="2"/>
+                    <line x1="60" y1="230" x2="370" y2="230" stroke="black" stroke-width="2"/>
+                    <text x="215" y="255" text-anchor="middle" font-size="12">Time &rarr;</text>
+                    <text x="38" y="145" text-anchor="middle" font-size="12" transform="rotate(-90,38,145)">s &darr;</text>
+                    <!-- Pumping phase -->
+                    <path d="M70 60 Q100 100 140 140 Q180 170 220 185 Q240 192 260 195" fill="none" stroke="black" stroke-width="3"/>
+                    <!-- Recovery phase -->
+                    <path d="M260 195 Q280 180 300 155 Q320 120 340 90 Q355 70 365 60" fill="none" stroke="black" stroke-width="3" stroke-dasharray="6,4"/>
+                    <!-- tp marker -->
+                    <line x1="260" y1="195" x2="260" y2="230" stroke="black" stroke-width="1.5" stroke-dasharray="4,3"/>
+                    <text x="260" y="245" text-anchor="middle" font-weight="bold" font-size="12">t<tspan dy="3" font-size="8">p</tspan></text>
+                    <text x="160" y="218" text-anchor="middle" font-size="11">Pumping</text>
+                    <text x="330" y="218" text-anchor="middle" font-size="11">Recovery</text>
+                    <!-- Arrow s' -->
+                    <line x1="310" y1="60" x2="310" y2="155" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="325" y="110" font-weight="bold" font-size="12">s&rsquo;</text>
+                    <!-- Right: Recovery plot -->
+                    <text x="580" y="42" text-anchor="middle" font-weight="bold" font-size="13">RECOVERY PLOT: s&rsquo; vs t/t&rsquo;</text>
+                    <line x1="430" y1="55" x2="430" y2="230" stroke="black" stroke-width="2"/>
+                    <line x1="430" y1="230" x2="730" y2="230" stroke="black" stroke-width="2"/>
+                    <text x="580" y="255" text-anchor="middle" font-size="12">t/t&rsquo; (log scale) &rarr;</text>
+                    <text x="412" y="145" text-anchor="middle" font-size="12" transform="rotate(-90,412,145)">s&rsquo; (m)</text>
+                    <!-- Data and line -->
+                    <circle cx="470" cy="210" r="4" fill="black"/>
+                    <circle cx="510" cy="185" r="4" fill="black"/>
+                    <circle cx="550" cy="160" r="4" fill="black"/>
+                    <circle cx="590" cy="135" r="4" fill="black"/>
+                    <circle cx="640" cy="105" r="4" fill="black"/>
+                    <circle cx="690" cy="78" r="4" fill="black"/>
+                    <line x1="445" y1="225" x2="720" y2="58" stroke="black" stroke-width="3"/>
+                    <!-- Δs' bracket -->
+                    <line x1="550" y1="160" x2="550" y2="84" stroke="black" stroke-width="2" stroke-dasharray="4,3"/>
+                    <text x="540" y="128" text-anchor="end" font-weight="bold" font-size="12">&Delta;s&rsquo;</text>
+                    <!-- Formula -->
+                    <rect x="430" y="270" width="300" height="26" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="580" y="289" text-anchor="middle" font-weight="bold" font-size="13">T = 2.303Q / (4&pi;&Delta;s&rsquo;)</text>
+                </svg>
+                <div class="figcaption">Figure 5.8: Recovery test — after the pump is stopped, residual drawdown s&rsquo; is plotted against t/t&rsquo; on semi-log paper. The slope yields T.</div>
+            </div>
+
+            <h3>Advantages of the Recovery Test</h3>
+            <ul>
+                <li><strong>Independent check</strong> on T obtained during the pumping phase.</li>
+                <li><strong>No flow meter needed</strong> during recovery (Q is known from the pumping phase).</li>
+                <li><strong>Not affected by well losses</strong> (there is no discharge during recovery, so the non-Darcian turbulence zone disappears).</li>
+                <li><strong>Simpler data collection</strong> — only one well (even the pumping well) is needed.</li>
+            </ul>
+        </section>
+
+        <!-- ======== 5.10 IMAGE WELLS ======== -->
+        <section id="sec-5-10">
+            <h2>5.10 IMAGE WELL THEORY AND BOUNDARY EFFECTS</h2>
+            <p>Real aquifers are not infinite — they encounter boundaries such as impermeable barriers (faults, clay layers) and recharge boundaries (rivers, lakes). The <strong>method of images</strong> handles these by placing imaginary wells symmetrically across the boundary:</p>
+
+            <div class="grid-two">
+                <div class="mini-note">
+                    <h4>Impermeable Boundary (Barrier)</h4>
+                    <p>An <strong>image pumping well</strong> (same sign, +Q) is placed at the mirror position across the barrier. This doubles the drawdown near the boundary.</p>
+                    <p><em>Effect:</em> The drawdown curve steepens — a second straight line with <strong>double the slope</strong> (&Delta;s doubles) appears on the Cooper-Jacob plot.</p>
+                </div>
+                <div class="mini-note">
+                    <h4>Recharge Boundary (River)</h4>
+                    <p>An <strong>image recharge well</strong> (opposite sign, &minus;Q) is placed at the mirror position across the river. This reduces the drawdown.</p>
+                    <p><em>Effect:</em> The drawdown curve flattens and eventually stabilizes (reaches steady state even without true equilibrium) — the Cooper-Jacob line flattens to zero slope.</p>
+                </div>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="320" viewBox="0 0 780 320" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">IMAGE WELL THEORY</text>
+                    <!-- LEFT: Barrier boundary -->
+                    <text x="195" y="45" text-anchor="middle" font-weight="bold" font-size="13">IMPERMEABLE BARRIER</text>
+                    <!-- Barrier line -->
+                    <line x1="195" y1="60" x2="195" y2="260" stroke="black" stroke-width="4"/>
+                    <rect x="195" y="60" width="15" height="200" fill="url(#hatch)" stroke="none"/>
+                    <text x="215" y="80" font-size="11">Barrier</text>
+                    <!-- Real well -->
+                    <circle cx="120" cy="160" r="12" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="120" y="165" text-anchor="middle" font-weight="bold" font-size="12">+Q</text>
+                    <text x="120" y="195" text-anchor="middle" font-size="11">Real well</text>
+                    <!-- Image well -->
+                    <circle cx="270" cy="160" r="12" fill="none" stroke="black" stroke-width="2.5" stroke-dasharray="5,3"/>
+                    <text x="270" y="165" text-anchor="middle" font-weight="bold" font-size="12">+Q</text>
+                    <text x="270" y="195" text-anchor="middle" font-size="11" font-style="italic">Image well</text>
+                    <!-- d dimension -->
+                    <line x1="120" y1="220" x2="195" y2="220" stroke="black" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="158" y="238" text-anchor="middle" font-size="11">d</text>
+                    <line x1="195" y1="220" x2="270" y2="220" stroke="black" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="233" y="238" text-anchor="middle" font-size="11">d</text>
+                    <text x="195" y="280" text-anchor="middle" font-size="12">Drawdown <strong>increases</strong></text>
+                    <text x="195" y="296" text-anchor="middle" font-size="12">(slope doubles on CJ plot)</text>
+
+                    <!-- RIGHT: Recharge boundary -->
+                    <text x="585" y="45" text-anchor="middle" font-weight="bold" font-size="13">RECHARGE BOUNDARY (RIVER)</text>
+                    <!-- River -->
+                    <rect x="582" y="60" width="6" height="200" fill="none" stroke="black" stroke-width="2.5"/>
+                    <path d="M583 70 Q585 66 587 70 Q589 74 583 80 Q585 76 587 80" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M583 110 Q585 106 587 110 Q589 114 583 120 Q585 116 587 120" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M583 150 Q585 146 587 150 Q589 154 583 160 Q585 156 587 160" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M583 190 Q585 186 587 190 Q589 194 583 200 Q585 196 587 200" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="600" y="80" font-size="11">River</text>
+                    <!-- Real well -->
+                    <circle cx="510" cy="160" r="12" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="510" y="165" text-anchor="middle" font-weight="bold" font-size="12">+Q</text>
+                    <text x="510" y="195" text-anchor="middle" font-size="11">Real well</text>
+                    <!-- Image recharge well -->
+                    <circle cx="660" cy="160" r="12" fill="none" stroke="black" stroke-width="2.5" stroke-dasharray="5,3"/>
+                    <text x="660" y="165" text-anchor="middle" font-weight="bold" font-size="12">&minus;Q</text>
+                    <text x="660" y="195" text-anchor="middle" font-size="11" font-style="italic">Image well</text>
+                    <text x="585" y="280" text-anchor="middle" font-size="12">Drawdown <strong>decreases</strong></text>
+                    <text x="585" y="296" text-anchor="middle" font-size="12">(slope flattens to 0 on CJ plot)</text>
+                </svg>
+                <div class="figcaption">Figure 5.9: Method of images. Left: barrier boundary uses an image pumping well (+Q). Right: recharge boundary uses an image recharge well (&minus;Q).</div>
+            </div>
+
+            <h3>Detecting Boundaries from Pumping Test Data</h3>
+            <ul>
+                <li>On a Cooper-Jacob time-drawdown plot, a <strong>barrier</strong> causes the late-time data to steepen (upward break in the line, slope doubles).</li>
+                <li>A <strong>recharge boundary</strong> causes the data to flatten below the original line (downward break, slope approaches zero).</li>
+                <li>Distance to the boundary can be estimated from the time at which the break occurs using \(r_i = \sqrt{4Tt_b/S}\), where t<sub>b</sub> is the break time.</li>
+            </ul>
+        </section>
+
+        <!-- ======== 5.11 QUESTION BANK ======== -->
+        <section id="sec-5-11">
+            <h2>5.11 PAST QUESTION BANK FOR CHAPTER 5</h2>
+
+            <h3>Theory Questions</h3>
+            <table class="question-table">
+                <tr><th>Year</th><th>Q.No.</th><th>Marks</th><th>Question</th></tr>
+                <tr><td>2078 Chaitra</td><td>Q5(a)</td><td>[6]</td><td>Write the step-by-step procedure to determine transmissivity (T) by Thiem&rsquo;s method with the necessary mathematical expression.</td></tr>
+                <tr><td>2073 Bhadra</td><td>Q5(a)</td><td>[2]</td><td>Why is the pumping test carried out in groundwater studies?</td></tr>
+                <tr><td>2072 Ashwin</td><td>Q11</td><td>[6]</td><td>Explain the Theis solution for determination of storage coefficient and transmissibility of an aquifer.</td></tr>
+                <tr><td>2072 Magh</td><td>Q6</td><td>[8]</td><td>Explain the types of pumping test used in the field to determine the permeability of soil.</td></tr>
+                <tr><td>2072 Magh</td><td>Q7</td><td>[6]</td><td>Explain the Cooper and Jacob method for determination of storage coefficient and transmissivity of an aquifer using time-drawdown data.</td></tr>
+            </table>
+
+            <h3>Numerical Questions (Solved in <a href="numerical/chapter5.html">Numerical &rarr; Chapter 5</a>)</h3>
+            <table class="question-table">
+                <tr><th>Year</th><th>Q.No.</th><th>Marks</th><th>Problem Type</th><th>Key Answer</th></tr>
+                <tr><td>2078, 2073, 2072 Ash</td><td>Q5b/Q6</td><td>[6–8]</td><td>Cooper-Jacob time-drawdown</td><td>T &asymp; 1000 m&sup2;/day, S &asymp; 10<sup>&minus;4</sup></td></tr>
+                <tr><td>2071 Bhadra</td><td>Q8</td><td>[10]</td><td>Distance-drawdown (Thiem)</td><td>T &asymp; 0.0135 m&sup2;/s, R<sub>0</sub> &asymp; 613 m</td></tr>
+            </table>
+        </section>
+
+        <!-- ======== SUMMARY ======== -->
+        <section id="sec-summary">
+            <h2>CHAPTER SUMMARY AND EXAM FORMULA SHEET</h2>
+
+            <h3>Core Equations — Must Memorise</h3>
+            <table class="formula-table">
+                <tr><th>Method</th><th>Formula</th><th>Yields</th></tr>
+                <tr><td>Theis (general)</td><td>\(s = \frac{Q}{4\pi T}W(u)\), &ensp; \(u = \frac{r^2 S}{4Tt}\)</td><td>T, S</td></tr>
+                <tr><td>Theis type-curve</td><td>\(T = \frac{Q\,W(u)}{4\pi\,s}\), &ensp; \(S = \frac{4Tu}{r^2}\)</td><td>T, S</td></tr>
+                <tr><td>Cooper-Jacob (time-drawdown)</td><td>\(T = \frac{2.303\,Q}{4\pi\,\Delta s}\), &ensp; \(S = \frac{2.25\,T\,t_0}{r^2}\)</td><td>T, S</td></tr>
+                <tr><td>Thiem / Distance-drawdown</td><td>\(T = \frac{2.303\,Q}{2\pi\,\Delta s}\), &ensp; R<sub>0</sub> from s = 0</td><td>T, R<sub>0</sub></td></tr>
+                <tr><td>Recovery test</td><td>\(T = \frac{2.303\,Q}{4\pi\,\Delta s'}\)</td><td>T (check)</td></tr>
+            </table>
+
+            <h3>Key Relationships</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <h4>Transmissivity</h4>
+                    <div class="equation">$$ T = K \cdot b $$</div>
+                    <p>Typical: 50–5000 m&sup2;/day (good aquifer: &gt;500)</p>
+                </div>
+                <div class="mini-note">
+                    <h4>Storage Coefficient</h4>
+                    <p>Confined: S = 10<sup>&minus;5</sup>–10<sup>&minus;3</sup></p>
+                    <p>Unconfined: S<sub>y</sub> = 0.01–0.30</p>
+                </div>
+            </div>
+
+            <h3>Exam Tips for Chapter 5</h3>
+            <div class="study-note">
+                <h4>HIGH-YIELD STUDY POINTS</h4>
+                <ol>
+                    <li><strong>Cooper-Jacob time-drawdown numerical</strong> has appeared in 3 of 4 exams with identical data. Master the semi-log plot, &Delta;s per log cycle, and t<sub>0</sub> calculation.</li>
+                    <li><strong>Thiem&rsquo;s method step-by-step</strong> was asked in 2078 for 6 marks. Write the full derivation from Darcy&rsquo;s law, not just the final formula.</li>
+                    <li><strong>Theis solution explanation</strong> (2072 Ashwin) requires stating all 7 assumptions, the heat-analogy idea, the well function definition, and the type-curve matching procedure.</li>
+                    <li><strong>Types of pumping tests</strong> (2072 Magh) is an 8-mark question — describe all types with diagrams.</li>
+                    <li>Always distinguish between \(4\pi\) (transient/Cooper-Jacob) and \(2\pi\) (steady-state/Thiem) in the denominator.</li>
+                    <li>Always state the validity condition: \(u = r^2S/(4Tt) < 0.01\) for Cooper-Jacob.</li>
+                    <li>Draw semi-log plots clearly showing data points, the best-fit line, &Delta;s annotation, and the t<sub>0</sub> or R<sub>0</sub> intercept.</li>
+                </ol>
+            </div>
+
+            <h3>Quick Reference: Which Method to Use?</h3>
+            <div class="figure-container">
+                <svg width="780" height="260" viewBox="0 0 780 260" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="15">DECISION FLOWCHART — PUMPING TEST ANALYSIS</text>
+                    <!-- Start -->
+                    <rect x="280" y="40" width="220" height="30" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="390" y="60" text-anchor="middle" font-weight="bold" font-size="12">Pumping test data available</text>
+                    <line x1="390" y1="70" x2="390" y2="90" stroke="black" stroke-width="2"/>
+                    <!-- Branch: steady? -->
+                    <rect x="300" y="90" width="180" height="28" fill="#f5f5f5" stroke="black" stroke-width="2"/>
+                    <text x="390" y="108" text-anchor="middle" font-size="12">Is drawdown stable over time?</text>
+                    <!-- Yes: steady -->
+                    <line x1="300" y1="104" x2="170" y2="104" stroke="black" stroke-width="2"/>
+                    <text x="238" y="98" text-anchor="middle" font-size="11">Yes (steady)</text>
+                    <line x1="170" y1="104" x2="170" y2="135" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <rect x="70" y="138" width="200" height="50" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="170" y="157" text-anchor="middle" font-weight="bold" font-size="12">Thiem&rsquo;s Method</text>
+                    <text x="170" y="177" text-anchor="middle" font-size="11">T = 2.303Q / (2&pi;&Delta;s)</text>
+                    <!-- No: transient -->
+                    <line x1="480" y1="104" x2="610" y2="104" stroke="black" stroke-width="2"/>
+                    <text x="545" y="98" text-anchor="middle" font-size="11">No (transient)</text>
+                    <line x1="610" y1="104" x2="610" y2="135" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <rect x="505" y="138" width="210" height="28" fill="#f5f5f5" stroke="black" stroke-width="2"/>
+                    <text x="610" y="157" text-anchor="middle" font-size="12">Late-time data available?</text>
+                    <!-- Late-time yes -->
+                    <line x1="505" y1="152" x2="410" y2="152" stroke="black" stroke-width="2"/>
+                    <text x="460" y="146" text-anchor="middle" font-size="11">Yes</text>
+                    <line x1="410" y1="152" x2="410" y2="198" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <rect x="310" y="200" width="200" height="50" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="410" y="220" text-anchor="middle" font-weight="bold" font-size="12">Cooper-Jacob</text>
+                    <text x="410" y="240" text-anchor="middle" font-size="11">T = 2.303Q / (4&pi;&Delta;s)</text>
+                    <!-- All data -->
+                    <line x1="715" y1="152" x2="740" y2="152" stroke="black" stroke-width="2"/>
+                    <text x="725" y="146" text-anchor="middle" font-size="11">All</text>
+                    <line x1="740" y1="152" x2="740" y2="198" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <rect x="640" y="200" width="200" height="50" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="740" y="220" text-anchor="middle" font-weight="bold" font-size="12">Theis Type-Curve</text>
+                    <text x="740" y="240" text-anchor="middle" font-size="11">T = Q&middot;W(u) / (4&pi;s)</text>
+                </svg>
+                <div class="figcaption">Figure 5.10: Decision flowchart for selecting the appropriate pumping test analysis method.</div>
+            </div>
+        </section>
+    </main>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

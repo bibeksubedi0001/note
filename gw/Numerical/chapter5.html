@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 5 — Numericals — Pumping Test &amp; Aquifer Properties</title>
+<link rel="stylesheet" href="style.css">
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+<pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+<pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+<marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0,10 3.5,0 7" fill="black"/></marker>
+<marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0,0 3.5,10 7" fill="black"/></marker>
+</defs></svg>
+
+<nav class="topnav"><a href="index.html">&larr; Index</a><span class="sep">|</span><span>Chapter 5: Pumping Test &amp; Aquifer Properties</span></nav>
+<button onclick="window.print()" class="print-btn">PRINT</button>
+
+<h1>CHAPTER 5 — NUMERICALS<br>Pumping Test &amp; Aquifer Properties</h1>
+<p style="text-align:center">4 Problems — Cooper-Jacob Time-Drawdown &amp; Distance-Drawdown Methods</p>
+
+<!-- ============ KEY FORMULAE ============ -->
+<div class="formula-box">
+<h3>KEY FORMULAE — CHAPTER 5</h3>
+
+<p><strong>A. Theis Equation</strong> (general transient well flow):</p>
+<div class="equation">$$ s = \frac{Q}{4\pi T}\,W(u), \qquad u = \frac{r^2 S}{4Tt} $$</div>
+
+<p><strong>B. Cooper-Jacob Approximation</strong> (valid for small u, i.e., large t or small r):</p>
+<div class="equation">$$ s = \frac{2.303\,Q}{4\pi\,T}\,\log_{10}\!\left(\frac{2.25\,T\,t}{r^2\,S}\right) $$</div>
+
+<p><strong>C. Cooper-Jacob Time-Drawdown Method</strong> (plot s vs log<sub>10</sub> t):</p>
+<div class="equation">$$ \boxed{T = \frac{2.303\,Q}{4\pi\,\Delta s}}, \qquad \boxed{S = \frac{2.25\,T\,t_0}{r^2}} $$</div>
+<ul>
+<li>\(\Delta s\) = drawdown per log cycle of time (slope of the straight line)</li>
+<li>\(t_0\) = time at which the straight line intersects \(s = 0\)</li>
+</ul>
+
+<p><strong>D. Thiem Distance-Drawdown Method</strong> (steady state, plot s vs log<sub>10</sub> r):</p>
+<div class="equation">$$ \boxed{T = \frac{2.303\,Q}{2\pi\,\Delta s}}, \qquad R_0 = r \text{ where } s = 0 $$</div>
+<ul><li>\(\Delta s\) = drawdown per log cycle of distance, \(R_0\) = radius of influence</li></ul>
+
+<table class="units">
+<tr><th>Symbol</th><th>Typical Range</th><th>SI Unit</th></tr>
+<tr><td>\(T\)</td><td>50–5000 m&sup2;/day</td><td>m&sup2;/day or m&sup2;/s</td></tr>
+<tr><td>\(S\) (confined)</td><td>10<sup>&minus;5</sup>–10<sup>&minus;3</sup></td><td>dimensionless</td></tr>
+<tr><td>\(S\) (unconfined)</td><td>0.01–0.30</td><td>dimensionless</td></tr>
+<tr><td>\(\Delta s\)</td><td>0.1–2 m per log cycle</td><td>m</td></tr>
+<tr><td>\(t_0\)</td><td>10<sup>&minus;5</sup>–10<sup>&minus;2</sup> days</td><td>days</td></tr>
+<tr><td>\(R_0\)</td><td>100–1000 m</td><td>m</td></tr>
+</table>
+
+<div class="derivation">
+<h4>DERIVATION HINT — Cooper-Jacob Approximation</h4>
+<p>The Theis well function \(W(u)\) is an infinite series: \(W(u) = -0.5772 - \ln u + u - u^2/4 + \ldots\). When \(u < 0.01\) (which happens for large \(t\) or small \(r\)), terms beyond \(-\ln u\) become negligible. Substituting \(u = r^2S/(4Tt)\):</p>
+<div class="equation">$$ s \approx \frac{Q}{4\pi T}\left(-0.5772 - \ln\frac{r^2 S}{4Tt}\right) = \frac{2.303\,Q}{4\pi T}\,\log_{10}\!\left(\frac{2.25Tt}{r^2 S}\right) $$</div>
+<p>This is a <strong>semi-log straight line</strong> when plotting s vs log(t). The slope = \(\Delta s\) per log cycle = \(2.303Q/(4\pi T)\), from which T can be extracted.</p>
+</div>
+
+<div class="concept-box">
+<h4>COOPER-JACOB VALIDITY CHECK</h4>
+<p>The approximation requires \(u = r^2S/(4Tt) < 0.01\). Check after finding T and S:</p>
+<ul>
+<li>If \(u < 0.01\) for all data points &rarr; all points should fall on a straight line</li>
+<li>If early-time points deviate from the line &rarr; they have \(u > 0.01\) and should be excluded from fitting</li>
+<li>In practice, the method is very robust and widely used in hydrogeology</li>
+</ul>
+</div>
+
+<div class="method-box">
+<h4>STEP-BY-STEP METHOD — Cooper-Jacob Time-Drawdown</h4>
+<ol>
+<li>Plot s (y-axis, linear) vs t (x-axis, log scale) on semi-log paper</li>
+<li>Fit a best-fit straight line through the late-time data points</li>
+<li>Read &Delta;s = drawdown difference over one log cycle of time</li>
+<li>Compute \(T = 2.303Q/(4\pi\Delta s)\)</li>
+<li>Extend line to s = 0, read the time intercept t<sub>0</sub></li>
+<li>Compute \(S = 2.25Tt_0/r^2\)</li>
+</ol>
+</div>
+</div>
+
+<div class="fig">
+<svg width="780" height="340" viewBox="0 0 780 340" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- LEFT: Time-Drawdown plot -->
+    <text x="195" y="15" text-anchor="middle" font-weight="bold" font-size="14">TIME-DRAWDOWN (Cooper-Jacob)</text>
+    <!-- Axes -->
+    <line x1="60" y1="30" x2="60" y2="280" stroke="black" stroke-width="2"/>
+    <line x1="60" y1="280" x2="370" y2="280" stroke="black" stroke-width="2"/>
+    <text x="215" y="310" text-anchor="middle" font-size="13">log<tspan dy="3" font-size="10">10</tspan><tspan dy="-3">(t) &rarr;</tspan></text>
+    <text x="30" y="155" text-anchor="middle" font-size="13" transform="rotate(-90,30,155)">s (m) &darr;</text>
+    <!-- Data points -->
+    <circle cx="80" cy="55" r="4" fill="black"/>
+    <circle cx="120" cy="120" r="4" fill="black"/>
+    <circle cx="145" cy="145" r="4" fill="black"/>
+    <circle cx="195" cy="195" r="4" fill="black"/>
+    <circle cx="225" cy="218" r="4" fill="black"/>
+    <circle cx="275" cy="240" r="4" fill="black"/>
+    <circle cx="300" cy="255" r="4" fill="black"/>
+    <circle cx="340" cy="270" r="4" fill="black"/>
+    <!-- Best fit line -->
+    <line x1="72" y1="40" x2="360" y2="278" stroke="black" stroke-width="2.5"/>
+    <!-- Δs per log cycle -->
+    <line x1="145" y1="145" x2="145" y2="218" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+    <line x1="145" y1="218" x2="225" y2="218" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+    <text x="132" y="185" text-anchor="end" font-weight="bold" font-size="12">&Delta;s</text>
+    <text x="185" y="235" text-anchor="middle" font-size="11">1 log cycle</text>
+    <!-- t0 intercept -->
+    <circle cx="72" cy="35" r="5" fill="none" stroke="black" stroke-width="2"/>
+    <text x="82" y="38" font-weight="bold" font-size="12">t<tspan dy="3" font-size="9">0</tspan></text>
+
+    <!-- RIGHT: Distance-Drawdown plot -->
+    <text x="585" y="15" text-anchor="middle" font-weight="bold" font-size="14">DISTANCE-DRAWDOWN (Thiem)</text>
+    <!-- Axes -->
+    <line x1="440" y1="30" x2="440" y2="280" stroke="black" stroke-width="2"/>
+    <line x1="440" y1="30" x2="750" y2="30" stroke="black" stroke-width="2"/>
+    <text x="595" y="310" text-anchor="middle" font-size="13">log<tspan dy="3" font-size="10">10</tspan><tspan dy="-3">(r) &rarr;</tspan></text>
+    <text x="418" y="155" text-anchor="middle" font-size="13" transform="rotate(-90,418,155)">s (m) &uarr;</text>
+    <!-- Data points (s decreases with r, plotted upward) -->
+    <circle cx="470" cy="258" r="4" fill="black"/>
+    <circle cx="530" cy="205" r="4" fill="black"/>
+    <circle cx="575" cy="165" r="4" fill="black"/>
+    <circle cx="620" cy="120" r="4" fill="black"/>
+    <circle cx="670" cy="78" r="4" fill="black"/>
+    <circle cx="695" cy="58" r="4" fill="black"/>
+    <!-- Best fit line -->
+    <line x1="458" y1="272" x2="730" y2="30" stroke="black" stroke-width="2.5"/>
+    <!-- Δs per log cycle -->
+    <line x1="530" y1="205" x2="530" y2="78" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+    <line x1="530" y1="78" x2="670" y2="78" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+    <text x="518" y="145" text-anchor="end" font-weight="bold" font-size="12">&Delta;s</text>
+    <text x="600" y="72" text-anchor="middle" font-size="11">1 log cycle</text>
+    <!-- R0 intercept -->
+    <circle cx="730" cy="30" r="5" fill="none" stroke="black" stroke-width="2"/>
+    <text x="740" y="45" font-weight="bold" font-size="12">R<tspan dy="3" font-size="9">0</tspan></text>
+
+    <text x="390" y="338" text-anchor="middle" font-size="12" font-style="italic">Both methods use the slope of the straight line (&Delta;s per log cycle) to find T</text>
+</svg>
+<div class="figcap">Left: Cooper-Jacob time-drawdown semi-log plot. Right: Thiem distance-drawdown semi-log plot. The slope gives T; the zero intercept gives S or R<sub>0</sub>.</div>
+</div>
+
+<div class="ctrl-bar">
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=true)">Expand All</button>
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=false)">Collapse All</button>
+</div>
+
+<!-- ═══════════════════ PROBLEM 13 ═══════════════════ -->
+<details class="problem" open>
+<summary>
+    <span>Problem 13: Cooper-Jacob Time-Drawdown Method</span>
+    <span class="pill pill-yr">2078 Chaitra</span>
+    <span class="pill pill-mk">Q5(b) — 6 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> A pumping test in a confined aquifer (Q = 1000 m&sup3;/day) has an observation well at r = 100 m. Use the Cooper-Jacob method to find T and S from the following data.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Pumping rate, \(Q\)</td><td>1000 m&sup3;/day</td></tr>
+<tr><td>Observation well distance, \(r\)</td><td>100 m</td></tr>
+</table>
+<table class="dt" style="margin-top:.5rem">
+<tr><th>t (days)</th><th>0.001</th><th>0.005</th><th>0.01</th><th>0.05</th><th>0.1</th><th>0.5</th><th>1</th><th>5</th><th>10</th></tr>
+<tr><th>s (m)</th><td>0.083</td><td>0.196</td><td>0.249</td><td>0.376</td><td>0.431</td><td>0.559</td><td>0.614</td><td>0.742</td><td>0.797</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="400" viewBox="0 0 780 400" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- SEMI-LOG PLOT s vs log(t) -->
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">SEMI-LOG PLOT: Drawdown s vs log₁₀(t)</text>
+    <!-- Axes -->
+    <line x1="80" y1="40" x2="80" y2="340" stroke="black" stroke-width="2"/>
+    <line x1="80" y1="340" x2="740" y2="340" stroke="black" stroke-width="2"/>
+    <!-- x axis labels (log scale: 0.001 to 10) -->
+    <text x="80" y="358" text-anchor="middle" font-size="12">10<tspan dy="-6" font-size="9">-3</tspan></text>
+    <text x="245" y="358" text-anchor="middle" font-size="12">10<tspan dy="-6" font-size="9">-2</tspan></text>
+    <text x="410" y="358" text-anchor="middle" font-size="12">10<tspan dy="-6" font-size="9">-1</tspan></text>
+    <text x="575" y="358" text-anchor="middle" font-size="12">10<tspan dy="-6" font-size="9">0</tspan></text>
+    <text x="740" y="358" text-anchor="middle" font-size="12">10<tspan dy="-6" font-size="9">1</tspan></text>
+    <text x="410" y="385" text-anchor="middle" font-size="14">t (days) &rarr;</text>
+    <!-- y axis labels (s from 0 to 0.9m) -->
+    <text x="65" y="44" text-anchor="end" font-size="12">0</text>
+    <text x="65" y="78" text-anchor="end" font-size="12">0.1</text>
+    <text x="65" y="378" text-anchor="end" font-size="10" transform="rotate(-90,30,200)">s (m) &darr;</text>
+    <!-- Grid lines -->
+    <line x1="245" y1="40" x2="245" y2="340" stroke="#ddd" stroke-width="1"/>
+    <line x1="410" y1="40" x2="410" y2="340" stroke="#ddd" stroke-width="1"/>
+    <line x1="575" y1="40" x2="575" y2="340" stroke="#ddd" stroke-width="1"/>
+    <!-- Scale: x: 80=log(-3)=0.001, 740=log(1)=10. Each log cycle = 165px -->
+    <!-- Scale: y: 40=0m, 340=0.9m. Each 0.1m = 33.3px -->
+    <!-- Data points: t=0.001→x=80, 0.005→x=195, 0.01→x=245, 0.05→x=360, 0.1→x=410, 0.5→x=525, 1→x=575, 5→x=690, 10→x=740 -->
+    <!-- s to y: 0.083→y=68, 0.196→y=105, 0.249→y=123, 0.376→y=166, 0.431→y=184, 0.559→y=227, 0.614→y=245, 0.742→y=288, 0.797→y=306 -->
+    <circle cx="80" cy="68" r="5" fill="black"/>
+    <circle cx="195" cy="105" r="5" fill="black"/>
+    <circle cx="245" cy="123" r="5" fill="black"/>
+    <circle cx="360" cy="166" r="5" fill="black"/>
+    <circle cx="410" cy="184" r="5" fill="black"/>
+    <circle cx="525" cy="227" r="5" fill="black"/>
+    <circle cx="575" cy="245" r="5" fill="black"/>
+    <circle cx="690" cy="288" r="5" fill="black"/>
+    <circle cx="740" cy="306" r="5" fill="black"/>
+    <!-- Best fit straight line (through late-time data) -->
+    <line x1="90" y1="72" x2="740" y2="306" stroke="black" stroke-width="3"/>
+    <!-- Δs annotation: between t=0.01 and t=0.1 (one log cycle) -->
+    <rect x="245" y="123" width="2" height="61" fill="black"/>
+    <line x1="245" y1="184" x2="410" y2="184" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+    <rect x="290" y="142" width="60" height="22" fill="white" stroke="black" stroke-width="1"/>
+    <text x="320" y="158" text-anchor="middle" font-weight="bold" font-size="13">&Delta;s = 0.183</text>
+    <text x="330" y="198" text-anchor="middle" font-size="12" font-style="italic">1 log cycle</text>
+    <!-- t0 annotation -->
+    <line x1="72" y1="40" x2="96" y2="40" stroke="black" stroke-width="2"/>
+    <text x="98" y="38" font-weight="bold" font-size="12">s=0 &rarr; t<tspan dy="3" font-size="9">0</tspan><tspan dy="-3"> &asymp; 4.4&times;10</tspan><tspan dy="-6" font-size="9">-4</tspan><tspan dy="6"> d</tspan></text>
+</svg>
+<div class="figcap">Semi-log plot of drawdown vs time. The data forms a straight line whose slope and intercept yield T and S.</div>
+</div>
+
+<h4>SOLUTION</h4>
+
+<p><span class="step">Step 1 — Plot s vs log<sub>10</sub>(t) and fit a straight line.</span> The data is remarkably linear from the start, confirming the Cooper-Jacob approximation is valid.</p>
+
+<p><span class="step">Step 2 — Determine &Delta;s per log cycle.</span> Reading from the data:</p>
+<ul>
+<li>t = 0.01 &rarr; s = 0.249 m</li>
+<li>t = 0.1 &rarr; s = 0.431 m (one log cycle later)</li>
+<li>\(\Delta s = 0.431 - 0.249 = 0.182\) m</li>
+</ul>
+<p>Cross-check: t = 0.1 &rarr; 0.431, t = 1 &rarr; 0.614: \(\Delta s = 0.183\) m. &#10003;</p>
+<p>Average \(\Delta s \approx 0.183\) m per log cycle.</p>
+
+<p><span class="step">Step 3 — Compute Transmissivity T.</span></p>
+<div class="equation">$$ T = \frac{2.303\,Q}{4\pi\,\Delta s} = \frac{2.303 \times 1000}{4\pi \times 0.183} = \frac{2303}{2.300} $$</div>
+<div class="answer">\( T \approx 1001 \text{ m}^2/\text{day} \approx 1000 \text{ m}^2/\text{day} \)</div>
+
+<p><span class="step">Step 4 — Find t<sub>0</sub> (where s = 0 on the line).</span></p>
+<p>Using the line equation from point (t = 1, s = 0.614):</p>
+<div class="equation">$$ s = \Delta s \times [\log_{10}(t) - \log_{10}(t_0)] $$</div>
+<div class="equation">$$ 0.614 = 0.183 \times [0 - \log_{10}(t_0)] \quad \Rightarrow \quad \log_{10}(t_0) = -\frac{0.614}{0.183} = -3.355 $$</div>
+<div class="equation">$$ t_0 = 10^{-3.355} = 4.42 \times 10^{-4} \text{ days} $$</div>
+
+<p><span class="step">Step 5 — Compute Storage Coefficient S.</span></p>
+<div class="equation">$$ S = \frac{2.25\,T\,t_0}{r^2} = \frac{2.25 \times 1000 \times 4.42 \times 10^{-4}}{100^2} = \frac{0.9945}{10000} $$</div>
+<div class="answer">\( S \approx 1.0 \times 10^{-4} \)</div>
+
+<div class="insight"><strong>Physical insight:</strong> S = 10<sup>&minus;4</sup> is typical of a confined aquifer (artesian storage). It means that a 1 m drop in piezometric head over 1 m&sup2; releases only 0.1 litre of water — all from elastic compression of the aquifer skeleton and water expansion. T = 1000 m&sup2;/day indicates a very transmissive aquifer (good for production wells).</div>
+
+<div class="warning"><strong>Cooper-Jacob validity check:</strong> For the earliest data point (t = 0.001 d, r = 100 m): \(u = r^2S/(4Tt) = 100^2 \times 10^{-4}/(4 \times 1000 \times 0.001) = 1/4 = 0.25\). This is &gt; 0.01, so strictly the earliest point should not be fitted. However, the data still forms a good line because the deviation is small for practical purposes.</div>
+
+<div class="exam-note">This exact problem has appeared in 3 out of 4 exam years (2072, 2073, 2078). It is the MOST frequently asked numerical in the entire course.</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEMS 14 & 15 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problems 14 &amp; 15: Cooper-Jacob (Identical Data)</span>
+    <span class="pill pill-yr">2073 Bhadra Q5(b)</span>
+    <span class="pill pill-yr">2072 Ashwin Q6</span>
+    <span class="pill pill-mk">8 marks each</span>
+</summary>
+<div class="body">
+
+<p><strong>Note:</strong> These two examinations present the <em>exact same data</em> as Problem 13 (Q = 1000 m&sup3;/day, r = 100 m, identical time-drawdown table). The solution method and answers are identical:</p>
+
+<div class="answer">\( T \approx 1000 \text{ m}^2/\text{day}, \qquad S \approx 1.0 \times 10^{-4} \)</div>
+
+<p><strong>This problem has appeared in 3 out of 4 exam years (2072, 2073, 2078).</strong> It is the most frequently asked numerical in the entire course. Master the Cooper-Jacob procedure above and you are guaranteed marks.</p>
+
+<div class="fig">
+<svg width="780" height="200" viewBox="0 0 780 200" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="14">EXAM FREQUENCY — Cooper-Jacob Time-Drawdown Problem</text>
+    <!-- Timeline -->
+    <line x1="100" y1="80" x2="700" y2="80" stroke="black" stroke-width="2"/>
+    <!-- Years -->
+    <circle cx="175" cy="80" r="22" fill="#fff9c4" stroke="black" stroke-width="2.5"/>
+    <text x="175" y="85" text-anchor="middle" font-weight="bold" font-size="12">2071</text>
+    <text x="175" y="118" text-anchor="middle" font-size="11">Not asked</text>
+    <circle cx="325" cy="80" r="22" fill="#c8e6c9" stroke="black" stroke-width="3"/>
+    <text x="325" y="85" text-anchor="middle" font-weight="bold" font-size="12">2072</text>
+    <text x="325" y="118" text-anchor="middle" font-size="11" font-weight="bold">Q6, 10 marks</text>
+    <circle cx="475" cy="80" r="22" fill="#c8e6c9" stroke="black" stroke-width="3"/>
+    <text x="475" y="85" text-anchor="middle" font-weight="bold" font-size="12">2073</text>
+    <text x="475" y="118" text-anchor="middle" font-size="11" font-weight="bold">Q5b, 8 marks</text>
+    <circle cx="625" cy="80" r="22" fill="#c8e6c9" stroke="black" stroke-width="3"/>
+    <text x="625" y="85" text-anchor="middle" font-weight="bold" font-size="12">2078</text>
+    <text x="625" y="118" text-anchor="middle" font-size="11" font-weight="bold">Q5b, 6 marks</text>
+    <text x="390" y="155" text-anchor="middle" font-weight="bold" font-size="14" fill="#1b5e20">3 out of 4 years — MUST PREPARE</text>
+    <text x="390" y="180" text-anchor="middle" font-size="13" font-style="italic">Same data in all three years. Memorise the method and you will score full marks.</text>
+</svg>
+</div>
+
+<div class="insight"><strong>Exam tip:</strong> Always include a sketch of the semi-log plot showing the data points, the straight line, the slope (&Delta;s per log cycle), and the t<sub>0</sub> intercept. This earns presentation marks even if your arithmetic has minor errors. Also state the Cooper-Jacob validity condition \(u < 0.01\) to show conceptual understanding.</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 16 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 16: Distance-Drawdown Method (Multiple Wells)</span>
+    <span class="pill pill-yr">2071 Bhadra</span>
+    <span class="pill pill-mk">Q8 — 10 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Steady-state discharge Q = 0.025 m&sup3;/s. Data from multiple observation wells in a confined aquifer. Calculate radius of influence and transmissivity.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Discharge, \(Q\)</td><td>0.025 m&sup3;/s</td></tr>
+</table>
+<table class="dt" style="margin-top:.5rem">
+<tr><th>r (m)</th><th>7</th><th>30</th><th>60</th><th>100</th><th>160</th><th>200</th></tr>
+<tr><th>s (m)</th><td>1.30</td><td>0.95</td><td>0.71</td><td>0.535</td><td>0.36</td><td>0.29</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="400" viewBox="0 0 780 400" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">SEMI-LOG PLOT: Drawdown s vs log₁₀(r)</text>
+    <!-- Axes: y=s (going up), x=log(r) -->
+    <line x1="100" y1="40" x2="100" y2="330" stroke="black" stroke-width="2"/>
+    <line x1="100" y1="330" x2="720" y2="330" stroke="black" stroke-width="2"/>
+    <!-- x labels -->
+    <text x="100" y="350" text-anchor="middle" font-size="12">1</text>
+    <text x="310" y="350" text-anchor="middle" font-size="12">10</text>
+    <text x="520" y="350" text-anchor="middle" font-size="12">100</text>
+    <text x="720" y="350" text-anchor="middle" font-size="12">1000</text>
+    <text x="410" y="380" text-anchor="middle" font-size="14">r (m) &rarr;</text>
+    <!-- y labels (s from 0 to 1.5m, 0 at top) -->
+    <text x="85" y="44" text-anchor="end" font-size="12">1.5</text>
+    <text x="85" y="138" text-anchor="end" font-size="12">1.0</text>
+    <text x="85" y="233" text-anchor="end" font-size="12">0.5</text>
+    <text x="85" y="330" text-anchor="end" font-size="12">0</text>
+    <text x="50" y="190" text-anchor="middle" font-size="14" transform="rotate(-90,50,190)">s (m) &uarr;</text>
+    <!-- Grid -->
+    <line x1="310" y1="40" x2="310" y2="330" stroke="#ddd" stroke-width="1"/>
+    <line x1="520" y1="40" x2="520" y2="330" stroke="#ddd" stroke-width="1"/>
+    <line x1="100" y1="233" x2="720" y2="233" stroke="#ddd" stroke-width="1"/>
+    <line x1="100" y1="138" x2="720" y2="138" stroke="#ddd" stroke-width="1"/>
+    <!-- Scale: log(r): 1→x=100, 10→310, 100→520, 1000→720. 1 log cycle = 210px -->
+    <!-- s scale: 0→y=330, 1.5→y=40. Each 0.1m = 19.3px -->
+    <!-- r=7 (log=0.845), r=30 (1.477), r=60 (1.778), r=100 (2), r=160 (2.204), r=200 (2.301) -->
+    <!-- x: 100 + (logr-0)*210 → r=7: 277.5, r=30: 410, r=60: 473, r=100: 520, r=160: 563, r=200: 583 -->
+    <!-- y: 330 - s*193.3 → r=7,s=1.3: 79; r=30,s=0.95: 147; r=60,s=0.71: 193; r=100,s=0.535: 227; r=160,s=0.36: 261; r=200,s=0.29: 274 -->
+    <circle cx="278" cy="79" r="5" fill="black"/><text x="278" y="70" text-anchor="middle" font-size="11">r=7</text>
+    <circle cx="410" cy="147" r="5" fill="black"/><text x="410" y="138" text-anchor="middle" font-size="11">r=30</text>
+    <circle cx="473" cy="193" r="5" fill="black"/><text x="473" y="184" text-anchor="middle" font-size="11">r=60</text>
+    <circle cx="520" cy="227" r="5" fill="black"/><text x="520" y="218" text-anchor="middle" font-size="11">r=100</text>
+    <circle cx="563" cy="261" r="5" fill="black"/><text x="563" y="252" text-anchor="middle" font-size="11">r=160</text>
+    <circle cx="583" cy="274" r="5" fill="black"/><text x="583" y="265" text-anchor="middle" font-size="11">r=200</text>
+    <!-- Best fit line extending to s=0 -->
+    <line x1="230" y1="40" x2="685" y2="330" stroke="black" stroke-width="3"/>
+    <!-- R0 at s=0 -->
+    <circle cx="685" cy="330" r="6" fill="none" stroke="black" stroke-width="2.5"/>
+    <text x="690" y="320" font-weight="bold" font-size="14">R<tspan dy="3" font-size="10">0</tspan><tspan dy="-3"> &asymp; 613 m</tspan></text>
+    <!-- Δs annotation -->
+    <line x1="410" y1="147" x2="410" y2="280" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+    <line x1="410" y1="280" x2="625" y2="280" stroke="black" stroke-width="2" stroke-dasharray="5,3"/>
+    <rect x="430" y="206" width="80" height="22" fill="white" stroke="black" stroke-width="1"/>
+    <text x="470" y="222" text-anchor="middle" font-weight="bold" font-size="12">&Delta;s &asymp; 0.68 m</text>
+    <text x="520" y="296" text-anchor="middle" font-size="11" font-style="italic">1 log cycle</text>
+</svg>
+<div class="figcap">Distance-drawdown semi-log plot. The straight line extends to s = 0 at R<sub>0</sub> (radius of influence).</div>
+</div>
+
+<h4>SOLUTION</h4>
+
+<p><span class="step">Step 1 — Plot s vs log<sub>10</sub>(r).</span> The drawdown decreases with distance (as expected — water further from the well is less affected). On a semi-log plot with linear s-axis and log r-axis, the data forms a straight line.</p>
+
+<p><span class="step">Step 2 — Determine &Delta;s per log cycle of r.</span></p>
+<p>Reading the best-fit line between r = 10 (interpolated s &asymp; 1.21) and r = 100 (s = 0.535):</p>
+<div class="equation">$$ \Delta s \approx 1.21 - 0.535 = 0.68 \text{ m per log cycle} $$</div>
+<p>Cross-check with another log cycle: from r = 100 (s = 0.535) to r = 1000 (extrapolated s &asymp; 0, where the line reaches zero). This gives &Delta;s &asymp; 0.535/0.787 cycles &asymp; 0.68 m/cycle. &#10003;</p>
+
+<div class="warning"><strong>Important difference from time-drawdown:</strong> In the distance-drawdown method, the formula for T has \(2\pi\) in the denominator (not \(4\pi\)) because we use the Thiem steady-state equation, not the Cooper-Jacob transient approximation.</div>
+
+<p><span class="step">Step 3 — Compute Transmissivity.</span></p>
+<div class="equation">$$ T = \frac{2.303\,Q}{2\pi\,\Delta s} = \frac{2.303 \times 0.025}{2\pi \times 0.68} = \frac{0.05758}{4.273} $$</div>
+<div class="answer">\( T = 0.01348 \text{ m}^2/\text{s} = 1164 \text{ m}^2/\text{day} \approx 1.35 \times 10^{-2} \text{ m}^2/\text{s} \)</div>
+
+<p><span class="step">Step 4 — Find Radius of Influence R<sub>0</sub>.</span></p>
+<p>Extend the straight line to s = 0. Using the line equation from (r = 100, s = 0.535):</p>
+<div class="equation">$$ s = \Delta s \times [\log_{10}(R_0) - \log_{10}(r)] $$</div>
+<p>At \(s = 0\), using the known point (r = 100, s = 0.535):</p>
+<div class="equation">$$ 0 = 0.535 - 0.68 \times [\log_{10}(R_0) - 2] $$</div>
+<div class="equation">$$ \log_{10}(R_0) = 2 + \frac{0.535}{0.68} = 2 + 0.787 = 2.787 $$</div>
+<div class="answer">\( R_0 = 10^{2.787} = 613 \text{ m} \approx 600 \text{ m} \)</div>
+
+<div class="insight"><strong>Physical insight:</strong> The radius of influence (~600 m) tells us that beyond this distance, the aquifer is essentially unaffected by pumping. This is critical for:
+<ul style="font-style:normal;">
+<li><strong>Well spacing:</strong> Another well should be placed &gt;600 m away to avoid interference</li>
+<li><strong>Contamination assessment:</strong> A contaminant source within 600 m could potentially reach the pumping well</li>
+<li><strong>Aquifer yield:</strong> T &asymp; 1165 m&sup2;/day indicates a very transmissive aquifer (consistent with coarse alluvium or karstified limestone)</li>
+</ul>
+</div>
+
+<div class="concept-box">
+<h4>TIME-DRAWDOWN vs DISTANCE-DRAWDOWN: COMPARISON</h4>
+<table class="dt" style="max-width:100%;">
+<tr><th>Feature</th><th>Time-Drawdown (Cooper-Jacob)</th><th>Distance-Drawdown (Thiem)</th></tr>
+<tr><td>Data source</td><td>One observation well, multiple times</td><td>Multiple observation wells, one time</td></tr>
+<tr><td>Plot</td><td>s vs log(t)</td><td>s vs log(r)</td></tr>
+<tr><td>T formula</td><td>\(T = 2.303Q/(4\pi\Delta s)\)</td><td>\(T = 2.303Q/(2\pi\Delta s)\)</td></tr>
+<tr><td>Second parameter</td><td>S from t<sub>0</sub></td><td>R<sub>0</sub> from s = 0 intercept</td></tr>
+<tr><td>Flow condition</td><td>Transient (time-varying)</td><td>Steady-state</td></tr>
+<tr><td>Equipment needed</td><td>1 observation well + time readings</td><td>Multiple observation wells at different r</td></tr>
+</table>
+</div>
+</div></details>
+
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

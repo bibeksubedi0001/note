@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 8: Pumps for Groundwater Lifting</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --base-size: 12pt; }
+        body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
+            font-family: 'Times New Roman', Times, serif; font-size: var(--base-size);
+            color: black; background-color: white; line-height: 1.5; margin: 0; padding: 0;
+        }
+        * { box-sizing: border-box; }
+        body { max-width: 860px; margin: 0 auto; padding: 2rem; }
+        h1 { font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid black; padding-bottom: 0.5rem; }
+        h2 { font-weight: bold; text-transform: uppercase; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid black; }
+        h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        h4 { font-weight: bold; font-style: italic; margin-top: 1rem; margin-bottom: 0.5rem; }
+        p { text-align: justify; margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+        li { text-align: justify; margin-bottom: 0.5rem; }
+        .equation { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; overflow-x: auto; }
+        .exam-note, .study-note, .question-card, .solution-box { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .exam-note h4, .study-note h4, .question-card h4, .solution-box h4 { margin-top: 0; border-bottom: 1px dashed black; padding-bottom: 0.25rem; }
+        .solution-box { border-width: 2px; }
+        .solution-box h4 { font-weight: bold; }
+        .callout { border-left: 3px solid black; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; }
+        .figure-container { text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid black; overflow-x: auto; }
+        .figcaption { font-style: italic; margin-top: 0.5rem; text-align: center; }
+        table.info-table, table.question-table, table.formula-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table.info-table th, table.info-table td, table.question-table th, table.question-table td, table.formula-table th, table.formula-table td { border: 1px solid black; padding: 6px 10px; text-align: left; vertical-align: top; }
+        table.info-table th, table.question-table th, table.formula-table th { font-weight: bold; background: #f5f5f5; }
+        .toc { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .toc ol { margin-bottom: 0; } .toc a { text-decoration: none; }
+        .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .mini-note { border: 1px solid black; padding: 0.85rem; margin: 1rem 0; }
+        .question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .pill { display: inline-block; border: 1px solid black; padding: 2px 8px; font-size: 0.9rem; }
+        .data-block { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid black; }
+        .print-btn { position: fixed; top: 1rem; right: 1rem; border: 2px solid black; background-color: white; color: black; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer; font-family: 'Times New Roman', Times, serif; font-size: var(--base-size); }
+        .print-btn:hover { background-color: black; color: white; }
+        @media (max-width: 720px) { body { padding: 1rem; } .grid-two { grid-template-columns: 1fr; } }
+        @media print { body { padding: 0; max-width: 100%; } .print-btn { display: none; } .figure-container, .exam-note, .study-note, .question-card, .mini-note, .solution-box { page-break-inside: avoid; } h2, h3 { page-break-after: avoid; } }
+    </style>
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+[data-theme="dark"]{color-scheme:dark}
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,[data-theme="dark"] body p,
+[data-theme="dark"] body span,[data-theme="dark"] body li,
+[data-theme="dark"] body td,[data-theme="dark"] body th,
+[data-theme="dark"] body label,[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,[data-theme="dark"] body small,
+[data-theme="dark"] body em,[data-theme="dark"] body i,
+[data-theme="dark"] body summary,[data-theme="dark"] body legend,
+[data-theme="dark"] body details,[data-theme="dark"] body mark,
+[data-theme="dark"] body address,[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,
+[data-theme="dark"] h4,[data-theme="dark"] h5,[data-theme="dark"] h6{color:#e8e5dd!important}
+[data-theme="dark"] strong,[data-theme="dark"] b{color:#e8e5dd!important}
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+[data-theme="dark"] div,[data-theme="dark"] p,[data-theme="dark"] section,
+[data-theme="dark"] article,[data-theme="dark"] aside,[data-theme="dark"] nav,
+[data-theme="dark"] header,[data-theme="dark"] footer,[data-theme="dark"] main,
+[data-theme="dark"] table,[data-theme="dark"] tr,[data-theme="dark"] td,
+[data-theme="dark"] th,[data-theme="dark"] input,[data-theme="dark"] select,
+[data-theme="dark"] textarea,[data-theme="dark"] button,[data-theme="dark"] details,
+[data-theme="dark"] summary,[data-theme="dark"] hr,[data-theme="dark"] ul,
+[data-theme="dark"] ol,[data-theme="dark"] li,[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,[data-theme="dark"] code,[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+[data-theme="dark"] section,[data-theme="dark"] article,[data-theme="dark"] main,
+[data-theme="dark"] .page,[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .study-note{background:#1e222a!important}
+[data-theme="dark"] .question-card{background:#1e222a!important}
+[data-theme="dark"] .mini-note{background:#1e222a!important}
+[data-theme="dark"] .solution-box{background:#1e222a!important}
+[data-theme="dark"] .callout{background:#1e222a!important}
+[data-theme="dark"] .toc{background:#1e222a!important}
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+        <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="0.8"/></pattern>
+        <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#777"/><circle cx="9" cy="9" r="2" fill="#777"/></pattern>
+        <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+        <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="black"/></marker>
+        <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="black"/></marker>
+    </defs>
+</svg>
+    <button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+    <main>
+        <header>
+            <p style="text-align:center;font-style:italic;margin-bottom:1rem;">Groundwater Engineering &mdash; CE 76509</p>
+            <h1>CHAPTER 8: PUMPS FOR GROUNDWATER LIFTING</h1>
+            <p style="text-align:center;font-style:italic;margin-bottom:2rem;">(Syllabus Weight: 4 hours, ~4&ndash;6 marks &mdash; Theory Only)</p>
+        </header>
+
+        <section class="toc">
+            <h4>CHAPTER ROADMAP</h4>
+            <ol>
+                <li><a href="#sec-8-1">Introduction &mdash; need for pumping</a></li>
+                <li><a href="#sec-8-2">Classification of pumps</a></li>
+                <li><a href="#sec-8-3">Centrifugal pump &mdash; working principle</a></li>
+                <li><a href="#sec-8-4">Submersible pump</a></li>
+                <li><a href="#sec-8-5">Jet pump (ejector pump)</a></li>
+                <li><a href="#sec-8-6">Airlift pump</a></li>
+                <li><a href="#sec-8-7">Reciprocating pump (hand pump)</a></li>
+                <li><a href="#sec-8-8">Comparison of groundwater pumps</a></li>
+                <li><a href="#sec-8-9">Factors in pump selection</a></li>
+                <li><a href="#sec-8-10">Pump performance and basic formulae</a></li>
+                <li><a href="#sec-8-11">Past question bank for Chapter 8</a></li>
+                <li><a href="#sec-summary">Chapter summary and exam key points</a></li>
+            </ol>
+        </section>
+
+        <!-- ======== 8.1 INTRODUCTION ======== -->
+        <section id="sec-8-1">
+            <h2>8.1 INTRODUCTION &mdash; NEED FOR PUMPING</h2>
+
+            <p>Groundwater, by nature, exists below the land surface. To extract it for use in drinking water supply, irrigation, or industrial purposes, energy must be supplied to lift the water from the aquifer to the surface. This energy is typically provided by <strong>pumps</strong>.</p>
+
+            <p>The selection and design of a pumping system is a critical step in groundwater development. The pump must:</p>
+            <ul>
+                <li>Deliver the <strong>required discharge</strong> (Q) at the required <strong>pressure head</strong></li>
+                <li>Overcome the <strong>total dynamic head</strong> (TDH), which includes the static lift, drawdown, friction losses, and delivery head</li>
+                <li>Operate <strong>efficiently</strong> at the design point to minimize energy costs</li>
+                <li>Be <strong>suitable</strong> for the well type, depth, and water quality conditions</li>
+            </ul>
+
+            <div class="mini-note">
+                <strong>Key Exam Point:</strong> This is a theory-only chapter &mdash; no numerical problems. Questions typically ask for types of pumps (4 marks), working principle of centrifugal pump (4 marks), or pump selection factors (4 marks). Focus on clear descriptions with diagrams.
+            </div>
+        </section>
+
+        <!-- ======== 8.2 CLASSIFICATION ======== -->
+        <section id="sec-8-2">
+            <h2>8.2 CLASSIFICATION OF PUMPS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2071 Bhadra Q9 [4]:</strong> What are the types of pumps used for lifting water?</p>
+                <p><strong>2073 Bhadra Q9 [4+2]:</strong> Describe briefly any four common groundwater pumps.</p>
+            </div>
+
+            <p>Pumps used for groundwater lifting can be classified based on their working principle:</p>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 720 380" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="360" y="20" text-anchor="middle" font-weight="bold" font-size="8">Classification of Groundwater Pumps</text>
+
+                    <rect x="215" y="35" width="290" height="30" rx="4" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="360" y="55" text-anchor="middle" font-weight="bold" font-size="8">GROUNDWATER PUMPS</text>
+
+                    <!-- Three categories -->
+                    <line x1="150" y1="65" x2="150" y2="95" stroke="black" stroke-width="1"/>
+                    <line x1="360" y1="65" x2="360" y2="95" stroke="black" stroke-width="1"/>
+                    <line x1="580" y1="65" x2="580" y2="95" stroke="black" stroke-width="1"/>
+                    <line x1="150" y1="65" x2="580" y2="65" stroke="black" stroke-width="1"/>
+
+                    <!-- Rotodynamic -->
+                    <rect x="45" y="95" width="210" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="150" y="114" text-anchor="middle" font-weight="bold" font-size="9">ROTODYNAMIC (KINETIC)</text>
+                    <line x1="150" y1="123" x2="150" y2="143" stroke="black" stroke-width="1"/>
+                    <rect x="35" y="143" width="230" height="125" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="55" y="163" font-weight="bold" font-size="9">1. Centrifugal pump</text>
+                    <text x="70" y="180" font-size="8">&bull; Volute type</text>
+                    <text x="70" y="195" font-size="8">&bull; Turbine (diffuser) type</text>
+                    <text x="55" y="215" font-weight="bold" font-size="9">2. Submersible pump</text>
+                    <text x="70" y="232" font-size="8">(motor + pump submerged)</text>
+                    <text x="55" y="252" font-weight="bold" font-size="9">3. Jet pump (ejector)</text>
+
+                    <!-- Positive Displacement -->
+                    <rect x="270" y="95" width="210" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="375" y="114" text-anchor="middle" font-weight="bold" font-size="9">POSITIVE DISPLACEMENT</text>
+                    <line x1="375" y1="123" x2="375" y2="143" stroke="black" stroke-width="1"/>
+                    <rect x="270" y="143" width="220" height="125" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="290" y="163" font-weight="bold" font-size="9">4. Reciprocating pump</text>
+                    <text x="305" y="180" font-size="8">&bull; Suction type</text>
+                    <text x="305" y="195" font-size="8">&bull; Force (lift) type</text>
+                    <text x="290" y="215" font-weight="bold" font-size="9">5. Hand pump</text>
+                    <text x="305" y="232" font-size="8">(India Mark II, etc.)</text>
+                    <text x="290" y="252" font-size="8">&bull; Deep well / shallow well</text>
+
+                    <!-- Special / Pneumatic -->
+                    <rect x="500" y="95" width="200" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="600" y="114" text-anchor="middle" font-weight="bold" font-size="9">SPECIAL TYPES</text>
+                    <line x1="600" y1="123" x2="600" y2="143" stroke="black" stroke-width="1"/>
+                    <rect x="500" y="143" width="200" height="125" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="520" y="163" font-weight="bold" font-size="9">6. Airlift pump</text>
+                    <text x="535" y="180" font-size="8">(compressed air)</text>
+                    <text x="520" y="200" font-weight="bold" font-size="9">7. Hydraulic ram</text>
+                    <text x="535" y="217" font-size="8">(water hammer energy)</text>
+                    <text x="520" y="237" font-weight="bold" font-size="9">8. Solar pump</text>
+                    <text x="535" y="254" font-size="8">(PV-powered submersible)</text>
+
+                    <!-- Most asked note -->
+                    <rect x="100" y="290" width="520" height="30" rx="3" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="360" y="310" text-anchor="middle" font-weight="bold" font-size="9">Most asked in IOE: Centrifugal pump (principle) + Submersible pump + Selection factors</text>
+
+                    <!-- Exam frequency -->
+                    <text x="360" y="350" text-anchor="middle" font-size="9" font-style="italic">When asked &ldquo;list types,&rdquo; name at least 5&ndash;6 types with one-line description each.</text>
+                    <text x="360" y="370" text-anchor="middle" font-size="9" font-style="italic">When asked &ldquo;describe four pumps,&rdquo; write 4&ndash;5 lines each with sketch.</text>
+                </svg>
+                <div class="figcaption">Figure 8.1: Classification of pumps used for groundwater lifting.</div>
+            </div>
+        </section>
+
+        <!-- ======== 8.3 CENTRIFUGAL PUMP ======== -->
+        <section id="sec-8-3">
+            <h2>8.3 CENTRIFUGAL PUMP &mdash; WORKING PRINCIPLE</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2072 Ashwin Q9 [4+2]:</strong> Explain the working principle, advantages, and limitations of the centrifugal pump used for groundwater.</p>
+                <p><strong>2072 Magh Q9 [4]:</strong> Explain the working principle of the centrifugal pump used for lifting groundwater.</p>
+            </div>
+
+            <h3>8.3.1 Description</h3>
+            <p>The <strong>centrifugal pump</strong> is the most widely used type of pump for groundwater lifting. It belongs to the rotodynamic pump category and works on the principle of converting kinetic energy of water into pressure energy.</p>
+
+            <h3>8.3.2 Main Components</h3>
+            <ul>
+                <li><strong>Impeller:</strong> A rotating disc with curved vanes (blades) mounted on a shaft. It is the key component that imparts energy to the water. May be open, semi-open, or enclosed (shrouded) type.</li>
+                <li><strong>Casing (volute):</strong> A spiral-shaped housing that surrounds the impeller. Its cross-sectional area gradually increases from the impeller to the discharge nozzle, converting kinetic energy to pressure energy.</li>
+                <li><strong>Suction pipe with foot valve and strainer:</strong> Connects the pump to the water source. The foot valve prevents backflow when the pump is stopped. The strainer prevents debris from entering.</li>
+                <li><strong>Delivery pipe:</strong> Carries water from the pump to the point of use or storage.</li>
+                <li><strong>Shaft and bearings:</strong> The shaft connects the impeller to the prime mover (motor or engine). Bearings support the shaft.</li>
+                <li><strong>Stuffing box / mechanical seal:</strong> Prevents leakage where the shaft passes through the casing.</li>
+            </ul>
+
+            <h3>8.3.3 Working Principle</h3>
+            <p>The working principle of a centrifugal pump can be explained in the following steps:</p>
+            <ol>
+                <li><strong>Priming:</strong> Before starting, the pump casing and suction pipe must be completely filled with water (primed). Air must be removed because the pump cannot create sufficient vacuum to lift water if air is present.</li>
+                <li><strong>Rotation of impeller:</strong> When the electric motor (or engine) starts, the impeller rotates at high speed (typically 1450 or 2900 rpm).</li>
+                <li><strong>Centrifugal action:</strong> As the impeller rotates, the water between the vanes is thrown outward by <strong>centrifugal force</strong> towards the periphery of the casing. This creates a region of low pressure (partial vacuum) at the centre of the impeller (eye).</li>
+                <li><strong>Suction:</strong> Due to the low pressure at the eye, atmospheric pressure acting on the water surface in the source (well/sump) pushes water up through the suction pipe into the impeller eye. This is a continuous process as long as the pump runs.</li>
+                <li><strong>Energy conversion in the volute:</strong> The water thrown to the periphery at high velocity enters the volute casing. As the cross-sectional area of the volute increases, the velocity of water decreases and its <strong>pressure increases</strong> (Bernoulli&rsquo;s principle). This converts kinetic energy into pressure energy.</li>
+                <li><strong>Delivery:</strong> The high-pressure water exits through the delivery pipe to the required height or storage tank.</li>
+            </ol>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 420" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="9">Working Principle of a Centrifugal Pump</text>
+
+                    <!-- Volute casing outline -->
+                    <ellipse cx="350" cy="220" rx="140" ry="130" fill="none" stroke="black" stroke-width="2"/>
+                    <!-- Spiral extension to outlet -->
+                    <path d="M490,220 Q510,200 510,170 L510,130" fill="none" stroke="black" stroke-width="2"/>
+                    <line x1="490" y1="130" x2="530" y2="130" stroke="black" stroke-width="2"/>
+                    <line x1="490" y1="130" x2="490" y2="100" stroke="black" stroke-width="2"/>
+                    <line x1="530" y1="130" x2="530" y2="100" stroke="black" stroke-width="2"/>
+                    <!-- Delivery arrow -->
+                    <line x1="510" y1="100" x2="510" y2="55" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <text x="530" y="80" font-weight="bold" font-size="8">Delivery</text>
+
+                    <!-- Impeller (inner circle with vanes) -->
+                    <circle cx="350" cy="220" r="70" fill="none" stroke="black" stroke-width="1.5"/>
+                    <!-- Impeller eye -->
+                    <circle cx="350" cy="220" r="20" fill="#d4e8ff" stroke="black" stroke-width="1"/>
+                    <text x="350" y="225" text-anchor="middle" font-size="9" font-weight="bold">Eye</text>
+
+                    <!-- Curved vanes (simplified) -->
+                    <path d="M350,150 Q380,170 370,190" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M420,220 Q400,195 385,175" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M350,290 Q320,270 330,250" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M280,220 Q300,245 315,265" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M295,165 Q325,165 340,185" fill="none" stroke="black" stroke-width="1.5"/>
+                    <path d="M405,275 Q375,275 360,255" fill="none" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Rotation arrow -->
+                    <path d="M395,145 A60,60 0 0,1 415,185" fill="none" stroke="black" stroke-width="0.8" marker-end="url(#arr)"/>
+                    <text x="430" y="160" font-size="8">&omega;</text>
+
+                    <!-- Suction pipe -->
+                    <line x1="210" y1="220" x2="140" y2="220" stroke="black" stroke-width="2"/>
+                    <line x1="140" y1="210" x2="140" y2="320" stroke="black" stroke-width="2"/>
+                    <line x1="160" y1="210" x2="160" y2="320" stroke="black" stroke-width="2"/>
+                    <!-- Foot valve -->
+                    <rect x="130" y="320" width="40" height="15" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="150" y="330" text-anchor="middle" font-size="8">Foot valve</text>
+                    <!-- Strainer -->
+                    <line x1="130" y1="335" x2="170" y2="335" stroke="black" stroke-width="1" stroke-dasharray="2,2"/>
+                    <text x="150" y="350" text-anchor="middle" font-size="8">Strainer</text>
+
+                    <!-- Water level -->
+                    <path d="M70,360 Q90,355 110,360 Q130,365 150,360 Q170,355 190,360 Q210,365 230,360" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="80" y="380" font-size="8">Water level in well</text>
+
+                    <!-- Suction arrow -->
+                    <line x1="150" y1="355" x2="150" y2="340" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <!-- Volute label -->
+                    <line x1="490" y1="260" x2="530" y2="290" stroke="black" stroke-width="0.8"/>
+                    <text x="535" y="295" font-size="9">Volute casing</text>
+                    <text x="535" y="310" font-size="8">(area increases &rarr;</text>
+                    <text x="535" y="323" font-size="8"> velocity &darr;, pressure &uarr;)</text>
+
+                    <!-- Impeller label -->
+                    <line x1="350" y1="290" x2="350" y2="320" stroke="black" stroke-width="0.8"/>
+                    <text x="350" y="338" text-anchor="middle" font-size="9">Impeller</text>
+                    <text x="350" y="353" text-anchor="middle" font-size="8">(rotating vanes)</text>
+
+                    <!-- Suction label -->
+                    <text x="100" y="205" font-size="9" font-weight="bold">Suction</text>
+                    <line x1="175" y1="220" x2="215" y2="220" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <!-- Energy conversion note -->
+                    <rect x="30" y="395" width="640" height="22" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="350" y="411" text-anchor="middle" font-size="9">KE (impeller &rarr; high velocity) &rarr; PE (volute &rarr; high pressure) &rarr; Delivered at required head</text>
+                </svg>
+                <div class="figcaption">Figure 8.2: Schematic of a centrifugal pump showing impeller, volute casing, suction pipe with foot valve, and delivery pipe.</div>
+            </div>
+
+            <!-- ANIMATED: Centrifugal Pump Working Cycle -->
+            <div class="figure-container">
+                <svg viewBox="0 0 780 520" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <defs>
+                        <marker id="arrB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a5276"/></marker>
+                        <marker id="arrR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#c0392b"/></marker>
+                        <radialGradient id="eyeGrad"><stop offset="0%" stop-color="#d6eaf8"/><stop offset="100%" stop-color="#aed6f1"/></radialGradient>
+                    </defs>
+                    <text x="390" y="22" text-anchor="middle" font-weight="bold" font-size="8">Animated: How a Centrifugal Pump Works</text>
+
+                    <!-- ── VOLUTE CASING ── -->
+                    <path d="M390,140 A150,150 0 1,1 390,440 Q540,440 540,350 L540,140 Q540,100 500,100 L420,100" fill="none" stroke="black" stroke-width="2.5"/>
+                    <path d="M390,140 Q360,100 320,100 L270,100" fill="none" stroke="black" stroke-width="2.5"/>
+                    <!-- Volute spiral widening markers -->
+                    <text x="555" y="295" font-size="9" fill="#555" font-style="italic" transform="rotate(90,555,295)">Volute (area increases →)</text>
+
+                    <!-- ── IMPELLER ── -->
+                    <circle cx="390" cy="290" r="90" fill="none" stroke="black" stroke-width="2"/>
+                    <!-- Impeller eye -->
+                    <circle cx="390" cy="290" r="25" fill="url(#eyeGrad)" stroke="#2980b9" stroke-width="1.5"/>
+                    <text x="390" y="295" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a5276">Eye</text>
+
+                    <!-- ── ROTATING VANES (animated) ── -->
+                    <g transform="translate(390,290)">
+                        <animateTransform attributeName="transform" type="rotate" from="0 390 290" to="360 390 290" dur="3s" repeatCount="indefinite" additive="replace"/>
+                        <!-- 6 curved vanes -->
+                        <path d="M0,-25 Q30,-55 20,-80" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                        <path d="M22,-12 Q55,-30 70,-50" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                        <path d="M22,12 Q55,30 70,50" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                        <path d="M0,25 Q-30,55 -20,80" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                        <path d="M-22,12 Q-55,30 -70,50" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                        <path d="M-22,-12 Q-55,-30 -70,-50" fill="none" stroke="#2c3e50" stroke-width="2"/>
+                    </g>
+
+                    <!-- ── ANIMATED WATER PARTICLES ── suction side -->
+                    <circle r="4" fill="#3498db" opacity="0.8">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M100,290 L365,290"/>
+                        <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="3.5" fill="#2980b9" opacity="0.7">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M120,280 L365,285" begin="0.4s"/>
+                        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="3" fill="#5dade2" opacity="0.7">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M110,300 L365,295" begin="0.8s"/>
+                    </circle>
+
+                    <!-- ── ANIMATED WATER PARTICLES ── outward spiral in impeller -->
+                    <circle r="3.5" fill="#2471a3" opacity="0.8">
+                        <animateMotion dur="1.8s" repeatCount="indefinite" path="M390,265 Q440,230 460,200 Q480,170 490,140"/>
+                    </circle>
+                    <circle r="3" fill="#1f618d" opacity="0.7">
+                        <animateMotion dur="1.8s" repeatCount="indefinite" path="M410,290 Q450,310 470,340 Q490,370 500,400" begin="0.5s"/>
+                    </circle>
+                    <circle r="3" fill="#2e86c1" opacity="0.7">
+                        <animateMotion dur="1.8s" repeatCount="indefinite" path="M390,315 Q340,350 320,370 Q300,390 290,400" begin="1s"/>
+                    </circle>
+
+                    <!-- ── ANIMATED WATER PARTICLES ── delivery (upward) -->
+                    <circle r="4" fill="#1a5276" opacity="0.85">
+                        <animateMotion dur="1.5s" repeatCount="indefinite" path="M500,140 L500,60"/>
+                        <animate attributeName="opacity" values="0.9;0.5;0.9" dur="1.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="3.5" fill="#1a5276" opacity="0.7">
+                        <animateMotion dur="1.5s" repeatCount="indefinite" path="M510,140 L510,55" begin="0.7s"/>
+                    </circle>
+
+                    <!-- ── SUCTION PIPE ── -->
+                    <line x1="100" y1="280" x2="300" y2="280" stroke="black" stroke-width="2"/>
+                    <line x1="100" y1="300" x2="300" y2="300" stroke="black" stroke-width="2"/>
+                    <line x1="100" y1="280" x2="100" y2="400" stroke="black" stroke-width="2"/>
+                    <line x1="80" y1="280" x2="80" y2="400" stroke="black" stroke-width="2"/>
+                    <!-- Foot valve (animated flap) -->
+                    <rect x="70" y="400" width="40" height="12" fill="none" stroke="black" stroke-width="1.5"/>
+                    <line x1="75" y1="406" x2="105" y2="406" stroke="#c0392b" stroke-width="1.5">
+                        <animate attributeName="y1" values="406;402;406" dur="1.5s" repeatCount="indefinite"/>
+                        <animate attributeName="y2" values="406;402;406" dur="1.5s" repeatCount="indefinite"/>
+                    </line>
+                    <text x="90" y="430" text-anchor="middle" font-size="8">Foot Valve</text>
+                    <!-- Strainer -->
+                    <line x1="70" y1="414" x2="110" y2="414" stroke="black" stroke-width="1" stroke-dasharray="2,2"/>
+                    <text x="90" y="445" text-anchor="middle" font-size="8">Strainer</text>
+
+                    <!-- Water source -->
+                    <path d="M30,455 Q55,448 80,455 Q105,462 130,455 Q155,448 180,455" fill="none" stroke="#2980b9" stroke-width="1.5">
+                        <animate attributeName="d" values="M30,455 Q55,448 80,455 Q105,462 130,455 Q155,448 180,455;M30,455 Q55,462 80,455 Q105,448 130,455 Q155,462 180,455;M30,455 Q55,448 80,455 Q105,462 130,455 Q155,448 180,455" dur="2s" repeatCount="indefinite"/>
+                    </path>
+                    <text x="105" y="475" text-anchor="middle" font-size="9" font-weight="bold">Well / Sump</text>
+
+                    <!-- ── DELIVERY PIPE ── -->
+                    <line x1="490" y1="140" x2="490" y2="50" stroke="black" stroke-width="2"/>
+                    <line x1="520" y1="140" x2="520" y2="50" stroke="black" stroke-width="2"/>
+                    <line x1="490" y1="50" x2="520" y2="50" stroke="black" stroke-width="2"/>
+                    <text x="540" y="90" font-weight="bold" font-size="8">Delivery</text>
+                    <!-- Upward arrow -->
+                    <line x1="505" y1="48" x2="505" y2="30" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+
+                    <!-- ── SHAFT ── -->
+                    <line x1="390" y1="290" x2="390" y2="480" stroke="#555" stroke-width="3"/>
+                    <rect x="370" y="470" width="40" height="25" rx="3" fill="#ddd" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="487" text-anchor="middle" font-size="9" font-weight="bold">MOTOR</text>
+
+                    <!-- ── ROTATION INDICATOR ── -->
+                    <path d="M430,200 A50,50 0 0,1 450,240" fill="none" stroke="#c0392b" stroke-width="1.5" marker-end="url(#arrR)"/>
+                    <text x="462" y="220" font-size="8" fill="#c0392b" font-weight="bold">ω</text>
+
+                    <!-- ── LABELS ── -->
+                    <text x="60" y="275" font-size="9" font-weight="bold" fill="#1a5276">SUCTION</text>
+                    <line x1="130" y1="290" x2="295" y2="290" stroke="#1a5276" stroke-width="0.8" marker-end="url(#arrB)"/>
+                    <text x="385" y="200" text-anchor="middle" font-size="9" fill="#555">Impeller (rotating)</text>
+
+                    <!-- ── ENERGY STAGES ── -->
+                    <rect x="80" y="495" width="600" height="22" rx="3" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="380" y="511" text-anchor="middle" font-size="9">
+                        ① Low P at eye → suction &nbsp;&nbsp; ② Centrifugal force → high velocity &nbsp;&nbsp; ③ Volute → KE converts to PE → delivery
+                    </text>
+                </svg>
+                <div class="figcaption">Figure 8.2b: <strong>Animated</strong> centrifugal pump — water particles (blue dots) show the flow path: suction into eye → radially outward through spinning impeller → into volute → up the delivery pipe. The impeller vanes rotate continuously.</div>
+            </div>
+
+            <h3>8.3.4 Types of Centrifugal Pumps</h3>
+            <h4>(a) Volute Pump</h4>
+            <p>The most common type. The impeller is surrounded by a spiral volute casing that converts velocity head to pressure head. Simple construction and widely used for surface-mounted installations.</p>
+
+            <h4>(b) Turbine (Diffuser) Pump</h4>
+            <p>Uses stationary guide vanes (diffusers) around the impeller instead of a volute casing. The diffuser vanes gradually expand the flow area and convert kinetic energy more efficiently. Used in <strong>vertical turbine pumps</strong> installed in deep wells (also called deep-well turbine pumps or lineshaft turbine pumps).</p>
+
+            <h4>(c) Multistage Centrifugal Pump</h4>
+            <p>Contains two or more impellers arranged in series on the same shaft. Each impeller (stage) adds pressure. Used when a single impeller cannot provide the required total head. The total head = head per stage &times; number of stages.</p>
+
+            <h4>(c) Multistage Centrifugal Pump</h4>
+            <p>Contains two or more impellers arranged in series on the same shaft. Each impeller (stage) adds pressure. Used when a single impeller cannot provide the required total head. The total head = head per stage &times; number of stages.</p>
+
+            <!-- Multistage Pump Diagram -->
+            <div class="figure-container">
+                <svg viewBox="0 0 780 360" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="390" y="22" text-anchor="middle" font-weight="bold" font-size="8">Multistage Centrifugal Pump — Stages in Series</text>
+
+                    <!-- Suction inlet -->
+                    <line x1="30" y1="165" x2="80" y2="165" stroke="black" stroke-width="2"/>
+                    <line x1="30" y1="195" x2="80" y2="195" stroke="black" stroke-width="2"/>
+                    <line x1="50" y1="180" x2="75" y2="180" stroke="#2980b9" stroke-width="1.5" marker-end="url(#arrB)"/>
+                    <text x="50" y="155" text-anchor="middle" font-size="9" font-weight="bold">Suction</text>
+
+                    <!-- Stage 1 -->
+                    <rect x="80" y="130" width="130" height="100" rx="6" fill="#d6eaf8" fill-opacity="0.3" stroke="black" stroke-width="2"/>
+                    <circle cx="145" cy="180" r="35" fill="none" stroke="#2c3e50" stroke-width="1.5"/>
+                    <circle cx="145" cy="180" r="10" fill="#aed6f1" stroke="#2980b9" stroke-width="1"/>
+                    <!-- Rotating vanes for stage 1 -->
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" from="0 145 180" to="360 145 180" dur="2s" repeatCount="indefinite"/>
+                        <line x1="145" y1="145" x2="145" y2="155" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="175" y1="180" x2="165" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="145" y1="215" x2="145" y2="205" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="115" y1="180" x2="125" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                    </g>
+                    <text x="145" y="120" text-anchor="middle" font-weight="bold" font-size="9">STAGE 1</text>
+                    <text x="145" y="240" text-anchor="middle" font-size="8">P₁ = +H</text>
+
+                    <!-- Connection 1→2 -->
+                    <rect x="210" y="165" width="40" height="30" fill="none" stroke="black" stroke-width="1"/>
+                    <line x1="220" y1="180" x2="240" y2="180" stroke="#2980b9" stroke-width="1" marker-end="url(#arrB)"/>
+
+                    <!-- Stage 2 -->
+                    <rect x="250" y="130" width="130" height="100" rx="6" fill="#d5f5e3" fill-opacity="0.3" stroke="black" stroke-width="2"/>
+                    <circle cx="315" cy="180" r="35" fill="none" stroke="#2c3e50" stroke-width="1.5"/>
+                    <circle cx="315" cy="180" r="10" fill="#a9dfbf" stroke="#27ae60" stroke-width="1"/>
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" from="0 315 180" to="360 315 180" dur="2s" repeatCount="indefinite"/>
+                        <line x1="315" y1="145" x2="315" y2="155" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="345" y1="180" x2="335" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="315" y1="215" x2="315" y2="205" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="285" y1="180" x2="295" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                    </g>
+                    <text x="315" y="120" text-anchor="middle" font-weight="bold" font-size="9">STAGE 2</text>
+                    <text x="315" y="240" text-anchor="middle" font-size="8">P₂ = +2H</text>
+
+                    <!-- Connection 2→3 -->
+                    <rect x="380" y="165" width="40" height="30" fill="none" stroke="black" stroke-width="1"/>
+                    <line x1="390" y1="180" x2="410" y2="180" stroke="#2980b9" stroke-width="1" marker-end="url(#arrB)"/>
+
+                    <!-- Stage 3 -->
+                    <rect x="420" y="130" width="130" height="100" rx="6" fill="#fef9e7" fill-opacity="0.3" stroke="black" stroke-width="2"/>
+                    <circle cx="485" cy="180" r="35" fill="none" stroke="#2c3e50" stroke-width="1.5"/>
+                    <circle cx="485" cy="180" r="10" fill="#fad7a0" stroke="#e67e22" stroke-width="1"/>
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" from="0 485 180" to="360 485 180" dur="2s" repeatCount="indefinite"/>
+                        <line x1="485" y1="145" x2="485" y2="155" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="515" y1="180" x2="505" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="485" y1="215" x2="485" y2="205" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="455" y1="180" x2="465" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                    </g>
+                    <text x="485" y="120" text-anchor="middle" font-weight="bold" font-size="9">STAGE 3</text>
+                    <text x="485" y="240" text-anchor="middle" font-size="8">P₃ = +3H</text>
+
+                    <!-- Connection 3→N -->
+                    <text x="580" y="180" text-anchor="middle" font-size="8" font-weight="bold">. . .</text>
+
+                    <!-- Stage N -->
+                    <rect x="610" y="130" width="130" height="100" rx="6" fill="#fadbd8" fill-opacity="0.3" stroke="black" stroke-width="2"/>
+                    <circle cx="675" cy="180" r="35" fill="none" stroke="#2c3e50" stroke-width="1.5"/>
+                    <circle cx="675" cy="180" r="10" fill="#f5b7b1" stroke="#c0392b" stroke-width="1"/>
+                    <g>
+                        <animateTransform attributeName="transform" type="rotate" from="0 675 180" to="360 675 180" dur="2s" repeatCount="indefinite"/>
+                        <line x1="675" y1="145" x2="675" y2="155" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="705" y1="180" x2="695" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="675" y1="215" x2="675" y2="205" stroke="#2c3e50" stroke-width="1.5"/>
+                        <line x1="645" y1="180" x2="655" y2="180" stroke="#2c3e50" stroke-width="1.5"/>
+                    </g>
+                    <text x="675" y="120" text-anchor="middle" font-weight="bold" font-size="9">STAGE N</text>
+                    <text x="675" y="240" text-anchor="middle" font-size="8">P_N = +N×H</text>
+
+                    <!-- Delivery outlet -->
+                    <line x1="740" y1="165" x2="770" y2="165" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <line x1="740" y1="195" x2="760" y2="195" stroke="black" stroke-width="2"/>
+                    <text x="755" y="155" font-size="9" font-weight="bold" fill="#c0392b">Delivery</text>
+                    <text x="755" y="215" font-size="8" fill="#c0392b">(high P)</text>
+
+                    <!-- Common shaft -->
+                    <line x1="80" y1="180" x2="740" y2="180" stroke="#555" stroke-width="2.5" stroke-dasharray="1,0"/>
+
+                    <!-- Pressure buildup bar -->
+                    <rect x="80" y="270" width="660" height="22" rx="3" fill="none" stroke="black" stroke-width="1"/>
+                    <rect x="80" y="270" width="130" height="22" rx="3" fill="#d6eaf8" stroke="none"/>
+                    <rect x="210" y="270" width="170" height="22" rx="3" fill="#d5f5e3" stroke="none"/>
+                    <rect x="380" y="270" width="170" height="22" rx="3" fill="#fef9e7" stroke="none"/>
+                    <rect x="550" y="270" width="190" height="22" rx="3" fill="#fadbd8" stroke="none"/>
+                    <text x="390" y="286" text-anchor="middle" font-size="8" font-weight="bold">Pressure builds progressively: H → 2H → 3H → ... → N×H</text>
+
+                    <!-- Animated pressure particle -->
+                    <circle r="5" fill="#e74c3c" opacity="0.7">
+                        <animateMotion dur="4s" repeatCount="indefinite" path="M80,280 L740,280"/>
+                        <animate attributeName="r" values="3;5;7;9" dur="4s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.4;0.6;0.8;1" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+
+                    <!-- Formula -->
+                    <rect x="180" y="310" width="420" height="40" rx="4" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="328" text-anchor="middle" font-weight="bold" font-size="8">Total Head = H per stage × Number of stages (N)</text>
+                    <text x="390" y="345" text-anchor="middle" font-size="8" font-style="italic">Used in deep-well turbine &amp; submersible pumps (5–30 stages)</text>
+                </svg>
+                <div class="figcaption">Figure 8.2d: Multistage centrifugal pump — impellers in series on a common shaft, each stage adding pressure H. The growing red dot along the pressure bar shows cumulative pressure buildup. All impellers rotate simultaneously.</div>
+            </div>
+
+            <h3>8.3.5 Advantages and Limitations</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>Simple construction and compact design</li>
+                        <li>Smooth, continuous flow (non-pulsating)</li>
+                        <li>Can handle large discharges</li>
+                        <li>High efficiency (60&ndash;85%)</li>
+                        <li>Low maintenance cost</li>
+                        <li>Can be directly coupled to electric motor</li>
+                        <li>Suitable for a wide range of heads and discharges</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>Requires <strong>priming</strong> before start-up (not self-priming)</li>
+                        <li>Limited suction lift (&le; 6&ndash;7 m due to atmospheric pressure limit and NPSH requirements)</li>
+                        <li>Efficiency drops significantly at off-design conditions</li>
+                        <li>Not suitable for very high heads with single stage</li>
+                        <li>Cannot handle viscous fluids or fluids with large solids</li>
+                        <li>Susceptible to cavitation if NPSH is insufficient</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mini-note">
+                <strong>Cavitation:</strong> When the pressure at the pump inlet drops below the vapour pressure of water, dissolved gases form bubbles that implode violently when they reach higher-pressure zones. This causes pitting damage to the impeller and noise. To prevent cavitation, the available <strong>Net Positive Suction Head (NPSH)</strong> must exceed the required NPSH of the pump.
+            </div>
+
+            <!-- Cavitation & Priming Explanation Diagram -->
+            <div class="figure-container">
+                <svg viewBox="0 0 780 440" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="390" y="22" text-anchor="middle" font-weight="bold" font-size="8">Cavitation and Priming — Visual Explanation</text>
+
+                    <!-- ═══ LEFT: PRIMING ═══ -->
+                    <rect x="20" y="45" width="350" height="380" rx="6" fill="none" stroke="#2471a3" stroke-width="1.5"/>
+                    <text x="195" y="68" text-anchor="middle" font-weight="bold" font-size="9" fill="#2471a3">WHY PRIMING IS NEEDED</text>
+
+                    <!-- Pump with air (before priming) -->
+                    <text x="120" y="95" text-anchor="middle" font-size="9" font-weight="bold" fill="#c0392b">Before Priming (FAILS)</text>
+                    <ellipse cx="120" cy="155" rx="50" ry="40" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="120" y="150" text-anchor="middle" font-size="8">AIR inside</text>
+                    <text x="120" y="165" text-anchor="middle" font-size="9">(too light to create</text>
+                    <text x="120" y="178" text-anchor="middle" font-size="9">sufficient vacuum)</text>
+                    <!-- X mark -->
+                    <line x1="150" y1="130" x2="170" y2="110" stroke="#c0392b" stroke-width="3"/>
+                    <line x1="170" y1="130" x2="150" y2="110" stroke="#c0392b" stroke-width="3"/>
+
+                    <!-- Pump with water (after priming) -->
+                    <text x="280" y="95" text-anchor="middle" font-size="9" font-weight="bold" fill="#27ae60">After Priming (WORKS)</text>
+                    <ellipse cx="280" cy="155" rx="50" ry="40" fill="#d6eaf8" fill-opacity="0.3" stroke="black" stroke-width="1.5"/>
+                    <text x="280" y="150" text-anchor="middle" font-size="8">WATER inside</text>
+                    <text x="280" y="165" text-anchor="middle" font-size="9">(centrifugal force</text>
+                    <text x="280" y="178" text-anchor="middle" font-size="9">creates vacuum at eye)</text>
+                    <!-- Check mark -->
+                    <path d="M310,115 L320,130 L340,105" fill="none" stroke="#27ae60" stroke-width="3"/>
+
+                    <!-- Arrow between them -->
+                    <line x1="175" y1="155" x2="225" y2="155" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <text x="200" y="148" text-anchor="middle" font-size="9">Fill with</text>
+                    <text x="200" y="195" text-anchor="middle" font-size="9">water</text>
+
+                    <!-- Suction limit explanation -->
+                    <rect x="40" y="210" width="310" height="90" rx="4" fill="none" stroke="#e67e22" stroke-width="1"/>
+                    <text x="195" y="230" text-anchor="middle" font-weight="bold" font-size="9" fill="#e67e22">Maximum Suction Lift ≤ 6–7 m</text>
+                    <text x="195" y="250" text-anchor="middle" font-size="8">Atmospheric pressure = 10.33 m of water</text>
+                    <text x="195" y="268" text-anchor="middle" font-size="8">Minus: vapour pressure (~0.24 m at 20°C)</text>
+                    <text x="195" y="286" text-anchor="middle" font-size="8">Minus: friction losses (~2–3 m)</text>
+                    <text x="195" y="298" text-anchor="middle" font-size="8" font-weight="bold">Practical limit ≈ 6–7 m</text>
+
+                    <!-- Bar chart showing pressure budget -->
+                    <rect x="60" y="315" width="200" height="14" fill="#3498db" stroke="none"/>
+                    <text x="160" y="326" text-anchor="middle" font-size="8" fill="white" font-weight="bold">10.33 m (atm pressure)</text>
+                    <rect x="60" y="332" width="20" height="14" fill="#e74c3c" stroke="none"/>
+                    <text x="85" y="343" font-size="8">0.24 m (vapour P)</text>
+                    <rect x="60" y="349" width="60" height="14" fill="#e67e22" stroke="none"/>
+                    <text x="125" y="360" font-size="8">~3 m (friction &amp; losses)</text>
+                    <rect x="60" y="366" width="118" height="14" fill="#27ae60" stroke="none"/>
+                    <text x="183" y="377" font-size="8" font-weight="bold" fill="#27ae60">≈ 7 m (usable suction)</text>
+
+                    <!-- ═══ RIGHT: CAVITATION ═══ -->
+                    <rect x="400" y="45" width="360" height="380" rx="6" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+                    <text x="580" y="68" text-anchor="middle" font-weight="bold" font-size="9" fill="#c0392b">CAVITATION PROCESS</text>
+
+                    <!-- Step 1: Low pressure zone -->
+                    <rect x="430" y="85" width="300" height="55" rx="4" fill="#fadbd8" stroke="#e74c3c" stroke-width="1"/>
+                    <text x="580" y="103" text-anchor="middle" font-weight="bold" font-size="8" fill="#c0392b">① Pressure drops below vapour pressure</text>
+                    <text x="580" y="118" text-anchor="middle" font-size="8">At pump inlet (eye) when suction lift is too high</text>
+                    <text x="580" y="133" text-anchor="middle" font-size="8">or pipe has excessive friction</text>
+                    <line x1="580" y1="140" x2="580" y2="150" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <!-- Step 2: Bubble formation -->
+                    <rect x="430" y="150" width="300" height="50" rx="4" fill="#fef9e7" stroke="#e67e22" stroke-width="1"/>
+                    <text x="580" y="168" text-anchor="middle" font-weight="bold" font-size="8" fill="#e67e22">② Vapour bubbles form</text>
+                    <text x="580" y="183" text-anchor="middle" font-size="8">Water boils at low pressure → gas bubbles</text>
+                    <!-- Animated bubbles -->
+                    <circle cx="460" cy="175" r="3" fill="white" stroke="#e67e22" stroke-width="0.8">
+                        <animate attributeName="r" values="2;5;2" dur="1s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="700" cy="170" r="3" fill="white" stroke="#e67e22" stroke-width="0.8">
+                        <animate attributeName="r" values="3;6;3" dur="1.2s" repeatCount="indefinite"/>
+                    </circle>
+                    <line x1="580" y1="200" x2="580" y2="210" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <!-- Step 3: Bubbles collapse -->
+                    <rect x="430" y="210" width="300" height="55" rx="4" fill="#f5eef8" stroke="#8e44ad" stroke-width="1"/>
+                    <text x="580" y="228" text-anchor="middle" font-weight="bold" font-size="8" fill="#8e44ad">③ Bubbles implode violently</text>
+                    <text x="580" y="243" text-anchor="middle" font-size="8">When bubbles reach high-pressure zones</text>
+                    <text x="580" y="258" text-anchor="middle" font-size="8">→ micro-jets impact impeller surface</text>
+                    <!-- Animated implosion -->
+                    <circle cx="450" cy="240" r="4" fill="none" stroke="#8e44ad" stroke-width="1.5">
+                        <animate attributeName="r" values="6;1;6" dur="0.5s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.8;0.2;0.8" dur="0.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="710" cy="245" r="4" fill="none" stroke="#8e44ad" stroke-width="1.5">
+                        <animate attributeName="r" values="1;6;1" dur="0.5s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.2;0.8;0.2" dur="0.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <line x1="580" y1="265" x2="580" y2="275" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <!-- Step 4: Damage -->
+                    <rect x="430" y="275" width="300" height="50" rx="4" fill="#fadbd8" stroke="#c0392b" stroke-width="2"/>
+                    <text x="580" y="293" text-anchor="middle" font-weight="bold" font-size="8" fill="#c0392b">④ DAMAGE to impeller</text>
+                    <text x="580" y="308" text-anchor="middle" font-size="8">Pitting, erosion, noise, vibration</text>
+                    <text x="580" y="320" text-anchor="middle" font-size="8">Reduced efficiency, eventual failure</text>
+
+                    <!-- Prevention -->
+                    <rect x="430" y="340" width="300" height="70" rx="4" fill="#d5f5e3" stroke="#27ae60" stroke-width="1.5"/>
+                    <text x="580" y="358" text-anchor="middle" font-weight="bold" font-size="9" fill="#27ae60">PREVENTION</text>
+                    <text x="580" y="375" text-anchor="middle" font-size="8">✓ Keep suction lift within limits (≤ 6–7 m)</text>
+                    <text x="580" y="390" text-anchor="middle" font-size="8">✓ NPSH_available &gt; NPSH_required</text>
+                    <text x="580" y="405" text-anchor="middle" font-size="8">✓ Minimize pipe friction losses on suction side</text>
+                </svg>
+                <div class="figcaption">Figure 8.2c: <strong>Left:</strong> Why priming is required — air cannot create sufficient vacuum; only water can. Maximum suction lift ≈ 6–7 m. <strong>Right:</strong> Cavitation process — pressure drops below vapour pressure → bubbles form → implode violently → impeller damage. Animated bubbles show formation and collapse.</div>
+            </div>
+        </section>
+
+        <!-- ======== 8.4 SUBMERSIBLE PUMP ======== -->
+        <section id="sec-8-4">
+            <h2>8.4 SUBMERSIBLE PUMP</h2>
+
+            <p>A <strong>submersible pump</strong> is a centrifugal pump that has the motor and pump unit integrated into a single waterproof, sealed assembly that is lowered entirely into the well below the water level.</p>
+
+            <h3>8.4.1 Construction</h3>
+            <ul>
+                <li><strong>Motor:</strong> Hermetically sealed, water-cooled electric motor located below the pump stages. The motor is filled with oil or water for insulation and cooling.</li>
+                <li><strong>Pump stages:</strong> Multiple impellers (stages) stacked in series above the motor. Each stage adds head. A typical groundwater submersible may have 5&ndash;30 stages.</li>
+                <li><strong>Intake screen:</strong> Between the motor and pump section, allows water to enter while filtering sand.</li>
+                <li><strong>Power cable:</strong> Waterproof electrical cable runs from the motor to the surface control panel.</li>
+                <li><strong>Drop pipe (rising main):</strong> Connects the pump outlet to the surface delivery.</li>
+            </ul>
+
+            <h3>8.4.2 Working Principle</h3>
+            <p>The working principle is the same as a multistage centrifugal pump. The motor drives the impellers, which spin and throw water outward by centrifugal force. Each stage adds pressure, and the accumulated pressure forces water up through the rising main to the surface.</p>
+
+            <p>Because the pump is submerged, it does not need priming and there is no suction lift limitation. The pump is always below the water level, so it pushes water upward rather than pulling it.</p>
+
+            <h3>8.4.3 Advantages and Limitations</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li><strong>No priming needed</strong> &mdash; always submerged</li>
+                        <li><strong>No suction lift limit</strong> &mdash; can lift from any depth</li>
+                        <li>Compact &mdash; fits inside small-diameter tube wells</li>
+                        <li>Quiet operation (submerged, no surface noise)</li>
+                        <li>No separate pump house required</li>
+                        <li>High efficiency for deep-well applications</li>
+                        <li>Freeze-proof (pump is below frost line)</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>Higher initial cost than surface pumps</li>
+                        <li>Difficult to inspect and repair (must be pulled out)</li>
+                        <li>Motor burns out if water level drops below the motor (dry running)</li>
+                        <li>Sensitive to sand and abrasive particles</li>
+                        <li>Electrical cable failure is difficult to detect</li>
+                        <li>Motor winding insulation can degrade over time</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 500 430" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="250" y="20" text-anchor="middle" font-weight="bold" font-size="9">Submersible Pump in a Tube Well</text>
+
+                    <!-- Well casing -->
+                    <rect x="170" y="50" width="10" height="350" fill="#ccc" stroke="black" stroke-width="1.5"/>
+                    <rect x="320" y="50" width="10" height="350" fill="#ccc" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Ground -->
+                    <rect x="30" y="50" width="140" height="14" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <rect x="330" y="50" width="140" height="14" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+
+                    <!-- Water level -->
+                    <line x1="30" y1="150" x2="170" y2="150" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <line x1="330" y1="150" x2="470" y2="150" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="40" y="145" font-size="8" font-weight="bold">Static WL</text>
+
+                    <!-- Pumping water level -->
+                    <line x1="180" y1="210" x2="320" y2="210" stroke="black" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="340" y="215" font-size="8">Pumping WL</text>
+
+                    <!-- Drawdown arrow -->
+                    <line x1="360" y1="150" x2="360" y2="210" stroke="black" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="385" y="185" font-size="8">Drawdown</text>
+
+                    <!-- Rising main (drop pipe) -->
+                    <rect x="240" y="64" width="20" height="200" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="140" font-size="8">Rising main</text>
+                    <line x1="380" y1="140" x2="265" y2="140" stroke="black" stroke-width="1"/>
+
+                    <!-- Power cable -->
+                    <path d="M225,64 L225,300" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="195" y="110" text-anchor="end" font-size="9">Power</text>
+                    <text x="195" y="122" text-anchor="end" font-size="9">cable</text>
+
+                    <!-- Pump stages -->
+                    <rect x="210" y="264" width="80" height="50" fill="none" stroke="black" stroke-width="2"/>
+                    <text x="250" y="283" text-anchor="middle" font-weight="bold" font-size="8">PUMP</text>
+                    <text x="250" y="298" text-anchor="middle" font-size="9">(multi-stage)</text>
+
+                    <!-- Intake screen -->
+                    <rect x="215" y="314" width="70" height="16" fill="none" stroke="black" stroke-width="1" stroke-dasharray="3,2"/>
+                    <text x="380" y="326" font-size="8">Intake screen</text>
+                    <line x1="370" y1="324" x2="290" y2="322" stroke="black" stroke-width="1"/>
+
+                    <!-- Motor -->
+                    <rect x="210" y="330" width="80" height="55" fill="#e0e0e0" stroke="black" stroke-width="2"/>
+                    <text x="250" y="352" text-anchor="middle" font-weight="bold" font-size="8">MOTOR</text>
+                    <text x="250" y="367" text-anchor="middle" font-size="9">(sealed, water-</text>
+                    <text x="250" y="379" text-anchor="middle" font-size="9">cooled)</text>
+
+                    <!-- Delivery at top -->
+                    <line x1="250" y1="64" x2="250" y2="40" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <text x="275" y="50" font-weight="bold" font-size="9">Q (discharge)</text>
+
+                    <!-- Check valve -->
+                    <rect x="237" y="240" width="26" height="12" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="390" y="250" font-size="8">Check valve</text>
+                    <line x1="380" y1="248" x2="268" y2="248" stroke="black" stroke-width="1"/>
+
+                    <!-- Well depth label -->
+                    <text x="100" y="250" text-anchor="middle" font-size="8">Pump always</text>
+                    <text x="100" y="264" text-anchor="middle" font-size="8">below water</text>
+                    <text x="100" y="278" text-anchor="middle" font-size="8">level &rarr; no</text>
+                    <text x="100" y="292" text-anchor="middle" font-size="8">priming needed</text>
+                </svg>
+                <div class="figcaption">Figure 8.3: Submersible pump installed in a tube well showing motor, pump stages, intake screen, rising main, and power cable.</div>
+            </div>
+
+            <!-- ANIMATED: Submersible Pump in Operation -->
+            <div class="figure-container">
+                <svg viewBox="0 0 600 580" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <defs>
+                        <linearGradient id="waterFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d6eaf8"/><stop offset="100%" stop-color="#85c1e9"/></linearGradient>
+                        <marker id="arrUp" markerWidth="8" markerHeight="6" refX="4" refY="0" orient="auto"><polygon points="0 6,4 0,8 6" fill="#2471a3"/></marker>
+                    </defs>
+                    <text x="300" y="22" text-anchor="middle" font-weight="bold" font-size="8">Animated: Submersible Pump in Operation</text>
+
+                    <!-- Ground surface -->
+                    <rect x="20" y="60" width="180" height="14" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <rect x="400" y="60" width="180" height="14" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <text x="110" y="56" text-anchor="middle" font-size="9" font-weight="bold">Ground Surface</text>
+
+                    <!-- Well casing -->
+                    <rect x="200" y="60" width="10" height="440" fill="#bbb" stroke="black" stroke-width="1.5"/>
+                    <rect x="390" y="60" width="10" height="440" fill="#bbb" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Well screen (bottom) -->
+                    <rect x="200" y="420" width="10" height="80" fill="none" stroke="black" stroke-width="1" stroke-dasharray="3,3"/>
+                    <rect x="390" y="420" width="10" height="80" fill="none" stroke="black" stroke-width="1" stroke-dasharray="3,3"/>
+
+                    <!-- Water in well (animated level) -->
+                    <rect x="210" y="150" width="180" height="350" fill="url(#waterFill)" opacity="0.35"/>
+
+                    <!-- Static water level -->
+                    <line x1="20" y1="150" x2="200" y2="150" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <line x1="400" y1="150" x2="580" y2="150" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="55" y="145" font-size="8" font-weight="bold" fill="#2980b9">Static WL</text>
+
+                    <!-- Pumping water level (cone of depression) -->
+                    <path d="M210,150 Q300,210 390,150" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5,3">
+                        <animate attributeName="d" values="M210,150 Q300,200 390,150;M210,150 Q300,220 390,150;M210,150 Q300,200 390,150" dur="3s" repeatCount="indefinite"/>
+                    </path>
+                    <text x="430" y="200" font-size="8" fill="#c0392b">Pumping WL</text>
+
+                    <!-- Drawdown arrow -->
+                    <line x1="450" y1="150" x2="450" y2="210" stroke="#c0392b" stroke-width="1" marker-end="url(#arr)"/>
+                    <text x="475" y="185" font-size="9" fill="#c0392b">Drawdown</text>
+
+                    <!-- Rising main -->
+                    <rect x="285" y="74" width="30" height="240" fill="none" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Animated water particles rising through pipe -->
+                    <circle r="4" fill="#2471a3" opacity="0.85">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M300,380 L300,74"/>
+                        <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="3.5" fill="#1a5276" opacity="0.75">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M300,380 L300,74" begin="0.5s"/>
+                    </circle>
+                    <circle r="3" fill="#2980b9" opacity="0.7">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M300,380 L300,74" begin="1s"/>
+                    </circle>
+                    <circle r="3.5" fill="#5dade2" opacity="0.7">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M300,380 L300,74" begin="1.5s"/>
+                    </circle>
+
+                    <!-- Delivery at surface -->
+                    <path d="M315,74 L315,50 L380,50" fill="none" stroke="black" stroke-width="2"/>
+                    <path d="M285,74 L285,55 L315,55" fill="none" stroke="black" stroke-width="1"/>
+                    <line x1="380" y1="50" x2="410" y2="50" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <text x="420" y="46" font-weight="bold" font-size="8" fill="#1a5276">Q (discharge)</text>
+
+                    <!-- Animated water droplets exiting -->
+                    <circle r="3" fill="#3498db" opacity="0.8">
+                        <animateMotion dur="1s" repeatCount="indefinite" path="M380,50 L430,52"/>
+                    </circle>
+
+                    <!-- Power cable -->
+                    <path d="M270,74 Q265,150 268,410" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+                    <text x="240" y="120" text-anchor="end" font-size="9" fill="#c0392b">Power</text>
+                    <text x="240" y="132" text-anchor="end" font-size="9" fill="#c0392b">cable</text>
+
+                    <!-- PUMP BODY (multistage) -->
+                    <rect x="260" y="314" width="80" height="70" rx="3" fill="#d5dbdb" stroke="black" stroke-width="2"/>
+                    <text x="300" y="340" text-anchor="middle" font-weight="bold" font-size="9">PUMP</text>
+                    <!-- Animated impeller lines inside -->
+                    <g>
+                        <line x1="275" y1="355" x2="325" y2="355" stroke="#2c3e50" stroke-width="1.5">
+                            <animate attributeName="x1" values="275;280;275" dur="0.5s" repeatCount="indefinite"/>
+                            <animate attributeName="x2" values="325;320;325" dur="0.5s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="280" y1="365" x2="320" y2="365" stroke="#2c3e50" stroke-width="1.5">
+                            <animate attributeName="x1" values="280;275;280" dur="0.5s" repeatCount="indefinite"/>
+                            <animate attributeName="x2" values="320;325;320" dur="0.5s" repeatCount="indefinite"/>
+                        </line>
+                        <line x1="275" y1="375" x2="325" y2="375" stroke="#2c3e50" stroke-width="1.5">
+                            <animate attributeName="x1" values="275;280;275" dur="0.5s" repeatCount="indefinite"/>
+                            <animate attributeName="x2" values="325;320;325" dur="0.5s" repeatCount="indefinite"/>
+                        </line>
+                    </g>
+                    <text x="300" y="380" text-anchor="middle" font-size="8">(multi-stage impellers)</text>
+
+                    <!-- Intake screen -->
+                    <rect x="268" y="384" width="64" height="14" fill="none" stroke="black" stroke-width="1" stroke-dasharray="3,2"/>
+                    <text x="420" y="394" font-size="8">Intake screen</text>
+                    <line x1="410" y1="392" x2="335" y2="391" stroke="black" stroke-width="1"/>
+
+                    <!-- Animated water entering intake -->
+                    <circle r="3" fill="#5dade2" opacity="0.7">
+                        <animateMotion dur="1.5s" repeatCount="indefinite" path="M220,390 L268,390"/>
+                    </circle>
+                    <circle r="3" fill="#5dade2" opacity="0.7">
+                        <animateMotion dur="1.5s" repeatCount="indefinite" path="M380,390 L332,390" begin="0.5s"/>
+                    </circle>
+
+                    <!-- MOTOR -->
+                    <rect x="260" y="398" width="80" height="65" rx="3" fill="#aab7b8" stroke="black" stroke-width="2"/>
+                    <text x="300" y="425" text-anchor="middle" font-weight="bold" font-size="9">MOTOR</text>
+                    <text x="300" y="440" text-anchor="middle" font-size="9">(sealed, water-</text>
+                    <text x="300" y="452" text-anchor="middle" font-size="9">cooled)</text>
+                    <!-- Motor spinning indicator -->
+                    <circle cx="300" cy="420" r="4" fill="none" stroke="#e74c3c" stroke-width="1">
+                        <animate attributeName="r" values="3;6;3" dur="0.8s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="1;0.3;1" dur="0.8s" repeatCount="indefinite"/>
+                    </circle>
+
+                    <!-- Check valve -->
+                    <rect x="287" y="300" width="26" height="10" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="420" y="310" font-size="8">Check valve</text>
+                    <line x1="410" y1="308" x2="316" y2="305" stroke="black" stroke-width="1"/>
+
+                    <!-- Labels -->
+                    <text x="445" y="90" font-size="9">Rising main</text>
+                    <line x1="435" y1="88" x2="318" y2="88" stroke="black" stroke-width="1"/>
+                    <text x="445" y="430" font-size="8">Well screen</text>
+                    <line x1="435" y1="428" x2="403" y2="440" stroke="black" stroke-width="1"/>
+
+                    <!-- Key advantage callout -->
+                    <rect x="30" y="240" width="160" height="70" rx="5" fill="none" stroke="#27ae60" stroke-width="1.5"/>
+                    <text x="110" y="260" text-anchor="middle" font-size="8" font-weight="bold" fill="#27ae60">KEY ADVANTAGE</text>
+                    <text x="110" y="278" text-anchor="middle" font-size="8">Pump always below</text>
+                    <text x="110" y="293" text-anchor="middle" font-size="8">water → No priming</text>
+                    <text x="110" y="305" text-anchor="middle" font-size="8">needed, any depth!</text>
+
+                    <!-- Aquifer arrows -->
+                    <line x1="160" y1="450" x2="200" y2="450" stroke="#2980b9" stroke-width="1" marker-end="url(#arrB)"/>
+                    <line x1="440" y1="450" x2="400" y2="450" stroke="#2980b9" stroke-width="1" marker-end="url(#arrB)"/>
+                    <text x="100" y="455" text-anchor="middle" font-size="9" fill="#2980b9">GW inflow</text>
+                    <text x="500" y="455" text-anchor="middle" font-size="9" fill="#2980b9">GW inflow</text>
+
+                    <!-- Bottom summary -->
+                    <rect x="60" y="530" width="480" height="40" rx="4" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="300" y="548" text-anchor="middle" font-size="9">Motor drives multi-stage impellers → water rises through stages</text>
+                    <text x="300" y="563" text-anchor="middle" font-size="9">→ accumulated pressure pushes water up rising main to surface</text>
+                </svg>
+                <div class="figcaption">Figure 8.3b: <strong>Animated</strong> submersible pump in operation — blue particles show water entering through the intake screen, passing through the multi-stage pump, and rising through the delivery pipe. The motor pulses to indicate rotation.</div>
+            </div>
+        </section>
+
+        <!-- ======== 8.5 JET PUMP ======== -->
+        <section id="sec-8-5">
+            <h2>8.5 JET PUMP (EJECTOR PUMP)</h2>
+
+            <p>A <strong>jet pump</strong> (or ejector pump) combines a centrifugal pump at the surface with a jet (ejector) assembly located down in the well. It is used to lift water from depths greater than the normal suction limit of a surface centrifugal pump (which is about 6&ndash;7 m).</p>
+
+            <h3>8.5.1 Working Principle</h3>
+            <ol>
+                <li>A centrifugal pump at the surface sends a portion of the pumped water back down through a <strong>pressure pipe</strong> to the ejector assembly in the well.</li>
+                <li>The ejector has a <strong>nozzle</strong> that converts the pressure energy of this recirculated water into a high-velocity jet.</li>
+                <li>The high-velocity jet creates a <strong>low-pressure zone</strong> (Venturi effect) in the <strong>mixing chamber</strong>, which draws groundwater from the well into the jet stream.</li>
+                <li>The mixed water (recirculated + fresh groundwater) passes through a <strong>diffuser</strong> (gradually expanding section), converting velocity to pressure.</li>
+                <li>The pressurized mixture rises through the <strong>return pipe</strong> to the surface pump, which delivers the net discharge.</li>
+            </ol>
+
+            <h3>8.5.2 Advantages and Limitations</h3>
+
+            <!-- ANIMATED: Jet Pump Working Principle -->
+            <div class="figure-container">
+                <svg viewBox="0 0 740 560" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="370" y="22" text-anchor="middle" font-weight="bold" font-size="8">Animated: How a Jet Pump (Ejector) Works</text>
+
+                    <!-- ── SURFACE PUMP ── -->
+                    <rect x="60" y="50" width="120" height="60" rx="5" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <text x="120" y="76" text-anchor="middle" font-weight="bold" font-size="9">CENTRIFUGAL</text>
+                    <text x="120" y="90" text-anchor="middle" font-weight="bold" font-size="9">PUMP</text>
+                    <!-- Motor -->
+                    <rect x="60" y="110" width="120" height="25" rx="3" fill="#bbb" stroke="black" stroke-width="1.5"/>
+                    <text x="120" y="127" text-anchor="middle" font-size="8">Electric Motor</text>
+
+                    <!-- Ground surface line -->
+                    <line x1="20" y1="160" x2="720" y2="160" stroke="black" stroke-width="2.5"/>
+                    <text x="650" y="155" font-size="9" font-weight="bold">GROUND</text>
+
+                    <!-- ── PRESSURE PIPE (going down) ── -->
+                    <rect x="90" y="110" width="16" height="310" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+                    <text x="55" y="280" font-size="8" fill="#c0392b" transform="rotate(-90,55,280)">Pressure Pipe (↓)</text>
+
+                    <!-- Animated high-pressure water going DOWN -->
+                    <circle r="3.5" fill="#e74c3c" opacity="0.8">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M98,110 L98,415"/>
+                    </circle>
+                    <circle r="3" fill="#c0392b" opacity="0.7">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M98,110 L98,415" begin="0.6s"/>
+                    </circle>
+                    <circle r="3" fill="#e74c3c" opacity="0.7">
+                        <animateMotion dur="2s" repeatCount="indefinite" path="M98,110 L98,415" begin="1.2s"/>
+                    </circle>
+
+                    <!-- ── RETURN PIPE (going up) ── -->
+                    <rect x="150" y="110" width="16" height="310" fill="none" stroke="#2471a3" stroke-width="1.5"/>
+                    <text x="185" y="280" font-size="8" fill="#2471a3" transform="rotate(-90,185,280)">Return Pipe (↑)</text>
+
+                    <!-- Animated mixed water going UP -->
+                    <circle r="4" fill="#2980b9" opacity="0.85">
+                        <animateMotion dur="2.2s" repeatCount="indefinite" path="M158,430 L158,80"/>
+                    </circle>
+                    <circle r="3.5" fill="#3498db" opacity="0.75">
+                        <animateMotion dur="2.2s" repeatCount="indefinite" path="M158,430 L158,80" begin="0.7s"/>
+                    </circle>
+                    <circle r="3" fill="#5dade2" opacity="0.7">
+                        <animateMotion dur="2.2s" repeatCount="indefinite" path="M158,430 L158,80" begin="1.4s"/>
+                    </circle>
+
+                    <!-- ── DELIVERY pipe from pump ── -->
+                    <line x1="180" y1="70" x2="250" y2="70" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <text x="260" y="67" font-weight="bold" font-size="8" fill="#1a5276">Net Q (delivery)</text>
+
+                    <!-- ── EJECTOR ASSEMBLY (down in well) ── -->
+                    <rect x="75" y="420" width="95" height="110" rx="4" fill="#fef9e7" stroke="black" stroke-width="2"/>
+                    <text x="122" y="440" text-anchor="middle" font-weight="bold" font-size="9">EJECTOR</text>
+
+                    <!-- Nozzle -->
+                    <path d="M98,420 L98,445 L92,450 L104,450 L98,445" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+                    <text x="50" y="448" text-anchor="end" font-size="9" fill="#c0392b">Nozzle</text>
+                    <!-- High velocity jet -->
+                    <line x1="98" y1="450" x2="98" y2="470" stroke="#e74c3c" stroke-width="0.8" stroke-dasharray="2,2">
+                        <animate attributeName="stroke-dashoffset" values="0;-8" dur="0.3s" repeatCount="indefinite"/>
+                    </line>
+
+                    <!-- Mixing chamber -->
+                    <rect x="86" y="460" width="24" height="25" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="50" y="477" text-anchor="end" font-size="9">Mixing</text>
+                    <text x="50" y="488" text-anchor="end" font-size="9">chamber</text>
+
+                    <!-- Venturi low-pressure zone -->
+                    <text x="145" y="472" font-size="8" fill="#c0392b" font-style="italic">Low P zone</text>
+                    <!-- Animated pulsing to show low pressure -->
+                    <circle cx="98" cy="472" r="8" fill="none" stroke="#e74c3c" stroke-width="0.8" opacity="0.5">
+                        <animate attributeName="r" values="8;14;8" dur="1s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.5;0.1;0.5" dur="1s" repeatCount="indefinite"/>
+                    </circle>
+
+                    <!-- Diffuser (expanding) -->
+                    <path d="M86,485 L80,515 L116,515 L110,485" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="145" y="505" font-size="9">Diffuser</text>
+                    <text x="145" y="517" font-size="8">(V↓, P↑)</text>
+
+                    <!-- GW entering from sides -->
+                    <circle r="3" fill="#85c1e9" opacity="0.7">
+                        <animateMotion dur="1.2s" repeatCount="indefinite" path="M75,472 L86,472"/>
+                    </circle>
+                    <circle r="3" fill="#85c1e9" opacity="0.7">
+                        <animateMotion dur="1.2s" repeatCount="indefinite" path="M170,472 L110,472" begin="0.5s"/>
+                    </circle>
+                    <line x1="55" y1="472" x2="86" y2="472" stroke="#2980b9" stroke-width="1" marker-end="url(#arrB)"/>
+                    <text x="35" y="470" text-anchor="end" font-size="9" fill="#2980b9">GW</text>
+                    <text x="35" y="481" text-anchor="end" font-size="9" fill="#2980b9">inflow</text>
+
+                    <!-- Well casing -->
+                    <rect x="210" y="160" width="8" height="380" fill="#bbb" stroke="black" stroke-width="1"/>
+                    <rect x="30" y="160" width="8" height="380" fill="#bbb" stroke="black" stroke-width="1"/>
+
+                    <!-- Water level -->
+                    <path d="M38,250 Q80,243 122,250 Q164,257 205,250" fill="none" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="6,3"/>
+                    <text x="230" y="248" font-size="8" fill="#2980b9">Water Level</text>
+
+                    <!-- ── FLOW DIAGRAM (right side) ── -->
+                    <rect x="330" y="50" width="380" height="490" rx="8" fill="none" stroke="#2c3e50" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="520" y="75" text-anchor="middle" font-weight="bold" font-size="9" fill="#2c3e50">How the Jet Pump Cycle Works</text>
+
+                    <!-- Step boxes -->
+                    <rect x="370" y="95" width="300" height="45" rx="4" fill="#fadbd8" stroke="#c0392b" stroke-width="1"/>
+                    <text x="520" y="113" text-anchor="middle" font-weight="bold" font-size="9" fill="#c0392b">① Surface pump pressurizes water</text>
+                    <text x="520" y="130" text-anchor="middle" font-size="8">A portion sent DOWN the pressure pipe</text>
+                    <line x1="520" y1="140" x2="520" y2="155" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <rect x="370" y="155" width="300" height="45" rx="4" fill="#fef9e7" stroke="#e67e22" stroke-width="1"/>
+                    <text x="520" y="173" text-anchor="middle" font-weight="bold" font-size="9" fill="#e67e22">② Nozzle creates high-velocity jet</text>
+                    <text x="520" y="190" text-anchor="middle" font-size="8">Pressure energy → Kinetic energy</text>
+                    <line x1="520" y1="200" x2="520" y2="215" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <rect x="370" y="215" width="300" height="50" rx="4" fill="#d5f5e3" stroke="#27ae60" stroke-width="1"/>
+                    <text x="520" y="233" text-anchor="middle" font-weight="bold" font-size="9" fill="#27ae60">③ Venturi effect — low pressure zone</text>
+                    <text x="520" y="250" text-anchor="middle" font-size="8">Draws surrounding groundwater into</text>
+                    <text x="520" y="262" text-anchor="middle" font-size="8">the mixing chamber</text>
+                    <line x1="520" y1="265" x2="520" y2="280" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <rect x="370" y="280" width="300" height="45" rx="4" fill="#d6eaf8" stroke="#2471a3" stroke-width="1"/>
+                    <text x="520" y="298" text-anchor="middle" font-weight="bold" font-size="9" fill="#2471a3">④ Diffuser converts KE back to PE</text>
+                    <text x="520" y="315" text-anchor="middle" font-size="8">Velocity ↓, Pressure ↑ (Bernoulli)</text>
+                    <line x1="520" y1="325" x2="520" y2="340" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <rect x="370" y="340" width="300" height="45" rx="4" fill="#e8daef" stroke="#8e44ad" stroke-width="1"/>
+                    <text x="520" y="358" text-anchor="middle" font-weight="bold" font-size="9" fill="#8e44ad">⑤ Mixed water rises to surface</text>
+                    <text x="520" y="375" text-anchor="middle" font-size="8">Through return pipe → pump delivers net Q</text>
+
+                    <!-- Efficiency note -->
+                    <rect x="370" y="410" width="300" height="55" rx="4" fill="none" stroke="#7f8c8d" stroke-width="1"/>
+                    <text x="520" y="430" text-anchor="middle" font-weight="bold" font-size="9" fill="#e74c3c">⚠ Low Efficiency: 25–40%</text>
+                    <text x="520" y="448" text-anchor="middle" font-size="8">Part of pumped water is recirculated</text>
+                    <text x="520" y="463" text-anchor="middle" font-size="8">Net Q = total pumped − recirculated</text>
+
+                    <!-- Depth range -->
+                    <text x="520" y="500" text-anchor="middle" font-size="9" font-weight="bold">Suitable depth: 20 – 60 m</text>
+                    <text x="520" y="520" text-anchor="middle" font-size="8" font-style="italic">All moving parts at surface → easy maintenance</text>
+                </svg>
+                <div class="figcaption">Figure 8.5: <strong>Animated</strong> jet pump (ejector) — red dots show pressurized water flowing down through the nozzle; blue dots show the mixed water (recirculated + fresh GW) returning to the surface. The pulsing circle at the nozzle shows the low-pressure (Venturi) zone that draws in groundwater.</div>
+            </div>
+
+            <h3>8.5.2 Advantages and Limitations</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>All moving parts at the surface &mdash; easy maintenance</li>
+                        <li>Can lift water from 20&ndash;60 m depth</li>
+                        <li>Self-priming after initial prime</li>
+                        <li>Suitable for small-diameter wells</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>Low efficiency (25&ndash;40%) due to energy loss in the jet</li>
+                        <li>Part of the pumped water is recirculated (reduced net discharge)</li>
+                        <li>Efficiency decreases with increasing depth</li>
+                        <li>Not suitable for large yields</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 8.6 AIRLIFT PUMP ======== -->
+        <section id="sec-8-6">
+            <h2>8.6 AIRLIFT PUMP</h2>
+
+            <p>An <strong>airlift pump</strong> uses compressed air to lift water from a well. It has no moving parts inside the well.</p>
+
+            <h3>8.6.1 Working Principle</h3>
+            <ol>
+                <li>Compressed air is injected into the bottom of a <strong>riser pipe</strong> (eductor pipe) submerged in the well water.</li>
+                <li>The air mixes with water in the riser pipe, creating an <strong>air-water mixture</strong> that is lighter than the surrounding water column.</li>
+                <li>The denser surrounding water pushes the lighter air-water mixture upward through the riser pipe to the surface.</li>
+                <li>At the surface, air is separated and water is collected.</li>
+            </ol>
+
+            <p>The key requirement is that the <strong>submergence ratio</strong> (ratio of the submerged length of the riser pipe to the total length above the water surface) must be adequate. Typically, the submergence should be 50&ndash;70% of the total riser length for reasonable efficiency.</p>
+
+            <h3>8.6.2 Advantages and Limitations</h3>
+
+            <!-- ANIMATED: Airlift Pump Working Principle -->
+            <div class="figure-container">
+                <svg viewBox="0 0 700 580" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="22" text-anchor="middle" font-weight="bold" font-size="8">Animated: How an Airlift Pump Works</text>
+
+                    <!-- Ground surface -->
+                    <rect x="20" y="80" width="170" height="12" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <rect x="370" y="80" width="310" height="12" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <text x="100" y="75" text-anchor="middle" font-size="9" font-weight="bold">Ground Surface</text>
+
+                    <!-- Air compressor at surface -->
+                    <rect x="430" y="20" width="130" height="50" rx="5" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <text x="495" y="42" text-anchor="middle" font-weight="bold" font-size="9">AIR</text>
+                    <text x="495" y="56" text-anchor="middle" font-weight="bold" font-size="9">COMPRESSOR</text>
+                    <!-- Pulsing indicator -->
+                    <circle cx="540" cy="40" r="5" fill="#e74c3c" opacity="0.5">
+                        <animate attributeName="r" values="3;7;3" dur="0.8s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.7;0.2;0.7" dur="0.8s" repeatCount="indefinite"/>
+                    </circle>
+
+                    <!-- Air pipe -->
+                    <path d="M430,50 L400,50 L400,92" fill="none" stroke="#e74c3c" stroke-width="2"/>
+                    <rect x="392" y="92" width="16" height="370" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+                    <text x="425" y="250" font-size="8" fill="#c0392b" transform="rotate(90,425,250)">Air Pipe (compressed air ↓)</text>
+
+                    <!-- Animated air bubbles going DOWN through air pipe -->
+                    <circle r="3" fill="#e74c3c" opacity="0.6">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M400,92 L400,460"/>
+                    </circle>
+                    <circle r="2.5" fill="#c0392b" opacity="0.5">
+                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M400,92 L400,460" begin="0.8s"/>
+                    </circle>
+
+                    <!-- Well casing -->
+                    <rect x="190" y="92" width="10" height="460" fill="#bbb" stroke="black" stroke-width="1"/>
+                    <rect x="370" y="92" width="10" height="460" fill="#bbb" stroke="black" stroke-width="1"/>
+
+                    <!-- Riser pipe (eductor pipe) -->
+                    <rect x="270" y="92" width="22" height="400" fill="none" stroke="#2471a3" stroke-width="2"/>
+
+                    <!-- Water level -->
+                    <path d="M200,200 Q230,193 260,200 Q290,207 320,200 Q350,193 370,200" fill="none" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="6,3"/>
+                    <text x="140" y="198" text-anchor="end" font-size="8" fill="#2980b9" font-weight="bold">Water Level</text>
+
+                    <!-- Water fill in well -->
+                    <rect x="200" y="200" width="170" height="352" fill="#d6eaf8" opacity="0.25"/>
+
+                    <!-- Submergence region -->
+                    <line x1="345" y1="200" x2="345" y2="490" stroke="#27ae60" stroke-width="1.5" marker-start="url(#arr-r)"/>
+                    <text x="355" y="350" font-size="8" fill="#27ae60" transform="rotate(90,355,350)">Submergence (S)</text>
+
+                    <!-- Lift region -->
+                    <line x1="345" y1="92" x2="345" y2="200" stroke="#8e44ad" stroke-width="1.5" marker-start="url(#arr-r)"/>
+                    <text x="355" y="145" font-size="8" fill="#8e44ad" transform="rotate(90,355,145)">Lift (L)</text>
+
+                    <!-- Air injection point -->
+                    <circle cx="400" cy="460" r="6" fill="#e74c3c" stroke="black" stroke-width="1">
+                        <animate attributeName="r" values="4;8;4" dur="0.6s" repeatCount="indefinite"/>
+                    </circle>
+                    <line x1="408" y1="460" x2="292" y2="460" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="430" y="465" font-size="8" fill="#c0392b" font-weight="bold">Air injection point</text>
+
+                    <!-- ANIMATED AIR BUBBLES rising in riser pipe -->
+                    <!-- Bubble group 1 -->
+                    <circle r="5" fill="white" stroke="#999" stroke-width="0.8" opacity="0.9">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M281,460 Q285,400 278,350 Q282,300 281,250 Q278,200 281,150 L281,92"/>
+                        <animate attributeName="r" values="3;5;7;5;3" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="4" fill="white" stroke="#999" stroke-width="0.8" opacity="0.8">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M286,460 Q283,390 288,330 Q284,270 286,210 Q283,150 286,92" begin="0.6s"/>
+                        <animate attributeName="r" values="2;4;6;4;2" dur="3s" repeatCount="indefinite" begin="0.6s"/>
+                    </circle>
+                    <circle r="3.5" fill="white" stroke="#aaa" stroke-width="1" opacity="0.7">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M279,460 Q282,380 276,310 Q280,240 279,170 Q277,120 279,92" begin="1.2s"/>
+                        <animate attributeName="r" values="2;3;5;3;2" dur="3s" repeatCount="indefinite" begin="1.2s"/>
+                    </circle>
+                    <circle r="3" fill="white" stroke="#aaa" stroke-width="1" opacity="0.6">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M284,460 Q280,370 286,290 Q282,210 284,130 L284,92" begin="1.8s"/>
+                    </circle>
+
+                    <!-- ANIMATED WATER particles carried up by bubbles -->
+                    <circle r="3" fill="#2980b9" opacity="0.7">
+                        <animateMotion dur="3.5s" repeatCount="indefinite" path="M281,420 L281,92"/>
+                    </circle>
+                    <circle r="2.5" fill="#2471a3" opacity="0.6">
+                        <animateMotion dur="3.5s" repeatCount="indefinite" path="M281,420 L281,92" begin="1s"/>
+                    </circle>
+                    <circle r="2.5" fill="#5dade2" opacity="0.6">
+                        <animateMotion dur="3.5s" repeatCount="indefinite" path="M281,420 L281,92" begin="2s"/>
+                    </circle>
+
+                    <!-- Discharge at top -->
+                    <path d="M292,92 L292,60 L340,60" fill="none" stroke="black" stroke-width="2"/>
+                    <line x1="335" y1="60" x2="365" y2="60" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <text x="373" y="57" font-weight="bold" font-size="8" fill="#1a5276">Q (water + air)</text>
+                    <text x="373" y="72" font-size="8">(air separates at surface)</text>
+
+                    <!-- Riser pipe label -->
+                    <text x="235" y="300" text-anchor="middle" font-size="8" fill="#2471a3" transform="rotate(-90,235,300)">Riser Pipe (Eductor)</text>
+
+                    <!-- Light vs heavy column illustration -->
+                    <rect x="40" y="200" width="120" height="130" rx="5" fill="none" stroke="#2c3e50" stroke-width="1.5"/>
+                    <text x="100" y="220" text-anchor="middle" font-weight="bold" font-size="9">Working Principle</text>
+                    <text x="100" y="240" text-anchor="middle" font-size="8">Air + water mixture</text>
+                    <text x="100" y="255" text-anchor="middle" font-size="8">inside riser is</text>
+                    <text x="100" y="270" text-anchor="middle" font-size="8" font-weight="bold" fill="#27ae60">LIGHTER</text>
+                    <text x="100" y="285" text-anchor="middle" font-size="8">than surrounding</text>
+                    <text x="100" y="300" text-anchor="middle" font-size="8">pure water column</text>
+                    <text x="100" y="320" text-anchor="middle" font-size="8">→ buoyancy lifts</text>
+                    <text x="100" y="335" text-anchor="middle" font-size="8">mixture upward!</text>
+
+                    <!-- Submergence ratio note -->
+                    <rect x="40" y="370" width="140" height="55" rx="4" fill="none" stroke="#e67e22" stroke-width="1.5"/>
+                    <text x="110" y="390" text-anchor="middle" font-weight="bold" font-size="8" fill="#e67e22">Submergence Ratio</text>
+                    <text x="110" y="406" text-anchor="middle" font-size="8">S/(S+L) = 50–70%</text>
+                    <text x="110" y="420" text-anchor="middle" font-size="9">for reasonable efficiency</text>
+
+                    <!-- Efficiency note -->
+                    <rect x="40" y="445" width="140" height="40" rx="4" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+                    <text x="110" y="463" text-anchor="middle" font-weight="bold" font-size="8" fill="#c0392b">Efficiency: 20–35%</text>
+                    <text x="110" y="478" text-anchor="middle" font-size="9">No moving parts in well!</text>
+
+                    <!-- Bottom labels -->
+                    <rect x="140" y="530" width="420" height="40" rx="4" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="350" y="548" text-anchor="middle" font-size="9">Compressed air → bubbles mix with water in riser → lighter column rises</text>
+                    <text x="350" y="563" text-anchor="middle" font-size="9">→ denser surrounding water pushes mixture up → water delivered at surface</text>
+                </svg>
+                <div class="figcaption">Figure 8.6: <strong>Animated</strong> airlift pump — white bubbles (air) rise through the riser pipe, carrying water (blue dots) upward. The air-water mixture is lighter than the surrounding water column, creating the lifting force. The pulsing red dot shows the air injection point.</div>
+            </div>
+
+            <h3>8.6.2 Advantages and Limitations</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>No moving parts in the well &mdash; minimal wear</li>
+                        <li>Can handle sandy or muddy water</li>
+                        <li>Useful for well development and testing</li>
+                        <li>Simple installation</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>Very low efficiency (20&ndash;35%)</li>
+                        <li>Requires large submergence &mdash; not suitable for shallow wells</li>
+                        <li>Requires air compressor at the surface</li>
+                        <li>Not suitable for continuous large-scale pumping</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 8.7 RECIPROCATING / HAND PUMP ======== -->
+        <section id="sec-8-7">
+            <h2>8.7 RECIPROCATING PUMP (HAND PUMP)</h2>
+
+            <p>A <strong>reciprocating pump</strong> is a positive displacement pump that uses a piston or plunger moving back and forth in a cylinder to draw and push water. Hand-operated versions are widely used in rural areas of Nepal and South Asia for shallow groundwater extraction.</p>
+
+            <h3>8.7.1 Working Principle</h3>
+
+            <!-- ANIMATED: Reciprocating (Hand) Pump Working Cycle -->
+            <div class="figure-container">
+                <svg viewBox="0 0 780 600" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <defs>
+                        <clipPath id="cylClip"><rect x="200" y="140" width="100" height="200"/></clipPath>
+                    </defs>
+                    <text x="390" y="22" text-anchor="middle" font-weight="bold" font-size="8">Animated: How a Reciprocating (Hand) Pump Works</text>
+
+                    <!-- ════════ LEFT SIDE: SUCTION STROKE ════════ -->
+                    <text x="195" y="50" text-anchor="middle" font-weight="bold" font-size="9" fill="#2471a3">SUCTION STROKE</text>
+                    <text x="195" y="66" text-anchor="middle" font-size="9">(Piston moves UP)</text>
+
+                    <!-- Cylinder -->
+                    <rect x="140" y="140" width="110" height="200" fill="none" stroke="black" stroke-width="2"/>
+
+                    <!-- Piston (animated moving up) -->
+                    <rect x="145" y="200" width="100" height="12" rx="2" fill="#888" stroke="black" stroke-width="1.5">
+                        <animate attributeName="y" values="280;200;280" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <!-- Piston rod -->
+                    <line x1="195" y1="200" x2="195" y2="120" stroke="black" stroke-width="3">
+                        <animate attributeName="y1" values="280;200;280" dur="3s" repeatCount="indefinite"/>
+                    </line>
+                    <!-- Handle -->
+                    <line x1="195" y1="120" x2="280" y2="100" stroke="black" stroke-width="3">
+                        <animateTransform attributeName="transform" type="rotate" values="0 195 120;-15 195 120;0 195 120" dur="3s" repeatCount="indefinite"/>
+                    </line>
+                    <text x="285" y="95" font-size="8" font-weight="bold">Handle</text>
+
+                    <!-- Delivery valve (on piston) - CLOSED during suction stroke -->
+                    <rect x="165" y="202" width="25" height="6" rx="1" fill="#c0392b" stroke="black" stroke-width="0.8">
+                        <animate attributeName="y" values="282;202;282" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="118" y="216" text-anchor="end" font-size="9" fill="#c0392b">Delivery valve</text>
+                    <text x="118" y="228" text-anchor="end" font-size="9" fill="#c0392b">(on piston)</text>
+
+                    <!-- Suction valve (at bottom) - OPENS during suction -->
+                    <rect x="170" y="335" width="25" height="6" rx="1" fill="#27ae60" stroke="black" stroke-width="0.8">
+                        <animate attributeName="y" values="340;333;340" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="118" y="342" text-anchor="end" font-size="9" fill="#27ae60">Suction valve</text>
+                    <text x="118" y="354" text-anchor="end" font-size="9" fill="#27ae60">(at bottom)</text>
+                    <line x1="140" y1="340" x2="250" y2="340" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Water entering (animated) -->
+                    <circle r="4" fill="#3498db" opacity="0.8">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M195,420 L195,335"/>
+                        <animate attributeName="opacity" values="0;0.8;0.8;0" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="3.5" fill="#2980b9" opacity="0.7">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M195,420 L195,335" begin="0.5s"/>
+                        <animate attributeName="opacity" values="0;0.7;0.7;0" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                    </circle>
+
+                    <!-- Suction pipe -->
+                    <rect x="180" y="340" width="30" height="100" fill="none" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Water source -->
+                    <path d="M120,445 Q150,438 180,445 Q210,452 240,445 Q270,438 300,445" fill="none" stroke="#2980b9" stroke-width="1.5">
+                        <animate attributeName="d" values="M120,445 Q150,438 180,445 Q210,452 240,445 Q270,438 300,445;M120,445 Q150,452 180,445 Q210,438 240,445 Q270,452 300,445;M120,445 Q150,438 180,445 Q210,452 240,445 Q270,438 300,445" dur="2s" repeatCount="indefinite"/>
+                    </path>
+                    <text x="210" y="470" text-anchor="middle" font-size="8">Well water</text>
+
+                    <!-- Arrows and labels -->
+                    <line x1="195" y1="420" x2="195" y2="395" stroke="#2980b9" stroke-width="1.5" marker-end="url(#arrB)"/>
+                    <text x="240" y="410" font-size="8" fill="#2980b9" font-weight="bold">Water enters ↑</text>
+
+                    <!-- Vacuum label -->
+                    <text x="195" y="265" text-anchor="middle" font-size="8" fill="#8e44ad">Vacuum created</text>
+                    <text x="195" y="280" text-anchor="middle" font-size="8" fill="#8e44ad">below piston</text>
+
+                    <!-- Status indicators -->
+                    <rect x="70" y="480" width="260" height="35" rx="3" fill="none" stroke="#2471a3" stroke-width="1"/>
+                    <text x="200" y="496" text-anchor="middle" font-size="8" fill="#27ae60" font-weight="bold">✓ Suction valve: OPEN</text>
+                    <text x="200" y="510" text-anchor="middle" font-size="8" fill="#c0392b" font-weight="bold">✗ Delivery valve: CLOSED</text>
+
+                    <!-- ════════ RIGHT SIDE: DELIVERY STROKE ════════ -->
+                    <text x="575" y="50" text-anchor="middle" font-weight="bold" font-size="9" fill="#c0392b">DELIVERY STROKE</text>
+                    <text x="575" y="66" text-anchor="middle" font-size="9">(Piston moves DOWN)</text>
+
+                    <!-- Cylinder -->
+                    <rect x="520" y="140" width="110" height="200" fill="none" stroke="black" stroke-width="2"/>
+
+                    <!-- Piston (animated moving down) -->
+                    <rect x="525" y="200" width="100" height="12" rx="2" fill="#888" stroke="black" stroke-width="1.5">
+                        <animate attributeName="y" values="200;280;200" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <!-- Piston rod -->
+                    <line x1="575" y1="200" x2="575" y2="120" stroke="black" stroke-width="3">
+                        <animate attributeName="y1" values="200;280;200" dur="3s" repeatCount="indefinite"/>
+                    </line>
+                    <!-- Handle -->
+                    <line x1="575" y1="120" x2="490" y2="100" stroke="black" stroke-width="3">
+                        <animateTransform attributeName="transform" type="rotate" values="0 575 120;15 575 120;0 575 120" dur="3s" repeatCount="indefinite"/>
+                    </line>
+
+                    <!-- Delivery valve (on piston) - OPENS during delivery -->
+                    <rect x="545" y="202" width="25" height="6" rx="1" fill="#27ae60" stroke="black" stroke-width="0.8">
+                        <animate attributeName="y" values="202;282;202" dur="3s" repeatCount="indefinite"/>
+                    </rect>
+                    <text x="660" y="250" font-size="9" fill="#27ae60">Delivery valve</text>
+                    <text x="660" y="262" font-size="9" fill="#27ae60">OPENS ↑</text>
+
+                    <!-- Suction valve (at bottom) - CLOSED during delivery -->
+                    <rect x="550" y="335" width="25" height="6" rx="1" fill="#c0392b" stroke="black" stroke-width="0.8"/>
+                    <text x="660" y="340" font-size="9" fill="#c0392b">Suction valve</text>
+                    <text x="660" y="352" font-size="9" fill="#c0392b">CLOSED</text>
+                    <line x1="520" y1="340" x2="630" y2="340" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Water being pushed up through piston -->
+                    <circle r="4" fill="#1a5276" opacity="0.8">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M575,280 L575,200 L575,140 L575,110"/>
+                        <animate attributeName="opacity" values="0;0;0.8;0.8" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle r="3.5" fill="#2471a3" opacity="0.7">
+                        <animateMotion dur="3s" repeatCount="indefinite" path="M575,280 L575,200 L575,140 L575,110" begin="0.5s"/>
+                        <animate attributeName="opacity" values="0;0;0.7;0.7" dur="3s" repeatCount="indefinite" begin="0.5s"/>
+                    </circle>
+
+                    <!-- Delivery spout -->
+                    <path d="M575,140 L575,110 Q575,95 590,95 L650,95" fill="none" stroke="black" stroke-width="2"/>
+                    <line x1="640" y1="95" x2="680" y2="95" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+
+                    <!-- Animated water drops from spout -->
+                    <circle r="3" fill="#3498db" opacity="0.7">
+                        <animateMotion dur="1.5s" repeatCount="indefinite" path="M680,95 L695,100 L700,120"/>
+                    </circle>
+                    <text x="690" y="90" font-weight="bold" font-size="9" fill="#1a5276">Spout</text>
+
+                    <!-- Suction pipe -->
+                    <rect x="560" y="340" width="30" height="100" fill="none" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Water source -->
+                    <path d="M500,445 Q530,438 560,445 Q590,452 620,445 Q650,438 680,445" fill="none" stroke="#2980b9" stroke-width="1.5"/>
+                    <text x="590" y="470" text-anchor="middle" font-size="8">Well water</text>
+
+                    <!-- Status indicators -->
+                    <rect x="450" y="480" width="260" height="35" rx="3" fill="none" stroke="#c0392b" stroke-width="1"/>
+                    <text x="580" y="496" text-anchor="middle" font-size="8" fill="#c0392b" font-weight="bold">✗ Suction valve: CLOSED</text>
+                    <text x="580" y="510" text-anchor="middle" font-size="8" fill="#27ae60" font-weight="bold">✓ Delivery valve: OPEN</text>
+
+                    <!-- ════════ DIVIDER ════════ -->
+                    <line x1="390" y1="40" x2="390" y2="530" stroke="#999" stroke-width="1" stroke-dasharray="4,4"/>
+
+                    <!-- ════════ CYCLE SUMMARY ════════ -->
+                    <rect x="100" y="540" width="580" height="50" rx="5" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="558" text-anchor="middle" font-size="9" font-weight="bold">Complete Cycle:</text>
+                    <text x="390" y="578" text-anchor="middle" font-size="9">UP stroke → vacuum below piston → suction valve opens → water enters &nbsp;|&nbsp; DOWN stroke → water forced through piston valve → delivered via spout</text>
+                </svg>
+                <div class="figcaption">Figure 8.7: <strong>Animated</strong> reciprocating (hand) pump — <strong>Left:</strong> Suction stroke (piston up, suction valve opens, water drawn in). <strong>Right:</strong> Delivery stroke (piston down, delivery valve opens, water pushed through and out the spout). Valves alternate green (open) / red (closed).</div>
+            </div>
+
+            <h3>8.7.1 Working Principle</h3>
+            <ol>
+                <li><strong>Suction stroke:</strong> As the piston moves upward, the volume below the piston increases, creating a partial vacuum. The suction valve opens and water from the well enters the cylinder.</li>
+                <li><strong>Delivery stroke:</strong> As the piston moves downward, the suction valve closes and the delivery valve (on the piston) opens. Water is forced above the piston.</li>
+                <li>On the next upstroke, the water above the piston is pushed out through the delivery spout, and fresh water enters from below.</li>
+            </ol>
+
+            <h3>8.7.2 Types of Hand Pumps</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Type</th>
+                    <th>Depth Range</th>
+                    <th>Example</th>
+                    <th>Features</th>
+                </tr>
+                <tr>
+                    <td>Shallow well hand pump</td>
+                    <td>&lt; 7 m (suction type)</td>
+                    <td>No. 6 pump</td>
+                    <td>Cylinder at surface; suction lift limited to ~7 m</td>
+                </tr>
+                <tr>
+                    <td>Medium-depth hand pump</td>
+                    <td>7 &ndash; 15 m</td>
+                    <td>Tara pump</td>
+                    <td>Direct-action; cylinder below water level</td>
+                </tr>
+                <tr>
+                    <td>Deep well hand pump</td>
+                    <td>15 &ndash; 45 m</td>
+                    <td>India Mark II, India Mark III, Afridev</td>
+                    <td>Cylinder below water level with connecting rod; robust, widely used</td>
+                </tr>
+                <tr>
+                    <td>Extra deep well</td>
+                    <td>45 &ndash; 90 m</td>
+                    <td>India Mark III (modified)</td>
+                    <td>Uses lighter components and VLOM design</td>
+                </tr>
+            </table>
+
+            <div class="mini-note">
+                <strong>Key Exam Point:</strong> In Nepal, the most commonly installed hand pump for community water supply in the Terai is the <strong>India Mark II</strong> deep well hand pump, which can operate at depths up to 45 m. The <strong>Afridev</strong> pump is popular because of its VLOM (Village Level Operation and Maintenance) design.
+            </div>
+        </section>
+
+        <!-- ======== 8.8 COMPARISON ======== -->
+        <section id="sec-8-8">
+            <h2>8.8 COMPARISON OF GROUNDWATER PUMPS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <p><strong>2073 Bhadra Q9 [4+2]:</strong> Describe briefly any four common groundwater pumps.</p>
+            </div>
+
+            <table class="info-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Centrifugal (Surface)</th>
+                    <th>Submersible</th>
+                    <th>Jet Pump</th>
+                    <th>Airlift</th>
+                    <th>Hand Pump</th>
+                </tr>
+                <tr>
+                    <td>Depth range</td>
+                    <td>&le; 6&ndash;7 m (suction)</td>
+                    <td>Up to 300+ m</td>
+                    <td>20&ndash;60 m</td>
+                    <td>20&ndash;100 m</td>
+                    <td>Up to 45 m</td>
+                </tr>
+                <tr>
+                    <td>Efficiency</td>
+                    <td>60&ndash;85%</td>
+                    <td>55&ndash;80%</td>
+                    <td>25&ndash;40%</td>
+                    <td>20&ndash;35%</td>
+                    <td>40&ndash;60%</td>
+                </tr>
+                <tr>
+                    <td>Discharge</td>
+                    <td>High</td>
+                    <td>Medium to high</td>
+                    <td>Low to medium</td>
+                    <td>Low to medium</td>
+                    <td>Very low</td>
+                </tr>
+                <tr>
+                    <td>Priming</td>
+                    <td>Required</td>
+                    <td>Not needed</td>
+                    <td>Initial prime only</td>
+                    <td>Not needed</td>
+                    <td>May need</td>
+                </tr>
+                <tr>
+                    <td>Maintenance</td>
+                    <td>Easy (surface)</td>
+                    <td>Difficult (pull out)</td>
+                    <td>Easy (surface parts)</td>
+                    <td>Easy (no moving parts)</td>
+                    <td>Moderate</td>
+                </tr>
+                <tr>
+                    <td>Power source</td>
+                    <td>Electric / diesel</td>
+                    <td>Electric</td>
+                    <td>Electric</td>
+                    <td>Air compressor</td>
+                    <td>Manual</td>
+                </tr>
+                <tr>
+                    <td>Cost</td>
+                    <td>Low to medium</td>
+                    <td>Medium to high</td>
+                    <td>Medium</td>
+                    <td>Medium</td>
+                    <td>Low</td>
+                </tr>
+                <tr>
+                    <td>Best suited for</td>
+                    <td>Open wells, sumps</td>
+                    <td>Deep tube wells</td>
+                    <td>Domestic wells</td>
+                    <td>Well development, testing</td>
+                    <td>Rural community supply</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ======== 8.9 PUMP SELECTION FACTORS ======== -->
+        <section id="sec-8-9">
+            <h2>8.9 FACTORS IN PUMP SELECTION</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2078 Chaitra Q6 [4]:</strong> Explain the factors to be considered in the selection of pump sets for groundwater pumping.</p>
+                <p><strong>2073 Bhadra Q9 [4+2]:</strong> What factors should be considered while selecting a groundwater pump?</p>
+            </div>
+
+            <p>The selection of an appropriate pump for a groundwater project involves the following factors:</p>
+
+            <h3>A. Well Characteristics</h3>
+            <ul>
+                <li><strong>Well type:</strong> Open well or tube well? Open wells typically use centrifugal surface pumps; tube wells need submersible or deep-well turbine pumps.</li>
+                <li><strong>Well depth and casing diameter:</strong> The pump must physically fit inside the well. Submersible pumps require minimum 100 mm (4&Prime;) casing.</li>
+                <li><strong>Static water level and drawdown:</strong> Determines the total pumping lift. If static water level is within 6&ndash;7 m, a surface centrifugal pump suffices. Deeper water levels require submersible or jet pumps.</li>
+            </ul>
+
+            <h3>B. Required Discharge and Head</h3>
+            <ul>
+                <li><strong>Design discharge (Q):</strong> The pump must deliver the required flow rate. Centrifugal pumps handle high Q; hand pumps are for low Q.</li>
+                <li><strong>Total dynamic head (TDH):</strong> The sum of:
+                    <ul>
+                        <li>Static suction lift (depth to pumping water level)</li>
+                        <li>Static delivery head (height above pump to delivery point)</li>
+                        <li>Friction losses in pipes and fittings</li>
+                        <li>Velocity head at discharge</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>C. Power Source Availability</h3>
+            <ul>
+                <li><strong>Electricity:</strong> Most pumps (centrifugal, submersible) require reliable electric supply</li>
+                <li><strong>Diesel/petrol engine:</strong> Used where electricity is unavailable or unreliable</li>
+                <li><strong>Solar energy:</strong> Increasingly used for submersible pumps in remote areas</li>
+                <li><strong>Manual power:</strong> Hand pumps for areas without any power source</li>
+            </ul>
+
+            <h3>D. Water Quality and Sand Content</h3>
+            <ul>
+                <li>Sandy or turbid water can damage centrifugal pump impellers due to abrasion</li>
+                <li>Corrosive water (high iron, low pH) requires stainless steel or plastic components</li>
+                <li>Airlift pumps are preferred for sandy wells (no submerged moving parts)</li>
+            </ul>
+
+            <h3>E. Economic Factors</h3>
+            <ul>
+                <li><strong>Initial cost:</strong> Purchase and installation cost of the pump set</li>
+                <li><strong>Operating cost:</strong> Energy consumption, which depends on pump efficiency and hours of operation</li>
+                <li><strong>Maintenance cost:</strong> Ease and frequency of repairs</li>
+                <li><strong>Life cycle cost:</strong> Total cost over the expected lifespan (typically 10&ndash;20 years)</li>
+            </ul>
+
+            <h3>F. Reliability and Serviceability</h3>
+            <ul>
+                <li>Availability of spare parts and local repair expertise</li>
+                <li>Durability and expected service life</li>
+                <li>Ease of installation, removal, and repair</li>
+                <li>For community water supply, VLOM (Village Level Operation and Maintenance) pumps are preferred</li>
+            </ul>
+
+            <h3>G. Duty Conditions</h3>
+            <ul>
+                <li><strong>Continuous vs. intermittent operation:</strong> Submersible pumps are well-suited for continuous operation; hand pumps are for intermittent use.</li>
+                <li><strong>Future expansion:</strong> Whether the system may need higher discharge in the future</li>
+            </ul>
+
+            <div class="callout">
+                <strong>Exam writing strategy:</strong> When asked about pump selection factors, organize your answer under clear headings (Well Characteristics, Discharge &amp; Head, Power, Water Quality, Economics, Serviceability). Write 1&ndash;2 bullet points under each heading. This structured approach scores higher marks than a loose list.
+            </div>
+        </section>
+
+        <!-- ======== 8.10 PUMP PERFORMANCE ======== -->
+        <section id="sec-8-10">
+            <h2>8.10 PUMP PERFORMANCE AND BASIC FORMULAE</h2>
+
+            <p>Although Chapter 8 is theory-only, the following basic pump formulae are useful for understanding pump performance and may appear in related contexts:</p>
+
+            <h3>8.10.1 Total Dynamic Head (TDH)</h3>
+
+            <!-- TDH Diagram -->
+            <div class="figure-container">
+                <svg viewBox="0 0 780 520" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="390" y="22" text-anchor="middle" font-weight="bold" font-size="8">Total Dynamic Head (TDH) — Visual Breakdown</text>
+
+                    <!-- Delivery tank / point at top -->
+                    <rect x="530" y="40" width="80" height="50" fill="none" stroke="black" stroke-width="2"/>
+                    <path d="M535,58 Q555,52 575,58 Q595,64 605,58" fill="none" stroke="#2980b9" stroke-width="1"/>
+                    <text x="570" y="75" text-anchor="middle" font-size="8">Storage tank</text>
+
+                    <!-- Delivery pipe -->
+                    <rect x="560" y="90" width="16" height="220" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="530" y="200" font-size="8" transform="rotate(-90,530,200)">Delivery pipe</text>
+
+                    <!-- Pump at ground level -->
+                    <rect x="360" y="300" width="100" height="40" rx="4" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <text x="410" y="316" text-anchor="middle" font-weight="bold" font-size="9">PUMP</text>
+                    <text x="410" y="332" text-anchor="middle" font-size="9">Pump centerline</text>
+                    <!-- Ground surface -->
+                    <line x1="50" y1="310" x2="350" y2="310" stroke="black" stroke-width="2.5"/>
+                    <line x1="470" y1="310" x2="720" y2="310" stroke="black" stroke-width="2.5"/>
+                    <text x="180" y="305" text-anchor="middle" font-size="9" font-weight="bold">GROUND</text>
+
+                    <!-- Suction pipe down into well -->
+                    <rect x="396" y="340" width="16" height="120" fill="none" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Well casing -->
+                    <rect x="350" y="340" width="8" height="140" fill="#bbb" stroke="black" stroke-width="1"/>
+                    <rect x="450" y="340" width="8" height="140" fill="#bbb" stroke="black" stroke-width="1"/>
+
+                    <!-- Static water level -->
+                    <line x1="358" y1="380" x2="450" y2="380" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="6,3"/>
+                    <text x="320" y="378" text-anchor="end" font-size="8" fill="#2980b9">Static WL</text>
+
+                    <!-- Pumping water level (lower) -->
+                    <line x1="358" y1="430" x2="450" y2="430" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5,3"/>
+                    <text x="320" y="428" text-anchor="end" font-size="8" fill="#c0392b">Pumping WL</text>
+
+                    <!-- Water fill -->
+                    <rect x="358" y="430" width="92" height="50" fill="#d6eaf8" opacity="0.3"/>
+
+                    <!-- Foot valve -->
+                    <rect x="392" y="460" width="24" height="10" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="320" y="468" text-anchor="end" font-size="9">Foot valve</text>
+
+                    <!-- ═══ DIMENSION ARROWS (right side) ═══ -->
+                    <!-- hs: static suction head (pump to pumping WL) -->
+                    <line x1="500" y1="310" x2="500" y2="430" stroke="#e74c3c" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <rect x="510" y="360" width="100" height="28" rx="3" fill="#fadbd8" stroke="#e74c3c" stroke-width="1"/>
+                    <text x="560" y="376" text-anchor="middle" font-weight="bold" font-size="9" fill="#c0392b">h_s = suction</text>
+                    <text x="560" y="386" text-anchor="middle" font-size="9" fill="#c0392b">(to pumping WL)</text>
+
+                    <!-- hd: delivery head (pump to tank) -->
+                    <line x1="640" y1="310" x2="640" y2="90" stroke="#2471a3" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <rect x="650" y="185" width="120" height="28" rx="3" fill="#d6eaf8" stroke="#2471a3" stroke-width="1"/>
+                    <text x="710" y="201" text-anchor="middle" font-weight="bold" font-size="9" fill="#2471a3">h_d = delivery</text>
+                    <text x="710" y="211" text-anchor="middle" font-size="9" fill="#2471a3">(pump to outlet)</text>
+
+                    <!-- hf: friction losses (along pipes) -->
+                    <path d="M390,380 Q370,370 380,360 Q390,350 375,340" fill="none" stroke="#e67e22" stroke-width="1.5"/>
+                    <path d="M568,280 Q556,260 565,240 Q574,220 560,200 Q548,180 558,160 Q568,140 555,120" fill="none" stroke="#e67e22" stroke-width="1.5"/>
+                    <text x="270" y="365" text-anchor="end" font-size="8" fill="#e67e22" font-weight="bold">h_f = friction</text>
+                    <text x="270" y="378" text-anchor="end" font-size="9" fill="#e67e22">loss in pipes</text>
+
+                    <!-- v²/2g at outlet -->
+                    <line x1="570" y1="90" x2="620" y2="60" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <text x="630" y="55" font-size="8" fill="#8e44ad" font-weight="bold">v²/2g</text>
+                    <text x="630" y="68" font-size="9" fill="#8e44ad">(velocity head)</text>
+
+                    <!-- Drawdown dimension -->
+                    <line x1="180" y1="380" x2="180" y2="430" stroke="#7f8c8d" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="140" y="410" text-anchor="end" font-size="9" fill="#7f8c8d">Drawdown</text>
+
+                    <!-- ═══ FORMULA BOX ═══ -->
+                    <rect x="50" y="455" width="680" height="55" rx="5" fill="none" stroke="black" stroke-width="2"/>
+                    <text x="390" y="478" text-anchor="middle" font-weight="bold" font-size="9">TDH = h_s + h_d + h_f + v²/2g</text>
+                    <text x="390" y="500" text-anchor="middle" font-size="9">
+                        <tspan fill="#c0392b">suction head</tspan> + <tspan fill="#2471a3">delivery head</tspan> + <tspan fill="#e67e22">friction losses</tspan> + <tspan fill="#8e44ad">velocity head</tspan>
+                    </text>
+
+                    <!-- Animated water particle showing the full path -->
+                    <circle r="4" fill="#3498db" opacity="0.8">
+                        <animateMotion dur="5s" repeatCount="indefinite" path="M404,460 L404,340 L460,310 L568,310 L568,90 L568,65"/>
+                        <animate attributeName="opacity" values="0.4;0.9;0.9;0.9;0.4" dur="5s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+                <div class="figcaption">Figure 8.8: Total Dynamic Head (TDH) breakdown — the pump must overcome the sum of suction head, delivery head, pipe friction losses, and velocity head at the outlet. An animated blue particle traces the complete water path from well to storage tank.</div>
+            </div>
+
+            <h3>8.10.1 Total Dynamic Head (TDH)</h3>
+            <div class="equation">
+                \[ \text{TDH} = h_s + h_d + h_f + \frac{v^2}{2g} \]
+            </div>
+            <p>where:</p>
+            <ul>
+                <li>\( h_s \) = static suction head (depth to pumping water level)</li>
+                <li>\( h_d \) = static delivery head (height to delivery point)</li>
+                <li>\( h_f \) = total friction head loss in suction and delivery pipes</li>
+                <li>\( v^2/2g \) = velocity head at the delivery pipe outlet</li>
+            </ul>
+
+            <h3>8.10.2 Power Required</h3>
+            <div class="equation">
+                \[ P_w = \frac{\gamma \cdot Q \cdot \text{TDH}}{1000} \quad \text{(kW)} \]
+            </div>
+            <p>where \( \gamma = \rho g = 9810 \text{ N/m}^3 \) (specific weight of water), Q in m&sup3;/s.</p>
+
+            <p>The <strong>brake power</strong> (power input to the pump shaft) accounts for pump efficiency:</p>
+            <div class="equation">
+                \[ P_b = \frac{P_w}{\eta_p} = \frac{\gamma \cdot Q \cdot \text{TDH}}{1000 \cdot \eta_p} \]
+            </div>
+
+            <p>The <strong>motor power</strong> (if electric motor driven):</p>
+            <div class="equation">
+                \[ P_m = \frac{P_b}{\eta_m} = \frac{\gamma \cdot Q \cdot \text{TDH}}{1000 \cdot \eta_p \cdot \eta_m} \]
+            </div>
+
+            <p>where \( \eta_p \) = pump efficiency (0.6&ndash;0.85) and \( \eta_m \) = motor efficiency (0.85&ndash;0.95).</p>
+
+            <h3>8.10.3 Specific Speed</h3>
+            <p>Specific speed is a dimensionless parameter used to classify pump types and select the most efficient pump for given conditions:</p>
+            <div class="equation">
+                \[ N_s = \frac{N \sqrt{Q}}{H^{3/4}} \]
+            </div>
+            <p>where N = pump speed (rpm), Q = discharge (m&sup3;/s), H = head per stage (m). Low N<sub>s</sub> indicates radial flow (centrifugal); high N<sub>s</sub> indicates axial flow (propeller type).</p>
+
+            <div class="mini-note">
+                <strong>Note:</strong> These formulae are typically used in pump design or selection calculations, not as separate numerical problems in the groundwater syllabus. However, understanding TDH and power is important for conceptual questions.
+            </div>
+        </section>
+
+        <!-- ======== 8.11 PAST QUESTION BANK ======== -->
+        <section id="sec-8-11">
+            <h2>8.11 PAST QUESTION BANK FOR CHAPTER 8</h2>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2078 Chaitra</span>
+                    <span class="pill">Q6</span>
+                    <span class="pill">4 marks</span>
+                </div>
+                <p>Explain the factors to be considered in the selection of pump sets for groundwater pumping.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>Organize under headings: (a) Well characteristics (type, depth, diameter), (b) Discharge &amp; head requirements, (c) Power source availability, (d) Water quality &amp; sand content, (e) Economic factors (initial + operating cost), (f) Reliability &amp; serviceability. Write 1&ndash;2 points under each for 4 marks. See Section 8.9.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2073 Bhadra</span>
+                    <span class="pill">Q9</span>
+                    <span class="pill">4+2 marks</span>
+                </div>
+                <p>Describe briefly any four common groundwater pumps. What factors should be considered while selecting a groundwater pump?</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p><strong>Part 1 (4 marks):</strong> Describe four pumps: (1) Centrifugal &mdash; principle, volute, priming required; (2) Submersible &mdash; motor+pump submerged, no priming; (3) Jet pump &mdash; ejector principle, surface pump + down-well nozzle; (4) Hand pump &mdash; reciprocating, for rural areas. Write 3&ndash;4 lines each. Sections 8.3&ndash;8.7.</p>
+                    <p><strong>Part 2 (2 marks):</strong> List 4&ndash;5 selection factors: well depth, Q &amp; TDH, power availability, water quality, cost. Section 8.9.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2072 Ashwin</span>
+                    <span class="pill">Q9</span>
+                    <span class="pill">4+2 marks</span>
+                </div>
+                <p>Explain the working principle, advantages, and limitations of the centrifugal pump used for groundwater.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p><strong>Working principle (4 marks):</strong> Priming &rarr; impeller rotation &rarr; centrifugal force throws water outward &rarr; low pressure at eye &rarr; suction &rarr; volute converts KE to PE &rarr; delivery. Include labelled sketch (Figure 8.2). Section 8.3.3.</p>
+                    <p><strong>Advantages &amp; limitations (2 marks):</strong> Advantages: simple, continuous flow, high efficiency. Limitations: needs priming, suction lift limited to ~7 m, cavitation risk. Section 8.3.5.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2072 Magh</span>
+                    <span class="pill">Q9</span>
+                    <span class="pill">4 marks</span>
+                </div>
+                <p>Explain the working principle of the centrifugal pump used for lifting groundwater.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>Explain the 6-step working principle: priming, impeller rotation, centrifugal force, suction, energy conversion in volute, delivery. Draw and label Figure 8.2. Section 8.3.3.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2071 Bhadra</span>
+                    <span class="pill">Q9</span>
+                    <span class="pill">4 marks</span>
+                </div>
+                <p>What are the types of pumps used for lifting water?</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>Draw the classification chart (Figure 8.1). List all pump types under three categories: (a) Rotodynamic &mdash; centrifugal (volute, turbine, multistage), submersible, jet pump; (b) Positive displacement &mdash; reciprocating, hand pump; (c) Special &mdash; airlift, hydraulic ram, solar pump. Write a one-line description for each. Section 8.2.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SUMMARY ======== -->
+        <section id="sec-summary">
+            <h2>CHAPTER SUMMARY AND EXAM KEY POINTS</h2>
+
+            <div class="study-note">
+                <h4>EXAM FORMULA SHEET &mdash; CHAPTER 8</h4>
+                <table class="formula-table">
+                    <tr>
+                        <th>Item</th>
+                        <th>Formula / Key Fact</th>
+                        <th>Context</th>
+                    </tr>
+                    <tr>
+                        <td>Total dynamic head</td>
+                        <td>\( \text{TDH} = h_s + h_d + h_f + v^2/2g \)</td>
+                        <td>Sum of all heads the pump must overcome</td>
+                    </tr>
+                    <tr>
+                        <td>Water power</td>
+                        <td>\( P_w = \gamma Q \cdot \text{TDH} / 1000 \) (kW)</td>
+                        <td>Power needed to lift water (100% efficiency)</td>
+                    </tr>
+                    <tr>
+                        <td>Brake power</td>
+                        <td>\( P_b = P_w / \eta_p \)</td>
+                        <td>Actual shaft power accounting for pump losses</td>
+                    </tr>
+                    <tr>
+                        <td>Motor power</td>
+                        <td>\( P_m = P_b / \eta_m \)</td>
+                        <td>Electrical input accounting for motor losses</td>
+                    </tr>
+                    <tr>
+                        <td>Suction lift limit</td>
+                        <td>&le; 6&ndash;7 m (centrifugal pump)</td>
+                        <td>Limited by atmospheric pressure minus vapour pressure</td>
+                    </tr>
+                    <tr>
+                        <td>Centrifugal pump principle</td>
+                        <td>Priming &rarr; centrifugal force &rarr; volute (KE &rarr; PE)</td>
+                        <td>Most asked concept in this chapter</td>
+                    </tr>
+                    <tr>
+                        <td>Submersible pump</td>
+                        <td>Motor + pump submerged; no priming; any depth</td>
+                        <td>Most used for deep tube wells</td>
+                    </tr>
+                    <tr>
+                        <td>Gravel pack design v<sub>e</sub></td>
+                        <td>Screen entrance velocity &le; 3 cm/s</td>
+                        <td>Prevents sand pumping and incrustation</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="study-note">
+                <h4>KEY TAKEAWAYS FOR EXAM</h4>
+                <ol>
+                    <li><strong>Centrifugal pump working principle</strong> is the single most asked topic (appeared in 2072 Ashwin + 2072 Magh). Know the 6 steps and draw the sketch with volute, impeller, suction pipe, and foot valve.</li>
+                    <li><strong>Types of pumps:</strong> Appeared 2071 + 2073. Name at least 6 types with one-line descriptions under classified headings.</li>
+                    <li><strong>Pump selection factors:</strong> Appeared 2078 + 2073. Organize under headings: well type, Q &amp; head, power, water quality, economics, serviceability.</li>
+                    <li><strong>Submersible pump:</strong> Know that it needs no priming, works at any depth, motor is submerged. Key advantage over centrifugal surface pump.</li>
+                    <li><strong>No numericals</strong> from this chapter. Focus entirely on theory, description, and diagrams.</li>
+                    <li><strong>Exam allocation:</strong> Typically 4 marks (one question only). Time management &mdash; spend 10&ndash;12 minutes maximum.</li>
+                </ol>
+            </div>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 230" style="max-width:860px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="9">Exam Strategy: Chapter 8 Decision Flowchart</text>
+
+                    <rect x="240" y="35" width="220" height="30" rx="4" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="350" y="55" text-anchor="middle" font-weight="bold" font-size="9">CHAPTER 8 QUESTION</text>
+
+                    <line x1="140" y1="65" x2="140" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="350" y1="65" x2="350" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="570" y1="65" x2="570" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="140" y1="65" x2="570" y2="65" stroke="black" stroke-width="1"/>
+
+                    <!-- Types -->
+                    <rect x="40" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="140" y="109" text-anchor="middle" font-size="9">&ldquo;Types of pumps?&rdquo;</text>
+                    <line x1="140" y1="118" x2="140" y2="138" stroke="black" stroke-width="1"/>
+                    <rect x="40" y="138" width="200" height="45" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="140" y="155" text-anchor="middle" font-size="8">Classification chart (Fig 8.1)</text>
+                    <text x="140" y="170" text-anchor="middle" font-size="8">6+ types, 1 line each</text>
+
+                    <!-- Centrifugal principle -->
+                    <rect x="250" y="90" width="210" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="355" y="109" text-anchor="middle" font-size="9">&ldquo;Centrifugal principle?&rdquo;</text>
+                    <line x1="355" y1="118" x2="355" y2="138" stroke="black" stroke-width="1"/>
+                    <rect x="250" y="138" width="210" height="55" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="355" y="155" text-anchor="middle" font-size="8">6 steps + labelled sketch</text>
+                    <text x="355" y="170" text-anchor="middle" font-size="8">Advantages &amp; limitations</text>
+                    <text x="355" y="185" text-anchor="middle" font-size="8">(Sec 8.3, Fig 8.2)</text>
+
+                    <!-- Selection factors -->
+                    <rect x="480" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="580" y="109" text-anchor="middle" font-size="9">&ldquo;Selection factors?&rdquo;</text>
+                    <line x1="580" y1="118" x2="580" y2="138" stroke="black" stroke-width="1"/>
+                    <rect x="480" y="138" width="200" height="45" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="580" y="155" text-anchor="middle" font-size="8">6 headings, 1&ndash;2 pts each</text>
+                    <text x="580" y="170" text-anchor="middle" font-size="8">(Sec 8.9)</text>
+
+                    <text x="350" y="220" text-anchor="middle" font-size="9" font-style="italic">Theory only &mdash; 4 marks &mdash; 10&ndash;12 min. Always include a diagram.</text>
+                </svg>
+                <div class="figcaption">Figure 8.4: Exam strategy for answering Chapter 8 questions.</div>
+            </div>
+        </section>
+    </main>
+
+<!-- Draw/Annotate toggle -->
+<script>
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000000','#ffffff',
+    '#f0f0f0','#0ea5e9','#ec4899','#f59e0b','#06b6d4','#ff6b6b','#a855f7',
+    '#22d3ee','#facc15','#fef9c3','gold','#c0c0c0'
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [], pts = [], drawn = 0, raf = 0;
+
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+  cv.addEventListener('wheel', function (e) { window.scrollBy(0, e.deltaY); paint(); }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1, w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0); paint();
+  }
+  sized(); window.addEventListener('resize', sized);
+
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p; if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c; cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round'; cx.lineJoin = 'round'; cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    if (SHIMMER[c]) d.setAttribute(c === 'gold' ? 'data-shimmer' : 'data-silver', '');
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+  document.body.appendChild(tb);
+
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on; btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on); cv.classList.toggle('on', on);
+  };
+
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      if (drawn === 0) { cx.beginPath(); cx.moveTo(pts[0] - sx, pts[1] - sy); drawn = 2; }
+      for (var i = drawn; i < n; i += 2) cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      cx.stroke(); drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault(); cv.setPointerCapture(e.pointerId); drawing = true;
+    pts = [e.clientX + window.scrollX, e.clientY + window.scrollY]; drawn = 0;
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color; cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round'; cx.lineJoin = 'round';
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return; drawing = false;
+    if (pts.length >= 4) strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    pts = []; drawn = 0; paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  function lum(c){
+    if(!c)return -1;c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

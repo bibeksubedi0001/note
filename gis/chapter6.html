@@ -1,0 +1,2240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 6 – Vector Analysis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 6</div>
+    <h1>Vector Analysis</h1>
+  </header>
+  <main>
+
+    <!-- 1. Data Management Functions vs. Data Analysis Functions -->
+    <h2>1. Data Management Functions vs. Data Analysis Functions <span class="exam-ref">Q1</span></h2>
+    <ul>
+      <li><strong>Data Management Functions:</strong> These are operations used to organize, maintain, refine, and manipulate the spatial database without necessarily creating new spatial geometries or solving analytical problems. They prepare the dataset for analysis. Examples include data import/export, data editing (adding/modifying vertices), spatial data validation (topology checking), map projection/coordinate transformation, and attribute editing.</li>
+      <li><strong>Data Analysis Functions:</strong> These functions use the geometric properties of vector data (points, lines, polygons) to derive insights, solve spatial problems, or create entirely new geographic datasets based on queries and mathematical operations. Examples include buffer analysis, network analysis, topological overlay (Clip, Intersect, Union), and point-in-polygon analysis.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 200" width="520" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fDM"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gDM1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e3f2fd"/><stop offset="100%" stop-color="#bbdefb"/></linearGradient>
+          <linearGradient id="gDM2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fce4ec"/><stop offset="100%" stop-color="#f8bbd0"/></linearGradient>
+        </defs>
+        <!-- Title -->
+        <text x="260" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Data Management vs. Data Analysis Functions</text>
+        <!-- Left: Data Management -->
+        <g filter="url(#fDM)">
+          <rect x="10" y="28" width="240" height="160" rx="8" fill="url(#gDM1)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="130" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">DATA MANAGEMENT</text>
+          <text x="130" y="58" text-anchor="middle" font-size="7" fill="#555" font-style="italic">Organize &amp; Prepare</text>
+          <line x1="30" y1="64" x2="230" y2="64" stroke="#1a3c5e" stroke-width="0.5" opacity="0.3"/>
+          <!-- Icons + labels -->
+          <rect x="22" y="72" width="36" height="28" rx="4" fill="#fff" stroke="#1a3c5e" stroke-width="0.6"/>
+          <text x="40" y="84" text-anchor="middle" font-size="14" fill="#1a3c5e">&#x21C4;</text>
+          <text x="40" y="96" text-anchor="middle" font-size="5" fill="#1a3c5e">Convert</text>
+          <text x="68" y="84" font-size="7" fill="#333">Import/Export, Format</text>
+          <text x="68" y="93" font-size="7" fill="#333">conversion (SHP↔GDB)</text>
+
+          <rect x="22" y="106" width="36" height="28" rx="4" fill="#fff" stroke="#1a3c5e" stroke-width="0.6"/>
+          <text x="40" y="118" text-anchor="middle" font-size="14" fill="#1a3c5e">&#x270E;</text>
+          <text x="40" y="130" text-anchor="middle" font-size="5" fill="#1a3c5e">Edit</text>
+          <text x="68" y="118" font-size="7" fill="#333">Move vertices, reshape</text>
+          <text x="68" y="127" font-size="7" fill="#333">polygons, update fields</text>
+
+          <rect x="22" y="140" width="36" height="28" rx="4" fill="#fff" stroke="#1a3c5e" stroke-width="0.6"/>
+          <text x="40" y="152" text-anchor="middle" font-size="14" fill="#1a3c5e">&#x2713;</text>
+          <text x="40" y="164" text-anchor="middle" font-size="5" fill="#1a3c5e">Validate</text>
+          <text x="68" y="152" font-size="7" fill="#333">Topology checking,</text>
+          <text x="68" y="161" font-size="7" fill="#333">projection transform</text>
+
+          <text x="130" y="183" text-anchor="middle" font-size="6" fill="#1a3c5e" font-weight="bold">No new spatial geometry created</text>
+        </g>
+        <!-- Right: Data Analysis -->
+        <g filter="url(#fDM)">
+          <rect x="270" y="28" width="240" height="160" rx="8" fill="url(#gDM2)" stroke="#8b2500" stroke-width="1.2"/>
+          <text x="390" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">DATA ANALYSIS</text>
+          <text x="390" y="58" text-anchor="middle" font-size="7" fill="#555" font-style="italic">Derive &amp; Create</text>
+          <line x1="290" y1="64" x2="490" y2="64" stroke="#8b2500" stroke-width="0.5" opacity="0.3"/>
+
+          <rect x="282" y="72" width="36" height="28" rx="4" fill="#fff" stroke="#8b2500" stroke-width="0.6"/>
+          <text x="300" y="84" text-anchor="middle" font-size="14" fill="#8b2500">&#x25CB;</text>
+          <text x="300" y="96" text-anchor="middle" font-size="5" fill="#8b2500">Buffer</text>
+          <text x="328" y="84" font-size="7" fill="#333">Proximity zones around</text>
+          <text x="328" y="93" font-size="7" fill="#333">features (new polygons)</text>
+
+          <rect x="282" y="106" width="36" height="28" rx="4" fill="#fff" stroke="#8b2500" stroke-width="0.6"/>
+          <text x="300" y="118" text-anchor="middle" font-size="14" fill="#8b2500">&#x2229;</text>
+          <text x="300" y="130" text-anchor="middle" font-size="5" fill="#8b2500">Overlay</text>
+          <text x="328" y="118" font-size="7" fill="#333">Clip, Intersect, Union,</text>
+          <text x="328" y="127" font-size="7" fill="#333">Erase (topology ops)</text>
+
+          <rect x="282" y="140" width="36" height="28" rx="4" fill="#fff" stroke="#8b2500" stroke-width="0.6"/>
+          <text x="300" y="152" text-anchor="middle" font-size="14" fill="#8b2500">&#x2261;</text>
+          <text x="300" y="164" text-anchor="middle" font-size="5" fill="#8b2500">Query</text>
+          <text x="328" y="152" font-size="7" fill="#333">Network analysis,</text>
+          <text x="328" y="161" font-size="7" fill="#333">point-in-polygon, SQL</text>
+
+          <text x="390" y="183" text-anchor="middle" font-size="6" fill="#8b2500" font-weight="bold">Creates new spatial datasets</text>
+        </g>
+      </svg>
+      <figcaption><strong>Fig 6.13</strong> &mdash; Data Management vs. Data Analysis: Management functions prepare data (convert, edit, validate) without creating new geometry; Analysis functions derive new spatial datasets through geometric operations.</figcaption>
+    </figure>
+
+    <!-- 2. Three Vector Data Management Functions -->
+    <h2>2. Three Vector Data Management Functions <span class="exam-ref">Q2</span></h2>
+    <p>If asked to explain strict data management operations, use these three:</p>
+    <ol>
+      <li><strong>Data Conversion:</strong> Transforming spatial data between different models or formats, such as converting a vector shapefile into a raster grid (Rasterization) or converting CAD files into GIS shapefiles.</li>
+      <li><strong>Data Editing:</strong> Modifying existing vector features to correct errors or update outdated spatial and attribute data. This includes moving vertices, reshaping polygons, or updating the text fields in the attribute table.</li>
+      <li><strong>Topology Building/Validation:</strong> Establishing and checking the spatial relationships between adjacent or connected features to ensure data integrity. This involves applying rules like "polygons must not have gaps" or "lines must connect at nodes" to clean up digitizing errors.</li>
+    </ol>
+
+    <!-- 3. Detailed Geoprocessing and Vector Functions -->
+    <h2>3. Detailed Geoprocessing and Vector Functions <span class="exam-ref">Q3, Q4, Q5, Q6, Q7, Q8, Q13</span></h2>
+    <p>The examiners frequently ask you to explain these specific functions along with their spatial maps and attribute table effects.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 315" width="560" height="315" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fQR"><feDropShadow dx="1" dy="1" stdDeviation="1" flood-opacity="0.08"/></filter>
+        </defs>
+        <text x="280" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">All 10 Geoprocessing Operations at a Glance</text>
+        <text x="280" y="26" text-anchor="middle" font-size="7" fill="#555" font-style="italic">What each operation does to geometry (left) and attributes (right)</text>
+
+        <!-- Table header -->
+        <rect x="5" y="34" width="550" height="20" rx="3" fill="#1a3c5e"/>
+        <text x="18" y="47" font-size="7" fill="#fff" font-weight="bold">#</text>
+        <text x="42" y="47" font-size="7" fill="#fff" font-weight="bold">Operation</text>
+        <text x="120" y="47" font-size="7" fill="#fff" font-weight="bold">Type</text>
+        <text x="195" y="47" font-size="7" fill="#fff" font-weight="bold">Geometry Effect</text>
+        <text x="380" y="47" font-size="7" fill="#fff" font-weight="bold">Attribute Effect</text>
+
+        <!-- Row 1: Clip -->
+        <rect x="5" y="54" width="550" height="24" rx="0" fill="#e8eef4" opacity="0.5"/>
+        <text x="18" y="69" font-size="7" fill="#333">1</text>
+        <text x="42" y="69" font-size="7" fill="#1a3c5e" font-weight="bold">Clip</text>
+        <text x="120" y="69" font-size="6" fill="#2d7d46">Analysis</text>
+        <text x="195" y="69" font-size="6.5" fill="#333">Cuts input to clip boundary shape</text>
+        <text x="380" y="69" font-size="6.5" fill="#333">Input A attrs only (B discarded)</text>
+
+        <!-- Row 2: Intersect -->
+        <rect x="5" y="78" width="550" height="24" rx="0" fill="#faf8f4"/>
+        <text x="18" y="93" font-size="7" fill="#333">2</text>
+        <text x="42" y="93" font-size="7" fill="#1a3c5e" font-weight="bold">Intersect</text>
+        <text x="120" y="93" font-size="6" fill="#2d7d46">Analysis</text>
+        <text x="195" y="93" font-size="6.5" fill="#333">Keeps only overlap (A &#x2229; B)</text>
+        <text x="380" y="93" font-size="6.5" fill="#333">Both A + B attrs joined</text>
+
+        <!-- Row 3: Union -->
+        <rect x="5" y="102" width="550" height="24" rx="0" fill="#e8eef4" opacity="0.5"/>
+        <text x="18" y="117" font-size="7" fill="#333">3</text>
+        <text x="42" y="117" font-size="7" fill="#1a3c5e" font-weight="bold">Union</text>
+        <text x="120" y="117" font-size="6" fill="#2d7d46">Analysis</text>
+        <text x="195" y="117" font-size="6.5" fill="#333">Keeps everything (A &#x222A; B), splits overlap</text>
+        <text x="380" y="117" font-size="6.5" fill="#333">Both joined; NULLs where no overlap</text>
+
+        <!-- Row 4: Dissolve -->
+        <rect x="5" y="126" width="550" height="24" rx="0" fill="#faf8f4"/>
+        <text x="18" y="141" font-size="7" fill="#333">4</text>
+        <text x="42" y="141" font-size="7" fill="#1a3c5e" font-weight="bold">Dissolve</text>
+        <text x="120" y="141" font-size="6" fill="#b8860b">Mgmt</text>
+        <text x="195" y="141" font-size="6.5" fill="#333">Removes internal boundaries (same attr)</text>
+        <text x="380" y="141" font-size="6.5" fill="#333">Rows merged; stats (SUM/AVG) optional</text>
+
+        <!-- Row 5: Buffer -->
+        <rect x="5" y="150" width="550" height="24" rx="0" fill="#e8eef4" opacity="0.5"/>
+        <text x="18" y="165" font-size="7" fill="#333">5</text>
+        <text x="42" y="165" font-size="7" fill="#1a3c5e" font-weight="bold">Buffer</text>
+        <text x="120" y="165" font-size="6" fill="#2d7d46">Analysis</text>
+        <text x="195" y="165" font-size="6.5" fill="#333">Creates proximity polygon at distance d</text>
+        <text x="380" y="165" font-size="6.5" fill="#333">Inherits base attrs + BUFF_DIST col</text>
+
+        <!-- Row 6: Merge -->
+        <rect x="5" y="174" width="550" height="24" rx="0" fill="#faf8f4"/>
+        <text x="18" y="189" font-size="7" fill="#333">6</text>
+        <text x="42" y="189" font-size="7" fill="#1a3c5e" font-weight="bold">Merge</text>
+        <text x="120" y="189" font-size="6" fill="#b8860b">Mgmt</text>
+        <text x="195" y="189" font-size="6.5" fill="#333">Keeps both geometries unchanged</text>
+        <text x="380" y="189" font-size="6.5" fill="#333">Rows stacked vertically (appended)</text>
+
+        <!-- Row 7: Erase -->
+        <rect x="5" y="198" width="550" height="24" rx="0" fill="#e8eef4" opacity="0.5"/>
+        <text x="18" y="213" font-size="7" fill="#333">7</text>
+        <text x="42" y="213" font-size="7" fill="#1a3c5e" font-weight="bold">Erase</text>
+        <text x="120" y="213" font-size="6" fill="#2d7d46">Analysis</text>
+        <text x="195" y="213" font-size="6.5" fill="#333">Removes overlap from input (A &#x2216; B)</text>
+        <text x="380" y="213" font-size="6.5" fill="#333">Input A attrs only</text>
+
+        <!-- Row 8: Spatial Join -->
+        <rect x="5" y="222" width="550" height="24" rx="0" fill="#faf8f4"/>
+        <text x="18" y="237" font-size="7" fill="#333">8</text>
+        <text x="42" y="237" font-size="7" fill="#1a3c5e" font-weight="bold">Spatial Join</text>
+        <text x="120" y="237" font-size="6" fill="#2d7d46">Analysis</text>
+        <text x="195" y="237" font-size="6.5" fill="#333">Geometry unchanged (target layer)</text>
+        <text x="380" y="237" font-size="6.5" fill="#333">Join attrs transferred by location</text>
+
+        <!-- Row 9: Update -->
+        <rect x="5" y="246" width="550" height="24" rx="0" fill="#e8eef4" opacity="0.5"/>
+        <text x="18" y="261" font-size="7" fill="#333">9</text>
+        <text x="42" y="261" font-size="7" fill="#1a3c5e" font-weight="bold">Update</text>
+        <text x="120" y="261" font-size="6" fill="#b8860b">Mgmt</text>
+        <text x="195" y="261" font-size="6.5" fill="#333">Replaces base geometry in overlap zone</text>
+        <text x="380" y="261" font-size="6.5" fill="#333">Update layer attrs replace base attrs</text>
+
+        <!-- Row 10: Split -->
+        <rect x="5" y="270" width="550" height="24" rx="0" fill="#faf8f4"/>
+        <text x="18" y="285" font-size="7" fill="#333">10</text>
+        <text x="42" y="285" font-size="7" fill="#1a3c5e" font-weight="bold">Split</text>
+        <text x="120" y="285" font-size="6" fill="#b8860b">Mgmt</text>
+        <text x="195" y="285" font-size="6.5" fill="#333">Divides input into separate files by boundary</text>
+        <text x="380" y="285" font-size="6.5" fill="#333">Each output inherits original attrs</text>
+
+        <!-- Legend -->
+        <rect x="5" y="298" width="550" height="14" rx="2" fill="#f0ece4" opacity="0.7"/>
+        <circle cx="18" cy="306" r="4" fill="#2d7d46" opacity="0.7"/>
+        <text x="27" y="309" font-size="6" fill="#2d7d46" font-weight="bold">Analysis</text>
+        <text x="68" y="309" font-size="6" fill="#555">= creates new spatial geometry</text>
+        <circle cx="185" cy="306" r="4" fill="#b8860b" opacity="0.7"/>
+        <text x="196" y="309" font-size="6" fill="#b8860b" font-weight="bold">Mgmt</text>
+        <text x="230" y="309" font-size="6" fill="#555">= reorganizes existing data</text>
+        <text x="450" y="309" font-size="6" fill="#8b2500" font-style="italic">Key: &#x2229;=overlap, &#x222A;=all, &#x2216;=subtract</text>
+      </svg>
+      <figcaption><strong>Fig 6.17</strong> &mdash; Quick Reference: All 10 geoprocessing operations summarized &mdash; what each does to geometry and attribute tables, categorized by Analysis vs. Management type.</figcaption>
+    </figure>
+
+    <h3>A. Clip</h3>
+    <ul>
+      <li><strong>Concept:</strong> Acts like a "cookie cutter." It extracts features from an input layer that fall strictly within the spatial boundary of a clip layer.</li>
+      <li><strong>Spatial Map:</strong> If the Input is a large irregular polygon (e.g., a forest) and the Clip layer is a perfect circle (e.g., a study area), the Output is only the piece of the forest that fits inside the circle.</li>
+      <li><strong>Attribute Table:</strong> The output layer retains only the attributes of the Input layer. The Clip layer's attributes are ignored completely.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 440 115" width="440" height="115" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a6r" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <linearGradient id="gCl" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#8cc63f"/></linearGradient>
+          <filter id="f61"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Input -->
+        <g filter="url(#f61)">
+          <rect x="8" y="12" width="90" height="70" rx="6" fill="url(#gCl)" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="1.5"/>
+          <circle cx="72" cy="48" r="28" fill="none" stroke="#ed5565" stroke-width="2" stroke-dasharray="5,3"/>
+          <text x="30" y="35" font-size="8" fill="#2a6c2a" font-weight="bold">Input</text>
+          <text x="72" y="82" font-size="7" fill="#ed5565" font-weight="bold">Clip boundary</text>
+        </g>
+        <line x1="112" y1="48" x2="148" y2="48" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="130" y="40" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">✂</text>
+        <!-- equals -->
+        <text x="130" y="105" text-anchor="middle" font-size="8" fill="#888" font-style="italic">cookie-cutter</text>
+        <!-- Output -->
+        <g transform="translate(155,0)" filter="url(#f61)">
+          <clipPath id="clipCircle"><circle cx="42" cy="48" r="28"/></clipPath>
+          <rect x="0" y="12" width="70" height="70" rx="0" fill="url(#gCl)" fill-opacity="0.7" stroke="none" clip-path="url(#clipCircle)"/>
+          <circle cx="42" cy="48" r="28" fill="none" stroke="#2a8c2a" stroke-width="1.8"/>
+          <text x="42" y="52" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">✓</text>
+        </g>
+        <text x="195" y="95" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Output: only inside clip</text>
+      </svg>
+      <figcaption>Fig 6.1 – Clip: Cookie-cutter extracts input features within clip boundary</figcaption>
+    </figure>
+
+    <h3>B. Intersect</h3>
+    <ul>
+      <li><strong>Concept:</strong> Computes the geometric intersection of two layers. Only those features that overlap in both layers are preserved in the output.</li>
+      <li><strong>Spatial Map:</strong> If Polygon A (Land Use) overlaps Polygon B (Flood Zone), the Output is strictly the overlapping middle section.</li>
+      <li><strong>Attribute Table:</strong> The output attribute table joins the attribute columns from both Polygon A and Polygon B for the overlapping region.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 440 120" width="440" height="120" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="f62"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- Input A & B -->
+        <g filter="url(#f62)">
+          <circle cx="48" cy="48" r="32" fill="#4fc1e9" fill-opacity="0.35" stroke="#1a3c5e" stroke-width="1.8"/>
+          <circle cx="82" cy="48" r="32" fill="#f6bb42" fill-opacity="0.35" stroke="#8b6914" stroke-width="1.8"/>
+          <text x="35" y="32" font-size="10" font-weight="bold" fill="#1a3c5e">A</text>
+          <text x="95" y="32" font-size="10" font-weight="bold" fill="#8b6914">B</text>
+        </g>
+        <text x="65" y="98" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Input Layers</text>
+        <!-- Arrow -->
+        <line x1="120" y1="48" x2="155" y2="48" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="138" y="40" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">∩</text>
+        <!-- Output -->
+        <g transform="translate(165,0)" filter="url(#f62)">
+          <clipPath id="intA"><circle cx="48" cy="48" r="32"/></clipPath>
+          <circle cx="82" cy="48" r="32" fill="#a0d468" fill-opacity="0.65" stroke="none" clip-path="url(#intA)"/>
+          <circle cx="48" cy="48" r="32" fill="none" stroke="#ccc" stroke-width="0.8" stroke-dasharray="4,2"/>
+          <circle cx="82" cy="48" r="32" fill="none" stroke="#ccc" stroke-width="0.8" stroke-dasharray="4,2"/>
+          <text x="65" y="52" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">✓</text>
+        </g>
+        <text x="230" y="98" text-anchor="middle" font-size="8" fill="#555" font-style="italic">A ∩ B (Overlap only)</text>
+        <text x="230" y="112" text-anchor="middle" font-size="7" fill="#1a3c5e">Attributes: A + B combined</text>
+      </svg>
+      <figcaption>Fig 6.2 – Intersect: Only the overlapping region is preserved, with both attribute tables joined</figcaption>
+    </figure>
+
+    <h3>C. Union (A Spatial Analysis / Topological Overlay Tool)</h3>
+    <ul>
+      <li><strong>What it does:</strong> It takes two overlapping polygon layers and physically cuts them against each other. Every place where boundaries cross, a completely new, smaller polygon is created.</li>
+      <li><strong>The Attribute Table:</strong> It joins the columns of Table A and Table B together (horizontally). Every new polygon knows what it was in Layer A and what it was in Layer B.</li>
+      <li><strong>Rule:</strong> Both input layers must be polygons.</li>
+      <li><strong>Civil Engineering Example:</strong> You have a polygon layer of "Soil Types" and another polygon layer of "Land Use" for the exact same watershed. You use Union to find every unique combination of soil and land use. If an "Agricultural" polygon overlaps a "Clay Soil" polygon, the Union operation cuts out that specific overlapping shape and its attribute table will read: Land Use: Agricultural | Soil: Clay.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 130" width="480" height="130" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f63"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Input A & B -->
+        <g filter="url(#f63)">
+          <circle cx="52" cy="52" r="34" fill="#4fc1e9" fill-opacity="0.35" stroke="#1a3c5e" stroke-width="1.8"/>
+          <circle cx="88" cy="52" r="34" fill="#f6bb42" fill-opacity="0.35" stroke="#8b6914" stroke-width="1.8"/>
+          <text x="36" y="36" font-size="10" font-weight="bold" fill="#1a3c5e">A</text>
+          <text x="104" y="36" font-size="10" font-weight="bold" fill="#8b6914">B</text>
+        </g>
+        <text x="70" y="105" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Input Layers</text>
+        <!-- Arrow -->
+        <line x1="130" y1="52" x2="168" y2="52" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="149" y="44" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">∪</text>
+        <!-- Output: all three regions -->
+        <g transform="translate(178,0)" filter="url(#f63)">
+          <!-- A-only -->
+          <clipPath id="uAonly"><circle cx="52" cy="52" r="34"/></clipPath>
+          <circle cx="52" cy="52" r="34" fill="#4fc1e9" fill-opacity="0.35" stroke="#1a3c5e" stroke-width="1.5"/>
+          <!-- B-only -->
+          <circle cx="88" cy="52" r="34" fill="#f6bb42" fill-opacity="0.35" stroke="#8b6914" stroke-width="1.5"/>
+          <!-- Overlap highlight -->
+          <clipPath id="uOvlp"><circle cx="52" cy="52" r="34"/></clipPath>
+          <circle cx="88" cy="52" r="34" fill="#a0d468" fill-opacity="0.55" stroke="none" clip-path="url(#uOvlp)"/>
+          <!-- Labels -->
+          <text x="32" y="55" font-size="7" fill="#1a3c5e" font-weight="bold">A only</text>
+          <text x="70" y="55" text-anchor="middle" font-size="7" fill="#2a6c2a" font-weight="bold">A∩B</text>
+          <text x="104" y="55" font-size="7" fill="#8b6914" font-weight="bold">B only</text>
+        </g>
+        <text x="248" y="105" text-anchor="middle" font-size="8" fill="#555" font-style="italic">A ∪ B (Everything preserved)</text>
+        <text x="248" y="120" text-anchor="middle" font-size="7" fill="#1a3c5e">Attributes: A + B combined; NULLs where non-overlap</text>
+        <!-- Mini attribute table -->
+        <g transform="translate(330,10)" filter="url(#f63)">
+          <rect x="0" y="0" width="135" height="72" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="68" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Output Table</text>
+          <line x1="5" y1="18" x2="130" y2="18" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="8" y="28" font-size="6" fill="#333" font-weight="bold">Zone</text>
+          <text x="42" y="28" font-size="6" fill="#1a3c5e" font-weight="bold">A_attr</text>
+          <text x="85" y="28" font-size="6" fill="#8b6914" font-weight="bold">B_attr</text>
+          <line x1="5" y1="32" x2="130" y2="32" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="42" font-size="6" fill="#555">A only</text>
+          <text x="42" y="42" font-size="6" fill="#1a3c5e">Agri</text>
+          <text x="85" y="42" font-size="6" fill="#aaa">NULL</text>
+          <text x="8" y="52" font-size="6" fill="#555">A∩B</text>
+          <text x="42" y="52" font-size="6" fill="#1a3c5e">Agri</text>
+          <text x="85" y="52" font-size="6" fill="#8b6914">Clay</text>
+          <text x="8" y="62" font-size="6" fill="#555">B only</text>
+          <text x="42" y="62" font-size="6" fill="#aaa">NULL</text>
+          <text x="85" y="62" font-size="6" fill="#8b6914">Clay</text>
+        </g>
+      </svg>
+      <figcaption>Fig 6.3 – Union: All areas preserved with combined attribute table; NULLs where non-overlapping</figcaption>
+    </figure>
+
+    <h3>D. Dissolve</h3>
+    <ul>
+      <li><strong>Concept:</strong> Aggregates adjacent features or polygons that share the same attribute value into a single, larger feature.</li>
+      <li><strong>Spatial Map:</strong> If you have 10 adjacent small square parcels, and 8 of them share the attribute "Residential", the output merges those 8 squares into one large "Residential" polygon boundary.</li>
+      <li><strong>Attribute Table:</strong> The records are aggregated. Multiple rows are combined into a single record, reducing the total number of rows in the table.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 500 135" width="500" height="135" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f66"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Before: 6 small parcels -->
+        <g filter="url(#f66)">
+          <rect x="5" y="5" width="170" height="120" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="90" y="18" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Before Dissolve</text>
+          <!-- Row 1 -->
+          <rect x="15" y="26" width="45" height="36" rx="2" fill="#66bb6a" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="38" y="48" text-anchor="middle" font-size="6" fill="#2a6c2a" font-weight="bold">Res</text>
+          <rect x="60" y="26" width="45" height="36" rx="2" fill="#66bb6a" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="83" y="48" text-anchor="middle" font-size="6" fill="#2a6c2a" font-weight="bold">Res</text>
+          <rect x="105" y="26" width="60" height="36" rx="2" fill="#42a5f5" fill-opacity="0.4" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="135" y="48" text-anchor="middle" font-size="6" fill="#1a3c5e" font-weight="bold">Comm</text>
+          <!-- Row 2 -->
+          <rect x="15" y="62" width="45" height="36" rx="2" fill="#66bb6a" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="38" y="84" text-anchor="middle" font-size="6" fill="#2a6c2a" font-weight="bold">Res</text>
+          <rect x="60" y="62" width="45" height="36" rx="2" fill="#66bb6a" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="83" y="84" text-anchor="middle" font-size="6" fill="#2a6c2a" font-weight="bold">Res</text>
+          <rect x="105" y="62" width="60" height="36" rx="2" fill="#42a5f5" fill-opacity="0.4" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="135" y="84" text-anchor="middle" font-size="6" fill="#1a3c5e" font-weight="bold">Comm</text>
+          <text x="90" y="112" text-anchor="middle" font-size="7" fill="#888" font-style="italic">6 parcels, 6 rows</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="185" y1="65" x2="225" y2="65" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="205" y="56" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold"></text>
+        <text x="205" y="82" text-anchor="middle" font-size="7" fill="#888">Dissolve</text>
+        <!-- After: 2 merged zones -->
+        <g filter="url(#f66)">
+          <rect x="235" y="5" width="140" height="120" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="305" y="18" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">After Dissolve</text>
+          <rect x="245" y="26" width="90" height="72" rx="4" fill="#66bb6a" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="2"/>
+          <text x="290" y="66" text-anchor="middle" font-size="9" fill="#2a6c2a" font-weight="bold">Residential</text>
+          <rect x="335" y="26" width="30" height="72" rx="4" fill="#42a5f5" fill-opacity="0.4" stroke="#1a3c5e" stroke-width="2"/>
+          <text x="350" y="66" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold" writing-mode="tb">Comm</text>
+          <text x="305" y="112" text-anchor="middle" font-size="7" fill="#888" font-style="italic">2 zones, 2 rows</text>
+        </g>
+        <!-- Mini table comparison -->
+        <g transform="translate(390,10)" filter="url(#f66)">
+          <rect x="0" y="0" width="100" height="108" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="50" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Table Summary</text>
+          <line x1="5" y1="18" x2="95" y2="18" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="8" y="30" font-size="6" fill="#555" font-style="italic">Before:</text>
+          <text x="8" y="42" font-size="6" fill="#2a6c2a">Res | Res | Comm</text>
+          <text x="8" y="52" font-size="6" fill="#2a6c2a">Res | Res | Comm</text>
+          <line x1="5" y1="58" x2="95" y2="58" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="70" font-size="6" fill="#555" font-style="italic">After:</text>
+          <text x="8" y="82" font-size="6" fill="#2a6c2a" font-weight="bold">Residential</text>
+          <text x="8" y="94" font-size="6" fill="#1a3c5e" font-weight="bold">Commercial</text>
+          <text x="50" y="106" text-anchor="middle" font-size="6" fill="#888">6 rows → 2 rows</text>
+        </g>
+      </svg>
+      <figcaption>Fig 6.6 – Dissolve: Internal boundaries removed for parcels sharing the same attribute</figcaption>
+    </figure>
+
+    <h3>E. Buffer</h3>
+    <ul>
+      <li><strong>Concept:</strong> Creates a proximity zone (a new polygon) around a map feature (point, line, or polygon) measured at a specific uniform or variable distance.</li>
+      <li><strong>Spatial Map:</strong> A line representing a highway will output a thick polygon tracing that highway at a 50m distance on both sides.</li>
+      <li><strong>Attribute Table:</strong> A new polygon feature is created. The attribute table typically inherits the base feature's attributes and adds a new column stating the buffer distance (e.g., "BUFF_DIST = 50").</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 440 135" width="440" height="135" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f64"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gBuf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef" stop-opacity="0.3"/><stop offset="100%" stop-color="#3ba8d8" stop-opacity="0.15"/></linearGradient>
+        </defs>
+        <!-- Point buffer -->
+        <g transform="translate(18,8)" filter="url(#f64)">
+          <rect x="0" y="0" width="110" height="105" rx="8" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="55" y="16" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Point Buffer</text>
+          <circle cx="55" cy="52" r="30" fill="url(#gBuf)" stroke="#1a3c5e" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <circle cx="55" cy="52" r="5" fill="#ed5565" stroke="#a03030" stroke-width="1"/>
+          <line x1="55" y1="52" x2="85" y2="52" stroke="#555" stroke-width="0.8" stroke-dasharray="2,1"/>
+          <text x="72" y="48" font-size="7" fill="#1a3c5e" font-weight="bold">d</text>
+          <text x="55" y="96" text-anchor="middle" font-size="8" fill="#888" font-style="italic">Circular zone</text>
+        </g>
+        <!-- Line buffer -->
+        <g transform="translate(150,8)" filter="url(#f64)">
+          <rect x="0" y="0" width="130" height="105" rx="8" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="65" y="16" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Line Buffer</text>
+          <path d="M 15,58 Q 45,25 75,50 Q 105,75 120,38" fill="none" stroke="#333" stroke-width="2.5"/>
+          <path d="M 15,58 Q 45,25 75,50 Q 105,75 120,38" fill="none" stroke="#4fc1e9" stroke-width="24" stroke-opacity="0.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="65" y="96" text-anchor="middle" font-size="8" fill="#888" font-style="italic">Parallel corridor</text>
+        </g>
+        <!-- Polygon buffer -->
+        <g transform="translate(302,8)" filter="url(#f64)">
+          <rect x="0" y="0" width="120" height="105" rx="8" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="60" y="16" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Polygon Buffer</text>
+          <rect x="28" y="30" width="64" height="44" rx="4" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="1.5"/>
+          <rect x="14" y="18" width="92" height="68" rx="10" fill="none" stroke="#1a3c5e" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="60" y="96" text-anchor="middle" font-size="8" fill="#888" font-style="italic">Expanded outline</text>
+        </g>
+      </svg>
+      <figcaption>Fig 6.4 – Buffer: Proximity zones around Points, Lines, and Polygons</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 145" width="480" height="145" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fMR"><feDropShadow dx="1" dy="1" stdDeviation="1" flood-opacity="0.08"/></filter>
+        </defs>
+        <text x="240" y="14" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Single Buffer vs. Multi-Ring Buffer</text>
+
+        <!-- Left: Single buffer -->
+        <g filter="url(#fMR)">
+          <rect x="10" y="24" width="200" height="112" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="110" y="39" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Single Buffer</text>
+          <!-- Factory point -->
+          <circle cx="110" cy="82" r="4" fill="#8b2500" stroke="#5a1800" stroke-width="0.5"/>
+          <text x="110" y="73" text-anchor="middle" font-size="5" fill="#8b2500">Factory</text>
+          <!-- Single 500m ring -->
+          <circle cx="110" cy="82" r="35" fill="#5cc5ef" fill-opacity="0.15" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="155" y="66" font-size="5" fill="#1a3c5e">500m</text>
+          <!-- Label -->
+          <text x="110" y="128" text-anchor="middle" font-size="6" fill="#555">One distance = one zone</text>
+        </g>
+
+        <!-- Right: Multi-ring buffer -->
+        <g filter="url(#fMR)">
+          <rect x="270" y="24" width="200" height="112" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="370" y="39" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b2500">Multi-Ring Buffer</text>
+          <!-- Factory point -->
+          <circle cx="370" cy="82" r="4" fill="#8b2500" stroke="#5a1800" stroke-width="0.5"/>
+          <!-- 500m ring (outermost = lightest) -->
+          <circle cx="370" cy="82" r="45" fill="#fce4ec" fill-opacity="0.3" stroke="#d4cfc5" stroke-width="0.6"/>
+          <text x="425" y="55" font-size="5" fill="#8b2500">500m</text>
+          <!-- 300m ring -->
+          <circle cx="370" cy="82" r="30" fill="#f8bbd0" fill-opacity="0.3" stroke="#d4cfc5" stroke-width="0.6"/>
+          <text x="410" y="66" font-size="5" fill="#8b2500">300m</text>
+          <!-- 100m ring (innermost = darkest) -->
+          <circle cx="370" cy="82" r="15" fill="#ef9a9a" fill-opacity="0.4" stroke="#8b2500" stroke-width="0.8"/>
+          <text x="394" y="78" font-size="5" fill="#8b2500">100m</text>
+          <!-- Arrow + labels -->
+          <text x="320" y="60" font-size="5" fill="#555">High risk</text>
+          <text x="320" y="100" font-size="5" fill="#555">Low risk</text>
+          <line x1="340" y1="62" x2="340" y2="96" stroke="#b8860b" stroke-width="0.5" marker-end="url(#aPrf)"/>
+          <text x="370" y="128" text-anchor="middle" font-size="6" fill="#555">Multiple distances = concentric zones</text>
+        </g>
+
+        <!-- Comparison arrow -->
+        <text x="236" y="85" text-anchor="middle" font-size="12" fill="#b8860b">&#x2192;</text>
+      </svg>
+      <figcaption><strong>Fig 6.18</strong> &mdash; Single Buffer vs. Multi-Ring Buffer: A single buffer creates one proximity zone; multi-ring buffers create concentric zones at different distances (e.g., 100m high-risk, 300m medium, 500m low-risk around a factory).</figcaption>
+    </figure>
+
+    <h3>F. Merge (A Data Management Tool)</h3>
+    <ul>
+      <li><strong>What it does:</strong> It takes two completely separate datasets (usually adjacent to each other) and groups them into one single file. It does not calculate intersections or break polygons into smaller pieces.</li>
+      <li><strong>The Attribute Table:</strong> It simply takes the rows from Table B and adds them to the bottom of Table A (stacking them vertically).</li>
+      <li><strong>Rule:</strong> The input layers must be the same geometry type (e.g., you can only Merge lines with lines, or polygons with polygons).</li>
+      <li><strong>Civil Engineering Example:</strong> You have a shapefile of the "Kathmandu Road Network" and a separate shapefile of the "Lalitpur Road Network." You use Merge to create a single shapefile called "Valley Road Network."</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 140" width="520" height="140" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f67"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gMrA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e3f2fd"/><stop offset="100%" stop-color="#bbdefb"/></linearGradient>
+          <linearGradient id="gMrB" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff8e1"/><stop offset="100%" stop-color="#ffecb3"/></linearGradient>
+        </defs>
+        <!-- Dataset A -->
+        <g filter="url(#f67)">
+          <rect x="5" y="8" width="100" height="55" rx="6" fill="url(#gMrA)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="55" y="22" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">KTM Roads</text>
+          <line x1="15" y1="32" x2="90" y2="32" stroke="#1a3c5e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="25" y1="40" x2="80" y2="40" stroke="#1a3c5e" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="20" y1="48" x2="85" y2="48" stroke="#1a3c5e" stroke-width="1.2" stroke-linecap="round"/>
+          <text x="55" y="60" text-anchor="middle" font-size="6" fill="#888">3 features</text>
+        </g>
+        <!-- Dataset B -->
+        <g filter="url(#f67)">
+          <rect x="5" y="72" width="100" height="55" rx="6" fill="url(#gMrB)" stroke="#8b6914" stroke-width="1.2"/>
+          <text x="55" y="86" text-anchor="middle" font-size="8" font-weight="bold" fill="#8b6914">Lalitpur Roads</text>
+          <line x1="15" y1="96" x2="88" y2="96" stroke="#8b6914" stroke-width="2" stroke-linecap="round"/>
+          <line x1="22" y1="104" x2="75" y2="104" stroke="#8b6914" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="55" y="124" text-anchor="middle" font-size="6" fill="#888">2 features</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="115" y1="68" x2="155" y2="68" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="135" y="60" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold"></text>
+        <text x="135" y="82" text-anchor="middle" font-size="7" fill="#888">Merge</text>
+        <!-- Output -->
+        <g filter="url(#f67)">
+          <rect x="165" y="14" width="130" height="108" rx="6" fill="#faf8f4" stroke="#2a8c2a" stroke-width="1.5"/>
+          <text x="230" y="28" text-anchor="middle" font-size="8" font-weight="bold" fill="#2a8c2a">Valley Road Network</text>
+          <line x1="178" y1="38" x2="282" y2="38" stroke="#1a3c5e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="185" y1="48" x2="275" y2="48" stroke="#1a3c5e" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="180" y1="58" x2="278" y2="58" stroke="#1a3c5e" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="178" y1="72" x2="280" y2="72" stroke="#8b6914" stroke-width="2" stroke-linecap="round"/>
+          <line x1="185" y1="82" x2="268" y2="82" stroke="#8b6914" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="165" y1="66" x2="295" y2="66" stroke="#d4cfc5" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <text x="230" y="103" text-anchor="middle" font-size="6" fill="#888" font-style="italic">5 features — rows stacked</text>
+          <text x="230" y="116" text-anchor="middle" font-size="6" fill="#1a3c5e">No geometry altered</text>
+        </g>
+        <!-- Table visual -->
+        <g transform="translate(310,14)" filter="url(#f67)">
+          <rect x="0" y="0" width="195" height="108" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="98" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Attribute Table (vertical stack)</text>
+          <line x1="5" y1="18" x2="190" y2="18" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="10" y="30" font-size="6" fill="#333" font-weight="bold">FID</text>
+          <text x="35" y="30" font-size="6" fill="#333" font-weight="bold">Name</text>
+          <text x="100" y="30" font-size="6" fill="#333" font-weight="bold">Source</text>
+          <line x1="5" y1="34" x2="190" y2="34" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="10" y="44" font-size="6" fill="#1a3c5e">1</text>
+          <text x="35" y="44" font-size="6" fill="#1a3c5e">Ring Road</text>
+          <text x="100" y="44" font-size="6" fill="#1a3c5e">KTM</text>
+          <text x="10" y="54" font-size="6" fill="#1a3c5e">2</text>
+          <text x="35" y="54" font-size="6" fill="#1a3c5e">Ratna Park Rd</text>
+          <text x="100" y="54" font-size="6" fill="#1a3c5e">KTM</text>
+          <text x="10" y="64" font-size="6" fill="#1a3c5e">3</text>
+          <text x="35" y="64" font-size="6" fill="#1a3c5e">Tripureshwor</text>
+          <text x="100" y="64" font-size="6" fill="#1a3c5e">KTM</text>
+          <line x1="5" y1="68" x2="190" y2="68" stroke="#b8860b" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <text x="10" y="80" font-size="6" fill="#8b6914">4</text>
+          <text x="35" y="80" font-size="6" fill="#8b6914">Pulchowk Rd</text>
+          <text x="100" y="80" font-size="6" fill="#8b6914">Lalitpur</text>
+          <text x="10" y="90" font-size="6" fill="#8b6914">5</text>
+          <text x="35" y="90" font-size="6" fill="#8b6914">Satdobato Rd</text>
+          <text x="100" y="90" font-size="6" fill="#8b6914">Lalitpur</text>
+          <text x="98" y="105" text-anchor="middle" font-size="6" fill="#888">↑ Table A rows + Table B rows stacked ↓</text>
+        </g>
+      </svg>
+      <figcaption>Fig 6.7 – Merge: Separate datasets combined into one file; attribute rows stacked vertically</figcaption>
+    </figure>
+
+    <h3>G. Erase</h3>
+    <ul>
+      <li><strong>Concept:</strong> Removes portions of the input feature that overlap with the "erase" feature. It is the geometric opposite of a Clip.</li>
+      <li><strong>Spatial Map:</strong> If the Input is a large polygon and the Erase layer is a smaller overlapping circle, the Output is the large polygon with a blank "hole" punched out where the circle was.</li>
+      <li><strong>Attribute Table:</strong> Retains only the input layer's attributes; the records and geometry for the erased portions are permanently removed.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 400 110" width="400" height="110" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="f65"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- Input -->
+        <g filter="url(#f65)">
+          <rect x="8" y="12" width="90" height="68" rx="6" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="1.5"/>
+          <circle cx="68" cy="46" r="24" fill="#ed5565" fill-opacity="0.3" stroke="#ed5565" stroke-width="1.8" stroke-dasharray="4,2"/>
+          <text x="28" y="35" font-size="8" fill="#2a6c2a" font-weight="bold">Input</text>
+          <text x="68" y="80" font-size="7" fill="#ed5565" font-weight="bold">Erase</text>
+        </g>
+        <line x1="112" y1="46" x2="148" y2="46" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="130" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold"></text>
+        <!-- Output -->
+        <g transform="translate(158,0)" filter="url(#f65)">
+          <defs><mask id="eraseMask"><rect x="0" y="0" width="110" height="100" fill="white"/><circle cx="60" cy="46" r="24" fill="black"/></mask></defs>
+          <rect x="0" y="12" width="90" height="68" rx="6" fill="#a0d468" fill-opacity="0.65" stroke="#2a8c2a" stroke-width="1.5" mask="url(#eraseMask)"/>
+          <circle cx="60" cy="46" r="24" fill="none" stroke="#d4cfc5" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="60" y="50" text-anchor="middle" font-size="7" fill="#ccc">removed</text>
+        </g>
+        <text x="205" y="98" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Output: hole punched out</text>
+      </svg>
+      <figcaption>Fig 6.5 – Erase: The geometric opposite of Clip — removes overlapping portions</figcaption>
+    </figure>
+
+    <h3>2. Map Join / Spatial Join (A Data Analysis Tool)</h3>
+    <ul>
+      <li><strong>What it does:</strong> It transfers attributes from one layer to another based purely on their spatial relationship (location) (like "intersects," "is completely within," or "is closest to"). It does not alter the geometric shapes of the target layer at all.</li>
+      <li><strong>The Attribute Table:</strong> It joins the columns of Table B to the side of Table A (widening it horizontally) based on physical location.</li>
+      <li><strong>Rule:</strong> The input layers can be different geometry types (e.g., you can join Polygon attributes to Point features).</li>
+      <li><strong>Engineering Example:</strong> For your final year project on Site Response Analysis, you have a point shapefile containing 50 individual soil borehole locations from Kathmandu Geo Lab. You also have a polygon shapefile of the Kathmandu municipal wards. If you use a Spatial Join, the software looks at where each borehole point falls physically, and automatically adds the "Ward Number" and "Ward Population" columns from the polygon map directly into your borehole point attribute table.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 540 150" width="540" height="150" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f68"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gSjW" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#bbdefb"/></linearGradient>
+        </defs>
+        <!-- Ward polygons + borehole points -->
+        <g filter="url(#f68)">
+          <rect x="5" y="5" width="155" height="130" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="82" y="18" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Ward Polygons + Boreholes</text>
+          <!-- Ward 1 -->
+          <polygon points="15,30 75,28 80,70 55,82 15,75" fill="url(#gSjW)" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="45" y="58" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold">Ward 1</text>
+          <!-- Ward 2 -->
+          <polygon points="75,28 150,30 148,78 80,70" fill="#fff8e1" stroke="#8b6914" stroke-width="1"/>
+          <text x="112" y="58" text-anchor="middle" font-size="7" fill="#8b6914" font-weight="bold">Ward 2</text>
+          <!-- Ward 3 -->
+          <polygon points="15,75 55,82 80,70 148,78 145,120 15,118" fill="#e8f5e9" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="80" y="105" text-anchor="middle" font-size="7" fill="#2a8c2a" font-weight="bold">Ward 3</text>
+          <!-- Borehole points -->
+          <circle cx="35" cy="50" r="4" fill="#ed5565" stroke="#a03030" stroke-width="0.8"/>
+          <text x="35" y="43" text-anchor="middle" font-size="5" fill="#ed5565">BH1</text>
+          <circle cx="60" cy="68" r="4" fill="#ed5565" stroke="#a03030" stroke-width="0.8"/>
+          <text x="60" y="61" text-anchor="middle" font-size="5" fill="#ed5565">BH2</text>
+          <circle cx="110" cy="48" r="4" fill="#ed5565" stroke="#a03030" stroke-width="0.8"/>
+          <text x="110" y="41" text-anchor="middle" font-size="5" fill="#ed5565">BH3</text>
+          <circle cx="90" cy="98" r="4" fill="#ed5565" stroke="#a03030" stroke-width="0.8"/>
+          <text x="90" y="91" text-anchor="middle" font-size="5" fill="#ed5565">BH4</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="170" y1="70" x2="210" y2="70" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="190" y="62" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold"></text>
+        <text x="190" y="88" text-anchor="middle" font-size="7" fill="#888">Spatial</text>
+        <text x="190" y="98" text-anchor="middle" font-size="7" fill="#888">Join</text>
+        <!-- Output table -->
+        <g transform="translate(220,8)" filter="url(#f68)">
+          <rect x="0" y="0" width="310" height="128" rx="6" fill="#faf8f4" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="155" y="16" text-anchor="middle" font-size="8" font-weight="bold" fill="#2a8c2a">Output: Borehole table with Ward attributes joined</text>
+          <line x1="5" y1="22" x2="305" y2="22" stroke="#d4cfc5" stroke-width="0.5"/>
+          <!-- Header -->
+          <text x="10" y="35" font-size="6" fill="#333" font-weight="bold">FID</text>
+          <text x="35" y="35" font-size="6" fill="#ed5565" font-weight="bold">BH_ID</text>
+          <text x="72" y="35" font-size="6" fill="#ed5565" font-weight="bold">SPT_N</text>
+          <text x="110" y="35" font-size="6" fill="#ed5565" font-weight="bold">Depth_m</text>
+          <text x="160" y="35" font-size="6" fill="#1a3c5e" font-weight="bold">← Ward_No</text>
+          <text x="215" y="35" font-size="6" fill="#1a3c5e" font-weight="bold">Ward_Pop</text>
+          <text x="270" y="35" font-size="6" fill="#1a3c5e" font-weight="bold">Rock</text>
+          <line x1="5" y1="40" x2="305" y2="40" stroke="#d4cfc5" stroke-width="0.3"/>
+          <!-- Row 1 -->
+          <text x="10" y="52" font-size="6" fill="#555">1</text>
+          <text x="35" y="52" font-size="6" fill="#ed5565">BH1</text>
+          <text x="72" y="52" font-size="6" fill="#555">12</text>
+          <text x="110" y="52" font-size="6" fill="#555">15m</text>
+          <text x="160" y="52" font-size="6" fill="#1a3c5e">1</text>
+          <text x="215" y="52" font-size="6" fill="#1a3c5e">18,400</text>
+          <text x="270" y="52" font-size="6" fill="#1a3c5e">Gravel</text>
+          <!-- Row 2 -->
+          <text x="10" y="64" font-size="6" fill="#555">2</text>
+          <text x="35" y="64" font-size="6" fill="#ed5565">BH2</text>
+          <text x="72" y="64" font-size="6" fill="#555">8</text>
+          <text x="110" y="64" font-size="6" fill="#555">20m</text>
+          <text x="160" y="64" font-size="6" fill="#1a3c5e">1</text>
+          <text x="215" y="64" font-size="6" fill="#1a3c5e">18,400</text>
+          <text x="270" y="64" font-size="6" fill="#1a3c5e">Gravel</text>
+          <!-- Row 3 -->
+          <text x="10" y="76" font-size="6" fill="#555">3</text>
+          <text x="35" y="76" font-size="6" fill="#ed5565">BH3</text>
+          <text x="72" y="76" font-size="6" fill="#555">22</text>
+          <text x="110" y="76" font-size="6" fill="#555">12m</text>
+          <text x="160" y="76" font-size="6" fill="#8b6914">2</text>
+          <text x="215" y="76" font-size="6" fill="#8b6914">24,100</text>
+          <text x="270" y="76" font-size="6" fill="#8b6914">Sand</text>
+          <!-- Row 4 -->
+          <text x="10" y="88" font-size="6" fill="#555">4</text>
+          <text x="35" y="88" font-size="6" fill="#ed5565">BH4</text>
+          <text x="72" y="88" font-size="6" fill="#555">5</text>
+          <text x="110" y="88" font-size="6" fill="#555">25m</text>
+          <text x="160" y="88" font-size="6" fill="#2a8c2a">3</text>
+          <text x="215" y="88" font-size="6" fill="#2a8c2a">9,750</text>
+          <text x="270" y="88" font-size="6" fill="#2a8c2a">Clay</text>
+          <!-- Note -->
+          <rect x="30" y="98" width="248" height="22" rx="4" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="155" y="110" text-anchor="middle" font-size="6.5" fill="#8b6914" font-weight="bold">→ Geometry unchanged; Ward columns appended by spatial location</text>
+          <text x="155" y="120" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Red = original BH attributes | Blue = joined Ward attributes</text>
+        </g>
+      </svg>
+      <figcaption>Fig 6.8 – Spatial Join: Ward polygon attributes transferred to borehole points by location</figcaption>
+    </figure>
+
+    <h3>I. Update</h3>
+    <ul>
+      <li><strong>Concept:</strong> Computes the geometric intersection and replaces the input layer's features and attributes with the update layer's features and attributes where they overlap.</li>
+      <li><strong>Spatial Map:</strong> A base map of land use, and a smaller polygon of a "New Airport Development". The Output shows the base map, but the area under the new development is entirely replaced by the new polygon's shape.</li>
+      <li><strong>Attribute Table:</strong> The attributes of the base layer are overwritten by the attributes of the update layer purely in the overlapping region.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 120" width="480" height="120" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f6u"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gUpd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f5e9"/><stop offset="100%" stop-color="#c8e6c9"/></linearGradient>
+        </defs>
+        <!-- Base layer -->
+        <g filter="url(#f6u)">
+          <rect x="5" y="8" width="120" height="90" rx="6" fill="url(#gUpd)" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="65" y="22" text-anchor="middle" font-size="8" font-weight="bold" fill="#2a8c2a">Base Land Use (2020)</text>
+          <rect x="12" y="28" width="50" height="28" rx="2" fill="#a0d468" fill-opacity="0.4" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="37" y="45" text-anchor="middle" font-size="6" fill="#2a8c2a">Agri</text>
+          <rect x="62" y="28" width="55" height="28" rx="2" fill="#66bb6a" fill-opacity="0.4" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="90" y="45" text-anchor="middle" font-size="6" fill="#2a8c2a">Forest</text>
+          <rect x="12" y="56" width="105" height="28" rx="2" fill="#f6bb42" fill-opacity="0.3" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="65" y="73" text-anchor="middle" font-size="6" fill="#8b6914">Residential</text>
+          <!-- Update polygon overlay -->
+          <rect x="50" y="35" width="45" height="40" rx="3" fill="#ef5350" fill-opacity="0.4" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="72" y="58" text-anchor="middle" font-size="5" fill="#c62828" font-weight="bold">New\nAirport</text>
+          <text x="65" y="100" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Red = Update layer</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="135" y1="52" x2="172" y2="52" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="154" y="44" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold"></text>
+        <!-- Output -->
+        <g filter="url(#f6u)">
+          <rect x="180" y="8" width="120" height="90" rx="6" fill="#faf8f4" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="240" y="22" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Output</text>
+          <rect x="187" y="28" width="50" height="28" rx="2" fill="#a0d468" fill-opacity="0.4" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="212" y="45" text-anchor="middle" font-size="6" fill="#2a8c2a">Agri</text>
+          <rect x="237" y="28" width="55" height="28" rx="2" fill="#66bb6a" fill-opacity="0.4" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="265" y="45" text-anchor="middle" font-size="6" fill="#2a8c2a">Forest</text>
+          <rect x="187" y="56" width="105" height="28" rx="2" fill="#f6bb42" fill-opacity="0.3" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="240" y="73" text-anchor="middle" font-size="6" fill="#8b6914">Residential</text>
+          <!-- Replaced zone -->
+          <rect x="225" y="35" width="45" height="40" rx="3" fill="#ef5350" fill-opacity="0.55" stroke="#c62828" stroke-width="1.5"/>
+          <text x="248" y="55" text-anchor="middle" font-size="6" fill="white" font-weight="bold">Airport</text>
+          <text x="248" y="63" text-anchor="middle" font-size="5" fill="white">(replaced)</text>
+          <text x="240" y="100" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Old attrs overwritten in red zone</text>
+        </g>
+        <!-- Note -->
+        <g transform="translate(315,12)" filter="url(#f6u)">
+          <rect x="0" y="0" width="155" height="82" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="78" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Key Difference</text>
+          <line x1="5" y1="18" x2="150" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="32" font-size="6" fill="#555">• Outside overlap: base unchanged</text>
+          <text x="8" y="44" font-size="6" fill="#555">• Inside overlap: update replaces</text>
+          <text x="8" y="56" font-size="6" fill="#555">• Only update's attrs in that zone</text>
+          <text x="8" y="72" font-size="6" fill="#c62828" font-weight="bold">≠ Union (which keeps both attrs)</text>
+        </g>
+      </svg>
+      <figcaption>Fig 6.11 – Update: Base layer replaced by update layer in the overlapping zone</figcaption>
+    </figure>
+
+    <h3>J. Split</h3>
+    <ul>
+      <li><strong>Concept:</strong> Breaks a single input layer into multiple separate output files using the boundaries of a split layer.</li>
+      <li><strong>Spatial Map:</strong> A map of rivers crossing through three different district polygons. The Output results in three completely separate files (e.g., River_DistA.shp, River_DistB.shp, River_DistC.shp).</li>
+      <li><strong>Attribute Table:</strong> The original attribute table is divided into multiple smaller tables, one for each new output file.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 130" width="520" height="130" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f6sp"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Input: Rivers across 3 districts -->
+        <g filter="url(#f6sp)">
+          <rect x="5" y="5" width="165" height="110" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="88" y="18" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Input: National Rivers</text>
+          <!-- District boundaries -->
+          <rect x="12" y="24" width="50" height="80" rx="2" fill="#e3f2fd" stroke="#1a3c5e" stroke-width="0.8"/>
+          <text x="37" y="100" text-anchor="middle" font-size="6" fill="#1a3c5e">Dist A</text>
+          <rect x="62" y="24" width="50" height="80" rx="2" fill="#fff8e1" stroke="#8b6914" stroke-width="0.8"/>
+          <text x="87" y="100" text-anchor="middle" font-size="6" fill="#8b6914">Dist B</text>
+          <rect x="112" y="24" width="50" height="80" rx="2" fill="#e8f5e9" stroke="#2a8c2a" stroke-width="0.8"/>
+          <text x="137" y="100" text-anchor="middle" font-size="6" fill="#2a8c2a">Dist C</text>
+          <!-- River lines flowing across all 3 -->
+          <path d="M 15,40 Q 40,55 65,38 Q 90,22 115,45 Q 140,68 158,50" fill="none" stroke="#42a5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 18,72 Q 45,85 70,68 Q 95,50 125,72 Q 148,88 155,75" fill="none" stroke="#42a5f5" stroke-width="2" stroke-linecap="round"/>
+          <text x="88" y="118" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Split layer = 3 districts</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="180" y1="60" x2="215" y2="60" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="198" y="52" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">✂</text>
+        <text x="198" y="78" text-anchor="middle" font-size="7" fill="#888">Split</text>
+        <!-- Output: 3 separate files -->
+        <g filter="url(#f6sp)">
+          <rect x="225" y="5" width="88" height="55" rx="5" fill="#e3f2fd" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="269" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">River_DistA.shp</text>
+          <path d="M 232,28 Q 255,42 280,26" fill="none" stroke="#42a5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 235,42 Q 260,52 280,38" fill="none" stroke="#42a5f5" stroke-width="2" stroke-linecap="round"/>
+          <text x="269" y="55" text-anchor="middle" font-size="5" fill="#888">File 1</text>
+        </g>
+        <g filter="url(#f6sp)">
+          <rect x="320" y="5" width="88" height="55" rx="5" fill="#fff8e1" stroke="#8b6914" stroke-width="1.2"/>
+          <text x="364" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">River_DistB.shp</text>
+          <path d="M 327,30 Q 350,18 378,35" fill="none" stroke="#42a5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 330,42 Q 355,32 375,48" fill="none" stroke="#42a5f5" stroke-width="2" stroke-linecap="round"/>
+          <text x="364" y="55" text-anchor="middle" font-size="5" fill="#888">File 2</text>
+        </g>
+        <g filter="url(#f6sp)">
+          <rect x="415" y="5" width="98" height="55" rx="5" fill="#e8f5e9" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="464" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">River_DistC.shp</text>
+          <path d="M 422,35 Q 445,55 470,40" fill="none" stroke="#42a5f5" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 425,50 Q 448,62 472,52" fill="none" stroke="#42a5f5" stroke-width="2" stroke-linecap="round"/>
+          <text x="464" y="55" text-anchor="middle" font-size="5" fill="#888">File 3</text>
+        </g>
+        <!-- Note -->
+        <g filter="url(#f6sp)">
+          <rect x="225" y="68" width="288" height="48" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="369" y="82" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">3 separate shapefiles created</text>
+          <text x="369" y="95" text-anchor="middle" font-size="6" fill="#555">Each file has its own attribute table (subset of original rows)</text>
+          <text x="369" y="108" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Rivers clipped at district boundaries → independent files</text>
+        </g>
+      </svg>
+      <figcaption>Fig 6.12 – Split: Input layer broken into separate files using split polygon boundaries</figcaption>
+    </figure>
+
+    <!-- 4. Differentiating Specific Functions -->
+    <h2>4. Differentiating Specific Functions <span class="exam-ref">Q9</span></h2>
+    <ul>
+      <li><strong>Clip vs. Intersect:</strong> Both isolate the overlapping spatial area. However, Clip only retains the attribute table of the input layer (acting merely as a cookie-cutter), whereas Intersect joins the attribute tables of both layers together in the output.</li>
+      <li><strong>Merge vs. Dissolve:</strong> Merge combines two or more separate datasets into a single dataset without altering the individual feature geometries or combining rows (it just stacks the tables). Dissolve works within a single dataset, removing internal boundaries between adjacent polygons that share the same attribute value, thereby combining multiple rows into one.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 215" width="520" height="215" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fCI"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.10"/></filter>
+          <clipPath id="cpCI1"><circle cx="68" cy="52" r="30"/></clipPath>
+          <clipPath id="cpCI2"><circle cx="68" cy="52" r="30"/></clipPath>
+        </defs>
+        <!-- Title -->
+        <text x="260" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Clip vs. Intersect — Same Geometry, Different Attributes</text>
+        <!-- Separator -->
+        <line x1="260" y1="20" x2="260" y2="210" stroke="#d4cfc5" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+        <!-- LEFT: Clip -->
+        <g filter="url(#fCI)">
+          <rect x="8" y="26" width="240" height="180" rx="6" fill="#faf8f4" stroke="#1a3c5e" stroke-width="0.8"/>
+          <text x="128" y="42" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">CLIP (Cookie-Cutter)</text>
+          <!-- Input A (rect) -->
+          <rect x="20" y="52" width="60" height="45" rx="4" fill="#bbdefb" stroke="#1a3c5e" stroke-width="0.8" opacity="0.7"/>
+          <text x="50" y="72" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold">Input A</text>
+          <text x="50" y="82" text-anchor="middle" font-size="6" fill="#555">Attr: Name</text>
+          <!-- Clip boundary (circle) -->
+          <circle cx="62" cy="74" r="22" fill="none" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <text x="84" y="58" font-size="6" fill="#b8860b" font-weight="bold">Clip B</text>
+          <!-- Arrow -->
+          <text x="105" y="76" font-size="14" fill="#555">&#x2192;</text>
+          <!-- Output -->
+          <ellipse cx="150" cy="74" rx="22" ry="22" fill="#bbdefb" stroke="#1a3c5e" stroke-width="0.8" opacity="0.8"/>
+          <text x="150" y="72" text-anchor="middle" font-size="6" fill="#1a3c5e" font-weight="bold">Output</text>
+          <text x="150" y="81" text-anchor="middle" font-size="5" fill="#555">Shape of B</text>
+          <!-- Attribute table -->
+          <rect x="20" y="110" width="218" height="46" rx="3" fill="#fff" stroke="#d4cfc5" stroke-width="0.6"/>
+          <text x="129" y="122" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Output Attribute Table</text>
+          <line x1="20" y1="126" x2="238" y2="126" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="64" y="136" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">FID</text>
+          <text x="158" y="136" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">A.Name</text>
+          <line x1="20" y1="140" x2="238" y2="140" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="64" y="150" text-anchor="middle" font-size="7" fill="#333">1</text>
+          <text x="158" y="150" text-anchor="middle" font-size="7" fill="#333">Road_X</text>
+          <line x1="109" y1="126" x2="109" y2="156" stroke="#d4cfc5" stroke-width="0.3"/>
+          <!-- Key point -->
+          <rect x="20" y="162" width="218" height="18" rx="3" fill="#e3f2fd" stroke="#1a3c5e" stroke-width="0.5"/>
+          <text x="129" y="174" text-anchor="middle" font-size="6.5" fill="#1a3c5e" font-weight="bold">Only Input A attributes kept</text>
+          <text x="129" y="183" text-anchor="middle" font-size="6" fill="#555">(B's table is discarded)</text>
+        </g>
+
+        <!-- RIGHT: Intersect -->
+        <g filter="url(#fCI)">
+          <rect x="272" y="26" width="240" height="180" rx="6" fill="#faf8f4" stroke="#8b2500" stroke-width="0.8"/>
+          <text x="392" y="42" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">INTERSECT (Spatial AND)</text>
+          <!-- Input A (rect) -->
+          <rect x="284" y="52" width="60" height="45" rx="4" fill="#bbdefb" stroke="#1a3c5e" stroke-width="0.8" opacity="0.7"/>
+          <text x="314" y="72" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold">Input A</text>
+          <text x="314" y="82" text-anchor="middle" font-size="6" fill="#555">Attr: Name</text>
+          <!-- Input B (circle) -->
+          <circle cx="326" cy="74" r="22" fill="#fce4ec" stroke="#8b2500" stroke-width="0.8" opacity="0.5"/>
+          <text x="348" y="58" font-size="6" fill="#8b2500" font-weight="bold">Input B</text>
+          <text x="348" y="66" font-size="5" fill="#555">Attr: Zone</text>
+          <!-- Arrow -->
+          <text x="369" y="76" font-size="14" fill="#555">&#x2192;</text>
+          <!-- Output (overlap only) -->
+          <ellipse cx="414" cy="74" rx="22" ry="22" fill="#e1bee7" stroke="#6c4f9e" stroke-width="0.8" opacity="0.8"/>
+          <text x="414" y="72" text-anchor="middle" font-size="6" fill="#6c4f9e" font-weight="bold">A &#x2229; B</text>
+          <text x="414" y="81" text-anchor="middle" font-size="5" fill="#555">Overlap</text>
+          <!-- Attribute table -->
+          <rect x="284" y="110" width="218" height="46" rx="3" fill="#fff" stroke="#d4cfc5" stroke-width="0.6"/>
+          <text x="393" y="122" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b2500">Output Attribute Table</text>
+          <line x1="284" y1="126" x2="502" y2="126" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="318" y="136" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">FID</text>
+          <text x="388" y="136" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">A.Name</text>
+          <text x="465" y="136" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b2500">B.Zone</text>
+          <line x1="284" y1="140" x2="502" y2="140" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="318" y="150" text-anchor="middle" font-size="7" fill="#333">1</text>
+          <text x="388" y="150" text-anchor="middle" font-size="7" fill="#333">Road_X</text>
+          <text x="465" y="150" text-anchor="middle" font-size="7" fill="#333">Zone_Y</text>
+          <line x1="352" y1="126" x2="352" y2="156" stroke="#d4cfc5" stroke-width="0.3"/>
+          <line x1="430" y1="126" x2="430" y2="156" stroke="#d4cfc5" stroke-width="0.3"/>
+          <!-- Key point -->
+          <rect x="284" y="162" width="218" height="18" rx="3" fill="#fce4ec" stroke="#8b2500" stroke-width="0.5"/>
+          <text x="393" y="174" text-anchor="middle" font-size="6.5" fill="#8b2500" font-weight="bold">Both A and B attributes joined</text>
+          <text x="393" y="183" text-anchor="middle" font-size="6" fill="#555">(Tables merged in output)</text>
+        </g>
+      </svg>
+      <figcaption><strong>Fig 6.14</strong> &mdash; Clip vs. Intersect: Both produce the same spatial output (the overlap), but Clip only retains Input A's attributes while Intersect joins both tables.</figcaption>
+    </figure>
+
+    <!-- 5. Prove that Intersection = Union + Clip -->
+    <h2>5. Prove that Intersection = Union + Clip <span class="exam-ref">Q6e</span></h2>
+    <p>This mathematical/logical proof requires you to break down the operations step-by-step:</p>
+    <ol>
+      <li>Let Layer A be the Input Layer and Layer B be the secondary layer.</li>
+      <li><strong>The Union Step:</strong> Performing a Union on Layer A and Layer B results in a combined map containing three distinct geometric areas: A unique, B unique, and the Overlap (A ∩ B). Crucially, the attribute table now contains the joined columns of both A and B.</li>
+      <li><strong>The Clip Step:</strong> Take the output of the Union and Clip it using Layer B's exact boundary as the cookie-cutter.</li>
+      <li>Clipping to Layer B removes anything outside of B (deleting A unique). We are left with only the area inside B. Since the problem asks for the interaction of A and B, clipping the unioned layer strictly to the overlapping zone isolates the spatial geometry of (A ∩ B).</li>
+      <li><strong>Conclusion:</strong> The final geometry is just the overlapping area. Because the first step was a Union, the attribute table contains the joined data from both A and B. A geometric overlap that contains the joined attributes of both input layers is the exact definition of an Intersection. Therefore, Union + Clip = Intersection.</li>
+    </ol>
+
+    <figure class="figure">
+      <svg viewBox="0 0 540 180" width="540" height="180" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fPrf"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.10"/></filter>
+          <linearGradient id="gPrA" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#bbdefb"/><stop offset="100%" stop-color="#90caf9"/></linearGradient>
+          <linearGradient id="gPrB" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f8bbd0"/><stop offset="100%" stop-color="#f48fb1"/></linearGradient>
+          <linearGradient id="gPrO" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ce93d8"/><stop offset="100%" stop-color="#ab47bc"/></linearGradient>
+          <marker id="aPrf" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#555"/></marker>
+        </defs>
+        <!-- Title -->
+        <text x="270" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Proof: Union + Clip = Intersect</text>
+
+        <!-- Step 1: Start with A and B -->
+        <g filter="url(#fPrf)">
+          <rect x="5" y="24" width="100" height="88" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="55" y="38" text-anchor="middle" font-size="7" font-weight="bold" fill="#555">Start: A &amp; B</text>
+          <circle cx="42" cy="70" r="20" fill="url(#gPrA)" opacity="0.6" stroke="#1a3c5e" stroke-width="0.7"/>
+          <circle cx="68" cy="70" r="20" fill="url(#gPrB)" opacity="0.5" stroke="#8b2500" stroke-width="0.7"/>
+          <text x="42" y="73" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">A</text>
+          <text x="68" y="73" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="bold">B</text>
+          <text x="55" y="105" text-anchor="middle" font-size="5" fill="#555">Two input layers</text>
+        </g>
+
+        <!-- Arrow 1 -->
+        <line x1="108" y1="68" x2="125" y2="68" stroke="#555" stroke-width="1.5" marker-end="url(#aPrf)"/>
+        <text x="116" y="62" text-anchor="middle" font-size="6" fill="#b8860b" font-weight="bold">Union</text>
+
+        <!-- Step 2: Union result -->
+        <g filter="url(#fPrf)">
+          <rect x="128" y="24" width="120" height="88" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="188" y="38" text-anchor="middle" font-size="7" font-weight="bold" fill="#555">After Union</text>
+          <!-- A-only zone -->
+          <circle cx="168" cy="70" r="20" fill="url(#gPrA)" opacity="0.5" stroke="#1a3c5e" stroke-width="0.7"/>
+          <!-- B-only zone -->
+          <circle cx="208" cy="70" r="20" fill="url(#gPrB)" opacity="0.4" stroke="#8b2500" stroke-width="0.7"/>
+          <!-- Overlap zone (drawn last) -->
+          <ellipse cx="188" cy="70" rx="8" ry="18" fill="url(#gPrO)" opacity="0.7" stroke="#6c4f9e" stroke-width="0.7"/>
+          <text x="155" y="73" text-anchor="middle" font-size="6" fill="#1a3c5e">A only</text>
+          <text x="188" y="66" text-anchor="middle" font-size="5" fill="#fff" font-weight="bold">A&#x2229;B</text>
+          <text x="221" y="73" text-anchor="middle" font-size="6" fill="#8b2500">B only</text>
+          <text x="188" y="105" text-anchor="middle" font-size="5" fill="#555">3 zones, joined attrs</text>
+        </g>
+
+        <!-- Arrow 2 -->
+        <line x1="251" y1="68" x2="268" y2="68" stroke="#555" stroke-width="1.5" marker-end="url(#aPrf)"/>
+        <text x="260" y="62" text-anchor="middle" font-size="6" fill="#b8860b" font-weight="bold">Clip</text>
+        <text x="260" y="78" text-anchor="middle" font-size="5" fill="#555">(using B)</text>
+
+        <!-- Step 3: Clip result -->
+        <g filter="url(#fPrf)">
+          <rect x="271" y="24" width="120" height="88" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="331" y="38" text-anchor="middle" font-size="7" font-weight="bold" fill="#555">After Clip to B</text>
+          <!-- B boundary (clip mask shown as dashed) -->
+          <circle cx="331" cy="70" r="24" fill="none" stroke="#8b2500" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <!-- Overlap zone remains -->
+          <ellipse cx="320" cy="70" rx="8" ry="18" fill="url(#gPrO)" opacity="0.7" stroke="#6c4f9e" stroke-width="0.7"/>
+          <!-- B-only remains -->
+          <path d="M324,48 A24,24 0 0,1 342,89 A20,20 0 0,0 332,52 Z" fill="url(#gPrB)" opacity="0.3"/>
+          <text x="320" y="66" text-anchor="middle" font-size="5" fill="#fff" font-weight="bold">A&#x2229;B</text>
+          <text x="344" y="73" text-anchor="middle" font-size="5" fill="#8b2500">B</text>
+          <text x="331" y="105" text-anchor="middle" font-size="5" fill="#555">A-only removed!</text>
+        </g>
+
+        <!-- Arrow 3 (equals) -->
+        <text x="404" y="72" text-anchor="middle" font-size="18" fill="#6c4f9e" font-weight="bold">=</text>
+
+        <!-- Step 4: Intersect output -->
+        <g filter="url(#fPrf)">
+          <rect x="418" y="24" width="115" height="88" rx="6" fill="#f3e5f5" stroke="#6c4f9e" stroke-width="1"/>
+          <text x="475" y="38" text-anchor="middle" font-size="7" font-weight="bold" fill="#6c4f9e">= Intersect(A,B)</text>
+          <ellipse cx="475" cy="70" rx="20" ry="24" fill="url(#gPrO)" opacity="0.6" stroke="#6c4f9e" stroke-width="0.8"/>
+          <text x="475" y="66" text-anchor="middle" font-size="7" fill="#fff" font-weight="bold">A &#x2229; B</text>
+          <text x="475" y="77" text-anchor="middle" font-size="5" fill="#fff">Joined attrs</text>
+          <text x="475" y="105" text-anchor="middle" font-size="5" fill="#6c4f9e" font-weight="bold">Q.E.D.</text>
+        </g>
+
+        <!-- Bottom summary -->
+        <rect x="50" y="120" width="440" height="52" rx="5" fill="#f3e5f5" stroke="#6c4f9e" stroke-width="0.6" opacity="0.5"/>
+        <text x="270" y="136" text-anchor="middle" font-size="7" fill="#6c4f9e" font-weight="bold">Why does this work?</text>
+        <text x="270" y="148" text-anchor="middle" font-size="6.5" fill="#555">1. Union preserves all geometry AND joins both attribute tables.</text>
+        <text x="270" y="159" text-anchor="middle" font-size="6.5" fill="#555">2. Clipping to B removes A-only areas, leaving only the overlap with joined attributes.</text>
+        <text x="270" y="170" text-anchor="middle" font-size="6.5" fill="#555">3. Overlap + joined attributes = the exact definition of Intersect.</text>
+      </svg>
+      <figcaption><strong>Fig 6.15</strong> &mdash; Visual Proof: Union + Clip = Intersect. Union creates three zones with joined attributes; Clipping to B removes A-only, leaving only the overlap &mdash; which is exactly what Intersect produces.</figcaption>
+    </figure>
+
+    <!-- Exam Examples for Each Geoprocessing Function -->
+    <h2>Exam Examples for Each Geoprocessing Function</h2>
+
+    <h3>A. Clip</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You are given a massive geographic dataset of the entire national river network, but your final year project only focuses on a specific watershed model. You use the Clip tool, with your specific watershed boundary as the "cookie-cutter," to extract only the streams and rivers that flow within your study area. The resulting layer contains only the relevant river segments, keeping the original river attributes intact.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 460 115" width="460" height="115" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExA"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- National river network -->
+        <g filter="url(#fExA)">
+          <rect x="5" y="5" width="130" height="100" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="70" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">🇳🇵 National Rivers</text>
+          <path d="M 12,30 Q 30,50 55,35 Q 80,20 110,40 Q 125,50 130,45" fill="none" stroke="#42a5f5" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 15,55 Q 40,70 70,52 Q 95,35 128,60" fill="none" stroke="#42a5f5" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M 10,78 Q 45,90 80,75 Q 110,62 130,80" fill="none" stroke="#42a5f5" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Watershed boundary -->
+          <ellipse cx="75" cy="55" rx="35" ry="28" fill="none" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="75" y="95" text-anchor="middle" font-size="6" fill="#c62828">✂Watershed boundary</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="145" y1="55" x2="180" y2="55" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="163" y="48" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold">Clip</text>
+        <!-- Output -->
+        <g filter="url(#fExA)">
+          <rect x="190" y="5" width="120" height="100" rx="6" fill="#faf8f4" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="250" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">✅ Study Area Only</text>
+          <ellipse cx="250" cy="55" rx="35" ry="28" fill="#e3f2fd" fill-opacity="0.3" stroke="#2a8c2a" stroke-width="1.2"/>
+          <clipPath id="wsClip"><ellipse cx="250" cy="55" rx="35" ry="28"/></clipPath>
+          <g clip-path="url(#wsClip)">
+            <path d="M 215,38 Q 235,52 250,40 Q 265,28 285,45" fill="none" stroke="#42a5f5" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M 218,58 Q 240,70 260,55 Q 278,42 290,62" fill="none" stroke="#42a5f5" stroke-width="1.8" stroke-linecap="round"/>
+          </g>
+          <text x="250" y="95" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Only rivers inside watershed</text>
+        </g>
+        <!-- Note -->
+        <g transform="translate(320,12)" filter="url(#fExA)">
+          <rect x="0" y="0" width="130" height="85" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="65" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Attribute Table</text>
+          <line x1="5" y1="18" x2="125" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="30" font-size="6" fill="#555">• River_ID: Koshi_Trib_03</text>
+          <text x="8" y="42" font-size="6" fill="#555">• Length_km: 12.4</text>
+          <text x="8" y="54" font-size="6" fill="#555">• Order: 3</text>
+          <line x1="5" y1="60" x2="125" y2="60" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="65" y="72" text-anchor="middle" font-size="6" fill="#2a8c2a" font-weight="bold">Input attrs only — no clip attrs</text>
+        </g>
+      </svg>
+      <figcaption>Ex A – Clip: National river network clipped to watershed study area</figcaption>
+    </figure>
+
+    <h3>B. Intersect</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You are conducting a site response analysis to identify areas highly vulnerable to earthquake damage. You have one polygon layer showing "High Soil Liquefaction Potential" and another polygon layer showing "Dense Urban Settlements." By applying the Intersect tool, the output map will strictly show the overlapping zones—representing highly populated areas built on dangerous soil. The output attribute table merges the soil properties and the population data for those specific areas.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 500 120" width="500" height="120" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExB"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- Liquefaction zone -->
+        <g filter="url(#fExB)">
+          <ellipse cx="60" cy="55" rx="48" ry="35" fill="#ef5350" fill-opacity="0.2" stroke="#c62828" stroke-width="1.5"/>
+          <text x="35" y="42" font-size="7" fill="#c62828" font-weight="bold">Liquefaction</text>
+          <text x="35" y="52" font-size="6" fill="#c62828">Zone ⚠</text>
+          <!-- Dense Urban -->
+          <ellipse cx="95" cy="55" rx="42" ry="32" fill="#42a5f5" fill-opacity="0.2" stroke="#1565c0" stroke-width="1.5"/>
+          <text x="115" y="42" font-size="7" fill="#1565c0" font-weight="bold">Dense</text>
+          <text x="115" y="52" font-size="6" fill="#1565c0">Urban</text>
+        </g>
+        <text x="77" y="75" text-anchor="middle" font-size="6" fill="#555" font-style="italic">overlap</text>
+        <!-- Arrow -->
+        <line x1="145" y1="55" x2="180" y2="55" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="163" y="48" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold">∩</text>
+        <!-- Output -->
+        <g filter="url(#fExB)">
+          <rect x="190" y="15" width="110" height="85" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="245" y="28" text-anchor="middle" font-size="7" font-weight="bold" fill="#c62828">⚠Vulnerable Zone</text>
+          <clipPath id="intLiq"><ellipse cx="225" cy="55" rx="38" ry="28"/></clipPath>
+          <ellipse cx="255" cy="55" rx="35" ry="25" fill="#ef5350" fill-opacity="0.35" stroke="none" clip-path="url(#intLiq)"/>
+          <ellipse cx="225" cy="55" rx="38" ry="28" fill="none" stroke="#ccc" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <ellipse cx="255" cy="55" rx="35" ry="25" fill="none" stroke="#ccc" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <text x="245" y="58" text-anchor="middle" font-size="7" fill="#c62828" font-weight="bold">✓</text>
+          <text x="245" y="92" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Only overlapping area</text>
+        </g>
+        <!-- Table -->
+        <g transform="translate(310,12)" filter="url(#fExB)">
+          <rect x="0" y="0" width="180" height="92" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="90" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Joined Output Table</text>
+          <line x1="5" y1="18" x2="175" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="30" font-size="6" fill="#c62828" font-weight="bold">Liq_Class</text>
+          <text x="55" y="30" font-size="6" fill="#c62828" font-weight="bold">SPT_N</text>
+          <text x="90" y="30" font-size="6" fill="#1565c0" font-weight="bold">Ward_Pop</text>
+          <text x="140" y="30" font-size="6" fill="#1565c0" font-weight="bold">Density</text>
+          <line x1="5" y1="34" x2="175" y2="34" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="46" font-size="6" fill="#555">High</text>
+          <text x="55" y="46" font-size="6" fill="#555">5</text>
+          <text x="90" y="46" font-size="6" fill="#555">32,000</text>
+          <text x="140" y="46" font-size="6" fill="#555">4,200</text>
+          <text x="8" y="58" font-size="6" fill="#555">V.High</text>
+          <text x="55" y="58" font-size="6" fill="#555">3</text>
+          <text x="90" y="58" font-size="6" fill="#555">28,500</text>
+          <text x="140" y="58" font-size="6" fill="#555">3,800</text>
+          <line x1="5" y1="64" x2="175" y2="64" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="90" y="78" text-anchor="middle" font-size="6" fill="#2a8c2a" font-weight="bold">Both layer attributes merged →</text>
+          <text x="90" y="88" text-anchor="middle" font-size="6" fill="#888">Soil props + Population data</text>
+        </g>
+      </svg>
+      <figcaption>Ex B – Intersect: Liquefaction zone ∩ Dense urban = Earthquake-vulnerable areas</figcaption>
+    </figure>
+
+    <h3>C. Union</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You are calculating the Runoff Curve Number for a hydrologic model (like mHM or HEC-HMS). You need to know the unique combinations of soil type and land use. You perform a Union on a "Soil Hydrologic Group" layer and a "Land Cover" layer. The output retains all spatial boundaries from both maps. The attribute table now has every polygon classified by both its soil type (e.g., Group B) and land use (e.g., Agricultural), allowing you to assign specific curve numbers to each unique plot.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 125" width="520" height="125" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExC"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- Soil layer -->
+        <g filter="url(#fExC)">
+          <rect x="5" y="5" width="65" height="75" rx="5" fill="#e3f2fd" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="38" y="16" text-anchor="middle" font-size="6" font-weight="bold" fill="#1a3c5e">Soil Groups</text>
+          <rect x="10" y="20" width="55" height="25" rx="2" fill="#bbdefb" stroke="#1a3c5e" stroke-width="0.5"/>
+          <text x="38" y="36" text-anchor="middle" font-size="6" fill="#1a3c5e">Grp A</text>
+          <rect x="10" y="45" width="55" height="25" rx="2" fill="#90caf9" stroke="#1a3c5e" stroke-width="0.5"/>
+          <text x="38" y="61" text-anchor="middle" font-size="6" fill="#1a3c5e">Grp B</text>
+        </g>
+        <!-- Land Cover layer -->
+        <g filter="url(#fExC)">
+          <rect x="5" y="85" width="65" height="32" rx="5" fill="#e8f5e9" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="38" y="96" text-anchor="middle" font-size="6" font-weight="bold" fill="#2a8c2a">Land Cover</text>
+          <text x="38" y="108" text-anchor="middle" font-size="5" fill="#555">Agri | Forest | Urban</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="78" y1="58" x2="108" y2="58" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="93" y="52" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">∪</text>
+        <!-- Output grid -->
+        <g filter="url(#fExC)">
+          <rect x="115" y="5" width="165" height="112" rx="6" fill="#faf8f4" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="198" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">Union Output: Unique Combos</text>
+          <!-- Grid of combinations -->
+          <rect x="122" y="24" width="50" height="22" rx="2" fill="#bbdefb" fill-opacity="0.5" stroke="#555" stroke-width="0.5"/>
+          <text x="147" y="38" text-anchor="middle" font-size="5" fill="#333">A + Agri</text>
+          <rect x="172" y="24" width="50" height="22" rx="2" fill="#bbdefb" fill-opacity="0.5" stroke="#555" stroke-width="0.5"/>
+          <text x="197" y="38" text-anchor="middle" font-size="5" fill="#333">A + Forest</text>
+          <rect x="222" y="24" width="50" height="22" rx="2" fill="#bbdefb" fill-opacity="0.5" stroke="#555" stroke-width="0.5"/>
+          <text x="247" y="38" text-anchor="middle" font-size="5" fill="#333">A + Urban</text>
+          <rect x="122" y="46" width="50" height="22" rx="2" fill="#90caf9" fill-opacity="0.5" stroke="#555" stroke-width="0.5"/>
+          <text x="147" y="60" text-anchor="middle" font-size="5" fill="#333">B + Agri</text>
+          <rect x="172" y="46" width="50" height="22" rx="2" fill="#90caf9" fill-opacity="0.5" stroke="#555" stroke-width="0.5"/>
+          <text x="197" y="60" text-anchor="middle" font-size="5" fill="#333">B + Forest</text>
+          <rect x="222" y="46" width="50" height="22" rx="2" fill="#90caf9" fill-opacity="0.5" stroke="#555" stroke-width="0.5"/>
+          <text x="247" y="60" text-anchor="middle" font-size="5" fill="#333">B + Urban</text>
+          <text x="198" y="82" text-anchor="middle" font-size="6" fill="#555">→ Assign CN to each combo</text>
+          <text x="148" y="96" font-size="5" fill="#888">e.g. B + Agri → CN = 72</text>
+          <text x="148" y="106" font-size="5" fill="#888">e.g. A + Forest → CN = 36</text>
+        </g>
+        <!-- CN note -->
+        <g transform="translate(290,8)" filter="url(#fExC)">
+          <rect x="0" y="0" width="220" height="105" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="110" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Output Table (Both attrs joined)</text>
+          <line x1="5" y1="18" x2="215" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="30" font-size="6" fill="#333" font-weight="bold">FID</text>
+          <text x="28" y="30" font-size="6" fill="#1a3c5e" font-weight="bold">Soil</text>
+          <text x="65" y="30" font-size="6" fill="#2a8c2a" font-weight="bold">LandCover</text>
+          <text x="120" y="30" font-size="6" fill="#8b6914" font-weight="bold">→ CN</text>
+          <text x="155" y="30" font-size="6" fill="#555" font-weight="bold">Area_ha</text>
+          <line x1="5" y1="34" x2="215" y2="34" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="46" font-size="6" fill="#555">1</text>
+          <text x="28" y="46" font-size="6" fill="#1a3c5e">Grp A</text>
+          <text x="65" y="46" font-size="6" fill="#2a8c2a">Agricultural</text>
+          <text x="120" y="46" font-size="6" fill="#8b6914">67</text>
+          <text x="155" y="46" font-size="6" fill="#555">45.2</text>
+          <text x="8" y="58" font-size="6" fill="#555">2</text>
+          <text x="28" y="58" font-size="6" fill="#1a3c5e">Grp B</text>
+          <text x="65" y="58" font-size="6" fill="#2a8c2a">Agricultural</text>
+          <text x="120" y="58" font-size="6" fill="#8b6914">72</text>
+          <text x="155" y="58" font-size="6" fill="#555">33.8</text>
+          <text x="8" y="70" font-size="6" fill="#555">3</text>
+          <text x="28" y="70" font-size="6" fill="#1a3c5e">Grp A</text>
+          <text x="65" y="70" font-size="6" fill="#2a8c2a">Forest</text>
+          <text x="120" y="70" font-size="6" fill="#8b6914">36</text>
+          <text x="155" y="70" font-size="6" fill="#555">60.1</text>
+          <line x1="5" y1="76" x2="215" y2="76" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="110" y="90" text-anchor="middle" font-size="6" fill="#2a8c2a" font-weight="bold">Every unique plot gets Soil + LandCover</text>
+          <text x="110" y="102" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Used for HEC-HMS Curve Number modelling</text>
+        </g>
+      </svg>
+      <figcaption>Ex C – Union: Soil Groups ∪ Land Cover = Unique combinations for CN assignment</figcaption>
+    </figure>
+
+    <h3>D. Dissolve</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You receive a highly detailed geological map with 50 different sub-classifications of soil types. For your preliminary analysis, you only need to differentiate between "Coarse-Grained" and "Fine-Grained" soils. You add a new attribute classifying them broadly, and use the Dissolve tool based on that new attribute. The tool erases the boundaries between adjacent polygons of the same broad category, merging hundreds of small polygons into just two massive geological zones.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 500 115" width="500" height="115" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExD"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- Before: many small polygons -->
+        <g filter="url(#fExD)">
+          <rect x="5" y="5" width="150" height="100" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="80" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">50 Sub-classifications</text>
+          <!-- Coarse-grained sub-types -->
+          <rect x="12" y="22" width="28" height="22" rx="1" fill="#f6bb42" fill-opacity="0.3" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="26" y="36" text-anchor="middle" font-size="4.5" fill="#8b6914">Sand</text>
+          <rect x="40" y="22" width="32" height="22" rx="1" fill="#f6bb42" fill-opacity="0.4" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="56" y="36" text-anchor="middle" font-size="4.5" fill="#8b6914">Gravel</text>
+          <rect x="72" y="22" width="28" height="22" rx="1" fill="#f6bb42" fill-opacity="0.25" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="86" y="36" text-anchor="middle" font-size="4.5" fill="#8b6914">Cobble</text>
+          <rect x="100" y="22" width="48" height="22" rx="1" fill="#f6bb42" fill-opacity="0.35" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="124" y="36" text-anchor="middle" font-size="4.5" fill="#8b6914">Sandy-Gravel</text>
+          <!-- Fine-grained sub-types -->
+          <rect x="12" y="44" width="35" height="22" rx="1" fill="#42a5f5" fill-opacity="0.2" stroke="#1565c0" stroke-width="0.5"/>
+          <text x="30" y="58" text-anchor="middle" font-size="4.5" fill="#1565c0">Clay</text>
+          <rect x="47" y="44" width="30" height="22" rx="1" fill="#42a5f5" fill-opacity="0.3" stroke="#1565c0" stroke-width="0.5"/>
+          <text x="62" y="58" text-anchor="middle" font-size="4.5" fill="#1565c0">Silt</text>
+          <rect x="77" y="44" width="35" height="22" rx="1" fill="#42a5f5" fill-opacity="0.25" stroke="#1565c0" stroke-width="0.5"/>
+          <text x="95" y="58" text-anchor="middle" font-size="4.5" fill="#1565c0">Silty-Clay</text>
+          <rect x="112" y="44" width="36" height="22" rx="1" fill="#42a5f5" fill-opacity="0.35" stroke="#1565c0" stroke-width="0.5"/>
+          <text x="130" y="58" text-anchor="middle" font-size="4.5" fill="#1565c0">Organic</text>
+          <text x="80" y="78" text-anchor="middle" font-size="5" fill="#888">... and 42 more sub-types</text>
+          <text x="80" y="98" text-anchor="middle" font-size="6" fill="#888" font-style="italic">50 polygons, 50 rows</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="165" y1="55" x2="200" y2="55" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="183" y="48" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold"></text>
+        <text x="183" y="70" text-anchor="middle" font-size="6" fill="#888">Dissolve</text>
+        <!-- After: 2 broad categories -->
+        <g filter="url(#fExD)">
+          <rect x="210" y="5" width="130" height="100" rx="6" fill="#faf8f4" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="275" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">2 Broad Categories</text>
+          <rect x="218" y="24" width="115" height="30" rx="4" fill="#f6bb42" fill-opacity="0.35" stroke="#8b6914" stroke-width="2"/>
+          <text x="275" y="43" text-anchor="middle" font-size="8" fill="#8b6914" font-weight="bold">Coarse-Grained</text>
+          <rect x="218" y="54" width="115" height="30" rx="4" fill="#42a5f5" fill-opacity="0.25" stroke="#1565c0" stroke-width="2"/>
+          <text x="275" y="73" text-anchor="middle" font-size="8" fill="#1565c0" font-weight="bold">Fine-Grained</text>
+          <text x="275" y="98" text-anchor="middle" font-size="6" fill="#888" font-style="italic">2 polygons, 2 rows</text>
+        </g>
+        <!-- Note -->
+        <g transform="translate(350,10)" filter="url(#fExD)">
+          <rect x="0" y="0" width="140" height="90" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="70" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Result</text>
+          <line x1="5" y1="18" x2="135" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="32" font-size="6" fill="#555">• 50 sub-types → 2 categories</text>
+          <text x="8" y="44" font-size="6" fill="#555">• Internal boundaries removed</text>
+          <text x="8" y="56" font-size="6" fill="#555">• Dissolved on "Broad_Class"</text>
+          <text x="8" y="68" font-size="6" fill="#555">• Attribute: only Broad_Class</text>
+          <text x="70" y="84" text-anchor="middle" font-size="6" fill="#2a8c2a" font-weight="bold">Simplifies preliminary analysis</text>
+        </g>
+      </svg>
+      <figcaption>Ex D – Dissolve: 50 soil sub-types merged into 2 broad geological categories</figcaption>
+    </figure>
+
+    <h3>E. Buffer</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You are tasked with environmental compliance for a new road construction project. Regulations state that no heavy machinery can operate within 100 meters of a natural water body. You use the Buffer tool on the "Rivers and Lakes" vector layer, setting a distance of 100m. This generates a new polygon representing the restricted exclusion zone along the entire water network.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 120" width="480" height="120" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fExE"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gExBuf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#42a5f5" stop-opacity="0.15"/><stop offset="100%" stop-color="#1e88e5" stop-opacity="0.08"/></linearGradient>
+        </defs>
+        <!-- River + Lake with buffer -->
+        <g filter="url(#fExE)">
+          <rect x="5" y="5" width="260" height="105" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="135" y="18" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Road Construction Exclusion Zone</text>
+          <!-- Lake -->
+          <ellipse cx="70" cy="58" rx="35" ry="22" fill="#42a5f5" fill-opacity="0.3" stroke="#1565c0" stroke-width="1.5"/>
+          <text x="70" y="62" text-anchor="middle" font-size="7" fill="#1565c0" font-weight="bold">Lake</text>
+          <!-- Lake buffer -->
+          <ellipse cx="70" cy="58" rx="50" ry="37" fill="url(#gExBuf)" stroke="#c62828" stroke-width="1" stroke-dasharray="4,2"/>
+          <!-- River -->
+          <path d="M 120,30 Q 155,55 190,38 Q 220,22 250,50" fill="none" stroke="#1565c0" stroke-width="3" stroke-linecap="round"/>
+          <!-- River buffer -->
+          <path d="M 120,30 Q 155,55 190,38 Q 220,22 250,50" fill="none" stroke="#c62828" stroke-width="28" stroke-opacity="0.08" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 120,30 Q 155,55 190,38 Q 220,22 250,50" fill="none" stroke="#c62828" stroke-width="28" stroke-opacity="0.0" stroke-linecap="round"/>
+          <!-- Buffer boundary (dashed) -->
+          <path d="M 120,30 Q 155,55 190,38 Q 220,22 250,50" fill="none" stroke="#c62828" stroke-width="28" stroke-opacity="0.12" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Labels -->
+          <text x="200" y="68" font-size="6" fill="#1565c0">River</text>
+          <text x="195" y="88" font-size="6" fill="#c62828">100m buffer = — No machinery</text>
+          <!-- Road crossing -->
+          <line x1="160" y1="85" x2="250" y2="85" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="215" y="100" font-size="5" fill="#333">Proposed Road</text>
+          <!-- Conflict mark -->
+          <text x="195" y="80" font-size="8" fill="#c62828">⚠</text>
+        </g>
+        <!-- Note -->
+        <g transform="translate(275,8)" filter="url(#fExE)">
+          <rect x="0" y="0" width="195" height="98" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="98" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Buffer Output</text>
+          <line x1="5" y1="18" x2="190" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="32" font-size="6" fill="#555">• New polygon: exclusion zone</text>
+          <text x="8" y="44" font-size="6" fill="#555">• BUFF_DIST = 100m</text>
+          <text x="8" y="56" font-size="6" fill="#555">• Inherits river/lake attributes</text>
+          <text x="8" y="68" font-size="6" fill="#555">• Road segment inside buffer</text>
+          <text x="12" y="78" font-size="6" fill="#c62828" font-weight="bold">  = VIOLATION → reroute needed</text>
+          <text x="98" y="94" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Environmental compliance check</text>
+        </g>
+      </svg>
+      <figcaption>Ex E – Buffer: 100m exclusion zone around rivers/lakes for road construction compliance</figcaption>
+    </figure>
+
+    <h3>F. Merge</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You are analyzing traffic volume across a large region, but the road network shapefiles were provided by two different municipal governments. You use the Merge tool to combine the "Municipality A Roads" and "Municipality B Roads" into a single, continuous transportation dataset, stacking their attribute tables together so you can run a unified spatial analysis.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 110" width="480" height="110" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExF"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- Municipality A -->
+        <g filter="url(#fExF)">
+          <rect x="5" y="5" width="80" height="92" rx="5" fill="#e3f2fd" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="45" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Mun. A Roads</text>
+          <line x1="12" y1="28" x2="78" y2="32" stroke="#1a3c5e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="15" y1="42" x2="70" y2="45" stroke="#1a3c5e" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="18" y1="56" x2="75" y2="58" stroke="#1a3c5e" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="20" y1="68" x2="68" y2="72" stroke="#1a3c5e" stroke-width="1" stroke-linecap="round"/>
+          <text x="45" y="88" text-anchor="middle" font-size="6" fill="#888">120 features</text>
+        </g>
+        <!-- + -->
+        <text x="98" y="55" text-anchor="middle" font-size="14" fill="#1a3c5e" font-weight="bold">+</text>
+        <!-- Municipality B -->
+        <g filter="url(#fExF)">
+          <rect x="110" y="5" width="80" height="92" rx="5" fill="#fff8e1" stroke="#8b6914" stroke-width="1"/>
+          <text x="150" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Mun. B Roads</text>
+          <line x1="117" y1="28" x2="183" y2="30" stroke="#8b6914" stroke-width="2" stroke-linecap="round"/>
+          <line x1="120" y1="42" x2="178" y2="44" stroke="#8b6914" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="122" y1="56" x2="175" y2="57" stroke="#8b6914" stroke-width="1.2" stroke-linecap="round"/>
+          <text x="150" y="78" text-anchor="middle" font-size="6" fill="#888">85 features</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="200" y1="50" x2="230" y2="50" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="215" y="68" text-anchor="middle" font-size="6" fill="#888">Merge</text>
+        <!-- Output -->
+        <g filter="url(#fExF)">
+          <rect x="240" y="5" width="100" height="92" rx="5" fill="#e8f5e9" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="290" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">Unified Network</text>
+          <line x1="248" y1="28" x2="332" y2="30" stroke="#1a3c5e" stroke-width="2" stroke-linecap="round"/>
+          <line x1="250" y1="38" x2="328" y2="40" stroke="#1a3c5e" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="252" y1="48" x2="330" y2="50" stroke="#1a3c5e" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="248" y1="58" x2="325" y2="59" stroke="#1a3c5e" stroke-width="1" stroke-linecap="round"/>
+          <line x1="248" y1="68" x2="332" y2="70" stroke="#8b6914" stroke-width="2" stroke-linecap="round"/>
+          <line x1="250" y1="76" x2="328" y2="78" stroke="#8b6914" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="252" y1="84" x2="325" y2="85" stroke="#8b6914" stroke-width="1" stroke-linecap="round"/>
+          <text x="290" y="98" text-anchor="middle" font-size="6" fill="#888" font-style="italic">205 features stacked</text>
+        </g>
+        <!-- Note -->
+        <g transform="translate(350,8)" filter="url(#fExF)">
+          <rect x="0" y="0" width="125" height="86" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="63" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Table Effect</text>
+          <line x1="5" y1="18" x2="120" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="32" font-size="6" fill="#1a3c5e">Mun A: 120 rows</text>
+          <text x="8" y="44" font-size="6" fill="#8b6914">Mun B: 85 rows</text>
+          <line x1="8" y1="50" x2="115" y2="50" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="62" font-size="6" fill="#2a8c2a" font-weight="bold">Output: 205 rows</text>
+          <text x="8" y="76" font-size="6" fill="#555">(stacked vertically)</text>
+          <text x="8" y="86" font-size="5" fill="#888">No geometry change</text>
+        </g>
+      </svg>
+      <figcaption>Ex F – Merge: Two municipal road shapefiles combined for unified traffic analysis</figcaption>
+    </figure>
+
+    <h3>G. Erase</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You are finding a suitable location for a new landfill. You have a polygon layer of "Available Government Land." However, you must avoid environmentally sensitive areas. You use the Erase tool, inputting the government land and using a "Protected Forests and Watersheds" layer as the erase feature. The output is the available land with the protected areas digitally "punched out" or removed.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 115" width="480" height="115" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fExG"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <mask id="exEraseMask"><rect x="0" y="0" width="135" height="90" fill="white"/><ellipse cx="75" cy="50" rx="28" ry="22" fill="black"/><ellipse cx="40" cy="35" rx="18" ry="14" fill="black"/></mask>
+        </defs>
+        <!-- Input: Government Land -->
+        <g filter="url(#fExG)">
+          <rect x="5" y="5" width="135" height="98" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="73" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Govt Land + Protected Areas</text>
+          <rect x="12" y="24" width="120" height="68" rx="4" fill="#a0d468" fill-opacity="0.4" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="105" y="38" font-size="6" fill="#2a8c2a" font-weight="bold">Govt Land</text>
+          <!-- Protected zones -->
+          <ellipse cx="55" cy="50" rx="28" ry="20" fill="#ef5350" fill-opacity="0.25" stroke="#c62828" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="55" y="48" text-anchor="middle" font-size="5" fill="#c62828">Protected</text>
+          <text x="55" y="56" text-anchor="middle" font-size="5" fill="#c62828">Forest</text>
+          <ellipse cx="100" cy="68" rx="22" ry="15" fill="#42a5f5" fill-opacity="0.2" stroke="#1565c0" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="100" y="68" text-anchor="middle" font-size="5" fill="#1565c0">Watershed</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="150" y1="55" x2="185" y2="55" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="168" y="48" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold"></text>
+        <text x="168" y="72" text-anchor="middle" font-size="6" fill="#888">Erase</text>
+        <!-- Output -->
+        <g filter="url(#fExG)">
+          <rect x="195" y="5" width="135" height="98" rx="6" fill="#faf8f4" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="263" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">Available for Landfill</text>
+          <rect x="202" y="24" width="120" height="68" rx="4" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="1.2" mask="url(#exEraseMask)"/>
+          <!-- Holes -->
+          <ellipse cx="237" cy="50" rx="28" ry="22" fill="none" stroke="#d4cfc5" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <text x="237" y="52" text-anchor="middle" font-size="6" fill="#ccc">removed</text>
+          <ellipse cx="272" cy="58" rx="18" ry="14" fill="none" stroke="#d4cfc5" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <text x="272" y="60" text-anchor="middle" font-size="5" fill="#ccc">removed</text>
+          <text x="263" y="98" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Protected areas punched out</text>
+        </g>
+        <!-- Note -->
+        <g transform="translate(340,8)" filter="url(#fExG)">
+          <rect x="0" y="0" width="132" height="90" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="66" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Result</text>
+          <line x1="5" y1="18" x2="127" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="32" font-size="6" fill="#555">• Green areas = safe to build</text>
+          <text x="8" y="44" font-size="6" fill="#555">• Holes = protected zones</text>
+          <text x="8" y="56" font-size="6" fill="#555">• Only Govt Land attrs kept</text>
+          <text x="8" y="68" font-size="6" fill="#555">• Protected attrs discarded</text>
+          <text x="66" y="84" text-anchor="middle" font-size="6" fill="#c62828" font-weight="bold">Opposite of Clip</text>
+        </g>
+      </svg>
+      <figcaption>Ex G – Erase: Protected forests/watersheds removed from available government land</figcaption>
+    </figure>
+
+    <h3>H. Map Join / Spatial Join</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You have a point layer representing hundreds of individual California Bearing Ratio (CBR) soil test locations along a proposed highway alignment, and a polygon layer representing different geological wards. A Spatial Join will append the ward information (like ward number and dominant rock type) directly into the attribute table of each individual CBR point based entirely on which polygon the point physically falls inside.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 130" width="520" height="130" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExH"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- Highway with CBR points + wards -->
+        <g filter="url(#fExH)">
+          <rect x="5" y="5" width="175" height="115" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="92" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Highway + CBR Points + Wards</text>
+          <!-- Ward zones -->
+          <rect x="12" y="24" width="55" height="86" rx="3" fill="#e3f2fd" fill-opacity="0.5" stroke="#1a3c5e" stroke-width="0.8"/>
+          <text x="40" y="35" text-anchor="middle" font-size="6" fill="#1a3c5e">Ward 5</text>
+          <rect x="67" y="24" width="55" height="86" rx="3" fill="#fff8e1" fill-opacity="0.5" stroke="#8b6914" stroke-width="0.8"/>
+          <text x="95" y="35" text-anchor="middle" font-size="6" fill="#8b6914">Ward 6</text>
+          <rect x="122" y="24" width="50" height="86" rx="3" fill="#e8f5e9" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="0.8"/>
+          <text x="147" y="35" text-anchor="middle" font-size="6" fill="#2a8c2a">Ward 7</text>
+          <!-- Highway alignment -->
+          <path d="M 15,65 Q 50,45 90,70 Q 130,95 168,55" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- CBR test points -->
+          <circle cx="25" cy="62" r="3.5" fill="#ef5350" stroke="#a03030" stroke-width="0.6"/>
+          <circle cx="45" cy="52" r="3.5" fill="#ef5350" stroke="#a03030" stroke-width="0.6"/>
+          <circle cx="70" cy="55" r="3.5" fill="#ef5350" stroke="#a03030" stroke-width="0.6"/>
+          <circle cx="90" cy="68" r="3.5" fill="#ef5350" stroke="#a03030" stroke-width="0.6"/>
+          <circle cx="112" cy="80" r="3.5" fill="#ef5350" stroke="#a03030" stroke-width="0.6"/>
+          <circle cx="135" cy="78" r="3.5" fill="#ef5350" stroke="#a03030" stroke-width="0.6"/>
+          <circle cx="155" cy="62" r="3.5" fill="#ef5350" stroke="#a03030" stroke-width="0.6"/>
+          <text x="92" y="104" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Red dots = CBR test locations</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="188" y1="62" x2="218" y2="62" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="203" y="55" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold"></text>
+        <text x="203" y="78" text-anchor="middle" font-size="6" fill="#888">Spatial Join</text>
+        <!-- Output table -->
+        <g transform="translate(225,5)" filter="url(#fExH)">
+          <rect x="0" y="0" width="290" height="115" rx="6" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="145" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">CBR Points + Ward Attrs Appended</text>
+          <line x1="5" y1="20" x2="285" y2="20" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="32" font-size="6" fill="#333" font-weight="bold">FID</text>
+          <text x="30" y="32" font-size="6" fill="#ef5350" font-weight="bold">CBR_%</text>
+          <text x="62" y="32" font-size="6" fill="#ef5350" font-weight="bold">Depth</text>
+          <text x="100" y="32" font-size="6" fill="#ef5350" font-weight="bold">Soil_Type</text>
+          <text x="155" y="32" font-size="6" fill="#1a3c5e" font-weight="bold">← Ward_No</text>
+          <text x="210" y="32" font-size="6" fill="#1a3c5e" font-weight="bold">Rock_Type</text>
+          <text x="260" y="32" font-size="6" fill="#1a3c5e" font-weight="bold">Area_km²</text>
+          <line x1="5" y1="36" x2="285" y2="36" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="48" font-size="6" fill="#555">1</text>
+          <text x="30" y="48" font-size="6" fill="#555">8.2</text>
+          <text x="62" y="48" font-size="6" fill="#555">1.5m</text>
+          <text x="100" y="48" font-size="6" fill="#555">Silty Sand</text>
+          <text x="155" y="48" font-size="6" fill="#1a3c5e">5</text>
+          <text x="210" y="48" font-size="6" fill="#1a3c5e">Gravel</text>
+          <text x="260" y="48" font-size="6" fill="#1a3c5e">12.3</text>
+          <text x="8" y="60" font-size="6" fill="#555">2</text>
+          <text x="30" y="60" font-size="6" fill="#555">5.4</text>
+          <text x="62" y="60" font-size="6" fill="#555">2.0m</text>
+          <text x="100" y="60" font-size="6" fill="#555">Clay</text>
+          <text x="155" y="60" font-size="6" fill="#8b6914">6</text>
+          <text x="210" y="60" font-size="6" fill="#8b6914">Sand</text>
+          <text x="260" y="60" font-size="6" fill="#8b6914">18.1</text>
+          <text x="8" y="72" font-size="6" fill="#555">3</text>
+          <text x="30" y="72" font-size="6" fill="#555">12.1</text>
+          <text x="62" y="72" font-size="6" fill="#555">1.0m</text>
+          <text x="100" y="72" font-size="6" fill="#555">Gravel</text>
+          <text x="155" y="72" font-size="6" fill="#2a8c2a">7</text>
+          <text x="210" y="72" font-size="6" fill="#2a8c2a">Slate</text>
+          <text x="260" y="72" font-size="6" fill="#2a8c2a">8.5</text>
+          <line x1="5" y1="78" x2="285" y2="78" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="145" y="92" text-anchor="middle" font-size="6" fill="#2a8c2a" font-weight="bold">Point geometry unchanged — ward cols joined by location</text>
+          <text x="145" y="104" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Red = CBR attrs | Blue = Ward attrs appended</text>
+        </g>
+      </svg>
+      <figcaption>Ex H – Spatial Join: CBR test points along highway automatically get ward attributes by location</figcaption>
+    </figure>
+
+    <h3>I. Update</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You have a master land-use map of a rural municipality from 2020. Recently, a "Smart Village" initiative successfully developed a specific ward, completely changing its infrastructure and land use. You use the Update tool to overlay the new 2026 ward data onto the old 2020 master map. The old map remains intact everywhere else, but the exact footprint of the upgraded ward is completely replaced by the new geometry and attributes.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 500 115" width="500" height="115" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExI"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- 2020 Master map -->
+        <g filter="url(#fExI)">
+          <rect x="5" y="5" width="130" height="100" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="70" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Master 2020 Map</text>
+          <rect x="12" y="24" width="55" height="30" rx="2" fill="#a0d468" fill-opacity="0.35" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="40" y="42" text-anchor="middle" font-size="5" fill="#2a8c2a">Agriculture</text>
+          <rect x="67" y="24" width="60" height="30" rx="2" fill="#66bb6a" fill-opacity="0.35" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="97" y="42" text-anchor="middle" font-size="5" fill="#2a8c2a">Forest</text>
+          <rect x="12" y="54" width="115" height="30" rx="2" fill="#f6bb42" fill-opacity="0.25" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="70" y="72" text-anchor="middle" font-size="5" fill="#8b6914">Rural Settlement</text>
+          <!-- Smart Village target zone -->
+          <rect x="55" y="34" width="42" height="38" rx="2" fill="none" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="76" y="56" text-anchor="middle" font-size="5" fill="#c62828">⭐ target</text>
+          <text x="70" y="98" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Old data + update target</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="145" y1="55" x2="180" y2="55" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="163" y="48" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold"></text>
+        <text x="163" y="72" text-anchor="middle" font-size="6" fill="#888">Update</text>
+        <!-- Output -->
+        <g filter="url(#fExI)">
+          <rect x="190" y="5" width="130" height="100" rx="6" fill="#faf8f4" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="255" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">✅ Updated 2026 Map</text>
+          <rect x="197" y="24" width="55" height="30" rx="2" fill="#a0d468" fill-opacity="0.35" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="225" y="42" text-anchor="middle" font-size="5" fill="#2a8c2a">Agriculture</text>
+          <rect x="252" y="24" width="60" height="30" rx="2" fill="#66bb6a" fill-opacity="0.35" stroke="#2a8c2a" stroke-width="0.5"/>
+          <text x="282" y="42" text-anchor="middle" font-size="5" fill="#2a8c2a">Forest</text>
+          <rect x="197" y="54" width="115" height="30" rx="2" fill="#f6bb42" fill-opacity="0.25" stroke="#8b6914" stroke-width="0.5"/>
+          <text x="255" y="72" text-anchor="middle" font-size="5" fill="#8b6914">Rural Settlement</text>
+          <!-- Replaced zone -->
+          <rect x="240" y="34" width="42" height="38" rx="2" fill="#7c4dff" fill-opacity="0.35" stroke="#7c4dff" stroke-width="1.5"/>
+          <text x="261" y="52" text-anchor="middle" font-size="5" fill="#4a148c" font-weight="bold">Smart</text>
+          <text x="261" y="62" text-anchor="middle" font-size="5" fill="#4a148c" font-weight="bold">Village</text>
+          <text x="255" y="98" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Purple = replaced zone</text>
+        </g>
+        <!-- Note -->
+        <g transform="translate(330,8)" filter="url(#fExI)">
+          <rect x="0" y="0" width="160" height="90" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="80" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">How Update Works</text>
+          <line x1="5" y1="18" x2="155" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="32" font-size="6" fill="#555">• Outside target: 2020 data kept</text>
+          <text x="8" y="44" font-size="6" fill="#555">• Inside target: 2026 replaces</text>
+          <text x="8" y="56" font-size="6" fill="#555">• Old Agri/Forest attrs erased</text>
+          <text x="8" y="68" font-size="6" fill="#555">• New: Smart Village attrs only</text>
+          <text x="80" y="84" text-anchor="middle" font-size="6" fill="#7c4dff" font-weight="bold">Partial map revision tool</text>
+        </g>
+      </svg>
+      <figcaption>Ex I – Update: 2020 rural map updated with 2026 Smart Village data in target ward</figcaption>
+    </figure>
+
+    <h3>J. Split</h3>
+    <div class="exam-box">
+      <p><strong>Exam Example:</strong> You have a complete, national-level vector layer of every bridge in the country. For administrative distribution, you need to send files to the respective provincial transport offices. You use the Split tool, using a "Provincial Boundaries" polygon layer as the split feature. The tool automatically chops the national bridge layer into seven completely separate shapefiles, one for each province.</p>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 125" width="520" height="125" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs><filter id="fExJ"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter></defs>
+        <!-- National bridges -->
+        <g filter="url(#fExJ)">
+          <rect x="5" y="5" width="135" height="110" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="72" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">🇳🇵 All 7 Provinces + Bridges</text>
+          <!-- Simplified Nepal shape with provinces -->
+          <path d="M 15,42 L 35,36 L 60,40 L 85,34 L 115,40 L 130,48 L 125,68 L 100,78 L 70,82 L 35,78 L 15,68 Z" fill="#e0e0e0" stroke="#555" stroke-width="0.8"/>
+          <!-- Province boundaries -->
+          <line x1="35" y1="36" x2="35" y2="78" stroke="#555" stroke-width="0.4" stroke-dasharray="2,1"/>
+          <line x1="60" y1="40" x2="55" y2="82" stroke="#555" stroke-width="0.4" stroke-dasharray="2,1"/>
+          <line x1="85" y1="34" x2="80" y2="80" stroke="#555" stroke-width="0.4" stroke-dasharray="2,1"/>
+          <line x1="108" y1="38" x2="105" y2="76" stroke="#555" stroke-width="0.4" stroke-dasharray="2,1"/>
+          <!-- Bridge symbols -->
+          <text x="25" y="58" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="48" y="52" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="48" y="70" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="72" y="55" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="72" y="72" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="95" y="50" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="95" y="68" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="118" y="55" text-anchor="middle" font-size="6" fill="#c62828"></text>
+          <text x="72" y="98" text-anchor="middle" font-size="6" fill="#888" font-style="italic">850 total bridges</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="150" y1="60" x2="182" y2="60" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a6r)"/>
+        <text x="166" y="52" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">✂</text>
+        <text x="166" y="78" text-anchor="middle" font-size="6" fill="#888">Split</text>
+        <!-- Output: 7 separate files -->
+        <g filter="url(#fExJ)">
+          <rect x="190" y="5" width="50" height="38" rx="4" fill="#e3f2fd" stroke="#1a3c5e" stroke-width="0.8"/>
+          <text x="215" y="18" text-anchor="middle" font-size="5" font-weight="bold" fill="#1a3c5e">Prov 1</text>
+          <text x="215" y="28" text-anchor="middle" font-size="5" fill="#c62828">×120</text>
+          <text x="215" y="40" text-anchor="middle" font-size="4" fill="#888">.shp</text>
+        </g>
+        <g filter="url(#fExJ)">
+          <rect x="245" y="5" width="50" height="38" rx="4" fill="#fce4ec" stroke="#c62828" stroke-width="0.8"/>
+          <text x="270" y="18" text-anchor="middle" font-size="5" font-weight="bold" fill="#c62828">Prov 2</text>
+          <text x="270" y="28" text-anchor="middle" font-size="5" fill="#c62828">×95</text>
+          <text x="270" y="40" text-anchor="middle" font-size="4" fill="#888">.shp</text>
+        </g>
+        <g filter="url(#fExJ)">
+          <rect x="300" y="5" width="50" height="38" rx="4" fill="#fff8e1" stroke="#8b6914" stroke-width="0.8"/>
+          <text x="325" y="18" text-anchor="middle" font-size="5" font-weight="bold" fill="#8b6914">Prov 3</text>
+          <text x="325" y="28" text-anchor="middle" font-size="5" fill="#c62828">×180</text>
+          <text x="325" y="40" text-anchor="middle" font-size="4" fill="#888">.shp</text>
+        </g>
+        <g filter="url(#fExJ)">
+          <rect x="355" y="5" width="50" height="38" rx="4" fill="#e8f5e9" stroke="#2a8c2a" stroke-width="0.8"/>
+          <text x="380" y="18" text-anchor="middle" font-size="5" font-weight="bold" fill="#2a8c2a">Prov 4</text>
+          <text x="380" y="28" text-anchor="middle" font-size="5" fill="#c62828">×145</text>
+          <text x="380" y="40" text-anchor="middle" font-size="4" fill="#888">.shp</text>
+        </g>
+        <g filter="url(#fExJ)">
+          <rect x="190" y="48" width="50" height="38" rx="4" fill="#f3e5f5" stroke="#6c4f9e" stroke-width="0.8"/>
+          <text x="215" y="61" text-anchor="middle" font-size="5" font-weight="bold" fill="#6c4f9e">Prov 5</text>
+          <text x="215" y="71" text-anchor="middle" font-size="5" fill="#c62828">×110</text>
+          <text x="215" y="83" text-anchor="middle" font-size="4" fill="#888">.shp</text>
+        </g>
+        <g filter="url(#fExJ)">
+          <rect x="245" y="48" width="50" height="38" rx="4" fill="#e0f7fa" stroke="#006064" stroke-width="0.8"/>
+          <text x="270" y="61" text-anchor="middle" font-size="5" font-weight="bold" fill="#006064">Prov 6</text>
+          <text x="270" y="71" text-anchor="middle" font-size="5" fill="#c62828">×105</text>
+          <text x="270" y="83" text-anchor="middle" font-size="4" fill="#888">.shp</text>
+        </g>
+        <g filter="url(#fExJ)">
+          <rect x="300" y="48" width="50" height="38" rx="4" fill="#fff3e0" stroke="#e65100" stroke-width="0.8"/>
+          <text x="325" y="61" text-anchor="middle" font-size="5" font-weight="bold" fill="#e65100">Prov 7</text>
+          <text x="325" y="71" text-anchor="middle" font-size="5" fill="#c62828">×95</text>
+          <text x="325" y="83" text-anchor="middle" font-size="4" fill="#888">.shp</text>
+        </g>
+        <!-- Summary -->
+        <g transform="translate(365,48)" filter="url(#fExJ)">
+          <rect x="0" y="0" width="150" height="68" rx="5" fill="#fff3c4" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="75" y="14" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">7 Separate Files</text>
+          <line x1="5" y1="18" x2="145" y2="18" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="8" y="30" font-size="6" fill="#555">• 850 bridges → 7 files</text>
+          <text x="8" y="42" font-size="6" fill="#555">• Each province gets own .shp</text>
+          <text x="8" y="54" font-size="6" fill="#555">• Attrs split by province</text>
+          <text x="75" y="66" text-anchor="middle" font-size="6" fill="#2a8c2a" font-weight="bold">Sent to 7 transport offices</text>
+        </g>
+      </svg>
+      <figcaption>Ex J – Split: National bridge layer split into 7 provincial shapefiles for distribution</figcaption>
+    </figure>
+
+    <!-- The Theory Question (2071 Magh, Q7) -->
+    <h2>1. The Theory Question <span class="exam-ref">2071 Magh, Q7</span></h2>
+    <p><strong>Question:</strong> Define the term spatial analysis. Explain different types of vector overlay operations in GIS. Also explain three examples of neighborhood functions. [2+4+4]</p>
+
+    <h3>A. Definition of Spatial Analysis (2 Marks)</h3>
+    <p>Spatial analysis is the core analytical process in GIS where we extract or create new information about a set of geographic features. It involves evaluating suitability, predicting outcomes, measuring proximities, and modeling relationships between spatial data to solve complex engineering and planning problems.</p>
+
+    <h3>B. Types of Vector Overlay Operations (4 Marks)</h3>
+    <p>Vector overlay involves combining two or more separate polygon layers to create a completely new layer containing both the spatial boundaries and the attribute data of the inputs.</p>
+    <p><strong>Intersect (The "AND" Operator):</strong> Keeps only the overlapping regions of the input layers. The output attribute table combines data from both.</p>
+    <p><strong>Union (The "OR" Operator):</strong> Keeps the entire extent of all input layers. Polygons are split wherever lines cross, and the attribute table joins all data.</p>
+    <p><strong>Identity / Erase:</strong> Identity keeps the base map's boundaries but adds the overlay's attributes. Erase completely removes the overlapping portions from the base map.</p>
+
+    <h3>C. Three Examples of Neighborhood Functions (4 Marks)</h3>
+    <p>Neighborhood functions analyze the relationship between a target feature and its surrounding area.</p>
+    <ol>
+      <li><strong>Buffering:</strong> Creating a zone of a specified distance around a point, line, or polygon (e.g., establishing a 100m no-build zone around a river).</li>
+      <li><strong>Near / Distance Analysis:</strong> Calculating the exact shortest distance from one feature to another (e.g., finding the distance from a proposed school to the nearest existing hospital).</li>
+      <li><strong>Thiessen Polygons (Voronoi Diagrams):</strong> Creating boundaries around a set of points so that any location inside a given polygon is closer to that polygon's central point than to any other point (e.g., mapping the service areas for different rainfall stations).</li>
+    </ol>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 165" width="520" height="165" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fNB"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.10"/></filter>
+        </defs>
+        <text x="260" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Three Neighborhood Functions</text>
+
+        <!-- 1. Buffer -->
+        <g filter="url(#fNB)">
+          <rect x="5" y="24" width="162" height="132" rx="6" fill="#faf8f4" stroke="#1a3c5e" stroke-width="0.8"/>
+          <text x="86" y="39" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">1. Buffering</text>
+          <!-- River line -->
+          <path d="M25,80 Q50,65 70,80 Q90,95 115,75 Q135,60 150,78" fill="none" stroke="#1a3c5e" stroke-width="2"/>
+          <!-- Buffer zone around river -->
+          <path d="M25,80 Q50,65 70,80 Q90,95 115,75 Q135,60 150,78" fill="none" stroke="#5cc5ef" stroke-width="18" opacity="0.25" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="86" y="70" text-anchor="middle" font-size="6" fill="#5cc5ef" font-weight="bold">100m zone</text>
+          <!-- Dimension line -->
+          <line x1="70" y1="80" x2="70" y2="66" stroke="#b8860b" stroke-width="0.5"/>
+          <text x="78" y="67" font-size="5" fill="#b8860b">d</text>
+          <!-- Label -->
+          <text x="86" y="112" text-anchor="middle" font-size="6" fill="#555">Creates proximity zone</text>
+          <text x="86" y="121" text-anchor="middle" font-size="6" fill="#555">at specified distance</text>
+          <text x="86" y="130" text-anchor="middle" font-size="5.5" fill="#1a3c5e" font-style="italic">e.g., 100m no-build zone</text>
+          <text x="86" y="150" text-anchor="middle" font-size="6" fill="#1a3c5e" font-weight="bold">New polygon output</text>
+        </g>
+
+        <!-- 2. Near/Distance -->
+        <g filter="url(#fNB)">
+          <rect x="179" y="24" width="162" height="132" rx="6" fill="#faf8f4" stroke="#2d7d46" stroke-width="0.8"/>
+          <text x="260" y="39" text-anchor="middle" font-size="8" font-weight="bold" fill="#2d7d46">2. Near / Distance</text>
+          <!-- School point -->
+          <circle cx="215" cy="75" r="5" fill="#1a3c5e" stroke="#0d2137" stroke-width="0.5"/>
+          <text x="215" y="90" text-anchor="middle" font-size="5.5" fill="#1a3c5e">School</text>
+          <!-- Hospital point -->
+          <circle cx="300" cy="65" r="5" fill="#8b2500" stroke="#5a1800" stroke-width="0.5"/>
+          <text x="300" y="80" text-anchor="middle" font-size="5.5" fill="#8b2500">Hospital</text>
+          <!-- Distance line -->
+          <line x1="220" y1="75" x2="295" y2="65" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,2"/>
+          <text x="257" y="62" text-anchor="middle" font-size="6" fill="#b8860b" font-weight="bold">d = 2.3 km</text>
+          <!-- Third point -->
+          <circle cx="250" cy="100" r="4" fill="#6c4f9e" stroke="#4a287d" stroke-width="0.5"/>
+          <text x="250" y="113" text-anchor="middle" font-size="5" fill="#6c4f9e">Market</text>
+          <line x1="218" y1="79" x2="247" y2="97" stroke="#d4cfc5" stroke-width="0.6" stroke-dasharray="3,2"/>
+          <!-- Label -->
+          <text x="260" y="130" text-anchor="middle" font-size="6" fill="#555">Calculates shortest</text>
+          <text x="260" y="139" text-anchor="middle" font-size="6" fill="#555">distance between features</text>
+          <text x="260" y="150" text-anchor="middle" font-size="6" fill="#2d7d46" font-weight="bold">Numeric output (meters)</text>
+        </g>
+
+        <!-- 3. Thiessen/Voronoi -->
+        <g filter="url(#fNB)">
+          <rect x="353" y="24" width="162" height="132" rx="6" fill="#faf8f4" stroke="#8b2500" stroke-width="0.8"/>
+          <text x="434" y="39" text-anchor="middle" font-size="8" font-weight="bold" fill="#8b2500">3. Thiessen (Voronoi)</text>
+          <!-- Voronoi boundaries (hand-drawn polygonal) -->
+          <line x1="380" y1="48" x2="420" y2="105" stroke="#d4cfc5" stroke-width="0.8"/>
+          <line x1="420" y1="105" x2="505" y2="75" stroke="#d4cfc5" stroke-width="0.8"/>
+          <line x1="420" y1="105" x2="395" y2="150" stroke="#d4cfc5" stroke-width="0.8"/>
+          <line x1="380" y1="48" x2="460" y2="48" stroke="#d4cfc5" stroke-width="0.8"/>
+          <line x1="460" y1="48" x2="505" y2="75" stroke="#d4cfc5" stroke-width="0.8"/>
+          <!-- Rainfall station points -->
+          <circle cx="395" cy="72" r="4" fill="#1a3c5e" stroke="#0d2137" stroke-width="0.5"/>
+          <text x="395" y="84" text-anchor="middle" font-size="5" fill="#1a3c5e">Stn A</text>
+          <circle cx="455" cy="62" r="4" fill="#8b2500" stroke="#5a1800" stroke-width="0.5"/>
+          <text x="455" y="74" text-anchor="middle" font-size="5" fill="#8b2500">Stn B</text>
+          <circle cx="430" cy="105" r="4" fill="#2d7d46" stroke="#1a5030" stroke-width="0.5"/>
+          <text x="430" y="117" text-anchor="middle" font-size="5" fill="#2d7d46">Stn C</text>
+          <!-- Zone fills (subtle) -->
+          <text x="380" y="63" font-size="5" fill="#1a3c5e" opacity="0.5">Zone A</text>
+          <text x="470" y="56" font-size="5" fill="#8b2500" opacity="0.5">Zone B</text>
+          <text x="440" y="130" font-size="5" fill="#2d7d46" opacity="0.5">Zone C</text>
+          <!-- Label -->
+          <text x="434" y="142" text-anchor="middle" font-size="6" fill="#555">Any point in Zone A is</text>
+          <text x="434" y="151" text-anchor="middle" font-size="6" fill="#555">closer to Stn A than B or C</text>
+        </g>
+      </svg>
+      <figcaption><strong>Fig 6.16</strong> &mdash; Three Neighborhood Functions: (1) Buffering creates proximity polygons, (2) Near/Distance calculates shortest distances between features, (3) Thiessen (Voronoi) polygons assign service areas so every location is closest to its generating point.</figcaption>
+    </figure>
+
+    <!-- Landfill Site Selection Workflow -->
+    <h2>Landfill Site Selection Workflow <span class="exam-ref">10 Marks</span></h2>
+    <p><strong>Question:</strong> Write about the necessary tools and explain how you will perform the following analyses using GIS: Best location for landfill area so that following constraints are fulfilled: Houses &gt; 1000m, River &gt; 1500m, Road &lt; 500m, Water bodies &gt; 1500m. Provided data: Shapefile of river, land use data, point data of the houses, shapefile of roads, polygon shapefile of the study area. [10]</p>
+    <p>Here is the precise step-by-step workflow you need to write:</p>
+
+    <h4>Step 1: Buffer the Restricted Features (Tool: Buffer)</h4>
+    <p>Since a landfill is hazardous, it must be far from people and water. We buffer the restrictions:</p>
+    <ul>
+      <li>Buffer the "Houses" point layer by 1,000m.</li>
+      <li>Buffer the "River" line layer by 1,500m.</li>
+      <li>Buffer the "Water bodies" polygon layer by 1,500m.</li>
+    </ul>
+
+    <h4>Step 2: Combine the Restricted Zones (Tool: Union or Merge)</h4>
+    <p>Use the Union tool to combine the three buffers from Step 1 into a single, massive "Restricted Area" polygon layer.</p>
+
+    <h4>Step 3: Extract the Available Land (Tool: Erase)</h4>
+    <p>Take the total "Study Area" polygon as the input feature, and use the "Restricted Area" from Step 2 as the erase feature. The output is a map of the "Available Land" where it is legally safe to build.</p>
+
+    <h4>Step 4: Buffer the Favorable Proximity Feature (Tool: Buffer)</h4>
+    <p>The site must be accessible for garbage trucks. Buffer the "Road" line shapefile by 500m to create the "Accessibility Zone".</p>
+
+    <h4>Step 5: Isolate the Final Suitable Sites (Tool: Intersect)</h4>
+    <p>Intersect the "Available Land" (from Step 3) with the 500m "Road Buffer" (from Step 4). The resulting polygons are the exact locations that meet every single distance constraint.</p>
+
+    <h4>Step 6: Filter by Appropriate Land Use (Tool: Select by Attributes)</h4>
+    <p>Using the provided "Land use data" shapefile, perform a Spatial Join with your final sites. Then, run an SQL query (e.g., SELECT * WHERE Land_Use = 'Barren') to ensure the landfill isn't placed on top of agricultural or forested land.</p>
+    <p>(Make sure to sketch a simple conceptual flowchart or a mock map showing a road with a buffer overlapping an available land polygon to secure the full 10 marks!)</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 240" width="560" height="240" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f69"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gLf1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e3f2fd"/><stop offset="100%" stop-color="#bbdefb"/></linearGradient>
+          <linearGradient id="gLf2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fce4ec"/><stop offset="100%" stop-color="#f8bbd0"/></linearGradient>
+          <linearGradient id="gLf3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f5e9"/><stop offset="100%" stop-color="#c8e6c9"/></linearGradient>
+          <linearGradient id="gLf4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff8e1"/><stop offset="100%" stop-color="#ffecb3"/></linearGradient>
+          <linearGradient id="gLf5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f3e5f5"/><stop offset="100%" stop-color="#e1bee7"/></linearGradient>
+          <linearGradient id="gLfR" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fffde7"/><stop offset="100%" stop-color="#fff9c4"/></linearGradient>
+          <marker id="a6lf" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#555"/></marker>
+        </defs>
+        <!-- Step 1: Buffer restricted -->
+        <g filter="url(#f69)">
+          <rect x="5" y="5" width="105" height="82" rx="6" fill="url(#gLf1)" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="58" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Step 1: Buffer</text>
+          <text x="58" y="30" text-anchor="middle" font-size="6" fill="#555">🏠 Houses →1000m</text>
+          <text x="58" y="40" text-anchor="middle" font-size="6" fill="#555">River →1500m</text>
+          <text x="58" y="50" text-anchor="middle" font-size="6" fill="#555">Water →1500m</text>
+          <circle cx="30" cy="68" r="10" fill="#ef5350" fill-opacity="0.15" stroke="#ef5350" stroke-width="0.8" stroke-dasharray="3,1"/>
+          <circle cx="30" cy="68" r="3" fill="#ef5350"/>
+          <path d="M 55,60 Q 68,75 85,60" fill="none" stroke="#42a5f5" stroke-width="1.5"/>
+          <path d="M 48,56 Q 68,82 92,56" fill="none" stroke="#42a5f5" stroke-width="0.5" stroke-dasharray="3,1" stroke-opacity="0.5"/>
+        </g>
+        <!-- Arrow 1→2 -->
+        <line x1="115" y1="45" x2="130" y2="45" stroke="#555" stroke-width="1.5" marker-end="url(#a6lf)"/>
+        <!-- Step 2: Union restricted buffers -->
+        <g filter="url(#f69)">
+          <rect x="135" y="5" width="90" height="82" rx="6" fill="url(#gLf2)" stroke="#c62828" stroke-width="1"/>
+          <text x="180" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#c62828">Step 2: Union</text>
+          <text x="180" y="30" text-anchor="middle" font-size="6" fill="#555">Combine all 3</text>
+          <text x="180" y="40" text-anchor="middle" font-size="6" fill="#555">buffers into one</text>
+          <text x="180" y="52" text-anchor="middle" font-size="7" fill="#c62828" font-weight="bold">RESTRICTED</text>
+          <text x="180" y="62" text-anchor="middle" font-size="7" fill="#c62828" font-weight="bold">ZONE —</text>
+          <rect x="148" y="68" width="64" height="12" rx="3" fill="#ef5350" fill-opacity="0.15" stroke="#ef5350" stroke-width="0.5"/>
+          <text x="180" y="77" text-anchor="middle" font-size="5" fill="#ef5350">single polygon</text>
+        </g>
+        <!-- Arrow 2→3 -->
+        <line x1="230" y1="45" x2="245" y2="45" stroke="#555" stroke-width="1.5" marker-end="url(#a6lf)"/>
+        <!-- Step 3: Erase -->
+        <g filter="url(#f69)">
+          <rect x="250" y="5" width="96" height="82" rx="6" fill="url(#gLf3)" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="298" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#2a8c2a">Step 3: Erase</text>
+          <text x="298" y="30" text-anchor="middle" font-size="6" fill="#555">Study Area</text>
+          <text x="298" y="40" text-anchor="middle" font-size="6" fill="#555">− Restricted Zone</text>
+          <rect x="262" y="48" width="72" height="30" rx="4" fill="#a0d468" fill-opacity="0.3" stroke="#2a8c2a" stroke-width="1"/>
+          <circle cx="290" cy="63" r="12" fill="white" stroke="#ef5350" stroke-width="0.8" stroke-dasharray="3,1"/>
+          <text x="290" y="67" text-anchor="middle" font-size="5" fill="#ef5350">✗</text>
+          <text x="270" y="60" font-size="5" fill="#2a8c2a" font-weight="bold">✓</text>
+          <text x="330" y="60" font-size="5" fill="#2a8c2a" font-weight="bold">✓</text>
+        </g>
+        <!-- Arrow 3→4 -->
+        <line x1="350" y1="45" x2="365" y2="45" stroke="#555" stroke-width="1.5" marker-end="url(#a6lf)"/>
+        <!-- Step 4: Buffer Road -->
+        <g filter="url(#f69)">
+          <rect x="370" y="5" width="90" height="82" rx="6" fill="url(#gLf4)" stroke="#8b6914" stroke-width="1"/>
+          <text x="415" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#8b6914">Step 4: Buffer</text>
+          <text x="415" y="30" text-anchor="middle" font-size="6" fill="#555">Road ≤ 500m</text>
+          <line x1="382" y1="55" x2="448" y2="55" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="382" y="43" width="66" height="24" rx="4" fill="#f6bb42" fill-opacity="0.15" stroke="#f6bb42" stroke-width="0.8" stroke-dasharray="3,1"/>
+          <text x="415" y="78" text-anchor="middle" font-size="6" fill="#8b6914">Accessibility Zone</text>
+        </g>
+        <!-- Arrow 4→5 -->
+        <line x1="465" y1="45" x2="480" y2="45" stroke="#555" stroke-width="1.5" marker-end="url(#a6lf)"/>
+        <!-- Step 5: Intersect -->
+        <g filter="url(#f69)">
+          <rect x="485" y="5" width="70" height="82" rx="6" fill="url(#gLf5)" stroke="#6c4f9e" stroke-width="1"/>
+          <text x="520" y="18" text-anchor="middle" font-size="7" font-weight="bold" fill="#6c4f9e">Step 5</text>
+          <text x="520" y="30" text-anchor="middle" font-size="7" font-weight="bold" fill="#6c4f9e">Intersect</text>
+          <text x="520" y="42" text-anchor="middle" font-size="6" fill="#555">Available</text>
+          <text x="520" y="52" text-anchor="middle" font-size="6" fill="#555">∩ Road Buf</text>
+          <text x="520" y="68" text-anchor="middle" font-size="8" fill="#6c4f9e">✅</text>
+          <text x="520" y="80" text-anchor="middle" font-size="5" fill="#6c4f9e" font-weight="bold">Suitable!</text>
+        </g>
+        <!-- Step 6 below -->
+        <g filter="url(#f69)">
+          <rect x="5" y="100" width="550" height="38" rx="6" fill="url(#gLfR)" stroke="#b8860b" stroke-width="1"/>
+          <text x="280" y="117" text-anchor="middle" font-size="8" font-weight="bold" fill="#b8860b">Step 6: Select by Attributes — SQL query (Land_Use = 'Barren') to filter final sites</text>
+          <text x="280" y="130" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Spatial Join with Land Use layer → filter out agricultural / forested land</text>
+        </g>
+        <!-- Summary arrow flow -->
+        <text x="280" y="155" text-anchor="middle" font-size="7" fill="#555">Buffer(restrictions) → Union → Erase(from study area) → Buffer(road) → Intersect → Select → ✅ Final Site</text>
+      </svg>
+      <figcaption>Fig 6.9 – Landfill Site Selection Workflow: Step-by-step GIS analysis using Buffer, Union, Erase, Intersect, and Select</figcaption>
+    </figure>
+
+    <!-- Figure-based Question: Clip, Buffer, Intersect, Union -->
+    <h2>Figure-Based Question: Clip, Buffer, Intersect, Union</h2>
+    <p>Figure below shows 2 roads, 7 buildings as points, and the area of interest (AOI) as polygon layers. (a) Sketch the road and building layers after clipping with the AOI polygon (assume clip-road and clip-bld are the outputs respectively). (b) Draw the 50 m buffer for each of the clipped layers along with clip-road and clip-bld layers (assume buffered layers are named as buf-road and buf-bld respectively). (c) Sketch the intersection of buf-road and buf-bld and also show the output fields. (d) Sketch the union of buff-road and buf-bld and also show the output fields.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 210" width="560" height="210" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f610"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- (a) Original + Clipped -->
+        <g filter="url(#f610)">
+          <rect x="5" y="5" width="130" height="95" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="70" y="16" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">(a) Clip to AOI</text>
+          <!-- AOI dashed -->
+          <rect x="18" y="22" width="105" height="68" rx="3" fill="none" stroke="#1a3c5e" stroke-width="1.2" stroke-dasharray="4,2"/>
+          <text x="120" y="32" font-size="5" fill="#1a3c5e">AOI</text>
+          <!-- Roads -->
+          <line x1="10" y1="48" x2="130" y2="45" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          <line x1="60" y1="20" x2="65" y2="95" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+          <!-- Clipped roads (bold inside AOI) -->
+          <line x1="18" y1="48" x2="123" y2="45" stroke="#ef5350" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="60" y1="22" x2="65" y2="90" stroke="#ef5350" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Building points -->
+          <circle cx="30" cy="38" r="3" fill="#42a5f5" stroke="#1565c0" stroke-width="0.6"/>
+          <circle cx="45" cy="60" r="3" fill="#42a5f5" stroke="#1565c0" stroke-width="0.6"/>
+          <circle cx="80" cy="35" r="3" fill="#42a5f5" stroke="#1565c0" stroke-width="0.6"/>
+          <circle cx="95" cy="62" r="3" fill="#42a5f5" stroke="#1565c0" stroke-width="0.6"/>
+          <circle cx="110" cy="40" r="3" fill="#42a5f5" stroke="#1565c0" stroke-width="0.6"/>
+          <!-- Points outside AOI (grey, discarded) -->
+          <circle cx="12" cy="45" r="3" fill="#ccc" stroke="#999" stroke-width="0.5"/>
+          <circle cx="67" cy="95" r="3" fill="#ccc" stroke="#999" stroke-width="0.5"/>
+          <text x="12" y="55" font-size="4" fill="#999">✗</text>
+          <text x="67" y="93" font-size="4" fill="#999">✗</text>
+          <text x="70" y="100" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Red = clip-road; Blue = clip-bld</text>
+        </g>
+        <!-- (b) 50m Buffers -->
+        <g filter="url(#f610)">
+          <rect x="145" y="5" width="130" height="95" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="210" y="16" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">(b) 50m Buffers</text>
+          <!-- Road buffers -->
+          <line x1="158" y1="55" x2="262" y2="52" stroke="#333" stroke-width="1.5"/>
+          <path d="M158,55 L262,52" fill="none" stroke="#ef5350" stroke-width="20" stroke-opacity="0.12" stroke-linecap="round"/>
+          <line x1="195" y1="22" x2="200" y2="90" stroke="#333" stroke-width="1.5"/>
+          <path d="M195,22 L200,90" fill="none" stroke="#ef5350" stroke-width="20" stroke-opacity="0.12" stroke-linecap="round"/>
+          <!-- Building buffers -->
+          <circle cx="170" cy="42" r="10" fill="#42a5f5" fill-opacity="0.12" stroke="#42a5f5" stroke-width="0.8" stroke-dasharray="2,1"/>
+          <circle cx="170" cy="42" r="2.5" fill="#42a5f5"/>
+          <circle cx="185" cy="66" r="10" fill="#42a5f5" fill-opacity="0.12" stroke="#42a5f5" stroke-width="0.8" stroke-dasharray="2,1"/>
+          <circle cx="185" cy="66" r="2.5" fill="#42a5f5"/>
+          <circle cx="220" cy="38" r="10" fill="#42a5f5" fill-opacity="0.12" stroke="#42a5f5" stroke-width="0.8" stroke-dasharray="2,1"/>
+          <circle cx="220" cy="38" r="2.5" fill="#42a5f5"/>
+          <circle cx="238" cy="68" r="10" fill="#42a5f5" fill-opacity="0.12" stroke="#42a5f5" stroke-width="0.8" stroke-dasharray="2,1"/>
+          <circle cx="238" cy="68" r="2.5" fill="#42a5f5"/>
+          <circle cx="252" cy="42" r="10" fill="#42a5f5" fill-opacity="0.12" stroke="#42a5f5" stroke-width="0.8" stroke-dasharray="2,1"/>
+          <circle cx="252" cy="42" r="2.5" fill="#42a5f5"/>
+          <text x="210" y="100" text-anchor="middle" font-size="6" fill="#888" font-style="italic">buf-road (red) + buf-bld (blue)</text>
+        </g>
+        <!-- (c) Intersect -->
+        <g filter="url(#f610)">
+          <rect x="285" y="5" width="130" height="95" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="350" y="16" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">(c) Intersect</text>
+          <!-- Show only overlapping lens shapes -->
+          <ellipse cx="310" cy="52" rx="10" ry="7" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="1"/>
+          <ellipse cx="330" cy="42" rx="8" ry="6" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="1"/>
+          <ellipse cx="360" cy="55" rx="10" ry="8" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="1"/>
+          <ellipse cx="380" cy="42" rx="7" ry="5" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="350" y="75" text-anchor="middle" font-size="6" fill="#555">Only where</text>
+          <text x="350" y="84" text-anchor="middle" font-size="6" fill="#555">buf-road ∩ buf-bld</text>
+          <text x="350" y="100" text-anchor="middle" font-size="5" fill="#1a3c5e" font-weight="bold">Fields: Road_* + Bldg_*</text>
+        </g>
+        <!-- (d) Union -->
+        <g filter="url(#f610)">
+          <rect x="425" y="5" width="130" height="95" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="490" y="16" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">(d) Union</text>
+          <!-- Road buffers -->
+          <path d="M438,55 L542,52" fill="none" stroke="#ef5350" stroke-width="18" stroke-opacity="0.1" stroke-linecap="round"/>
+          <line x1="438" y1="55" x2="542" y2="52" stroke="#ef5350" stroke-width="0.8"/>
+          <path d="M475,22 L480,90" fill="none" stroke="#ef5350" stroke-width="18" stroke-opacity="0.1" stroke-linecap="round"/>
+          <line x1="475" y1="22" x2="480" y2="90" stroke="#ef5350" stroke-width="0.8"/>
+          <!-- Building buffers -->
+          <circle cx="450" cy="45" r="9" fill="#42a5f5" fill-opacity="0.1" stroke="#42a5f5" stroke-width="0.8"/>
+          <circle cx="465" cy="68" r="9" fill="#42a5f5" fill-opacity="0.1" stroke="#42a5f5" stroke-width="0.8"/>
+          <circle cx="500" cy="38" r="9" fill="#42a5f5" fill-opacity="0.1" stroke="#42a5f5" stroke-width="0.8"/>
+          <circle cx="518" cy="65" r="9" fill="#42a5f5" fill-opacity="0.1" stroke="#42a5f5" stroke-width="0.8"/>
+          <circle cx="530" cy="42" r="9" fill="#42a5f5" fill-opacity="0.1" stroke="#42a5f5" stroke-width="0.8"/>
+          <!-- Overlap marks -->
+          <ellipse cx="455" cy="52" rx="4" ry="3" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="0.8"/>
+          <ellipse cx="502" cy="48" rx="4" ry="3" fill="#a0d468" fill-opacity="0.5" stroke="#2a8c2a" stroke-width="0.8"/>
+          <text x="490" y="82" text-anchor="middle" font-size="6" fill="#555">Everything kept</text>
+          <text x="490" y="100" text-anchor="middle" font-size="5" fill="#1a3c5e" font-weight="bold">Fields: Road_* + Bldg_* (NULLs)</text>
+        </g>
+        <!-- Output field tables -->
+        <g filter="url(#f610)">
+          <rect x="5" y="110" width="275" height="55" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="140" y="122" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">(c) Intersect Output Fields</text>
+          <line x1="10" y1="126" x2="275" y2="126" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="12" y="138" font-size="6" fill="#333" font-weight="bold">[FID]</text>
+          <text x="40" y="138" font-size="6" fill="#333" font-weight="bold">[Shape]</text>
+          <text x="78" y="138" font-size="6" fill="#ef5350" font-weight="bold">[Road_fid]</text>
+          <text x="122" y="138" font-size="6" fill="#ef5350" font-weight="bold">[Road_name]</text>
+          <text x="172" y="138" font-size="6" fill="#ef5350" font-weight="bold">[Road_type]</text>
+          <text x="218" y="138" font-size="6" fill="#42a5f5" font-weight="bold">[Bldg_fid]</text>
+          <text x="258" y="138" font-size="6" fill="#42a5f5" font-weight="bold">[Bldg_name]</text>
+          <text x="140" y="155" text-anchor="middle" font-size="6" fill="#888" font-style="italic">Both tables joined — only overlapping features</text>
+        </g>
+        <g filter="url(#f610)">
+          <rect x="290" y="110" width="265" height="55" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+          <text x="422" y="122" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">(d) Union Output Fields</text>
+          <line x1="295" y1="126" x2="550" y2="126" stroke="#d4cfc5" stroke-width="0.3"/>
+          <text x="298" y="138" font-size="6" fill="#333" font-weight="bold">[FID]</text>
+          <text x="326" y="138" font-size="6" fill="#333" font-weight="bold">[Shape]</text>
+          <text x="364" y="138" font-size="6" fill="#ef5350" font-weight="bold">[Road_fid]</text>
+          <text x="408" y="138" font-size="6" fill="#ef5350" font-weight="bold">[Road_name]</text>
+          <text x="458" y="138" font-size="6" fill="#42a5f5" font-weight="bold">[Bldg_fid]</text>
+          <text x="504" y="138" font-size="6" fill="#42a5f5" font-weight="bold">[Bldg_name]</text>
+          <text x="422" y="155" text-anchor="middle" font-size="6" fill="#b8860b" font-style="italic">Same fields — NULL where no overlap</text>
+        </g>
+        <text x="280" y="185" text-anchor="middle" font-size="7" fill="#555" font-style="italic">Note: Intersect keeps only overlap zones; Union keeps everything with NULLs for non-overlap</text>
+      </svg>
+      <figcaption>Fig 6.10 – Figure-based Question: AOI with Roads + Buildings → Clip → Buffer → Intersect vs Union</figcaption>
+    </figure>
+
+    <h3>(a) Sketch the clipped layers (2 Marks)</h3>
+    <ul>
+      <li><strong>What to draw:</strong> 1. Draw a dashed rectangle representing the Area of Interest (AOI). 2. Inside this rectangle, draw the roads (lines) and buildings (dots) strictly stopping at the dashed boundary. 3. Crucial detail: Do not draw any lines or dots outside the AOI. The Clip tool acts as a cookie-cutter, completely discarding anything outside the AOI polygon.</li>
+      <li><strong>Labels:</strong> Label the lines as clip-road and the dots as clip-bld.</li>
+    </ul>
+
+    <h3>(b) Draw the 50m Buffers (2 Marks)</h3>
+    <ul>
+      <li><strong>What to draw:</strong> 1. Redraw your clip-road lines and clip-bld dots from part (a). 2. Around every building dot, draw a circle (this is your 50m point buffer). 3. Along every road line, draw a thick, parallel boundary on both sides (this is your 50m line buffer). 4. Crucial detail: Make sure some of the building circles overlap with the road buffers, as this is required for the next steps!</li>
+      <li><strong>Labels:</strong> Label the circular polygons as buf-bld and the road polygons as buf-road.</li>
+    </ul>
+
+    <h3>(c) Sketch the Intersection and show output fields (3 Marks)</h3>
+    <ul>
+      <li><strong>What to draw:</strong> 1. Look at where your buf-road polygon crosses over your buf-bld circles. 2. Draw only the specific overlapping, lens-shaped areas where both buffers exist at the exact same time. Erase everything else.</li>
+      <li><strong>The Output Fields (Attribute Table):</strong> Because an Intersect joins the tables of both input layers, the output table must contain the columns of both the roads and the buildings.
+        <ul>
+          <li>Draw a table with these columns: [FID] | [Shape] | [Road_fid] | [Road_name] | [Road_type] | [Bldg_fid] | [Bldg_name]</li>
+          <li>Note: The question provided these specific fields for the road and buildings, so you must write them out to get the marks.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>(d) Sketch the Union and show output fields (3 Marks)</h3>
+    <ul>
+      <li><strong>What to draw:</strong> 1. Draw the entirety of both buffer layers from part (b). Draw all the road buffers and all the building circles. 2. However, everywhere a circle crosses a road buffer, draw a distinct solid line to show that a new, smaller polygon has been created by the overlapping boundaries.</li>
+      <li><strong>The Output Fields (Attribute Table):</strong> A Union also joins the tables of both layers.
+        <ul>
+          <li>Draw a table with the exact same columns as part (c): [FID] | [Shape] | [Road_fid] | [Road_name] | [Road_type] | [Bldg_fid] | [Bldg_name]</li>
+          <li>Crucial detail for extra marks: Write a quick note below the table stating: "Where a building buffer does not overlap with a road buffer, the road attribute fields will contain 'Null' values, and vice versa."</li>
+        </ul>
+      </li>
+    </ul>
+
+    <p class="footer-note">End of Chapter 6 – Vector Analysis</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

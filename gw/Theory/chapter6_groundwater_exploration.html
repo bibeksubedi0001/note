@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 6: Groundwater Exploration</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --base-size: 12pt; }
+        body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
+            font-family: 'Times New Roman', Times, serif; font-size: var(--base-size);
+            color: black; background-color: white; line-height: 1.5; margin: 0; padding: 0;
+        }
+        * { box-sizing: border-box; }
+        body { max-width: 860px; margin: 0 auto; padding: 2rem; }
+        h1 { font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid black; padding-bottom: 0.5rem; }
+        h2 { font-weight: bold; text-transform: uppercase; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid black; }
+        h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        h4 { font-weight: bold; font-style: italic; margin-top: 1rem; margin-bottom: 0.5rem; }
+        p { text-align: justify; margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+        li { text-align: justify; margin-bottom: 0.5rem; }
+        .equation { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; overflow-x: auto; }
+        .exam-note, .study-note, .question-card, .solution-box { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .exam-note h4, .study-note h4, .question-card h4, .solution-box h4 { margin-top: 0; border-bottom: 1px dashed black; padding-bottom: 0.25rem; }
+        .solution-box { border-width: 2px; }
+        .solution-box h4 { font-weight: bold; }
+        .callout { border-left: 3px solid black; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; }
+        .figure-container { text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid black; overflow-x: auto; }
+        .figcaption { font-style: italic; margin-top: 0.5rem; text-align: center; }
+        table.info-table, table.question-table, table.formula-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table.info-table th, table.info-table td, table.question-table th, table.question-table td, table.formula-table th, table.formula-table td { border: 1px solid black; padding: 6px 10px; text-align: left; vertical-align: top; }
+        table.info-table th, table.question-table th, table.formula-table th { font-weight: bold; background: #f5f5f5; }
+        .toc { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .toc ol { margin-bottom: 0; } .toc a { text-decoration: none; }
+        .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .mini-note { border: 1px solid black; padding: 0.85rem; margin: 1rem 0; }
+        .question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .pill { display: inline-block; border: 1px solid black; padding: 2px 8px; font-size: 0.9rem; }
+        .data-block { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid black; }
+        .print-btn { position: fixed; top: 1rem; right: 1rem; border: 2px solid black; background-color: white; color: black; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer; font-family: 'Times New Roman', Times, serif; font-size: var(--base-size); }
+        .print-btn:hover { background-color: black; color: white; }
+        @media (max-width: 720px) { body { padding: 1rem; } .grid-two { grid-template-columns: 1fr; } }
+        @media print { body { padding: 0; max-width: 100%; } .print-btn { display: none; } .figure-container, .exam-note, .study-note, .question-card, .mini-note, .solution-box { page-break-inside: avoid; } h2, h3 { page-break-after: avoid; } }
+    </style>
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .study-note{background:#1e222a!important}
+[data-theme="dark"] .question-card{background:#1e222a!important}
+[data-theme="dark"] .mini-note{background:#1e222a!important}
+[data-theme="dark"] .solution-box{background:#1e222a!important}
+[data-theme="dark"] .callout{background:#1e222a!important}
+[data-theme="dark"] .toc{background:#1e222a!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+        <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+        <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#777"/><circle cx="9" cy="9" r="2" fill="#777"/></pattern>
+        <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+        <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse"><line x1="0" y1="10" x2="7" y2="0" stroke="black" stroke-width=".8"/><line x1="7" y1="10" x2="14" y2="0" stroke="black" stroke-width=".8"/></pattern>
+        <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="black"/></marker>
+        <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="black"/></marker>
+    </defs>
+</svg>
+    <button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+    <main>
+        <header>
+            <p style="text-align:center;font-style:italic;margin-bottom:1rem;">Groundwater Engineering &mdash; CE 76509</p>
+            <h1>CHAPTER 6: GROUNDWATER EXPLORATION</h1>
+            <p style="text-align:center;font-style:italic;margin-bottom:2rem;">(Syllabus Weight: 4 hours, ~5 marks — Theory Only)</p>
+        </header>
+
+        <section class="toc">
+            <h4>CHAPTER ROADMAP</h4>
+            <ol>
+                <li><a href="#sec-6-1">Introduction &mdash; what is groundwater exploration?</a></li>
+                <li><a href="#sec-6-2">Objectives of groundwater exploration</a></li>
+                <li><a href="#sec-6-3">Surface investigation methods</a></li>
+                <li><a href="#sec-6-4">Subsurface investigation methods</a></li>
+                <li><a href="#sec-6-5">Geophysical methods &mdash; overview</a></li>
+                <li><a href="#sec-6-6">Electrical resistivity method</a></li>
+                <li><a href="#sec-6-7">Seismic refraction method</a></li>
+                <li><a href="#sec-6-8">Other geophysical methods</a></li>
+                <li><a href="#sec-6-9">Water witching (divining)</a></li>
+                <li><a href="#sec-6-10">Remote sensing and GIS in groundwater exploration</a></li>
+                <li><a href="#sec-6-11">Past question bank for Chapter 6</a></li>
+                <li><a href="#sec-summary">Chapter summary and exam key points</a></li>
+            </ol>
+        </section>
+
+        <!-- ======== 6.1 INTRODUCTION ======== -->
+        <section id="sec-6-1">
+            <h2>6.1 INTRODUCTION &mdash; WHAT IS GROUNDWATER EXPLORATION?</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2071 Bhadra Q7 [4+4]:</strong> What is groundwater exploration? What are its objectives? Write about methods of groundwater exploration.</p>
+            </div>
+
+            <p>Groundwater exploration refers to the systematic investigation of subsurface conditions to locate, evaluate, and develop groundwater resources. It involves the application of geological, hydrological, and geophysical techniques to determine:</p>
+            <ul>
+                <li>The <strong>occurrence</strong> and <strong>distribution</strong> of groundwater</li>
+                <li>The <strong>quantity</strong> of groundwater available for extraction</li>
+                <li>The <strong>quality</strong> of groundwater for intended use</li>
+                <li>The most suitable <strong>locations</strong> for well construction</li>
+            </ul>
+
+            <p>Groundwater exploration is essential because groundwater is a hidden resource &mdash; it cannot be directly observed from the surface. Unlike surface water bodies such as rivers and lakes, the presence and extent of groundwater must be inferred from indirect evidence. Exploration bridges this knowledge gap.</p>
+
+            <div class="mini-note">
+                <strong>Key Exam Point:</strong> Groundwater exploration is always asked as a theory question. No numericals come from this chapter. Focus on understanding the purpose, classification of methods, and being able to explain at least two methods (especially electrical resistivity and seismic refraction) in detail with sketches.
+            </div>
+        </section>
+
+        <!-- ======== 6.2 OBJECTIVES ======== -->
+        <section id="sec-6-2">
+            <h2>6.2 OBJECTIVES OF GROUNDWATER EXPLORATION</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2072 Magh Q8 [6]:</strong> What are the objectives of groundwater exploration?</p>
+                <p><strong>2072 Ashwin Q7 [2+3+1]:</strong> What is the main objective of groundwater exploration?</p>
+            </div>
+
+            <p>The primary objectives of groundwater exploration are:</p>
+
+            <h3>A. Determination of Groundwater Occurrence</h3>
+            <ul>
+                <li>To identify the type, location, and extent of aquifers</li>
+                <li>To determine whether the aquifer is confined, unconfined, or semi-confined</li>
+                <li>To assess the geological formations and their water-bearing capacity</li>
+            </ul>
+
+            <h3>B. Assessment of Groundwater Quantity</h3>
+            <ul>
+                <li>To estimate the yield of potential wells</li>
+                <li>To determine aquifer parameters such as transmissivity (T) and storativity (S)</li>
+                <li>To assess the sustainable yield for long-term extraction</li>
+                <li>To evaluate the recharge potential and safe yield of the basin</li>
+            </ul>
+
+            <h3>C. Evaluation of Groundwater Quality</h3>
+            <ul>
+                <li>To determine the chemical composition of groundwater</li>
+                <li>To check suitability for drinking, irrigation, and industrial purposes</li>
+                <li>To identify potential contamination sources and pathways</li>
+            </ul>
+
+            <h3>D. Selection of Well Sites</h3>
+            <ul>
+                <li>To locate the most productive zones for drilling</li>
+                <li>To determine the optimal depth and design of wells</li>
+                <li>To minimize exploration and drilling costs</li>
+            </ul>
+
+            <h3>E. Groundwater Management</h3>
+            <ul>
+                <li>To develop a groundwater management plan</li>
+                <li>To monitor water levels and predict future trends</li>
+                <li>To plan artificial recharge where overdraft is occurring</li>
+            </ul>
+
+            <div class="mini-note">
+                <strong>Exam Tip:</strong> When asked &ldquo;What are the objectives?&rdquo;, list at least 5&ndash;6 points with brief explanations. The main objective is to <strong>locate, evaluate, and develop</strong> groundwater resources efficiently and economically.
+            </div>
+        </section>
+
+        <!-- ======== 6.3 SURFACE INVESTIGATION ======== -->
+        <section id="sec-6-3">
+            <h2>6.3 SURFACE INVESTIGATION METHODS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2072 Ashwin Q7 [2+3+1]:</strong> List different surface investigation methods used in groundwater exploration.</p>
+            </div>
+
+            <p>Surface investigation methods are preliminary techniques used before undertaking expensive subsurface exploration. These methods provide initial information about the likely occurrence of groundwater.</p>
+
+            <h3>6.3.1 Geological Survey</h3>
+            <p>A geological survey involves the study of surface geological features to infer subsurface conditions. The key aspects include:</p>
+            <ul>
+                <li><strong>Lithological mapping:</strong> Identification of rock types, their distribution, and water-bearing potential. Sandstone, limestone, and fractured basalt are good aquifer materials; clay and shale are aquitards.</li>
+                <li><strong>Structural mapping:</strong> Study of folds, faults, joints, and fractures. Faults may act as conduits or barriers to groundwater flow. Fracture zones in hard-rock terrain often indicate productive well sites.</li>
+                <li><strong>Geomorphological study:</strong> Study of landforms such as alluvial fans, flood plains, buried channels, and paleochannels that may indicate potential groundwater storage.</li>
+            </ul>
+
+            <h3>6.3.2 Hydrogeological Survey</h3>
+            <p>This involves the study of existing water sources such as springs, streams, existing wells, and their relationship to subsurface geology. Key activities include:</p>
+            <ul>
+                <li>Inventory of existing wells &mdash; depth, yield, water quality, and water level data</li>
+                <li>Study of spring locations and discharge measurements</li>
+                <li>Analysis of stream flow and base-flow separation</li>
+                <li>Measurement and mapping of water table elevations</li>
+            </ul>
+
+            <h3>6.3.3 Study of Aerial Photographs and Satellite Imagery</h3>
+            <p>Aerial photographs and satellite images are used to identify geological structures, drainage patterns, vegetation anomalies, and soil moisture differences that indicate groundwater presence. Features interpreted include:</p>
+            <ul>
+                <li>Lineaments (faults, fractures, joints)</li>
+                <li>Drainage density and pattern</li>
+                <li>Vegetation patterns (phreatophytes indicate shallow water table)</li>
+                <li>Soil moisture variations</li>
+            </ul>
+
+            <h3>6.3.4 Hydrological Data Analysis</h3>
+            <p>Analysis of rainfall data, evapotranspiration, surface runoff, and water balance to estimate recharge and groundwater availability in a basin.</p>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 360" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <!-- Title -->
+                    <text x="350" y="25" text-anchor="middle" font-weight="bold" font-size="14">Classification of Groundwater Exploration Methods</text>
+
+                    <!-- Main box -->
+                    <rect x="220" y="40" width="260" height="32" rx="4" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="350" y="61" text-anchor="middle" font-weight="bold" font-size="12">GROUNDWATER EXPLORATION</text>
+
+                    <!-- Lines down -->
+                    <line x1="175" y1="72" x2="175" y2="100" stroke="black" stroke-width="1"/>
+                    <line x1="350" y1="72" x2="350" y2="100" stroke="black" stroke-width="1"/>
+                    <line x1="545" y1="72" x2="545" y2="100" stroke="black" stroke-width="1"/>
+                    <line x1="175" y1="72" x2="545" y2="72" stroke="black" stroke-width="1"/>
+
+                    <!-- Surface Methods -->
+                    <rect x="80" y="100" width="190" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="175" y="119" text-anchor="middle" font-weight="bold" font-size="11">SURFACE METHODS</text>
+                    <line x1="175" y1="128" x2="175" y2="148" stroke="black" stroke-width="1"/>
+                    <rect x="60" y="148" width="230" height="90" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="80" y="168" font-size="11">&bull; Geological survey</text>
+                    <text x="80" y="186" font-size="11">&bull; Hydrogeological survey</text>
+                    <text x="80" y="204" font-size="11">&bull; Aerial photo interpretation</text>
+                    <text x="80" y="222" font-size="11">&bull; Remote sensing &amp; GIS</text>
+
+                    <!-- Subsurface Methods -->
+                    <rect x="275" y="100" width="190" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="370" y="119" text-anchor="middle" font-weight="bold" font-size="11">SUBSURFACE METHODS</text>
+                    <line x1="370" y1="128" x2="370" y2="148" stroke="black" stroke-width="1"/>
+                    <rect x="290" y="148" width="200" height="90" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="310" y="168" font-size="11">&bull; Test drilling</text>
+                    <text x="310" y="186" font-size="11">&bull; Borehole logging</text>
+                    <text x="310" y="204" font-size="11">&bull; Pumping tests</text>
+                    <text x="310" y="222" font-size="11">&bull; Geotechnical sampling</text>
+
+                    <!-- Geophysical Methods -->
+                    <rect x="470" y="100" width="190" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="565" y="119" text-anchor="middle" font-weight="bold" font-size="11">GEOPHYSICAL METHODS</text>
+                    <line x1="565" y1="128" x2="565" y2="148" stroke="black" stroke-width="1"/>
+                    <rect x="480" y="148" width="210" height="108" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="500" y="168" font-size="11">&bull; Electrical resistivity</text>
+                    <text x="500" y="186" font-size="11">&bull; Seismic refraction</text>
+                    <text x="500" y="204" font-size="11">&bull; Ground-penetrating radar</text>
+                    <text x="500" y="222" font-size="11">&bull; Gravity &amp; magnetic</text>
+                    <text x="500" y="240" font-size="11">&bull; Electromagnetic (EM)</text>
+
+                    <!-- Note -->
+                    <text x="350" y="300" text-anchor="middle" font-size="11" font-style="italic">Most asked: Electrical Resistivity &amp; Seismic Refraction</text>
+
+                    <!-- Water witching note -->
+                    <rect x="130" y="310" width="440" height="28" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="350" y="329" text-anchor="middle" font-size="11">Also covered: Water Witching / Divining (traditional, unscientific method)</text>
+                </svg>
+                <div class="figcaption">Figure 6.1: Classification of groundwater exploration methods.</div>
+            </div>
+
+            <table class="info-table">
+                <tr>
+                    <th>Surface Method</th>
+                    <th>Primary Information Obtained</th>
+                    <th>Limitations</th>
+                </tr>
+                <tr>
+                    <td>Geological survey</td>
+                    <td>Rock types, structures, aquifer geometry</td>
+                    <td>Surface exposures may not reflect deep conditions</td>
+                </tr>
+                <tr>
+                    <td>Hydrogeological survey</td>
+                    <td>Existing well data, spring discharges, water levels</td>
+                    <td>Limited to areas with existing data</td>
+                </tr>
+                <tr>
+                    <td>Aerial photo interpretation</td>
+                    <td>Lineaments, drainage, land use</td>
+                    <td>Qualitative; needs ground verification</td>
+                </tr>
+                <tr>
+                    <td>Hydrological analysis</td>
+                    <td>Recharge estimates, water balance</td>
+                    <td>Depends on data availability and quality</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ======== 6.4 SUBSURFACE INVESTIGATION ======== -->
+        <section id="sec-6-4">
+            <h2>6.4 SUBSURFACE INVESTIGATION METHODS</h2>
+
+            <p>Subsurface investigation methods involve direct or semi-direct probing of the underground formations. These methods provide more definitive information compared to surface methods, but are more expensive.</p>
+
+            <h3>6.4.1 Test Drilling (Exploratory Drilling)</h3>
+            <p>Test drilling is the most reliable method of groundwater exploration. It involves drilling boreholes to:</p>
+            <ul>
+                <li>Determine the sequence and thickness of geological formations</li>
+                <li>Identify the water-bearing zones and their depth</li>
+                <li>Collect rock and water samples for analysis</li>
+                <li>Measure static water levels</li>
+                <li>Conduct in-situ permeability tests</li>
+            </ul>
+            <p>Types of drilling methods include: rotary drilling, percussion (cable-tool) drilling, and auger drilling. The choice depends on the geological conditions, depth required, and available budget.</p>
+
+            <h3>6.4.2 Geophysical Well Logging</h3>
+            <p>Geophysical well logging (or borehole logging) involves lowering sensing instruments into a drilled borehole to measure physical properties of the surrounding formations. Common logging methods include:</p>
+            <ul>
+                <li><strong>Electrical resistivity log:</strong> Measures the resistivity of formations to identify aquifers (high resistivity in clean sands, low in clays)</li>
+                <li><strong>Spontaneous potential (SP) log:</strong> Measures natural electrical potential differences to distinguish permeable from impermeable layers</li>
+                <li><strong>Gamma ray log:</strong> Measures natural radioactivity; clay and shale have high gamma readings while clean sands have low readings</li>
+                <li><strong>Caliper log:</strong> Measures borehole diameter; enlarged zones may indicate fractured or soft formations</li>
+                <li><strong>Neutron log:</strong> Measures hydrogen content to estimate formation porosity</li>
+            </ul>
+
+            <h3>6.4.3 Pumping Tests</h3>
+            <p>Pumping tests (covered in detail in Chapter 5) are conducted by pumping water from a well at a controlled rate while monitoring the drawdown in the pumping well and nearby observation wells. This provides aquifer parameters (T and S) and verifies the productivity of the site.</p>
+
+            <div class="mini-note">
+                <strong>Key Point:</strong> Subsurface methods (especially test drilling + geophysical logging) are the most definitive exploration tools. They are used to <strong>confirm</strong> the findings of surface and geophysical surveys.
+            </div>
+        </section>
+
+        <!-- ======== 6.5 GEOPHYSICAL METHODS OVERVIEW ======== -->
+        <section id="sec-6-5">
+            <h2>6.5 GEOPHYSICAL METHODS &mdash; OVERVIEW</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2078 Chaitra Q9 [4]:</strong> What are the geophysical methods for groundwater exploration? Write in detail about any one of them.</p>
+                <p><strong>2071 Bhadra Q7 [4+4]:</strong> Write about methods of groundwater exploration.</p>
+            </div>
+
+            <p>Geophysical methods of groundwater exploration are <strong>indirect techniques</strong> that measure physical properties of subsurface materials from the surface without drilling. They are based on the principle that different geological formations have different physical properties (electrical resistivity, seismic velocity, density, magnetic susceptibility, etc.).</p>
+
+            <p>The main geophysical methods used for groundwater exploration are:</p>
+
+            <table class="info-table">
+                <tr>
+                    <th>Method</th>
+                    <th>Physical Property Measured</th>
+                    <th>Application in GW Exploration</th>
+                </tr>
+                <tr>
+                    <td>Electrical Resistivity</td>
+                    <td>Electrical resistivity of formations</td>
+                    <td>Most widely used; detects aquifer depth, thickness, and water quality</td>
+                </tr>
+                <tr>
+                    <td>Seismic Refraction</td>
+                    <td>Velocity of seismic waves</td>
+                    <td>Determines depth to bedrock and water table</td>
+                </tr>
+                <tr>
+                    <td>Ground-Penetrating Radar (GPR)</td>
+                    <td>Dielectric properties</td>
+                    <td>Shallow subsurface mapping; limited depth penetration</td>
+                </tr>
+                <tr>
+                    <td>Gravity Survey</td>
+                    <td>Variation in gravitational field</td>
+                    <td>Detects buried valleys, bedrock depth, cavities</td>
+                </tr>
+                <tr>
+                    <td>Magnetic Survey</td>
+                    <td>Variation in magnetic field</td>
+                    <td>Locates faults and igneous intrusions</td>
+                </tr>
+                <tr>
+                    <td>Electromagnetic (EM)</td>
+                    <td>Electrical conductivity</td>
+                    <td>Rapid reconnaissance; contamination plume mapping</td>
+                </tr>
+            </table>
+
+            <div class="callout">
+                The two most important geophysical methods for IOE exams are the <strong>Electrical Resistivity Method</strong> and the <strong>Seismic Refraction Method</strong>. These are covered in detail in the following sections.
+            </div>
+        </section>
+
+        <!-- ======== 6.6 ELECTRICAL RESISTIVITY METHOD ======== -->
+        <section id="sec-6-6">
+            <h2>6.6 ELECTRICAL RESISTIVITY METHOD</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2073 Bhadra Q7 [2+3]:</strong> Explain the electrical resistivity method of geophysical exploration with necessary sketches.</p>
+                <p><strong>2078 Chaitra Q9 [4]:</strong> Write in detail about any one geophysical method.</p>
+            </div>
+
+            <h3>6.6.1 Principle</h3>
+            <p>The electrical resistivity method is based on the principle that different earth materials have different electrical resistivities. An electric current is introduced into the ground through two current electrodes, and the resulting potential difference is measured between two potential electrodes. From the measured current (I) and potential difference (&Delta;V), the <strong>apparent resistivity</strong> (&rho;<sub>a</sub>) of the subsurface is calculated.</p>
+
+            <div class="equation">
+                \[ \rho_a = K \cdot \frac{\Delta V}{I} \]
+            </div>
+
+            <p>where \( K \) is the <strong>geometric factor</strong> that depends on the electrode arrangement (spacing and configuration).</p>
+
+            <h3>6.6.2 Typical Resistivity Values</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Material</th>
+                    <th>Resistivity (&Omega;&middot;m)</th>
+                    <th>Interpretation</th>
+                </tr>
+                <tr>
+                    <td>Clay</td>
+                    <td>1 &ndash; 100</td>
+                    <td>Low resistivity; aquitard</td>
+                </tr>
+                <tr>
+                    <td>Sand (saturated)</td>
+                    <td>50 &ndash; 500</td>
+                    <td>Moderate; good aquifer</td>
+                </tr>
+                <tr>
+                    <td>Sand (dry)</td>
+                    <td>500 &ndash; 5000</td>
+                    <td>High resistivity; unsaturated</td>
+                </tr>
+                <tr>
+                    <td>Gravel (saturated)</td>
+                    <td>100 &ndash; 1000</td>
+                    <td>Good aquifer material</td>
+                </tr>
+                <tr>
+                    <td>Sandstone</td>
+                    <td>50 &ndash; 5000</td>
+                    <td>Depends on porosity and saturation</td>
+                </tr>
+                <tr>
+                    <td>Limestone</td>
+                    <td>100 &ndash; 10,000</td>
+                    <td>Variable; depends on fracturing</td>
+                </tr>
+                <tr>
+                    <td>Crystalline rock (massive)</td>
+                    <td>1000 &ndash; 100,000+</td>
+                    <td>Very high; poor aquifer unless fractured</td>
+                </tr>
+                <tr>
+                    <td>Saline water</td>
+                    <td>&lt; 1</td>
+                    <td>Very low; salt water intrusion indicator</td>
+                </tr>
+                <tr>
+                    <td>Fresh water</td>
+                    <td>10 &ndash; 100</td>
+                    <td>Moderate</td>
+                </tr>
+            </table>
+
+            <h3>6.6.3 Electrode Configurations</h3>
+            <p>The most commonly used electrode arrangements are:</p>
+
+            <h4>(a) Wenner Array</h4>
+            <p>Four electrodes are placed in a straight line at equal spacing &lsquo;a&rsquo;. The two outer electrodes (A, B) are current electrodes and the two inner electrodes (M, N) are potential electrodes.</p>
+            <div class="equation">
+                \[ K = 2\pi a \quad \Rightarrow \quad \rho_a = 2\pi a \cdot \frac{\Delta V}{I} \]
+            </div>
+
+            <h4>(b) Schlumberger Array</h4>
+            <p>The current electrodes (A, B) are placed much farther apart than the potential electrodes (M, N). The distance AB/2 = L and MN/2 = l, where L &gt;&gt; l.</p>
+            <div class="equation">
+                \[ K = \pi \cdot \frac{L^2 - l^2}{2l} \approx \frac{\pi L^2}{2l} \quad \text{(when } L \gg l\text{)} \]
+            </div>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 280" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <!-- Title -->
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Wenner Electrode Array</text>
+
+                    <!-- Ground surface -->
+                    <line x1="50" y1="120" x2="650" y2="120" stroke="black" stroke-width="1.5"/>
+                    <text x="660" y="124" font-size="11">Ground Surface</text>
+
+                    <!-- Electrodes -->
+                    <line x1="150" y1="100" x2="150" y2="140" stroke="black" stroke-width="2"/>
+                    <text x="150" y="92" text-anchor="middle" font-weight="bold" font-size="12">A</text>
+
+                    <line x1="280" y1="100" x2="280" y2="140" stroke="black" stroke-width="2"/>
+                    <text x="280" y="92" text-anchor="middle" font-weight="bold" font-size="12">M</text>
+
+                    <line x1="410" y1="100" x2="410" y2="140" stroke="black" stroke-width="2"/>
+                    <text x="410" y="92" text-anchor="middle" font-weight="bold" font-size="12">N</text>
+
+                    <line x1="540" y1="100" x2="540" y2="140" stroke="black" stroke-width="2"/>
+                    <text x="540" y="92" text-anchor="middle" font-weight="bold" font-size="12">B</text>
+
+                    <!-- Spacing labels -->
+                    <line x1="150" y1="155" x2="280" y2="155" stroke="black" stroke-width="0.8" marker-end="url(#arr)" marker-start="url(#arr-r)"/>
+                    <text x="215" y="172" text-anchor="middle" font-size="12">a</text>
+
+                    <line x1="280" y1="155" x2="410" y2="155" stroke="black" stroke-width="0.8" marker-end="url(#arr)" marker-start="url(#arr-r)"/>
+                    <text x="345" y="172" text-anchor="middle" font-size="12">a</text>
+
+                    <line x1="410" y1="155" x2="540" y2="155" stroke="black" stroke-width="0.8" marker-end="url(#arr)" marker-start="url(#arr-r)"/>
+                    <text x="475" y="172" text-anchor="middle" font-size="12">a</text>
+
+                    <!-- Battery / ammeter -->
+                    <line x1="150" y1="80" x2="150" y2="60" stroke="black" stroke-width="1"/>
+                    <line x1="150" y1="60" x2="345" y2="60" stroke="black" stroke-width="1"/>
+                    <rect x="325" y="48" width="40" height="24" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="345" y="65" text-anchor="middle" font-size="11" font-weight="bold">I</text>
+                    <line x1="365" y1="60" x2="540" y2="60" stroke="black" stroke-width="1"/>
+                    <line x1="540" y1="60" x2="540" y2="80" stroke="black" stroke-width="1"/>
+
+                    <!-- Voltmeter -->
+                    <line x1="280" y1="80" x2="280" y2="40" stroke="black" stroke-width="1"/>
+                    <line x1="280" y1="40" x2="345" y2="40" stroke="black" stroke-width="1"/>
+                    <circle cx="345" cy="40" r="12" fill="none" stroke="black" stroke-width="1"/>
+                    <text x="345" y="44" text-anchor="middle" font-size="10" font-weight="bold">V</text>
+                    <line x1="357" y1="40" x2="410" y2="40" stroke="black" stroke-width="1"/>
+                    <line x1="410" y1="40" x2="410" y2="80" stroke="black" stroke-width="1"/>
+
+                    <!-- Current flow lines (subsurface) -->
+                    <path d="M150,140 Q200,200 345,210 Q490,200 540,140" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="5,3"/>
+                    <path d="M150,140 Q220,240 345,250 Q470,240 540,140" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="5,3"/>
+                    <text x="350" y="230" text-anchor="middle" font-size="10" font-style="italic">Current flow lines</text>
+
+                    <!-- Formula -->
+                    <text x="350" y="275" text-anchor="middle" font-size="12">&rho;<tspan baseline-shift="sub" font-size="10">a</tspan> = 2&pi;a &middot; &Delta;V/I</text>
+                </svg>
+                <div class="figcaption">Figure 6.2: Wenner electrode configuration for electrical resistivity survey.</div>
+            </div>
+
+            <h3>6.6.4 Types of Resistivity Surveys</h3>
+
+            <h4>(a) Vertical Electrical Sounding (VES)</h4>
+            <p>Also called <strong>electrical drilling</strong> or <strong>depth profiling</strong>. The electrode spacing is progressively increased while keeping the center point fixed. As the spacing increases, the current penetrates deeper, allowing measurement of resistivity at greater depths.</p>
+            <ul>
+                <li><strong>Purpose:</strong> To determine variation of resistivity with depth at a single location</li>
+                <li><strong>Output:</strong> A plot of apparent resistivity (&rho;<sub>a</sub>) vs. electrode spacing (a or AB/2) on log-log paper</li>
+                <li><strong>Interpretation:</strong> The shape of the curve indicates the number and nature of subsurface layers</li>
+            </ul>
+
+            <h4>(b) Horizontal Profiling</h4>
+            <p>The electrode spacing remains constant while the entire array is moved along a horizontal profile (traverse line). This detects <strong>lateral variations</strong> in resistivity at a constant depth.</p>
+            <ul>
+                <li><strong>Purpose:</strong> To trace the lateral extent of aquifers, locate faults, detect buried channels</li>
+                <li><strong>Output:</strong> A plot of apparent resistivity along the traverse line</li>
+            </ul>
+
+            <div class="mini-note">
+                <strong>Key Exam Distinction:</strong> VES (Vertical Electrical Sounding) measures changes <strong>with depth</strong> at one point. Horizontal profiling measures changes <strong>along a line</strong> at constant depth. Both are essential for complete subsurface characterization.
+            </div>
+
+            <h3>6.6.5 Interpretation of Resistivity Data</h3>
+            <p>For VES data, the apparent resistivity curve is compared with theoretical master curves (or computer-generated models) for layered earth. The interpretation yields:</p>
+            <ul>
+                <li>Number of subsurface layers</li>
+                <li>True resistivity of each layer</li>
+                <li>Thickness of each layer</li>
+                <li>Depth to aquifer and aquifer thickness</li>
+            </ul>
+
+            <h3>6.6.6 Advantages and Limitations</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>Most widely used method for groundwater</li>
+                        <li>Relatively simple equipment and operation</li>
+                        <li>Can provide depth &amp; lateral information</li>
+                        <li>Can distinguish fresh water from saline water (by resistivity contrast)</li>
+                        <li>Non-destructive and relatively low cost</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>Requires flat, open terrain for long electrode spreads</li>
+                        <li>Interpretation is non-unique (different layer combinations can produce similar curves)</li>
+                        <li>Affected by lateral inhomogeneities, buried pipes, power lines</li>
+                        <li>Depth penetration limited by electrode spacing</li>
+                        <li>Requires calibration with borehole data</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 6.7 SEISMIC REFRACTION METHOD ======== -->
+        <section id="sec-6-7">
+            <h2>6.7 SEISMIC REFRACTION METHOD</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2072 Magh Q8 [6]:</strong> Explain the seismic refraction method of groundwater exploration.</p>
+            </div>
+
+            <h3>6.7.1 Principle</h3>
+            <p>The seismic refraction method is based on the fact that seismic waves travel at different velocities through different geological materials. When a seismic wave generated at the surface (by an explosion or hammer blow) encounters a boundary between two layers with different densities, part of the wave is <strong>refracted</strong> along the boundary and some energy returns to the surface.</p>
+
+            <p>By measuring the <strong>travel time</strong> of seismic waves from the source to a series of geophones (receivers) placed at known distances, the depth to subsurface interfaces (such as the water table or bedrock surface) can be calculated.</p>
+
+            <h3>6.7.2 Snell&rsquo;s Law</h3>
+            <p>Refraction of seismic waves at a layer boundary is governed by Snell&rsquo;s law:</p>
+            <div class="equation">
+                \[ \frac{\sin i_1}{V_1} = \frac{\sin i_2}{V_2} \]
+            </div>
+            <p>where \( i_1 \) and \( i_2 \) are the angles of incidence and refraction, and \( V_1 \) and \( V_2 \) are the seismic velocities in layers 1 and 2 respectively.</p>
+
+            <p>At the <strong>critical angle</strong> (\( i_c \)), the refracted wave travels along the interface:</p>
+            <div class="equation">
+                \[ \sin i_c = \frac{V_1}{V_2} \quad\quad (V_2 > V_1) \]
+            </div>
+
+            <h3>6.7.3 Typical Seismic Velocities</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Material</th>
+                    <th>P-wave Velocity (m/s)</th>
+                </tr>
+                <tr>
+                    <td>Air</td>
+                    <td>330</td>
+                </tr>
+                <tr>
+                    <td>Dry soil / loose sand</td>
+                    <td>200 &ndash; 600</td>
+                </tr>
+                <tr>
+                    <td>Saturated soil / alluvium</td>
+                    <td>600 &ndash; 1800</td>
+                </tr>
+                <tr>
+                    <td>Clay</td>
+                    <td>1000 &ndash; 2500</td>
+                </tr>
+                <tr>
+                    <td>Sandstone</td>
+                    <td>2000 &ndash; 4500</td>
+                </tr>
+                <tr>
+                    <td>Limestone</td>
+                    <td>3000 &ndash; 6500</td>
+                </tr>
+                <tr>
+                    <td>Granite / Gneiss</td>
+                    <td>4500 &ndash; 6500</td>
+                </tr>
+                <tr>
+                    <td>Water</td>
+                    <td>1450 &ndash; 1530</td>
+                </tr>
+            </table>
+
+            <h3>6.7.4 Time-Distance Graph</h3>
+            <p>The travel times of first arrivals at each geophone are plotted against the source-to-geophone distance. For a two-layer case:</p>
+            <ul>
+                <li>The <strong>first segment</strong> (shorter distances) represents the direct wave through the upper layer with slope = 1/V<sub>1</sub></li>
+                <li>The <strong>second segment</strong> (longer distances, after the crossover distance) represents the refracted wave along the interface between layers, with slope = 1/V<sub>2</sub></li>
+                <li>The <strong>crossover distance</strong> (x<sub>c</sub>) is where the refracted wave arrives at the same time as the direct wave</li>
+            </ul>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 500" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <!-- Title -->
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Seismic Refraction Method</text>
+
+                    <!-- ===== UPPER DIAGRAM: Field Setup ===== -->
+                    <text x="350" y="45" text-anchor="middle" font-size="11" font-style="italic">(a) Field setup and wave paths</text>
+
+                    <!-- Ground surface -->
+                    <line x1="50" y1="100" x2="650" y2="100" stroke="black" stroke-width="1.5"/>
+                    <text x="670" y="104" font-size="10">Surface</text>
+
+                    <!-- Layer boundary -->
+                    <line x1="50" y1="180" x2="650" y2="180" stroke="black" stroke-width="1.2" stroke-dasharray="8,4"/>
+                    <text x="660" y="175" font-size="10">Layer</text>
+                    <text x="660" y="190" font-size="10">boundary</text>
+
+                    <!-- Layer labels -->
+                    <text x="80" y="140" font-size="11">Layer 1: V<tspan baseline-shift="sub" font-size="9">1</tspan></text>
+                    <text x="80" y="210" font-size="11">Layer 2: V<tspan baseline-shift="sub" font-size="9">2</tspan> &gt; V<tspan baseline-shift="sub" font-size="9">1</tspan></text>
+
+                    <!-- Source -->
+                    <text x="120" y="90" text-anchor="middle" font-size="10" font-weight="bold">Source</text>
+                    <line x1="120" y1="95" x2="120" y2="100" stroke="black" stroke-width="2"/>
+                    <text x="120" y="80" text-anchor="middle" font-size="16">&#9733;</text>
+
+                    <!-- Geophones -->
+                    <polygon points="220,95 215,100 225,100" fill="black"/>
+                    <polygon points="300,95 295,100 305,100" fill="black"/>
+                    <polygon points="380,95 375,100 385,100" fill="black"/>
+                    <polygon points="460,95 455,100 465,100" fill="black"/>
+                    <polygon points="540,95 535,100 545,100" fill="black"/>
+                    <text x="380" y="88" text-anchor="middle" font-size="10">Geophones</text>
+
+                    <!-- Direct wave -->
+                    <line x1="120" y1="100" x2="540" y2="100" stroke="black" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="330" y="116" text-anchor="middle" font-size="10" font-style="italic">Direct wave</text>
+
+                    <!-- Refracted wave path -->
+                    <line x1="120" y1="100" x2="200" y2="180" stroke="black" stroke-width="1.2"/>
+                    <line x1="200" y1="180" x2="480" y2="180" stroke="black" stroke-width="1.2"/>
+                    <line x1="480" y1="180" x2="540" y2="100" stroke="black" stroke-width="1.2"/>
+                    <text x="340" y="198" text-anchor="middle" font-size="10" font-style="italic">Refracted wave along interface</text>
+
+                    <!-- Critical angle -->
+                    <line x1="120" y1="100" x2="120" y2="180" stroke="black" stroke-width="0.5" stroke-dasharray="3,3"/>
+                    <path d="M120,145 A30,30 0 0,1 140,165" fill="none" stroke="black" stroke-width="0.5"/>
+                    <text x="148" y="160" font-size="9">i<tspan baseline-shift="sub" font-size="7">c</tspan></text>
+
+                    <!-- Depth label -->
+                    <line x1="90" y1="100" x2="90" y2="180" stroke="black" stroke-width="0.8" marker-end="url(#arr)" marker-start="url(#arr-r)"/>
+                    <text x="80" y="145" text-anchor="end" font-size="10">h</text>
+
+                    <!-- ===== LOWER DIAGRAM: Time-Distance Graph ===== -->
+                    <text x="350" y="255" text-anchor="middle" font-size="11" font-style="italic">(b) Time-distance graph</text>
+
+                    <!-- Axes -->
+                    <line x1="120" y1="460" x2="600" y2="460" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <line x1="120" y1="460" x2="120" y2="270" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <text x="360" y="490" text-anchor="middle" font-size="12">Distance (x)</text>
+                    <text x="100" y="360" text-anchor="middle" font-size="12" transform="rotate(-90,100,360)">Travel time (t)</text>
+
+                    <!-- Direct wave line -->
+                    <line x1="120" y1="460" x2="420" y2="310" stroke="black" stroke-width="1.5"/>
+                    <text x="260" y="370" font-size="11" transform="rotate(-26.5,260,370)">Slope = 1/V<tspan baseline-shift="sub" font-size="9">1</tspan></text>
+
+                    <!-- Refracted wave line -->
+                    <line x1="210" y1="410" x2="570" y2="330" stroke="black" stroke-width="1.5"/>
+                    <text x="430" y="355" font-size="11" transform="rotate(-12.5,430,355)">Slope = 1/V<tspan baseline-shift="sub" font-size="9">2</tspan></text>
+
+                    <!-- Crossover point -->
+                    <circle cx="320" cy="364" r="4" fill="black"/>
+                    <text x="335" y="360" font-size="10">Crossover point</text>
+                    <line x1="320" y1="368" x2="320" y2="460" stroke="black" stroke-width="0.8" stroke-dasharray="3,3"/>
+                    <text x="320" y="475" text-anchor="middle" font-size="10">x<tspan baseline-shift="sub" font-size="8">c</tspan></text>
+
+                    <!-- Intercept time -->
+                    <line x1="120" y1="410" x2="116" y2="410" stroke="black" stroke-width="1"/>
+                    <text x="112" y="414" text-anchor="end" font-size="10">t<tspan baseline-shift="sub" font-size="8">i</tspan></text>
+                    <circle cx="120" cy="410" r="3" fill="none" stroke="black" stroke-width="1"/>
+                </svg>
+                <div class="figcaption">Figure 6.3: (a) Seismic refraction field setup showing source, geophones, and wave paths. (b) Time-distance graph showing direct and refracted wave arrivals.</div>
+            </div>
+
+            <h3>6.7.5 Depth Calculation (Two-Layer Case)</h3>
+            <p>For a simple two-layer case (e.g., soil over bedrock), the depth to the interface (h) can be calculated using:</p>
+
+            <h4>Method 1: Using Crossover Distance</h4>
+            <div class="equation">
+                \[ h = \frac{x_c}{2} \sqrt{\frac{V_2 - V_1}{V_2 + V_1}} \]
+            </div>
+
+            <h4>Method 2: Using Intercept Time</h4>
+            <div class="equation">
+                \[ h = \frac{t_i \cdot V_1 \cdot V_2}{2\sqrt{V_2^2 - V_1^2}} \]
+            </div>
+
+            <p>where:</p>
+            <ul>
+                <li>\( x_c \) = crossover distance</li>
+                <li>\( t_i \) = intercept time (refracted wave line extended back to the time axis)</li>
+                <li>\( V_1 \) = velocity of Layer 1</li>
+                <li>\( V_2 \) = velocity of Layer 2</li>
+            </ul>
+
+            <h3>6.7.6 Advantages and Limitations</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>Provides accurate depth to bedrock / water table</li>
+                        <li>Relatively rapid field procedure</li>
+                        <li>Can cover large areas efficiently</li>
+                        <li>Good for determining overburden thickness</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>Requires V<sub>2</sub> &gt; V<sub>1</sub> (velocity must increase with depth)</li>
+                        <li>Cannot detect thin layers (hidden layer problem)</li>
+                        <li>Blind zone if a low-velocity layer exists beneath a high-velocity layer</li>
+                        <li>Not effective beyond ~30&ndash;50 m depth for routine surveys</li>
+                        <li>Sensitive to surface noise (traffic, machinery)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 6.8 OTHER GEOPHYSICAL METHODS ======== -->
+        <section id="sec-6-8">
+            <h2>6.8 OTHER GEOPHYSICAL METHODS</h2>
+
+            <h3>6.8.1 Ground-Penetrating Radar (GPR)</h3>
+            <p>GPR uses high-frequency electromagnetic pulses (10 MHz &ndash; 1 GHz) transmitted into the ground. When the pulse encounters a boundary between materials with different dielectric properties, part of the energy is reflected back. By measuring the travel time and amplitude of reflections, subsurface layering can be mapped.</p>
+            <ul>
+                <li><strong>Depth range:</strong> Typically 1 &ndash; 30 m (depends on frequency and soil conductivity)</li>
+                <li><strong>Applications:</strong> Shallow water table mapping, utility detection, contamination assessment</li>
+                <li><strong>Limitation:</strong> Very limited penetration in clay-rich or saline soils</li>
+            </ul>
+
+            <h3>6.8.2 Gravity Survey</h3>
+            <p>Gravity surveys measure small variations in the Earth&rsquo;s gravitational field caused by differences in subsurface rock density. Buried valleys or thick sequences of low-density sediments (potential aquifers) produce gravity lows, while dense bedrock produces gravity highs.</p>
+            <ul>
+                <li><strong>Application:</strong> Mapping buried channels, detecting depth to bedrock, identifying geological basins</li>
+                <li><strong>Limitation:</strong> Low resolution; requires extensive data corrections</li>
+            </ul>
+
+            <h3>6.8.3 Magnetic Survey</h3>
+            <p>Measures variations in the Earth&rsquo;s magnetic field caused by differences in magnetic susceptibility of subsurface rocks. Useful for locating faults, dykes, and igneous intrusions that may control groundwater movement.</p>
+
+            <h3>6.8.4 Electromagnetic (EM) Methods</h3>
+            <p>EM methods use time-varying electromagnetic fields to measure subsurface electrical conductivity without requiring ground contact (unlike resistivity methods). Common EM techniques include:</p>
+            <ul>
+                <li><strong>Frequency-domain EM (FDEM):</strong> Rapid reconnaissance tool for mapping conductive zones</li>
+                <li><strong>Time-domain EM (TDEM):</strong> Better depth resolution; used for deeper investigations</li>
+                <li><strong>Very Low Frequency (VLF):</strong> Uses radio transmitter signals to detect conductive fracture zones</li>
+            </ul>
+
+            <div class="mini-note">
+                <strong>Exam Note:</strong> GPR, gravity, magnetic, and EM methods are usually asked only as a list, not in detail. Focus your study time on electrical resistivity and seismic refraction methods.
+            </div>
+        </section>
+
+        <!-- ======== 6.9 WATER WITCHING ======== -->
+        <section id="sec-6-9">
+            <h2>6.9 WATER WITCHING (DIVINING)</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <p><strong>2072 Ashwin Q7 [2+3+1]:</strong> Explain water witching.</p>
+            </div>
+
+            <p>Water witching (also called <strong>water divining</strong>, <strong>dowsing</strong>, or <strong>rhabdomancy</strong>) is a traditional, non-scientific method of locating underground water. A person (the &ldquo;diviner&rdquo;) walks over the ground holding a forked stick (usually of willow, hazel, or peach wood), a pair of L-shaped metal rods, or a pendulum. The device is claimed to move or react when passing over underground water.</p>
+
+            <h3>How is it Practised?</h3>
+            <ul>
+                <li>A <strong>Y-shaped (forked) stick</strong> is held with the fork ends pointing upward and the stem pointing horizontally forward</li>
+                <li>As the diviner walks over an area, the stick supposedly dips downward over underground water</li>
+                <li>Alternatively, two <strong>L-shaped metal rods</strong> held loosely in the hands are said to cross or diverge over water</li>
+                <li>Some diviners use a <strong>pendulum</strong> that swings in a different pattern over water</li>
+            </ul>
+
+            <h3>Scientific Assessment</h3>
+            <p>Water witching has <strong>no scientific basis</strong>. Controlled scientific studies have consistently shown that the success rate of water diviners is no better than random chance. The observed movement of the rod is attributed to the <strong>ideomotor effect</strong> &mdash; involuntary, subconscious muscle movements by the person holding the device.</p>
+
+            <p>Despite its lack of scientific validity, water witching continues to be practiced in rural areas, particularly in developing countries, because:</p>
+            <ul>
+                <li>In many alluvial areas, groundwater is prevalent at shallow depths, so any random well location is likely to find water</li>
+                <li>There is a deep cultural tradition associated with the practice</li>
+                <li>Professional geophysical surveys may not be affordable or accessible</li>
+            </ul>
+
+            <div class="callout">
+                <strong>Important:</strong> Water witching should <strong>never</strong> be relied upon as a groundwater exploration method for engineering projects. Scientific methods such as electrical resistivity surveys and test drilling should always be used.
+            </div>
+        </section>
+
+        <!-- ======== 6.10 REMOTE SENSING ======== -->
+        <section id="sec-6-10">
+            <h2>6.10 REMOTE SENSING AND GIS IN GROUNDWATER EXPLORATION</h2>
+
+            <p>Modern groundwater exploration increasingly uses <strong>remote sensing</strong> and <strong>Geographic Information Systems (GIS)</strong> for regional-scale assessment.</p>
+
+            <h3>6.10.1 Remote Sensing</h3>
+            <p>Satellite and aerial remote sensing provide valuable data for groundwater prospecting, including:</p>
+            <ul>
+                <li><strong>Geological mapping:</strong> Identification of rock types, structures, and lineaments from optical and radar imagery</li>
+                <li><strong>Land use / land cover:</strong> Vegetation patterns such as phreatophytes indicate shallow groundwater</li>
+                <li><strong>Soil moisture mapping:</strong> Microwave and thermal infrared sensors can detect soil moisture anomalies</li>
+                <li><strong>Digital Elevation Model (DEM):</strong> Terrain analysis to delineate drainage basins and identify recharge/discharge zones</li>
+                <li><strong>Lineament analysis:</strong> Fractures and faults visible in satellite images serve as conduits for groundwater in hard-rock terrain</li>
+            </ul>
+
+            <h3>6.10.2 GIS Integration</h3>
+            <p>GIS is used to integrate multiple layers of spatial data (geology, geomorphology, slope, drainage density, land use, lineament density, rainfall, soil type) to produce <strong>groundwater potential zone maps</strong>. The typical workflow involves:</p>
+            <ol>
+                <li>Collection of thematic map layers from various sources</li>
+                <li>Assigning weights to each factor based on its influence on groundwater occurrence</li>
+                <li>Weighted overlay analysis to generate a composite groundwater potential map</li>
+                <li>Validation with existing well data and field verification</li>
+            </ol>
+
+            <div class="mini-note">
+                <strong>Key Point:</strong> Remote sensing and GIS are complementary tools that help in <strong>regional-scale</strong> groundwater assessment. They are cost-effective for large areas but must be validated by field investigations (geophysics and drilling).
+            </div>
+        </section>
+
+        <!-- ======== 6.11 PAST QUESTION BANK ======== -->
+        <section id="sec-6-11">
+            <h2>6.11 PAST QUESTION BANK FOR CHAPTER 6</h2>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2078 Chaitra</span>
+                    <span class="pill">Q9</span>
+                    <span class="pill">4 marks</span>
+                </div>
+                <p>What are the geophysical methods for groundwater exploration? Write in detail about any one of them.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>List all geophysical methods (electrical resistivity, seismic refraction, GPR, gravity, magnetic, EM) for 1&ndash;2 marks. Then explain <strong>electrical resistivity method</strong> in detail: principle, Wenner/Schlumberger arrays, VES vs. profiling, and interpretation. Include sketch of electrode arrangement. (See Section 6.6)</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2073 Bhadra</span>
+                    <span class="pill">Q7</span>
+                    <span class="pill">2+3 marks</span>
+                </div>
+                <p>Discuss briefly the purpose of groundwater exploration. Explain the electrical resistivity method of geophysical exploration with necessary sketches.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p><strong>Part 1 (2 marks):</strong> Objectives of GW exploration &mdash; locate, evaluate quantity/quality, select well sites. (Section 6.2)</p>
+                    <p><strong>Part 2 (3 marks):</strong> Principle of electrical resistivity, Wenner array with sketch, apparent resistivity formula, VES procedure, interpretation. (Section 6.6)</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2072 Ashwin</span>
+                    <span class="pill">Q7</span>
+                    <span class="pill">2+3+1 marks</span>
+                </div>
+                <p>What is the main objective of groundwater exploration? List different surface investigation methods used in groundwater exploration and explain water witching.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p><strong>Part 1 (2 marks):</strong> Main objective &mdash; locate and evaluate groundwater resources. (Section 6.2)</p>
+                    <p><strong>Part 2 (3 marks):</strong> Surface methods: geological survey, hydrogeological survey, aerial photo interpretation, hydrological data analysis. (Section 6.3)</p>
+                    <p><strong>Part 3 (1 mark):</strong> Water witching &mdash; traditional non-scientific method using forked stick; no scientific basis. (Section 6.9)</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2072 Magh</span>
+                    <span class="pill">Q8</span>
+                    <span class="pill">6 marks</span>
+                </div>
+                <p>What are the objectives of groundwater exploration? Explain the seismic refraction method of groundwater exploration.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p><strong>Part 1 (2 marks):</strong> Objectives of GW exploration. (Section 6.2)</p>
+                    <p><strong>Part 2 (4 marks):</strong> Seismic refraction: principle, Snell&rsquo;s law, field setup with geophones, time-distance graph with direct and refracted wave lines, depth formula using crossover distance. Include sketch. (Section 6.7)</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2071 Bhadra</span>
+                    <span class="pill">Q7</span>
+                    <span class="pill">4+4 marks</span>
+                </div>
+                <p>What is groundwater exploration? What are its objectives? Write about methods of groundwater exploration.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p><strong>Part 1 (4 marks):</strong> Definition + objectives. (Sections 6.1 and 6.2)</p>
+                    <p><strong>Part 2 (4 marks):</strong> Classification: surface, subsurface, and geophysical methods with brief description of each. Include classification chart. (Sections 6.3&ndash;6.5 and Figure 6.1)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SUMMARY ======== -->
+        <section id="sec-summary">
+            <h2>CHAPTER SUMMARY AND EXAM KEY POINTS</h2>
+
+            <div class="study-note">
+                <h4>EXAM FORMULA SHEET &mdash; CHAPTER 6</h4>
+                <table class="formula-table">
+                    <tr>
+                        <th>Item</th>
+                        <th>Formula / Key Fact</th>
+                        <th>Context</th>
+                    </tr>
+                    <tr>
+                        <td>Apparent resistivity</td>
+                        <td>\( \rho_a = K \cdot \frac{\Delta V}{I} \)</td>
+                        <td>Electrical resistivity method; K = geometric factor</td>
+                    </tr>
+                    <tr>
+                        <td>Wenner array K</td>
+                        <td>\( K = 2\pi a \)</td>
+                        <td>Equal spacing &lsquo;a&rsquo; between all four electrodes</td>
+                    </tr>
+                    <tr>
+                        <td>Schlumberger array K</td>
+                        <td>\( K \approx \frac{\pi L^2}{2l} \) (when L &gt;&gt; l)</td>
+                        <td>L = half current-electrode spacing, l = half potential-electrode spacing</td>
+                    </tr>
+                    <tr>
+                        <td>Snell&rsquo;s law</td>
+                        <td>\( \frac{\sin i_1}{V_1} = \frac{\sin i_2}{V_2} \)</td>
+                        <td>Seismic refraction at layer boundary</td>
+                    </tr>
+                    <tr>
+                        <td>Critical angle</td>
+                        <td>\( \sin i_c = \frac{V_1}{V_2} \)</td>
+                        <td>Wave travels along interface when V<sub>2</sub> &gt; V<sub>1</sub></td>
+                    </tr>
+                    <tr>
+                        <td>Depth (crossover)</td>
+                        <td>\( h = \frac{x_c}{2}\sqrt{\frac{V_2 - V_1}{V_2 + V_1}} \)</td>
+                        <td>Two-layer seismic refraction</td>
+                    </tr>
+                    <tr>
+                        <td>Depth (intercept time)</td>
+                        <td>\( h = \frac{t_i \cdot V_1 \cdot V_2}{2\sqrt{V_2^2 - V_1^2}} \)</td>
+                        <td>Alternative formula using time-axis intercept</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="study-note">
+                <h4>KEY TAKEAWAYS FOR EXAM</h4>
+                <ol>
+                    <li><strong>Groundwater exploration</strong> is the systematic investigation of subsurface conditions to locate, evaluate, and develop groundwater resources.</li>
+                    <li>Methods are classified into: <strong>surface</strong> (geological, hydrogeological, aerial), <strong>subsurface</strong> (test drilling, logging, pumping tests), and <strong>geophysical</strong> (resistivity, seismic, etc.).</li>
+                    <li><strong>Electrical resistivity method</strong> is the most commonly used geophysical method. Know the Wenner array setup, the apparent resistivity formula, and the difference between VES and horizontal profiling.</li>
+                    <li><strong>Seismic refraction method</strong> determines depth to bedrock/water table. Know Snell&rsquo;s law, time-distance graph interpretation, and depth formulas.</li>
+                    <li><strong>Water witching</strong> is a non-scientific traditional practice with no engineering validity.</li>
+                    <li>This is a <strong>theory-only chapter</strong> &mdash; no numerical problems. Focus on clear explanations with diagrams.</li>
+                </ol>
+            </div>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 240" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Exam Strategy: Chapter 6 Decision Flowchart</text>
+
+                    <!-- Question types -->
+                    <rect x="250" y="35" width="200" height="30" rx="4" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="350" y="55" text-anchor="middle" font-weight="bold" font-size="11">CHAPTER 6 QUESTION</text>
+
+                    <!-- Branches -->
+                    <line x1="200" y1="65" x2="200" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="350" y1="65" x2="350" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="530" y1="65" x2="530" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="200" y1="65" x2="530" y2="65" stroke="black" stroke-width="1"/>
+
+                    <!-- Objectives -->
+                    <rect x="100" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="200" y="109" text-anchor="middle" font-size="11">&ldquo;What are objectives?&rdquo;</text>
+                    <line x1="200" y1="118" x2="200" y2="140" stroke="black" stroke-width="1"/>
+                    <rect x="100" y="140" width="200" height="45" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="200" y="158" text-anchor="middle" font-size="10">Sec 6.2: List 5&ndash;6 objectives</text>
+                    <text x="200" y="175" text-anchor="middle" font-size="10">(locate, quantity, quality, sites)</text>
+
+                    <!-- Explain method -->
+                    <rect x="260" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="360" y="109" text-anchor="middle" font-size="11">&ldquo;Explain a method?&rdquo;</text>
+                    <line x1="360" y1="118" x2="360" y2="140" stroke="black" stroke-width="1"/>
+                    <rect x="260" y="140" width="200" height="60" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="360" y="155" text-anchor="middle" font-size="10">Electrical Resistivity (Sec 6.6)</text>
+                    <text x="360" y="170" text-anchor="middle" font-size="10">OR Seismic Refraction (Sec 6.7)</text>
+                    <text x="360" y="185" text-anchor="middle" font-size="10">Always include sketch + formula</text>
+
+                    <!-- List methods -->
+                    <rect x="440" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="540" y="109" text-anchor="middle" font-size="11">&ldquo;List methods?&rdquo;</text>
+                    <line x1="540" y1="118" x2="540" y2="140" stroke="black" stroke-width="1"/>
+                    <rect x="440" y="140" width="200" height="60" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="540" y="155" text-anchor="middle" font-size="10">3 categories: Surface,</text>
+                    <text x="540" y="170" text-anchor="middle" font-size="10">Subsurface, Geophysical</text>
+                    <text x="540" y="185" text-anchor="middle" font-size="10">Use Figure 6.1 classification</text>
+
+                    <!-- Tip -->
+                    <text x="350" y="230" text-anchor="middle" font-size="11" font-style="italic">Typically 4&ndash;8 marks. Always draw diagrams for maximum marks.</text>
+                </svg>
+                <div class="figcaption">Figure 6.4: Exam strategy for answering Chapter 6 questions.</div>
+            </div>
+        </section>
+    </main>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];
+  var pts = [];
+  var drawn = 0;
+  var raf = 0;
+
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    if (SHIMMER[c]) d.setAttribute(c === 'gold' ? 'data-shimmer' : 'data-silver', '');
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

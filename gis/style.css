@@ -1,0 +1,1137 @@
+/* ============================================================
+   GIS & Remote Sensing Study Guide – Professional Book Stylesheet
+   ============================================================ */
+
+/* — Google Fonts import — */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap');
+
+:root {
+  /* — Colour palette — */
+  --paper:       #fdfbf7;
+  --paper-edge:  #f5f0e8;
+  --ink:         #2c2c2c;
+  --muted:       #6b6b6b;
+  --accent:      #1a3c5e;
+  --accent-light:#e8eef4;
+  --accent-2:    #8b2500;
+  --accent-2-lt: #fdf0ec;
+  --panel:       var(--paper);
+  --line:        #d4cfc5;
+  --soft:        #f0ece4;
+  --gold:        #b8860b;
+  --green:       #2d7d46;
+  --green-lt:    #edf7f0;
+  --page-w:      250mm;
+  --page-min:    680px;
+  --gutter:      64px;
+  --radius:      8px;
+  --shadow-sm:   0 2px 8px rgba(0,0,0,.06);
+  --shadow-md:   0 4px 20px rgba(0,0,0,.10);
+  --shadow-lg:   0 8px 40px rgba(0,0,0,.14);
+
+  /* — Font sizes (uniform) — */
+  --fs-body:     13.5pt;
+  --fs-h1:       13.5pt;
+  --fs-h2:       13.5pt;
+  --fs-h3:       13.5pt;
+  --fs-h4:       13.5pt;
+  --fs-small:    13.5pt;
+  --fs-tiny:     13.5pt;
+  --fs-formula:  13.5pt;
+
+  /* — Transitions — */
+  --ease:        cubic-bezier(.4, 0, .2, 1);
+  --dur:         .3s;
+}
+
+/* ---- Dark Mode ---- */
+[data-theme="dark"] {
+  --paper:       #1a1d23;
+  --paper-edge:  #22262e;
+  --ink:         #e0ddd5;
+  --muted:       #9a9a9a;
+  --accent:      #5ea3e0;
+  --accent-light:#1e2a3a;
+  --accent-2:    #e87055;
+  --accent-2-lt: #2a1e1a;
+  --line:        #3a3d44;
+  --soft:        #24272e;
+  --gold:        #d4a017;
+  --green:       #5bb87a;
+  --green-lt:    #1a2a1e;
+}
+[data-theme="dark"] body {
+  background: linear-gradient(135deg, #111318 0%, #181b22 50%, #111318 100%);
+}
+[data-theme="dark"] .page {
+  box-shadow: 0 4px 30px rgba(0,0,0,.35), 0 1px 4px rgba(0,0,0,.2);
+  background-image: none;
+}
+[data-theme="dark"] .page::before {
+  background: linear-gradient(180deg, var(--accent) 0%, #3a7abf 100%);
+}
+[data-theme="dark"] th {
+  background: #2a3a50;
+}
+[data-theme="dark"] table {
+  background: var(--paper);
+}
+[data-theme="dark"] .figure {
+  background: linear-gradient(180deg, var(--paper-edge) 0%, var(--paper) 100%);
+  border-color: var(--line);
+}
+[data-theme="dark"] .figure svg {
+  background: radial-gradient(ellipse at center, rgba(30,42,58,.5) 0%, transparent 70%);
+}
+[data-theme="dark"] ::selection {
+  background: rgba(94,163,224,.25);
+}
+
+/* ---- Smooth Theme Transition ---- */
+html {
+  overflow-x: hidden;
+  transition: background-color .4s var(--ease);
+}
+
+/* ---- Custom Scrollbar ---- */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+@supports (scrollbar-color: auto) {
+  * { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+}
+
+/* ---- Animations ---- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.05); }
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ---- Body / Background ---- */
+body {
+  font-family: "EB Garamond", "Times New Roman", Georgia, "Noto Serif", serif;
+  font-size: var(--fs-body);
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, #dbd6cc 0%, #c9c3b8 50%, #dbd6cc 100%);
+  background-attachment: scroll;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+/* ---- Scroll Progress Bar ---- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent-2));
+  background-size: 200% 100%;
+  animation: gradientShift 3s ease infinite;
+  z-index: 9999;
+  transition: width .1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ---- Theme Toggle Button ---- */
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9998;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--dur) var(--ease);
+  backdrop-filter: blur(8px);
+}
+.theme-toggle:hover {
+  transform: rotate(30deg) scale(1.1);
+  box-shadow: var(--shadow-md);
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* ---- Scroll-to-Top Button ---- */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 16px;
+  z-index: 9998;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  color: var(--accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--dur) var(--ease);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+.scroll-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.scroll-top:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ---- Page (A4-like card — realistic book page) ---- */
+.page {
+  width: min(var(--page-w), calc(100% - 32px));
+  margin: 48px auto;
+  background: var(--paper);
+  border: none;
+  border-radius: 1px 6px 6px 1px;
+  box-shadow:
+    -4px  0  0  -1px #ede8df,
+    -8px  0  0  -2px #e5dfd5,
+    -12px 0  0  -3px #ddd7cd,
+    0 4px 24px rgba(0,0,0,.12),
+    0 1px  4px rgba(0,0,0,.08);
+  position: relative;
+  counter-reset: page-section;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 28px,
+      rgba(0,0,0,.015) 28px,
+      rgba(0,0,0,.015) 29px
+    );
+  background-color: var(--paper);
+  animation: fadeInUp .6s var(--ease) both;
+  transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+/* Left-side spine accent */
+.page::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--accent) 0%, #2a5a8a 100%);
+  border-radius: 1px 0 0 1px;
+}
+
+/* ---- Header (Chapter title band) ---- */
+header {
+  padding: 44px var(--gutter) 28px;
+  border-bottom: none;
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(26,60,94,.04) 0%, transparent 100%);
+}
+
+/* Decorative double-rule under header */
+header::after {
+  content: "";
+  display: block;
+  margin-top: 22px;
+  height: 0;
+  border-top: 2.5px solid var(--ink);
+  border-bottom: .75px solid var(--line);
+  padding-bottom: 3px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .3em;
+  font-size: var(--fs-small);
+  color: var(--gold);
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-family: "Source Sans 3", "Segoe UI", Helvetica, sans-serif;
+}
+
+/* ---- Headings ---- */
+h1, h2, h3, h4 {
+  line-height: 1.25;
+  color: var(--ink);
+  font-family: "Playfair Display", "Times New Roman", Georgia, serif;
+  scroll-margin-top: 24px;
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  margin-bottom: 6px;
+  letter-spacing: -.02em;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  margin-top: 44px;
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: none;
+  position: relative;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* Elegant gradient underline for h2 */
+h2::after {
+  content: "";
+  display: block;
+  margin-top: 6px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 40%, transparent 100%);
+  border-radius: 1px;
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 14px;
+  color: var(--accent);
+  padding-left: 14px;
+  border-left: 3px solid var(--gold);
+}
+
+h4 {
+  font-size: var(--fs-h4);
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: var(--accent-2);
+  font-style: italic;
+}
+
+/* ---- Body text ---- */
+p, li, dd, dt {
+  font-size: var(--fs-body);
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* First-line indent for consecutive paragraphs (book convention) */
+p + p {
+  text-indent: 1.5em;
+}
+
+p  { margin: 0 0 14px; }
+li { margin-bottom: 8px; }
+
+strong { font-weight: 700; }
+
+/* ---- Drop cap on first paragraph of lead text only ---- */
+.drop-cap::first-letter {
+  float: left;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 3.2em;
+  line-height: .82;
+  padding-right: 6px;
+  padding-top: 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---- Main content area ---- */
+main {
+  padding: 32px var(--gutter) 56px;
+}
+
+.lead {
+  font-size: var(--fs-body);
+  color: var(--muted);
+  max-width: 80ch;
+  margin-bottom: 18px;
+  font-style: italic;
+}
+
+/* ---- Links ---- */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: .5px solid transparent;
+  transition: border-color .2s;
+}
+a:hover {
+  border-bottom-color: var(--accent);
+  text-decoration: none;
+}
+
+/* ---- Focus states (accessibility) ---- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.theme-toggle:focus-visible,
+.scroll-top:focus-visible {
+  outline-offset: 3px;
+}
+a:focus-visible {
+  border-bottom-color: var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---- Lists ---- */
+ul, ol { padding-left: 28px; margin: 10px 0 16px; }
+ul ul, ol ol, ul ol, ol ul { margin-top: 6px; margin-bottom: 6px; }
+
+/* Subtle custom square bullets */
+ul > li { list-style-type: "\25AA\0020"; }
+ul > li > ul > li { list-style-type: "\25AB\0020"; }
+
+/* ---- Definition lists ---- */
+dl { margin: 12px 0 18px; }
+dt {
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: 10px;
+}
+dd {
+  margin-left: 24px;
+  margin-bottom: 6px;
+}
+
+/* ---- Blockquote ---- */
+blockquote {
+  margin: 18px 0;
+  padding: 14px 20px 14px 24px;
+  border-left: 3px solid var(--gold);
+  background: var(--soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* ---- Table of Contents ---- */
+nav.toc {
+  margin-top: 24px;
+  padding: 20px 24px;
+  border: 1pt solid var(--line);
+  background: var(--paper-edge);
+  border-radius: 3px;
+}
+nav.toc h2 { margin-top: 0; font-size: var(--fs-h3); }
+nav.toc h2::after { display: none; }
+nav.toc h2 { text-transform: none; letter-spacing: normal; }
+nav.toc ol { columns: 2; column-gap: 36px; padding-left: 22px; margin: 0; }
+nav.toc li { margin: 3px 0; break-inside: avoid; font-size: var(--fs-body); list-style-type: decimal; }
+
+/* ---- Callouts / Formula / Exam boxes ---- */
+.callout, .formula, .exam-box {
+  padding: 18px 22px 18px 50px;
+  margin: 22px 0;
+  border-left: 3.5pt solid var(--accent);
+  background: var(--accent-light);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: var(--fs-body);
+  position: relative;
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+/* Callout icon */
+.callout::before {
+  content: "\2731";
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  font-size: 16pt;
+  line-height: 1;
+}
+
+.exam-box {
+  border-left-color: var(--accent-2);
+  background: var(--accent-2-lt);
+}
+.exam-box::before {
+  content: "\270E";
+}
+
+.formula {
+  font-family: "EB Garamond", "Times New Roman", Georgia, serif;
+  font-size: var(--fs-formula);
+  background: var(--soft);
+  text-align: center;
+  padding: 20px 22px 20px 50px;
+  line-height: 1.9;
+  border-left-color: var(--gold);
+}
+.formula::before {
+  content: "\2211";
+}
+
+/* ---- Two-column layout ---- */
+.two-col { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px; }
+
+/* ---- Tables ---- */
+.table-wrap { overflow-x: auto; margin: 22px 0; border-radius: 4px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+  font-size: var(--fs-body);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+caption {
+  caption-side: bottom;
+  padding: 8px 0 0;
+  font-style: italic;
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+th, td {
+  border: .5pt solid var(--line);
+  padding: 10px 14px;
+  vertical-align: top;
+  text-align: left;
+}
+
+th {
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  font-family: "Source Sans 3", "Segoe UI", Helvetica, sans-serif;
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* Alternating row stripe */
+tbody tr:nth-child(even) {
+  background: var(--paper-edge);
+}
+tbody tr:hover {
+  background: var(--accent-light);
+}
+
+/* ---- Tags ---- */
+.chapter-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border: .5pt solid var(--line);
+  background: var(--soft);
+  font-size: var(--fs-small);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  border-radius: 2px;
+}
+
+/* (exam-ref moved to enhanced section below) */
+
+/* ---- Footer ---- */
+.footer-note {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: none;
+  font-style: italic;
+  font-size: var(--fs-small);
+  color: var(--muted);
+  text-align: center;
+  position: relative;
+}
+
+/* Ornamental rule above footer */
+.footer-note::before {
+  content: "\2014\00a0\00a7\00a0\2014";          /* — § — */
+  display: block;
+  text-align: center;
+  color: var(--line);
+  font-style: normal;
+  font-size: 11pt;
+  letter-spacing: .2em;
+  margin-bottom: 10px;
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--paper);
+  padding: 0 16px;
+}
+
+.footer-note::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: .5px;
+  background: var(--line);
+}
+
+/* ---- Back-to-index link ---- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 6px 16px;
+  border: 1px solid var(--line);
+  background: var(--soft);
+  font-size: var(--fs-small);
+  font-family: "Source Sans 3", "Segoe UI", Helvetica, sans-serif;
+  color: var(--accent);
+  text-decoration: none;
+  border-radius: 3px;
+  transition: all .2s;
+}
+.back-link:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   Figures & Diagrams
+   ============================================================ */
+.figure {
+  margin: 36px 0;
+  padding: 24px 20px 16px;
+  text-align: center;
+  background:
+    linear-gradient(180deg, #fff 0%, var(--paper) 100%);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.05),
+    0 0 0 1px rgba(0,0,0,.02);
+  position: relative;
+  transition: box-shadow .25s ease;
+}
+
+/* Reset default browser margins on nested <figure> inside .figure div */
+.figure figure {
+  margin: 0;
+}
+
+.figure:hover {
+  box-shadow:
+    0 4px 16px rgba(0,0,0,.08),
+    0 0 0 1px rgba(0,0,0,.03);
+}
+
+/* Subtle figure number accent bar at top */
+.figure::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  border-radius: 0 0 2px 2px;
+}
+
+.figure svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  /* Subtle background for SVG canvas */
+  background:
+    radial-gradient(ellipse at center, rgba(255,255,255,.6) 0%, transparent 70%);
+}
+
+.figure figcaption {
+  font-size: var(--fs-small);
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 14px;
+  padding-top: 10px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  font-family: "Source Sans 3", "Segoe UI", Helvetica, sans-serif;
+  letter-spacing: .01em;
+  line-height: 1.4;
+}
+
+/* Bold figure numbers within captions */
+.figure figcaption strong,
+.figure figcaption b {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.figure-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: 28px 0;
+}
+
+.figure-row .figure {
+  margin: 0;
+  flex: 1 1 200px;
+  max-width: 340px;
+}
+
+/* ============================================================
+   Index page – Chapter grid
+   ============================================================ */
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.chapter-card {
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: var(--radius);
+  transition: all .3s var(--ease);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp .5s var(--ease) both;
+}
+
+/* Stagger animation for cards */
+.chapter-card:nth-child(1)  { animation-delay: .05s; }
+.chapter-card:nth-child(2)  { animation-delay: .10s; }
+.chapter-card:nth-child(3)  { animation-delay: .15s; }
+.chapter-card:nth-child(4)  { animation-delay: .20s; }
+.chapter-card:nth-child(5)  { animation-delay: .25s; }
+.chapter-card:nth-child(6)  { animation-delay: .30s; }
+.chapter-card:nth-child(7)  { animation-delay: .35s; }
+.chapter-card:nth-child(8)  { animation-delay: .40s; }
+.chapter-card:nth-child(9)  { animation-delay: .45s; }
+.chapter-card:nth-child(10) { animation-delay: .50s; }
+.chapter-card:nth-child(11) { animation-delay: .55s; }
+.chapter-card:nth-child(12) { animation-delay: .60s; }
+
+/* Gold left accent stripe on cards */
+.chapter-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--gold));
+  transform: scaleY(0);
+  transition: transform .3s var(--ease);
+  transform-origin: bottom;
+}
+
+/* Chapter number badge */
+.chapter-card .card-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: 13pt;
+  margin-bottom: 8px;
+  transition: all .3s var(--ease);
+}
+
+/* Chapter card icon */
+.chapter-card .card-icon {
+  font-size: 28px;
+  margin-bottom: 4px;
+  display: block;
+  opacity: .65;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.chapter-card:hover .card-icon {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.chapter-card:hover {
+  box-shadow: var(--shadow-lg);
+  background: var(--paper);
+  transform: translateY(-4px);
+  border-color: var(--gold);
+}
+[data-theme="dark"] .chapter-card:hover {
+  background: var(--paper-edge);
+}
+.chapter-card:hover::before {
+  transform: scaleY(1);
+}
+.chapter-card:hover .card-number {
+  background: var(--accent);
+  color: white;
+}
+
+.chapter-card h3 {
+  border-left: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 4px;
+  font-size: var(--fs-h3);
+  color: var(--accent);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.chapter-card p {
+  text-indent: 0;
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: var(--fs-body);
+}
+
+/* Last-visited chapter indicator */
+.chapter-card.last-visited {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow-sm);
+}
+.chapter-card.last-visited::after {
+  content: "Continue reading";
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 8pt;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--gold);
+  font-weight: 600;
+  opacity: .85;
+}
+
+/* ============================================================
+   Additional details & micro-interactions
+   ============================================================ */
+
+/* --- Ornamental section separator between major sections --- */
+h2 ~ h2 {
+  margin-top: 52px;
+}
+
+::selection {
+  background: rgba(26,60,94,.15);
+  color: var(--ink);
+}
+
+.callout, .formula, .exam-box {
+  transition: box-shadow .2s, transform .2s;
+}
+.callout:hover, .exam-box:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+.formula:hover {
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+/* --- Intersection Observer reveal animation --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   Chapter Navigation (Prev / Next)
+   ============================================================ */
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.chapter-nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  border: 1px solid var(--line);
+  background: var(--soft);
+  border-radius: var(--radius);
+  font-family: "Source Sans 3", sans-serif;
+  font-size: var(--fs-small);
+  color: var(--accent);
+  text-decoration: none;
+  transition: all var(--dur) var(--ease);
+  min-width: 140px;
+}
+.chapter-nav a:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.chapter-nav .nav-next {
+  margin-left: auto;
+  text-align: right;
+}
+.chapter-nav .nav-label {
+  display: block;
+  font-size: var(--fs-tiny);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  opacity: .7;
+  margin-bottom: 2px;
+}
+.chapter-nav .nav-title {
+  font-weight: 600;
+}
+
+/* ============================================================
+   Quick-info badges (for chapter pages)
+   ============================================================ */
+.chapter-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0 4px;
+}
+.meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: "Source Sans 3", sans-serif;
+  font-size: var(--fs-tiny);
+  font-weight: 600;
+  letter-spacing: .03em;
+}
+.meta-badge.exam {
+  background: var(--accent-2-lt);
+  color: var(--accent-2);
+  border: 1px solid rgba(139,37,0,.15);
+}
+.meta-badge.topic {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid rgba(26,60,94,.15);
+}
+
+/* ============================================================
+   Enhanced exam-ref tags
+   ============================================================ */
+.exam-ref {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 10px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent-2-lt), #fde0d8);
+  color: var(--accent-2);
+  font-size: var(--fs-tiny);
+  font-weight: 600;
+  font-family: "Source Sans 3", sans-serif;
+  letter-spacing: .02em;
+  vertical-align: middle;
+  white-space: nowrap;
+  border-radius: 12px;
+  transition: all .2s var(--ease);
+}
+.exam-ref:hover {
+  background: var(--accent-2);
+  color: white;
+}
+
+/* ============================================================
+   Tooltip style for key terms
+   ============================================================ */
+.key-term {
+  border-bottom: 1.5px dashed var(--gold);
+  cursor: help;
+  position: relative;
+}
+
+/* ---- Inline code & preformatted blocks ---- */
+code {
+  background: var(--soft);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: "Consolas", "Menlo", "Monaco", monospace;
+  color: var(--accent-2);
+  border: .5px solid var(--line);
+}
+pre {
+  background: var(--soft);
+  padding: 16px 18px;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  overflow-x: auto;
+  margin: 18px 0;
+  line-height: 1.65;
+}
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+[data-theme="dark"] code {
+  background: var(--paper-edge);
+  border-color: var(--line);
+}
+
+/* ============================================================
+   Statistics / Hero Cards (for index)
+   ============================================================ */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: 28px 0;
+}
+.stat-card {
+  text-align: center;
+  padding: 16px 24px;
+  min-width: 120px;
+  border-radius: var(--radius);
+  background: var(--soft);
+  border: 1px solid var(--line);
+  transition: all .3s var(--ease);
+}
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.stat-card .stat-number {
+  display: block;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24pt;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.stat-card .stat-label {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: var(--fs-tiny);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ============================================================
+   Print styles
+   ============================================================ */
+@media print {
+  body { background: white; }
+  .page {
+    margin: 0; width: 100%;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    animation: none;
+    background-image: none;
+  }
+  .page::before { display: none; }
+  .back-link { display: none; }
+  .theme-toggle, .scroll-top, .scroll-progress, .chapter-nav { display: none; }
+  h2, h3 { page-break-after: avoid; }
+  .figure { page-break-inside: avoid; }
+  table { page-break-inside: avoid; }
+  .callout, .exam-box, .formula { page-break-inside: avoid; box-shadow: none; }
+  .chapter-card { break-inside: avoid; }
+  a { color: var(--ink); border-bottom: none; }
+}
+
+/* ============================================================
+   Responsive – small screens
+   ============================================================ */
+@media (max-width: 760px) {
+  :root {
+    --gutter: 24px;
+    --fs-h1: 20pt;
+    --fs-h2: 14pt;
+    --fs-h3: 12pt;
+  }
+  .page {
+    width: calc(100vw - 8px);
+    min-width: 0;
+    margin: 16px auto;
+    border-radius: 0;
+  }
+  .page::before { display: none; }
+  .two-col { grid-template-columns: 1fr; }
+  nav.toc ol { columns: 1; }
+  .chapter-grid { grid-template-columns: 1fr; }
+  .stats-row { gap: 12px; }
+  .stat-card { min-width: 80px; padding: 12px 16px; }
+  .stat-card .stat-number { font-size: 18pt; }
+  .theme-toggle { top: 8px; right: 8px; width: 38px; height: 38px; }
+  .chapter-nav { flex-direction: column; }
+  .drop-cap::first-letter {
+    float: none;
+    font-size: inherit;
+    padding: 0;
+  }
+  .callout, .formula, .exam-box {
+    padding-left: 40px;
+  }
+  .callout::before, .formula::before, .exam-box::before {
+    left: 10px;
+  }
+  .figure-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  .figure-row .figure {
+    max-width: 100%;
+  }
+}
+
+/* ============================================================
+   Responsive – wide screens
+   ============================================================ */

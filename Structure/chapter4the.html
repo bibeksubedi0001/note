@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: Finite Element Method</title>
+
+    <!-- MathJax / KaTeX -->
+    <!-- polyfill removed for speed -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+    <style>
+        :root {
+            --base-size: 12pt;
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        p,
+        span,
+        div,
+        li,
+        table,
+        td,
+        th {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: var(--base-size);
+            color: black;
+            background-color: white;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid black;
+        }
+
+        h3 {
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-weight: bold;
+            font-style: italic;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 1rem;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+        }
+
+        .equation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .exam-note {
+            border: 1px solid black;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .exam-note h4 {
+            margin-top: 0;
+            border-bottom: 1px dashed black;
+            padding-bottom: 0.25rem;
+        }
+
+        .callout {
+            border-left: 3px solid black;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+
+        .figure-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid black;
+        }
+
+        .figcaption {
+            font-style: italic;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        table.info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table.info-table th,
+        table.info-table td {
+            border: 1px solid black;
+            padding: 6px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table.info-table th {
+            font-weight: bold;
+            background: white;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            border: 2px solid black;
+            background-color: white;
+            color: black;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: var(--base-size);
+        }
+
+        .print-btn:hover {
+            background-color: black;
+            color: white;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .figure-container,
+            .exam-note {
+                page-break-inside: avoid;
+            }
+
+            h2,
+            h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<main>
+
+        <header>
+            <p style="text-align: center; font-style: italic; margin-bottom: 1rem">Structural Engineering Dynamics</p>
+            <h1>CHAPTER 4: FINITE ELEMENT METHOD</h1>
+        </header>
+
+        <!-- 4.7 Interpolation Functions -->
+        <section id="sec-4-7">
+            <h2>4.7 INTERPOLATION FUNCTIONS (SHAPE FUNCTIONS)</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Define shape function in finite analysis and write down the properties of shape function. [3]
+                        <em>(2080 Chaitra, Q9)</em></li>
+                    <li>Derive the expressions for Hermite shape function used for the interpolation in beam elements.
+                        [7-8] <em>(2080 Chaitra, Q9; 2079 Jestha, Q10/12; 2077 Chaitra, Q4)</em></li>
+                </ol>
+            </div>
+
+            <h3>Definition and Properties</h3>
+            <p>
+                In Finite Element Analysis, a <strong>Shape Function</strong> (or interpolation function) is a
+                continuous mathematical polynomial used to approximate the exact solution of a field variable (such as
+                displacement, temperature, or stress) at any point <em>inside</em> an element, based solely on the known
+                discrete values of that variable at the element's <em>nodes</em>.
+            </p>
+            <p>
+                Mathematically, the displacement \( u(x) \) within an element is expressed as \( u(x) = \sum N_i u_i \),
+                where \( N_i \) is the shape function associated with node \( i \), and \( u_i \) is the nodal
+                displacement.
+            </p>
+
+            <div class="callout">
+                <strong>Fundamental Properties of Shape Functions:</strong>
+                <ol>
+                    <li><strong>Kronecker Delta Property:</strong> A shape function \( N_i \) has a value of unity (1.0)
+                        at its home node \( i \), and a value of zero (0.0) at all other nodes. mathematically: \(
+                        N_i(x_j) = \delta_{ij} \).</li>
+                    <li><strong>Partition of Unity:</strong> The sum of all shape functions evaluated at any arbitrary
+                        point within the element is exactly equal to one. \( \sum N_i = 1 \). This ensures that a rigid
+                        body translation is accurately modeled without inducing fictitious strains.</li>
+                    <li><strong>Polynomial Order:</strong> The degree of the chosen polynomial strictly depends on the
+                        number of nodes and degrees of freedom (DOF) assigned to the element.</li>
+                </ol>
+            </div>
+
+            <h3>Derivation of Hermite Shape Functions for Beam Elements</h3>
+            <p>
+                Unlike a simple truss element which only displaces axially, a Euler-Bernoulli beam element undergoes
+                both transverse deflection (\( v \)) and rotation (\( \theta = \frac{dv}{dx} \)). A 2-node beam element
+                therefore has 4 degrees of freedom: \( v_1, \theta_1 \) at node 1, and \( v_2, \theta_2 \) at node 2.
+            </p>
+
+            <div class="figure-container">
+                <svg width="500" height="200" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
+                            orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+                        </marker>
+                    </defs>
+
+                    <!-- Beam Element -->
+                    <rect x="100" y="80" width="300" height="10" fill="white" stroke="black" stroke-width="2" />
+
+                    <!-- Node 1 -->
+                    <circle cx="100" cy="85" r="5" fill="black" />
+                    <text x="80" y="110" font-weight="bold">Node 1</text>
+                    <text x="80" y="130" font-style="italic">x = 0</text>
+
+                    <!-- Node 2 -->
+                    <circle cx="400" cy="85" r="5" fill="black" />
+                    <text x="380" y="110" font-weight="bold">Node 2</text>
+                    <text x="380" y="130" font-style="italic">x = L</text>
+
+                    <!-- DOF arrows for Node 1 -->
+                    <line x1="100" y1="80" x2="100" y2="30" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+                    <text x="75" y="45" font-style="italic" font-weight="bold">v<tspan baseline-shift="sub"
+                            font-size="0.8em">1</tspan></text>
+
+                    <path d="M 60 70 A 30 30 0 0 1 120 40" fill="none" stroke="black" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="130" y="50" font-style="italic" font-weight="bold">θ<tspan baseline-shift="sub"
+                            font-size="0.8em">1</tspan></text>
+
+                    <!-- DOF arrows for Node 2 -->
+                    <line x1="400" y1="80" x2="400" y2="30" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+                    <text x="415" y="45" font-style="italic" font-weight="bold">v<tspan baseline-shift="sub"
+                            font-size="0.8em">2</tspan></text>
+
+                    <path d="M 360 70 A 30 30 0 0 1 420 40" fill="none" stroke="black" stroke-width="2"
+                        marker-end="url(#arrow)" />
+                    <text x="430" y="50" font-style="italic" font-weight="bold">θ<tspan baseline-shift="sub"
+                            font-size="0.8em">2</tspan></text>
+
+                    <!-- Length -->
+                    <line x1="100" y1="160" x2="400" y2="160" stroke="black" stroke-width="1" />
+                    <line x1="100" y1="150" x2="100" y2="170" stroke="black" stroke-width="1" />
+                    <line x1="400" y1="150" x2="400" y2="170" stroke="black" stroke-width="1" />
+                    <text x="245" y="155" font-style="italic">Length = L</text>
+                </svg>
+                <div class="figcaption">Figure 4.1: A 2-node beam element showing 4 degrees of freedom.</div>
+            </div>
+
+            <p>
+                Because there are 4 unknowns, we must assume a cubic polynomial displacement function. To simplify the
+                algebra, we introduce a non-dimensional natural coordinate \( \xi = \frac{x}{L} \). The element spans
+                from \( \xi = 0 \) to \( \xi = 1 \).
+            </p>
+            <div class="equation">
+                $$ v(\xi) = a_0 + a_1 \xi + a_2 \xi^2 + a_3 \xi^3 $$
+            </div>
+            <p>
+                The slope (rotation) is the derivative with respect to \( x \). Using the chain rule, \( \theta =
+                \frac{dv}{dx} = \frac{dv}{d\xi} \frac{d\xi}{dx} = \frac{1}{L} \frac{dv}{d\xi} \). Therefore:
+            </p>
+            <div class="equation">
+                $$ \frac{dv}{d\xi} = L \cdot \theta(\xi) = a_1 + 2a_2 \xi + 3a_3 \xi^2 $$
+            </div>
+            <p>
+                We apply the four physical boundary conditions to solve for constants \( a_0, a_1, a_2, a_3 \):
+            </p>
+            <ol>
+                <li>At Node 1 (\( \xi = 0 \)): \( v(0) = v_1 \implies a_0 = v_1 \)</li>
+                <li>At Node 1 (\( \xi = 0 \)): \( \frac{dv}{d\xi}(0) = L \theta_1 \implies a_1 = L \theta_1 \)</li>
+                <li>At Node 2 (\( \xi = 1 \)): \( v(1) = v_2 \implies v_1 + L\theta_1 + a_2 + a_3 = v_2 \)</li>
+                <li>At Node 2 (\( \xi = 1 \)): \( \frac{dv}{d\xi}(1) = L \theta_2 \implies L\theta_1 + 2a_2 + 3a_3 =
+                    L\theta_2 \)</li>
+            </ol>
+            <p>
+                Solving equations (3) and (4) simultaneously for \( a_2 \) and \( a_3 \):
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                a_2 &= 3(v_2 - v_1) - L(2\theta_1 + \theta_2) \\
+                a_3 &= 2(v_1 - v_2) + L(\theta_1 + \theta_2)
+                \end{aligned}
+                $$
+            </div>
+            <p>
+                Substituting \( a_0, a_1, a_2, a_3 \) back into the original cubic equation \( v(\xi) \), and factoring
+                out the nodal variables \( v_1, \theta_1, v_2, \theta_2 \), we get:
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                v(\xi) &= (1 - 3\xi^2 + 2\xi^3)v_1 \\
+                &\quad + L(\xi - 2\xi^2 + \xi^3)\theta_1 \\
+                &\quad + (3\xi^2 - 2\xi^3)v_2 \\
+                &\quad + L(-\xi^2 + \xi^3)\theta_2
+                \end{aligned}
+                $$
+            </div>
+            <p>
+                This perfectly defines the displacement in terms of the four nodal degrees of freedom: \( v(\xi) = N_1
+                v_1 + N_2 \theta_1 + N_3 v_2 + N_4 \theta_2 \). The resulting <strong>Hermite Shape Functions</strong>
+                are:
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                N_1 &= 1 - 3\xi^2 + 2\xi^3 \\
+                N_2 &= L(\xi - 2\xi^2 + \xi^3) \\
+                N_3 &= 3\xi^2 - 2\xi^3 \\
+                N_4 &= L(-\xi^2 + \xi^3)
+                \end{aligned}
+                $$
+            </div>
+            <p><em>(Note: These functions guarantee the continuity of both displacement and slope across element
+                    boundaries, which is a strictly required condition (C1 continuity) for beam bending problems.)</em>
+            </p>
+        </section>
+
+        <!-- 4.8 Constant Strain Triangle -->
+        <section id="sec-4-8">
+            <h2>4.8 CONSTANT STRAIN TRIANGLE (CST)</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Derive the relation of strain-Displacement [B] matrix for constant strain triangle. [6]
+                        <em>(2073 Magh, Q9)</em></li>
+                </ol>
+            </div>
+
+            <h3>Derivation of the Strain-Displacement [B] Matrix</h3>
+            <p>
+                The Constant Strain Triangle (CST) is the simplest 2D solid element. It is a 3-node triangle where each
+                node has two degrees of freedom (horizontal displacement \( u \) and vertical displacement \( v \)).
+                Thus, there are 6 total DOF for the element.
+            </p>
+
+            <div class="figure-container">
+                <svg width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="arrowCST" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
+                            orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+                        </marker>
+                    </defs>
+
+                    <!-- Triangle -->
+                    <polygon points="100,200 300,200 200,50" fill="white" stroke="black" stroke-width="2" />
+
+                    <!-- Node 1 -->
+                    <circle cx="100" cy="200" r="4" fill="black" />
+                    <text x="70" y="215" font-weight="bold">1(x_1, y_1)</text>
+                    <line x1="100" y1="200" x2="140" y2="200" stroke="black" stroke-width="1.5"
+                        marker-end="url(#arrowCST)" />
+                    <text x="145" y="205" font-style="italic">u_1</text>
+                    <line x1="100" y1="200" x2="100" y2="160" stroke="black" stroke-width="1.5"
+                        marker-end="url(#arrowCST)" />
+                    <text x="105" y="155" font-style="italic">v_1</text>
+
+                    <!-- Node 2 -->
+                    <circle cx="300" cy="200" r="4" fill="black" />
+                    <text x="280" y="215" font-weight="bold">2(x_2, y_2)</text>
+                    <line x1="300" y1="200" x2="340" y2="200" stroke="black" stroke-width="1.5"
+                        marker-end="url(#arrowCST)" />
+                    <text x="345" y="205" font-style="italic">u_2</text>
+                    <line x1="300" y1="200" x2="300" y2="160" stroke="black" stroke-width="1.5"
+                        marker-end="url(#arrowCST)" />
+                    <text x="305" y="155" font-style="italic">v_2</text>
+
+                    <!-- Node 3 -->
+                    <circle cx="200" cy="50" r="4" fill="black" />
+                    <text x="180" y="35" font-weight="bold">3(x_3, y_3)</text>
+                    <line x1="200" y1="50" x2="240" y2="50" stroke="black" stroke-width="1.5"
+                        marker-end="url(#arrowCST)" />
+                    <text x="245" y="55" font-style="italic">u_3</text>
+                    <line x1="200" y1="50" x2="200" y2="10" stroke="black" stroke-width="1.5"
+                        marker-end="url(#arrowCST)" />
+                    <text x="205" y="15" font-style="italic">v_3</text>
+                </svg>
+                <div class="figcaption">Figure 4.2: Constant Strain Triangle showing nodal coordinates and
+                    displacements.</div>
+            </div>
+
+            <p>
+                The linear displacement field within the triangle is assumed as:
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                u(x,y) &= N_1 u_1 + N_2 u_2 + N_3 u_3 \\
+                v(x,y) &= N_1 v_1 + N_2 v_2 + N_3 v_3
+                \end{aligned}
+                $$
+            </div>
+            <p>
+                Where the linear shape functions \( N_i \) are defined geometrically in terms of the element's area (\(
+                A \)):
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                N_1 &= \frac{1}{2A}(a_1 + b_1 x + c_1 y) \\
+                N_2 &= \frac{1}{2A}(a_2 + b_2 x + c_2 y) \\
+                N_3 &= \frac{1}{2A}(a_3 + b_3 x + c_3 y)
+                \end{aligned}
+                $$
+            </div>
+            <p>
+                The constants are derived from the coordinate geometry, where \( b_1 = y_2 - y_3 \), \( c_1 = x_3 - x_2
+                \), with cyclic permutations for nodes 2 and 3. Notice that differentiating these shape functions yields
+                pure constants: \( \frac{\partial N_i}{\partial x} = \frac{b_i}{2A} \) and \( \frac{\partial
+                N_i}{\partial y} = \frac{c_i}{2A} \).
+            </p>
+            <p>
+                We compute the 2D strains (normal strains and shear strain) using the derivatives of the displacement
+                field:
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                \{\epsilon\} &= \begin{Bmatrix} \epsilon_x \\ \epsilon_y \\ \gamma_{xy} \end{Bmatrix} \\
+                &= \begin{Bmatrix} \frac{\partial u}{\partial x} \\ \frac{\partial v}{\partial y} \\ \frac{\partial
+                u}{\partial y} + \frac{\partial v}{\partial x} \end{Bmatrix}
+                \end{aligned}
+                $$
+            </div>
+            <p>
+                Substituting the shape functions into the strain definition:
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                \epsilon_x &= \frac{\partial}{\partial x}(N_1 u_1 + N_2 u_2 + N_3 u_3) \\
+                &= \frac{1}{2A}(b_1 u_1 + b_2 u_2 + b_3 u_3) \\
+                \epsilon_y &= \frac{\partial}{\partial y}(N_1 v_1 + N_2 v_2 + N_3 v_3) \\
+                &= \frac{1}{2A}(c_1 v_1 + c_2 v_2 + c_3 v_3) \\
+                \gamma_{xy} &= \left[ \frac{\partial}{\partial y}(N_1 u_1 + N_2 u_2 + N_3 u_3) \right] + \left[
+                \frac{\partial}{\partial x}(N_1 v_1 + N_2 v_2 + N_3 v_3) \right] \\
+                &= \frac{1}{2A}(c_1 u_1 + c_2 u_2 + c_3 u_3) + \frac{1}{2A}(b_1 v_1 + b_2 v_2 + b_3 v_3)
+                \end{aligned}
+                $$
+            </div>
+            <p>
+                Because these derivatives yield constants (no \(x\) or \(y\) variables remain), the strain is perfectly
+                uniform everywhere inside the element—hence the name "Constant Strain Triangle". Factoring out the nodal
+                displacement vector \( \{d\} \), we construct the Strain-Displacement matrix \( [B] \):
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                \{\epsilon\} &= [B]\{d\} \\
+                \begin{Bmatrix} \epsilon_x \\ \epsilon_y \\ \gamma_{xy} \end{Bmatrix}
+                &=
+                \frac{1}{2A}
+                \begin{bmatrix}
+                b_1 & 0 & b_2 & 0 & b_3 & 0 \\
+                0 & c_1 & 0 & c_2 & 0 & c_3 \\
+                c_1 & b_1 & c_2 & b_2 & c_3 & b_3
+                \end{bmatrix}
+                \begin{Bmatrix} u_1 \\ v_1 \\ u_2 \\ v_2 \\ u_3 \\ v_3 \end{Bmatrix}
+                \end{aligned}
+                $$
+            </div>
+        </section>
+
+        <!-- 4.9 Isoparametric Formulation -->
+        <section id="sec-4-9">
+            <h2>4.9 ISOPARAMETRIC FORMULATION</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>What is Jacobian matrix? [2] <em>(2079 Chaitra, Q10)</em></li>
+                    <li>Define isoparametric, super parametric, and sub parametric elements. [3] <em>(2079 Jestha,
+                            Q10/12)</em></li>
+                    <li>Explain / What is Iso-parametric formulation / element? [1-2] <em>(2076 Bhadra, Q9; 2074 Bhadra,
+                            Q9; 2072 Magh, Q5)</em></li>
+                </ol>
+            </div>
+
+            <h3>Isoparametric Formulation</h3>
+            <p>
+                In the analysis of complex real-world structures, meshes must accommodate curved and highly irregular
+                boundaries. Performing complex calculus (integration) over skewed, distorted shapes is mathematically
+                tedious and computationally inefficient.
+            </p>
+            <p>
+                <strong>Isoparametric Formulation</strong> solves this by using the <em>exact same shape functions</em>
+                (\( N_i \)) to map both the geometric coordinates of the element and the field variables (displacements)
+                within the element. By doing so, any irregularly shaped element in the global coordinate system \( (x,
+                y) \) is mathematically transformed (mapped) into a perfectly normalized, geometrically simple "master
+                element" in a natural coordinate system \( (\xi, \eta) \) spanning from -1 to 1. All numerical
+                integration is performed rapidly on this simple master element.
+            </p>
+
+            <div class="figure-container">
+                <svg width="600" height="250" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <marker id="mapArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6"
+                            orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+                        </marker>
+                    </defs>
+
+                    <!-- Real Element -->
+                    <g transform="translate(50, 50)">
+                        <polygon points="20,130 140,160 170,30 40,10" fill="white" stroke="black" stroke-width="2" />
+                        <circle cx="20" cy="130" r="4" fill="black" />
+                        <circle cx="140" cy="160" r="4" fill="black" />
+                        <circle cx="170" cy="30" r="4" fill="black" />
+                        <circle cx="40" cy="10" r="4" fill="black" />
+
+                        <line x1="0" y1="180" x2="180" y2="180" stroke="black" stroke-width="1.5"
+                            marker-end="url(#mapArrow)" />
+                        <text x="190" y="185" font-style="italic">x</text>
+                        <line x1="0" y1="180" x2="0" y2="0" stroke="black" stroke-width="1.5"
+                            marker-end="url(#mapArrow)" />
+                        <text x="-5" y="-10" font-style="italic">y</text>
+
+                        <text x="90" y="210" font-weight="bold" text-anchor="middle">Physical Element</text>
+                        <text x="90" y="230" font-style="italic" text-anchor="middle">(Global x-y system)</text>
+                    </g>
+
+                    <!-- Mapping Arrow -->
+                    <path d="M 250 120 Q 300 80, 350 120" fill="none" stroke="black" stroke-width="2"
+                        marker-end="url(#mapArrow)" />
+                    <text x="300" y="90" font-weight="bold" text-anchor="middle">Jacobian Mapping [J]</text>
+
+                    <!-- Master Element -->
+                    <g transform="translate(400, 50)">
+                        <!-- Axes -->
+                        <line x1="0" y1="80" x2="160" y2="80" stroke="black" stroke-width="1" stroke-dasharray="4,4" />
+                        <line x1="80" y1="160" x2="80" y2="0" stroke="black" stroke-width="1" stroke-dasharray="4,4" />
+                        <text x="170" y="85" font-style="italic">ξ</text>
+                        <text x="75" y="-10" font-style="italic">η</text>
+
+                        <!-- Square -->
+                        <rect x="20" y="20" width="120" height="120" fill="white" stroke="black" stroke-width="2" />
+                        <circle cx="20" cy="140" r="4" fill="black" />
+                        <text x="0" y="155" font-style="italic">(-1, -1)</text>
+
+                        <circle cx="140" cy="140" r="4" fill="black" />
+                        <text x="140" y="155" font-style="italic">(1, -1)</text>
+
+                        <circle cx="140" cy="20" r="4" fill="black" />
+                        <text x="140" y="15" font-style="italic">(1, 1)</text>
+
+                        <circle cx="20" cy="20" r="4" fill="black" />
+                        <text x="0" y="15" font-style="italic">(-1, 1)</text>
+
+                        <text x="80" y="210" font-weight="bold" text-anchor="middle">Master Element</text>
+                        <text x="80" y="230" font-style="italic" text-anchor="middle">(Natural ξ-η system)</text>
+                    </g>
+                </svg>
+                <div class="figcaption">Figure 4.3: Isoparametric mapping of a distorted physical quad into a perfect
+                    computational square.</div>
+            </div>
+
+            <h3>Element Classifications</h3>
+            <ul>
+                <li><strong>Isoparametric Element:</strong> The number of nodes used to define the element's geometry is
+                    <em>exactly equal</em> to the number of nodes used to define the displacement field. (e.g., A 4-node
+                    quad where geometry and displacement are both linear).</li>
+                <li><strong>Super-parametric Element:</strong> <em>More</em> nodes are used to define the geometry than
+                    are used for displacements. (Used to accurately model highly curved boundaries, even if the assumed
+                    strain state inside is kept simple/linear).</li>
+                <li><strong>Sub-parametric Element:</strong> <em>Fewer</em> nodes are used to define the geometry than
+                    are used for displacements. (Used when the physical boundaries are perfectly straight, but a complex
+                    higher-order quadratic strain field is required inside the element).</li>
+            </ul>
+
+            <h3>The Jacobian Matrix [J]</h3>
+            <p>
+                The <strong>Jacobian matrix</strong> is a vital mathematical tensor of partial derivatives that links
+                the spatial derivatives of the global coordinate system \( (x, y) \) to the spatial derivatives of the
+                natural, normalized coordinate system \( (\xi, \eta) \).
+            </p>
+            <p>
+                By the chain rule of differentiation, derivatives with respect to natural coordinates are tied to global
+                coordinates via:
+            </p>
+            <div class="equation">
+                $$
+                \begin{aligned}
+                \begin{Bmatrix} \frac{\partial N_i}{\partial \xi} \\ \frac{\partial N_i}{\partial \eta} \end{Bmatrix}
+                &=
+                \begin{bmatrix} \frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} \\ \frac{\partial
+                x}{\partial \eta} & \frac{\partial y}{\partial \eta} \end{bmatrix}
+                \begin{Bmatrix} \frac{\partial N_i}{\partial x} \\ \frac{\partial N_i}{\partial y} \end{Bmatrix} \\
+                &=
+                [J] \begin{Bmatrix} \frac{\partial N_i}{\partial x} \\ \frac{\partial N_i}{\partial y} \end{Bmatrix}
+                \end{aligned}
+                $$
+            </div>
+            <p>
+                The matrix \( [J] \) is the Jacobian matrix. Its determinant, \( |J| \), is fundamentally necessary to
+                map elemental areas from the physical space into the computational space during the numerical stiffness
+                integration (Gauss Quadrature), such that:
+            </p>
+            <div class="equation">
+                $$ dx \cdot dy = |J| \cdot d\xi \cdot d\eta $$
+            </div>
+            <p>
+                If \( |J| \le 0 \) anywhere inside the element, it physically means the element mesh is invalid (e.g.,
+                folded over on itself, or overly distorted), and the computer algorithm will fail.
+            </p>
+
+        </section>
+
+    </main>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

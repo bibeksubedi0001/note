@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 3 — Numericals — Potential Flow Theory</title>
+<link rel="stylesheet" href="style.css">
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+<pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+<pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#777"/><circle cx="9" cy="9" r="2" fill="#777"/></pattern>
+<pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+<pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse"><line x1="0" y1="10" x2="7" y2="0" stroke="black" stroke-width=".8"/><line x1="7" y1="10" x2="14" y2="0" stroke="black" stroke-width=".8"/></pattern>
+<marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0,10 3.5,0 7" fill="black"/></marker>
+<marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0,0 3.5,10 7" fill="black"/></marker>
+</defs></svg>
+
+<nav class="topnav"><a href="index.html">&larr; Index</a><span class="sep">|</span><span>Chapter 3: Potential Flow Theory &amp; Flow Nets</span></nav>
+<button onclick="window.print()" class="print-btn">PRINT</button>
+
+<h1>CHAPTER 3 — NUMERICALS<br>Potential Groundwater Flow Theory &amp; Flow Net Analysis</h1>
+<p style="text-align:center">7 Problems — Dupuit Equation, Recharge Formula, Variable-Thickness Confined Flow, Contour Maps</p>
+
+<!-- ============ KEY FORMULAE ============ -->
+<div class="formula-box">
+<h3>KEY FORMULAE — CHAPTER 3</h3>
+
+<p><strong>A. Dupuit Equation (Unconfined, No Recharge):</strong></p>
+<div class="equation">$$ Q = \frac{K(h_1^2 - h_2^2)}{2L}, \qquad h^2 = h_1^2 - \frac{(h_1^2-h_2^2)}{L}\,x $$</div>
+
+<p><strong>B. Unconfined Aquifer with Uniform Recharge \(p\):</strong></p>
+<div class="equation">$$ h^2 = h_1^2 - \frac{(h_1^2-h_2^2)}{L}\,x + \frac{p}{K}\,x(L-x) $$</div>
+<div class="equation">$$ q_1 = \frac{K(h_1^2-h_2^2)}{2L} + \frac{pL}{2}, \qquad q_2 = \frac{pL}{2} - \frac{K(h_1^2-h_2^2)}{2L} $$</div>
+<div class="equation">$$ d = \frac{L}{2} - \frac{K(h_1^2-h_2^2)}{2pL} \quad \text{(water divide from deeper canal)} $$</div>
+
+<p><strong>C. Confined Aquifer with Variable (Wedge) Thickness:</strong></p>
+<div class="equation">$$ Q = K \cdot \frac{(h_1-h_2)(b_2-b_1)}{L\,\ln(b_2/b_1)} $$</div>
+<ul><li>where \(b(x) = b_1 + \frac{b_2-b_1}{L}x\) varies linearly from \(b_1\) to \(b_2\)</li></ul>
+
+<p><strong>D. Water-Table Contour Map:</strong></p>
+<ul>
+<li>Interpolate equal-head points on lines joining known wells</li>
+<li>Connect points of equal head &rarr; contour lines</li>
+<li>Flow direction is <strong>perpendicular to contours</strong> toward <strong>decreasing head</strong></li>
+</ul>
+
+<table class="units">
+<tr><th>Symbol</th><th>Typical Range</th><th>SI Unit</th></tr>
+<tr><td>\(K\)</td><td>0.01–100 m/day</td><td>m/day or m/s</td></tr>
+<tr><td>\(p\) (recharge)</td><td>0–50 mm/hr</td><td>m/day (convert!)</td></tr>
+<tr><td>\(h_1, h_2\)</td><td>5–50 m (unconfined)</td><td>m</td></tr>
+<tr><td>\(L\)</td><td>100–10,000 m</td><td>m</td></tr>
+</table>
+
+<div class="derivation">
+<h4>DERIVATION HINT — Dupuit Equation (No Recharge)</h4>
+<p>Start from the Dupuit assumption: flow is horizontal and the hydraulic gradient equals the slope of the water table. For a unit-width strip: \(Q = -Kh\,dh/dx\). Separate and integrate from \(x=0\) (where \(h=h_1\)) to \(x=L\) (where \(h=h_2\)):</p>
+<div class="equation">$$ Q\,dx = -Kh\,dh \quad \Rightarrow \quad Q \cdot L = \frac{K(h_1^2 - h_2^2)}{2} $$</div>
+<p>This gives the Dupuit parabola: \(h^2\) varies <strong>linearly</strong> with distance \(x\).</p>
+</div>
+
+<div class="derivation">
+<h4>DERIVATION HINT — Recharge Formula</h4>
+<p>With uniform recharge \(p\) (m/day) over a strip of width \(L\), the flow rate at any section \(x\) is not constant — it increases linearly from the water divide toward each boundary. By continuity: \(dQ/dx = p\). This modifies the ODE to: \(d(q)/dx = p\), where \(q = -Kh\,dh/dx\). Integrating twice with boundary conditions \(h=h_1\) at \(x=0\) and \(h=h_2\) at \(x=L\) yields the complete phreatic surface and the discharge formulas.</p>
+</div>
+
+<div class="concept-box">
+<h4>WHEN TO USE WHICH FORMULA?</h4>
+<ul>
+<li><strong>Unconfined, no recharge:</strong> Dupuit: \(Q = K(h_1^2-h_2^2)/(2L)\)</li>
+<li><strong>Unconfined, with recharge:</strong> Full recharge formulas (q<sub>1</sub>, q<sub>2</sub>, divide d)</li>
+<li><strong>Confined, constant thickness:</strong> Simply \(Q = KbA \cdot i = Kb(h_1-h_2)/L\)</li>
+<li><strong>Confined, variable (wedge) thickness:</strong> Log formula: \(Q = K(h_1-h_2)(b_2-b_1)/[L\ln(b_2/b_1)]\)</li>
+<li><strong>Contour map:</strong> Interpolate, draw contours, flow &perp; to contours</li>
+</ul>
+</div>
+</div>
+
+<div class="ctrl-bar">
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=true)">Expand All</button>
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=false)">Collapse All</button>
+</div>
+
+<!-- ═══════════════════ PROBLEM 4 ═══════════════════ -->
+<details class="problem" open>
+<summary>
+    <span>Problem 4: Unconfined Aquifer with Recharge (q<sub>1</sub>, q<sub>2</sub>, divide)</span>
+    <span class="pill pill-yr">2078 Chaitra</span>
+    <span class="pill pill-mk">Q3(b) — 8 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Two irrigation canals are separated by 1.57 km of land underlain by an impervious layer. Rainfall at 25 mm/hr fully infiltrates. Canal depths: 12 m and 7 m. K = 12 m/day. Find seepage into both canals, the phreatic surface equation, and the water-table divide.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Strip width, \(L\)</td><td>1570 m</td></tr>
+<tr><td>Rainfall, \(p\)</td><td>25 mm/hr</td></tr>
+<tr><td>Canal depths</td><td>\(h_1 = 12\) m, \(h_2 = 7\) m</td></tr>
+<tr><td>Permeability, \(K\)</td><td>12 m/day</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="350" viewBox="0 0 780 350" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="400" y="14" text-anchor="middle" font-weight="bold" font-size="15">Rainfall p = 25 mm/hr = 0.6 m/day</text>
+    <line x1="220" y1="22" x2="220" y2="52" stroke="black" stroke-width="2"/><polygon points="217,48 220,57 223,48" fill="black"/>
+    <line x1="330" y1="22" x2="330" y2="52" stroke="black" stroke-width="2"/><polygon points="327,48 330,57 333,48" fill="black"/>
+    <line x1="440" y1="22" x2="440" y2="52" stroke="black" stroke-width="2"/><polygon points="437,48 440,57 443,48" fill="black"/>
+    <line x1="550" y1="22" x2="550" y2="52" stroke="black" stroke-width="2"/><polygon points="547,48 550,57 553,48" fill="black"/>
+    <line x1="115" y1="62" x2="690" y2="62" stroke="black" stroke-width="2"/>
+    <!-- Left canal -->
+    <rect x="115" y="62" width="48" height="188" fill="none" stroke="black" stroke-width="2.5"/>
+    <path d="M118 80 Q130 74 142 80 Q154 86 160 80" fill="none" stroke="black" stroke-width="1.5"/>
+    <text x="139" y="105" text-anchor="middle" font-weight="bold" font-size="14">h&#x2081;=12</text>
+    <!-- Right canal -->
+    <rect x="645" y="62" width="48" height="188" fill="none" stroke="black" stroke-width="2.5"/>
+    <path d="M648 115 Q660 109 672 115 Q684 121 692 115" fill="none" stroke="black" stroke-width="1.5"/>
+    <text x="669" y="140" text-anchor="middle" font-weight="bold" font-size="14">h&#x2082;=7</text>
+    <!-- Phreatic -->
+    <path d="M163 80 C285 55,420 42,445 44 C490 46,580 76,645 115" fill="none" stroke="black" stroke-width="3"/>
+    <text x="400" y="36" text-anchor="middle" font-weight="bold" font-size="13" font-style="italic">Phreatic surface</text>
+    <!-- Divide -->
+    <line x1="442" y1="44" x2="442" y2="250" stroke="black" stroke-width="2.5" stroke-dasharray="8,5"/>
+    <text x="442" y="272" text-anchor="middle" font-weight="bold" font-size="14">d = ?</text>
+    <!-- q arrows -->
+    <line x1="330" y1="140" x2="178" y2="140" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="254" y="133" text-anchor="middle" font-weight="bold" font-size="15">q&#x2081;</text>
+    <line x1="520" y1="140" x2="635" y2="140" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="578" y="133" text-anchor="middle" font-weight="bold" font-size="15">q&#x2082;</text>
+    <!-- Impervious -->
+    <rect x="95" y="250" width="620" height="25" fill="url(#ground)" stroke="black" stroke-width="2"/>
+    <text x="405" y="268" text-anchor="middle" font-size="12" font-style="italic">Impervious stratum</text>
+    <!-- L -->
+    <line x1="163" y1="300" x2="645" y2="300" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="382" y="292" width="50" height="20" fill="white"/><text x="407" y="307" text-anchor="middle" font-weight="bold" font-size="14">L = 1570 m</text>
+    <text x="400" y="340" text-anchor="middle" font-size="13">K = 12 m/day</text>
+</svg>
+<div class="figcap">Two canals separated by a land strip with uniform rainfall infiltration. The water divide occurs where horizontal flow reverses direction.</div>
+</div>
+
+<h4>SOLUTION</h4>
+
+<div class="warning"><strong>Unit conversion first!</strong> Rainfall is given as 25 mm/hr. Convert to m/day: \(25 \times 24/1000 = 0.6\) m/day.</div>
+
+<p><span class="step">Step 1 — Convert rainfall.</span> \(p = 25 \text{ mm/hr} \times 24 \text{ hr/day} \div 1000 = 0.6\) m/day.</p>
+
+<p><span class="step">Step 2 — Dupuit gradient term.</span> This term accounts for flow driven purely by the head difference between the two canals (it would be the only term if there were no rainfall):</p>
+<div class="equation">$$ \frac{K(h_1^2-h_2^2)}{2L} = \frac{12(144-49)}{3140} = \frac{12 \times 95}{3140} = \frac{1140}{3140} = 0.363 \text{ m}^2/\text{day} $$</div>
+
+<p><span class="step">Step 3 — Recharge term.</span> This represents half the total rainfall volume per unit length of strip:</p>
+<div class="equation">$$ \frac{pL}{2} = \frac{0.6 \times 1570}{2} = 471.0 \text{ m}^2/\text{day} $$</div>
+
+<p><span class="step">Step 4 — Discharge into deeper canal (canal 1):</span> It receives both the gravity-driven flow AND the recharge contribution from its side of the divide:</p>
+<div class="answer">\( q_1 = 0.363 + 471.0 = 471.36 \text{ m}^2/\text{day per m} \)</div>
+
+<p><span class="step">Step 5 — Discharge into shallower canal (canal 2):</span> It gets the recharge contribution MINUS the gravity-driven flow toward canal 1:</p>
+<div class="answer">\( q_2 = 471.0 - 0.363 = 470.64 \text{ m}^2/\text{day per m} \)</div>
+
+<p><strong>Verification:</strong> Total rainfall on the strip = \(pL = 0.6 \times 1570 = 942.0\) m&sup2;/day. Sum of discharges: \(q_1 + q_2 = 471.36 + 470.64 = 942.0\). &#10003; (Conservation of mass satisfied)</p>
+
+<p><span class="step">Step 6 — Phreatic surface equation.</span> The general form is:</p>
+<div class="equation">$$ h^2 = h_1^2 - \frac{(h_1^2-h_2^2)}{L}\,x + \frac{p}{K}\,x(L-x) $$</div>
+<p>Substituting: \(h_1^2 = 144\), \((h_1^2-h_2^2)/L = 95/1570 = 0.0605\), \(p/K = 0.6/12 = 0.05\):</p>
+<div class="answer">\( h^2 = 144 - 0.0605\,x + 0.05\,x(1570 - x) \)</div>
+
+<p><span class="step">Step 7 — Water divide (ground-water divide).</span> The position d (from the deeper canal) where the horizontal flow rate is zero:</p>
+<div class="equation">$$ d = \frac{L}{2} - \frac{K(h_1^2-h_2^2)}{2pL} = 785 - \frac{12 \times 95}{2 \times 0.6 \times 1570} = 785 - \frac{1140}{1884} $$</div>
+<div class="answer">\( d = 785 - 0.605 = 784.4 \text{ m from the deeper canal} \)</div>
+
+<div class="insight"><strong>Physical insight:</strong> The divide is nearly at the midpoint (784.4 vs 785.0 m). This is because the intense rainfall (0.6 m/day) produces a recharge term (471 m&sup2;/day) that dwarfs the Dupuit gradient term (0.363 m&sup2;/day) by a factor of <strong>1300</strong>. Since the rainfall overwhelms the head difference, the water table is nearly symmetric and almost equal volumes drain to each canal. In dry conditions, the divide would shift significantly toward the shallower canal.</div>
+
+<div class="exam-note">This problem appeared in 2078 Chaitra Q3(b) for 8 marks. The recharge formula is among the most important in the course.</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 5 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 5: Water-Table Contour Map (4 Wells, Rectangle)</span>
+    <span class="pill pill-yr">2073 Bhadra</span>
+    <span class="pill pill-mk">Q3(a) — 3+4 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Prepare a water-table contour map and show flow direction from 4 wells at rectangle vertices (elevations: 51, 56, 76, 66 m). Contour interval = 5 m.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Well A (bottom-left)</td><td>56 m</td></tr>
+<tr><td>Well B (bottom-right)</td><td>51 m</td></tr>
+<tr><td>Well C (top-right)</td><td>66 m</td></tr>
+<tr><td>Well D (top-left)</td><td>76 m</td></tr>
+<tr><td>Contour interval</td><td>5 m</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="480" viewBox="0 0 780 480" style="font-family:'Times New Roman',serif;font-size:14px">
+    <rect x="120" y="70" width="450" height="310" fill="none" stroke="black" stroke-width="2.5"/>
+    <!-- Wells -->
+    <circle cx="120" cy="70" r="10" fill="white" stroke="black" stroke-width="3"/><circle cx="120" cy="70" r="4" fill="black"/>
+    <text x="68" y="58" font-weight="bold" font-size="16">D: 76 m</text>
+    <circle cx="570" cy="70" r="10" fill="white" stroke="black" stroke-width="3"/><circle cx="570" cy="70" r="4" fill="black"/>
+    <text x="585" y="58" font-weight="bold" font-size="16">C: 66 m</text>
+    <circle cx="120" cy="380" r="10" fill="white" stroke="black" stroke-width="3"/><circle cx="120" cy="380" r="4" fill="black"/>
+    <text x="68" y="405" font-weight="bold" font-size="16">A: 56 m</text>
+    <circle cx="570" cy="380" r="10" fill="white" stroke="black" stroke-width="3"/><circle cx="570" cy="380" r="4" fill="black"/>
+    <text x="585" y="405" font-weight="bold" font-size="16">B: 51 m</text>
+    <!-- Interpolation points -->
+    <circle cx="120" cy="318" r="4" fill="black"/><text x="96" y="324" text-anchor="end" font-size="12" font-weight="bold">60</text>
+    <circle cx="120" cy="241" r="4" fill="black"/><text x="96" y="247" text-anchor="end" font-size="12" font-weight="bold">65</text>
+    <circle cx="120" cy="163" r="4" fill="black"/><text x="96" y="169" text-anchor="end" font-size="12" font-weight="bold">70</text>
+    <circle cx="120" cy="85" r="4" fill="black"/><text x="96" y="91" text-anchor="end" font-size="12" font-weight="bold">75</text>
+    <circle cx="210" cy="380" r="4" fill="black"/><text x="210" y="400" text-anchor="middle" font-size="12" font-weight="bold">55</text>
+    <circle cx="570" cy="297" r="4" fill="black"/><text x="592" y="303" font-size="12" font-weight="bold">55</text>
+    <circle cx="570" cy="194" r="4" fill="black"/><text x="592" y="200" font-size="12" font-weight="bold">60</text>
+    <circle cx="570" cy="94" r="4" fill="black"/><text x="592" y="100" font-size="12" font-weight="bold">65</text>
+    <circle cx="390" cy="70" r="4" fill="black"/><text x="390" y="58" text-anchor="middle" font-size="12" font-weight="bold">70</text>
+    <circle cx="165" cy="70" r="4" fill="black"/><text x="165" y="58" text-anchor="middle" font-size="12" font-weight="bold">75</text>
+    <!-- Contour lines -->
+    <line x1="120" y1="85" x2="165" y2="70" stroke="black" stroke-width="2.5"/>
+    <rect x="125" y="68" width="30" height="16" fill="white"/><text x="140" y="80" text-anchor="middle" font-weight="bold" font-size="12">75</text>
+    <line x1="120" y1="163" x2="390" y2="70" stroke="black" stroke-width="2.5"/>
+    <rect x="232" y="102" width="30" height="16" fill="white"/><text x="247" y="114" text-anchor="middle" font-weight="bold" font-size="12">70</text>
+    <line x1="120" y1="241" x2="570" y2="94" stroke="black" stroke-width="2.5"/>
+    <rect x="324" y="156" width="30" height="16" fill="white"/><text x="339" y="168" text-anchor="middle" font-weight="bold" font-size="12">65</text>
+    <line x1="120" y1="318" x2="570" y2="194" stroke="black" stroke-width="2.5"/>
+    <rect x="324" y="245" width="30" height="16" fill="white"/><text x="339" y="257" text-anchor="middle" font-weight="bold" font-size="12">60</text>
+    <line x1="210" y1="380" x2="570" y2="297" stroke="black" stroke-width="2.5"/>
+    <rect x="370" y="330" width="30" height="16" fill="white"/><text x="385" y="342" text-anchor="middle" font-weight="bold" font-size="12">55</text>
+    <!-- Flow arrow -->
+    <line x1="250" y1="155" x2="430" y2="270" stroke="black" stroke-width="3.5" marker-end="url(#arr)"/>
+    <rect x="295" y="182" width="100" height="20" fill="white"/><text x="345" y="197" text-anchor="middle" font-weight="bold" font-size="14" font-style="italic">Flow direction</text>
+    <!-- Compass -->
+    <line x1="700" y1="400" x2="700" y2="340" stroke="black" stroke-width="2" marker-end="url(#arr)"/><text x="700" y="332" text-anchor="middle" font-weight="bold" font-size="14">N</text>
+    <text x="345" y="445" text-anchor="middle" font-size="13">Flow: D (76 m) &rarr; B (51 m) along the rectangle diagonal</text>
+    <text x="345" y="468" text-anchor="middle" font-size="13" font-style="italic">Flow is always perpendicular to contour lines, toward decreasing head</text>
+</svg>
+<div class="figcap">Completed water-table contour map with 5 m interval. Equal-head points are linearly interpolated on rectangle edges.</div>
+</div>
+
+<h4>SOLUTION</h4>
+<p><span class="step">Step 1 — Linear interpolation on each side:</span></p>
+<ul>
+<li><strong>AD (56&rarr;76):</strong> 60 at 20%, 65 at 45%, 70 at 70%, 75 at 95% from A</li>
+<li><strong>AB (56&rarr;51):</strong> 55 at 20% from A</li>
+<li><strong>BC (51&rarr;66):</strong> 55 at 27%, 60 at 60%, 65 at 93% from B</li>
+<li><strong>DC (76&rarr;66):</strong> 75 at 10%, 70 at 60% from D</li>
+</ul>
+<p><span class="step">Step 2:</span> Join equal-head points &rarr; contour lines (55, 60, 65, 70, 75 m).</p>
+<p><span class="step">Step 3:</span> Flow is perpendicular to contours toward lower head.</p>
+<div class="answer">General flow: from D (76 m) toward B (51 m) along the rectangle diagonal. Hydraulic gradient &asymp; 5 m / (contour spacing).</div>
+
+<h4>Uses of Water-Table Contour Maps</h4>
+<ol>
+<li>Determine groundwater <strong>flow direction</strong> at any point</li>
+<li>Estimate <strong>hydraulic gradient</strong> from contour spacing</li>
+<li>Identify <strong>recharge and discharge zones</strong></li>
+<li>Plan <strong>well-field locations</strong> and track contamination plumes</li>
+<li>Calculate <strong>seepage flow</strong> through any cross section using Darcy&rsquo;s law</li>
+</ol>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 6 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 6: Dupuit Equation — Unconfined Flow Without Recharge</span>
+    <span class="pill pill-yr">2073 Bhadra</span>
+    <span class="pill pill-mk">Q3(b) — 7 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Two rivers 5 km apart through a homogeneous unconfined aquifer. Depths: 20 m and 11 m. K = 18 m/day. Compute seepage per unit length and the phreatic line equation.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>\(L\)</td><td>5000 m</td></tr>
+<tr><td>\(h_1, h_2\)</td><td>20 m, 11 m</td></tr>
+<tr><td>\(K\)</td><td>18 m/day</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="280" viewBox="0 0 780 280" style="font-family:'Times New Roman',serif;font-size:14px">
+    <rect x="70" y="210" width="640" height="28" fill="url(#hatch)" stroke="black" stroke-width="2.5"/>
+    <text x="390" y="230" text-anchor="middle" font-size="12" font-style="italic">Impervious bedrock</text>
+    <line x1="120" y1="68" x2="120" y2="210" stroke="black" stroke-width="2.5"/>
+    <path d="M70 68 Q86 61 102 68 Q115 75 120 68" fill="none" stroke="black" stroke-width="2"/>
+    <text x="95" y="55" text-anchor="middle" font-weight="bold" font-size="15">h&#x2081;=20m</text>
+    <line x1="660" y1="130" x2="660" y2="210" stroke="black" stroke-width="2.5"/>
+    <path d="M660 130 Q678 123 696 130 Q706 134 716 130" fill="none" stroke="black" stroke-width="2"/>
+    <text x="695" y="120" text-anchor="middle" font-weight="bold" font-size="15">h&#x2082;=11m</text>
+    <path d="M120 68 Q280 85 390 100 Q530 120 660 130" fill="none" stroke="black" stroke-width="3"/>
+    <text x="390" y="86" text-anchor="middle" font-style="italic" font-weight="bold" font-size="13">Phreatic surface h(x)</text>
+    <line x1="250" y1="125" x2="520" y2="140" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+    <text x="385" y="138" text-anchor="middle" font-weight="bold">Q &rarr;</text>
+    <line x1="120" y1="255" x2="660" y2="255" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="368" y="247" width="48" height="20" fill="white"/><text x="392" y="262" text-anchor="middle" font-weight="bold" font-size="14">L = 5 km</text>
+</svg>
+<div class="figcap">Unconfined aquifer between two rivers (no recharge). The phreatic surface forms a Dupuit parabola.</div>
+</div>
+
+<h4>SOLUTION</h4>
+<div class="equation">$$ Q = \frac{K(h_1^2-h_2^2)}{2L} = \frac{18(400-121)}{10000} = \frac{18 \times 279}{10000} $$</div>
+<div class="answer">\( Q = 0.502 \text{ m}^2/\text{day per m of river length} \)</div>
+
+<p><span class="step">Phreatic surface:</span></p>
+<div class="answer">\( h^2 = 400 - 0.0558\,x \quad \Rightarrow \quad h = \sqrt{400 - 0.0558\,x} \)</div>
+
+<div class="insight"><strong>Physical insight:</strong> With no recharge, flow is one-directional (left to right). The parabolic profile drops more steeply near the discharge boundary because the same flow passes through a progressively thinner saturated section.</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 7 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 7: Water-Table Contour Map (3 Wells, Triangle)</span>
+    <span class="pill pill-yr">2072 Ashwin</span>
+    <span class="pill pill-mk">Q4 — 6+4 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Prepare a groundwater contour map at 2 m interval and show flow direction from 3 test wells arranged in a triangle with heads 70, 65, and 60 m.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Well A</td><td>70 m</td></tr>
+<tr><td>Well B</td><td>65 m</td></tr>
+<tr><td>Well C</td><td>60 m</td></tr>
+<tr><td>Contour interval</td><td>2 m</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="420" viewBox="0 0 780 420" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- Triangle -->
+    <polygon points="200,80 600,200 150,350" fill="none" stroke="black" stroke-width="2.5"/>
+    <!-- Wells -->
+    <circle cx="200" cy="80" r="10" fill="white" stroke="black" stroke-width="3"/><circle cx="200" cy="80" r="4" fill="black"/>
+    <text x="200" y="60" text-anchor="middle" font-weight="bold" font-size="16">A: 70 m</text>
+    <circle cx="600" cy="200" r="10" fill="white" stroke="black" stroke-width="3"/><circle cx="600" cy="200" r="4" fill="black"/>
+    <text x="640" y="190" font-weight="bold" font-size="16">B: 65 m</text>
+    <circle cx="150" cy="350" r="10" fill="white" stroke="black" stroke-width="3"/><circle cx="150" cy="350" r="4" fill="black"/>
+    <text x="110" y="375" font-weight="bold" font-size="16">C: 60 m</text>
+    <!-- Interpolation on AB (70→65): 68 at 40%, 66 at 80% -->
+    <circle cx="360" cy="128" r="4" fill="black"/><text x="370" y="118" font-weight="bold" font-size="12">68</text>
+    <circle cx="520" cy="176" r="4" fill="black"/><text x="535" y="168" font-weight="bold" font-size="12">66</text>
+    <!-- Interpolation on AC (70→60): 68 at 20%, 66 at 40%, 64 at 60%, 62 at 80% -->
+    <circle cx="190" cy="134" r="4" fill="black"/><text x="168" y="134" font-weight="bold" font-size="12">68</text>
+    <circle cx="180" cy="188" r="4" fill="black"/><text x="158" y="192" font-weight="bold" font-size="12">66</text>
+    <circle cx="170" cy="242" r="4" fill="black"/><text x="148" y="248" font-weight="bold" font-size="12">64</text>
+    <circle cx="160" cy="296" r="4" fill="black"/><text x="138" y="302" font-weight="bold" font-size="12">62</text>
+    <!-- Interpolation on BC (65→60): 64 at 20%, 62 at 60% -->
+    <circle cx="510" cy="230" r="4" fill="black"/><text x="525" y="226" font-weight="bold" font-size="12">64</text>
+    <circle cx="330" cy="290" r="4" fill="black"/><text x="348" y="288" font-weight="bold" font-size="12">62</text>
+    <!-- Contour lines connecting equal head -->
+    <line x1="190" y1="134" x2="360" y2="128" stroke="black" stroke-width="2.5"/>
+    <rect x="262" y="120" width="24" height="16" fill="white"/><text x="274" y="132" text-anchor="middle" font-weight="bold" font-size="12">68</text>
+    <line x1="180" y1="188" x2="520" y2="176" stroke="black" stroke-width="2.5"/>
+    <rect x="340" y="170" width="24" height="16" fill="white"/><text x="352" y="182" text-anchor="middle" font-weight="bold" font-size="12">66</text>
+    <line x1="170" y1="242" x2="510" y2="230" stroke="black" stroke-width="2.5"/>
+    <rect x="330" y="224" width="24" height="16" fill="white"/><text x="342" y="236" text-anchor="middle" font-weight="bold" font-size="12">64</text>
+    <line x1="160" y1="296" x2="330" y2="290" stroke="black" stroke-width="2.5"/>
+    <rect x="235" y="282" width="24" height="16" fill="white"/><text x="247" y="294" text-anchor="middle" font-weight="bold" font-size="12">62</text>
+    <!-- Flow arrow -->
+    <line x1="310" y1="135" x2="290" y2="280" stroke="black" stroke-width="3.5" marker-end="url(#arr)"/>
+    <rect x="295" y="195" width="95" height="20" fill="white"/><text x="342" y="210" text-anchor="middle" font-weight="bold" font-size="14" font-style="italic">Flow &perp; contours</text>
+    <!-- Note -->
+    <text x="390" y="400" text-anchor="middle" font-size="13">Flow: from A (70 m) toward C (60 m), perpendicular to contour lines</text>
+</svg>
+<div class="figcap">Triangular well arrangement with 2 m contour intervals. Contours are nearly parallel, indicating uniform regional flow.</div>
+</div>
+
+<h4>SOLUTION</h4>
+<p><span class="step">Step 1:</span> Interpolate on each side at 2 m intervals using linear proportion: position = (target &minus; start)/(end &minus; start).</p>
+<p><span class="step">Step 2:</span> Connect equal-head points across the triangle to form contour lines (62, 64, 66, 68 m).</p>
+<p><span class="step">Step 3:</span> Flow is perpendicular to contours toward lower head.</p>
+<div class="answer">Flow direction: from A (70 m) toward C (60 m), roughly perpendicular to the contour lines.</div>
+
+<div class="insight"><strong>Three-point method:</strong> With exactly 3 wells, you can uniquely determine the regional gradient direction and magnitude. This is the minimum data needed to define a planar water table.</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 8 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 8: Confined Aquifer — Variable Thickness</span>
+    <span class="pill pill-yr">2072 Ashwin</span>
+    <span class="pill pill-mk">Q5 — 8 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Determine the flow in the confined aquifer shown (K = 0.4 m/day, L = 800 m, b<sub>1</sub> = 8 m, b<sub>2</sub> = 6 m, h<sub>1</sub> = 10 m, h<sub>2</sub> = 8 m).</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>\(K\)</td><td>0.4 m/day</td></tr>
+<tr><td>\(L\)</td><td>800 m</td></tr>
+<tr><td>\(b_1, b_2\)</td><td>8 m, 6 m</td></tr>
+<tr><td>\(h_1, h_2\)</td><td>10 m, 8 m</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="250" viewBox="0 0 780 250" style="font-family:'Times New Roman',serif;font-size:14px">
+    <polygon points="130,48 640,68 640,175 130,215" fill="url(#dots)" stroke="black" stroke-width="2.5"/>
+    <polygon points="100,32 670,55 670,68 130,48" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+    <polygon points="130,215 640,175 670,188 100,232" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+    <!-- b1 -->
+    <line x1="112" y1="48" x2="112" y2="215" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="68" y="120" width="48" height="20" fill="white"/><text x="92" y="135" text-anchor="middle" font-weight="bold" font-size="14">b&#x2081;=8</text>
+    <!-- b2 -->
+    <line x1="658" y1="68" x2="658" y2="175" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="665" y="110" width="48" height="20" fill="white"/><text x="689" y="125" font-weight="bold" font-size="14">b&#x2082;=6</text>
+    <!-- Piezometers -->
+    <line x1="185" y1="48" x2="185" y2="8" stroke="black" stroke-width="3"/><text x="185" y="6" text-anchor="middle" font-weight="bold" font-size="15">h&#x2081;=10</text>
+    <line x1="595" y1="68" x2="595" y2="38" stroke="black" stroke-width="3"/><text x="595" y="32" text-anchor="middle" font-weight="bold" font-size="15">h&#x2082;=8</text>
+    <line x1="185" y1="8" x2="595" y2="38" stroke="black" stroke-width="2" stroke-dasharray="8,5"/>
+    <!-- Flow -->
+    <line x1="290" y1="128" x2="500" y2="128" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="395" y="120" text-anchor="middle" font-weight="bold" font-size="15">Q = ?</text>
+    <!-- L -->
+    <line x1="130" y1="240" x2="640" y2="240" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="363" y="232" width="50" height="20" fill="white"/><text x="388" y="247" text-anchor="middle" font-weight="bold" font-size="14">L=800m</text>
+</svg>
+<div class="figcap">Confined aquifer with linearly varying (wedge) thickness. Thickness tapers from b<sub>1</sub> to b<sub>2</sub>.</div>
+</div>
+
+<h4>SOLUTION</h4>
+
+<p><span class="step">Step 1 — Identify the aquifer type.</span> The aquifer thickness varies linearly from \(b_1 = 8\) m to \(b_2 = 6\) m. This is a &ldquo;wedge&rdquo; aquifer. We cannot use the standard formula \(Q = Kb\Delta h/L\) because \(b\) is not constant. Instead, we integrate \(Q = Kb(x)\,dh/dx\) with \(b(x) = b_1 + (b_2-b_1)x/L\).</p>
+
+<p><span class="step">Step 2 — Apply the variable-thickness formula.</span></p>
+<div class="equation">$$ Q = K \cdot \frac{(h_1-h_2)(b_2-b_1)}{L\,\ln(b_2/b_1)} = 0.4 \times \frac{(10-8)(6-8)}{800\,\ln(6/8)} $$</div>
+
+<p><span class="step">Step 3 — Evaluate each component.</span></p>
+<p>Head difference: \(h_1 - h_2 = 10 - 8 = 2\) m</p>
+<p>Thickness change: \(b_2 - b_1 = 6 - 8 = -2\) m</p>
+<p>Natural log: \(\ln(6/8) = \ln(0.75) = -0.2877\)</p>
+<p>Denominator: \(L \cdot \ln(b_2/b_1) = 800 \times (-0.2877) = -230.16\)</p>
+<p>Numerator: \((h_1-h_2)(b_2-b_1) = 2 \times (-2) = -4\)</p>
+
+<p><span class="step">Step 4 — Compute Q.</span></p>
+<div class="equation">$$ Q = 0.4 \times \frac{-4}{-230.16} = 0.4 \times 0.01738 $$</div>
+<div class="answer">\( Q = 6.95 \times 10^{-3} \text{ m}^2/\text{day per m width} \)</div>
+
+<div class="insight"><strong>Why a special formula?</strong> Since b(x) varies linearly, we cannot simply use Q = Kb(Δh/L). We must integrate \(Q = Kb(x)\,dh/dx\) across the aquifer, which yields the logarithmic formula above. If the aquifer had constant thickness, we would simply use \(Q = K \cdot b \cdot (h_1-h_2)/L\), which gives slightly different results. The log formula correctly accounts for the <strong>varying cross-sectional area</strong> available for flow along the aquifer.</div>
+
+<div class="concept-box">
+<h4>WHAT IF THE THICKNESS WERE CONSTANT?</h4>
+<p>If we used the average thickness \(\bar{b} = (8+6)/2 = 7\) m:</p>
+<div class="equation">$$ Q_{approx} = K\bar{b}\frac{h_1-h_2}{L} = 0.4 \times 7 \times \frac{2}{800} = 7.0 \times 10^{-3} \text{ m}^2/\text{day} $$</div>
+<p>This gives 7.0&times;10<sup>&minus;3</sup> vs the exact 6.95&times;10<sup>&minus;3</sup> — only 0.7% difference in this case. The log formula matters more when the thickness ratio \(b_2/b_1\) deviates significantly from 1.</p>
+</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 9 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 9: Confined Aquifer — Variable Thickness</span>
+    <span class="pill pill-yr">2072 Magh</span>
+    <span class="pill pill-mk">Q7 — 8 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Same type as Problem 8 with: L = 950 m, K = 0.56 m/day, h<sub>1</sub> = 12, b<sub>1</sub> = 7, h<sub>2</sub> = 9, b<sub>2</sub> = 5.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>\(K\)</td><td>0.56 m/day</td></tr>
+<tr><td>\(L\)</td><td>950 m</td></tr>
+<tr><td>\(h_1, h_2\)</td><td>12 m, 9 m</td></tr>
+<tr><td>\(b_1, b_2\)</td><td>7 m, 5 m</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="250" viewBox="0 0 780 250" style="font-family:'Times New Roman',serif;font-size:14px">
+    <polygon points="130,55 640,75 640,182 130,218" fill="url(#dots)" stroke="black" stroke-width="2.5"/>
+    <polygon points="100,38 670,58 670,75 130,55" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+    <polygon points="130,218 640,182 670,195 100,235" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+    <!-- b1 -->
+    <line x1="112" y1="55" x2="112" y2="218" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="66" y="125" width="48" height="20" fill="white"/><text x="90" y="140" text-anchor="middle" font-weight="bold" font-size="14">b&#x2081;=7</text>
+    <!-- b2 -->
+    <line x1="658" y1="75" x2="658" y2="182" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="665" y="117" width="48" height="20" fill="white"/><text x="689" y="132" font-weight="bold" font-size="14">b&#x2082;=5</text>
+    <!-- Piezometers -->
+    <line x1="185" y1="55" x2="185" y2="10" stroke="black" stroke-width="3"/><text x="185" y="8" text-anchor="middle" font-weight="bold" font-size="15">h&#x2081;=12</text>
+    <line x1="595" y1="75" x2="595" y2="40" stroke="black" stroke-width="3"/><text x="595" y="34" text-anchor="middle" font-weight="bold" font-size="15">h&#x2082;=9</text>
+    <line x1="185" y1="10" x2="595" y2="40" stroke="black" stroke-width="2" stroke-dasharray="8,5"/>
+    <!-- Flow arrow -->
+    <line x1="290" y1="135" x2="500" y2="135" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="395" y="128" text-anchor="middle" font-weight="bold" font-size="15">Q = ?</text>
+    <!-- L -->
+    <line x1="130" y1="240" x2="640" y2="240" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="363" y="232" width="50" height="20" fill="white"/><text x="388" y="247" text-anchor="middle" font-weight="bold" font-size="14">L=950m</text>
+    <!-- K label -->
+    <text x="395" y="165" text-anchor="middle" font-size="13">K = 0.56 m/day</text>
+</svg>
+<div class="figcap">Problem 9: Wedge-shaped confined aquifer tapering from b<sub>1</sub>=7 m to b<sub>2</sub>=5 m over 950 m.</div>
+</div>
+
+<h4>SOLUTION</h4>
+
+<p><span class="step">Step 1 — Identify aquifer type.</span> This is a confined aquifer with linearly varying thickness (wedge). We cannot use the simple \(Q = Kb \cdot \Delta h/L\) formula because \(b\) changes along the flow path. We must use the logarithmic formula derived by integrating \(Q = Kb(x)\,dh/dx\).</p>
+
+<p><span class="step">Step 2 — Apply variable-thickness formula.</span></p>
+<div class="equation">$$ Q = K\frac{(h_1-h_2)(b_2-b_1)}{L\,\ln(b_2/b_1)} $$</div>
+
+<p><span class="step">Step 3 — Substitute values.</span></p>
+<div class="equation">$$ Q = 0.56 \times \frac{(12-9)(5-7)}{950\,\ln(5/7)} = 0.56 \times \frac{3 \times (-2)}{950 \times (-0.3365)} $$</div>
+<p>Numerator of fraction: \(3 \times (-2) = -6\)</p>
+<p>Denominator of fraction: \(950 \times (-0.3365) = -319.68\)</p>
+<div class="equation">$$ = 0.56 \times \frac{-6}{-319.68} = 0.56 \times 0.01877 $$</div>
+<div class="answer">\( Q = 1.051 \times 10^{-2} \text{ m}^2/\text{day per m width} \)</div>
+
+<div class="insight"><strong>Comparison with Problem 8:</strong> Despite a longer aquifer (950 vs 800 m), the larger K (0.56 vs 0.40 m/day) and bigger head difference (3 vs 2 m) result in <strong>50% greater discharge</strong>. This shows that head difference and K are more influential than aquifer length.</div>
+
+<div class="warning"><strong>Note on signs:</strong> Both \(b_2 - b_1\) and \(\ln(b_2/b_1)\) are negative when the aquifer tapers. The two negatives cancel, giving a positive Q (flow from high to low head).</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 10 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 10: Unconfined Aquifer + Recharge + No-Rain Case</span>
+    <span class="pill pill-yr">2071 Bhadra</span>
+    <span class="pill pill-mk">Q4 — 3+3+3 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> Rain at 12 mm/hr on 1200 m strip between two canals (depths 10 &amp; 8 m). K = 10 m/day. Find q<sub>1</sub>, q<sub>2</sub>, phreatic equation, divide, and seepage when p = 0.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Rainfall, \(p\)</td><td>12 mm/hr</td></tr>
+<tr><td>Strip width, \(L\)</td><td>1200 m</td></tr>
+<tr><td>\(h_1, h_2\)</td><td>10 m, 8 m</td></tr>
+<tr><td>\(K\)</td><td>10 m/day</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="340" viewBox="0 0 780 340" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="400" y="14" text-anchor="middle" font-weight="bold" font-size="15">p = 12 mm/hr = 0.288 m/day</text>
+    <line x1="230" y1="22" x2="230" y2="50" stroke="black" stroke-width="2"/><polygon points="227,46 230,55 233,46" fill="black"/>
+    <line x1="345" y1="22" x2="345" y2="50" stroke="black" stroke-width="2"/><polygon points="342,46 345,55 348,46" fill="black"/>
+    <line x1="460" y1="22" x2="460" y2="50" stroke="black" stroke-width="2"/><polygon points="457,46 460,55 463,46" fill="black"/>
+    <line x1="575" y1="22" x2="575" y2="50" stroke="black" stroke-width="2"/><polygon points="572,46 575,55 578,46" fill="black"/>
+    <line x1="125" y1="60" x2="680" y2="60" stroke="black" stroke-width="2"/>
+    <rect x="125" y="60" width="46" height="185" fill="none" stroke="black" stroke-width="2.5"/>
+    <text x="148" y="105" text-anchor="middle" font-weight="bold" font-size="14">h&#x2081;=10</text>
+    <rect x="638" y="60" width="46" height="185" fill="none" stroke="black" stroke-width="2.5"/>
+    <text x="661" y="125" text-anchor="middle" font-weight="bold" font-size="14">h&#x2082;=8</text>
+    <path d="M171 82 C285 62,400 52,420 54 C475 56,580 76,638 102" fill="none" stroke="black" stroke-width="3"/>
+    <line x1="416" y1="54" x2="416" y2="245" stroke="black" stroke-width="2.5" stroke-dasharray="8,5"/>
+    <text x="416" y="265" text-anchor="middle" font-weight="bold" font-size="14">d = ?</text>
+    <line x1="325" y1="140" x2="185" y2="140" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="255" y="133" text-anchor="middle" font-weight="bold" font-size="14">q&#x2081;</text>
+    <line x1="510" y1="140" x2="628" y2="140" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+    <text x="569" y="133" text-anchor="middle" font-weight="bold" font-size="14">q&#x2082;</text>
+    <rect x="105" y="245" width="590" height="25" fill="url(#ground)" stroke="black" stroke-width="2"/>
+    <line x1="171" y1="295" x2="638" y2="295" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="382" y="287" width="50" height="20" fill="white"/><text x="407" y="302" text-anchor="middle" font-weight="bold" font-size="14">L=1200m</text>
+</svg>
+<div class="figcap">Recharge between two canals of different depth.</div>
+</div>
+
+<h4>SOLUTION</h4>
+
+<div class="warning"><strong>Unit conversion first!</strong> \(p = 12\) mm/hr. Convert: \(12 \times 24/1000 = 0.288\) m/day. All other data (K = 10 m/day, h in m, L in m) is already in m/day-compatible units.</div>
+
+<p><span class="step">Step 1:</span> \(p = 12 \times 24/1000 = 0.288\) m/day.</p>
+
+<p><span class="step">Step 2 — Compute the two terms.</span></p>
+<p><strong>Dupuit gradient term</strong> (driven by head difference between canals):</p>
+<div class="equation">$$ \frac{K(h_1^2-h_2^2)}{2L} = \frac{10(100-64)}{2400} = \frac{10 \times 36}{2400} = \frac{360}{2400} = 0.15 \text{ m}^2/\text{day} $$</div>
+<p><strong>Recharge term</strong> (driven by rainfall infiltration):</p>
+<div class="equation">$$ \frac{pL}{2} = \frac{0.288 \times 1200}{2} = 172.8 \text{ m}^2/\text{day} $$</div>
+
+<p><span class="step">Step 3 — Seepage into canals.</span></p>
+<div class="answer">\( q_1 = 172.8 + 0.15 = 172.95 \text{ m}^2/\text{day} \) &larr; into deeper canal</div>
+<div class="answer">\( q_2 = 172.8 - 0.15 = 172.65 \text{ m}^2/\text{day} \) &larr; into shallower canal</div>
+
+<p><strong>Verification:</strong> \(q_1+q_2 = 345.6 = pL = 0.288 \times 1200\). &#10003;</p>
+
+<p><span class="step">Step 4 — Phreatic surface equation.</span></p>
+<p>Using \(h^2 = h_1^2 - [(h_1^2-h_2^2)/L]\,x + (p/K)\,x(L-x)\):</p>
+<p>\((h_1^2-h_2^2)/L = 36/1200 = 0.03\), \(p/K = 0.288/10 = 0.0288\)</p>
+<div class="answer">\( h^2 = 100 - 0.03\,x + 0.0288\,x(1200 - x) \)</div>
+
+<p><span class="step">Step 5 — Water divide location.</span></p>
+<div class="equation">$$ d = \frac{L}{2} - \frac{K(h_1^2-h_2^2)}{2pL} = 600 - \frac{360}{2 \times 0.288 \times 1200} = 600 - \frac{360}{691.2} $$</div>
+<div class="answer">\( d = 600 - 0.521 = 599.5 \text{ m from deeper canal (virtually at centre)} \)</div>
+
+<p><span class="step">Step 6 — No rainfall case (p = 0).</span></p>
+<p>When there is no recharge, the only driving force is the head difference. The recharge formula reduces to the simple Dupuit equation:</p>
+<div class="answer">\( q_{p=0} = \dfrac{K(h_1^2-h_2^2)}{2L} = \frac{10 \times 36}{2400} = 0.15 \text{ m}^2/\text{day} \)</div>
+<p>All flow goes from the deeper canal side towards the shallower canal. There is <strong>no water divide</strong> because the flow is unidirectional.</p>
+
+<div class="insight"><strong>Physical insight:</strong> The contrast is dramatic: with rainfall, total flow = 345.6 m&sup2;/day; without rainfall, only 0.15 m&sup2;/day. Rainfall contributes <strong>99.96%</strong> of the total flow. This illustrates why seasonal rainfall patterns completely dominate shallow groundwater behaviour.</div>
+
+<div class="fig">
+<svg width="780" height="180" viewBox="0 0 780 180" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="14">DISCHARGE COMPARISON: With vs Without Rainfall</text>
+    <!-- Bar 1: with rain -->
+    <rect x="100" y="35" width="500" height="30" fill="#4fc3f7" stroke="black" stroke-width="2"/>
+    <text x="350" y="56" text-anchor="middle" font-weight="bold" font-size="12">With rain: q&#x2081;+q&#x2082; = 345.6 m&sup2;/day</text>
+    <!-- Bar 2: without rain (very small) -->
+    <rect x="100" y="80" width="1" height="30" fill="#ffb74d" stroke="black" stroke-width="2"/>
+    <text x="110" y="101" font-weight="bold" font-size="12">Without rain: q = 0.15 m&sup2;/day</text>
+    <!-- Label -->
+    <text x="390" y="135" text-anchor="middle" font-size="13">Rainfall contribution: 99.96% of total flow</text>
+    <text x="390" y="155" text-anchor="middle" font-size="12" font-style="italic">Recharge (172.8&times;2) dominates head-difference flow (0.15) by a factor of 2300</text>
+</svg>
+<div class="figcap">Rainfall completely dominates the seepage budget. Without rain, discharge drops to nearly zero.</div>
+</div>
+
+<div class="exam-note">This is a high-marks problem (3+3+3 = 9 marks). Common sub-parts: find q<sub>1</sub>, q<sub>2</sub>, phreatic equation, divide location, and compare with the no-rain case.</div>
+</div></details>
+
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

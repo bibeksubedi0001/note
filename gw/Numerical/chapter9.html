@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 9 — Numericals — Groundwater Resources of Nepal</title>
+<link rel="stylesheet" href="style.css">
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+<pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+<pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+<marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0,10 3.5,0 7" fill="black"/></marker>
+<marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0,0 3.5,10 7" fill="black"/></marker>
+</defs></svg>
+
+<nav class="topnav"><a href="index.html">&larr; Index</a><span class="sep">|</span><span>Chapter 9: Groundwater Resources of Nepal</span></nav>
+<button onclick="window.print()" class="print-btn">PRINT</button>
+
+<h1>CHAPTER 9 — NUMERICALS<br>Groundwater Resources of Nepal</h1>
+<p style="text-align:center">2 Problems — Confined Aquifer Storage &amp; Well-Field Planning</p>
+
+<!-- ============ KEY FORMULAE ============ -->
+<div class="formula-box">
+<h3>KEY FORMULAE — CHAPTER 9</h3>
+
+<p><strong>A. Annual Groundwater Storage Volume:</strong></p>
+<div class="equation">$$ \boxed{V = S \times A \times \Delta h} $$</div>
+<ul>
+<li>\(S\) = storage coefficient (dimensionless)</li>
+<li>\(A\) = aquifer plan area (m&sup2;)</li>
+<li>\(\Delta h\) = annual fluctuation of piezometric surface (m)</li>
+</ul>
+
+<p><strong>B. Number of Wells:</strong></p>
+<div class="equation">$$ \boxed{n = \frac{V}{q \times t}} $$</div>
+<ul>
+<li>\(q\) = average yield per well (m&sup3;/hr)</li>
+<li>\(t\) = annual pumping hours = pumping days &times; 24 hr/day</li>
+</ul>
+
+<p><strong>Physical meaning:</strong> The storage coefficient \(S\) for a confined aquifer represents the volume of water released per unit area per unit decline in head. It is very small (10<sup>&minus;4</sup> to 10<sup>&minus;3</sup>) because water is released only by elastic compression of the aquifer skeleton and expansion of water.</p>
+
+<table class="units">
+<tr><th>Symbol</th><th>Typical Range</th><th>SI Unit</th></tr>
+<tr><td>\(S\) (confined)</td><td>10<sup>&minus;4</sup>–10<sup>&minus;3</sup></td><td>dimensionless</td></tr>
+<tr><td>\(S_y\) (unconfined)</td><td>0.01–0.30</td><td>dimensionless</td></tr>
+<tr><td>\(A\) (plan area)</td><td>10–10,000 km&sup2;</td><td>m&sup2;</td></tr>
+<tr><td>\(\Delta h\) (annual fluctuation)</td><td>2–15 m</td><td>m</td></tr>
+<tr><td>\(q\) (well yield)</td><td>10–50 m&sup3;/hr</td><td>m&sup3;/hr</td></tr>
+</table>
+
+<div class="concept-box">
+<h4>WHY IS CONFINED AQUIFER STORAGE SO SMALL?</h4>
+<p>When piezometric pressure drops in a confined aquifer, water is released by two mechanisms:</p>
+<ul>
+<li><strong>Compression of the aquifer skeleton:</strong> The effective stress increases, compacting the soil matrix slightly. This squeezes out water (~95% of the released volume).</li>
+<li><strong>Expansion of water:</strong> Lower pressure allows water to expand slightly (~5%).</li>
+</ul>
+<p>Both mechanisms are elastic and produce very small volumes. In contrast, an <strong>unconfined aquifer</strong> releases water by actual draining of pore spaces (gravity drainage), which is 100-1000&times; more efficient. Hence \(S_y \gg S\).</p>
+</div>
+
+<div class="method-box">
+<h4>SOLUTION METHODOLOGY — Storage &amp; Well-Field Planning</h4>
+<ol>
+<li>Convert area to m&sup2;: \(A_{m^2} = A_{km^2} \times 10^6\)</li>
+<li>Compute storage volume: \(V = S \times A \times \Delta h\)</li>
+<li>Compute annual yield per well: \(q_{annual} = q \times 24 \times \text{pumping days}\)</li>
+<li>Number of wells: \(n = V / q_{annual}\)</li>
+</ol>
+</div>
+</div>
+
+<div class="fig">
+<svg width="780" height="320" viewBox="0 0 780 320" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">CONFINED AQUIFER STORAGE CONCEPT</text>
+    <!-- Confining layers -->
+    <rect x="80" y="100" width="620" height="20" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+    <rect x="80" y="220" width="620" height="20" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+    <!-- Aquifer -->
+    <rect x="80" y="120" width="620" height="100" fill="url(#dots-fine)" stroke="none"/>
+    <text x="390" y="175" text-anchor="middle" font-weight="bold" font-size="14">Confined Aquifer (S = storage coeff.)</text>
+    <!-- Piezometric surfaces -->
+    <line x1="80" y1="40" x2="700" y2="40" stroke="black" stroke-width="2.5"/>
+    <text x="710" y="44" font-weight="bold" font-size="13">Wet season</text>
+    <line x1="80" y1="72" x2="700" y2="72" stroke="black" stroke-width="2.5" stroke-dasharray="8,5"/>
+    <text x="710" y="76" font-weight="bold" font-size="13">Dry season</text>
+    <!-- Δh -->
+    <line x1="65" y1="40" x2="65" y2="72" stroke="black" stroke-width="2.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="50" y="60" text-anchor="end" font-weight="bold" font-size="15">&Delta;h</text>
+    <!-- Area -->
+    <rect x="180" y="260" width="400" height="30" fill="none" stroke="black" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="380" y="280" text-anchor="middle" font-weight="bold" font-size="14">Plan Area = A (km&sup2;)</text>
+    <!-- Formula -->
+    <text x="390" y="310" text-anchor="middle" font-weight="bold" font-size="15">V = S &times; A &times; &Delta;h</text>
+</svg>
+<div class="figcap">The piezometric surface fluctuates annually between wet and dry seasons. The volume V = S &times; A &times; &Delta;h represents the recoverable groundwater storage.</div>
+</div>
+
+<div class="ctrl-bar">
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=true)">Expand All</button>
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=false)">Collapse All</button>
+</div>
+
+<!-- ═══════════════════ PROBLEM 20 ═══════════════════ -->
+<details class="problem" open>
+<summary>
+    <span>Problem 20: Groundwater Storage — Pokhara</span>
+    <span class="pill pill-yr">2072 Ashwin</span>
+    <span class="pill pill-mk">Q3 — 8 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> In Pokhara, a confined aquifer of 30 m average thickness extends over 800 km&sup2;. The piezometric surface fluctuates annually from 19 m to 9 m above the top of the aquifer. S = 0.0008. What groundwater storage can be expected annually? With average well yield 30 m&sup3;/hr and 200 days pumping, how many wells can be drilled?</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Aquifer thickness</td><td>30 m</td></tr>
+<tr><td>Plan area, \(A\)</td><td>800 km&sup2; = \(800 \times 10^6\) m&sup2;</td></tr>
+<tr><td>Piezometric fluctuation</td><td>19 m to 9 m &rArr; \(\Delta h = 10\) m</td></tr>
+<tr><td>Storage coefficient, \(S\)</td><td>0.0008</td></tr>
+<tr><td>Well yield, \(q\)</td><td>30 m&sup3;/hr</td></tr>
+<tr><td>Pumping days</td><td>200 days/year</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="200" viewBox="0 0 780 200" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- Map-like representation -->
+    <ellipse cx="300" cy="100" rx="240" ry="80" fill="url(#dots-fine)" stroke="black" stroke-width="2.5"/>
+    <text x="300" y="90" text-anchor="middle" font-weight="bold" font-size="16">POKHARA</text>
+    <text x="300" y="112" text-anchor="middle" font-size="14">A = 800 km&sup2;</text>
+    <text x="300" y="132" text-anchor="middle" font-size="13">S = 0.0008, &Delta;h = 10 m</text>
+    <!-- Wells -->
+    <circle cx="200" cy="80" r="4" fill="black"/><circle cx="250" cy="60" r="4" fill="black"/>
+    <circle cx="350" cy="65" r="4" fill="black"/><circle cx="400" cy="85" r="4" fill="black"/>
+    <circle cx="180" cy="110" r="4" fill="black"/><circle cx="280" cy="130" r="4" fill="black"/>
+    <circle cx="370" cy="120" r="4" fill="black"/><circle cx="420" cy="100" r="4" fill="black"/>
+    <!-- Result -->
+    <rect x="570" y="45" width="185" height="110" fill="white" stroke="black" stroke-width="2"/>
+    <text x="662" y="72" text-anchor="middle" font-weight="bold" font-size="14">RESULTS</text>
+    <text x="662" y="98" text-anchor="middle" font-size="13">V = 6.4 &times; 10&sup6; m&sup3;</text>
+    <text x="662" y="122" text-anchor="middle" font-size="13">n = 44 wells</text>
+    <text x="662" y="145" text-anchor="middle" font-size="12" font-style="italic">(each @ 30 m&sup3;/hr)</text>
+</svg>
+</div>
+
+<h4>SOLUTION</h4>
+
+<p><span class="step">Step 1 — Annual groundwater storage.</span> The recoverable volume is the product of storage coefficient, area, and the annual range of piezometric surface fluctuation:</p>
+<div class="equation">$$ V = S \times A \times \Delta h = 0.0008 \times 800 \times 10^6 \times 10 $$</div>
+<p>Breakdown: \(0.0008 \times 8 \times 10^8 = 6.4 \times 10^5\) per m of &Delta;h; multiplied by 10 m:</p>
+<div class="equation">$$ = 0.0008 \times 8 \times 10^9 = 6.4 \times 10^6 \text{ m}^3 $$</div>
+<div class="answer">\( V = 6.4 \times 10^6 \text{ m}^3 = 6.4 \text{ million m}^3/\text{year} \)</div>
+
+<p><span class="step">Step 2 — Annual yield per well.</span> Each well operates continuously (24 hr/day) for 200 days:</p>
+<div class="equation">$$ q_{annual} = 30 \text{ m}^3/\text{hr} \times 24 \text{ hr/day} \times 200 \text{ days} = 30 \times 4800 = 144{,}000 \text{ m}^3/\text{year per well} $$</div>
+
+<p><span class="step">Step 3 — Number of wells.</span></p>
+<div class="equation">$$ n = \frac{V}{q_{annual}} = \frac{6{,}400{,}000}{144{,}000} $$</div>
+<div class="answer">\( n = 44.4 \approx \mathbf{44 \text{ wells}} \)</div>
+
+<div class="insight"><strong>Physical insight:</strong> 800 km&sup2; is a vast area (roughly 28 km &times; 28 km), yet only 6.4 million m&sup3; of recoverable storage per year — this is because S = 0.0008 is extremely small (confined artesian storage). In contrast:</div>
+
+<div class="concept-box">
+<h4>WHAT IF THE AQUIFER WERE UNCONFINED?</h4>
+<p>If the same aquifer were unconfined with specific yield \(S_y = 0.15\):</p>
+<div class="equation">$$ V_{unconfined} = 0.15 \times 800 \times 10^6 \times 10 = 1.2 \times 10^9 \text{ m}^3 $$</div>
+<p>That is <strong>187 times more</strong> water! This illustrates why confined aquifers, while capable of artesian flow, are not volumetrically rich. Their advantage lies in <strong>pressure-driven flow</strong> (artesian wells that flow without pumping) and <strong>protection</strong> from surface contamination.</p>
+</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 21 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 21: Groundwater Storage — Janakpur</span>
+    <span class="pill pill-yr">2072 Magh</span>
+    <span class="pill pill-mk">Q3 — 8 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> In Janakpur, a confined aquifer of 20 m average thickness extends over 850 km&sup2;. Water table fluctuates from 15 m to 10 m above the top. S = 0.0009. What is the annual groundwater storage? With well yield of 30 m&sup3;/hr and 210 pumping days, how many wells can be drilled?</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Aquifer thickness</td><td>20 m</td></tr>
+<tr><td>Plan area, \(A\)</td><td>850 km&sup2; = \(850 \times 10^6\) m&sup2;</td></tr>
+<tr><td>Piezometric fluctuation</td><td>15 m to 10 m &rArr; \(\Delta h = 5\) m</td></tr>
+<tr><td>Storage coefficient, \(S\)</td><td>0.0009</td></tr>
+<tr><td>Well yield, \(q\)</td><td>30 m&sup3;/hr</td></tr>
+<tr><td>Pumping days</td><td>210 days/year</td></tr>
+</table>
+</div>
+
+<div class="fig">
+<svg width="780" height="200" viewBox="0 0 780 200" style="font-family:'Times New Roman',serif;font-size:14px">
+    <ellipse cx="300" cy="100" rx="240" ry="80" fill="url(#dots-fine)" stroke="black" stroke-width="2.5"/>
+    <text x="300" y="90" text-anchor="middle" font-weight="bold" font-size="16">JANAKPUR</text>
+    <text x="300" y="112" text-anchor="middle" font-size="14">A = 850 km&sup2;</text>
+    <text x="300" y="132" text-anchor="middle" font-size="13">S = 0.0009, &Delta;h = 5 m</text>
+    <circle cx="200" cy="80" r="4" fill="black"/><circle cx="270" cy="62" r="4" fill="black"/>
+    <circle cx="350" cy="70" r="4" fill="black"/><circle cx="400" cy="90" r="4" fill="black"/>
+    <circle cx="180" cy="115" r="4" fill="black"/><circle cx="330" cy="125" r="4" fill="black"/>
+    <rect x="570" y="45" width="185" height="110" fill="white" stroke="black" stroke-width="2"/>
+    <text x="662" y="72" text-anchor="middle" font-weight="bold" font-size="14">RESULTS</text>
+    <text x="662" y="98" text-anchor="middle" font-size="13">V = 3.825 &times; 10&sup6; m&sup3;</text>
+    <text x="662" y="122" text-anchor="middle" font-size="13">n = 25 wells</text>
+    <text x="662" y="145" text-anchor="middle" font-size="12" font-style="italic">(each @ 30 m&sup3;/hr)</text>
+</svg>
+</div>
+
+<h4>SOLUTION</h4>
+
+<p><span class="step">Step 1 — Annual groundwater storage.</span></p>
+<div class="equation">$$ V = S \times A \times \Delta h = 0.0009 \times 850 \times 10^6 \times 5 $$</div>
+<p>Breakdown: \(A \times \Delta h = 850 \times 10^6 \times 5 = 4.25 \times 10^9\) m&sup3; of aquifer volume affected</p>
+<div class="equation">$$ V = 0.0009 \times 4.25 \times 10^9 $$</div>
+<div class="answer">\( V = 3.825 \times 10^6 \text{ m}^3 = 3.825 \text{ million m}^3/\text{year} \)</div>
+
+<p><span class="step">Step 2 — Annual yield per well.</span> Each well operates 24 hr/day for 210 days:</p>
+<div class="equation">$$ q_{annual} = 30 \times 24 \times 210 = 30 \times 5040 = 151{,}200 \text{ m}^3/\text{year per well} $$</div>
+
+<p><span class="step">Step 3 — Number of wells.</span></p>
+<div class="equation">$$ n = \frac{3{,}825{,}000}{151{,}200} $$</div>
+<div class="answer">\( n = 25.3 \approx \mathbf{25 \text{ wells}} \)</div>
+
+<div class="insight"><strong>Comparison with Problem 20 (Pokhara):</strong> Despite Janakpur having a slightly larger area (850 vs 800 km&sup2;) and higher S (0.0009 vs 0.0008), its smaller &Delta;h (5 vs 10 m) halves the recoverable storage. The dominant factor is <strong>piezometric fluctuation &Delta;h</strong>, not area or S.</div>
+
+<div class="fig">
+<svg width="780" height="260" viewBox="0 0 780 260" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="14">COMPARISON: Pokhara vs Janakpur Groundwater Storage</text>
+    <!-- Bar chart -->
+    <!-- Storage bars -->
+    <text x="95" y="55" text-anchor="end" font-weight="bold" font-size="13">Pokhara</text>
+    <rect x="100" y="40" width="384" height="30" fill="#4fc3f7" stroke="black" stroke-width="2"/>
+    <text x="292" y="61" text-anchor="middle" font-weight="bold" font-size="13" fill="white">V = 6.4 M m&sup3;</text>
+    <text x="95" y="95" text-anchor="end" font-weight="bold" font-size="13">Janakpur</text>
+    <rect x="100" y="80" width="230" height="30" fill="#ffb74d" stroke="black" stroke-width="2"/>
+    <text x="215" y="101" text-anchor="middle" font-weight="bold" font-size="13">V = 3.825 M m&sup3;</text>
+    <!-- Wells bars -->
+    <text x="95" y="145" text-anchor="end" font-weight="bold" font-size="12">Wells</text>
+    <rect x="100" y="130" width="352" height="25" fill="#4fc3f7" stroke="black" stroke-width="1.5"/>
+    <text x="276" y="148" text-anchor="middle" font-weight="bold" font-size="12" fill="white">44 wells</text>
+    <rect x="100" y="160" width="200" height="25" fill="#ffb74d" stroke="black" stroke-width="1.5"/>
+    <text x="200" y="178" text-anchor="middle" font-weight="bold" font-size="12">25 wells</text>
+    <!-- Comparison table -->
+    <text x="390" y="215" text-anchor="middle" font-size="12">Pokhara: A=800km&sup2;, S=0.0008, &Delta;h=<tspan font-weight="bold" fill="#c62828">10 m</tspan></text>
+    <text x="390" y="235" text-anchor="middle" font-size="12">Janakpur: A=850km&sup2;, S=0.0009, &Delta;h=<tspan font-weight="bold" fill="#c62828">5 m</tspan></text>
+    <text x="390" y="255" text-anchor="middle" font-size="13" font-style="italic" font-weight="bold">&Delta;h is the dominant factor — double &Delta;h &approx; double the storage</text>
+</svg>
+<div class="figcap">Pokhara has twice the recoverable storage primarily because &Delta;h is twice as large. Area and S have minor effects.</div>
+</div>
+
+<table class="dt" style="max-width:550px;margin:1rem auto;">
+<tr><th>Parameter</th><th>Pokhara</th><th>Janakpur</th><th>Ratio</th></tr>
+<tr><td>Area</td><td>800 km&sup2;</td><td>850 km&sup2;</td><td>0.94</td></tr>
+<tr><td>&Delta;h</td><td>10 m</td><td>5 m</td><td><strong>2.0</strong></td></tr>
+<tr><td>S</td><td>0.0008</td><td>0.0009</td><td>0.89</td></tr>
+<tr><td>Storage V</td><td>6.4 M m&sup3;</td><td>3.825 M m&sup3;</td><td>1.67</td></tr>
+<tr><td>Pumping days</td><td>200</td><td>210</td><td>0.95</td></tr>
+<tr><td>Wells</td><td>44</td><td>25</td><td>1.76</td></tr>
+</table>
+<p style="text-align:center;font-style:italic;">Despite similar area and S, Pokhara has 76% more wells because &Delta;h is twice as large — the dominant factor.</p>
+
+<div class="exam-note">These problems appeared in 2072 Ashwin Q3 and 2072 Magh Q3. They are the simplest numericals in the course — easy marks if you remember V = S &times; A &times; &Delta;h and n = V/(q &times; t).</div>
+</div></details>
+
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

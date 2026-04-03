@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>4.4 Shape Functions | Finite Element Method</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+MathJax = {
+ tex: {
+ inlineMath: [['$','$'],['\\(','\\)']],
+ displayMath: [['$$','$$'],['\\[','\\]']],
+ processEscapes: true
+ }
+};
+</script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        /* ── Topbar ── */
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            background: white; color: black;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; height: 44px;
+            border-bottom: 2px solid black;
+        }
+        .topbar a { color: black; text-decoration: none; font-weight: 700; }
+        .topbar a:hover { text-decoration: underline; }
+        .topbar span { font-size: 10pt; opacity: .65; }
+
+        /* ── Chapter Header ── */
+        .ch-header {
+            background: white; color: black;
+            text-align: center; padding: 40px 24px 32px;
+            border-bottom: 2px solid black;
+        }
+        .ch-header h1 {
+            color: black; font-size: 16pt; text-transform: uppercase;
+            border-bottom: none; margin-bottom: 6px;
+        }
+        .ch-header .meta { font-size: 11pt; font-style: italic; }
+        .ch-header .author { font-size: 9pt; opacity: .55; margin-top: 8px; }
+
+        /* ── Content wrapper ── */
+        .content { max-width: 800px; margin: 0 auto; padding: 30px 24px 50px; }
+
+        /* ── Equation blocks ── */
+        .eq-block {
+            margin: 14px 0; padding: 12px 18px;
+            background: white; border-left: 3px solid black;
+            overflow-x: auto;
+        }
+        .eq-block.hl {
+            background: white; border: 2px dashed black;
+            border-left: 4px solid black;
+        }
+
+        /* ── Definition box ── */
+        .def-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+        .def-box .dt { font-weight: 700; margin-bottom: 4px; }
+
+        /* ── Step box ── */
+        .step-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Note ── */
+        .note {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Result box ── */
+        .result-box {
+            background: white; border: 2px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Given / Answer ── */
+        .given { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+        .answer { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+
+        /* ── Example ── */
+        .example {
+            border: 1px solid black; padding: 16px; margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        .ex-title {
+            font-weight: bold; border-bottom: 1px solid black;
+            padding-bottom: 6px; margin-bottom: 10px;
+        }
+        .ex-q {
+            background: white; border-left: 3px solid black;
+            padding: 10px 14px; margin: 8px 0; font-style: italic;
+        }
+
+        /* ── Solution label ── */
+        .soln-label {
+            display: inline-block; background: black; color: white;
+            padding: 2px 10px; font-weight: bold; margin: 12px 0 6px; font-size: 10pt;
+        }
+
+        /* ── Figures ── */
+        .figure, .svg-wrap { text-align: center; margin: 16px auto; max-width: 100%; overflow-x: auto; }
+        .figure .caption, .figcaption {
+            font-style: italic; margin-top: 6px; text-align: center; font-size: 10pt;
+        }
+
+        /* ── Tables ── */
+        .matrix-table, .summary-table, .comp-table {
+            width: 100%; border-collapse: collapse; margin: 14px 0;
+        }
+        .matrix-table th, .summary-table th, .comp-table th {
+            background: white; color: black; border: 1px solid black;
+            padding: 6px 10px; text-align: center; font-weight: bold;
+        }
+        .matrix-table td, .summary-table td, .comp-table td {
+            border: 1px solid black; padding: 6px 10px; text-align: center; vertical-align: top;
+        }
+
+        /* ── Chapter navigation ── */
+        .ch-nav { display: flex; gap: 12px; margin: 30px 0; flex-wrap: wrap; }
+        .ch-nav a {
+            flex: 1; min-width: 200px; display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px; background: white; border: 1px solid black;
+            text-decoration: none; color: black; font-weight: bold;
+        }
+        .ch-nav a:hover { background: #f5f5f5; }
+        .ch-nav .next { justify-content: flex-end; text-align: right; }
+
+        /* ── Footer ── */
+        .footer {
+            background: white; color: black; text-align: center;
+            padding: 20px; font-size: 10pt; border-top: 2px solid black;
+        }
+        .footer p { color: black; text-align: center; }
+        .footer a { color: black; text-decoration: underline; }
+
+        /* ── Back to top ── */
+        .btt {
+            position: fixed; bottom: 24px; right: 80px; width: 40px; height: 40px;
+            border-radius: 50%; background: black; color: white; border: none;
+            cursor: pointer; font-size: 18px; display: none;
+            align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,.3); z-index: 90;
+        }
+        .btt.show { display: flex; }
+
+        /* ── Hero panel ── */
+        .hero-panel { margin-bottom: 24px; }
+        .hero-card { border: 1px solid black; padding: 20px; margin-bottom: 16px; }
+        .hero-card h2 { border-bottom: 2px solid black; padding-bottom: 6px; }
+        .hero-card p { margin: 8px 0; }
+
+        /* ── Chip row ── */
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .chip {
+            display: inline-block; background: white; border: 1px solid black;
+            padding: 4px 10px; font-size: 10pt;
+        }
+
+        /* ── TOC card / grid ── */
+        .toc-card { margin: 16px 0; }
+        .toc-card h3 { margin-bottom: 10px; font-weight: bold; }
+        .toc-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;
+        }
+        .toc-grid a {
+            display: block; padding: 10px 14px; background: white;
+            border: 1px solid black; text-decoration: none; color: black; font-weight: bold;
+        }
+        .toc-grid a:hover { background: #f5f5f5; }
+
+        /* ── Visual grid ── */
+        .visual-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px; margin: 16px 0;
+        }
+        .visual-card { border: 1px solid black; padding: 14px; }
+        .visual-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Chapter band ── */
+        .chapter-band { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+        .band-card {
+            flex: 1; min-width: 140px; border: 1px solid black;
+            padding: 14px; text-align: center;
+        }
+        .band-card .num { font-size: 20pt; font-weight: bold; }
+        .band-card .label { font-size: 10pt; margin-top: 4px; }
+
+        /* ── Mini grid / notes ── */
+        .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+        .mini-note { border: 1px solid black; padding: 12px; }
+        .mini-note h4 { font-weight: bold; margin-bottom: 6px; }
+
+        /* ── Quick formulas ── */
+        .quick-formulas {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px; margin: 16px 0;
+        }
+        .formula-card { border: 1px solid black; padding: 14px; }
+        .formula-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Formula box / concept box ── */
+        .formula-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .concept-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .derivation {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+
+        /* ── Question map ── */
+        .qmap { margin: 14px 0; }
+        .yr { font-size: 9pt; font-style: italic; }
+
+        /* ── Hero (index page) ── */
+        .hero {
+            background: white; color: black;
+            text-align: center; padding: 50px 24px 40px;
+            border-bottom: 2px solid black;
+        }
+        .hero h1 { color: black; border-bottom: none; text-align: center; }
+        .hero .sub { font-style: italic; }
+        .hero .author { opacity: .55; margin-top: 8px; }
+        .hero .divider { width: 80px; height: 3px; background: black; margin: 14px auto; }
+        .hero .stats { display: flex; justify-content: center; gap: 40px; margin-top: 16px; }
+        .hero .stat-val { font-size: 18pt; font-weight: bold; }
+
+        /* ── Card grid (index) ── */
+        .card { border: 1px solid black; padding: 16px; margin: 10px 0; }
+        .card h3 { font-weight: bold; margin-bottom: 6px; }
+        .card a {
+            display: inline-block; padding: 6px 14px; border: 1px solid black;
+            color: black; text-decoration: none; font-weight: bold; margin-top: 8px;
+        }
+        .card a:hover { background: black; color: white; }
+
+        /* ── Chapter card (index TOC) ── */
+        .toc-title {
+            text-transform: uppercase; border-bottom: 2px solid black;
+            padding-bottom: 8px; margin-bottom: 20px;
+        }
+        .ch-card {
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 18px; margin: 8px 0;
+            border: 1px solid black; border-left: 4px solid black;
+            text-decoration: none; color: black;
+            transition: background .15s;
+        }
+        .ch-card:hover { background: #f5f5f5; }
+        .ch-num { font-size: 16pt; font-weight: bold; min-width: 40px; text-align: center; }
+        .ch-body { flex: 1; }
+        .ch-title { font-weight: bold; }
+        .ch-pages { font-size: 10pt; margin-top: 4px; opacity: .6; }
+        .ch-arrow { font-size: 16pt; opacity: .4; }
+
+        /* ── Warning ── */
+        .warning {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Pre/diagram ── */
+        pre.diagram {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px auto; overflow-x: auto;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 11pt; line-height: 1.5; text-align: center;
+            max-width: 700px; white-space: pre;
+        }
+
+        /* ── Accordion problems ── */
+        details.problem { border: 1px solid black; margin: 10px 0; }
+        details.problem > summary {
+            background: white; color: black; padding: 10px 16px;
+            font-weight: bold; cursor: pointer;
+        }
+        details.problem[open] > summary { border-bottom: 1px solid black; }
+
+        @media (max-width: 768px) {
+            .content { padding: 16px 12px 40px; }
+            .ch-header h1 { font-size: 13pt; }
+            .visual-grid, .quick-formulas { grid-template-columns: 1fr; }
+            .mini-grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            .topbar, .btt, .ch-nav { display: none !important; }
+            .ch-header { border-bottom: 2px solid black; padding: 20px 0; }
+        }
+
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+ border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+ cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+ box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+ --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+ --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+ --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+ --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+ --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+ This single rule ensures NO text stays dark on dark bg.
+ Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .formula-box h3{color:#e8e5dd!important}
+[data-theme="dark"] .concept-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .concept-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .derivation{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .derivation h4{color:#e8e5dd!important}
+[data-theme="dark"] .warning{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .warning strong{color:#e8e5dd!important}
+[data-theme="dark"] .method-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .method-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#e0ddd5!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card h3{color:#e8e5dd!important}
+[data-theme="dark"] .card a{color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card a:hover{background:#3a3d44!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+ box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+ .dm-toggle{display:none!important}
+ [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+ transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<nav class="topbar">
+ <a href="index.html" style="font-weight:700"> FEM Textbook</a>
+ <span style="opacity:.65">Computational Technique</span>
+</nav>
+
+<header class="ch-header">
+ <h1>Chapter 4: Finite Element Method</h1>
+ <div class="meta">4.4 &mdash; Shape Functions / Interpolation Functions</div>
+ <div class="author">Collected &amp; Prepared By: Er. Sanjay Kumar Sah (Lecturer, Department of Civil Engineering, Pulchowk Campus)</div>
+</header>
+
+<div class="content">
+
+<!-- ===== INTRODUCTION ===== -->
+<h2>Shape Function / Interpolation Function</h2>
+
+<ul>
+ <li>In finite element analysis, field variables at nodal points are found by rigorous analysis.</li>
+ <li>But field variables (especially basic variables) at any point inside the element is the function of values at nodal points of the element.</li>
+ <li>This function which relates the field variable at any point within the element to the field variables of nodal points, is called a <strong>shape function</strong>. The field variables approximated by the shape function are not as exact as obtained by rigorous analysis at the same point, and hence, it is also called an <strong>&ldquo;Interpolation function.&rdquo;</strong></li>
+</ul>
+
+<p>&rarr; In two dimensional stress analysis, where the basic variable is displacement, it is given by:</p>
+<div class="eq-block">
+$$u = \sum N_i u_i$$
+$$v = \sum N_i v_i$$
+</div>
+<p>where summation is over the number of nodes.</p>
+
+<p>For example, for a three-noded triangular element, displacement at $P(x,y)$ is given by:</p>
+<div class="eq-block">
+$$u = \sum_{i=1}^{3} N_i u_i = N_1 u_1 + N_2 u_2 + N_3 u_3$$
+$$v = \sum_{i=1}^{3} N_i v_i = N_1 v_1 + N_2 v_2 + N_3 v_3$$
+</div>
+
+<p>In matrix form:</p>
+<div class="eq-block hl">
+$$\begin{Bmatrix} u \\ v \end{Bmatrix} = \begin{bmatrix} N_1 & N_2 & N_3 & 0 & 0 & 0 \\ 0 & 0 & 0 & N_1 & N_2 & N_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \\ v_1 \\ v_2 \\ v_3 \end{Bmatrix}$$
+$$\{u\}_{2 \times 1} = [N]_{2 \times 6} \{u_i\}_{6 \times 1}$$
+</div>
+
+<div class="def-box">
+<div class="dt">Definitions</div>
+<ul>
+ <li>$\{u\}$ &mdash; displacement vector at any point in the element.</li>
+ <li>$[N]$ &mdash; shape function.</li>
+ <li>$\{u_i\}$ &mdash; nodal displacement vector.</li>
+</ul>
+</div>
+
+<!-- ===== POLYNOMIAL SHAPE FUNCTION ===== -->
+<h2>Polynomial Shape Function</h2>
+
+<p>Polynomial functions are commonly used as shape functions because of the following benefits:</p>
+<ul>
+ <li>They are easy to handle mathematically, i.e., differentiation and integration of polynomials is easy.</li>
+ <li>Any function can be approximated well by using a polynomial function. If a function is highly nonlinear, we may have to approximate with a higher-order polynomial.</li>
+</ul>
+
+<h4>Approximation with polynomial functions of different order:</h4>
+
+<div class="figure">
+<svg viewBox="0 0 700 160" style="max-width:720px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <defs>
+ <marker id="axarr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a365d"/></marker>
+ </defs>
+ <!-- a) Constant -->
+ <line x1="30" y1="140" x2="30" y2="20" stroke="#1a365d" stroke-width="1.2" marker-end="url(#axarr)"/>
+ <text x="18" y="16" fill="#1a365d" font-size="11" font-style="italic">y</text>
+ <line x1="30" y1="140" x2="200" y2="140" stroke="#1a365d" stroke-width="1.2" marker-end="url(#axarr)"/>
+ <text x="205" y="145" fill="#1a365d" font-size="11" font-style="italic">x</text>
+ <line x1="50" y1="70" x2="180" y2="70" stroke="#c0392b" stroke-width="2"/>
+ <text x="75" y="60" fill="#c0392b" font-size="10">u = &alpha;&#8321;</text>
+ <text x="80" y="155" fill="#555" font-size="10">a) Constant</text>
+ <!-- b) Linear -->
+ <line x1="250" y1="140" x2="250" y2="20" stroke="#1a365d" stroke-width="1.2" marker-end="url(#axarr)"/>
+ <text x="238" y="16" fill="#1a365d" font-size="11" font-style="italic">y</text>
+ <line x1="250" y1="140" x2="420" y2="140" stroke="#1a365d" stroke-width="1.2" marker-end="url(#axarr)"/>
+ <text x="425" y="145" fill="#1a365d" font-size="11" font-style="italic">x</text>
+ <line x1="270" y1="120" x2="400" y2="40" stroke="#c0392b" stroke-width="2"/>
+ <text x="290" y="55" fill="#c0392b" font-size="10">u = &alpha;&#8321; + &alpha;&#8322;x</text>
+ <text x="300" y="155" fill="#555" font-size="10">b) Linear</text>
+ <!-- c) Quadratic -->
+ <line x1="470" y1="140" x2="470" y2="20" stroke="#1a365d" stroke-width="1.2" marker-end="url(#axarr)"/>
+ <text x="458" y="16" fill="#1a365d" font-size="11" font-style="italic">y</text>
+ <line x1="470" y1="140" x2="660" y2="140" stroke="#1a365d" stroke-width="1.2" marker-end="url(#axarr)"/>
+ <text x="665" y="145" fill="#1a365d" font-size="11" font-style="italic">x</text>
+ <path d="M490,115 Q560,30 640,45" fill="none" stroke="#c0392b" stroke-width="2"/>
+ <text x="505" y="42" fill="#c0392b" font-size="10">u = &alpha;&#8321; + &alpha;&#8322;x + &alpha;&#8323;x&sup2;</text>
+ <text x="510" y="155" fill="#555" font-size="10">c) Quadratic</text>
+</svg>
+</div>
+
+<!-- ===== 1D POLYNOMIAL ===== -->
+<h3>One Dimensional Polynomial Shape Function</h3>
+
+<p>A general one-dimensional polynomial shape function of $n^{th}$ order (with $n+1$ terms) is given by:</p>
+<div class="eq-block hl">
+$$u(x) = \alpha_1 + \alpha_2 x + \alpha_3 x^2 + \dots + \alpha_{n+1} x^n$$
+</div>
+
+<p>In matrix form:</p>
+<div class="eq-block">
+$$u = [G] \{\alpha\}$$
+</div>
+<p>where $[G] = \begin{bmatrix} 1 & x & x^2 & \dots & x^n \end{bmatrix}$
+and $\{\alpha\}^T = \begin{bmatrix} \alpha_1 & \alpha_2 & \alpha_3 & \dots & \alpha_{n+1} \end{bmatrix}$</p>
+
+<!-- ===== 2D POLYNOMIAL ===== -->
+<h3>Two Dimensional Polynomial Shape Function</h3>
+
+<p>A general form of two-dimensional polynomial shape function of $n^{th}$ order is given by:</p>
+<div class="eq-block">
+$$u(x,y) = \alpha_1 + \alpha_2 x + \alpha_3 y + \alpha_4 x^2 + \alpha_5 xy + \alpha_6 y^2 + \alpha_7 x^3 + \dots + \alpha_m y^n$$
+$$v(x,y) = \alpha_{m+1} + \alpha_{m+2} x + \alpha_{m+3} y + \alpha_{m+4} x^2 + \alpha_{m+5} xy + \dots + \alpha_{2m} y^n$$
+</div>
+
+<p>In matrix form:</p>
+<div class="eq-block">
+$$\{\delta\} = \begin{Bmatrix} u(x,y) \\ v(x,y) \end{Bmatrix} = [G_1]\{\alpha\} = \begin{bmatrix} G & 0 \\ 0 & G \end{bmatrix} \{\alpha\}$$
+</div>
+<p>where $G = \begin{bmatrix} 1 & x & y & x^2 & xy & y^2 & x^3 & \dots & y^n \end{bmatrix}$
+and $\{\alpha\}^T = \begin{bmatrix} \alpha_1 & \alpha_2 & \dots & \alpha_m & \alpha_{m+1} & \dots & \alpha_{2m} \end{bmatrix}$</p>
+
+<p>The total number of terms &lsquo;$m$&rsquo; in an $n^{th}$ degree polynomial is:</p>
+<div class="eq-block hl">
+$$m = \frac{(n+1)(n+2)}{2}$$
+</div>
+
+<ul>
+ <li>For 1st order polynomial ($n = 1$): $m = \frac{(1+1)(1+2)}{2} = 3$ &mdash; Terms: $\alpha_1 + \alpha_2 x + \alpha_3 y$</li>
+ <li>For 2nd order polynomial ($n = 2$): $m = \frac{(2+1)(2+2)}{2} = 6$ &mdash; Terms: $\alpha_1 + \alpha_2 x + \alpha_3 y + \alpha_4 x^2 + \alpha_5 xy + \alpha_6 y^2$</li>
+</ul>
+
+<!-- ===== PASCAL'S TRIANGLE ===== -->
+<h3>Pascal&rsquo;s Triangle</h3>
+
+<p>A convenient way to remember complete two-dimensional polynomial terms:</p>
+
+<table class="pascal-table">
+<tr><th>Order</th><th>Terms</th><th>No. of terms</th></tr>
+<tr><td>0th (Constant)</td><td>$1$</td><td>1</td></tr>
+<tr><td>1st (Linear)</td><td>$x \quad y$</td><td>3</td></tr>
+<tr><td>2nd (Quadratic)</td><td>$x^2 \quad xy \quad y^2$</td><td>6</td></tr>
+<tr><td>3rd (Cubic)</td><td>$x^3 \quad x^2y \quad xy^2 \quad y^3$</td><td>10</td></tr>
+<tr><td>4th (Quartic)</td><td>$x^4 \quad x^3y \quad x^2y^2 \quad xy^3 \quad y^4$</td><td>15</td></tr>
+<tr><td>5th (Quintic)</td><td>$x^5 \quad x^4y \quad x^3y^2 \quad x^2y^3 \quad xy^4 \quad y^5$</td><td>21</td></tr>
+<tr><td>6th (Hexadic)</td><td>$x^6 \quad x^5y \quad x^4y^2 \quad x^3y^3 \quad x^2y^4 \quad xy^5 \quad y^6$</td><td>28</td></tr>
+<tr><td>7th</td><td>$x^7 \quad x^6y \quad x^5y^2 \quad x^4y^3 \quad x^3y^4 \quad x^2y^5 \quad xy^6 \quad y^7$</td><td>36</td></tr>
+</table>
+
+<!-- ===== CONVERGENCE REQUIREMENTS ===== -->
+<h2>Convergence Requirements of Shape Functions</h2>
+
+<p>&rarr; The displacements obtained by finite element analysis are approximate solutions.<br>
+&rarr; As the number of finite elements (mesh or no. of nodes) increases, the solution approaches the exact solutions.</p>
+
+<p>In order to ensure convergence criteria, the shape functions should satisfy the following requirements:</p>
+
+<h4>i) Compatibility Requirement:</h4>
+<ul>
+ <li>The displacement models must be continuous within the elements and displacements must be compatible between the adjacent elements.</li>
+ <li>The adjacent elements must deform without causing opening, overlaps or discontinuities between the elements.</li>
+</ul>
+
+<h4>ii) Rigid Body Displacements:</h4>
+<ul>
+ <li>In a displacement model there should be a term which permits all points on the element to experience the same displacement.</li>
+ <li>If such a term does not exist, shifting of the origin of the coordinate system will cause additional stresses and strains, which should not occur.</li>
+ <li>In the displacement model $u = \alpha_1 + \alpha_2 x + \alpha_3 y$, the term $\alpha_1$ provides for the rigid body displacement.</li>
+ <li>Hence, to satisfy the requirement of rigid body displacement, there should be a <strong>constant term</strong> in the shape function selected.</li>
+</ul>
+
+<h4>iii) Constant Strain State:</h4>
+<ul>
+ <li>The displacement model should be such that all points in the element can experience the same strain.</li>
+ <li>If we imagine the refinement of mesh, i.e., if elements approach infinitesimal size, the strains within the element approach constant values.</li>
+ <li>Unless the shape function term includes these constant strain terms, we cannot hope to converge to a correct solution.</li>
+ <li>In displacement model $u = \alpha_1 + \alpha_2 x + \alpha_3 y + \dots$, $\alpha_2$ and $\alpha_3$ provide for uniform strain $\epsilon_x$, and $\alpha_{m+3}$ provides for uniform strain $\epsilon_y$.</li>
+</ul>
+
+<h4>iv) Geometric Isotropy / Spatial Isotropy / Geometric Invariance:</h4>
+<ul>
+ <li>The selection of polynomial shape function for the displacement model should be such that the pattern should be independent of the orientation of the local coordinate system.</li>
+</ul>
+
+<!-- ===== SHAPE FUNCTIONS USING POLYNOMIALS (CARTESIAN) ===== -->
+<h2>Shape Functions Using Polynomials (Cartesian Coordinates)</h2>
+
+<!-- Example 1: Two-noded bar -->
+<div class="example">
+<div class="ex-title">Example 1: Shape function of a two-noded bar/truss element</div>
+
+<div class="soln-label">Solution</div>
+<p>Using generalized coordinate approach (Cartesian Coordinate).</p>
+
+<div class="figure">
+<svg viewBox="0 0 480 100" style="max-width:500px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <!-- Bar -->
+ <rect x="60" y="42" width="360" height="12" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="1.5"/>
+ <!-- Node 1 -->
+ <circle cx="60" cy="48" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="60" y="52" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">1</text>
+ <text x="60" y="28" text-anchor="middle" fill="#555" font-size="10">u&#8321;</text>
+ <text x="60" y="78" text-anchor="middle" fill="#555" font-size="10">x&#8321;</text>
+ <!-- Node 2 -->
+ <circle cx="420" cy="48" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="420" y="52" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">2</text>
+ <text x="420" y="28" text-anchor="middle" fill="#555" font-size="10">u&#8322;</text>
+ <text x="420" y="78" text-anchor="middle" fill="#555" font-size="10">x&#8322;</text>
+ <!-- Point P -->
+ <text x="240" y="28" text-anchor="middle" fill="#c0392b" font-size="10">P(x)</text>
+ <line x1="240" y1="32" x2="240" y2="40" stroke="#c0392b" stroke-width="1"/>
+ <circle cx="240" cy="48" r="3" fill="#c0392b"/>
+ <!-- Length label -->
+ <line x1="60" y1="90" x2="420" y2="90" stroke="#888" stroke-width="1"/>
+ <line x1="60" y1="86" x2="60" y2="94" stroke="#888" stroke-width="1"/>
+ <line x1="420" y1="86" x2="420" y2="94" stroke="#888" stroke-width="1"/>
+ <text x="240" y="100" text-anchor="middle" fill="#888" font-style="italic">l</text>
+</svg>
+</div>
+
+<p>Nodal variables are $u_1$ &amp; $u_2$ along x-axis. Select a polynomial with two terms:</p>
+<div class="eq-block">
+$$u = \alpha_1 + \alpha_2 x = \begin{bmatrix} 1 & x \end{bmatrix} \begin{Bmatrix} \alpha_1 \\ \alpha_2 \end{Bmatrix}$$
+</div>
+
+<p>Applying boundary conditions:</p>
+<div class="eq-block">
+$$u_1 = \alpha_1 + \alpha_2 x_1, \qquad u_2 = \alpha_1 + \alpha_2 x_2$$
+</div>
+<div class="eq-block">
+$$\begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} = \begin{bmatrix} 1 & x_1 \\ 1 & x_2 \end{bmatrix} \begin{Bmatrix} \alpha_1 \\ \alpha_2 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$\begin{Bmatrix} \alpha_1 \\ \alpha_2 \end{Bmatrix} = \frac{1}{l} \begin{bmatrix} x_2 & -x_1 \\ -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} \quad --- (ii)$$
+</div>
+
+<p>Substituting (ii):</p>
+<div class="eq-block">
+$$u = \begin{bmatrix} 1 & x \end{bmatrix} \times \frac{1}{l} \begin{bmatrix} x_2 & -x_1 \\ -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} = \frac{1}{l} \begin{bmatrix} x_2 - x & x - x_1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$u = \begin{bmatrix} N_1 & N_2 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} = N_1 u_1 + N_2 u_2$$
+</div>
+
+<div class="result-box">
+$$N_1 = \frac{x_2 - x}{l}, \qquad N_2 = \frac{x - x_1}{l}$$
+$$[N] = \begin{bmatrix} N_1 & N_2 \end{bmatrix} = \begin{bmatrix} \frac{x_2 - x}{l} & \frac{x - x_1}{l} \end{bmatrix}$$
+<p>The values of $N_1$ and $N_2$ vary linearly.</p>
+</div>
+</div><!-- /example 1 -->
+
+<!-- Example 2: CST using polynomial -->
+<div class="example">
+<div class="ex-title">Example 2: Shape functions for the Constant Strain Triangle (CST) using polynomial functions</div>
+
+<div class="soln-label">Solution</div>
+
+<div class="figure">
+<svg viewBox="0 0 320 240" style="max-width:340px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <!-- Triangle -->
+ <polygon points="60,200 280,200 170,40" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Nodes -->
+ <circle cx="60" cy="200" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="60" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">1</text>
+ <text x="30" y="210" fill="#555" font-size="10">(x&#8321;,y&#8321;)</text>
+ <circle cx="280" cy="200" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="280" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">2</text>
+ <text x="281" y="220" fill="#555" font-size="10">(x&#8322;,y&#8322;)</text>
+ <circle cx="170" cy="40" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="170" y="44" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">3</text>
+ <text x="175" y="30" fill="#555" font-size="10">(x&#8323;,y&#8323;)</text>
+ <!-- Point P -->
+ <circle cx="160" cy="140" r="3" fill="#c0392b"/>
+ <text x="175" y="140" fill="#c0392b" font-size="10">P(x,y)</text>
+</svg>
+<div class="caption">CST with 6 nodal displacements</div>
+</div>
+
+<p>There are 6 nodal displacements $u_1, u_2, u_3, v_1, v_2, v_3$. Select polynomials with total 6 constants:</p>
+<div class="eq-block">
+$$u = \alpha_1 + \alpha_2 x + \alpha_3 y$$
+$$v = \alpha_4 + \alpha_5 x + \alpha_6 y$$
+</div>
+
+<p>Applying boundary conditions for $u$:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix} = \begin{bmatrix} 1 & x_1 & y_1 \\ 1 & x_2 & y_2 \\ 1 & x_3 & y_3 \end{bmatrix} \begin{Bmatrix} \alpha_1 \\ \alpha_2 \\ \alpha_3 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$\begin{Bmatrix} \alpha_1 \\ \alpha_2 \\ \alpha_3 \end{Bmatrix} = \frac{1}{2A} \begin{bmatrix} a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \\ c_1 & c_2 & c_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>where $\det \begin{vmatrix} 1 & x_1 & y_1 \\ 1 & x_2 & y_2 \\ 1 & x_3 & y_3 \end{vmatrix} = 2A$ and $A$ = area of triangle.</p>
+
+<div class="def-box">
+<div class="dt">Constants</div>
+<p>$a_1 = x_2 y_3 - x_3 y_2$; &ensp; $b_1 = y_2 - y_3$; &ensp; $c_1 = x_3 - x_2$</p>
+<p>$a_2 = x_3 y_1 - x_1 y_3$; &ensp; $b_2 = y_3 - y_1$; &ensp; $c_2 = x_1 - x_3$</p>
+<p>$a_3 = x_1 y_2 - x_2 y_1$; &ensp; $b_3 = y_1 - y_2$; &ensp; $c_3 = x_2 - x_1$</p>
+</div>
+
+<p>Substituting back:</p>
+<div class="eq-block">
+$$u = \begin{bmatrix} 1 & x & y \end{bmatrix} \times \frac{1}{2A} \begin{bmatrix} a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \\ c_1 & c_2 & c_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$u = \begin{bmatrix} N_1 & N_2 & N_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix} = N_1 u_1 + N_2 u_2 + N_3 u_3$$
+</div>
+
+<p>where $[N] = \begin{bmatrix} N_1 & N_2 & N_3 \end{bmatrix}$ is the shape function.</p>
+
+<p>Similarly, $v = \begin{bmatrix} N_1 & N_2 & N_3 \end{bmatrix} \begin{Bmatrix} v_1 \\ v_2 \\ v_3 \end{Bmatrix}$</p>
+
+<div class="result-box">
+$$\{\delta\} = \begin{Bmatrix} u \\ v \end{Bmatrix} = \begin{bmatrix} N_1 & N_2 & N_3 & 0 & 0 & 0 \\ 0 & 0 & 0 & N_1 & N_2 & N_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \\ v_1 \\ v_2 \\ v_3 \end{Bmatrix}$$
+</div>
+</div><!-- /example 2 -->
+
+
+<!-- ===== NATURAL COORDINATE SHAPE FUNCTIONS ===== -->
+<h2>Shape Function in terms of Natural Coordinate System</h2>
+
+<!-- Example 1: Natural Coordinate L1,L2 -->
+<div class="example">
+<div class="ex-title">Example 1: Shape function for a two-noded bar/truss element using Natural Coordinate system</div>
+
+<div class="soln-label">Solution</div>
+<p>Consider a two-noded bar/truss element with natural coordinates:</p>
+
+<pre class="diagram">L&#8321;=1 P(L&#8321;,L&#8322;) L&#8321;=0
+L&#8322;=0 L&#8322;=1
+ (1)-------------------X-------------------(2)</pre>
+
+<p>As there are only two nodal values, only a linear function of natural coordinates can be taken:</p>
+<div class="eq-block">
+$$u = \alpha_1 L_1 + \alpha_2 L_2 = \begin{bmatrix} L_1 & L_2 \end{bmatrix} \begin{Bmatrix} \alpha_1 \\ \alpha_2 \end{Bmatrix}$$
+</div>
+
+<p>Applying boundary conditions:</p>
+<ul>
+ <li>At node 1 ($L_1=1, L_2=0$): $u_1 = \alpha_1$</li>
+ <li>At node 2 ($L_1=0, L_2=1$): $u_2 = \alpha_2$</li>
+</ul>
+<div class="eq-block">
+$$\begin{Bmatrix} \alpha_1 \\ \alpha_2 \end{Bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$u = \begin{bmatrix} L_1 & L_2 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+
+<div class="result-box">
+$$[N] = \begin{bmatrix} N_1 & N_2 \end{bmatrix} = \begin{bmatrix} L_1 & L_2 \end{bmatrix}$$
+</div>
+</div><!-- /example 1 -->
+
+<!-- Example 2: Natural Coordinate ξ (-1 to +1), 2-noded -->
+<div class="example">
+<div class="ex-title">Example 2: Shape function for two-noded bar/truss element using $\xi$ varying from &minus;1 to +1</div>
+
+<div class="soln-label">Solution</div>
+
+<pre class="diagram">&xi; = -1 P(&xi;) &xi; = +1
+ (1)-----------------------X------------------------(2)
+ N&#8321; N&#8322;</pre>
+
+<p>Since there are only two nodal values, a polynomial with two terms is selected:</p>
+<div class="eq-block">
+$$u = \alpha_1 + \alpha_2 \xi = \begin{bmatrix} 1 & \xi \end{bmatrix} \begin{Bmatrix} \alpha_1 \\ \alpha_2 \end{Bmatrix}$$
+</div>
+
+<p>Applying boundary conditions:</p>
+<div class="eq-block">
+$$u_1 = \alpha_1 - \alpha_2 \quad (\text{at } \xi = -1), \qquad u_2 = \alpha_1 + \alpha_2 \quad (\text{at } \xi = +1)$$
+</div>
+<div class="eq-block">
+$$\begin{Bmatrix} \alpha_1 \\ \alpha_2 \end{Bmatrix} = \frac{1}{2} \begin{bmatrix} 1 & 1 \\ -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$u = \begin{bmatrix} \frac{1-\xi}{2} & \frac{1+\xi}{2} \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} = \begin{bmatrix} N_1 & N_2 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+
+<div class="result-box">
+$$N_1 = \frac{1-\xi}{2}, \qquad N_2 = \frac{1+\xi}{2}$$
+</div>
+</div><!-- /example 2 -->
+
+<!-- Example 3: Natural Coordinate ξ, 3-noded -->
+<div class="example">
+<div class="ex-title">Example 3: Shape function for three-noded bar/truss element with $\xi$ varying from &minus;1 to +1</div>
+
+<div class="soln-label">Solution</div>
+
+<pre class="diagram">&xi; = -1 &xi; = 0 &xi; = +1
+ (1)------------------------(3)------------------------(2)
+ N&#8321; N&#8323; N&#8322;</pre>
+
+<p>Three nodal values &rArr; polynomial with three terms:</p>
+<div class="eq-block">
+$$u = \alpha_1 + \alpha_2 \xi + \alpha_3 \xi^2 = \begin{bmatrix} 1 & \xi & \xi^2 \end{bmatrix} \begin{Bmatrix} \alpha_1 \\ \alpha_2 \\ \alpha_3 \end{Bmatrix} \quad --- (i)$$
+</div>
+
+<p>Applying boundary conditions:</p>
+<div class="eq-block">
+$$u_1 = \alpha_1 - \alpha_2 + \alpha_3 \;(\xi=-1), \quad u_2 = \alpha_1 + \alpha_2 + \alpha_3 \;(\xi=+1), \quad u_3 = \alpha_1 \;(\xi=0)$$
+</div>
+<div class="eq-block">
+$$\begin{Bmatrix} \alpha_1 \\ \alpha_2 \\ \alpha_3 \end{Bmatrix} = \begin{bmatrix} 1 & -1 & 1 \\ 1 & 1 & 1 \\ 1 & 0 & 0 \end{bmatrix}^{-1} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix} = \begin{bmatrix} 0 & 0 & 1 \\ -1/2 & 1/2 & 0 \\ 1/2 & 1/2 & -1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$u = \begin{bmatrix} \frac{1}{2}\xi(\xi-1) & \frac{1}{2}\xi(\xi+1) & 1-\xi^2 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<div class="result-box">
+$$N_1 = \frac{\xi}{2}(\xi-1), \qquad N_2 = \frac{\xi}{2}(\xi+1), \qquad N_3 = 1-\xi^2$$
+</div>
+</div><!-- /example 3 -->
+
+<!-- Example 4: CST Natural Coordinate -->
+<div class="example">
+<div class="ex-title">Example 4: Shape function of CST in terms of Natural Coordinate system</div>
+
+<div class="soln-label">Solution</div>
+
+<div class="figure">
+<svg viewBox="0 0 300 230" style="max-width:320px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <polygon points="50,200 260,200 155,40" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="200" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">1</text>
+ <text x="20" y="215" fill="#555" font-size="9">(1,0,0)</text>
+ <circle cx="260" cy="200" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="260" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">2</text>
+ <text x="262" y="218" fill="#555" font-size="9">(0,1,0)</text>
+ <circle cx="155" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="155" y="44" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">3</text>
+ <text x="158" y="30" fill="#555" font-size="9">(0,0,1)</text>
+ <circle cx="145" cy="140" r="3" fill="#c0392b"/>
+ <text x="160" y="140" fill="#c0392b" font-size="10">P(L&#8321;,L&#8322;,L&#8323;)</text>
+</svg>
+</div>
+
+<p>Let the displacement function for three nodal values as linear function of natural coordinates:</p>
+<div class="eq-block">
+$$u = \alpha_1 L_1 + \alpha_2 L_2 + \alpha_3 L_3 \quad --- (i)$$
+</div>
+
+<p>Applying boundary conditions:</p>
+<div class="eq-block">
+$$u_1 = \alpha_1, \quad u_2 = \alpha_2, \quad u_3 = \alpha_3$$
+</div>
+
+<div class="eq-block">
+$$u = \begin{bmatrix} L_1 & L_2 & L_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<div class="result-box">
+$$N_1 = L_1, \quad N_2 = L_2, \quad N_3 = L_3$$
+<p>Similarly, $v = \begin{bmatrix} N_1 & N_2 & N_3 \end{bmatrix} \begin{Bmatrix} v_1 \\ v_2 \\ v_3 \end{Bmatrix}$</p>
+$$\begin{Bmatrix} u \\ v \end{Bmatrix} = \begin{bmatrix} N_1 & N_2 & N_3 & 0 & 0 & 0 \\ 0 & 0 & 0 & N_1 & N_2 & N_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \\ v_1 \\ v_2 \\ v_3 \end{Bmatrix}$$
+</div>
+</div><!-- /example 4 -->
+
+
+<!-- ===== LAGRANGE POLYNOMIALS ===== -->
+<h2>Shape Function using Lagrange Polynomials</h2>
+
+<p>If only continuity of basic unknown (displacement) is to be satisfied, Lagrange polynomials can be used to derive shape functions. Lagrange polynomial of one dimension is defined by:</p>
+
+<div class="eq-block hl">
+$$L_k(x) = \prod_{\substack{m=1 \\ m \neq k}}^{n} \frac{(x - x_m)}{(x_k - x_m)}$$
+</div>
+
+<p>Thus, if $n = 5$ and $k = 3$:</p>
+<div class="eq-block">
+$$L_3(x) = \frac{(x - x_1)(x - x_2)(x - x_4)(x - x_5)}{(x_3 - x_1)(x_3 - x_2)(x_3 - x_4)(x_3 - x_5)}$$
+</div>
+
+<!-- Lagrange Example 1 -->
+<div class="example">
+<div class="ex-title">Example 1: Shape function of two-noded bar element using Lagrange polynomials</div>
+
+<div class="soln-label">Solution</div>
+
+<div class="result-box">
+$$N_1 = L_1 = \frac{x - x_2}{x_1 - x_2} = \frac{x_2 - x}{x_2 - x_1}$$
+$$N_2 = L_2 = \frac{x - x_1}{x_2 - x_1}$$
+</div>
+</div>
+
+<!-- Lagrange Example 2 -->
+<div class="example">
+<div class="ex-title">Example 2: Shape function of three-noded bar element using Lagrange polynomials</div>
+
+<div class="soln-label">Solution</div>
+
+<div class="result-box">
+$$N_1 = L_1 = \frac{(x - x_2)(x - x_3)}{(x_1 - x_2)(x_1 - x_3)}$$
+$$N_2 = L_2 = \frac{(x - x_1)(x - x_3)}{(x_2 - x_1)(x_2 - x_3)}$$
+$$N_3 = L_3 = \frac{(x - x_1)(x - x_2)}{(x_3 - x_1)(x_3 - x_2)}$$
+</div>
+</div>
+
+<!-- Lagrange Example 3 -->
+<div class="example">
+<div class="ex-title">Example 3: Shape function of 4-noded bar element using Lagrange polynomials</div>
+
+<div class="soln-label">Solution</div>
+
+<div class="result-box">
+$$N_1 = \frac{(x - x_2)(x - x_3)(x - x_4)}{(x_1 - x_2)(x_1 - x_3)(x_1 - x_4)}$$
+$$N_2 = \frac{(x - x_1)(x - x_3)(x - x_4)}{(x_2 - x_1)(x_2 - x_3)(x_2 - x_4)}$$
+$$N_3 = \frac{(x - x_1)(x - x_2)(x - x_4)}{(x_3 - x_1)(x_3 - x_2)(x_3 - x_4)}$$
+$$N_4 = \frac{(x - x_1)(x - x_2)(x - x_3)}{(x_4 - x_1)(x_4 - x_2)(x_4 - x_3)}$$
+</div>
+</div>
+
+
+<!-- ===== LAGRANGE 2D/3D ===== -->
+<h3>Lagrange Polynomial Approach for 2D/3D Elements</h3>
+
+<p>We may extend the concept to two and three dimensions by forming the products of the functions which hold good for the individual one-dimensional coordinate directions. For 2D element:</p>
+<div class="eq-block hl">
+$$N_i = L_i(\xi) \cdot L_i(\eta)$$
+</div>
+
+<!-- 4-noded rect Lagrange -->
+<div class="example">
+<div class="ex-title">Example 1: Shape functions for 4-noded rectangular element using Lagrange polynomial</div>
+<p>(Only two nodes in each direction)</p>
+
+<div class="figure">
+<svg viewBox="0 0 300 240" style="max-width:320px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <rect x="50" y="40" width="200" height="160" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="200" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">1</text>
+ <text x="22" y="215" fill="#555" font-size="9">(-1,-1)</text>
+ <circle cx="250" cy="200" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="250" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">2</text>
+ <text x="258" y="215" fill="#555" font-size="9">(1,-1)</text>
+ <circle cx="250" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="250" y="44" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">3</text>
+ <text x="258" y="32" fill="#555" font-size="9">(1,1)</text>
+ <circle cx="50" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="44" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">4</text>
+ <text x="22" y="32" fill="#555" font-size="9">(-1,1)</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<div class="eq-block">
+$$N_1 = L_1(\xi) L_1(\eta) = \frac{(\xi - 1)}{(-1 - 1)} \times \frac{(\eta - 1)}{(-1 - 1)} = \frac{1}{4}(1 - \xi)(1 - \eta)$$
+</div>
+<div class="eq-block">
+$$N_2 = L_2(\xi) L_2(\eta) = \frac{(\xi + 1)}{(1 + 1)} \times \frac{(\eta - 1)}{(-1 - 1)} = \frac{1}{4}(1 + \xi)(1 - \eta)$$
+</div>
+
+<p>Similarly:</p>
+<div class="result-box">
+$$N_1 = \frac{1}{4}(1 - \xi)(1 - \eta), \qquad N_2 = \frac{1}{4}(1 + \xi)(1 - \eta)$$
+$$N_3 = \frac{1}{4}(1 + \xi)(1 + \eta), \qquad N_4 = \frac{1}{4}(1 - \xi)(1 + \eta)$$
+$$\boxed{N_i = \frac{1}{4}(1 + \xi\xi_i)(1 + \eta\eta_i)}$$
+</div>
+</div>
+
+<!-- 9-noded rect Lagrange -->
+<div class="example">
+<div class="ex-title">Example 2: Shape functions for 9-noded rectangular element using Lagrange polynomial</div>
+
+<div class="figure">
+<svg viewBox="0 0 320 260" style="max-width:340px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <rect x="50" y="30" width="220" height="200" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Nodes -->
+ <circle cx="50" cy="230" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="50" y="248" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">1</text>
+ <text x="22" y="235" fill="#555" font-size="8">(-1,-1)</text>
+
+ <circle cx="270" cy="230" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="270" y="248" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">2</text>
+ <text x="278" y="235" fill="#555" font-size="8">(1,-1)</text>
+
+ <circle cx="270" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="270" y="22" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">3</text>
+ <text x="278" y="35" fill="#555" font-size="8">(1,1)</text>
+
+ <circle cx="50" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="50" y="22" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">4</text>
+ <text x="22" y="35" fill="#555" font-size="8">(-1,1)</text>
+
+ <circle cx="160" cy="230" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="160" y="248" text-anchor="middle" fill="#27ae60" font-weight="bold" font-size="10">5</text>
+
+ <circle cx="270" cy="130" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="283" y="134" fill="#27ae60" font-weight="bold" font-size="10">6</text>
+
+ <circle cx="160" cy="30" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="160" y="22" text-anchor="middle" fill="#27ae60" font-weight="bold" font-size="10">7</text>
+
+ <circle cx="50" cy="130" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="30" y="134" fill="#27ae60" font-weight="bold" font-size="10">8</text>
+
+ <circle cx="160" cy="130" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="173" y="125" fill="#e67e22" font-weight="bold" font-size="10">9</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>$N_i = L_i(\xi) L_i(\eta)$ where there are 3 nodes in each direction ($n=3$).</p>
+
+<p><strong>Corner Nodes</strong> ($\xi = \pm 1$ &amp; $\eta = \pm 1$):</p>
+<div class="eq-block">
+$$N_1 = \frac{\xi(\xi - 1)\eta(\eta - 1)}{4}, \quad N_2 = \frac{\xi(\xi + 1)\eta(\eta - 1)}{4}$$
+$$N_3 = \frac{\xi(\xi + 1)\eta(\eta + 1)}{4}, \quad N_4 = \frac{\xi(\xi - 1)\eta(\eta + 1)}{4}$$
+</div>
+
+<p><strong>Nodes 5 &amp; 7</strong> ($\xi = 0$, $\eta = \pm 1$):</p>
+<div class="eq-block">
+$$N_5 = \frac{(\xi^2 - 1)\eta(\eta - 1)}{-2}, \qquad N_7 = \frac{(\xi^2 - 1)\eta(\eta + 1)}{-2}$$
+</div>
+
+<p><strong>Nodes 6 &amp; 8</strong> ($\xi = \pm 1$, $\eta = 0$):</p>
+<div class="eq-block">
+$$N_6 = \frac{\xi(\xi + 1)(\eta^2 - 1)}{-2}, \qquad N_8 = \frac{\xi(\xi - 1)(\eta^2 - 1)}{-2}$$
+</div>
+
+<p><strong>Central Node 9</strong> ($\xi = 0$, $\eta = 0$):</p>
+<div class="eq-block">
+$$N_9 = (\xi^2 - 1)(\eta^2 - 1)$$
+</div>
+
+<div class="result-box">
+<p><strong>General formulas:</strong></p>
+<p>Corner Nodes: $N_i = \frac{\xi(\xi+\xi_i)}{(-2)} \times \frac{\eta(\eta+\eta_i)}{(-2)}$</p>
+<p>Nodes 5 &amp; 7 ($\xi \neq \pm 1$, $\eta = \pm 1$): $N_i = (\xi^2-1) \times \frac{\eta(\eta+\eta_i)}{(-2)}$</p>
+<p>Nodes 6 &amp; 8 ($\xi = \pm 1$, $\eta \neq \pm 1$): $N_i = \frac{\xi(\xi+\xi_i)}{(-2)} \times (\eta^2-1)$</p>
+<p>Central Node: $N_9 = (\xi^2-1)(\eta^2-1)$</p>
+</div>
+</div>
+
+
+<!-- ===== SERENDIPITY FAMILY ===== -->
+<h2>Shape Function for Serendipity Family Elements</h2>
+
+<p>The shape functions are found from consideration that $N_i = 1$ for $i^{th}$ node and zero when referred to any other node.</p>
+
+<!-- Serendipity Example 1: 4-noded -->
+<div class="example">
+<div class="ex-title">Example 1: Shape function of 4-noded rectangular element using &lsquo;serendipity concept&rsquo;</div>
+
+<div class="soln-label">Solution</div>
+
+<p>Shape function $N_1$ has to satisfy:</p>
+<ul>
+ <li>$N_1 = 0$ @ $\xi = 1$ &mdash; (a)</li>
+ <li>$N_1 = 0$ @ $\eta = 1$ &mdash; (b)</li>
+ <li>$N_1 = 1$ @ $\xi = -1$ &amp; $\eta = -1$ &mdash; (c)</li>
+</ul>
+
+<p>Hence, assuming $N_1 = C(1 - \xi)(1 - \eta)$. Applying (c):</p>
+<div class="eq-block">
+$$1 = C(1 + 1)(1 + 1) \Rightarrow C = \frac{1}{4}$$
+</div>
+
+<div class="result-box">
+$$N_1 = \frac{(1 - \xi)(1 - \eta)}{4}, \qquad N_2 = \frac{(1 + \xi)(1 - \eta)}{4}$$
+$$N_3 = \frac{(1 + \xi)(1 + \eta)}{4}, \qquad N_4 = \frac{(1 - \xi)(1 + \eta)}{4}$$
+$$\boxed{N_i = \frac{1}{4}(1 + \xi\xi_i)(1 + \eta\eta_i)}$$
+</div>
+</div>
+
+<!-- Serendipity Example 2: 8-noded -->
+<div class="example">
+<div class="ex-title">Example 2: Shape function of quadratic serendipity rectangular element (8-noded)</div>
+
+<div class="figure">
+<svg viewBox="0 0 320 260" style="max-width:340px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <rect x="50" y="30" width="220" height="200" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="230" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="50" y="248" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">1</text>
+ <text x="22" y="235" fill="#555" font-size="8">(-1,-1)</text>
+
+ <circle cx="270" cy="230" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="270" y="248" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">2</text>
+ <text x="278" y="235" fill="#555" font-size="8">(1,-1)</text>
+
+ <circle cx="270" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="270" y="22" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">3</text>
+ <text x="278" y="35" fill="#555" font-size="8">(1,1)</text>
+
+ <circle cx="50" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="50" y="22" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">4</text>
+ <text x="22" y="35" fill="#555" font-size="8">(-1,1)</text>
+
+ <circle cx="160" cy="230" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="160" y="248" text-anchor="middle" fill="#27ae60" font-weight="bold" font-size="10">5</text>
+
+ <circle cx="270" cy="130" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="283" y="134" fill="#27ae60" font-weight="bold" font-size="10">6</text>
+
+ <circle cx="160" cy="30" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="160" y="22" text-anchor="middle" fill="#27ae60" font-weight="bold" font-size="10">7</text>
+
+ <circle cx="50" cy="130" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="30" y="134" fill="#27ae60" font-weight="bold" font-size="10">8</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p><strong>Corner node $N_1$:</strong></p>
+<ul>
+ <li>$N_1 = 0$ @ $\xi = 1$</li>
+ <li>$N_1 = 0$ @ $\eta = 1$</li>
+ <li>$N_1 = 0$ @ $\xi + \eta + 1 = 0$ (diagonal through 8 and 5)</li>
+ <li>$N_1 = 1$ @ $\xi = -1$ &amp; $\eta = -1$</li>
+</ul>
+
+<p>Assume: $N_1 = C(1 - \xi)(1 - \eta)(1 + \xi + \eta)$</p>
+<div class="eq-block">
+$$1 = C(1+1)(1+1)(1-1-1) \Rightarrow C = -\frac{1}{4}$$
+</div>
+<div class="eq-block">
+$$N_1 = -\frac{(1-\xi)(1-\eta)(1+\xi+\eta)}{4}$$
+</div>
+
+<p>Similarly:</p>
+<div class="eq-block">
+$$N_2 = -\frac{(1+\xi)(1-\eta)(1-\xi+\eta)}{4}$$
+$$N_3 = -\frac{(1+\xi)(1+\eta)(1-\xi-\eta)}{4}$$
+$$N_4 = -\frac{(1-\xi)(1+\eta)(1+\xi-\eta)}{4}$$
+</div>
+
+<p><strong>Mid-side node $N_5$:</strong></p>
+<ul>
+ <li>$N_5 = 0$ @ $\xi = \pm 1$ and @ $\eta = 1$</li>
+ <li>$N_5 = 1$ @ $\xi = 0$ &amp; $\eta = -1$</li>
+</ul>
+
+<p>Assume: $N_5 = C(1-\xi)(1+\xi)(1-\eta)$</p>
+<div class="eq-block">
+$$1 = C(1)(1)(2) \Rightarrow C = \frac{1}{2}$$
+</div>
+<div class="eq-block">
+$$N_5 = \frac{(1-\xi^2)(1-\eta)}{2}$$
+</div>
+
+<p>Similarly:</p>
+<div class="eq-block">
+$$N_6 = \frac{(1+\xi)(1-\eta^2)}{2}, \quad N_7 = \frac{(1-\xi^2)(1+\eta)}{2}, \quad N_8 = \frac{(1-\xi)(1-\eta^2)}{2}$$
+</div>
+
+<div class="result-box">
+<p><strong>General formulas:</strong></p>
+<p>Corner nodes ($\xi \neq 0$, $\eta \neq 0$): $N_i = \frac{1}{4}(1+\xi\xi_i)(1+\eta\eta_i)(\xi\xi_i+\eta\eta_i-1)$</p>
+<p>Nodes 5 &amp; 7 ($\xi = 0$, $\eta = \pm 1$): $N_i = \frac{1}{2}(1-\xi^2)(1+\eta\eta_i)$</p>
+<p>Nodes 6 &amp; 8 ($\xi = \pm 1$, $\eta = 0$): $N_i = \frac{1}{2}(1+\xi\xi_i)(1-\eta^2)$</p>
+</div>
+</div>
+
+<!-- Serendipity Example 3: 12-noded cubic -->
+<div class="example">
+<div class="ex-title">Example 3: Shape function of cubic serendipity square element (12-noded)</div>
+
+<div class="figure">
+<svg viewBox="0 0 360 300" style="max-width:380px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="10">
+ <rect x="50" y="30" width="260" height="240" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Corner nodes -->
+ <circle cx="50" cy="270" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="22" y="275" fill="#1a365d" font-weight="bold">1</text>
+ <text x="12" y="285" fill="#555" font-size="8">(-1,-1)</text>
+ <circle cx="310" cy="270" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="318" y="275" fill="#1a365d" font-weight="bold">2</text>
+ <text x="315" y="285" fill="#555" font-size="8">(1,-1)</text>
+ <circle cx="310" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="318" y="35" fill="#1a365d" font-weight="bold">3</text>
+ <text x="315" y="22" fill="#555" font-size="8">(1,1)</text>
+ <circle cx="50" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="22" y="35" fill="#1a365d" font-weight="bold">4</text>
+ <text x="12" y="22" fill="#555" font-size="8">(-1,1)</text>
+ <!-- Side nodes bottom -->
+ <circle cx="137" cy="270" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="137" y="287" text-anchor="middle" fill="#27ae60" font-weight="bold">5</text>
+ <circle cx="223" cy="270" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="223" y="287" text-anchor="middle" fill="#27ae60" font-weight="bold">6</text>
+ <!-- Side nodes right -->
+ <circle cx="310" cy="190" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="325" y="194" fill="#27ae60" font-weight="bold">7</text>
+ <circle cx="310" cy="110" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="325" y="114" fill="#27ae60" font-weight="bold">8</text>
+ <!-- Side nodes top -->
+ <circle cx="223" cy="30" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="223" y="18" text-anchor="middle" fill="#27ae60" font-weight="bold">9</text>
+ <circle cx="137" cy="30" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="137" y="18" text-anchor="middle" fill="#27ae60" font-weight="bold">10</text>
+ <!-- Side nodes left -->
+ <circle cx="50" cy="110" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="30" y="114" fill="#27ae60" font-weight="bold">11</text>
+ <circle cx="50" cy="190" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="30" y="194" fill="#27ae60" font-weight="bold">12</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p><strong>Corner node $N_1$:</strong></p>
+<p>Assume: $N_1 = C(1-\xi)(1-\eta)\left(\xi^2+\eta^2-\frac{10}{9}\right)$</p>
+<div class="eq-block">
+$$1 = C(2)(2)\left(1+1-\frac{10}{9}\right) \Rightarrow C = \frac{9}{32}$$
+</div>
+
+<p><strong>Corner nodes:</strong></p>
+<div class="eq-block">
+$$N_1 = \frac{9}{32}(1-\xi)(1-\eta)\left(\xi^2+\eta^2-\frac{10}{9}\right)$$
+$$N_2 = \frac{9}{32}(1+\xi)(1-\eta)\left(\xi^2+\eta^2-\frac{10}{9}\right)$$
+$$N_3 = \frac{9}{32}(1+\xi)(1+\eta)\left(\xi^2+\eta^2-\frac{10}{9}\right)$$
+$$N_4 = \frac{9}{32}(1-\xi)(1+\eta)\left(\xi^2+\eta^2-\frac{10}{9}\right)$$
+</div>
+
+<p><strong>Mid-side node $N_5$:</strong></p>
+<p>Assume: $N_5 = C(1-\xi)(1+\xi)(1-\eta)(1-3\xi)$</p>
+<div class="eq-block">
+$$1 = C\left(\frac{4}{3}\right)\left(\frac{2}{3}\right)(2)(2) \Rightarrow C = \frac{9}{32}$$
+</div>
+
+<p><strong>Mid-side nodes:</strong></p>
+<div class="eq-block">
+$$N_5 = \frac{9}{32}(1-\xi^2)(1-\eta)(1-3\xi)$$
+$$N_6 = \frac{9}{32}(1-\xi^2)(1-\eta)(1+3\xi)$$
+$$N_7 = \frac{9}{32}(1+\xi)(1-\eta^2)(1-3\eta)$$
+$$N_8 = \frac{9}{32}(1+\xi)(1-\eta^2)(1+3\eta)$$
+$$N_9 = \frac{9}{32}(1-\xi^2)(1+\eta)(1+3\xi)$$
+$$N_{10} = \frac{9}{32}(1-\xi^2)(1+\eta)(1-3\xi)$$
+$$N_{11} = \frac{9}{32}(1-\xi)(1-\eta^2)(1+3\eta)$$
+$$N_{12} = \frac{9}{32}(1-\xi)(1-\eta^2)(1-3\eta)$$
+</div>
+
+<div class="result-box">
+<p><strong>General formulas:</strong></p>
+<p>Corners: $N_i = \frac{9}{32}(1+\xi\xi_i)(1+\eta\eta_i)\left(\xi^2+\eta^2-\frac{10}{9}\right)$</p>
+<p>Side nodes ($\xi \neq \pm 1$, $\eta = \pm 1$): $N_i = \frac{9}{32}(1-\xi^2)(1+\eta\eta_i)(1+9\xi\xi_i)$</p>
+<p>Side nodes ($\xi = \pm 1$, $\eta \neq \pm 1$): $N_i = \frac{9}{32}(1+\xi\xi_i)(1-\eta^2)(1+9\eta\eta_i)$</p>
+</div>
+</div>
+
+
+<!-- ===== ISOPARAMETRIC TRIANGLE SHAPE FUNCTIONS ===== -->
+<h2>Shape Functions for Isoparametric Triangular Elements</h2>
+
+<!-- 3-noded triangle ξ,η -->
+<div class="example">
+<div class="ex-title">Shape function of three-noded triangle in terms of $\xi$, $\eta$ (Isoparametric triangle)</div>
+
+<div class="figure">
+<svg viewBox="0 0 260 220" style="max-width:280px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <polygon points="50,190 230,190 50,30" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="190" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="194" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">1</text>
+ <text x="30" y="210" fill="#555" font-size="9">(0,0)</text>
+ <circle cx="230" cy="190" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="230" y="194" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">2</text>
+ <text x="233" y="210" fill="#555" font-size="9">(1,0)</text>
+ <circle cx="50" cy="30" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="34" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">3</text>
+ <text x="30" y="20" fill="#555" font-size="9">(0,1)</text>
+ <text x="155" y="100" fill="#888" font-size="9">&xi;+&eta;&minus;1=0</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>$N_1$ satisfies: $N_1=0$ @ $\xi+\eta-1=0$ and $N_1=1$ @ $\xi=0,\eta=0$.</p>
+<p>Assume $N_1 = C(\xi+\eta-1)$. Apply BC: $1 = C(0+0-1) \Rightarrow C=-1$</p>
+
+<div class="result-box">
+$$N_1 = 1 - \xi - \eta, \qquad N_2 = \xi, \qquad N_3 = \eta$$
+</div>
+</div>
+
+<!-- 6-noded triangle ξ,η -->
+<div class="example">
+<div class="ex-title">Shape function of 6-noded triangle in terms of $\xi$ &amp; $\eta$ (Isoparametric triangle)</div>
+
+<div class="figure">
+<svg viewBox="0 0 280 240" style="max-width:300px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <polygon points="50,200 250,200 50,30" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="200" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="50" y="218" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">1</text>
+ <text x="25" y="210" fill="#555" font-size="8">(0,0)</text>
+ <circle cx="250" cy="200" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="250" y="218" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">2</text>
+ <text x="255" y="210" fill="#555" font-size="8">(1,0)</text>
+ <circle cx="50" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="50" y="20" text-anchor="middle" fill="#1a365d" font-weight="bold" font-size="10">3</text>
+ <text x="25" y="25" fill="#555" font-size="8">(0,1)</text>
+ <!-- Mid-side nodes -->
+ <circle cx="150" cy="200" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="150" y="218" text-anchor="middle" fill="#27ae60" font-weight="bold" font-size="10">4</text>
+ <text x="155" y="195" fill="#555" font-size="8">(½,0)</text>
+ <circle cx="150" cy="115" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="165" y="112" fill="#27ae60" font-weight="bold" font-size="10">5</text>
+ <text x="155" y="130" fill="#555" font-size="8">(½,½)</text>
+ <circle cx="50" cy="115" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="30" y="112" fill="#27ae60" font-weight="bold" font-size="10">6</text>
+ <text x="15" y="125" fill="#555" font-size="8">(0,½)</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>$N_1$ satisfies: $N_1=0$ @ $1-\xi-\eta=0$ and @ $2\xi+2\eta-1=0$; $N_1=1$ @ $\xi=0,\eta=0$.</p>
+<p>Assume $N_1 = C(1-\xi-\eta)(2\xi+2\eta-1)$. Apply BC: $C=-1$.</p>
+
+<div class="result-box">
+$$N_1 = (1-\xi-\eta)(1-2\xi-2\eta)$$
+$$N_2 = \xi(2\xi-1)$$
+$$N_3 = \eta(2\eta-1)$$
+$$N_4 = 4\xi(1-\xi-\eta)$$
+$$N_5 = 4\xi\eta$$
+$$N_6 = 4\eta(1-\xi-\eta)$$
+</div>
+</div>
+
+<!-- 6-noded triangle L1,L2,L3 -->
+<div class="example">
+<div class="ex-title">Shape function of 6-noded triangle in terms of $L_1, L_2, L_3$</div>
+
+<div class="soln-label">Solution</div>
+
+<p><strong>Corner nodes:</strong></p>
+<p>$N_1$: satisfies $N_1=0$ @ $L_1=0$ and $L_1=\frac{1}{2}$; $N_1=1$ @ $L_1=1$.</p>
+<p>Assume $N_1 = C \cdot L_1(L_1-\frac{1}{2})$. Apply BC: $C=2$.</p>
+<div class="eq-block">
+$$N_1 = 2L_1\left(L_1-\frac{1}{2}\right), \quad N_2 = 2L_2\left(L_2-\frac{1}{2}\right), \quad N_3 = 2L_3\left(L_3-\frac{1}{2}\right)$$
+</div>
+
+<p><strong>Mid-side nodes:</strong></p>
+<p>$N_4$: satisfies $N_4=0$ @ $L_1=0$ and $L_2=0$; $N_4=1$ @ $L_1=\frac{1}{2},L_2=\frac{1}{2}$.</p>
+<p>Assume $N_4 = CL_1L_2$. Apply BC: $C=4$.</p>
+<div class="result-box">
+$$N_4 = 4L_1L_2, \qquad N_5 = 4L_2L_3, \qquad N_6 = 4L_1L_3$$
+</div>
+</div>
+
+<!-- 10-noded triangle L1,L2,L3 -->
+<div class="example">
+<div class="ex-title">Shape function of 10-noded triangle in terms of $L_1, L_2, L_3$</div>
+
+<div class="figure">
+<svg viewBox="0 0 280 230" style="max-width:300px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="10">
+ <polygon points="50,200 250,200 150,30" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="200" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="30" y="205" fill="#1a365d" font-weight="bold">1</text>
+ <circle cx="250" cy="200" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="258" y="205" fill="#1a365d" font-weight="bold">2</text>
+ <circle cx="150" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="158" y="28" fill="#1a365d" font-weight="bold">3</text>
+ <!-- Side 1-2 -->
+ <circle cx="117" cy="200" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="117" y="218" text-anchor="middle" fill="#27ae60" font-weight="bold">4</text>
+ <circle cx="183" cy="200" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="183" y="218" text-anchor="middle" fill="#27ae60" font-weight="bold">5</text>
+ <!-- Side 2-3 -->
+ <circle cx="217" cy="143" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="228" y="140" fill="#27ae60" font-weight="bold">6</text>
+ <circle cx="183" cy="87" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="194" y="84" fill="#27ae60" font-weight="bold">7</text>
+ <!-- Side 3-1 -->
+ <circle cx="117" cy="87" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="100" y="84" fill="#27ae60" font-weight="bold">9</text>
+ <circle cx="83" cy="143" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="65" y="140" fill="#27ae60" font-weight="bold">8</text><!-- Note: labeled 8 not 10 to match source numbering -->
+ <!-- Center -->
+ <circle cx="150" cy="143" r="4" fill="#e67e22" stroke="#1a365d" stroke-width="1"/>
+ <text x="158" y="140" fill="#e67e22" font-weight="bold">10</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p><strong>Corner nodes:</strong></p>
+<p>$N_1$: $N_1=0$ @ $L_1=0$, $L_1-\frac{1}{3}=0$, $L_1-\frac{2}{3}=0$; $N_1=1$ @ $L_1=1$.</p>
+<p>Assume $N_1 = CL_1(L_1-\frac{1}{3})(L_1-\frac{2}{3})$. Apply BC: $C=\frac{9}{2}$.</p>
+<div class="eq-block">
+$$N_1 = \frac{9}{2}L_1\left(L_1-\frac{1}{3}\right)\left(L_1-\frac{2}{3}\right)$$
+$$N_2 = \frac{9}{2}L_2\left(L_2-\frac{1}{3}\right)\left(L_2-\frac{2}{3}\right)$$
+$$N_3 = \frac{9}{2}L_3\left(L_3-\frac{1}{3}\right)\left(L_3-\frac{2}{3}\right)$$
+</div>
+
+<p><strong>Side nodes:</strong></p>
+<p>$N_4$: $N_4=0$ @ $L_2=0$, $L_1=0$, $L_1=\frac{1}{3}$; $N_4=1$ @ $L_1=\frac{2}{3},L_2=\frac{1}{3}$.</p>
+<p>Assume $N_4 = CL_1L_2(L_1-\frac{1}{3})$. Apply BC: $C=\frac{27}{2}$.</p>
+<div class="eq-block">
+$$N_4 = \frac{27}{2}L_1L_2\left(L_1-\frac{1}{3}\right), \qquad N_5 = \frac{27}{2}L_1L_2\left(L_2-\frac{1}{3}\right)$$
+$$N_6 = \frac{27}{2}L_2L_3\left(L_2-\frac{1}{3}\right), \qquad N_7 = \frac{27}{2}L_2L_3\left(L_3-\frac{1}{3}\right)$$
+$$N_8 = \frac{27}{2}L_1L_3\left(L_3-\frac{1}{3}\right), \qquad N_9 = \frac{27}{2}L_1L_3\left(L_1-\frac{1}{3}\right)$$
+</div>
+
+<p><strong>Central node:</strong></p>
+<div class="result-box">
+$$N_{10} = 27L_1L_2L_3$$
+</div>
+</div>
+
+<!-- 6-noded triangle with specific coords -->
+<div class="example">
+<div class="ex-title">Shape function of 6-noded triangular element (specific coordinates)</div>
+
+<div class="figure">
+<svg viewBox="0 0 300 240" style="max-width:320px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <polygon points="50,200 250,200 150,30" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="200" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="30" y="205" fill="#1a365d" font-weight="bold">1</text>
+ <text x="25" y="218" fill="#555" font-size="9">(-a,0)</text>
+ <circle cx="250" cy="200" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="258" y="205" fill="#1a365d" font-weight="bold">2</text>
+ <text x="255" y="218" fill="#555" font-size="9">(a,0)</text>
+ <circle cx="150" cy="30" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="158" y="28" fill="#1a365d" font-weight="bold">3</text>
+ <text x="152" y="18" fill="#555" font-size="9">(0,b)</text>
+ <circle cx="150" cy="200" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="150" y="218" text-anchor="middle" fill="#27ae60" font-weight="bold">4</text>
+ <circle cx="200" cy="115" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="213" y="112" fill="#27ae60" font-weight="bold">5</text>
+ <text x="200" y="130" fill="#555" font-size="8">(a/2,b/2)</text>
+ <circle cx="100" cy="115" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1"/>
+ <text x="80" y="112" fill="#27ae60" font-weight="bold">6</text>
+ <text x="62" y="130" fill="#555" font-size="8">(0,b/2)</text>
+</svg>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>$N_1 = C(2b\xi + a\eta - 2ab)(2b\xi + a\eta)$; Apply $N_1=1$ @ $\xi=-a, \eta=0$: $C=\frac{1}{8a^2b^2}$</p>
+<div class="eq-block">
+$$N_1 = \frac{1}{8a^2b^2}(2b\xi + a\eta - 2ab)(2b\xi + a\eta)$$
+$$N_2 = \frac{1}{8a^2b^2}(2b\xi - a\eta + 2ab)(2b\xi - a\eta)$$
+$$N_3 = \frac{\eta}{2b^2}(\eta - b)$$
+</div>
+
+<p>$N_4 = C(2b\xi + a\eta - 2ab)(2b\xi - a\eta + 2ab)$; Apply $N_4=1$ @ $\xi=0, \eta=0$: $C=-\frac{1}{4a^2b^2}$</p>
+<div class="eq-block">
+$$N_4 = -\frac{1}{4a^2b^2}(2b\xi + a\eta - 2ab)(2b\xi - a\eta + 2ab)$$
+</div>
+
+<p>$N_5 = C(2b\xi - a\eta + 2ab)\eta$; Apply $N_5=1$ @ $\xi=a, \eta=b$: $C=\frac{1}{3ab^2}$</p>
+<div class="result-box">
+$$N_5 = \frac{\eta}{3ab^2}(2b\xi - a\eta + 2ab)$$
+$$N_6 = \frac{-\eta}{3ab^2}(2b\xi + a\eta - 2ab)$$
+</div>
+</div>
+
+
+<!-- ===== NAVIGATION ===== -->
+<div class="ch-nav">
+ <a href="4.3_Truss_Element.html"><span style="font-size:1.2rem;font-weight:700">&larr;</span> <span>4.3 Truss Element</span></a>
+ <a href="4.5_Beam_Element.html" class="next"><span>4.5 Beam Element</span> <span style="font-size:1.2rem;font-weight:700">&rarr;</span></a>
+</div>
+
+</div><!-- /content -->
+
+<footer class="footer">
+ <p><strong>4.4 Shape Functions</strong> &mdash; Finite Element Method</p>
+ <p>Collected &amp; Prepared By: Er. Sanjay Kumar Sah | Pulchowk Campus</p>
+ <p style="margin-top:8px"><a href="index.html">&larr; Table of Contents</a></p>
+</footer>
+
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr;</button>
+<script>
+window.addEventListener('scroll',function(){document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
+</script>
+<script src="annotate.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+ 'use strict';
+ var on = false, drawing = false, erasing = false;
+ var COLORS = [
+ '#e63946', /* red */
+ '#1a365d', /* navy */
+ '#2d6a4f', /* forest green */
+ '#e67e22', /* orange */
+ '#7c3aed', /* violet */
+ '#000000', /* black */
+ '#ffffff', /* white */
+ '#f0f0f0', /* light gray */
+ '#0ea5e9', /* sky blue */
+ '#ec4899', /* hot pink */
+ '#f59e0b', /* amber gold */
+ '#06b6d4', /* cyan */
+ '#ff6b6b', /* coral */
+ '#a855f7', /* purple glow */
+ '#22d3ee', /* electric teal */
+ '#facc15', /* yellow */
+ '#fef9c3', /* pale yellow */
+ 'gold', /* golden shimmer */
+ '#c0c0c0' /* silver */
+ ];
+ var SHIMMER = { 'gold': true, '#c0c0c0': true };
+ var color = COLORS[0], penW = 3;
+ var strokes = []; // finished: [{c,w,er,p:[x,y,x,y,...]}]
+ var pts = []; // current stroke points (flat: x,y,x,y,...)
+ var drawn = 0; // how many points already rendered
+ var raf = 0;
+
+ /* --- CSS --- */
+ var st = document.createElement('style');
+ st.textContent =
+ '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+ '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+ '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+ '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+ '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+ '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+ document.head.appendChild(st);
+
+ /* --- fixed viewport canvas (small and fast) --- */
+ var cv = document.createElement('canvas');
+ cv.className = 'dw-cv';
+ document.body.appendChild(cv);
+
+ // allow mouse wheel to scroll through the canvas
+ cv.addEventListener('wheel', function (e) {
+ window.scrollBy(0, e.deltaY);
+ paint();
+ }, { passive: true });
+ var cx = cv.getContext('2d');
+
+ function sized() {
+ var dpr = window.devicePixelRatio || 1;
+ var w = window.innerWidth, h = window.innerHeight;
+ cv.width = w * dpr; cv.height = h * dpr;
+ cv.style.width = w + 'px'; cv.style.height = h + 'px';
+ cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ paint();
+ }
+ sized();
+ window.addEventListener('resize', sized);
+
+ /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+ function paint() {
+ var sx = window.scrollX, sy = window.scrollY;
+ cx.clearRect(0, 0, cv.width, cv.height);
+ for (var s = 0; s < strokes.length; s++) {
+ var sk = strokes[s], p = sk.p;
+ if (p.length < 4) continue;
+ cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+ cx.strokeStyle = sk.c;
+ cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ cx.beginPath();
+ cx.moveTo(p[0] - sx, p[1] - sy);
+ for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+ cx.stroke();
+ }
+ }
+ window.addEventListener('scroll', paint);
+
+ /* --- UI --- */
+ var btn = document.createElement('button');
+ btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+ document.body.appendChild(btn);
+
+ var tb = document.createElement('div'); tb.className = 'dw-tb';
+ var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+ COLORS.forEach(function (c) {
+ var d = document.createElement('div');
+ d.className = 'dw-dot' + (c === color ? ' on' : '');
+ d.style.background = c;
+ d.onclick = function () {
+ color = c; erasing = false; erBtn.classList.remove('on');
+ tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+ d.classList.add('on');
+ };
+ cGrid.appendChild(d);
+ });
+ tb.appendChild(cGrid);
+ var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+ tb.appendChild(lbl);
+ var sl = document.createElement('input');
+ sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+ sl.oninput = function () { penW = +sl.value; };
+ tb.appendChild(sl);
+
+ var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+ erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+ tb.appendChild(erBtn);
+
+ var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+ unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+ tb.appendChild(unBtn);
+
+ var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+ clBtn.onclick = function () { strokes.length = 0; paint(); };
+ tb.appendChild(clBtn);
+
+ document.body.appendChild(tb);
+
+ // stop toolbar clicks from reaching canvas
+ ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+ tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+ btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+ });
+
+ btn.onclick = function () {
+ on = !on;
+ btn.classList.toggle('on', on);
+ tb.classList.toggle('show', on);
+ cv.classList.toggle('on', on);
+ };
+
+ /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+ function tick() {
+ if (!drawing) { raf = 0; return; }
+ var n = pts.length;
+ if (drawn < n) {
+ var sx = window.scrollX, sy = window.scrollY;
+ // continue the existing path from last drawn point
+ if (drawn === 0) {
+ cx.beginPath();
+ cx.moveTo(pts[0] - sx, pts[1] - sy);
+ drawn = 2;
+ }
+ for (var i = drawn; i < n; i += 2) {
+ cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+ }
+ cx.stroke();
+ // continue the SAME path (no beginPath) — keeps it connected
+ drawn = n;
+ }
+ raf = requestAnimationFrame(tick);
+ }
+
+ /* --- pointer handlers --- */
+ cv.addEventListener('pointerdown', function (e) {
+ if (!on || e.button !== 0 || e.target !== cv) return;
+ e.preventDefault();
+ cv.setPointerCapture(e.pointerId);
+ drawing = true;
+ // store document coords
+ var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+ pts = [dx, dy];
+ drawn = 0;
+ // set style once for whole stroke
+ cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+ cx.strokeStyle = color;
+ cx.lineWidth = erasing ? penW * 4 : penW;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ // start rAF loop
+ if (!raf) raf = requestAnimationFrame(tick);
+ });
+
+ cv.addEventListener('pointermove', function (e) {
+ if (!drawing) return;
+ // just push coords — rAF will render them
+ pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+ });
+
+ function stop() {
+ if (!drawing) return;
+ drawing = false;
+ if (pts.length >= 4) {
+ strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+ }
+ pts = []; drawn = 0;
+ // full repaint to clean up
+ paint();
+ }
+ cv.addEventListener('pointerup', stop);
+ cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+ var t=document.getElementById('dmToggle'),h=document.documentElement,
+ s=localStorage.getItem('theme');
+ if(s)h.setAttribute('data-theme',s);
+ function updateIcon(){
+ if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+ }
+ updateIcon();
+ if(t){
+ t.addEventListener('click',function(){
+ var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+ h.setAttribute('data-theme',n);
+ localStorage.setItem('theme',n);
+ updateIcon();
+ fixInline(n==='dark');
+ });
+ }
+ /* Fix inline and style="color:..." */
+ function fixInline(dark){
+ var els=document.querySelectorAll('[style]');
+ for(var i=0;i<els.length;i++){
+ var el=els[i];
+ /* Skip SVG internals */
+ if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+ if(el.closest&&el.closest('svg'))continue;
+ var st=el.style;
+ if(dark){
+ /* Background */
+ if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+ el.setAttribute('data-dm-bg',st.backgroundColor);
+ if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+ }
+ if(st.background&&!el.getAttribute('data-dm-bgf')){
+ el.setAttribute('data-dm-bgf',st.background);
+ if(lum(st.background)>160)st.background='#1e222a';
+ }
+ /* Text color */
+ if(st.color&&!el.getAttribute('data-dm-fg')){
+ el.setAttribute('data-dm-fg',st.color);
+ if(lum(st.color)<100)st.color='#d0cdc5';
+ }
+ }else{
+ if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+ if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+ if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+ }
+ }
+ }
+ /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+ function lum(c){
+ if(!c)return -1;
+ c=c.trim().toLowerCase();
+ if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+ if(c==='black'||c==='#000'||c==='#000000')return 0;
+ var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+ if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+ var hx=c.match(/^#([0-9a-f]{3,8})$/);
+ if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+ return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+ return -1;
+ }
+ /* Apply on load if dark */
+ if(h.getAttribute('data-theme')==='dark'){
+ if(document.readyState==='loading')
+ document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+ else fixInline(true);
+ }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

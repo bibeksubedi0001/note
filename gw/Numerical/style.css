@@ -1,0 +1,164 @@
+/* ============================================================
+   GROUNDWATER ENGINEERING — SOLVED NUMERICALS
+   Shared Stylesheet (Times New Roman, 12pt, print-friendly)
+   ============================================================ */
+:root { --base: 12pt; --accent: #1a237e; --accent-light: #e8eaf6; --border: #333; }
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: var(--base);
+    color: black; background: white;
+    max-width: 900px; margin: 0 auto; padding: 2rem;
+    line-height: 1.6;
+}
+
+/* ---- Typography ---- */
+h1 { font-size: 1.35rem; font-weight: bold; text-transform: uppercase; text-align: center;
+     border-bottom: 3px solid black; padding-bottom: .5rem; margin-bottom: 1rem; }
+h2 { font-size: 1.15rem; font-weight: bold; text-transform: uppercase;
+     margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid black; padding-bottom: .3rem; }
+h3 { font-size: 1.05rem; font-weight: bold; margin-top: 1.2rem; margin-bottom: .5rem; }
+h4 { font-weight: bold; font-style: italic; margin-top: .8rem; margin-bottom: .4rem; }
+p  { text-align: justify; margin-bottom: 1rem; }
+ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+li { text-align: justify; margin-bottom: .35rem; }
+
+/* ---- Navigation ---- */
+.topnav { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin-bottom: 1.5rem;
+          border-bottom: 1px solid #ccc; padding-bottom: .8rem; }
+.topnav a { text-decoration: none; color: var(--accent); font-weight: bold; }
+.topnav a:hover { text-decoration: underline; }
+.topnav .sep { color: #999; }
+
+/* ---- Equation ---- */
+.equation { display: flex; justify-content: center; align-items: center; margin: 1.2rem 0; overflow-x: auto; }
+
+/* ---- Formula box ---- */
+.formula-box { background: var(--accent-light); border: 2px solid var(--accent);
+               border-radius: 6px; padding: 1rem 1.2rem; margin: 1.5rem 0; }
+.formula-box h3 { color: var(--accent); margin-top: 0; border: none; }
+.formula-box .equation { margin: .6rem 0; }
+.formula-box ul { margin-bottom: .4rem; }
+
+/* ---- Toggle / Accordion ---- */
+details.problem { border: 2px solid var(--border); margin-bottom: 1.8rem; }
+details.problem > summary {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .5rem;
+    cursor: pointer; padding: .8rem 1rem; background: #f5f5f5;
+    font-weight: bold; font-size: 1rem; list-style: none;
+    border-bottom: 2px solid var(--border);
+}
+details.problem > summary::-webkit-details-marker { display: none; }
+details.problem > summary::before { content: '▶'; font-size: .85rem; transition: transform .2s; }
+details.problem[open] > summary::before { transform: rotate(90deg); }
+details.problem[open] > summary { background: #e0e0e0; }
+details.problem > .body { padding: 1.2rem; }
+
+/* ---- Pills ---- */
+.pill { display: inline-block; border: 1px solid black; padding: 1px 8px;
+        font-size: .82rem; font-weight: bold; border-radius: 3px; }
+.pill-ch { background: #e8eaf6; }
+.pill-yr { background: #fff9c4; }
+.pill-mk { background: #e8f5e9; }
+
+/* ---- Given-data table ---- */
+.given { background: #fafafa; border: 1px solid #aaa; padding: .8rem 1rem; margin: .8rem 0; }
+.given h4 { margin-top: 0; font-style: normal; border-bottom: 1px dashed #aaa; padding-bottom: .3rem; margin-bottom: .5rem; }
+table.dt { width: 100%; border-collapse: collapse; margin: .4rem 0; }
+table.dt td, table.dt th { border: 1px solid #999; padding: 5px 10px; text-align: left; vertical-align: top; }
+table.dt th { background: #eee; font-weight: bold; }
+
+/* ---- Steps ---- */
+.step { font-weight: bold; display: inline-block; margin-bottom: .25rem; }
+
+/* ---- Answer ---- */
+.answer { border: 2.5px solid black; padding: .6rem 1rem; margin: .6rem 0;
+          text-align: center; font-weight: bold; font-size: 1.02rem; }
+
+/* ---- Insight callout ---- */
+.insight { border-left: 4px solid var(--accent); padding: .5rem 1rem; margin: 1rem 0;
+           background: #f9f9ff; font-style: italic; }
+
+/* ---- Concept box ---- */
+.concept-box { background: #fff8e1; border: 2px solid #f9a825; border-radius: 6px;
+               padding: 1rem 1.2rem; margin: 1.2rem 0; }
+.concept-box h4 { color: #e65100; margin-top: 0; font-style: normal; border: none; }
+.concept-box ul { margin-bottom: .3rem; }
+
+/* ---- Derivation hint ---- */
+.derivation { background: #e8f5e9; border: 1px solid #388e3c; border-radius: 4px;
+              padding: .8rem 1rem; margin: .8rem 0; font-size: .95rem; }
+.derivation h4 { color: #1b5e20; margin-top: 0; font-style: normal; }
+
+/* ---- Warning / Common mistake ---- */
+.warning { background: #fce4ec; border-left: 4px solid #c62828; padding: .5rem 1rem;
+           margin: .8rem 0; }
+.warning strong { color: #c62828; }
+
+/* ---- Exam note ---- */
+.exam-note { background: #e3f2fd; border: 1px solid #1565c0; border-radius: 4px;
+             padding: .6rem 1rem; margin: .8rem 0; font-weight: bold; text-align: center; }
+.exam-note::before { content: '★ '; }
+
+/* ---- Method box ---- */
+.method-box { background: #f3e5f5; border: 2px solid #7b1fa2; border-radius: 6px;
+              padding: 1rem 1.2rem; margin: 1.2rem 0; }
+.method-box h4 { color: #4a148c; margin-top: 0; font-style: normal; }
+.method-box ol { counter-reset: method-step; list-style: none; padding-left: 0; }
+.method-box ol li { counter-increment: method-step; padding: .3rem 0 .3rem 2.2rem;
+                    position: relative; }
+.method-box ol li::before { content: 'Step ' counter(method-step); font-weight: bold;
+                            color: #7b1fa2; position: absolute; left: 0; }
+
+/* ---- Units table ---- */
+table.units { border-collapse: collapse; margin: .5rem auto; font-size: .93rem; }
+table.units td, table.units th { border: 1px solid #777; padding: 4px 12px; }
+table.units th { background: #e8eaf6; font-weight: bold; }
+
+/* ---- Figure ---- */
+.fig { text-align: center; margin: 1.5rem 0; padding: 1rem; border: 1px solid #999; overflow-x: auto; }
+.fig svg { max-width: 100%; height: auto; }
+.figcap { font-style: italic; margin-top: .5rem; text-align: center; font-size: .93rem; }
+
+/* ---- Index cards ---- */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; margin: 1.5rem 0; }
+.card { border: 2px solid var(--accent); border-radius: 8px; padding: 1.2rem; transition: box-shadow .2s; }
+.card:hover { box-shadow: 0 4px 16px rgba(26,35,126,.15); }
+.card h3 { margin-top: 0; color: var(--accent); font-size: 1rem; }
+.card .count { font-size: 2rem; font-weight: bold; color: var(--accent); }
+.card a { display: inline-block; margin-top: .6rem; color: var(--accent); font-weight: bold; text-decoration: none;
+          border: 1px solid var(--accent); padding: 4px 14px; border-radius: 4px; }
+.card a:hover { background: var(--accent); color: white; }
+
+/* ---- Summary table ---- */
+table.sum { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+table.sum td, table.sum th { border: 1px solid black; padding: 6px 10px; text-align: left; vertical-align: top; }
+table.sum th { font-weight: bold; background: #f0f0f0; }
+
+/* ---- Print button ---- */
+.print-btn { position: fixed; top: 1rem; right: 1rem; border: 2px solid black; background: white; color: black;
+             padding: .4rem .9rem; font-weight: bold; cursor: pointer;
+             font-family: 'Times New Roman'; font-size: var(--base); z-index: 100; }
+.print-btn:hover { background: black; color: white; }
+
+/* ---- Expand / Collapse All ---- */
+.ctrl-bar { display: flex; gap: .6rem; margin-bottom: 1rem; }
+.ctrl-bar button { border: 1px solid var(--accent); background: white; color: var(--accent);
+                   padding: 4px 12px; cursor: pointer; font-family: 'Times New Roman';
+                   font-size: .9rem; font-weight: bold; }
+.ctrl-bar button:hover { background: var(--accent); color: white; }
+
+/* ---- Responsive ---- */
+@media (max-width: 720px) { body { padding: 1rem; } .card-grid { grid-template-columns: 1fr; } }
+
+/* ---- Print ---- */
+@media print {
+    body { padding: 0; max-width: 100%; }
+    .print-btn, .topnav, .ctrl-bar { display: none; }
+    details.problem { break-inside: avoid; }
+    details.problem[open] > summary { background: #eee !important; }
+    h2 { break-after: avoid; }
+}

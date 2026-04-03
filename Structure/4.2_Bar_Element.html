@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>4.2 Bar Element | Finite Element Method</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+MathJax = {
+ tex: {
+ inlineMath: [['$','$'],['\\(','\\)']],
+ displayMath: [['$$','$$'],['\\[','\\]']],
+ processEscapes: true
+ }
+};
+</script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        /* ── Topbar ── */
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            background: white; color: black;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; height: 44px;
+            border-bottom: 2px solid black;
+        }
+        .topbar a { color: black; text-decoration: none; font-weight: 700; }
+        .topbar a:hover { text-decoration: underline; }
+        .topbar span { font-size: 10pt; opacity: .65; }
+
+        /* ── Chapter Header ── */
+        .ch-header {
+            background: white; color: black;
+            text-align: center; padding: 40px 24px 32px;
+            border-bottom: 2px solid black;
+        }
+        .ch-header h1 {
+            color: black; font-size: 16pt; text-transform: uppercase;
+            border-bottom: none; margin-bottom: 6px;
+        }
+        .ch-header .meta { font-size: 11pt; font-style: italic; }
+        .ch-header .author { font-size: 9pt; opacity: .55; margin-top: 8px; }
+
+        /* ── Content wrapper ── */
+        .content { max-width: 800px; margin: 0 auto; padding: 30px 24px 50px; }
+
+        /* ── Equation blocks ── */
+        .eq-block {
+            margin: 14px 0; padding: 12px 18px;
+            background: white; border-left: 3px solid black;
+            overflow-x: auto;
+        }
+        .eq-block.hl {
+            background: white; border: 2px dashed black;
+            border-left: 4px solid black;
+        }
+
+        /* ── Definition box ── */
+        .def-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+        .def-box .dt { font-weight: 700; margin-bottom: 4px; }
+
+        /* ── Step box ── */
+        .step-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Note ── */
+        .note {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Result box ── */
+        .result-box {
+            background: white; border: 2px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Given / Answer ── */
+        .given { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+        .answer { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+
+        /* ── Example ── */
+        .example {
+            border: 1px solid black; padding: 16px; margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        .ex-title {
+            font-weight: bold; border-bottom: 1px solid black;
+            padding-bottom: 6px; margin-bottom: 10px;
+        }
+        .ex-q {
+            background: white; border-left: 3px solid black;
+            padding: 10px 14px; margin: 8px 0; font-style: italic;
+        }
+
+        /* ── Solution label ── */
+        .soln-label {
+            display: inline-block; background: black; color: white;
+            padding: 2px 10px; font-weight: bold; margin: 12px 0 6px; font-size: 10pt;
+        }
+
+        /* ── Figures ── */
+        .figure, .svg-wrap { text-align: center; margin: 16px auto; max-width: 100%; overflow-x: auto; }
+        .figure .caption, .figcaption {
+            font-style: italic; margin-top: 6px; text-align: center; font-size: 10pt;
+        }
+
+        /* ── Tables ── */
+        .matrix-table, .summary-table, .comp-table {
+            width: 100%; border-collapse: collapse; margin: 14px 0;
+        }
+        .matrix-table th, .summary-table th, .comp-table th {
+            background: white; color: black; border: 1px solid black;
+            padding: 6px 10px; text-align: center; font-weight: bold;
+        }
+        .matrix-table td, .summary-table td, .comp-table td {
+            border: 1px solid black; padding: 6px 10px; text-align: center; vertical-align: top;
+        }
+
+        /* ── Chapter navigation ── */
+        .ch-nav { display: flex; gap: 12px; margin: 30px 0; flex-wrap: wrap; }
+        .ch-nav a {
+            flex: 1; min-width: 200px; display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px; background: white; border: 1px solid black;
+            text-decoration: none; color: black; font-weight: bold;
+        }
+        .ch-nav a:hover { background: #f5f5f5; }
+        .ch-nav .next { justify-content: flex-end; text-align: right; }
+
+        /* ── Footer ── */
+        .footer {
+            background: white; color: black; text-align: center;
+            padding: 20px; font-size: 10pt; border-top: 2px solid black;
+        }
+        .footer p { color: black; text-align: center; }
+        .footer a { color: black; text-decoration: underline; }
+
+        /* ── Back to top ── */
+        .btt {
+            position: fixed; bottom: 24px; right: 80px; width: 40px; height: 40px;
+            border-radius: 50%; background: black; color: white; border: none;
+            cursor: pointer; font-size: 18px; display: none;
+            align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,.3); z-index: 90;
+        }
+        .btt.show { display: flex; }
+
+        /* ── Hero panel ── */
+        .hero-panel { margin-bottom: 24px; }
+        .hero-card { border: 1px solid black; padding: 20px; margin-bottom: 16px; }
+        .hero-card h2 { border-bottom: 2px solid black; padding-bottom: 6px; }
+        .hero-card p { margin: 8px 0; }
+
+        /* ── Chip row ── */
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .chip {
+            display: inline-block; background: white; border: 1px solid black;
+            padding: 4px 10px; font-size: 10pt;
+        }
+
+        /* ── TOC card / grid ── */
+        .toc-card { margin: 16px 0; }
+        .toc-card h3 { margin-bottom: 10px; font-weight: bold; }
+        .toc-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;
+        }
+        .toc-grid a {
+            display: block; padding: 10px 14px; background: white;
+            border: 1px solid black; text-decoration: none; color: black; font-weight: bold;
+        }
+        .toc-grid a:hover { background: #f5f5f5; }
+
+        /* ── Visual grid ── */
+        .visual-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px; margin: 16px 0;
+        }
+        .visual-card { border: 1px solid black; padding: 14px; }
+        .visual-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Chapter band ── */
+        .chapter-band { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+        .band-card {
+            flex: 1; min-width: 140px; border: 1px solid black;
+            padding: 14px; text-align: center;
+        }
+        .band-card .num { font-size: 20pt; font-weight: bold; }
+        .band-card .label { font-size: 10pt; margin-top: 4px; }
+
+        /* ── Mini grid / notes ── */
+        .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+        .mini-note { border: 1px solid black; padding: 12px; }
+        .mini-note h4 { font-weight: bold; margin-bottom: 6px; }
+
+        /* ── Quick formulas ── */
+        .quick-formulas {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px; margin: 16px 0;
+        }
+        .formula-card { border: 1px solid black; padding: 14px; }
+        .formula-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Formula box / concept box ── */
+        .formula-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .concept-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .derivation {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+
+        /* ── Question map ── */
+        .qmap { margin: 14px 0; }
+        .yr { font-size: 9pt; font-style: italic; }
+
+        /* ── Hero (index page) ── */
+        .hero {
+            background: white; color: black;
+            text-align: center; padding: 50px 24px 40px;
+            border-bottom: 2px solid black;
+        }
+        .hero h1 { color: black; border-bottom: none; text-align: center; }
+        .hero .sub { font-style: italic; }
+        .hero .author { opacity: .55; margin-top: 8px; }
+        .hero .divider { width: 80px; height: 3px; background: black; margin: 14px auto; }
+        .hero .stats { display: flex; justify-content: center; gap: 40px; margin-top: 16px; }
+        .hero .stat-val { font-size: 18pt; font-weight: bold; }
+
+        /* ── Card grid (index) ── */
+        .card { border: 1px solid black; padding: 16px; margin: 10px 0; }
+        .card h3 { font-weight: bold; margin-bottom: 6px; }
+        .card a {
+            display: inline-block; padding: 6px 14px; border: 1px solid black;
+            color: black; text-decoration: none; font-weight: bold; margin-top: 8px;
+        }
+        .card a:hover { background: black; color: white; }
+
+        /* ── Chapter card (index TOC) ── */
+        .toc-title {
+            text-transform: uppercase; border-bottom: 2px solid black;
+            padding-bottom: 8px; margin-bottom: 20px;
+        }
+        .ch-card {
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 18px; margin: 8px 0;
+            border: 1px solid black; border-left: 4px solid black;
+            text-decoration: none; color: black;
+            transition: background .15s;
+        }
+        .ch-card:hover { background: #f5f5f5; }
+        .ch-num { font-size: 16pt; font-weight: bold; min-width: 40px; text-align: center; }
+        .ch-body { flex: 1; }
+        .ch-title { font-weight: bold; }
+        .ch-pages { font-size: 10pt; margin-top: 4px; opacity: .6; }
+        .ch-arrow { font-size: 16pt; opacity: .4; }
+
+        /* ── Warning ── */
+        .warning {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Pre/diagram ── */
+        pre.diagram {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px auto; overflow-x: auto;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 11pt; line-height: 1.5; text-align: center;
+            max-width: 700px; white-space: pre;
+        }
+
+        /* ── Accordion problems ── */
+        details.problem { border: 1px solid black; margin: 10px 0; }
+        details.problem > summary {
+            background: white; color: black; padding: 10px 16px;
+            font-weight: bold; cursor: pointer;
+        }
+        details.problem[open] > summary { border-bottom: 1px solid black; }
+
+        @media (max-width: 768px) {
+            .content { padding: 16px 12px 40px; }
+            .ch-header h1 { font-size: 13pt; }
+            .visual-grid, .quick-formulas { grid-template-columns: 1fr; }
+            .mini-grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            .topbar, .btt, .ch-nav { display: none !important; }
+            .ch-header { border-bottom: 2px solid black; padding: 20px 0; }
+        }
+
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+ border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+ cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+ box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+ --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+ --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+ --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+ --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+ --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+ This single rule ensures NO text stays dark on dark bg.
+ Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .formula-box h3{color:#e8e5dd!important}
+[data-theme="dark"] .concept-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .concept-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .derivation{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .derivation h4{color:#e8e5dd!important}
+[data-theme="dark"] .warning{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .warning strong{color:#e8e5dd!important}
+[data-theme="dark"] .method-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .method-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#e0ddd5!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card h3{color:#e8e5dd!important}
+[data-theme="dark"] .card a{color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card a:hover{background:#3a3d44!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+ box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+ .dm-toggle{display:none!important}
+ [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+ transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<nav class="topbar">
+ <a href="index.html" style="font-weight:700"> FEM Textbook</a>
+ <span style="opacity:.65">Computational Technique</span>
+</nav>
+
+<header class="ch-header">
+ <h1>Chapter 4: Finite Element Method</h1>
+ <div class="meta">4.2 &mdash; Bar Element</div>
+ <div class="author">Collected &amp; Prepared By: Er. Sanjay Kumar Sah (Lecturer, Department of Civil Engineering, Pulchowk Campus)</div>
+</header>
+
+<div class="content">
+
+<!-- ===== STIFFNESS MATRIX & FORCE-DISPLACEMENT ===== -->
+<h2>Stiffness Matrix &amp; Force-Displacement Relationship</h2>
+
+<p>&rarr; Stiffness of a spring element is defined as the load per unit displacement. i.e.</p>
+<div class="eq-block">
+$$k = \frac{P}{\delta} \quad \Rightarrow \quad P = k \cdot \delta$$
+</div>
+
+<p>&rarr; Similarly, for a bar element, we know,</p>
+<div class="eq-block">
+$$\delta = \frac{Pl}{AE} \quad \Rightarrow \quad \frac{P}{\delta} = \frac{AE}{l} = k \;\text{ (Stiffness)}$$
+</div>
+<div class="eq-block">
+$$P = k \cdot \delta = \frac{AE}{l} \cdot \delta$$
+</div>
+
+<p>Considering a bar element or spring element acted upon by forces $F_1$ &amp; $F_2$ at nodes 1 &amp; 2 respectively. Let $u_1$ &amp; $u_2$ be the displacements at nodes 1 &amp; 2 respectively.</p>
+
+<!-- SVG: 2-noded bar with forces -->
+<div class="figure">
+<svg viewBox="0 0 520 120" style="max-width:540px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="13">
+ <defs>
+ <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+ </defs>
+ <!-- Bar -->
+ <rect x="70" y="55" width="380" height="14" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Node 1 -->
+ <circle cx="70" cy="62" r="10" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="70" y="66" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">1</text>
+ <!-- Node 2 -->
+ <circle cx="450" cy="62" r="10" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="450" y="66" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="12">2</text>
+ <!-- F1 arrow -->
+ <line x1="70" y1="12" x2="70" y2="42" stroke="#c0392b" stroke-width="2" marker-end="url(#ah)"/>
+ <text x="70" y="8" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">F₁, u₁</text>
+ <!-- F2 arrow -->
+ <line x1="450" y1="12" x2="450" y2="42" stroke="#c0392b" stroke-width="2" marker-end="url(#ah)"/>
+ <text x="450" y="8" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">F₂, u₂</text>
+ <!-- Length -->
+ <line x1="70" y1="90" x2="450" y2="90" stroke="#555" stroke-width="1"/>
+ <line x1="70" y1="85" x2="70" y2="95" stroke="#555" stroke-width="1"/>
+ <line x1="450" y1="85" x2="450" y2="95" stroke="#555" stroke-width="1"/>
+ <text x="260" y="108" text-anchor="middle" font-size="13" fill="#555" font-style="italic">l</text>
+</svg>
+<div class="caption">Fig: Force and displacement acting at corresponding nodes of a bar/spring element</div>
+</div>
+
+<p>Hence, net elongation, $\delta = u_2 - u_1$</p>
+
+<p>Also, for equilibrium:</p>
+<div class="eq-block">
+$$F_1 + F_2 = 0 \quad \Rightarrow \quad F_1 = -F_2 \quad \Rightarrow \quad F_2 = -F_1$$
+</div>
+
+<p>Now,</p>
+<div class="eq-block">
+$$F_2 = k \cdot \delta = k(u_2 - u_1) = -ku_1 + ku_2$$
+</div>
+<div class="eq-block">
+$$F_1 = -k(u_2 - u_1) = ku_1 - ku_2$$
+</div>
+
+<p>Hence, in matrix form:</p>
+<div class="eq-block hl">
+$$\begin{Bmatrix} F_1 \\ F_2 \end{Bmatrix} = \begin{bmatrix} k & -k \\ -k & k \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+
+<p>or, $\{F\} = [K]\{u\}$</p>
+
+<p>where,</p>
+<ul>
+ <li>$\{F\}$ = Force vector</li>
+ <li>$[K]$ = Stiffness matrix for bar/spring element ($k = \frac{AE}{l}$ for bar element)</li>
+ <li>$\{u\}$ = Displacement vector</li>
+</ul>
+
+<!-- ===== 3-NODED BAR ===== -->
+<h2>3-Noded Bar/Spring Element</h2>
+
+<!-- SVG: 3-noded bar -->
+<div class="figure">
+<svg viewBox="0 0 620 130" style="max-width:640px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <defs>
+ <marker id="ah2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker>
+ </defs>
+ <!-- Bar segment 1 -->
+ <rect x="60" y="55" width="220" height="14" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Bar segment 2 -->
+ <rect x="280" y="55" width="280" height="14" rx="2" fill="#cfe0f4" stroke="#1a365d" stroke-width="2"/>
+ <!-- Nodes -->
+ <circle cx="60" cy="62" r="10" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="60" y="66" text-anchor="middle" font-weight="bold" fill="#1a365d">1</text>
+ <circle cx="280" cy="62" r="10" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="280" y="66" text-anchor="middle" font-weight="bold" fill="#1a365d">2</text>
+ <circle cx="560" cy="62" r="10" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="560" y="66" text-anchor="middle" font-weight="bold" fill="#1a365d">3</text>
+ <!-- Labels above -->
+ <text x="60" y="22" text-anchor="middle" font-size="11" fill="#c0392b">F₁, u₁</text>
+ <text x="280" y="22" text-anchor="middle" font-size="11" fill="#c0392b">F₂, u₂</text>
+ <text x="560" y="22" text-anchor="middle" font-size="11" fill="#c0392b">F₃, u₃</text>
+ <!-- Arrows -->
+ <line x1="60" y1="28" x2="60" y2="42" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ah2)"/>
+ <line x1="280" y1="28" x2="280" y2="42" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ah2)"/>
+ <line x1="560" y1="28" x2="560" y2="42" stroke="#c0392b" stroke-width="1.5" marker-end="url(#ah2)"/>
+ <!-- Element labels -->
+ <text x="170" y="90" text-anchor="middle" font-size="11" fill="#1a365d" font-style="italic">A₁, E₁, l₁</text>
+ <text x="420" y="90" text-anchor="middle" font-size="11" fill="#1a365d" font-style="italic">A₂, E₂, l₂</text>
+ <!-- Dimension -->
+ <line x1="60" y1="105" x2="280" y2="105" stroke="#888" stroke-width="1"/>
+ <line x1="60" y1="100" x2="60" y2="110" stroke="#888" stroke-width="1"/>
+ <line x1="280" y1="100" x2="280" y2="110" stroke="#888" stroke-width="1"/>
+ <text x="170" y="120" text-anchor="middle" font-size="11" fill="#888">Element 1</text>
+ <line x1="280" y1="105" x2="560" y2="105" stroke="#888" stroke-width="1"/>
+ <line x1="560" y1="100" x2="560" y2="110" stroke="#888" stroke-width="1"/>
+ <text x="420" y="120" text-anchor="middle" font-size="11" fill="#888">Element 2</text>
+</svg>
+<div class="caption">Fig: 3-noded bar/spring element with two elements</div>
+</div>
+
+<p>For 1st element:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{11} \\ f_{12} \end{Bmatrix} = \begin{bmatrix} k_1 & -k_1 \\ -k_1 & k_1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+
+<p>For 2nd element:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{22} \\ f_{23} \end{Bmatrix} = \begin{bmatrix} k_2 & -k_2 \\ -k_2 & k_2 \end{bmatrix} \begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>Assembled equation is:</p>
+<div class="eq-block hl">
+$$\begin{Bmatrix} F_1 \\ F_2 \\ F_3 \end{Bmatrix} = \begin{bmatrix} k_1 & -k_1 & 0 \\ -k_1 & k_1+k_2 & -k_2 \\ 0 & -k_2 & k_2 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>where $F_2 = f_{12} + f_{22}$, and $f_{ij}$ = force in element $i$ at node $j$.</p>
+<p>$\therefore \{F\} = [K]\{u\}$</p>
+
+<!-- ===== STRESS & STRAIN ===== -->
+<h2>Stress &amp; Strain in an Element</h2>
+
+<div class="eq-block">
+$$\begin{Bmatrix} f_{11} \\ f_{12} \end{Bmatrix} = \begin{bmatrix} k & -k \\ -k & k \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$f_{11} = k(u_1 - u_2) = -k(u_2 - u_1)$$
+$$f_{12} = -k(u_1 - u_2) = k(u_2 - u_1) = \frac{EA}{l}(u_2 - u_1)$$
+</div>
+
+<p>$\therefore$ Element stress,</p>
+<div class="eq-block hl">
+$$\sigma = \frac{f_{12}}{A} = \frac{E}{l}(u_2 - u_1) = \frac{E}{l} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} = E[B]\{u\}$$
+</div>
+
+<p>and, Strain,</p>
+<div class="eq-block hl">
+$$\epsilon = \frac{\sigma}{E} = \frac{1}{l} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} = [B]\{u\}$$
+</div>
+
+<p>where $[B] = \frac{1}{l} \begin{bmatrix} -1 & 1 \end{bmatrix}$ is the <strong>strain-displacement matrix</strong>.</p>
+
+<!-- ===== EQUIVALENT NODAL LOADS ===== -->
+<h2>Equivalent Nodal Loads</h2>
+
+<p>Any type of load acting at any point of the element should be transferred to nodes as equivalent nodal loads in FEM.</p>
+
+<h3>i) Body Force</h3>
+<p>A body force is a force that acts throughout the volume of the body. For example, gravity force.</p>
+<p>Let $\gamma$ = unit weight of material of bar, $A$ = cross-sectional area, $l$ = length of bar, $W$ = weight.</p>
+<p>Then, $W = \gamma \cdot A \cdot l$</p>
+<p>Dividing equally to the two nodes:</p>
+<div class="eq-block hl">
+$$\begin{Bmatrix} f_{b1} \\ f_{b2} \end{Bmatrix} = \frac{\gamma \cdot A \cdot l}{2} \begin{Bmatrix} 1 \\ 1 \end{Bmatrix}$$
+</div>
+
+<h3>ii) Surface Traction (Surface Load)</h3>
+<p>If $S_t$ is the intensity of surface load and $P$ be the perimeter, then total load is:</p>
+<div class="eq-block">
+$$f_s = S_t \cdot P \cdot l$$
+</div>
+<p>Dividing the values equally to two nodes:</p>
+<div class="eq-block hl">
+$$\begin{Bmatrix} f_{s1} \\ f_{s2} \end{Bmatrix} = \frac{S_t \cdot P \cdot l}{2} \begin{Bmatrix} 1 \\ 1 \end{Bmatrix}$$
+</div>
+
+<div class="note">
+ &rarr; Point loads are directly added to nodal force vectors.
+</div>
+
+<!-- ===== TEMPERATURE EFFECT ===== -->
+<h2>Temperature Effect</h2>
+
+<p>We know; change in length due to change in temperature $\Delta t$ is given by:</p>
+<div class="eq-block">
+$$\Delta l = \alpha \cdot l \cdot \Delta t$$
+</div>
+<div class="eq-block">
+$$\frac{Pl}{AE} = \alpha \cdot l \cdot \Delta t \quad \Rightarrow \quad P = AE \cdot \alpha \cdot \Delta t$$
+</div>
+
+<p>$\therefore$ Element load vector due to temperature change is given by:</p>
+<div class="eq-block hl">
+$$\{f_t^e\} = \begin{Bmatrix} f_{1t} \\ f_{2t} \end{Bmatrix} = AE\alpha \cdot \Delta t \begin{Bmatrix} -1 \\ 1 \end{Bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$\text{Stress in element} = \frac{E}{l} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} - E\alpha \cdot \Delta t = E[B]\{u\} - E\alpha \cdot \Delta t$$
+</div>
+
+<div class="eq-block">
+$$\text{Strain in element} = [B]\{u\} - \alpha \cdot \Delta t$$
+</div>
+
+<!-- ===== EFFECT OF LACK OF FIT ===== -->
+<h2>Effect of Lack of Fit</h2>
+
+<div class="eq-block hl">
+$$\{f_{\delta}\} = \begin{Bmatrix} f_{1\delta} \\ f_{2\delta} \end{Bmatrix} = \frac{AE\delta}{l} \begin{Bmatrix} -1 \\ 1 \end{Bmatrix}$$
+</div>
+
+<p>($\delta$ is +ve when element is very long &amp; &minus;ve when element is short.)</p>
+
+<div class="eq-block">
+$$\text{Stress} = \frac{E}{l} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} - E \cdot \frac{\delta}{l} = E[B]\{u\} - E \cdot \frac{\delta}{l}$$
+</div>
+
+<div class="eq-block">
+$$\text{Strain} = \frac{1}{l} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \end{Bmatrix} - \frac{\delta}{l} = [B]\{u\} - \frac{\delta}{l}$$
+</div>
+
+<!-- ========================================== -->
+<!-- EXAMPLE 1 -->
+<!-- ========================================== -->
+<h2>Solved Examples</h2>
+
+<div class="example">
+<div class="ex-title">Example 1</div>
+<div class="ex-q">
+<strong>Q.</strong> For the spring assemblage with arbitrary numbered nodes shown in figure below, obtain: (a) the global stiffness matrix, (b) displacement of nodes 3 and 4, (c) the reaction forces at nodes 1 and 2, and (d) the forces in each spring. A force of 5000 N is applied at node 4.
+</div>
+
+<!-- SVG: Example 1 spring assemblage -->
+<div class="figure">
+<svg viewBox="0 0 600 160" style="max-width:620px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <defs><marker id="ea1" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker></defs>
+ <!-- Wall left -->
+ <rect x="20" y="40" width="10" height="50" fill="#888"/>
+ <line x1="20" y1="40" x2="20" y2="90" stroke="#555" stroke-width="2"/>
+ <line x1="15" y1="42" x2="20" y2="47" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="52" x2="20" y2="57" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="62" x2="20" y2="67" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="72" x2="20" y2="77" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="82" x2="20" y2="87" stroke="#555" stroke-width="1"/>
+ <!-- Wall right -->
+ <rect x="570" y="40" width="10" height="50" fill="#888"/>
+ <line x1="580" y1="40" x2="580" y2="90" stroke="#555" stroke-width="2"/>
+ <line x1="580" y1="42" x2="585" y2="47" stroke="#555" stroke-width="1"/>
+ <line x1="580" y1="52" x2="585" y2="57" stroke="#555" stroke-width="1"/>
+ <line x1="580" y1="62" x2="585" y2="67" stroke="#555" stroke-width="1"/>
+ <line x1="580" y1="72" x2="585" y2="77" stroke="#555" stroke-width="1"/>
+ <line x1="580" y1="82" x2="585" y2="87" stroke="#555" stroke-width="1"/>
+ <!-- Springs (zig-zag) -->
+ <!-- k1: 1→3 -->
+ <polyline points="40,65 55,55 70,75 85,55 100,75 115,55 130,75 145,55 160,75 175,55 190,65" fill="none" stroke="#2c5282" stroke-width="2"/>
+ <!-- k3: 3→4 -->
+ <polyline points="210,65 230,55 250,75 270,55 290,75 310,55 330,75 350,55 370,65" fill="none" stroke="#27ae60" stroke-width="2"/>
+ <!-- k2: 4→2 -->
+ <polyline points="390,65 405,55 420,75 435,55 450,75 465,55 480,75 495,55 510,75 525,55 540,65" fill="none" stroke="#e67e22" stroke-width="2"/>
+ <!-- Nodes -->
+ <circle cx="40" cy="65" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="40" y="35" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">1</text>
+ <circle cx="560" cy="65" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="560" y="35" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">2</text>
+ <circle cx="200" cy="65" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="200" y="35" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">3</text>
+ <circle cx="380" cy="65" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="380" y="35" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">4</text>
+ <!-- Spring labels -->
+ <text x="120" y="100" text-anchor="middle" font-size="11" fill="#2c5282" font-style="italic">k₁ = 1000 N/m</text>
+ <text x="290" y="100" text-anchor="middle" font-size="11" fill="#27ae60" font-style="italic">k₃ = 3000 N/m</text>
+ <text x="470" y="100" text-anchor="middle" font-size="11" fill="#e67e22" font-style="italic">k₂ = 2000 N/m</text>
+ <!-- Force at node 4 -->
+ <line x1="380" y1="115" x2="380" y2="85" stroke="#c0392b" stroke-width="2" marker-end="url(#ea1)"/>
+ <text x="380" y="130" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">P = 5000 N</text>
+ <!-- BC labels -->
+ <text x="40" y="105" text-anchor="middle" font-size="10" fill="#888">u₁=0</text>
+ <text x="560" y="105" text-anchor="middle" font-size="10" fill="#888">u₂=0</text>
+</svg>
+<div class="caption">Fig: Spring assemblage with arbitrarily numbered nodes</div>
+</div>
+
+<span class="soln-label">Solution</span>
+
+<p>Force vector:</p>
+<div class="eq-block">
+$$\{f\} = \begin{Bmatrix} f_1 \\ f_2 \\ f_3 \\ f_4 \end{Bmatrix} = \begin{Bmatrix} R_1 \\ R_2 \\ 0 \\ 5000 \end{Bmatrix}$$
+</div>
+
+<p>Displacement vector:</p>
+<div class="eq-block">
+$$\{u\} = \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \\ u_4 \end{Bmatrix} = \begin{Bmatrix} 0 \\ 0 \\ u_3 \\ u_4 \end{Bmatrix}$$
+</div>
+
+<p><strong>Stiffness matrix:</strong></p>
+<p>For element 1 (nodes 1, 3):</p>
+<div class="eq-block">
+$$[K^1] = \begin{bmatrix} 1000 & -1000 \\ -1000 & 1000 \end{bmatrix} \quad \text{(rows/cols: 1, 3)}$$
+</div>
+
+<p>For element 2 (nodes 2, 4):</p>
+<div class="eq-block">
+$$[K^2] = \begin{bmatrix} 2000 & -2000 \\ -2000 & 2000 \end{bmatrix} \quad \text{(rows/cols: 2, 4)}$$
+</div>
+
+<p>For element 3 (nodes 3, 4):</p>
+<div class="eq-block">
+$$[K^3] = \begin{bmatrix} 3000 & -3000 \\ -3000 & 3000 \end{bmatrix} \quad \text{(rows/cols: 3, 4)}$$
+</div>
+
+<p>Now, writing global stiffness matrix by superposition:</p>
+<div class="eq-block hl">
+$$[K] = 1000 \begin{bmatrix} 1 & 0 & -1 & 0 \\ 0 & 2 & 0 & -2 \\ -1 & 0 & 4 & -3 \\ 0 & -2 & -3 & 5 \end{bmatrix}$$
+</div>
+
+<p><strong>Force-displacement relationship:</strong> $\{f\} = [K]\{u\}$</p>
+<div class="eq-block">
+$$\begin{Bmatrix} R_1 \\ R_2 \\ 0 \\ 5000 \end{Bmatrix} = 1000 \begin{bmatrix} 1 & 0 & -1 & 0 \\ 0 & 2 & 0 & -2 \\ -1 & 0 & 4 & -3 \\ 0 & -2 & -3 & 5 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ u_3 \\ u_4 \end{Bmatrix}$$
+</div>
+
+<p>Eliminating rows and columns associated with $u = 0$ (boundary conditions), i.e., rows/columns 1 &amp; 2 (since $u_1 = 0$ and $u_2 = 0$), and writing reduced matrix equation for unknown DOFs ($u_3$ and $u_4$):</p>
+<div class="eq-block">
+$$\begin{Bmatrix} 0 \\ 5000 \end{Bmatrix} = 1000 \begin{bmatrix} 4 & -3 \\ -3 & 5 \end{bmatrix} \begin{Bmatrix} u_3 \\ u_4 \end{Bmatrix}$$
+</div>
+
+<p><strong>Solving the 2&times;2 system</strong> using matrix inversion formula: $\{u\} = [K_r]^{-1}\{F_r\}$.</p>
+<p>For a 2&times;2 matrix, the inverse is: $\begin{bmatrix} a & b \\ c & d \end{bmatrix}^{-1} = \frac{1}{ad - bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}$</p>
+
+<div class="eq-block">
+$$\text{Determinant of } [K_r] = 1000^2 \times (4 \times 5 - (-3)(-3)) = 1000^2 \times (20 - 9) = 11 \times 10^6$$
+</div>
+<div class="eq-block">
+$$[K_r]^{-1} = \frac{1}{11 \times 10^6} \begin{bmatrix} 5000 & 3000 \\ 3000 & 4000 \end{bmatrix} = \frac{1}{11000} \begin{bmatrix} 5 & 3 \\ 3 & 4 \end{bmatrix}$$
+</div>
+<div class="eq-block">
+$$\begin{Bmatrix} u_3 \\ u_4 \end{Bmatrix} = \frac{1}{11000} \begin{bmatrix} 5 & 3 \\ 3 & 4 \end{bmatrix} \begin{Bmatrix} 0 \\ 5000 \end{Bmatrix} = \frac{1}{11000} \begin{Bmatrix} 15000 \\ 20000 \end{Bmatrix}$$
+</div>
+
+<div class="result-box">
+$$\therefore \begin{Bmatrix} u_3 \\ u_4 \end{Bmatrix} = \begin{Bmatrix} 15/11 \\ 20/11 \end{Bmatrix} \approx \begin{Bmatrix} 1.363 \\ 1.818 \end{Bmatrix} \text{ m}$$
+</div>
+
+<p><strong>(c) Reaction forces:</strong> Back-substitute the displacements into the full global equation $\{f\} = [K]\{u\}$:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} R_1 \\ R_2 \\ 0 \\ 5000 \end{Bmatrix} = 1000 \begin{bmatrix} 1 & 0 & -1 & 0 \\ 0 & 2 & 0 & -2 \\ -1 & 0 & 4 & -3 \\ 0 & -2 & -3 & 5 \end{bmatrix} \begin{Bmatrix} 0 \\ 0 \\ 15/11 \\ 20/11 \end{Bmatrix}$$
+</div>
+
+<p>From Row 1: $R_1 = 1000 \times (1 \times 0 + 0 \times 0 - 1 \times \frac{15}{11} + 0 \times \frac{20}{11})$</p>
+<div class="eq-block">
+$$R_1 = 1000 \times \left(-\frac{15}{11}\right) = -\frac{15000}{11} = -1363.63 \text{ N}$$
+</div>
+
+<p>From Row 2: $R_2 = 1000 \times (0 + 2 \times 0 + 0 \times \frac{15}{11} - 2 \times \frac{20}{11})$</p>
+<div class="eq-block">
+$$R_2 = 1000 \times \left(-\frac{40}{11}\right) = -\frac{40000}{11} = -3636.36 \text{ N}$$
+</div>
+
+<div class="result-box">
+$$R_1 = -1363.63 \text{ N}, \qquad R_2 = -3636.36 \text{ N}$$
+</div>
+
+<p><strong>Equilibrium check:</strong> $\sum F = R_1 + R_2 + P = -1363.63 - 3636.36 + 5000 \approx 0$ &ensp; $\checkmark$</p>
+
+<p><strong>Forces in individual springs:</strong></p>
+
+<p>Element 1:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{11} \\ f_{13} \end{Bmatrix} = \begin{bmatrix} 1000 & -1000 \\ -1000 & 1000 \end{bmatrix} \begin{Bmatrix} 0 \\ 15/11 \end{Bmatrix}$$
+</div>
+<div class="result-box">
+$f_{11} = -15000/11 = -1363.63$ N, $\quad f_{13} = +15000/11 = +1363.63$ N (Tensile)
+</div>
+
+<p>Element 2:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{22} \\ f_{24} \end{Bmatrix} = \begin{bmatrix} 2000 & -2000 \\ -2000 & 2000 \end{bmatrix} \begin{Bmatrix} 0 \\ 20/11 \end{Bmatrix}$$
+</div>
+<div class="result-box">
+$f_{22} = -40000/11 = -3636.36$ N, $\quad f_{24} = +40000/11 = +3636.36$ N (Tensile)
+</div>
+
+<p>Element 3:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{33} \\ f_{34} \end{Bmatrix} = \begin{bmatrix} 3000 & -3000 \\ -3000 & 3000 \end{bmatrix} \begin{Bmatrix} 15/11 \\ 20/11 \end{Bmatrix}$$
+</div>
+<div class="result-box">
+$f_{33} = -15000/11 = -1363.63$ N, $\quad f_{34} = +15000/11 = +1363.63$ N (Tensile)
+</div>
+</div><!-- /example 1 -->
+
+<!-- ========================================== -->
+<!-- EXAMPLE 2 -->
+<!-- ========================================== -->
+<div class="example">
+<div class="ex-title">Example 2</div>
+<div class="ex-q">
+<strong>Q.</strong> For the spring assemblage shown in figure, obtain: (a) the global stiffness matrix, (b) the displacement of nodes 2, 3 &amp; 4, (c) the global nodal forces, and (d) the local element forces. Node 1 is fixed while node 5 is given a fixed known displacement $\delta = 20\text{ mm}$. The spring constant for all springs are equal to $k = 200\text{ kN/m}$.
+</div>
+
+<!-- SVG: Example 2 -->
+<div class="figure">
+<svg viewBox="0 0 620 130" style="max-width:640px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <!-- Wall left -->
+ <rect x="20" y="40" width="10" height="40" fill="#888"/>
+ <line x1="20" y1="40" x2="20" y2="80" stroke="#555" stroke-width="2"/>
+ <line x1="15" y1="42" x2="20" y2="47" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="52" x2="20" y2="57" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="62" x2="20" y2="67" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="72" x2="20" y2="77" stroke="#555" stroke-width="1"/>
+ <!-- Springs -->
+ <polyline points="38,60 50,50 62,70 74,50 86,70 98,50 110,60" fill="none" stroke="#2c5282" stroke-width="1.8"/>
+ <polyline points="128,60 140,50 152,70 164,50 176,70 188,50 200,60" fill="none" stroke="#2c5282" stroke-width="1.8"/>
+ <polyline points="218,60 230,50 242,70 254,50 266,70 278,50 290,60" fill="none" stroke="#2c5282" stroke-width="1.8"/>
+ <polyline points="308,60 320,50 332,70 344,50 356,70 368,50 380,60" fill="none" stroke="#2c5282" stroke-width="1.8"/>
+ <!-- Nodes -->
+ <circle cx="38" cy="60" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="38" y="30" text-anchor="middle" font-weight="bold" fill="#1a365d">1</text>
+ <circle cx="128" cy="60" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="128" y="30" text-anchor="middle" font-weight="bold" fill="#1a365d">2</text>
+ <circle cx="218" cy="60" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="218" y="30" text-anchor="middle" font-weight="bold" fill="#1a365d">3</text>
+ <circle cx="308" cy="60" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="308" y="30" text-anchor="middle" font-weight="bold" fill="#1a365d">4</text>
+ <circle cx="398" cy="60" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="398" y="30" text-anchor="middle" font-weight="bold" fill="#1a365d">5</text>
+ <!-- Labels -->
+ <text x="38" y="95" text-anchor="middle" font-size="10" fill="#888">u₁=0</text>
+ <text x="398" y="95" text-anchor="middle" font-size="10" fill="#888">u₅=20mm</text>
+ <!-- Arrow showing imposed displacement -->
+ <line x1="420" y1="60" x2="455" y2="60" stroke="#c0392b" stroke-width="2" marker-end="url(#ea1)"/>
+ <text x="450" y="50" font-size="10" fill="#c0392b">δ=20mm</text>
+ <!-- k labels -->
+ <text x="83" y="100" text-anchor="middle" font-size="10" fill="#2c5282">k</text>
+ <text x="173" y="100" text-anchor="middle" font-size="10" fill="#2c5282">k</text>
+ <text x="263" y="100" text-anchor="middle" font-size="10" fill="#2c5282">k</text>
+ <text x="353" y="100" text-anchor="middle" font-size="10" fill="#2c5282">k</text>
+ <text x="300" y="120" text-anchor="middle" font-size="11" fill="#555" font-style="italic">k = 200 kN/m (all springs)</text>
+</svg>
+<div class="caption">Fig: 5-node spring assemblage with known displacement at node 5</div>
+</div>
+
+<span class="soln-label">Solution</span>
+
+<p><strong>Given:</strong> 5 nodes, 4 spring elements (all with $k = 200$ kN/m), $u_1 = 0$ (fixed), $u_5 = 20$ mm $= 0.02$ m (known displacement), no external load on nodes 2, 3, 4.</p>
+
+<p><strong>Element connectivity:</strong></p>
+<ul>
+ <li>Element 1: nodes 1 &ndash; 2</li>
+ <li>Element 2: nodes 2 &ndash; 3</li>
+ <li>Element 3: nodes 3 &ndash; 4</li>
+ <li>Element 4: nodes 4 &ndash; 5</li>
+</ul>
+
+<p><strong>Force vector:</strong> (Reactions at constrained nodes; no external load at free nodes)</p>
+<div class="eq-block">
+$$\{f\} = \begin{Bmatrix} R_1 \\ 0 \\ 0 \\ 0 \\ R_5 \end{Bmatrix}$$
+</div>
+
+<p><strong>Displacement vector:</strong> ($u_5 = 20$ mm $= 0.02$ m)</p>
+<div class="eq-block">
+$$\{u\} = \begin{Bmatrix} 0 \\ u_2 \\ u_3 \\ u_4 \\ 0.02 \end{Bmatrix} \text{ m}$$
+</div>
+
+<p><strong>(a) Global Stiffness Matrix:</strong></p>
+<p>For each element, the stiffness matrix is given by:</p>
+<div class="eq-block">
+$$[K^i] = k \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix} = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \text{ kN/m}$$
+</div>
+
+<p>Element 1 (nodes 1, 2):</p>
+<div class="eq-block">
+$$[K^1] = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \quad \text{(rows/cols: 1, 2)}$$
+</div>
+
+<p>Element 2 (nodes 2, 3):</p>
+<div class="eq-block">
+$$[K^2] = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \quad \text{(rows/cols: 2, 3)}$$
+</div>
+
+<p>Element 3 (nodes 3, 4):</p>
+<div class="eq-block">
+$$[K^3] = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \quad \text{(rows/cols: 3, 4)}$$
+</div>
+
+<p>Element 4 (nodes 4, 5):</p>
+<div class="eq-block">
+$$[K^4] = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \quad \text{(rows/cols: 4, 5)}$$
+</div>
+
+<p>Assembling the $5 \times 5$ global stiffness matrix by direct stiffness method (superimposing element contributions at corresponding DOFs):</p>
+<div class="eq-block hl">
+$$[K] = \begin{bmatrix} 200 & -200 & 0 & 0 & 0 \\ -200 & 400 & -200 & 0 & 0 \\ 0 & -200 & 400 & -200 & 0 \\ 0 & 0 & -200 & 400 & -200 \\ 0 & 0 & 0 & -200 & 200 \end{bmatrix} \text{ kN/m}$$
+</div>
+<p>Note: Diagonal entries at interior nodes are $k + k = 400$, and end nodes have just $k = 200$.</p>
+
+<p><strong>(b) Force-displacement relationship:</strong> $\{f\} = [K]\{u\}$</p>
+<div class="eq-block">
+$$\begin{Bmatrix} R_1 \\ 0 \\ 0 \\ 0 \\ R_5 \end{Bmatrix} = \begin{bmatrix} 200 & -200 & 0 & 0 & 0 \\ -200 & 400 & -200 & 0 & 0 \\ 0 & -200 & 400 & -200 & 0 \\ 0 & 0 & -200 & 400 & -200 \\ 0 & 0 & 0 & -200 & 200 \end{bmatrix} \begin{Bmatrix} 0 \\ u_2 \\ u_3 \\ u_4 \\ 0.02 \end{Bmatrix}$$
+</div>
+
+<p>Eliminating rows/columns for known DOFs ($u_1 = 0$ and $u_5 = 0.02$ m) and writing equations for rows 2, 3, 4:</p>
+<p>Row 2: $0 = 400 u_2 - 200 u_3$</p>
+<p>Row 3: $0 = -200 u_2 + 400 u_3 - 200 u_4$</p>
+<p>Row 4: $0 = -200 u_3 + 400 u_4 - 200 \times 0.02$</p>
+<p>The term $-200 \times 0.02 = -4$ kN from the known displacement $u_5$ is moved to the left-hand side:</p>
+
+<div class="eq-block">
+$$\begin{Bmatrix} 0 \\ 0 \\ 4 \end{Bmatrix} = \begin{bmatrix} 400 & -200 & 0 \\ -200 & 400 & -200 \\ 0 & -200 & 400 \end{bmatrix} \begin{Bmatrix} u_2 \\ u_3 \\ u_4 \end{Bmatrix}$$
+</div>
+
+<p><strong>Solving the 3&times;3 system:</strong></p>
+<p>From Row 1: $400 u_2 = 200 u_3 \Rightarrow u_2 = 0.5\, u_3$ &ensp; &mdash; (i)</p>
+<p>From Row 2: $-200 u_2 + 400 u_3 - 200 u_4 = 0$</p>
+<p>Substituting (i): $-200(0.5\,u_3) + 400 u_3 - 200 u_4 = 0 \Rightarrow 300 u_3 = 200 u_4 \Rightarrow u_3 = \frac{2}{3}u_4$ &ensp; &mdash; (ii)</p>
+<p>From Row 3: $-200 u_3 + 400 u_4 = 4$</p>
+<p>Substituting (ii): $-200 \times \frac{2}{3}u_4 + 400 u_4 = 4 \Rightarrow \frac{800}{3} u_4 = 4 \Rightarrow u_4 = 0.015$ m</p>
+<p>Back-substituting: $u_3 = \frac{2}{3} \times 0.015 = 0.01$ m &emsp; and &emsp; $u_2 = 0.5 \times 0.01 = 0.005$ m</p>
+
+<div class="result-box">
+$$\begin{Bmatrix} u_2 \\ u_3 \\ u_4 \end{Bmatrix} = \begin{Bmatrix} 0.005 \\ 0.01 \\ 0.015 \end{Bmatrix} \text{ m} = \begin{Bmatrix} 5 \\ 10 \\ 15 \end{Bmatrix} \text{ mm}$$
+</div>
+
+<div class="note">The displacements vary linearly (5, 10, 15, 20 mm), which is expected since all springs are identical and the only imposed loading is the displacement at node 5.</div>
+
+<p><strong>(c) Global nodal forces (Reactions):</strong></p>
+<p>Using the original full equation $\{f\} = [K]\{u\}$ with all displacements now known: $\{u\} = \{0, 0.005, 0.01, 0.015, 0.02\}^T$ m.</p>
+
+<p>Row 1: $R_1 = 200 \times 0 - 200 \times 0.005 = -1$ kN</p>
+<p>Row 5: $R_5 = -200 \times 0.015 + 200 \times 0.02 = -3 + 4 = 1$ kN</p>
+
+<div class="result-box">
+$$R_1 = -1 \text{ kN}, \qquad R_5 = +1 \text{ kN}$$
+</div>
+
+<p><strong>Equilibrium check:</strong> $R_1 + R_5 = -1 + 1 = 0$ &ensp; $\checkmark$ (No external loads applied, so net force must be zero.)</p>
+
+<p><strong>(d) Forces in individual springs:</strong></p>
+<p>Using $\{f^e\} = [K^e]\{u^e\}$ for each element:</p>
+
+<p>Element 1 (nodes 1&ndash;2): $u_1 = 0$, $u_2 = 0.005$ m</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{11} \\ f_{12} \end{Bmatrix} = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \begin{Bmatrix} 0 \\ 0.005 \end{Bmatrix} = \begin{Bmatrix} -1 \\ 1 \end{Bmatrix} \text{ kN}$$
+</div>
+<div class="result-box">$f_{11} = -1$ kN, $f_{12} = +1$ kN (Tensile, spring elongates)</div>
+
+<p>Element 2 (nodes 2&ndash;3): $u_2 = 0.005$, $u_3 = 0.01$ m</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{22} \\ f_{23} \end{Bmatrix} = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \begin{Bmatrix} 0.005 \\ 0.01 \end{Bmatrix} = \begin{Bmatrix} -1 \\ 1 \end{Bmatrix} \text{ kN}$$
+</div>
+<div class="result-box">$f_{22} = -1$ kN, $f_{23} = +1$ kN (Tensile)</div>
+
+<p>Element 3 (nodes 3&ndash;4): $u_3 = 0.01$, $u_4 = 0.015$ m</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{33} \\ f_{34} \end{Bmatrix} = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \begin{Bmatrix} 0.01 \\ 0.015 \end{Bmatrix} = \begin{Bmatrix} -1 \\ 1 \end{Bmatrix} \text{ kN}$$
+</div>
+<div class="result-box">$f_{33} = -1$ kN, $f_{34} = +1$ kN (Tensile)</div>
+
+<p>Element 4 (nodes 4&ndash;5): $u_4 = 0.015$, $u_5 = 0.02$ m</p>
+<div class="eq-block">
+$$\begin{Bmatrix} f_{44} \\ f_{45} \end{Bmatrix} = \begin{bmatrix} 200 & -200 \\ -200 & 200 \end{bmatrix} \begin{Bmatrix} 0.015 \\ 0.02 \end{Bmatrix} = \begin{Bmatrix} -1 \\ 1 \end{Bmatrix} \text{ kN}$$
+</div>
+<div class="result-box">$f_{44} = -1$ kN, $f_{45} = +1$ kN (Tensile)</div>
+
+<div class="note">All springs carry the same force of 1 kN (tensile). This is expected because the system is in series with no external loads at intermediate nodes.</div>
+</div><!-- /example 2 -->
+
+<!-- ========================================== -->
+<!-- EXAMPLE 3 -->
+<!-- ========================================== -->
+<div class="example">
+<div class="ex-title">Example 3</div>
+<div class="ex-q">
+<strong>Q.</strong> In the figure given below, a load $P = 60$ kN is applied as shown. Determine the displacement field, stress and support reaction. Take $E = 20 \times 10^3$ N/mm². There is a gap of 1.2 mm between the right end and the wall.
+</div>
+
+<!-- SVG: Example 3 -->
+<div class="figure">
+<svg viewBox="0 0 580 150" style="max-width:600px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <defs><marker id="ea3" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker></defs>
+ <!-- Wall left -->
+ <rect x="30" y="40" width="10" height="40" fill="#888"/>
+ <line x1="30" y1="40" x2="30" y2="80" stroke="#555" stroke-width="2"/>
+ <line x1="25" y1="42" x2="30" y2="47" stroke="#555" stroke-width="1"/>
+ <line x1="25" y1="52" x2="30" y2="57" stroke="#555" stroke-width="1"/>
+ <line x1="25" y1="62" x2="30" y2="67" stroke="#555" stroke-width="1"/>
+ <line x1="25" y1="72" x2="30" y2="77" stroke="#555" stroke-width="1"/>
+ <!-- Wall right -->
+ <rect x="520" y="40" width="10" height="40" fill="#888"/>
+ <line x1="520" y1="40" x2="520" y2="80" stroke="#555" stroke-width="2"/>
+ <line x1="520" y1="42" x2="525" y2="47" stroke="#555" stroke-width="1"/>
+ <line x1="520" y1="52" x2="525" y2="57" stroke="#555" stroke-width="1"/>
+ <line x1="520" y1="62" x2="525" y2="67" stroke="#555" stroke-width="1"/>
+ <line x1="520" y1="72" x2="525" y2="77" stroke="#555" stroke-width="1"/>
+ <!-- Bar 1 -->
+ <rect x="50" y="50" width="200" height="20" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Bar 2 -->
+ <rect x="250" y="50" width="200" height="20" rx="2" fill="#cfe0f4" stroke="#1a365d" stroke-width="2"/>
+ <!-- Gap -->
+ <line x1="455" y1="45" x2="455" y2="75" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,2"/>
+ <text x="475" y="93" text-anchor="middle" font-size="10" fill="#c0392b">gap = 1.2mm</text>
+ <line x1="450" y1="80" x2="450" y2="86" stroke="#c0392b" stroke-width="1"/>
+ <line x1="450" y1="86" x2="520" y2="86" stroke="#c0392b" stroke-width="1"/>
+ <line x1="520" y1="80" x2="520" y2="86" stroke="#c0392b" stroke-width="1"/>
+ <!-- Nodes -->
+ <circle cx="50" cy="60" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="35" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">1</text>
+ <circle cx="250" cy="60" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="250" y="35" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">2</text>
+ <circle cx="450" cy="60" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="450" y="35" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">3</text>
+ <!-- Force at node 2 -->
+ <line x1="250" y1="100" x2="250" y2="78" stroke="#c0392b" stroke-width="2" marker-end="url(#ea3)"/>
+ <text x="250" y="115" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">P = 60 kN</text>
+ <!-- Element labels -->
+ <text x="150" y="110" text-anchor="middle" font-size="10" fill="#1a365d">A₁=250mm², L₁=150mm</text>
+ <text x="350" y="110" text-anchor="middle" font-size="10" fill="#1a365d">A₂=250mm², L₂=150mm</text>
+</svg>
+<div class="caption">Fig: Bar with load P, fixed at left and gap to wall at right</div>
+</div>
+
+<p><strong>Given:</strong> Two bar elements with $A_1 = A_2 = 250$ mm², $L_1 = L_2 = 150$ mm, $E = 20 \times 10^3$ N/mm². Load $P = 60$ kN at node 2. Gap of 1.2 mm between node 3 and the right wall. Node 1 is fixed ($u_1 = 0$).</p>
+
+<span class="soln-label">Solution</span>
+
+<p><strong>Step 1: Identify unknowns and boundary conditions.</strong></p>
+<p>Initially, we assume the gap is not closed. Node 3 is free, so $F_3 = 0$.</p>
+
+<p>Force vector:</p>
+<div class="eq-block">
+$$\{F\} = \begin{Bmatrix} R_1 \\ 60 \times 10^3 \\ 0 \end{Bmatrix} \text{ N}$$
+</div>
+
+<p>Displacement vector:</p>
+<div class="eq-block">
+$$\{u\} = \begin{Bmatrix} 0 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p><strong>Step 2: Element stiffness matrices.</strong></p>
+<p>Using $[K^e] = \frac{AE}{L}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$:</p>
+<div class="eq-block">
+$$k = \frac{AE}{L} = \frac{250 \times 20 \times 10^3}{150} = \frac{5 \times 10^6}{150} = \frac{10^5}{3} = 33{,}333.33 \text{ N/mm}$$
+</div>
+<div class="eq-block">
+$$[K^1] = [K^2] = \frac{10^5}{3} \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$$
+</div>
+
+<p><strong>Step 3: Global stiffness matrix</strong> (assembling by direct stiffness method):</p>
+<div class="eq-block">
+$$[K] = \frac{10^5}{3} \begin{bmatrix} 1 & -1 & 0 \\ -1 & 2 & -1 \\ 0 & -1 & 1 \end{bmatrix}$$
+</div>
+
+<p><strong>Step 4: Apply boundary conditions and solve.</strong></p>
+<p>$\{F\} = [K]\{u\}$:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} R_1 \\ 60 \times 10^3 \\ 0 \end{Bmatrix} = \frac{10^5}{3} \begin{bmatrix} 1 & -1 & 0 \\ -1 & 2 & -1 \\ 0 & -1 & 1 \end{bmatrix} \begin{Bmatrix} 0 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>Eliminating row/column 1 (since $u_1 = 0$), the reduced equations are:</p>
+<div class="eq-block">
+$$60{,}000 = \frac{10^5}{3}(2 u_2 - u_3) \quad --- (i)$$
+$$0 = \frac{10^5}{3}(-u_2 + u_3) \quad --- (ii)$$
+</div>
+
+<p>From equation (ii): $u_3 = u_2$. Substituting into (i):</p>
+<div class="eq-block">
+$$60{,}000 = \frac{10^5}{3}(2u_2 - u_2) = \frac{10^5}{3} u_2 \quad \Rightarrow \quad u_2 = \frac{60{,}000 \times 3}{10^5} = 1.8 \text{ mm}$$
+</div>
+
+<div class="result-box">
+$$u_2 = 1.8 \text{ mm}, \qquad u_3 = 1.8 \text{ mm}$$
+</div>
+
+<p><strong>Step 5: Check if the gap closes.</strong></p>
+<p>The displacement at node 3 is $u_3 = 1.8$ mm, but the gap is only 1.2 mm. Since $u_3 > 1.2$ mm, the right end <strong>touches the wall</strong> and cannot displace further. The wall develops a reaction force $R_3$.</p>
+
+<p><strong>Step 6: Re-solve with gap constraint</strong> $u_3 = 1.2$ mm.</p>
+<div class="eq-block">
+$$\{F\} = \begin{Bmatrix} R_1 \\ 60 \times 10^3 \\ R_3 \end{Bmatrix} \text{ N}, \qquad \{u\} = \begin{Bmatrix} 0 \\ u_2 \\ 1.2 \end{Bmatrix} \text{ mm}$$
+</div>
+
+<p>From the global equation, Row 2 gives:</p>
+<div class="eq-block">
+$$60{,}000 = \frac{10^5}{3}(-0 + 2u_2 - 1.2) = \frac{10^5}{3}(2u_2 - 1.2)$$
+</div>
+<div class="eq-block">
+$$2u_2 - 1.2 = \frac{60{,}000 \times 3}{10^5} = 1.8 \quad \Rightarrow \quad u_2 = \frac{1.8 + 1.2}{2} = 1.5 \text{ mm}$$
+</div>
+
+<p><strong>Step 7: Back-substitute to find reactions.</strong></p>
+<p>Row 1: $R_1 = \frac{10^5}{3}(0 - u_2 + 0) = \frac{10^5}{3}(-1.5)$</p>
+<div class="eq-block">
+$$R_1 = -50{,}000 \text{ N} = -50 \text{ kN}$$
+</div>
+
+<p>Row 3: $R_3 = \frac{10^5}{3}(0 - u_2 + u_3) = \frac{10^5}{3}(-1.5 + 1.2)$</p>
+<div class="eq-block">
+$$R_3 = \frac{10^5}{3}(-0.3) = -10{,}000 \text{ N} = -10 \text{ kN}$$
+</div>
+
+<div class="result-box">
+$$u_2 = 1.5 \text{ mm}, \quad u_3 = 1.2 \text{ mm}$$
+$$R_1 = -50 \text{ kN}, \quad R_3 = -10 \text{ kN}$$
+</div>
+
+<p><strong>Equilibrium check:</strong> $R_1 + P + R_3 = -50 + 60 + (-10) = 0$ &ensp; $\checkmark$</p>
+
+<p><strong>Step 8: Element stresses.</strong></p>
+<p>Using $\sigma = \frac{E}{L}(u_2 - u_1)$ for each element:</p>
+
+<p>Element 1 (nodes 1&ndash;2):</p>
+<div class="eq-block">
+$$\sigma_1 = \frac{E}{L}(u_2 - u_1) = \frac{20 \times 10^3}{150}(1.5 - 0) = 133.33 \times 1.5 = 200 \text{ N/mm}^2 \text{ (Tensile)}$$
+</div>
+
+<p>Element 2 (nodes 2&ndash;3):</p>
+<div class="eq-block">
+$$\sigma_2 = \frac{E}{L}(u_3 - u_2) = \frac{20 \times 10^3}{150}(1.2 - 1.5) = 133.33 \times (-0.3) = -40 \text{ N/mm}^2 \text{ (Compressive)}$$
+</div>
+
+<div class="result-box">
+$$\sigma_1 = +200 \text{ N/mm}^2 \text{ (Tension)}, \qquad \sigma_2 = -40 \text{ N/mm}^2 \text{ (Compression)}$$
+</div>
+</div><!-- /example 3 -->
+
+<!-- ========================================== -->
+<!-- EXAMPLE 4 -->
+<!-- ========================================== -->
+<div class="example">
+<div class="ex-title">Example 4</div>
+<div class="ex-q">
+<strong>Q.</strong> A 4 m long 300 mm &times; 300 mm concrete member is vertically hanging. Investigate the state of deformation and stress in the member subjected to gravity. Given: analytical displacement $u(x) = \frac{\gamma}{E}\left(Lx - \frac{x^2}{2}\right)$, stress $\sigma(x) = \gamma(L - x)$. Take $E = 2 \times 10^4$ N/mm², $\gamma = 25 \times 10^{-6}$ N/mm³.
+</div>
+
+<!-- SVG: Hanging bar -->
+<div class="figure">
+<svg viewBox="0 0 200 260" style="max-width:200px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <!-- Fix at top -->
+ <rect x="50" y="10" width="100" height="8" fill="#888"/>
+ <line x1="50" y1="18" x2="150" y2="18" stroke="#555" stroke-width="2"/>
+ <line x1="55" y1="10" x2="50" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="70" y1="10" x2="65" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="85" y1="10" x2="80" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="100" y1="10" x2="95" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="115" y1="10" x2="110" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="130" y1="10" x2="125" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="145" y1="10" x2="140" y2="18" stroke="#555" stroke-width="1"/>
+ <!-- Bar -->
+ <rect x="75" y="22" width="50" height="200" rx="2" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Node 1 top -->
+ <circle cx="100" cy="22" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="160" y="28" font-weight="bold" fill="#1a365d">1 (u₁=0)</text>
+ <!-- Node 2 bottom -->
+ <circle cx="100" cy="222" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="160" y="228" font-weight="bold" fill="#1a365d">2 (u₂)</text>
+ <!-- Gravity arrow -->
+ <text x="30" y="130" text-anchor="middle" font-size="11" fill="#555">γ↓</text>
+ <!-- Length -->
+ <text x="40" y="125" text-anchor="middle" font-size="10" fill="#888">L=4m</text>
+ <!-- Cross section label -->
+ <text x="100" y="250" text-anchor="middle" font-size="10" fill="#555">300×300mm</text>
+</svg>
+<div class="caption">Fig: Vertically hanging concrete member</div>
+</div>
+
+<span class="soln-label">Solution &mdash; Using One Element</span>
+
+<p>Force vector:</p>
+<div class="eq-block">
+$$\{F\} = \frac{\gamma \cdot A \cdot l}{2} \begin{Bmatrix} 1 \\ 1 \end{Bmatrix} + \begin{Bmatrix} R_1 \\ 0 \end{Bmatrix} = \begin{Bmatrix} 4500 + R_1 \\ 4500 \end{Bmatrix} \text{ N}$$
+</div>
+
+<p>Displacement vector: $\{u\} = \begin{Bmatrix} 0 \\ u_2 \end{Bmatrix}$</p>
+
+<p>Stiffness matrix:</p>
+<div class="eq-block">
+$$[K] = \frac{EA}{l} \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix} = \frac{2 \times 10^4 \times 300^2}{4000} \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix} = 4.5 \times 10^5 \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$$
+</div>
+
+<p>$\{F\} = [K]\{u\}$:</p>
+<div class="eq-block">
+$$4500 = 4.5 \times 10^5 \times u_2$$
+</div>
+
+<div class="result-box">
+$$u_2 = 0.01 \text{ mm}$$
+</div>
+
+<p>Stress:</p>
+<div class="eq-block">
+$$\sigma = E[B]\{u\} = 2 \times 10^4 \times \frac{1}{4000} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} 0 \\ 0.01 \end{Bmatrix} = 0.05 \text{ N/mm}^2$$
+</div>
+
+<p>Verification from analytical relation at $x = 4000$:</p>
+<div class="eq-block">
+$$u(x) = \frac{25 \times 10^{-6}}{2 \times 10^4} \left(4000 \times 4000 - \frac{4000^2}{2}\right) = 0.01 \text{ mm} \quad \checkmark$$
+</div>
+
+<p>At C.G. of element ($x = 2000$):</p>
+<div class="eq-block">
+$$\sigma(x) = \gamma(L - x) = 25 \times 10^{-6}(4000 - 2000) = 0.05 \text{ N/mm}^2 \quad \checkmark$$
+</div>
+
+<span class="soln-label">Solution &mdash; Using Two Elements</span>
+
+<p>Load vector:</p>
+<div class="eq-block">
+$$\{f_{b1}\} = \frac{\gamma A_1 L_1}{2} \begin{Bmatrix} 1 \\ 1 \end{Bmatrix} = 2250 \begin{Bmatrix} 1 \\ 1 \end{Bmatrix}, \quad \{f_{b2}\} = 2250 \begin{Bmatrix} 1 \\ 1 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$\{f_b\} = \begin{Bmatrix} 2250 \\ 4500 \\ 2250 \end{Bmatrix} \text{ N}$$
+</div>
+<div class="eq-block">
+$$\{F\} = \begin{Bmatrix} R_1 + 2250 \\ 4500 \\ 2250 \end{Bmatrix} \text{ N}, \quad \{u\} = \begin{Bmatrix} 0 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>Stiffness matrix:</p>
+<div class="eq-block">
+$$[K^1] = [K^2] = \frac{2 \times 10^4 \times (300)^2}{2000} \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix} = 9 \times 10^5 \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$$
+</div>
+<div class="eq-block">
+$$[K] = 9 \times 10^5 \begin{bmatrix} 1 & -1 & 0 \\ -1 & 2 & -1 \\ 0 & -1 & 1 \end{bmatrix}$$
+</div>
+
+<p>Reduced matrix equation:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} 4500 \\ 2250 \end{Bmatrix} = 9 \times 10^5 \begin{bmatrix} 2 & -1 \\ -1 & 1 \end{bmatrix} \begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<div class="result-box">
+$$\begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix} = \begin{Bmatrix} 0.0075 \\ 0.01 \end{Bmatrix} \text{ mm}$$
+</div>
+
+<p>Verification: At Node 2 ($x=2000$): $u_2 = 0.0075$ mm $\checkmark$ &emsp; At Node 3 ($x=4000$): $u_3 = 0.01$ mm $\checkmark$</p>
+
+<p><strong>Stresses:</strong></p>
+<div class="eq-block">
+$$\sigma_1 = \frac{2 \times 10^4}{2000} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} 0 \\ 0.0075 \end{Bmatrix} = 0.075 \text{ N/mm}^2$$
+</div>
+<div class="eq-block">
+$$\sigma_2 = \frac{2 \times 10^4}{2000} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} 0.0075 \\ 0.01 \end{Bmatrix} = 0.025 \text{ N/mm}^2$$
+</div>
+
+<p>Verified at C.G. of element 1 ($x = 1000$): $\sigma = 0.075$ N/mm² $\checkmark$</p>
+<p>Verified at C.G. of element 2 ($x = 3000$): $\sigma = 0.025$ N/mm² $\checkmark$</p>
+</div><!-- /example 4 -->
+
+<!-- ========================================== -->
+<!-- EXAMPLE 5 -->
+<!-- ========================================== -->
+<div class="example">
+<div class="ex-title">Example 5</div>
+<div class="ex-q">
+<strong>Q.</strong> The stepped bar shown in figure is subjected to an increase in temperature $\Delta t = 80°C$. Determine the displacements, stresses and the support reactions.
+</div>
+
+<!-- SVG: Stepped bar -->
+<div class="figure">
+<svg viewBox="0 0 620 180" style="max-width:640px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <defs><marker id="ea5" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0,0 3,8 6" fill="#c0392b"/></marker></defs>
+ <!-- Wall left -->
+ <rect x="20" y="35" width="10" height="50" fill="#888"/>
+ <line x1="20" y1="35" x2="20" y2="85" stroke="#555" stroke-width="2"/>
+ <line x1="15" y1="37" x2="20" y2="42" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="47" x2="20" y2="52" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="57" x2="20" y2="62" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="67" x2="20" y2="72" stroke="#555" stroke-width="1"/>
+ <line x1="15" y1="77" x2="20" y2="82" stroke="#555" stroke-width="1"/>
+ <!-- Wall right -->
+ <rect x="590" y="40" width="10" height="40" fill="#888"/>
+ <line x1="590" y1="40" x2="590" y2="80" stroke="#555" stroke-width="2"/>
+ <line x1="590" y1="42" x2="595" y2="47" stroke="#555" stroke-width="1"/>
+ <line x1="590" y1="52" x2="595" y2="57" stroke="#555" stroke-width="1"/>
+ <line x1="590" y1="62" x2="595" y2="67" stroke="#555" stroke-width="1"/>
+ <line x1="590" y1="72" x2="595" y2="77" stroke="#555" stroke-width="1"/>
+ <!-- Bar segments -->
+ <rect x="38" y="38" width="200" height="44" rx="2" fill="#ffcccc" stroke="#1a365d" stroke-width="2"/>
+ <rect x="238" y="42" width="170" height="36" rx="2" fill="#ccddff" stroke="#1a365d" stroke-width="2"/>
+ <rect x="408" y="46" width="175" height="28" rx="2" fill="#ccffcc" stroke="#1a365d" stroke-width="2"/>
+ <!-- Nodes -->
+ <circle cx="38" cy="60" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="38" y="25" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">1</text>
+ <circle cx="238" cy="60" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="238" y="25" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">2</text>
+ <circle cx="408" cy="60" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="408" y="25" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">3</text>
+ <circle cx="583" cy="60" r="8" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="583" y="25" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="13">4</text>
+ <!-- Material labels -->
+ <text x="138" y="100" text-anchor="middle" font-size="10" fill="#c0392b" font-weight="bold">Aluminium</text>
+ <text x="138" y="112" text-anchor="middle" font-size="9" fill="#555">L₁=800, A₁=2400</text>
+ <text x="138" y="122" text-anchor="middle" font-size="9" fill="#555">E₁=83GPa, α₁=18.9×10⁻⁶</text>
+ <text x="323" y="100" text-anchor="middle" font-size="10" fill="#2c5282" font-weight="bold">Steel</text>
+ <text x="323" y="112" text-anchor="middle" font-size="9" fill="#555">L₂=600, A₂=1200</text>
+ <text x="323" y="122" text-anchor="middle" font-size="9" fill="#555">E₂=70GPa, α₂=23×10⁻⁶</text>
+ <text x="495" y="100" text-anchor="middle" font-size="10" fill="#27ae60" font-weight="bold">Bronze</text>
+ <text x="495" y="112" text-anchor="middle" font-size="9" fill="#555">L₃=400, A₃=600</text>
+ <text x="495" y="122" text-anchor="middle" font-size="9" fill="#555">E₃=200GPa, α₃=11.7×10⁻⁶</text>
+ <!-- Forces -->
+ <line x1="270" y1="60" x2="248" y2="60" stroke="#c0392b" stroke-width="2" marker-end="url(#ea5)"/>
+ <text x="285" y="55" font-size="10" fill="#c0392b">P₁=60kN</text>
+ <line x1="440" y1="60" x2="418" y2="60" stroke="#c0392b" stroke-width="2" marker-end="url(#ea5)"/>
+ <text x="455" y="55" font-size="10" fill="#c0392b">P₂=75kN</text>
+ <!-- Temp label -->
+ <text x="310" y="155" text-anchor="middle" font-size="12" fill="#e67e22" font-weight="bold">Δt = 80°C</text>
+</svg>
+<div class="caption">Fig: Stepped bar with temperature increase and applied loads</div>
+</div>
+
+<span class="soln-label">Solution</span>
+
+<p><strong>Given data:</strong></p>
+<table>
+<tr><th>Property</th><th>Element 1 (Aluminium)</th><th>Element 2 (Steel)</th><th>Element 3 (Bronze)</th></tr>
+<tr><td>Length $L$ (mm)</td><td>800</td><td>600</td><td>400</td></tr>
+<tr><td>Area $A$ (mm&sup2;)</td><td>2400</td><td>1200</td><td>600</td></tr>
+<tr><td>$E$ (GPa = 10&sup3; N/mm&sup2;)</td><td>83</td><td>70</td><td>200</td></tr>
+<tr><td>$\alpha$ (/&deg;C)</td><td>18.9 &times; 10&supmin;&sup6;</td><td>23 &times; 10&supmin;&sup6;</td><td>11.7 &times; 10&supmin;&sup6;</td></tr>
+</table>
+<p>$\Delta t = 80$&deg;C, $P_1 = -60$ kN at node 2 (leftward), $P_2 = -75$ kN at node 3 (leftward). Both ends fixed: $u_1 = u_4 = 0$.</p>
+
+<p><strong>Step 1: Element thermal load vectors.</strong></p>
+<p>Using $\{f_t^e\} = AE\alpha \Delta t \begin{Bmatrix} -1 \\ 1 \end{Bmatrix}$:</p>
+
+<p>Element 1: $A_1 E_1 \alpha_1 \Delta t = 2400 \times 83 \times 10^3 \times 18.9 \times 10^{-6} \times 80$</p>
+<div class="eq-block">
+$$= 2400 \times 83000 \times 1.512 \times 10^{-3} = 2400 \times 125.496 = 301{,}190.4 \text{ N}$$
+</div>
+<div class="eq-block">
+$$\{f_t^1\} = 301{,}190.4 \begin{Bmatrix} -1 \\ 1 \end{Bmatrix} = \begin{Bmatrix} -301{,}190.4 \\ 301{,}190.4 \end{Bmatrix} \text{ N} \quad \text{(nodes 1, 2)}$$
+</div>
+
+<p>Element 2: $A_2 E_2 \alpha_2 \Delta t = 1200 \times 70 \times 10^3 \times 23 \times 10^{-6} \times 80$</p>
+<div class="eq-block">
+$$= 1200 \times 70000 \times 1.84 \times 10^{-3} = 1200 \times 128.8 = 154{,}560 \text{ N}$$
+</div>
+<div class="eq-block">
+$$\{f_t^2\} = 154{,}560 \begin{Bmatrix} -1 \\ 1 \end{Bmatrix} = \begin{Bmatrix} -154{,}560 \\ 154{,}560 \end{Bmatrix} \text{ N} \quad \text{(nodes 2, 3)}$$
+</div>
+
+<p>Element 3: $A_3 E_3 \alpha_3 \Delta t = 600 \times 200 \times 10^3 \times 11.7 \times 10^{-6} \times 80$</p>
+<div class="eq-block">
+$$= 600 \times 200000 \times 9.36 \times 10^{-4} = 600 \times 187.2 = 112{,}320 \text{ N}$$
+</div>
+<div class="eq-block">
+$$\{f_t^3\} = 112{,}320 \begin{Bmatrix} -1 \\ 1 \end{Bmatrix} = \begin{Bmatrix} -112{,}320 \\ 112{,}320 \end{Bmatrix} \text{ N} \quad \text{(nodes 3, 4)}$$
+</div>
+
+<p><strong>Step 2: Assemble the global temperature load vector</strong> by adding element contributions at shared nodes:</p>
+<div class="eq-block">
+$$\{f_t\} = \begin{Bmatrix} f_{t1} \\ f_{t2} \\ f_{t3} \\ f_{t4} \end{Bmatrix} = \begin{Bmatrix} -301{,}190.4 \\ 301{,}190.4 + (-154{,}560) \\ 154{,}560 + (-112{,}320) \\ 112{,}320 \end{Bmatrix} = \begin{Bmatrix} -301{,}190.40 \\ 146{,}630.40 \\ 42{,}240 \\ 112{,}320 \end{Bmatrix} \text{ N}$$
+</div>
+
+<p><strong>Step 3: External force vector</strong> (forces at nodes 2 &amp; 3 are leftward, i.e., negative):</p>
+<div class="eq-block">
+$$\{f_{\text{ext}}\} = \begin{Bmatrix} R_1 \\ -60{,}000 \\ -75{,}000 \\ R_4 \end{Bmatrix} \text{ N}$$
+</div>
+
+<p><strong>Step 4: Global force vector</strong> = External + Temperature:</p>
+<div class="eq-block">
+$$\{F_{\text{global}}\} = \{f_{\text{ext}}\} + \{f_t\} = \begin{Bmatrix} R_1 - 301{,}190.40 \\ -60{,}000 + 146{,}630.40 \\ -75{,}000 + 42{,}240 \\ R_4 + 112{,}320 \end{Bmatrix} = \begin{Bmatrix} R_1 - 301{,}190.40 \\ 86{,}630.40 \\ -32{,}760 \\ R_4 + 112{,}320 \end{Bmatrix} \text{ N}$$
+</div>
+
+<p><strong>Displacement vector:</strong> $\{u\} = \begin{Bmatrix} 0 \\ u_2 \\ u_3 \\ 0 \end{Bmatrix}$</p>
+
+<p><strong>Step 5: Element stiffness matrices.</strong></p>
+<p>Using $k_i = \frac{A_i E_i}{L_i}$:</p>
+<div class="eq-block">
+$$k_1 = \frac{2400 \times 83 \times 10^3}{800} = \frac{199.2 \times 10^6}{800} = 2.49 \times 10^5 \text{ N/mm}$$
+</div>
+<div class="eq-block">
+$$k_2 = \frac{1200 \times 70 \times 10^3}{600} = \frac{84 \times 10^6}{600} = 1.4 \times 10^5 \text{ N/mm}$$
+</div>
+<div class="eq-block">
+$$k_3 = \frac{600 \times 200 \times 10^3}{400} = \frac{120 \times 10^6}{400} = 3.0 \times 10^5 \text{ N/mm}$$
+</div>
+<div class="eq-block">
+$$[K^1] = 10^5 \begin{bmatrix} 2.49 & -2.49 \\ -2.49 & 2.49 \end{bmatrix}, \quad [K^2] = 10^5 \begin{bmatrix} 1.4 & -1.4 \\ -1.4 & 1.4 \end{bmatrix}, \quad [K^3] = 10^5 \begin{bmatrix} 3 & -3 \\ -3 & 3 \end{bmatrix}$$
+</div>
+
+<p><strong>Step 6: Global stiffness matrix</strong> (assembling):</p>
+<div class="eq-block hl">
+$$[K] = 10^5 \begin{bmatrix} 2.49 & -2.49 & 0 & 0 \\ -2.49 & (2.49+1.4) & -1.4 & 0 \\ 0 & -1.4 & (1.4+3) & -3 \\ 0 & 0 & -3 & 3 \end{bmatrix} = 10^5 \begin{bmatrix} 2.49 & -2.49 & 0 & 0 \\ -2.49 & 3.89 & -1.4 & 0 \\ 0 & -1.4 & 4.4 & -3 \\ 0 & 0 & -3 & 3 \end{bmatrix}$$
+</div>
+
+<p><strong>Step 7: Apply boundary conditions and solve.</strong></p>
+<p>$\{F\} = [K]\{u\}$. Eliminating rows/columns for $u_1 = 0$ and $u_4 = 0$:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} 86{,}630.40 \\ -32{,}760 \end{Bmatrix} = 10^5 \begin{bmatrix} 3.89 & -1.4 \\ -1.4 & 4.4 \end{bmatrix} \begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>Using matrix inversion: $\det = 10^{10}(3.89 \times 4.4 - 1.4 \times 1.4) = 10^{10}(17.116 - 1.96) = 15.156 \times 10^{10}$</p>
+<div class="eq-block">
+$$\begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix} = \frac{1}{15.156 \times 10^{10}} \begin{bmatrix} 4.4 \times 10^5 & 1.4 \times 10^5 \\ 1.4 \times 10^5 & 3.89 \times 10^5 \end{bmatrix} \begin{Bmatrix} 86{,}630.40 \\ -32{,}760 \end{Bmatrix}$$
+</div>
+<div class="eq-block">
+$$u_2 = \frac{4.4 \times 10^5 \times 86{,}630.40 + 1.4 \times 10^5 \times (-32{,}760)}{15.156 \times 10^{10}} = \frac{38{,}117{,}376 - 4{,}586{,}400}{15.156 \times 10^{10}} = \frac{33{,}530{,}976}{15.156 \times 10^{10}}$$
+</div>
+
+<div class="result-box">
+$$\begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix} = \begin{Bmatrix} 0.22124 \\ -0.00406 \end{Bmatrix} \text{ mm}$$
+</div>
+
+<p><strong>Step 8: Support reactions.</strong></p>
+<p>Row 1 of the full equation: $F_1 = 10^5(2.49 \times 0 - 2.49 \times 0.22124) = 10^5 \times (-0.55089)$</p>
+<div class="eq-block">
+$$F_1 = R_1 - 301{,}190.40 = -55{,}089 \quad \Rightarrow \quad R_1 = -55{,}089 + 301{,}190.40 = 246{,}101.40 \text{ N}$$
+</div>
+
+<p>Row 4: $F_4 = 10^5(-3 \times (-0.00406) + 3 \times 0) = 10^5 \times 0.01218$</p>
+<div class="eq-block">
+$$F_4 = R_4 + 112{,}320 = 1{,}218 \quad \Rightarrow \quad R_4 = 1{,}218 - 112{,}320 = -111{,}102 \text{ N}$$
+</div>
+
+<div class="result-box">
+$$R_1 = 246{,}101.40 \text{ N} \approx 246.1 \text{ kN}$$
+$$R_4 = -111{,}102 \text{ N} \approx -111.1 \text{ kN}$$
+</div>
+
+<p><strong>Equilibrium check:</strong> $R_1 + (-60{,}000) + (-75{,}000) + R_4 = 246{,}101.4 - 60{,}000 - 75{,}000 - 111{,}102 \approx 0$ &ensp; $\checkmark$</p>
+
+<p><strong>Step 9: Element stresses</strong> (with temperature effect).</p>
+<p>Using $\sigma = E\left[\frac{1}{L}(u_j - u_i)\right] - E\alpha\Delta t$:</p>
+
+<p>Element 1 ($u_1 = 0$, $u_2 = 0.22124$):</p>
+<div class="eq-block">
+$$\sigma_1 = 83 \times 10^3 \left\{ \frac{0.22124 - 0}{800} - 18.9 \times 10^{-6} \times 80 \right\} = 83000 \left\{ 2.7655 \times 10^{-4} - 1.512 \times 10^{-3} \right\}$$
+</div>
+<div class="eq-block">
+$$= 83000 \times (-1.2355 \times 10^{-3}) = -102.54 \text{ N/mm}^2 \text{ (Compressive)}$$
+</div>
+
+<p>Element 2 ($u_2 = 0.22124$, $u_3 = -0.00406$):</p>
+<div class="eq-block">
+$$\sigma_2 = 70 \times 10^3 \left\{ \frac{-0.00406 - 0.22124}{600} - 23 \times 10^{-6} \times 80 \right\} = 70000 \left\{ \frac{-0.2253}{600} - 1.84 \times 10^{-3} \right\}$$
+</div>
+<div class="eq-block">
+$$= 70000 \times (-3.755 \times 10^{-4} - 1.84 \times 10^{-3}) = 70000 \times (-2.2155 \times 10^{-3}) = -155.09 \text{ N/mm}^2 \text{ (Compressive)}$$
+</div>
+
+<p>Element 3 ($u_3 = -0.00406$, $u_4 = 0$):</p>
+<div class="eq-block">
+$$\sigma_3 = 200 \times 10^3 \left\{ \frac{0 - (-0.00406)}{400} - 11.7 \times 10^{-6} \times 80 \right\} = 200000 \left\{ 1.015 \times 10^{-5} - 9.36 \times 10^{-4} \right\}$$
+</div>
+<div class="eq-block">
+$$= 200000 \times (-9.259 \times 10^{-4}) = -185.17 \text{ N/mm}^2 \text{ (Compressive)}$$
+</div>
+
+<div class="result-box">
+$$\sigma_1 = -102.54 \text{ N/mm}^2, \quad \sigma_2 = -155.09 \text{ N/mm}^2, \quad \sigma_3 = -185.17 \text{ N/mm}^2$$
+<p>All members are in compression because the temperature expansion is restrained by the fixed supports.</p>
+</div>
+</div><!-- /example 5 -->
+
+<!-- ========================================== -->
+<!-- EXAMPLE 6 -->
+<!-- ========================================== -->
+<div class="example">
+<div class="ex-title">Example 6</div>
+<div class="ex-q">
+<strong>Q.</strong> Determine the extension of the bar shown in the figure due to self weight and a concentrated load of 400 N applied at its end. $b_1 = 150$ mm, $b_2 = 75$ mm, $t = 25$ mm, $E = 2 \times 10^5$ N/mm², $\gamma = 0.8 \times 10^{-4}$ N/mm³. Also, determine the reaction at the support, stress and strain in the member and member forces.
+</div>
+
+<!-- SVG: Tapered bar -->
+<div class="figure">
+<svg viewBox="0 0 220 300" style="max-width:220px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <defs><marker id="ea6" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#c0392b"/></marker></defs>
+ <!-- Fix at top -->
+ <rect x="35" y="10" width="130" height="8" fill="#888"/>
+ <line x1="35" y1="18" x2="165" y2="18" stroke="#555" stroke-width="2"/>
+ <line x1="42" y1="10" x2="37" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="57" y1="10" x2="52" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="72" y1="10" x2="67" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="87" y1="10" x2="82" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="102" y1="10" x2="97" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="117" y1="10" x2="112" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="132" y1="10" x2="127" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="147" y1="10" x2="142" y2="18" stroke="#555" stroke-width="1"/>
+ <line x1="162" y1="10" x2="157" y2="18" stroke="#555" stroke-width="1"/>
+ <!-- Tapered bar -->
+ <polygon points="45,22 155,22 130,240 70,240" fill="#d4e4f7" stroke="#1a365d" stroke-width="2"/>
+ <!-- Node 1 -->
+ <circle cx="100" cy="22" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="172" y="28" font-weight="bold" fill="#1a365d" font-size="12">1</text>
+ <!-- Node 2 -->
+ <circle cx="100" cy="240" r="7" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="142" y="246" font-weight="bold" fill="#1a365d" font-size="12">2</text>
+ <!-- Force -->
+ <line x1="100" y1="252" x2="100" y2="280" stroke="#c0392b" stroke-width="2" marker-end="url(#ea6)"/>
+ <text x="100" y="296" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">P = 400 N</text>
+ <!-- Width labels -->
+ <text x="18" y="28" font-size="10" fill="#555">b₁=150</text>
+ <text x="18" y="246" font-size="10" fill="#555">b₂=75</text>
+ <!-- Length -->
+ <text x="185" y="140" font-size="10" fill="#888">L=600mm</text>
+</svg>
+<div class="caption">Fig: Tapered bar hanging under self-weight with point load</div>
+</div>
+
+<div class="note">
+ <strong>Note:</strong> If area varies linearly, $[K] = \frac{E\bar{A}}{l}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$ where $\bar{A} = \frac{A_1 + A_2}{2}$.<br>
+ Body force: $\{f_b\} = \frac{\gamma \cdot l}{6} \begin{Bmatrix} 2A_1 + A_2 \\ A_1 + 2A_2 \end{Bmatrix}$
+</div>
+
+<p>Here $A_1 = 150 \times 25 = 3750$ mm², $A_2 = 75 \times 25 = 1875$ mm².</p>
+
+<span class="soln-label">Solution &mdash; Using One Element</span>
+
+<p>Load vector:</p>
+<div class="eq-block">
+$$\{f_b\} = \frac{0.8 \times 10^{-4} \times 600}{6} \begin{Bmatrix} 2(3750) + 1875 \\ 3750 + 2(1875) \end{Bmatrix} = \begin{Bmatrix} 75 \\ 60 \end{Bmatrix} \text{ N}$$
+</div>
+<div class="eq-block">
+$$\{F\} = \begin{Bmatrix} R_1 + 75 \\ 460 \end{Bmatrix} \text{ N}, \quad \{u\} = \begin{Bmatrix} 0 \\ u_2 \end{Bmatrix}$$
+</div>
+
+<p>Stiffness matrix ($\bar{A} = 2812.5$ mm²):</p>
+<div class="eq-block">
+$$[K] = \frac{2 \times 10^5 \times 2812.5}{600} \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix} = 937500 \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}$$
+</div>
+
+<div class="eq-block">
+$$460 = 937500 \times u_2$$
+</div>
+
+<div class="result-box">
+$$u_2 = 4.906 \times 10^{-4} \text{ mm}$$
+$$R_1 = -535 \text{ N} = 535 \text{ N (Tension)}$$
+$$\sigma = 0.16355 \text{ N/mm}^2, \quad \epsilon = 8.177 \times 10^{-7}$$
+</div>
+
+<span class="soln-label">Solution &mdash; Using Two Elements</span>
+
+<p>Nodes at top, middle, and bottom: $A_1 = 3750$, $A_2 = 2812.5$, $A_3 = 1875$ mm².</p>
+
+<p>Body force:</p>
+<div class="eq-block">
+$$\{f_{b1}\} = \begin{Bmatrix} 41.25 \\ 37.5 \end{Bmatrix}, \quad \{f_{b2}\} = \begin{Bmatrix} 30 \\ 26.25 \end{Bmatrix}, \quad \{f_b\} = \begin{Bmatrix} 41.25 \\ 67.5 \\ 26.25 \end{Bmatrix} \text{ N}$$
+</div>
+<div class="eq-block">
+$$\{F\} = \begin{Bmatrix} R_1 + 41.25 \\ 67.5 \\ 426.25 \end{Bmatrix} \text{ N}, \quad \{u\} = \begin{Bmatrix} 0 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>Stiffness matrices ($\bar{A}_1 = 3281.25$, $\bar{A}_2 = 2343.75$ mm²):</p>
+<div class="eq-block">
+$$[K^1] = 10^6 \begin{bmatrix} 2.1875 & -2.1875 \\ -2.1875 & 2.1875 \end{bmatrix}, \quad [K^2] = 10^6 \begin{bmatrix} 1.5625 & -1.5625 \\ -1.5625 & 1.5625 \end{bmatrix}$$
+</div>
+<div class="eq-block">
+$$[K] = 10^6 \begin{bmatrix} 2.1875 & -2.1875 & 0 \\ -2.1875 & 3.75 & -1.5625 \\ 0 & -1.5625 & 1.5625 \end{bmatrix}$$
+</div>
+
+<p>Reduced equation:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} 67.5 \\ 426.25 \end{Bmatrix} = 10^6 \begin{bmatrix} 3.75 & -1.5625 \\ -1.5625 & 1.5625 \end{bmatrix} \begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<div class="result-box">
+$$\begin{Bmatrix} u_2 \\ u_3 \end{Bmatrix} = \begin{Bmatrix} 2.257 \times 10^{-4} \\ 4.985 \times 10^{-4} \end{Bmatrix} \text{ mm}$$
+$$R_1 = -535 \text{ N} = 535 \text{ N (Tension)}$$
+</div>
+
+<p><strong>Stresses:</strong></p>
+<div class="eq-block">
+$$\sigma_1 = \frac{2 \times 10^5}{300} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} 0 \\ 2.257 \times 10^{-4} \end{Bmatrix} = 0.150476 \text{ N/mm}^2$$
+</div>
+<div class="eq-block">
+$$\sigma_2 = \frac{2 \times 10^5}{300} \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{Bmatrix} 2.257 \times 10^{-4} \\ 4.985 \times 10^{-4} \end{Bmatrix} = 0.181866 \text{ N/mm}^2$$
+</div>
+
+<p><strong>Strains:</strong></p>
+<div class="eq-block">
+$$\epsilon_1 = 7.523 \times 10^{-7}, \quad \epsilon_2 = 9.093 \times 10^{-7}$$
+</div>
+
+<p><strong>Element forces:</strong></p>
+<div class="result-box">
+$$\text{Element 1: } f_{11} = -493.75 \text{ N}, \; f_{12} = +493.75 \text{ N}$$
+$$\text{Element 2: } f_{22} = -426.25 \text{ N}, \; f_{23} = +426.25 \text{ N}$$
+</div>
+</div><!-- /example 6 -->
+
+<!-- ===== NAVIGATION ===== -->
+<div class="ch-nav">
+ <a href="4.1_Introduction-_FEM.html"><span style="font-size:1.2rem;font-weight:700">&larr;</span> <span>4.1 Introduction to FEM</span></a>
+ <a href="4.3_Truss_Element.html" class="next"><span>4.3 Truss Element</span> <span style="font-size:1.2rem;font-weight:700">&rarr;</span></a>
+</div>
+
+</div><!-- /content -->
+
+<footer class="footer">
+ <p><strong>4.2 Bar Element</strong> &mdash; Finite Element Method</p>
+ <p>Collected &amp; Prepared By: Er. Sanjay Kumar Sah | Pulchowk Campus</p>
+ <p style="margin-top:8px"><a href="index.html">&larr; Table of Contents</a></p>
+</footer>
+
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr;</button>
+<script>
+window.addEventListener('scroll',function(){document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
+</script>
+<script src="annotate.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+ 'use strict';
+ var on = false, drawing = false, erasing = false;
+ var COLORS = [
+ '#e63946', /* red */
+ '#1a365d', /* navy */
+ '#2d6a4f', /* forest green */
+ '#e67e22', /* orange */
+ '#7c3aed', /* violet */
+ '#000000', /* black */
+ '#ffffff', /* white */
+ '#f0f0f0', /* light gray */
+ '#0ea5e9', /* sky blue */
+ '#ec4899', /* hot pink */
+ '#f59e0b', /* amber gold */
+ '#06b6d4', /* cyan */
+ '#ff6b6b', /* coral */
+ '#a855f7', /* purple glow */
+ '#22d3ee', /* electric teal */
+ '#facc15', /* yellow */
+ '#fef9c3', /* pale yellow */
+ 'gold', /* golden shimmer */
+ '#c0c0c0' /* silver */
+ ];
+ var SHIMMER = { 'gold': true, '#c0c0c0': true };
+ var color = COLORS[0], penW = 3;
+ var strokes = []; // finished: [{c,w,er,p:[x,y,x,y,...]}]
+ var pts = []; // current stroke points (flat: x,y,x,y,...)
+ var drawn = 0; // how many points already rendered
+ var raf = 0;
+
+ /* --- CSS --- */
+ var st = document.createElement('style');
+ st.textContent =
+ '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+ '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+ '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+ '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+ '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+ '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+ document.head.appendChild(st);
+
+ /* --- fixed viewport canvas (small and fast) --- */
+ var cv = document.createElement('canvas');
+ cv.className = 'dw-cv';
+ document.body.appendChild(cv);
+
+ // allow mouse wheel to scroll through the canvas
+ cv.addEventListener('wheel', function (e) {
+ window.scrollBy(0, e.deltaY);
+ paint();
+ }, { passive: true });
+ var cx = cv.getContext('2d');
+
+ function sized() {
+ var dpr = window.devicePixelRatio || 1;
+ var w = window.innerWidth, h = window.innerHeight;
+ cv.width = w * dpr; cv.height = h * dpr;
+ cv.style.width = w + 'px'; cv.style.height = h + 'px';
+ cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ paint();
+ }
+ sized();
+ window.addEventListener('resize', sized);
+
+ /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+ function paint() {
+ var sx = window.scrollX, sy = window.scrollY;
+ cx.clearRect(0, 0, cv.width, cv.height);
+ for (var s = 0; s < strokes.length; s++) {
+ var sk = strokes[s], p = sk.p;
+ if (p.length < 4) continue;
+ cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+ cx.strokeStyle = sk.c;
+ cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ cx.beginPath();
+ cx.moveTo(p[0] - sx, p[1] - sy);
+ for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+ cx.stroke();
+ }
+ }
+ window.addEventListener('scroll', paint);
+
+ /* --- UI --- */
+ var btn = document.createElement('button');
+ btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+ document.body.appendChild(btn);
+
+ var tb = document.createElement('div'); tb.className = 'dw-tb';
+ var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+ COLORS.forEach(function (c) {
+ var d = document.createElement('div');
+ d.className = 'dw-dot' + (c === color ? ' on' : '');
+ d.style.background = c;
+ d.onclick = function () {
+ color = c; erasing = false; erBtn.classList.remove('on');
+ tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+ d.classList.add('on');
+ };
+ cGrid.appendChild(d);
+ });
+ tb.appendChild(cGrid);
+ var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+ tb.appendChild(lbl);
+ var sl = document.createElement('input');
+ sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+ sl.oninput = function () { penW = +sl.value; };
+ tb.appendChild(sl);
+
+ var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+ erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+ tb.appendChild(erBtn);
+
+ var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+ unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+ tb.appendChild(unBtn);
+
+ var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+ clBtn.onclick = function () { strokes.length = 0; paint(); };
+ tb.appendChild(clBtn);
+
+ document.body.appendChild(tb);
+
+ // stop toolbar clicks from reaching canvas
+ ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+ tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+ btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+ });
+
+ btn.onclick = function () {
+ on = !on;
+ btn.classList.toggle('on', on);
+ tb.classList.toggle('show', on);
+ cv.classList.toggle('on', on);
+ };
+
+ /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+ function tick() {
+ if (!drawing) { raf = 0; return; }
+ var n = pts.length;
+ if (drawn < n) {
+ var sx = window.scrollX, sy = window.scrollY;
+ // continue the existing path from last drawn point
+ if (drawn === 0) {
+ cx.beginPath();
+ cx.moveTo(pts[0] - sx, pts[1] - sy);
+ drawn = 2;
+ }
+ for (var i = drawn; i < n; i += 2) {
+ cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+ }
+ cx.stroke();
+ // continue the SAME path (no beginPath) — keeps it connected
+ drawn = n;
+ }
+ raf = requestAnimationFrame(tick);
+ }
+
+ /* --- pointer handlers --- */
+ cv.addEventListener('pointerdown', function (e) {
+ if (!on || e.button !== 0 || e.target !== cv) return;
+ e.preventDefault();
+ cv.setPointerCapture(e.pointerId);
+ drawing = true;
+ // store document coords
+ var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+ pts = [dx, dy];
+ drawn = 0;
+ // set style once for whole stroke
+ cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+ cx.strokeStyle = color;
+ cx.lineWidth = erasing ? penW * 4 : penW;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ // start rAF loop
+ if (!raf) raf = requestAnimationFrame(tick);
+ });
+
+ cv.addEventListener('pointermove', function (e) {
+ if (!drawing) return;
+ // just push coords — rAF will render them
+ pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+ });
+
+ function stop() {
+ if (!drawing) return;
+ drawing = false;
+ if (pts.length >= 4) {
+ strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+ }
+ pts = []; drawn = 0;
+ // full repaint to clean up
+ paint();
+ }
+ cv.addEventListener('pointerup', stop);
+ cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+ var t=document.getElementById('dmToggle'),h=document.documentElement,
+ s=localStorage.getItem('theme');
+ if(s)h.setAttribute('data-theme',s);
+ function updateIcon(){
+ if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+ }
+ updateIcon();
+ if(t){
+ t.addEventListener('click',function(){
+ var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+ h.setAttribute('data-theme',n);
+ localStorage.setItem('theme',n);
+ updateIcon();
+ fixInline(n==='dark');
+ });
+ }
+ /* Fix inline and style="color:..." */
+ function fixInline(dark){
+ var els=document.querySelectorAll('[style]');
+ for(var i=0;i<els.length;i++){
+ var el=els[i];
+ /* Skip SVG internals */
+ if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+ if(el.closest&&el.closest('svg'))continue;
+ var st=el.style;
+ if(dark){
+ /* Background */
+ if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+ el.setAttribute('data-dm-bg',st.backgroundColor);
+ if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+ }
+ if(st.background&&!el.getAttribute('data-dm-bgf')){
+ el.setAttribute('data-dm-bgf',st.background);
+ if(lum(st.background)>160)st.background='#1e222a';
+ }
+ /* Text color */
+ if(st.color&&!el.getAttribute('data-dm-fg')){
+ el.setAttribute('data-dm-fg',st.color);
+ if(lum(st.color)<100)st.color='#d0cdc5';
+ }
+ }else{
+ if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+ if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+ if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+ }
+ }
+ }
+ /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+ function lum(c){
+ if(!c)return -1;
+ c=c.trim().toLowerCase();
+ if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+ if(c==='black'||c==='#000'||c==='#000000')return 0;
+ var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+ if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+ var hx=c.match(/^#([0-9a-f]{3,8})$/);
+ if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+ return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+ return -1;
+ }
+ /* Apply on load if dark */
+ if(h.getAttribute('data-theme')==='dark'){
+ if(document.readyState==='loading')
+ document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+ else fixInline(true);
+ }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 4 – Data Sources</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 4</div>
+    <h1>Data Sources</h1>
+  </header>
+  <main>
+
+    <!-- ============================================================
+         Part 1: Data Input and Digitizing Errors (Section 4.1)
+         ============================================================ -->
+    <h2>Part 1: Data Input and Digitizing Errors (Section 4.1) <span class="exam-ref">Covers: 2072 Magh Q6, 2081 Chaitra</span></h2>
+
+    <h3>1. Primary Data Sources for Digitizing (2 Marks)</h3>
+    <p>Digitizing is the process of converting analog (physical) information into digital GIS formats (points, lines, polygons). The primary sources you trace over to create this digital data are:</p>
+    <ul>
+      <li><strong>Scanned Hardcopy Maps:</strong> Historical topographic maps or cadastral (parcel) blueprints that have been scanned and georeferenced.</li>
+      <li><strong>Satellite Imagery &amp; Aerial Photography:</strong> High-resolution orthophotos where the digitizer visually traces roads, rivers, and building footprints directly from the image.</li>
+    </ul>
+
+    <h3>2. Location Errors vs. Topological Errors (4 Marks)</h3>
+    <p>This is a critical distinction in GIS data quality:</p>
+    <ul>
+      <li><strong>Location (Positional) Errors:</strong> This relates to geometric accuracy. It occurs when the geographic coordinates of a feature in the GIS do not match its true physical location on the Earth.
+        <ul>
+          <li><strong>Example:</strong> A GPS error places a water well 15 meters away from its actual physical location. The point is structurally perfect, but it is in the wrong place.</li>
+        </ul>
+      </li>
+      <li><strong>Topological Errors:</strong> This relates to logical relationships. It occurs when the geometry is drawn incorrectly, breaking the mathematical rules of how features connect and interact, regardless of their absolute coordinates.
+        <ul>
+          <li><strong>Examples:</strong>
+            <ul>
+              <li><strong>Overshoots/Undershoots:</strong> A digitized road line goes too far and crosses an intersection (overshoot), or stops just short of connecting to the next road (undershoot).</li>
+              <li><strong>Slivers:</strong> Tiny, microscopic gap polygons created when two adjacent boundaries (like two forest stands) don't perfectly snap together.</li>
+              <li><strong>Unclosed Polygons:</strong> A lake boundary whose start and end points do not perfectly connect.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 240" width="620" height="240" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gOver" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff0f0"/><stop offset="100%" stop-color="#fcd8d8"/></linearGradient>
+          <linearGradient id="gUnder" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff8f0"/><stop offset="100%" stop-color="#fce8c8"/></linearGradient>
+          <linearGradient id="gSliv" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#c8ddf0"/></linearGradient>
+          <filter id="f41"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- ═══ OVERSHOOT ═══ -->
+        <g transform="translate(8,8)" filter="url(#f41)">
+          <rect width="195" height="220" rx="10" fill="url(#gOver)" stroke="#ed5565" stroke-width="1.2"/>
+          <rect x="35" y="6" width="125" height="24" rx="12" fill="#ed5565"/>
+          <text x="97" y="22" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">⚠ Overshoot</text>
+
+          <!-- Intersection scene -->
+          <!-- Main horizontal road -->
+          <rect x="15" y="82" width="165" height="12" rx="2" fill="#ddd" stroke="#bbb" stroke-width=".5"/>
+          <line x1="15" y1="88" x2="180" y2="88" stroke="#999" stroke-width=".8" stroke-dasharray="6,4"/>
+          <text x="170" y="80" font-size="7" fill="#888">Main Road</text>
+
+          <!-- Correct stop position (the node) -->
+          <circle cx="97" cy="88" r="5" fill="#333" stroke="white" stroke-width="1.5"/>
+          <text x="110" y="86" font-size="7" fill="#555">Node</text>
+
+          <!-- Approaching road (correct portion) -->
+          <rect x="91" y="38" width="12" height="44" rx="2" fill="#c8e0f0" stroke="#80b0d0" stroke-width=".5"/>
+          <text x="120" y="55" font-size="7" fill="#1a3c5e">Side road</text>
+
+          <!-- Overshoot extension (the error) -->
+          <rect x="91" y="95" width="12" height="35" rx="2" fill="#ed5565" fill-opacity=".35" stroke="#ed5565" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <!-- Arrow pointing to the excess -->
+          <line x1="110" y1="112" x2="130" y2="112" stroke="#ed5565" stroke-width="1"/>
+          <text x="132" y="116" font-size="8" fill="#ed5565" font-weight="bold">Excess</text>
+          <text x="132" y="126" font-size="8" fill="#ed5565" font-weight="bold">(dangling arc)</text>
+
+          <!-- Label area -->
+          <rect x="15" y="145" width="165" height="62" rx="6" fill="rgba(237,85,101,.06)"/>
+          <text x="97" y="161" text-anchor="middle" font-size="8" fill="#a03030" font-weight="600">Line extends past the node</text>
+          <text x="97" y="176" text-anchor="middle" font-size="7.5" fill="#555">Creates a "dangling arc"</text>
+          <text x="97" y="191" text-anchor="middle" font-size="7.5" fill="#555">beyond the intersection</text>
+          <text x="97" y="203" text-anchor="middle" font-size="7" fill="#888">Fix: Snap / Trim tolerance</text>
+        </g>
+
+        <!-- ═══ UNDERSHOOT ═══ -->
+        <g transform="translate(215,8)" filter="url(#f41)">
+          <rect width="195" height="220" rx="10" fill="url(#gUnder)" stroke="#f6bb42" stroke-width="1.2"/>
+          <rect x="35" y="6" width="125" height="24" rx="12" fill="#d4940a"/>
+          <text x="97" y="22" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">⚠ Undershoot</text>
+
+          <!-- Main horizontal road -->
+          <rect x="15" y="82" width="165" height="12" rx="2" fill="#ddd" stroke="#bbb" stroke-width=".5"/>
+          <line x1="15" y1="88" x2="180" y2="88" stroke="#999" stroke-width=".8" stroke-dasharray="6,4"/>
+          <text x="170" y="80" font-size="7" fill="#888">Main Road</text>
+
+          <!-- Target node -->
+          <circle cx="97" cy="88" r="5" fill="#333" stroke="white" stroke-width="1.5"/>
+          <text x="110" y="86" font-size="7" fill="#555">Node</text>
+
+          <!-- Side road (stops short) -->
+          <rect x="91" y="38" width="12" height="30" rx="2" fill="#c8e0f0" stroke="#80b0d0" stroke-width=".5"/>
+          <text x="120" y="55" font-size="7" fill="#1a3c5e">Side road</text>
+
+          <!-- The gap (the error) -->
+          <line x1="97" y1="68" x2="97" y2="83" stroke="#ed5565" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <circle cx="97" cy="68" r="3.5" fill="#ed5565" stroke="white" stroke-width="1"/>
+          <!-- Gap annotation -->
+          <line x1="108" y1="75" x2="130" y2="75" stroke="#ed5565" stroke-width="1"/>
+          <text x="132" y="72" font-size="8" fill="#ed5565" font-weight="bold">Gap!</text>
+          <text x="132" y="82" font-size="7" fill="#ed5565">(no connection)</text>
+
+          <!-- Bracket showing gap distance -->
+          <line x1="85" y1="68" x2="85" y2="83" stroke="#d4940a" stroke-width="1.5"/>
+          <line x1="82" y1="68" x2="88" y2="68" stroke="#d4940a" stroke-width="1"/>
+          <line x1="82" y1="83" x2="88" y2="83" stroke="#d4940a" stroke-width="1"/>
+
+          <rect x="15" y="145" width="165" height="62" rx="6" fill="rgba(212,148,10,.06)"/>
+          <text x="97" y="161" text-anchor="middle" font-size="8" fill="#8b6914" font-weight="600">Line stops short of the node</text>
+          <text x="97" y="176" text-anchor="middle" font-size="7.5" fill="#555">Breaks network connectivity–</text>
+          <text x="97" y="191" text-anchor="middle" font-size="7.5" fill="#555">routing fails at this junction</text>
+          <text x="97" y="203" text-anchor="middle" font-size="7" fill="#888">Fix: Extend / Snap tolerance</text>
+        </g>
+
+        <!-- ═══ SLIVER POLYGON ═══ -->
+        <g transform="translate(422,8)" filter="url(#f41)">
+          <rect width="195" height="220" rx="10" fill="url(#gSliv)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <rect x="25" y="6" width="145" height="24" rx="12" fill="#1a3c5e"/>
+          <text x="97" y="22" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">⚠ Sliver Polygon</text>
+
+          <!-- Two parcels with gap between them -->
+          <polygon points="20,45 155,38 155,78 20,85" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="2"/>
+          <text x="85" y="66" text-anchor="middle" font-size="10" fill="#2a6c2a" font-weight="bold">Parcel A</text>
+
+          <polygon points="20,100 155,93 155,135 20,138" fill="#4fc1e9" fill-opacity="0.45" stroke="#1a3c5e" stroke-width="2"/>
+          <text x="85" y="120" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">Parcel B</text>
+
+          <!-- The sliver (highlighted error zone) -->
+          <polygon points="20,85 155,78 155,93 20,100" fill="#ed5565" fill-opacity="0.55" stroke="#ed5565" stroke-width="1.2"/>
+          <!-- Sliver label with arrow -->
+          <line x1="158" y1="86" x2="175" y2="86" stroke="#ed5565" stroke-width="1"/>
+          <text x="160" y="81" font-size="7" fill="#ed5565" font-weight="bold">Sliver</text>
+          <text x="160" y="96" font-size="7" fill="#ed5565" font-weight="bold">(gap)</text>
+
+          <!-- Magnifying glass effect on sliver -->
+          <circle cx="85" cy="90" r="12" fill="none" stroke="#a03030" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <line x1="93" y1="98" x2="105" y2="110" stroke="#a03030" stroke-width="1.5"/>
+
+          <rect x="15" y="145" width="165" height="62" rx="6" fill="rgba(26,60,94,.06)"/>
+          <text x="97" y="161" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">Tiny gap between polygons</text>
+          <text x="97" y="176" text-anchor="middle" font-size="7.5" fill="#555">Created when adjacent edges</text>
+          <text x="97" y="191" text-anchor="middle" font-size="7.5" fill="#555">don't perfectly align/snap</text>
+          <text x="97" y="203" text-anchor="middle" font-size="7" fill="#888">Fix: Topology rules / Snap</text>
+        </g>
+      </svg>
+      <figcaption>Fig 4.1 – Common Topological Digitizing Errors: Overshoot (excess arc past node), Undershoot (gap before node), and Sliver Polygon (misaligned boundary gap)</figcaption>
+    </figure>
+
+    <h3>3. Workflow: Integrating GPS Data into GIS (10 Marks) <span class="exam-ref">Tested in: 2081 Chaitra</span></h3>
+    <p>This is a highly practical scenario question. Here are the exact steps a surveyor takes to bring field data into a GIS for analysis:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 220" width="620" height="220" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a4r" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+          <linearGradient id="gW1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef"/><stop offset="100%" stop-color="#3098c8"/></linearGradient>
+          <linearGradient id="gW2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a0d468"/><stop offset="100%" stop-color="#6eaa30"/></linearGradient>
+          <linearGradient id="gW3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdd66b"/><stop offset="100%" stop-color="#d4980a"/></linearGradient>
+          <linearGradient id="gW4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c4a8ed"/><stop offset="100%" stop-color="#8058c0"/></linearGradient>
+          <linearGradient id="gW5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f07070"/><stop offset="100%" stop-color="#c03030"/></linearGradient>
+          <filter id="f42"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.13"/></filter>
+        </defs>
+
+        <!-- Title bar -->
+        <rect x="120" y="0" width="380" height="22" rx="11" fill="#1a3c5e"/>
+        <text x="310" y="15" text-anchor="middle" font-size="10" fill="white" font-weight="bold">GPS Data Integration Pipeline — 5 Steps</text>
+
+        <!-- ═══ Step 1 ═══ -->
+        <g filter="url(#f42)">
+          <rect x="6" y="34" width="110" height="100" rx="10" fill="url(#gW1)" stroke="#2a7cb5" stroke-width="1.2"/>
+          <rect x="30" y="38" width="62" height="18" rx="9" fill="rgba(0,0,0,.2)"/>
+          <text x="61" y="51" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Step 1</text>
+          <!-- GPS satellite icon -->
+          <circle cx="61" cy="78" r="10" fill="white" fill-opacity=".25"/>
+          <text x="61" y="83" text-anchor="middle" font-size="14"></text>
+          <text x="61" y="104" text-anchor="middle" font-size="10" font-weight="bold" fill="white">GPS Field</text>
+          <text x="61" y="117" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.9)">Collection</text>
+        </g>
+        <!-- Detail bubble for Step 1 -->
+        <rect x="6" y="140" width="110" height="50" rx="6" fill="#e8f6fd" stroke="#2a7cb5" stroke-width=".5"/>
+        <text x="61" y="155" text-anchor="middle" font-size="7" fill="#1a3c5e">Handheld GPS / Rover</text>
+        <text x="61" y="166" text-anchor="middle" font-size="7" fill="#555">Waypoints + Attributes</text>
+        <text x="61" y="178" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Output: .GPX / .CSV</text>
+
+        <!-- Arrow 1→2 -->
+        <line x1="119" y1="84" x2="133" y2="84" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a4r)"/>
+
+        <!-- ═══ Step 2 ═══ -->
+        <g filter="url(#f42)">
+          <rect x="139" y="34" width="110" height="100" rx="10" fill="url(#gW2)" stroke="#5a9a20" stroke-width="1.2"/>
+          <rect x="163" y="38" width="62" height="18" rx="9" fill="rgba(0,0,0,.2)"/>
+          <text x="194" y="51" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Step 2</text>
+          <circle cx="194" cy="78" r="10" fill="white" fill-opacity=".25"/>
+          <text x="194" y="83" text-anchor="middle" font-size="14"></text>
+          <text x="194" y="104" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Import to</text>
+          <text x="194" y="117" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.9)">GIS (XY Data)</text>
+        </g>
+        <rect x="139" y="140" width="110" height="50" rx="6" fill="#eef8e0" stroke="#5a9a20" stroke-width=".5"/>
+        <text x="194" y="155" text-anchor="middle" font-size="7" fill="#3a6a10">Add XY Data tool</text>
+        <text x="194" y="166" text-anchor="middle" font-size="7" fill="#555">Table → Point layer</text>
+        <text x="194" y="178" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Tool: Display XY Data</text>
+
+        <!-- Arrow 2→3 -->
+        <line x1="252" y1="84" x2="266" y2="84" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a4r)"/>
+
+        <!-- ═══ Step 3 ═══ -->
+        <g filter="url(#f42)">
+          <rect x="272" y="34" width="110" height="100" rx="10" fill="url(#gW3)" stroke="#b8860b" stroke-width="1.2"/>
+          <rect x="296" y="38" width="62" height="18" rx="9" fill="rgba(0,0,0,.2)"/>
+          <text x="327" y="51" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Step 3</text>
+          <circle cx="327" cy="78" r="10" fill="white" fill-opacity=".25"/>
+          <text x="327" y="83" text-anchor="middle" font-size="14"></text>
+          <text x="327" y="104" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">Define CRS</text>
+          <text x="327" y="117" text-anchor="middle" font-size="9" fill="#555">(WGS 1984)</text>
+        </g>
+        <rect x="272" y="140" width="110" height="50" rx="6" fill="#fdf6e0" stroke="#b8860b" stroke-width=".5"/>
+        <text x="327" y="155" text-anchor="middle" font-size="7" fill="#7a5a0a">Assign coordinate ref</text>
+        <text x="327" y="166" text-anchor="middle" font-size="7" fill="#555">EPSG:4326 (Lat/Long)</text>
+        <text x="327" y="178" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Tool: Define Projection</text>
+
+        <!-- Arrow 3→4 -->
+        <line x1="385" y1="84" x2="399" y2="84" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a4r)"/>
+
+        <!-- ═══ Step 4 ═══ -->
+        <g filter="url(#f42)">
+          <rect x="405" y="34" width="110" height="100" rx="10" fill="url(#gW4)" stroke="#7b52b5" stroke-width="1.2"/>
+          <rect x="429" y="38" width="62" height="18" rx="9" fill="rgba(0,0,0,.2)"/>
+          <text x="460" y="51" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Step 4</text>
+          <circle cx="460" cy="78" r="10" fill="white" fill-opacity=".25"/>
+          <text x="460" y="83" text-anchor="middle" font-size="14"></text>
+          <text x="460" y="104" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Project to</text>
+          <text x="460" y="117" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.9)">MUTM (meters)</text>
+        </g>
+        <rect x="405" y="140" width="110" height="50" rx="6" fill="#ede4f8" stroke="#7b52b5" stroke-width=".5"/>
+        <text x="460" y="155" text-anchor="middle" font-size="7" fill="#5a3290">Convert to local CRS</text>
+        <text x="460" y="166" text-anchor="middle" font-size="7" fill="#555">° → meters (planar)</text>
+        <text x="460" y="178" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Tool: Project Raster/FC</text>
+
+        <!-- Arrow 4→5 -->
+        <line x1="518" y1="84" x2="532" y2="84" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a4r)"/>
+
+        <!-- ═══ Step 5 ═══ -->
+        <g filter="url(#f42)">
+          <rect x="538" y="34" width="80" height="100" rx="10" fill="url(#gW5)" stroke="#b03030" stroke-width="1.2"/>
+          <rect x="551" y="38" width="54" height="18" rx="9" fill="rgba(0,0,0,.2)"/>
+          <text x="578" y="51" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Step 5</text>
+          <circle cx="578" cy="78" r="10" fill="white" fill-opacity=".25"/>
+          <text x="578" y="83" text-anchor="middle" font-size="14"></text>
+          <text x="578" y="104" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Spatial</text>
+          <text x="578" y="117" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.9)">Analysis</text>
+        </g>
+        <rect x="538" y="140" width="80" height="50" rx="6" fill="#fde4e4" stroke="#b03030" stroke-width=".5"/>
+        <text x="578" y="155" text-anchor="middle" font-size="7" fill="#802020">Buffer, Overlay,</text>
+        <text x="578" y="166" text-anchor="middle" font-size="7" fill="#555">Query, Map Output</text>
+        <text x="578" y="178" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Ready ✓</text>
+
+        <!-- Bottom progress bar -->
+        <rect x="6" y="200" width="612" height="14" rx="7" fill="#f0f0f0" stroke="#ddd" stroke-width=".5"/>
+        <rect x="6" y="200" width="122" height="14" rx="7" fill="#3098c8" fill-opacity="0.8"/>
+        <rect x="128" y="200" width="122" height="14" rx="0" fill="#6eaa30" fill-opacity="0.8"/>
+        <rect x="250" y="200" width="122" height="14" rx="0" fill="#d4980a" fill-opacity="0.8"/>
+        <rect x="372" y="200" width="122" height="14" rx="0" fill="#8058c0" fill-opacity="0.8"/>
+        <rect x="494" y="200" width="124" height="14" rx="7" fill="#c03030" fill-opacity="0.8"/>
+        <text x="67" y="211" text-anchor="middle" font-size="7" fill="white" font-weight="bold">Field</text>
+        <text x="189" y="211" text-anchor="middle" font-size="7" fill="white" font-weight="bold">Office</text>
+        <text x="311" y="211" text-anchor="middle" font-size="7" fill="white" font-weight="bold">Define</text>
+        <text x="433" y="211" text-anchor="middle" font-size="7" fill="white" font-weight="bold">Project</text>
+        <text x="556" y="211" text-anchor="middle" font-size="7" fill="white" font-weight="bold">Analyze</text>
+      </svg>
+      <figcaption>Fig 4.2 – Workflow: Integrating GPS Data into GIS (5-step pipeline from field collection to spatial analysis)</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Step 1: Data Collection &amp; Export:</strong> The surveyor uses a handheld GPS or a Rover to collect waypoints (coordinates) and attributes in the field. This data is exported from the device usually as a .GPX file or a comma-separated .CSV Excel file.</li>
+      <li><strong>Step 2: Importing into GIS (Add XY Data):</strong> In the GIS software (like ArcGIS or QGIS), the surveyor uses the "Add Delimited Text" or "Display XY Data" tool. They map the spreadsheet's Longitude column to the X-axis and Latitude to the Y-axis.</li>
+      <li><strong>Step 3: Defining the Coordinate System:</strong> Because raw GPS data is collected globally, the surveyor must define the incoming spatial reference as GCS WGS 1984.</li>
+      <li><strong>Step 4: Conversion &amp; Projection:</strong> The temporary plotted points are exported and saved permanently as a Point Shapefile or Feature Class. To prepare for engineering measurements, the "Project" tool is used to convert the data from WGS 1984 (degrees) into a local projected coordinate system like MUTM (meters).</li>
+      <li><strong>Step 5: Spatial Analysis:</strong> The data is now ready. The surveyor can buffer the GPS points, overlay them with municipal wards, or interpolate them to create a continuous surface.</li>
+    </ul>
+
+    <!-- ============================================================
+         Part 2: Major Data Feeds to GIS and Their Characteristics
+         ============================================================ -->
+    <h2>Part 2: Major Data Feeds to GIS and Their Characteristics (Section 4.2) <span class="exam-ref">Covers: 2072 Magh Q4, 2072 Ashwin Q2a, 2073 Magh Q4</span></h2>
+
+    <h3>1. Major Data Sources (Feeds) to GIS (5 to 6 Marks)</h3>
+    <p>To secure full marks on this recurring question, divide your answer into Primary (direct measurement) and Secondary (derived) sources:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 260" width="620" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gPri" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f4ff"/><stop offset="100%" stop-color="#b8ddf4"/></linearGradient>
+          <linearGradient id="gSec" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#faf0e0"/><stop offset="100%" stop-color="#f0dabb"/></linearGradient>
+          <filter id="fDS"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- Title -->
+        <rect x="170" y="0" width="280" height="24" rx="12" fill="#1a3c5e"/>
+        <text x="310" y="16" text-anchor="middle" font-size="11" fill="white" font-weight="bold">GIS Data Sources Overview</text>
+
+        <!-- ═══ PRIMARY SIDE ═══ -->
+        <g transform="translate(8,34)" filter="url(#fDS)">
+          <rect width="295" height="218" rx="10" fill="url(#gPri)" stroke="#2a7cb5" stroke-width="1.2"/>
+          <rect x="70" y="6" width="155" height="22" rx="11" fill="#2a7cb5"/>
+          <text x="147" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Primary Sources</text>
+          <text x="147" y="38" text-anchor="middle" font-size="7.5" fill="#1a3c5e" font-style="italic">Directly collected from the real world</text>
+
+          <!-- GPS -->
+          <rect x="12" y="50" width="271" height="48" rx="7" fill="white" fill-opacity=".85" stroke="#3ba8d8" stroke-width=".8"/>
+          <text x="18" y="66" font-size="13"></text>
+          <text x="38" y="67" font-size="9.5" fill="#1a3c5e" font-weight="bold">GNSS / GPS Field Surveys</text>
+          <text x="38" y="80" font-size="7.5" fill="#555">Point-based, highly accurate. Manholes, boundary pegs, utilities.</text>
+          <text x="38" y="91" font-size="7" fill="#888">Output: .GPX / .CSV → Import as XY data</text>
+
+          <!-- Remote Sensing -->
+          <rect x="12" y="104" width="271" height="48" rx="7" fill="white" fill-opacity=".85" stroke="#2a8c2a" stroke-width=".8"/>
+          <text x="18" y="120" font-size="13"></text>
+          <text x="38" y="121" font-size="9.5" fill="#1a3c5e" font-weight="bold">Remote Sensing (Satellites &amp; Drones)</text>
+          <text x="38" y="134" font-size="7.5" fill="#555">Continuous raster coverage. NDVI, land-use classification.</text>
+          <text x="38" y="145" font-size="7" fill="#888">Landsat, Sentinel, DJI drones → GeoTIFF</text>
+
+          <!-- Total Station -->
+          <rect x="12" y="158" width="271" height="48" rx="7" fill="white" fill-opacity=".85" stroke="#7b52b5" stroke-width=".8"/>
+          <text x="18" y="174" font-size="13"></text>
+          <text x="38" y="175" font-size="9.5" fill="#1a3c5e" font-weight="bold">Total Station / Conventional Survey</text>
+          <text x="38" y="188" font-size="7.5" fill="#555">Millimeter-level precision. Dam layouts, building setouts.</text>
+          <text x="38" y="199" font-size="7" fill="#888">EDM + Theodolite → Electronic survey data</text>
+        </g>
+
+        <!-- ═══ SECONDARY SIDE ═══ -->
+        <g transform="translate(315,34)" filter="url(#fDS)">
+          <rect width="300" height="218" rx="10" fill="url(#gSec)" stroke="#b8860b" stroke-width="1.2"/>
+          <rect x="62" y="6" width="175" height="22" rx="11" fill="#b8860b"/>
+          <text x="150" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Secondary Sources</text>
+          <text x="150" y="38" text-anchor="middle" font-size="7.5" fill="#7a5a0a" font-style="italic">Derived from existing data</text>
+
+          <!-- Digitized Maps -->
+          <rect x="12" y="50" width="276" height="48" rx="7" fill="white" fill-opacity=".85" stroke="#b8860b" stroke-width=".8"/>
+          <text x="18" y="66" font-size="13"></text>
+          <text x="38" y="67" font-size="9.5" fill="#7a5a0a" font-weight="bold">Digitized / Scanned Maps</text>
+          <text x="38" y="80" font-size="7.5" fill="#555">Cost-effective for historical data. Prone to paper shrinkage.</text>
+          <text x="38" y="91" font-size="7" fill="#888">Scan → Georeference → Heads-up digitize</text>
+
+          <!-- DEMs -->
+          <rect x="12" y="104" width="276" height="48" rx="7" fill="white" fill-opacity=".85" stroke="#ed5565" stroke-width=".8"/>
+          <text x="18" y="120" font-size="13">⛰</text>
+          <text x="38" y="121" font-size="9.5" fill="#7a5a0a" font-weight="bold">Digital Elevation Models (DEMs)</text>
+          <text x="38" y="134" font-size="7.5" fill="#555">3D raster surfaces for slope, watershed, terrain analysis.</text>
+          <text x="38" y="145" font-size="7" fill="#888">SRTM / ASTER GDEM → free global coverage</text>
+
+          <!-- Census -->
+          <rect x="12" y="158" width="276" height="48" rx="7" fill="white" fill-opacity=".85" stroke="#1a3c5e" stroke-width=".8"/>
+          <text x="18" y="174" font-size="13"></text>
+          <text x="38" y="175" font-size="9.5" fill="#7a5a0a" font-weight="bold">Tabular Census / Survey Data</text>
+          <text x="38" y="188" font-size="7.5" fill="#555">Non-spatial attributes joined to polygons via common ID.</text>
+          <text x="38" y="199" font-size="7" fill="#888">Population, tax records → Table Join to wards</text>
+        </g>
+      </svg>
+      <figcaption>Fig 4.4 – Primary vs. Secondary GIS Data Sources: direct field collection versus derived/existing data</figcaption>
+    </figure>
+
+    <h4>Primary Data Sources (Directly Collected):</h4>
+    <ul>
+      <li><strong>GNSS / GPS Field Surveys:</strong>
+        <ul><li>Characteristics: Highly accurate, point-based discrete data. Excellent for mapping utilities, manholes, and property corners.</li></ul>
+      </li>
+      <li><strong>Remote Sensing (Satellites &amp; Drones):</strong>
+        <ul><li>Characteristics: Provides massive, continuous raster coverage. Great for land-use classification, NDVI, and tracking environmental changes over time.</li></ul>
+      </li>
+      <li><strong>Total Station / Conventional Surveying:</strong>
+        <ul><li>Characteristics: Offers millimeter-level precision. Ideal for small-scale, highly detailed engineering sites like a dam construction layout.</li></ul>
+      </li>
+    </ul>
+
+    <h4>Secondary Data Sources (Derived / Existing):</h4>
+    <ul>
+      <li><strong>Digitized / Scanned Maps:</strong>
+        <ul><li>Characteristics: Cost-effective way to get historical data into GIS, but heavily prone to human digitizing errors and paper shrinkage.</li></ul>
+      </li>
+      <li><strong>Digital Elevation Models (DEMs):</strong>
+        <ul><li>Characteristics: Continuous 3D raster surfaces downloaded from global missions (like SRTM or ASTER) used for watershed and slope analysis.</li></ul>
+      </li>
+      <li><strong>Tabular Census / Survey Data:</strong>
+        <ul><li>Characteristics: Purely attribute data (non-spatial Excel sheets like population counts) that must be "joined" to existing spatial polygons (like ward boundaries) using a common ID.</li></ul>
+      </li>
+    </ul>
+
+    <h3>2. Positional Accuracy vs. Attribute Accuracy (2 Marks) <span class="exam-ref">Tested in: 2073 Magh Q4</span></h3>
+    <p>GIS data quality is measured in two distinct ways:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 200" width="620" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gPA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f4ff"/><stop offset="100%" stop-color="#b0d8f0"/></linearGradient>
+          <linearGradient id="gAA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef3e0"/><stop offset="100%" stop-color="#f0dbb5"/></linearGradient>
+          <filter id="fPA"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- VS badge -->
+        <circle cx="310" cy="100" r="22" fill="#1a3c5e" stroke="#b8860b" stroke-width="2" filter="url(#fPA)"/>
+        <text x="310" y="105" text-anchor="middle" font-size="12" fill="white" font-weight="bold">VS</text>
+
+        <!-- ═══ POSITIONAL ACCURACY ═══ -->
+        <g transform="translate(8,8)" filter="url(#fPA)">
+          <rect width="280" height="184" rx="10" fill="url(#gPA)" stroke="#2a7cb5" stroke-width="1.2"/>
+          <rect x="52" y="6" width="176" height="22" rx="11" fill="#2a7cb5"/>
+          <text x="140" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Positional Accuracy</text>
+          <text x="140" y="42" text-anchor="middle" font-size="8.5" fill="#1a3c5e" font-weight="600">"Is it in the right place?"</text>
+
+          <!-- Target/Bullseye visualization -->
+          <circle cx="70" cy="95" r="35" fill="none" stroke="#ddd" stroke-width="1"/>
+          <circle cx="70" cy="95" r="24" fill="none" stroke="#ccc" stroke-width="1"/>
+          <circle cx="70" cy="95" r="13" fill="none" stroke="#bbb" stroke-width="1"/>
+          <circle cx="70" cy="95" r="3" fill="#ed5565"/>
+          <!-- Scattered points (high accuracy = clustered near center) -->
+          <circle cx="68" cy="92" r="2.5" fill="#2a7cb5" opacity=".8"/>
+          <circle cx="73" cy="97" r="2.5" fill="#2a7cb5" opacity=".8"/>
+          <circle cx="66" cy="98" r="2.5" fill="#2a7cb5" opacity=".8"/>
+          <circle cx="72" cy="90" r="2.5" fill="#2a7cb5" opacity=".8"/>
+          <circle cx="69" cy="94" r="2.5" fill="#2a7cb5" opacity=".8"/>
+          <text x="70" y="140" text-anchor="middle" font-size="7" fill="#2a7cb5" font-weight="bold">High accuracy = tight cluster</text>
+
+          <!-- Description -->
+          <text x="140" y="68" text-anchor="middle" font-size="8" fill="#555">Closeness of map coordinates</text>
+          <text x="140" y="80" text-anchor="middle" font-size="8" fill="#555">to true ground positions</text>
+
+          <rect x="110" y="90" width="158" height="46" rx="6" fill="white" fill-opacity=".7"/>
+          <text x="120" y="104" font-size="7.5" fill="#333" font-weight="600">Measured by:</text>
+          <text x="120" y="116" font-size="7" fill="#555">• RMS Error (meters)</text>
+          <text x="120" y="128" font-size="7" fill="#555">• Comparison to GPS control pts</text>
+
+          <rect x="12" y="148" width="256" height="28" rx="6" fill="rgba(42,124,181,.08)"/>
+          <text x="140" y="163" text-anchor="middle" font-size="7.5" fill="#2a7cb5" font-style="italic">✓ Road mapped at exact GPS coordinates</text>
+          <text x="140" y="174" text-anchor="middle" font-size="7" fill="#888">= High Positional Accuracy</text>
+        </g>
+
+        <!-- ═══ ATTRIBUTE ACCURACY ═══ -->
+        <g transform="translate(332,8)" filter="url(#fPA)">
+          <rect width="280" height="184" rx="10" fill="url(#gAA)" stroke="#b8860b" stroke-width="1.2"/>
+          <rect x="52" y="6" width="176" height="22" rx="11" fill="#b8860b"/>
+          <text x="140" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Attribute Accuracy</text>
+          <text x="140" y="42" text-anchor="middle" font-size="8.5" fill="#7a5a0a" font-weight="600">"Is the description correct?"</text>
+
+          <!-- Mini table visualization -->
+          <rect x="15" y="56" width="250" height="78" rx="5" fill="white" fill-opacity=".8" stroke="#b8860b" stroke-width=".5"/>
+          <!-- Header -->
+          <rect x="15" y="56" width="250" height="18" rx="5" fill="#b8860b" fill-opacity=".15"/>
+          <text x="58" y="69" text-anchor="middle" font-size="7" fill="#7a5a0a" font-weight="bold">ROAD_ID</text>
+          <text x="130" y="69" text-anchor="middle" font-size="7" fill="#7a5a0a" font-weight="bold">TYPE</text>
+          <text x="220" y="69" text-anchor="middle" font-size="7" fill="#7a5a0a" font-weight="bold">LANES</text>
+          <!-- Row 1 (correct) -->
+          <text x="58" y="84" text-anchor="middle" font-size="7" fill="#555">RD-101</text>
+          <text x="130" y="84" text-anchor="middle" font-size="7" fill="#2a8c2a">Pitched ✓</text>
+          <text x="220" y="84" text-anchor="middle" font-size="7" fill="#2a8c2a">4 ✓</text>
+          <!-- Row 2 (error!) -->
+          <text x="58" y="99" text-anchor="middle" font-size="7" fill="#555">RD-202</text>
+          <text x="130" y="99" text-anchor="middle" font-size="7" fill="#ed5565">Pitched ✗</text>
+          <text x="220" y="99" text-anchor="middle" font-size="7" fill="#ed5565">4 ✗</text>
+          <!-- Row 2 correction -->
+          <text x="58" y="114" text-anchor="middle" font-size="6.5" fill="#888">Actual:</text>
+          <text x="130" y="114" text-anchor="middle" font-size="6.5" fill="#888">Dirt road</text>
+          <text x="220" y="114" text-anchor="middle" font-size="6.5" fill="#888">2 lanes</text>
+          <!-- Error highlight -->
+          <rect x="85" y="90" width="180" height="14" rx="3" fill="#ed5565" fill-opacity=".1" stroke="#ed5565" stroke-width=".5" stroke-dasharray="3,2"/>
+
+          <rect x="12" y="148" width="256" height="28" rx="6" fill="rgba(184,134,11,.08)"/>
+          <text x="140" y="163" text-anchor="middle" font-size="7.5" fill="#b8860b" font-style="italic">✗ Table says "4-lane pitched" but it's "2-lane dirt"</text>
+          <text x="140" y="174" text-anchor="middle" font-size="7" fill="#888">= Low Attribute Accuracy</text>
+        </g>
+      </svg>
+      <figcaption>Fig 4.5 – Positional Accuracy (spatial location) vs. Attribute Accuracy (descriptive data correctness)</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Positional Accuracy:</strong> Answers "Is it in the right place?" It is the statistical closeness (usually measured by RMS error) of the map features to their true ground coordinates.</li>
+      <li><strong>Attribute Accuracy:</strong> Answers "Is the description correct?" It is the correctness of the non-spatial data table attached to the geometry.
+        <ul>
+          <li><strong>Example:</strong> A road line is perfectly mapped in the correct location (High Positional Accuracy), but the attribute table lists it as a "4-lane pitched highway" when it is actually a "2-lane dirt road" (Low Attribute Accuracy).</li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- ============================================================
+         4.3 Maps, GPS, Images, Databases
+         ============================================================ -->
+    <h2>4.3 Maps, GPS, Images, Databases (Sources &amp; Importance) <span class="exam-ref">Covers: 2076 Bhadra Q1b, 2079 Chaitra Q1b, 2078 Chaitra Q1b</span></h2>
+
+    <h3>1. The Basic Sources of Data for GIS</h3>
+    <p>While we touched on this earlier, if an exam question specifically asks for the "basic sources" under this chapter's context, group them into these four distinct categories:</p>
+    <ul>
+      <li><strong>Maps (Analog to Digital):</strong> Hardcopy topographic or cadastral maps that are scanned and georeferenced. A technician then manually digitizes (traces) the features into vector formats.</li>
+      <li><strong>GPS/GNSS:</strong> Field surveys using handheld receivers or high-precision RTK rovers. This provides exact point data for infrastructure like manholes, light poles, or boundary pegs.</li>
+      <li><strong>Images (Remote Sensing):</strong> Passive satellite imagery (Landsat, Sentinel) or active sensors (LiDAR, Radar) and drone orthophotos. These provide continuous raster data for tracking land-use changes or extracting elevation.</li>
+      <li><strong>Databases &amp; Commercial Data:</strong> Non-spatial tabular data (like national census population tables or municipal tax records) that are linked to spatial polygons (like ward boundaries) using a common ID number.</li>
+    </ul>
+
+    <h3>2. Why is Data Acquisition/Collection the Most Important Process? <span class="exam-ref">Tested in: 2079 Chaitra Q1b, 2078 Chaitra Q1b</span></h3>
+    <p>You must mention these two specific principles to get full marks:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 190" width="620" height="190" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="g80" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#ed5565"/><stop offset="100%" stop-color="#d44040"/></linearGradient>
+          <linearGradient id="g20" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#4fc1e9"/><stop offset="100%" stop-color="#3ba8d8"/></linearGradient>
+          <linearGradient id="gGIGO" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff0f0"/><stop offset="100%" stop-color="#fcd8d8"/></linearGradient>
+          <filter id="f8020"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- ═══ LEFT: 80/20 RULE ═══ -->
+        <g transform="translate(8,8)" filter="url(#f8020)">
+          <rect width="310" height="174" rx="10" fill="#f8f8ff" stroke="#1a3c5e" stroke-width="1.2"/>
+          <rect x="60" y="6" width="190" height="22" rx="11" fill="#1a3c5e"/>
+          <text x="155" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">The 80 / 20 Rule</text>
+
+          <!-- Stacked bar chart -->
+          <rect x="20" y="40" width="270" height="50" rx="6" fill="#eee" stroke="#ccc" stroke-width=".5"/>
+          <!-- 80% portion -->
+          <rect x="20" y="40" width="216" height="50" rx="6" fill="url(#g80)"/>
+          <text x="128" y="60" text-anchor="middle" font-size="18" fill="white" font-weight="bold">80%</text>
+          <text x="128" y="78" text-anchor="middle" font-size="8" fill="rgba(255,255,255,.9)">Data Collection &amp; Cleaning</text>
+          <!-- 20% portion -->
+          <rect x="236" y="40" width="54" height="50" rx="0" fill="url(#g20)"/>
+          <text x="263" y="62" text-anchor="middle" font-size="13" fill="white" font-weight="bold">20%</text>
+          <text x="263" y="78" text-anchor="middle" font-size="6.5" fill="white">Analysis</text>
+
+          <!-- Budget/Time row -->
+          <rect x="20" y="100" width="130" height="28" rx="5" fill="rgba(237,85,101,.08)"/>
+          <text x="85" y="112" text-anchor="middle" font-size="8" fill="#a03030" font-weight="bold">⏱ Time</text>
+          <text x="85" y="123" text-anchor="middle" font-size="7" fill="#555">Collection &amp; entry dominate</text>
+
+          <rect x="158" y="100" width="132" height="28" rx="5" fill="rgba(79,193,233,.08)"/>
+          <text x="224" y="112" text-anchor="middle" font-size="8" fill="#2a7cb5" font-weight="bold">Budget</text>
+          <text x="224" y="123" text-anchor="middle" font-size="7" fill="#555">Most funds → data work</text>
+
+          <rect x="20" y="136" width="270" height="28" rx="6" fill="rgba(26,60,94,.05)"/>
+          <text x="155" y="151" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">In real GIS projects, data acquisition consumes</text>
+          <text x="155" y="162" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">80% of time &amp; budget — analysis is only 20%.</text>
+        </g>
+
+        <!-- ═══ RIGHT: GIGO ═══ -->
+        <g transform="translate(330,8)" filter="url(#f8020)">
+          <rect width="282" height="174" rx="10" fill="url(#gGIGO)" stroke="#ed5565" stroke-width="1.2"/>
+          <rect x="42" y="6" width="198" height="22" rx="11" fill="#ed5565"/>
+          <text x="141" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">GIGO Principle</text>
+          <text x="141" y="42" text-anchor="middle" font-size="9" fill="#a03030" font-weight="bold">Garbage In → Garbage Out</text>
+
+          <!-- Flow visualization -->
+          <rect x="15" y="52" width="100" height="40" rx="6" fill="white" fill-opacity=".7" stroke="#ed5565" stroke-width=".8"/>
+          <text x="65" y="68" text-anchor="middle" font-size="8" fill="#a03030" font-weight="bold">⚠ Bad Input</text>
+          <text x="65" y="80" text-anchor="middle" font-size="7" fill="#555">Flawed DEM</text>
+
+          <!-- Arrow -->
+          <line x1="118" y1="72" x2="135" y2="72" stroke="#ed5565" stroke-width="2"/>
+          <polygon points="135,67 145,72 135,77" fill="#ed5565"/>
+
+          <!-- GIS box -->
+          <rect x="148" y="56" width="40" height="32" rx="4" fill="#1a3c5e"/>
+          <text x="168" y="76" text-anchor="middle" font-size="8" fill="white" font-weight="bold">GIS</text>
+
+          <!-- Arrow -->
+          <line x1="191" y1="72" x2="208" y2="72" stroke="#ed5565" stroke-width="2"/>
+          <polygon points="208,67 218,72 208,77" fill="#ed5565"/>
+
+          <rect x="220" y="52" width="50" height="40" rx="6" fill="white" fill-opacity=".7" stroke="#ed5565" stroke-width=".8"/>
+          <text x="245" y="68" text-anchor="middle" font-size="7" fill="#a03030" font-weight="bold">Bad</text>
+          <text x="245" y="80" text-anchor="middle" font-size="7" fill="#a03030" font-weight="bold">Output</text>
+
+          <!-- Warning text -->
+          <rect x="15" y="100" width="252" height="64" rx="6" fill="rgba(160,48,48,.06)"/>
+          <text x="141" y="115" text-anchor="middle" font-size="7.5" fill="#a03030" font-weight="600">GIS software is just a calculator.</text>
+          <text x="141" y="128" text-anchor="middle" font-size="7.5" fill="#555">It assumes your input data is perfect.</text>
+          <text x="141" y="143" text-anchor="middle" font-size="7.5" fill="#555">Bad DEM → wrong flood plain → bridges</text>
+          <text x="141" y="156" text-anchor="middle" font-size="7.5" fill="#555">at wrong elevation → budget explosion</text>
+        </g>
+      </svg>
+      <figcaption>Fig 4.8 – The 80/20 Rule (data dominates project time/budget) and GIGO Principle (bad input = bad output)</figcaption>
+    </figure>
+    <ul>
+      <li><strong>The 80/20 Rule:</strong> In any real-world GIS engineering project, data collection, entry, and cleaning consume 80% of the project's total time and budget. The actual spatial analysis and map making only take the remaining 20%.</li>
+      <li><strong>The GIGO Principle (Garbage In, Garbage Out):</strong> GIS software is just a calculator. It assumes the data you feed it is perfect. If you input a heavily flawed Digital Elevation Model (DEM) into an advanced hydrological model, the software will confidently output a completely incorrect flood plain. In civil engineering, bad input data doesn't just make a bad map; it causes bridges to be built at the wrong elevation and budgets to explode.</li>
+    </ul>
+
+    <!-- ============================================================
+         4.5 Data Capture Methods, Data Quality, and Metadata
+         ============================================================ -->
+    <h2>4.5 Data Capture Methods, Data Quality, and Metadata <span class="exam-ref">Covers: 2071 Magh Q2b, 2075 Bhadra Q4, 2071 Magh Q6a, 2082 Shrawan</span></h2>
+
+    <h3>1. Direct vs. Indirect Methods of Spatial Data Capture <span class="exam-ref">Tested in: 2071 Magh Q2b</span></h3>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 195" width="620" height="195" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gDir" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e0f8e0"/><stop offset="100%" stop-color="#b8e8b8"/></linearGradient>
+          <linearGradient id="gInd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0e8f8"/><stop offset="100%" stop-color="#d8c0f0"/></linearGradient>
+          <filter id="fDI"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- Title -->
+        <rect x="160" y="0" width="300" height="22" rx="11" fill="#1a3c5e"/>
+        <text x="310" y="15" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Spatial Data Capture Methods</text>
+
+        <!-- ═══ DIRECT ═══ -->
+        <g transform="translate(8,30)" filter="url(#fDI)">
+          <rect width="295" height="158" rx="10" fill="url(#gDir)" stroke="#2a8c2a" stroke-width="1.2"/>
+          <rect x="70" y="6" width="155" height="22" rx="11" fill="#2a8c2a"/>
+          <text x="147" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Direct Capture</text>
+          <text x="147" y="40" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="600">Original data from the real world</text>
+
+          <!-- Method cards -->
+          <rect x="10" y="50" width="86" height="65" rx="6" fill="white" fill-opacity=".85" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="53" y="65" text-anchor="middle" font-size="12"></text>
+          <text x="53" y="78" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">GPS Survey</text>
+          <text x="53" y="90" text-anchor="middle" font-size="6.5" fill="#555">Field waypoints</text>
+          <text x="53" y="100" text-anchor="middle" font-size="6.5" fill="#555">Property corners</text>
+          <text x="53" y="110" text-anchor="middle" font-size="6" fill="#888">→ .GPX / .CSV</text>
+
+          <rect x="104" y="50" width="86" height="65" rx="6" fill="white" fill-opacity=".85" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="147" y="65" text-anchor="middle" font-size="12"></text>
+          <text x="147" y="78" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">Drone / UAV</text>
+          <text x="147" y="90" text-anchor="middle" font-size="6.5" fill="#555">Aerial photography</text>
+          <text x="147" y="100" text-anchor="middle" font-size="6.5" fill="#555">Orthomosaics</text>
+          <text x="147" y="110" text-anchor="middle" font-size="6" fill="#888">→ GeoTIFF</text>
+
+          <rect x="198" y="50" width="86" height="65" rx="6" fill="white" fill-opacity=".85" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="241" y="65" text-anchor="middle" font-size="12"></text>
+          <text x="241" y="78" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">Total Station</text>
+          <text x="241" y="90" text-anchor="middle" font-size="6.5" fill="#555">mm-level precision</text>
+          <text x="241" y="100" text-anchor="middle" font-size="6.5" fill="#555">Engineering sites</text>
+          <text x="241" y="110" text-anchor="middle" font-size="6" fill="#888">→ EDM data</text>
+
+          <rect x="10" y="122" width="274" height="28" rx="6" fill="rgba(42,140,42,.08)"/>
+          <text x="147" y="137" text-anchor="middle" font-size="7.5" fill="#2a6c2a" font-weight="600">✓ High accuracy | ✓ Current data | ✗ Expensive &amp; time-consuming</text>
+          <text x="147" y="148" text-anchor="middle" font-size="7" fill="#888">You are physically present in the field</text>
+        </g>
+
+        <!-- ═══ INDIRECT ═══ -->
+        <g transform="translate(315,30)" filter="url(#fDI)">
+          <rect width="300" height="158" rx="10" fill="url(#gInd)" stroke="#7b52b5" stroke-width="1.2"/>
+          <rect x="62" y="6" width="175" height="22" rx="11" fill="#7b52b5"/>
+          <text x="150" y="21" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Indirect Capture</text>
+          <text x="150" y="40" text-anchor="middle" font-size="8" fill="#5a3290" font-weight="600">Derived from existing sources</text>
+
+          <!-- Method cards -->
+          <rect x="10" y="50" width="86" height="65" rx="6" fill="white" fill-opacity=".85" stroke="#7b52b5" stroke-width=".6"/>
+          <text x="53" y="65" text-anchor="middle" font-size="12"></text>
+          <text x="53" y="78" text-anchor="middle" font-size="8" fill="#5a3290" font-weight="bold">Digitizing</text>
+          <text x="53" y="90" text-anchor="middle" font-size="6.5" fill="#555">Tracing over</text>
+          <text x="53" y="100" text-anchor="middle" font-size="6.5" fill="#555">scanned maps</text>
+          <text x="53" y="110" text-anchor="middle" font-size="6" fill="#888">→ Shapefile</text>
+
+          <rect x="104" y="50" width="86" height="65" rx="6" fill="white" fill-opacity=".85" stroke="#7b52b5" stroke-width=".6"/>
+          <text x="147" y="65" text-anchor="middle" font-size="12"></text>
+          <text x="147" y="78" text-anchor="middle" font-size="8" fill="#5a3290" font-weight="bold">Conversion</text>
+          <text x="147" y="90" text-anchor="middle" font-size="6.5" fill="#555">Paper contours</text>
+          <text x="147" y="100" text-anchor="middle" font-size="6.5" fill="#555">→ digital DEM</text>
+          <text x="147" y="110" text-anchor="middle" font-size="6" fill="#888">→ Raster grid</text>
+
+          <rect x="198" y="50" width="92" height="65" rx="6" fill="white" fill-opacity=".85" stroke="#7b52b5" stroke-width=".6"/>
+          <text x="244" y="65" text-anchor="middle" font-size="12"></text>
+          <text x="244" y="78" text-anchor="middle" font-size="8" fill="#5a3290" font-weight="bold">Scanning</text>
+          <text x="244" y="90" text-anchor="middle" font-size="6.5" fill="#555">Paper blueprints</text>
+          <text x="244" y="100" text-anchor="middle" font-size="6.5" fill="#555">→ georeferenced</text>
+          <text x="244" y="110" text-anchor="middle" font-size="6" fill="#888">→ Raster image</text>
+
+          <rect x="10" y="122" width="280" height="28" rx="6" fill="rgba(123,82,181,.08)"/>
+          <text x="150" y="137" text-anchor="middle" font-size="7.5" fill="#5a3290" font-weight="600">✓ Cost-effective | ✓ Historical data | ✗ Error-prone &amp; dated</text>
+          <text x="150" y="148" text-anchor="middle" font-size="7" fill="#888">Working at the computer with existing sources</text>
+        </g>
+      </svg>
+      <figcaption>Fig 4.6 – Direct vs. Indirect Spatial Data Capture Methods</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Direct Data Capture:</strong> Collecting original data directly from the physical real world.
+        <ul><li>Examples: Standing in a field with a GPS rover to record property corners; flying a drone to capture fresh aerial photography; running a Total Station survey.</li></ul>
+      </li>
+      <li><strong>Indirect Data Capture:</strong> Creating new GIS data by extracting or converting information from existing data sources.
+        <ul><li>Examples: Heads-up digitizing (tracing over a scanned historical map on your computer screen); converting an existing paper contour map into a digital DEM; scanning a hardcopy blueprint.</li></ul>
+      </li>
+    </ul>
+
+    <h3>2. The 5 Macro-Level Components of Data Quality <span class="exam-ref">Tested in: 2071 Magh Q2b, 2075 Bhadra Q4, 2082 Shrawan</span></h3>
+    <p>When examiners ask for data quality parameters or macro-level components, they want you to list these exact five metrics. If a dataset fails even one of these, it is considered poor quality.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 340" width="620" height="340" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <radialGradient id="gDQhub" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#2a5c8e"/><stop offset="100%" stop-color="#0e2a42"/></radialGradient>
+          <linearGradient id="gDQ1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef"/><stop offset="100%" stop-color="#3ba8d8"/></linearGradient>
+          <linearGradient id="gDQ2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#8cc63f"/></linearGradient>
+          <linearGradient id="gDQ3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdd66b"/><stop offset="100%" stop-color="#e8a820"/></linearGradient>
+          <linearGradient id="gDQ4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c4a8ed"/><stop offset="100%" stop-color="#9a72d8"/></linearGradient>
+          <linearGradient id="gDQ5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f07070"/><stop offset="100%" stop-color="#d44040"/></linearGradient>
+          <filter id="f43"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.14"/></filter>
+        </defs>
+
+        <!-- Central hub -->
+        <circle cx="310" cy="170" r="52" fill="url(#gDQhub)" stroke="#b8860b" stroke-width="2.5" filter="url(#f43)"/>
+        <text x="310" y="156" text-anchor="middle" font-size="13" fill="#f6bb42" font-weight="bold">Data</text>
+        <text x="310" y="174" text-anchor="middle" font-size="14" fill="white" font-weight="bold">Quality</text>
+        <text x="310" y="192" text-anchor="middle" font-size="8" fill="#aac8e0">5 Macro Components</text>
+
+        <!-- ═══ 1. Positional Accuracy (top-left) ═══ -->
+        <line x1="175" y1="75" x2="265" y2="138" stroke="#3ba8d8" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <g transform="translate(6,8)" filter="url(#f43)">
+          <rect width="180" height="85" rx="10" fill="url(#gDQ1)" stroke="#2a7cb5" stroke-width="1"/>
+          <rect x="10" y="6" width="22" height="22" rx="11" fill="rgba(0,0,0,.18)"/>
+          <text x="21" y="22" text-anchor="middle" font-size="12" fill="white" font-weight="bold">1</text>
+          <text x="45" y="20" font-size="10" fill="white" font-weight="bold">Positional</text>
+          <text x="45" y="33" font-size="10" fill="white" font-weight="bold">   Accuracy</text>
+          <rect x="8" y="42" width="164" height="35" rx="5" fill="rgba(255,255,255,.4)"/>
+          <text x="90" y="55" text-anchor="middle" font-size="7.5" fill="#1a3c5e">Is feature at correct location?</text>
+          <text x="90" y="68" text-anchor="middle" font-size="7" fill="#555">Measured by RMS error (m)</text>
+        </g>
+
+        <!-- ═══ 2. Attribute Accuracy (top-right) ═══ -->
+        <line x1="440" y1="75" x2="355" y2="138" stroke="#8cc63f" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <g transform="translate(434,8)" filter="url(#f43)">
+          <rect width="180" height="85" rx="10" fill="url(#gDQ2)" stroke="#5a9a20" stroke-width="1"/>
+          <rect x="10" y="6" width="22" height="22" rx="11" fill="rgba(0,0,0,.18)"/>
+          <text x="21" y="22" text-anchor="middle" font-size="12" fill="white" font-weight="bold">2</text>
+          <text x="45" y="20" font-size="10" fill="white" font-weight="bold">Attribute</text>
+          <text x="45" y="33" font-size="10" fill="white" font-weight="bold">   Accuracy</text>
+          <rect x="8" y="42" width="164" height="35" rx="5" fill="rgba(255,255,255,.4)"/>
+          <text x="90" y="55" text-anchor="middle" font-size="7.5" fill="#2a6c2a">Is description data correct?</text>
+          <text x="90" y="68" text-anchor="middle" font-size="7" fill="#555">Table values match reality</text>
+        </g>
+
+        <!-- ═══ 3. Logical Consistency (middle-left) ═══ -->
+        <line x1="185" y1="210" x2="258" y2="185" stroke="#e8a820" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <g transform="translate(6,185)" filter="url(#f43)">
+          <rect width="180" height="85" rx="10" fill="url(#gDQ3)" stroke="#b8860b" stroke-width="1"/>
+          <rect x="10" y="6" width="22" height="22" rx="11" fill="rgba(0,0,0,.18)"/>
+          <text x="21" y="22" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">3</text>
+          <text x="45" y="20" font-size="10" fill="#333" font-weight="bold">Logical</text>
+          <text x="45" y="33" font-size="10" fill="#333" font-weight="bold">   Consistency</text>
+          <rect x="8" y="42" width="164" height="35" rx="5" fill="rgba(255,255,255,.4)"/>
+          <text x="90" y="55" text-anchor="middle" font-size="7.5" fill="#7a5a0a">Do features follow rules?</text>
+          <text x="90" y="68" text-anchor="middle" font-size="7" fill="#555">Topology, no gaps/overlaps</text>
+        </g>
+
+        <!-- ═══ 4. Temporal Accuracy (middle-right) ═══ -->
+        <line x1="440" y1="210" x2="362" y2="185" stroke="#9a72d8" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <g transform="translate(434,185)" filter="url(#f43)">
+          <rect width="180" height="85" rx="10" fill="url(#gDQ4)" stroke="#7b52b5" stroke-width="1"/>
+          <rect x="10" y="6" width="22" height="22" rx="11" fill="rgba(0,0,0,.18)"/>
+          <text x="21" y="22" text-anchor="middle" font-size="12" fill="white" font-weight="bold">4</text>
+          <text x="45" y="20" font-size="10" fill="white" font-weight="bold">⏱Temporal</text>
+          <text x="45" y="33" font-size="10" fill="white" font-weight="bold">   Accuracy</text>
+          <rect x="8" y="42" width="164" height="35" rx="5" fill="rgba(255,255,255,.3)"/>
+          <text x="90" y="55" text-anchor="middle" font-size="7.5" fill="#5a3290">Is data current / relevant?</text>
+          <text x="90" y="68" text-anchor="middle" font-size="7" fill="#555">2015 map ≠ 2026 reality</text>
+        </g>
+
+        <!-- ═══ 5. Completeness (bottom-center) ═══ -->
+        <line x1="310" y1="222" x2="310" y2="285" stroke="#d44040" stroke-width="1.8" stroke-dasharray="5,3"/>
+        <g transform="translate(220,285)" filter="url(#f43)">
+          <rect width="180" height="50" rx="10" fill="url(#gDQ5)" stroke="#b03030" stroke-width="1"/>
+          <rect x="10" y="6" width="22" height="18" rx="9" fill="rgba(0,0,0,.18)"/>
+          <text x="21" y="19" text-anchor="middle" font-size="11" fill="white" font-weight="bold">5</text>
+          <text x="45" y="19" font-size="10" fill="white" font-weight="bold">✅ Data Completeness</text>
+          <text x="90" y="38" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,.9)">Is everything captured? No missing features?</text>
+        </g>
+      </svg>
+      <figcaption>Fig 4.3 – The Five Macro-Level Components of Data Quality (hub-spoke model)</figcaption>
+    </figure>
+    <ol>
+      <li><strong>Positional Accuracy:</strong> How closely the coordinate ($X, Y, Z$) of a feature in the GIS matches its true physical location on the Earth. (e.g., Is the water pipe actually where the map says it is?)</li>
+      <li><strong>Attribute Accuracy:</strong> The correctness of the descriptive tabular data attached to the geometry. (e.g., The pipe is drawn in the right place, but does the table correctly list it as PVC, or mistakenly list it as Cast Iron?)</li>
+      <li><strong>Logical Consistency (Topology):</strong> Do the geometric features follow mathematical and logical rules? (e.g., Do the road lines perfectly connect at the intersection, or is there a microscopic gap preventing the network routing tool from working?)</li>
+      <li><strong>Temporal Accuracy:</strong> Is the data relevant for the current time period? (e.g., Using a 2015 land-use map to plan a 2026 highway alignment has terrible temporal accuracy because thousands of new houses have likely been built since then.)</li>
+      <li><strong>Data Completeness:</strong> Is anything missing from the dataset? (e.g., Did the surveyors map 100% of the ward's fire hydrants, or did they stop early and only map 85%?)</li>
+    </ol>
+
+    <h3>3. The Significance of Data Accuracy in GIS Analysis <span class="exam-ref">Tested in: 2082 Shrawan</span></h3>
+    <p>In civil engineering, spatial analysis is used for legally binding decisions. If a cadastral map lacks positional accuracy, land ownership disputes arise. If a utility network lacks logical consistency, excavation crews might strike an unmapped gas line. Accuracy ensures safety, legal compliance, and economic efficiency.</p>
+
+    <h3>4. What is Metadata? (3 Marks) <span class="exam-ref">Tested in: 2071 Magh Q6a</span></h3>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 220" width="620" height="220" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gMeta" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f8f4e8"/><stop offset="100%" stop-color="#ece0c0"/></linearGradient>
+          <linearGradient id="gMetaH" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1a3c5e"/><stop offset="100%" stop-color="#2a6090"/></linearGradient>
+          <filter id="fMT"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- Left: Concept explainer -->
+        <g transform="translate(8,8)" filter="url(#fMT)">
+          <rect width="260" height="200" rx="10" fill="url(#gMeta)" stroke="#b8860b" stroke-width="1.2"/>
+          <rect x="45" y="6" width="170" height="24" rx="12" fill="#b8860b"/>
+          <text x="130" y="22" text-anchor="middle" font-size="11" fill="white" font-weight="bold">What is Metadata?</text>
+
+          <text x="130" y="48" text-anchor="middle" font-size="10" fill="#7a5a0a" font-weight="bold">"Data about the Data"</text>
+
+          <!-- Analogy box -->
+          <rect x="12" y="58" width="236" height="50" rx="6" fill="white" fill-opacity=".7" stroke="#b8860b" stroke-width=".4"/>
+          <text x="20" y="73" font-size="8" fill="#555" font-weight="600">Analogy:</text>
+          <text x="20" y="86" font-size="7.5" fill="#555">Like a nutrition label on a can of soup —</text>
+          <text x="20" y="98" font-size="7.5" fill="#555">it tells you what's inside before you open it.</text>
+
+          <!-- Format info -->
+          <rect x="12" y="115" width="236" height="30" rx="6" fill="rgba(184,134,11,.06)"/>
+          <text x="20" y="130" font-size="8" fill="#7a5a0a" font-weight="600">Format: .XML file attached to shapefile</text>
+          <text x="20" y="141" font-size="7" fill="#888">Standards: ISO 19115 / FGDC-CSDGM</text>
+
+          <!-- Importance -->
+          <rect x="12" y="152" width="236" height="40" rx="6" fill="rgba(237,85,101,.06)"/>
+          <text x="20" y="166" font-size="8" fill="#a03030" font-weight="600">⚠Why it matters:</text>
+          <text x="20" y="178" font-size="7.5" fill="#555">Without metadata, engineers cannot legally or</text>
+          <text x="20" y="189" font-size="7.5" fill="#555">ethically trust a dataset for critical projects.</text>
+        </g>
+
+        <!-- Right: The "Nutrition Label" card -->
+        <g transform="translate(290,8)" filter="url(#fMT)">
+          <rect width="322" height="200" rx="10" fill="white" stroke="#1a3c5e" stroke-width="1.5"/>
+          <!-- Header -->
+          <rect x="0" y="0" width="322" height="30" rx="10" fill="url(#gMetaH)"/>
+          <rect x="0" y="20" width="322" height="10" fill="url(#gMetaH)"/>
+          <text x="161" y="20" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Metadata Record (Example)</text>
+
+          <!-- Field rows -->
+          <rect x="8" y="36" width="306" height="22" rx="4" fill="#e8f0f8"/>
+          <text x="16" y="50" font-size="8" fill="#1a3c5e" font-weight="bold">Title:</text>
+          <text x="85" y="50" font-size="8" fill="#555">Kathmandu Ward Boundaries 2023</text>
+
+          <rect x="8" y="62" width="306" height="22" rx="4" fill="#f8f8f8"/>
+          <text x="16" y="76" font-size="8" fill="#1a3c5e" font-weight="bold">Creator:</text>
+          <text x="85" y="76" font-size="8" fill="#555">Survey Department, Government of Nepal</text>
+
+          <rect x="8" y="88" width="306" height="22" rx="4" fill="#e8f0f8"/>
+          <text x="16" y="102" font-size="8" fill="#1a3c5e" font-weight="bold">Date:</text>
+          <text x="85" y="102" font-size="8" fill="#555">2023-06-15 (Published)</text>
+
+          <rect x="8" y="114" width="306" height="22" rx="4" fill="#f8f8f8"/>
+          <text x="16" y="128" font-size="8" fill="#1a3c5e" font-weight="bold">CRS:</text>
+          <text x="85" y="128" font-size="8" fill="#555">EPSG:32645 — WGS 84 / UTM Zone 45N</text>
+
+          <rect x="8" y="140" width="306" height="22" rx="4" fill="#e8f0f8"/>
+          <text x="16" y="154" font-size="8" fill="#1a3c5e" font-weight="bold">Accuracy:</text>
+          <text x="85" y="154" font-size="8" fill="#555">RMS ±2.5m (GPS control points)</text>
+
+          <rect x="8" y="166" width="306" height="22" rx="4" fill="#f8f8f8"/>
+          <text x="16" y="180" font-size="8" fill="#1a3c5e" font-weight="bold">Format:</text>
+          <text x="85" y="180" font-size="8" fill="#555">ESRI Shapefile (.shp/.dbf/.shx/.prj)</text>
+        </g>
+      </svg>
+      <figcaption>Fig 4.7 – Metadata: "Data about the Data" — concept and example record layout</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Definition:</strong> Metadata is simply "data about the data."</li>
+      <li><strong>Explanation:</strong> Think of it like the nutrition label on a can of soup. When you download a shapefile from the internet, you have no idea where it came from. The Metadata file (usually an .XML file attached to the shapefile) tells you the crucial history: Who created it? When was it published? What coordinate system does it use? What is its positional accuracy?</li>
+      <li><strong>Importance:</strong> Without metadata, a professional engineer cannot legally or ethically trust a dataset for a critical design project because they cannot verify its accuracy or origin.</li>
+    </ul>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SOLVED NUMERICAL EXAMPLES (PAST EXAM QUESTIONS)              -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <h2>Solved Numerical Examples (Past Exam Questions)</h2>
+    <p>The following are fully worked solutions from IOE past examination papers. Three unique solution types cover <strong>every numerical variant</strong> that has appeared in this chapter.</p>
+
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <!-- LIST OF ALL NUMERICAL QUESTIONS                            -->
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <h3>List of All Numerical Questions from Past Papers</h3>
+    <div class="table-wrap">
+      <table style="text-align:left;">
+        <thead>
+          <tr><th>Exam</th><th>Q No.</th><th>Question</th><th>Marks</th><th>Type</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2079 Chaitra</td><td>Q2a</td><td>Allowable RMS error for 1:20,000 scale map</td><td>3</td><td>Type 1</td></tr>
+          <tr><td>2079 Chaitra</td><td>Q2b</td><td>Distance between A(24.5&deg;N, 83.5&deg;E) and B(24.6&deg;N, 84.5&deg;E), R = 6378 km</td><td>3</td><td>Type 2</td></tr>
+          <tr><td>2078 Chaitra</td><td>Q2a</td><td>Allowable RMS error for 1:25,000 scale map</td><td>3</td><td>Type 1</td></tr>
+          <tr><td>2076 Bhadra</td><td>Q2b</td><td>Allowable RMS error for 1:25,000 scale map</td><td>Part of 3</td><td>Type 1</td></tr>
+          <tr><td>2076 Bhadra</td><td>Q2c</td><td>Difference between 1&deg; latitude and 1&deg; longitude distance (WGS84)</td><td>&mdash;</td><td>Type 3</td></tr>
+          <tr><td>2075 Bhadra</td><td>Q2b</td><td>Allowable RMS error for 1:2,500 (UTM) &rarr; answer 1.29 m</td><td>&mdash;</td><td>Type 1</td></tr>
+          <tr><td>2074 Magh</td><td>Q2b</td><td>Allowable errors for 1:30,000 and 1:5,000 maps</td><td>Part of 5</td><td>Type 1</td></tr>
+          <tr><td>2071 Bhadra</td><td>Q2c</td><td>Allowable RMS error in 1:15,000 and 1:5,000 maps</td><td>2</td><td>Type 1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <!-- TYPE 1: ALLOWABLE RMS ERROR                                -->
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <h3>Solution Type 1: Allowable RMS Error Calculation</h3>
+    <p><em>(Covers: 2079 Chaitra Q2a, 2078 Chaitra Q2a, 2076 Bhadra Q2b, 2075 Bhadra Q2b, 2074 Magh Q2b, 2071 Bhadra Q2c)</em></p>
+
+    <div class="callout">
+      <strong>The Hidden IOE Rule:</strong> Examiners use the <strong>U.S. National Map Accuracy Standards (NMAS)</strong>. The rule depends on whether the map scale is larger or smaller than 1:20,000.
+    </div>
+
+    <div class="table-wrap">
+      <table style="text-align:center;">
+        <thead><tr><th>Condition</th><th>Scale Range</th><th>CE90 Allowance</th><th>CE90 in mm</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Condition 1</strong></td><td>Scales <strong>larger</strong> than 1:20,000 (e.g., 1:2,500, 1:5,000, 1:15,000)</td><td>1/30th of an inch</td><td><strong>0.84667 mm</strong></td></tr>
+          <tr><td><strong>Condition 2</strong></td><td>Scales <strong>1:20,000 and smaller</strong> (e.g., 1:20,000, 1:25,000, 1:30,000)</td><td>1/50th of an inch</td><td><strong>0.508 mm</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula">
+      RMSE = CE90 / 1.6449
+    </div>
+
+    <div class="callout">
+      <strong>Verification:</strong> For a 1:2,500 map (Condition 1), CE90 = 0.84667 mm &times; 2500 = 2.1167 m. Thus, RMSE = 2.1167 / 1.6449 = <strong>1.29 m</strong> &mdash; matching the answer given in the 2075 Bhadra question exactly.
+    </div>
+
+    <h4>Example A &mdash; Solving for 1:5,000 scale map <span class="exam-ref">2074 Magh Q2b &middot; 2071 Bhadra Q2c</span></h4>
+    <div class="exam-box">
+      <strong>Question:</strong> Calculate the allowable RMS error for a 1:5,000 scale map.
+    </div>
+    <p><strong>Step 1: Identify the Condition.</strong><br>
+    Scale = 1:5,000. Since 5,000 &lt; 20,000, this is a <strong>larger scale</strong> map &rarr; <strong>Condition 1</strong> applies.</p>
+    <p><strong>Step 2: Calculate CE90 at Map Scale.</strong></p>
+    <div class="formula">
+      Map Error Limit (CE90) = 1/30 inch = 0.84667 mm = 0.00084667 m
+    </div>
+    <p><strong>Step 3: Convert to Ground Distance.</strong></p>
+    <div class="formula">
+      Ground CE90 = 0.00084667 m &times; 5,000 = 4.233 m
+    </div>
+    <p><strong>Step 4: Calculate RMSE.</strong></p>
+    <div class="formula">
+      RMSE = 4.233 / 1.6449 = <strong>2.57 meters</strong>
+    </div>
+
+    <h4>Example B &mdash; Solving for 1:25,000 scale map <span class="exam-ref">2078 Chaitra Q2a &middot; 2076 Bhadra Q2b</span></h4>
+    <div class="exam-box">
+      <strong>Question:</strong> What is the allowable RMS error for a 1:25,000 scale map? [3 marks]
+    </div>
+    <p><strong>Step 1: Identify the Condition.</strong><br>
+    Scale = 1:25,000. Since 25,000 &ge; 20,000, this is a <strong>smaller scale</strong> map &rarr; <strong>Condition 2</strong> applies.</p>
+    <p><strong>Step 2: Calculate CE90 at Map Scale.</strong></p>
+    <div class="formula">
+      Map Error Limit (CE90) = 1/50 inch = 0.508 mm = 0.000508 m
+    </div>
+    <p><strong>Step 3: Convert to Ground Distance.</strong></p>
+    <div class="formula">
+      Ground CE90 = 0.000508 m &times; 25,000 = 12.70 m
+    </div>
+    <p><strong>Step 4: Calculate RMSE.</strong></p>
+    <div class="formula">
+      RMSE = 12.70 / 1.6449 = <strong>7.72 meters</strong>
+    </div>
+
+    <h4>Example C &mdash; Solving for 1:20,000 scale map <span class="exam-ref">2079 Chaitra Q2a</span></h4>
+    <div class="exam-box">
+      <strong>Question:</strong> What is the allowable RMS error for a 1:20,000 scale map? [3 marks]
+    </div>
+    <p><strong>Step 1:</strong> Scale = 1:20,000. Since 20,000 &ge; 20,000 &rarr; <strong>Condition 2</strong> applies.</p>
+    <div class="formula">
+      Ground CE90 = 0.000508 m &times; 20,000 = 10.16 m
+    </div>
+    <div class="formula">
+      RMSE = 10.16 / 1.6449 = <strong>6.18 meters</strong>
+    </div>
+
+    <h4>Quick Reference Table: All Scale Answers</h4>
+    <div class="table-wrap">
+      <table style="text-align:center;">
+        <thead><tr><th>Map Scale</th><th>Condition</th><th>CE90 (ground)</th><th>RMSE (answer)</th></tr></thead>
+        <tbody>
+          <tr><td>1:2,500</td><td>1 (larger)</td><td>2.117 m</td><td><strong>1.29 m</strong></td></tr>
+          <tr><td>1:5,000</td><td>1 (larger)</td><td>4.233 m</td><td><strong>2.57 m</strong></td></tr>
+          <tr><td>1:15,000</td><td>1 (larger)</td><td>12.70 m</td><td><strong>7.72 m</strong></td></tr>
+          <tr><td>1:20,000</td><td>2 (smaller)</td><td>10.16 m</td><td><strong>6.18 m</strong></td></tr>
+          <tr><td>1:25,000</td><td>2 (smaller)</td><td>12.70 m</td><td><strong>7.72 m</strong></td></tr>
+          <tr><td>1:30,000</td><td>2 (smaller)</td><td>15.24 m</td><td><strong>9.27 m</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <!-- TYPE 2: DISTANCE ON EARTH SPHERE                           -->
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <h3>Solution Type 2: Distance Between Two Points on a Sphere <span class="exam-ref">2079 Chaitra Q2b [3 marks]</span></h3>
+
+    <div class="exam-box">
+      <strong>Question:</strong> Find the distance between points A(24.5&deg;N, 83.5&deg;E) and B(24.6&deg;N, 84.5&deg;E) in km, for the radius of the Earth = 6378 km, assuming Earth's shape as a sphere.
+    </div>
+
+    <p>This requires the <strong>Spherical Law of Cosines</strong>.</p>
+
+    <p><strong>Given:</strong></p>
+    <ul>
+      <li>Radius (R) = 6378 km</li>
+      <li>&phi;<sub>1</sub> (Latitude of A) = 24.5&deg;</li>
+      <li>&phi;<sub>2</sub> (Latitude of B) = 24.6&deg;</li>
+      <li>&Delta;&lambda; (Longitude difference) = 84.5&deg; &minus; 83.5&deg; = 1.0&deg;</li>
+    </ul>
+
+    <p><strong>Step 1: Convert Degrees to Radians.</strong></p>
+    <div class="formula">
+      &phi;<sub>1</sub> = 24.5&deg; &times; (&pi; / 180) = 0.42761 rad<br>
+      &phi;<sub>2</sub> = 24.6&deg; &times; (&pi; / 180) = 0.42935 rad<br>
+      &Delta;&lambda; = 1.0&deg; &times; (&pi; / 180) = 0.01745 rad
+    </div>
+
+    <p><strong>Step 2: Apply the Spherical Law of Cosines Formula.</strong></p>
+    <div class="formula">
+      d = R &middot; arccos[ sin(&phi;<sub>1</sub>) &middot; sin(&phi;<sub>2</sub>) + cos(&phi;<sub>1</sub>) &middot; cos(&phi;<sub>2</sub>) &middot; cos(&Delta;&lambda;) ]
+    </div>
+
+    <p><strong>Step 3: Calculate Each Term.</strong></p>
+    <div class="table-wrap">
+      <table style="text-align:left;">
+        <thead><tr><th>Term</th><th>Calculation</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>sin(24.5&deg;) &middot; sin(24.6&deg;)</td><td>0.41469 &times; 0.41628</td><td>0.17263</td></tr>
+          <tr><td>cos(24.5&deg;) &middot; cos(24.6&deg;) &middot; cos(1.0&deg;)</td><td>0.90996 &times; 0.90923 &times; 0.99985</td><td>0.82724</td></tr>
+          <tr><td>Sum</td><td>0.17263 + 0.82724</td><td>0.99987</td></tr>
+          <tr><td>arccos(0.99987)</td><td>&mdash;</td><td>0.01597 rad</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Step 4: Calculate Distance.</strong></p>
+    <div class="formula">
+      d = 6378 km &times; 0.01597 rad = <strong>101.86 km</strong>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <!-- TYPE 3: LATITUDE vs LONGITUDE DISTANCE DIFFERENCE          -->
+    <!-- ──────────────────────────────────────────────────────────── -->
+    <h3>Solution Type 3: Difference Between 1&deg; Latitude and 1&deg; Longitude <span class="exam-ref">2076 Bhadra Q2c</span></h3>
+
+    <div class="exam-box">
+      <strong>Question:</strong> What would be the difference between the distance on Earth presented by 1-degree latitude and 1-degree longitude if the radius of the Earth at the equator is 6,378,137 m and the radius of Earth along poles is 6,356,752.3142 m for WGS 1984 system?
+    </div>
+
+    <p>This question tests your understanding of Earth as an <strong>oblate ellipsoid</strong>. Since the Earth bulges at the equator and flattens at the poles, the distance covered by 1&deg; of longitude (measured along the equatorial circle) is slightly longer than 1&deg; of latitude (measured along the polar meridian).</p>
+
+    <p><strong>Given (WGS 84):</strong></p>
+    <ul>
+      <li>Equatorial radius: <strong>a</strong> = 6,378,137 m</li>
+      <li>Polar radius: <strong>b</strong> = 6,356,752.3142 m</li>
+    </ul>
+
+    <p><strong>Step 1: Distance of 1&deg; Longitude (at the Equator).</strong></p>
+    <p>The equator is a perfect circle with radius <em>a</em>.</p>
+    <div class="formula">
+      1&deg; Longitude = (2&pi;a) / 360 = (&pi; &times; 6,378,137) / 180 = <strong>111,319.49 m</strong>
+    </div>
+
+    <p><strong>Step 2: Average Distance of 1&deg; Latitude.</strong></p>
+    <p>The meridian (pole-to-pole) uses the polar radius <em>b</em>.</p>
+    <div class="formula">
+      1&deg; Latitude = (2&pi;b) / 360 = (&pi; &times; 6,356,752.3142) / 180 = <strong>110,946.26 m</strong>
+    </div>
+
+    <p><strong>Step 3: Calculate the Difference.</strong></p>
+    <div class="formula">
+      Difference = 111,319.49 m &minus; 110,946.26 m = <strong>373.23 meters</strong>
+    </div>
+
+    <div class="callout">
+      <strong>Shortcut formula for the exam:</strong><br>
+      Difference = (&pi; / 180) &times; (a &minus; b) = (&pi; / 180) &times; (6,378,137 &minus; 6,356,752.3142) = (&pi; / 180) &times; 21,384.6858 = <strong>373.23 m</strong>
+    </div>
+
+    <p class="footer-note">End of Chapter 4 – Data Sources</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

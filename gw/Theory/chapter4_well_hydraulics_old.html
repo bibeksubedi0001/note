@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 4: Well Hydraulics</title>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --base-size: 12pt;
+        }
+
+        body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: var(--base-size);
+            color: black;
+            background-color: white;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid black;
+        }
+
+        h3 {
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-weight: bold;
+            font-style: italic;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+        }
+
+        .equation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .exam-note, .study-note, .question-card {
+            border: 1px solid black;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .exam-note h4, .study-note h4, .question-card h4 {
+            margin-top: 0;
+            border-bottom: 1px dashed black;
+            padding-bottom: 0.25rem;
+        }
+
+        .callout {
+            border-left: 3px solid black;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+
+        .figure-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid black;
+            overflow-x: auto;
+        }
+
+        .figcaption {
+            font-style: italic;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        table.info-table, table.question-table, table.formula-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table.info-table th, table.info-table td,
+        table.question-table th, table.question-table td,
+        table.formula-table th, table.formula-table td {
+            border: 1px solid black;
+            padding: 6px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table.info-table th, table.question-table th, table.formula-table th {
+            font-weight: bold;
+            background: #f5f5f5;
+        }
+
+        .toc {
+            border: 1px solid black;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .toc ol { margin-bottom: 0; }
+        .toc a { text-decoration: none; }
+
+        .grid-two {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .mini-note {
+            border: 1px solid black;
+            padding: 0.85rem;
+            margin: 1rem 0;
+        }
+
+        .question-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .pill {
+            display: inline-block;
+            border: 1px solid black;
+            padding: 2px 8px;
+            font-size: 0.9rem;
+        }
+
+        .data-block {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid black;
+        }
+
+        .data-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.92rem;
+            line-height: 1.45;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            border: 2px solid black;
+            background-color: white;
+            color: black;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: var(--base-size);
+        }
+
+        .print-btn:hover {
+            background-color: black;
+            color: white;
+        }
+
+        @media (max-width: 720px) {
+            body { padding: 1rem; }
+            .grid-two { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            body { padding: 0; max-width: 100%; }
+            .print-btn { display: none; }
+            .figure-container, .exam-note, .study-note, .question-card, .mini-note { page-break-inside: avoid; }
+            h2, h3 { page-break-after: avoid; }
+        }
+    </style>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══ */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<!-- SVG pattern definitions -->
+    <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+        <defs>
+            <pattern id="hatch" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="0" y2="8" stroke="black" stroke-width="0.7"/>
+            </pattern>
+            <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse">
+                <circle cx="4" cy="4" r="1.2" fill="#555"/>
+                <circle cx="11" cy="11" r="1.2" fill="#555"/>
+            </pattern>
+            <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="10" x2="7" y2="0" stroke="black" stroke-width="0.7"/>
+                <line x1="7" y1="10" x2="14" y2="0" stroke="black" stroke-width="0.7"/>
+            </pattern>
+        </defs>
+    </svg>
+
+    <button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+    <main>
+        <header>
+            <p style="text-align: center; font-style: italic; margin-bottom: 1rem;">Groundwater Engineering — CE 76509</p>
+            <h1>CHAPTER 4: WELL HYDRAULICS</h1>
+            <p style="text-align: center; font-style: italic; margin-bottom: 2rem;">(Syllabus Weight: 8 hours, 16 marks)</p>
+        </header>
+
+        <section class="toc">
+            <h4>CHAPTER ROADMAP</h4>
+            <ol>
+                <li><a href="#sec-4-1">Introduction to wells and well terminology</a></li>
+                <li><a href="#sec-4-2">Cone of depression, radius of influence, and area of influence</a></li>
+                <li><a href="#sec-4-3">Well yield and specific capacity</a></li>
+                <li><a href="#sec-4-4">Assumptions for steady-state well flow</a></li>
+                <li><a href="#sec-4-5">Derivation: Steady radial flow to a well in a confined aquifer (Thiem equation)</a></li>
+                <li><a href="#sec-4-6">Derivation: Steady radial flow to a well in an unconfined aquifer (Dupuit equation)</a></li>
+                <li><a href="#sec-4-7">Unsteady (transient) radial flow — Theis equation (overview)</a></li>
+                <li><a href="#sec-4-8">Past question bank for Chapter 4</a></li>
+                <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
+            </ol>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.1 INTRODUCTION TO WELLS -->
+        <!-- ============================================================ -->
+        <section id="sec-4-1">
+            <h2>4.1 INTRODUCTION TO WELLS AND WELL TERMINOLOGY</h2>
+
+            <p>
+                A <strong>well</strong> is a hydraulic structure that penetrates an aquifer and allows extraction (or injection) of groundwater. Wells are the most common means of groundwater exploitation worldwide. Understanding the hydraulics of flow toward a pumping well is central to groundwater engineering.
+            </p>
+
+            <h3>Types of Wells</h3>
+            <ul>
+                <li><strong>Fully penetrating well:</strong> A well whose screen extends through the entire thickness of the aquifer, so that water enters along the full saturated depth.</li>
+                <li><strong>Partially penetrating well:</strong> A well that taps only a portion of the aquifer thickness, causing three-dimensional flow near the well.</li>
+                <li><strong>Artesian (flowing) well:</strong> A well drilled into a confined aquifer where the piezometric surface is above the ground level, causing water to flow naturally without pumping.</li>
+                <li><strong>Observation well (piezometer):</strong> A non-pumping well used to measure the water level or piezometric head at a given location.</li>
+            </ul>
+
+            <div class="figure-container">
+                <svg width="780" height="380" viewBox="0 0 780 380" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <!-- Ground surface -->
+                    <line x1="20" y1="60" x2="760" y2="60" stroke="black" stroke-width="2"/>
+                    <text x="390" y="50" text-anchor="middle" font-weight="bold">Ground Surface</text>
+
+                    <!-- Confining layer top -->
+                    <rect x="20" y="60" width="740" height="30" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <text x="680" y="80" font-size="10" font-style="italic">Confining layer</text>
+
+                    <!-- Confined aquifer -->
+                    <rect x="20" y="90" width="740" height="100" fill="url(#dots)" stroke="black" stroke-width="1"/>
+                    <text x="680" y="145" font-size="11" font-weight="bold">Confined</text>
+                    <text x="680" y="160" font-size="11" font-weight="bold">Aquifer</text>
+                    <text x="680" y="175" font-size="10">(thickness b)</text>
+
+                    <!-- Confining layer bottom -->
+                    <rect x="20" y="190" width="740" height="30" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+
+                    <!-- Unconfined aquifer -->
+                    <rect x="20" y="220" width="740" height="120" fill="url(#dots)" stroke="black" stroke-width="1"/>
+                    <text x="680" y="280" font-size="11" font-weight="bold">Unconfined</text>
+                    <text x="680" y="295" font-size="11" font-weight="bold">Aquifer</text>
+                    <text x="680" y="310" font-size="10">(thickness H)</text>
+
+                    <!-- Impervious base -->
+                    <rect x="20" y="340" width="740" height="30" fill="url(#ground)" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="360" text-anchor="middle" font-style="italic">Impervious bedrock</text>
+
+                    <!-- Well 1: Confined fully penetrating -->
+                    <rect x="148" y="20" width="4" height="170" fill="black"/>
+                    <rect x="142" y="90" width="16" height="100" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <text x="150" y="16" text-anchor="middle" font-size="10" font-weight="bold">Confined Well</text>
+                    <text x="150" y="210" text-anchor="middle" font-size="9">(fully penetrating)</text>
+
+                    <!-- Piezometric surface for confined -->
+                    <path d="M 20 40 Q 100 40 130 52 Q 150 62 170 52 Q 200 40 300 40" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="8,4"/>
+                    <text x="260" y="36" font-size="10" font-style="italic">Piezometric surface</text>
+
+                    <!-- Well 2: Unconfined -->
+                    <rect x="398" y="20" width="4" height="320" fill="black"/>
+                    <rect x="392" y="220" width="16" height="120" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="3,2"/>
+                    <text x="400" y="16" text-anchor="middle" font-size="10" font-weight="bold">Unconfined Well</text>
+
+                    <!-- Water table for unconfined -->
+                    <path d="M 300 240 Q 340 240 370 256 Q 400 275 430 256 Q 460 240 560 240" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="520" y="236" font-size="10" font-style="italic">Water table</text>
+
+                    <!-- Cone of depression labels -->
+                    <path d="M 100 40 L 130 52" fill="none" stroke="black" stroke-width="0.7"/>
+                    <path d="M 340 240 L 370 256" fill="none" stroke="black" stroke-width="0.7"/>
+
+                    <!-- Pump symbol -->
+                    <circle cx="150" cy="26" r="6" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="150" y="30" text-anchor="middle" font-size="9" font-weight="bold">P</text>
+                    <circle cx="400" cy="26" r="6" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="400" y="30" text-anchor="middle" font-size="9" font-weight="bold">P</text>
+
+                    <!-- Dimension: b -->
+                    <line x1="100" y1="90" x2="100" y2="190" stroke="black" stroke-width="0.8"/>
+                    <polygon points="97,90 100,84 103,90" fill="black"/>
+                    <polygon points="97,190 100,196 103,190" fill="black"/>
+                    <text x="88" y="145" text-anchor="end" font-weight="bold">b</text>
+
+                    <!-- Dimension: H -->
+                    <line x1="350" y1="240" x2="350" y2="340" stroke="black" stroke-width="0.8"/>
+                    <polygon points="347,240 350,234 353,240" fill="black"/>
+                    <polygon points="347,340 350,346 353,340" fill="black"/>
+                    <text x="338" y="290" text-anchor="end" font-weight="bold">H</text>
+                </svg>
+                <div class="figcaption">Figure 4.1: Types of wells — confined (fully penetrating) and unconfined well with water levels.</div>
+            </div>
+
+            <h3>Key Terminology</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Term</th>
+                    <th>Definition</th>
+                </tr>
+                <tr>
+                    <td>Static water level (SWL)</td>
+                    <td>The water level in a well before pumping begins; represents the natural piezometric surface or water table.</td>
+                </tr>
+                <tr>
+                    <td>Pumping water level (PWL)</td>
+                    <td>The water level in the well during pumping; always lower than SWL.</td>
+                </tr>
+                <tr>
+                    <td>Drawdown (\(s\) or \(s_w\))</td>
+                    <td>The difference between SWL and PWL: \(s = \text{SWL} - \text{PWL}\). Represents the depression of the water surface caused by pumping.</td>
+                </tr>
+                <tr>
+                    <td>Well radius (\(r_w\))</td>
+                    <td>The radius of the well casing/screen.</td>
+                </tr>
+                <tr>
+                    <td>Radius of influence (\(R\))</td>
+                    <td>The radial distance from the well beyond which the drawdown is negligible; the boundary of the cone of depression.</td>
+                </tr>
+                <tr>
+                    <td>Well discharge / yield (\(Q\))</td>
+                    <td>The volume of water pumped per unit time (m&sup3;/s or L/s).</td>
+                </tr>
+                <tr>
+                    <td>Specific capacity</td>
+                    <td>The discharge per unit drawdown: \(Q/s_w\). Indicates well efficiency.</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.2 CONE OF DEPRESSION -->
+        <!-- ============================================================ -->
+        <section id="sec-4-2">
+            <h2>4.2 CONE OF DEPRESSION, RADIUS OF INFLUENCE, AND AREA OF INFLUENCE</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Define cone of depression, radius of influence, well yield, and specific capacity of a well. Write down the assumptions used for the governing equation. [6] <em>(2078 Chaitra, Q4a)</em></li>
+                    <li>Define cone of depression, radius of influence, and area of influence with a neat sketch in well hydraulics. [6] <em>(2072 Magh, Q4)</em></li>
+                </ol>
+            </div>
+
+            <div class="callout">
+                <strong>DEFINITION:</strong> When a well is pumped, the water level drops at and around the well, forming a funnel-shaped depression in the piezometric surface (confined) or water table (unconfined). This depression is called the <strong>cone of depression</strong> (or drawdown cone).
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="420" viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <!-- Ground surface -->
+                    <line x1="40" y1="80" x2="740" y2="80" stroke="black" stroke-width="2"/>
+                    <text x="390" y="70" text-anchor="middle" font-size="11">Ground surface</text>
+
+                    <!-- Original piezometric surface (before pumping) -->
+                    <line x1="40" y1="120" x2="740" y2="120" stroke="black" stroke-width="1.5" stroke-dasharray="10,5"/>
+                    <text x="640" y="112" font-size="10" font-style="italic">Original piezometric surface (SWL)</text>
+
+                    <!-- Cone of depression -->
+                    <path d="M 40 120 L 180 120 Q 250 122 310 140 Q 350 155 370 200 Q 380 240 390 280
+                             Q 400 240 410 200 Q 430 155 470 140 Q 530 122 600 120 L 740 120"
+                          fill="none" stroke="black" stroke-width="2"/>
+
+                    <!-- Hatching for confined aquifer -->
+                    <rect x="40" y="320" width="700" height="80" fill="url(#dots)" stroke="black" stroke-width="1"/>
+                    <text x="100" y="365" font-size="11" font-weight="bold">Confined Aquifer (thickness b)</text>
+
+                    <!-- Confining layer -->
+                    <rect x="40" y="290" width="700" height="30" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <text x="620" y="310" font-size="10" font-style="italic">Confining layer</text>
+
+                    <!-- Well -->
+                    <rect x="387" y="40" width="6" height="360" fill="black"/>
+                    <circle cx="390" cy="36" r="8" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="40" text-anchor="middle" font-size="9" font-weight="bold">Q</text>
+
+                    <!-- Drawdown arrows -->
+                    <line x1="390" y1="120" x2="390" y2="280" stroke="black" stroke-width="1" stroke-dasharray="4,3"/>
+                    <line x1="420" y1="120" x2="420" y2="280" stroke="black" stroke-width="0.8"/>
+                    <polygon points="417,120 420,114 423,120" fill="black"/>
+                    <polygon points="417,280 420,286 423,280" fill="black"/>
+                    <text x="440" y="200" font-weight="bold">s<tspan dy="3" font-size="9">w</tspan></text>
+                    <text x="440" y="218" font-size="10">(drawdown)</text>
+
+                    <!-- Radius of influence -->
+                    <line x1="390" y1="130" x2="180" y2="130" stroke="black" stroke-width="0.8"/>
+                    <polygon points="390,127 396,130 390,133" fill="black"/>
+                    <polygon points="180,127 174,130 180,133" fill="black"/>
+                    <text x="285" y="148" text-anchor="middle" font-weight="bold">R (radius of influence)</text>
+
+                    <line x1="390" y1="130" x2="600" y2="130" stroke="black" stroke-width="0.8"/>
+                    <polygon points="600,127 606,130 600,133" fill="black"/>
+                    <text x="500" y="148" text-anchor="middle" font-weight="bold">R</text>
+
+                    <!-- r_w label -->
+                    <line x1="387" y1="250" x2="370" y2="250" stroke="black" stroke-width="0.8"/>
+                    <text x="355" y="254" text-anchor="end" font-size="10">r<tspan dy="2" font-size="8">w</tspan></text>
+
+                    <!-- Cone label -->
+                    <text x="530" y="170" font-size="12" font-weight="bold" font-style="italic">Cone of depression</text>
+                    <line x1="480" y1="165" x2="450" y2="155" stroke="black" stroke-width="0.7"/>
+
+                    <!-- Area of influence (plan view annotation) -->
+                    <text x="390" y="410" text-anchor="middle" font-size="11">The <tspan font-weight="bold">area of influence</tspan> is the circular area (in plan) enclosed by the radius of influence R.</text>
+                </svg>
+                <div class="figcaption">Figure 4.2: Cone of depression around a pumping well in a confined aquifer showing drawdown s<sub>w</sub> and radius of influence R.</div>
+            </div>
+
+            <h3>Cone of Depression</h3>
+            <p>
+                When pumping starts, water is first extracted from the immediate vicinity of the well. As pumping continues, the drawdown propagates outward, forming a three-dimensional conical surface. Key features:
+            </p>
+            <ul>
+                <li>The drawdown is <strong>maximum at the well face</strong> and decreases with radial distance.</li>
+                <li>The cone <strong>expands with time</strong> until a steady state is reached (when recharge equals discharge).</li>
+                <li>The <strong>steepness</strong> of the cone depends on the aquifer transmissivity: low-T aquifers produce steep, narrow cones; high-T aquifers produce flat, wide cones.</li>
+                <li>In <strong>unconfined aquifers</strong>, the cone represents the actual lowering of the water table, reducing the saturated thickness near the well.</li>
+            </ul>
+
+            <h3>Radius of Influence (R)</h3>
+            <p>
+                The radius of influence is the maximum distance from the pumping well at which measurable drawdown occurs. Beyond this distance, the aquifer is essentially undisturbed. It depends on:
+            </p>
+            <ul>
+                <li>Pumping rate (\(Q\))</li>
+                <li>Aquifer transmissivity (\(T\))</li>
+                <li>Storage coefficient (\(S\))</li>
+                <li>Duration of pumping (\(t\))</li>
+            </ul>
+
+            <p>Empirical estimates include:</p>
+            <div class="equation">
+                $$ R = 3000 \cdot s_w \cdot \sqrt{K} \quad \text{(Sichardt formula, R in m, K in m/s)} $$
+            </div>
+
+            <h3>Area of Influence</h3>
+            <p>
+                The area of influence is the circular area (in plan view) within which the drawdown due to pumping is measurable. It equals \(\pi R^2\), where \(R\) is the radius of influence.
+            </p>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.3 WELL YIELD AND SPECIFIC CAPACITY -->
+        <!-- ============================================================ -->
+        <section id="sec-4-3">
+            <h2>4.3 WELL YIELD AND SPECIFIC CAPACITY</h2>
+
+            <h3>Well Yield</h3>
+            <p>
+                The <strong>well yield</strong> (or discharge, \(Q\)) is the volume of water that can be pumped from a well per unit time under specified conditions. It is typically expressed in liters per second (L/s), cubic meters per day (m&sup3;/day), or gallons per minute (gpm).
+            </p>
+
+            <h3>Specific Capacity</h3>
+            <p>
+                The <strong>specific capacity</strong> of a well is defined as the discharge per unit drawdown:
+            </p>
+            <div class="equation">
+                $$ \text{Specific capacity} = \frac{Q}{s_w} \quad \text{(m}^3\text{/s per m, or L/s per m)} $$
+            </div>
+
+            <p>Significance of specific capacity:</p>
+            <ul>
+                <li>A higher specific capacity indicates a <strong>more productive well</strong> (or higher transmissivity aquifer).</li>
+                <li>It provides a quick field estimate of aquifer transmissivity: \(T \approx 1.22 \times (Q/s_w)\) (empirical, for confined aquifers).</li>
+                <li>Specific capacity <strong>decreases with increasing drawdown</strong> in unconfined aquifers because the saturated thickness diminishes.</li>
+                <li>It is also affected by well losses (well efficiency), partial penetration, and turbulent flow near the well.</li>
+            </ul>
+
+            <div class="mini-note">
+                <h4>EXAM TIP</h4>
+                <p>The specific capacity \(Q/s_w\) is <strong>NOT constant</strong> in unconfined aquifers because as drawdown increases, the effective saturated thickness decreases, reducing the available transmissivity. In confined aquifers (where \(b\) stays constant), the specific capacity remains approximately constant for small drawdowns.</p>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.4 ASSUMPTIONS -->
+        <!-- ============================================================ -->
+        <section id="sec-4-4">
+            <h2>4.4 ASSUMPTIONS FOR STEADY-STATE WELL FLOW</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Write down the assumptions used for the governing equation. [Part of Q4a] <em>(2078 Chaitra)</em></li>
+                </ol>
+            </div>
+
+            <p>The derivation of steady-state radial flow equations (Thiem / Dupuit) relies on the following assumptions:</p>
+
+            <ol>
+                <li>The aquifer is <strong>homogeneous and isotropic</strong> with uniform hydraulic conductivity \(K\).</li>
+                <li>The aquifer has <strong>infinite areal extent</strong> (no boundary effects).</li>
+                <li>The well <strong>fully penetrates the aquifer</strong> and receives water from the entire aquifer thickness.</li>
+                <li>Flow toward the well is <strong>radially symmetric</strong> (horizontal, two-dimensional in plan).</li>
+                <li>The aquifer is bounded below by an <strong>impermeable (confining) layer</strong>.</li>
+                <li><strong>Steady-state conditions</strong> prevail — the drawdown does not change with time, meaning recharge equals discharge.</li>
+                <li>Flow obeys <strong>Darcy's law</strong> (laminar flow conditions).</li>
+                <li>The well diameter is <strong>infinitesimally small</strong> (or well storage is negligible).</li>
+                <li>For unconfined aquifers: the <strong>Dupuit assumptions</strong> apply — flow is horizontal and the hydraulic gradient equals the slope of the water table.</li>
+            </ol>
+
+            <div class="figure-container">
+                <svg width="780" height="160" viewBox="0 0 780 160" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <!-- Three assumption boxes -->
+                    <rect x="10" y="10" width="240" height="140" rx="5" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="130" y="35" text-anchor="middle" font-weight="bold" font-size="11">DUPUIT ASSUMPTIONS</text>
+                    <line x1="30" y1="42" x2="230" y2="42" stroke="black" stroke-width="0.5"/>
+                    <text x="30" y="62" font-size="10">1. Flow lines are horizontal</text>
+                    <text x="30" y="82" font-size="10">2. Hydraulic gradient = slope</text>
+                    <text x="42" y="98" font-size="10">of the free surface (dh/dr)</text>
+                    <text x="30" y="118" font-size="10">3. Velocity is uniform over</text>
+                    <text x="42" y="134" font-size="10">the entire depth</text>
+
+                    <rect x="270" y="10" width="240" height="140" rx="5" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="35" text-anchor="middle" font-weight="bold" font-size="11">STEADY-STATE CONDITION</text>
+                    <line x1="290" y1="42" x2="490" y2="42" stroke="black" stroke-width="0.5"/>
+                    <text x="290" y="62" font-size="10">Pumping rate Q = Recharge</text>
+                    <text x="290" y="82" font-size="10">&part;h/&part;t = 0</text>
+                    <text x="290" y="102" font-size="10">Water levels are constant</text>
+                    <text x="290" y="122" font-size="10">Cone of depression is stable</text>
+
+                    <rect x="530" y="10" width="240" height="140" rx="5" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="650" y="35" text-anchor="middle" font-weight="bold" font-size="11">DARCY&apos;S LAW VALID</text>
+                    <line x1="550" y1="42" x2="750" y2="42" stroke="black" stroke-width="0.5"/>
+                    <text x="550" y="62" font-size="10">Laminar flow conditions</text>
+                    <text x="550" y="82" font-size="10">Re &lt; 1 to 10 (pore scale)</text>
+                    <text x="550" y="102" font-size="10">No turbulent well losses</text>
+                    <text x="550" y="122" font-size="10">v = -K(dh/dr)</text>
+                </svg>
+                <div class="figcaption">Figure 4.3: Key groups of assumptions underlying steady-state well equations.</div>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.5 THIEM EQUATION — CONFINED AQUIFER -->
+        <!-- ============================================================ -->
+        <section id="sec-4-5">
+            <h2>4.5 DERIVATION: STEADY RADIAL FLOW TO A WELL IN A CONFINED AQUIFER (THIEM EQUATION)</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Derive an expression for steady radial flow into a well in a confined aquifer with a neat sketch. [7] <em>(2073 Bhadra, Q4a)</em></li>
+                    <li>A well penetrates an artesian aquifer. Determine the maximum yield for a given drawdown and the percentage change in discharge if the well diameter is reduced. [6] <em>(2078 Chaitra, Q4b)</em></li>
+                </ol>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="400" viewBox="0 0 780 400" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <!-- Impervious base -->
+                    <rect x="40" y="310" width="700" height="30" fill="url(#ground)" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="332" text-anchor="middle" font-style="italic" font-size="10">Impervious base</text>
+
+                    <!-- Confined aquifer -->
+                    <rect x="40" y="210" width="700" height="100" fill="url(#dots)" stroke="black" stroke-width="1"/>
+
+                    <!-- Confining layer -->
+                    <rect x="40" y="180" width="700" height="30" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <text x="680" y="200" font-size="10" font-style="italic">Confining layer</text>
+
+                    <!-- Original piezometric surface -->
+                    <line x1="40" y1="100" x2="740" y2="100" stroke="black" stroke-width="1.5" stroke-dasharray="10,5"/>
+                    <text x="600" y="92" font-size="10" font-style="italic">Original piezometric surface</text>
+
+                    <!-- Cone of depression in piezometric surface -->
+                    <path d="M 40 100 L 160 100 Q 240 102 300 115 Q 340 128 365 155 Q 378 175 390 200
+                             Q 402 175 415 155 Q 440 128 480 115 Q 540 102 620 100 L 740 100"
+                          fill="none" stroke="black" stroke-width="2"/>
+
+                    <!-- Well casing -->
+                    <rect x="387" y="30" width="6" height="280" fill="black"/>
+                    <rect x="380" y="210" width="20" height="100" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+                    <!-- Pump -->
+                    <circle cx="390" cy="24" r="8" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="28" text-anchor="middle" font-size="9" font-weight="bold">Q</text>
+                    <line x1="390" y1="16" x2="390" y2="6" stroke="black" stroke-width="2"/>
+                    <polygon points="383,8 390,0 397,8" fill="black"/>
+
+                    <!-- Dimension: b (aquifer thickness) -->
+                    <line x1="60" y1="210" x2="60" y2="310" stroke="black" stroke-width="0.8"/>
+                    <polygon points="57,210 60,204 63,210" fill="black"/>
+                    <polygon points="57,310 60,316 63,310" fill="black"/>
+                    <text x="48" y="265" text-anchor="end" font-weight="bold" font-size="12">b</text>
+
+                    <!-- Dimension: H (piezometric head above base) -->
+                    <line x1="100" y1="100" x2="100" y2="310" stroke="black" stroke-width="0.8"/>
+                    <polygon points="97,100 100,94 103,100" fill="black"/>
+                    <polygon points="97,310 100,316 103,310" fill="black"/>
+                    <text x="88" y="205" text-anchor="end" font-weight="bold" font-size="12">H</text>
+
+                    <!-- Dimension: h_w (head at well) -->
+                    <line x1="420" y1="200" x2="420" y2="310" stroke="black" stroke-width="0.8"/>
+                    <polygon points="417,200 420,194 423,200" fill="black"/>
+                    <polygon points="417,310 420,316 423,310" fill="black"/>
+                    <text x="440" y="260" font-weight="bold" font-size="12">h<tspan dy="3" font-size="9">w</tspan></text>
+
+                    <!-- Dimension: s_w (drawdown at well) -->
+                    <line x1="440" y1="100" x2="440" y2="200" stroke="black" stroke-width="0.8"/>
+                    <polygon points="437,100 440,94 443,100" fill="black"/>
+                    <polygon points="437,200 440,206 443,200" fill="black"/>
+                    <text x="458" y="155" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">w</tspan></text>
+
+                    <!-- Radius labels -->
+                    <line x1="390" y1="370" x2="160" y2="370" stroke="black" stroke-width="0.8"/>
+                    <polygon points="390,367 396,370 390,373" fill="black"/>
+                    <polygon points="160,367 154,370 160,373" fill="black"/>
+                    <text x="275" y="388" text-anchor="middle" font-weight="bold">R (radius of influence)</text>
+
+                    <line x1="390" y1="355" x2="380" y2="355" stroke="black" stroke-width="0.8"/>
+                    <text x="365" y="359" text-anchor="end" font-size="10" font-weight="bold">r<tspan dy="2" font-size="8">w</tspan></text>
+
+                    <!-- Cylindrical surface at r -->
+                    <line x1="300" y1="210" x2="300" y2="310" stroke="black" stroke-width="1" stroke-dasharray="5,3"/>
+                    <line x1="390" y1="345" x2="300" y2="345" stroke="black" stroke-width="0.6"/>
+                    <text x="345" y="343" text-anchor="middle" font-size="10">r</text>
+                    <text x="300" y="325" text-anchor="middle" font-size="10" font-style="italic">Cylindrical</text>
+                    <text x="300" y="340" text-anchor="middle" font-size="10" font-style="italic">surface</text>
+
+                    <!-- Flow arrows toward well -->
+                    <line x1="200" y1="260" x2="350" y2="260" stroke="black" stroke-width="1"/>
+                    <polygon points="340,256 356,260 340,264" fill="black"/>
+                    <line x1="580" y1="260" x2="430" y2="260" stroke="black" stroke-width="1"/>
+                    <polygon points="440,256 424,260 440,264" fill="black"/>
+
+                    <!-- Aquifer label -->
+                    <text x="170" y="260" font-size="11" font-weight="bold">Confined Aquifer</text>
+                </svg>
+                <div class="figcaption">Figure 4.4: Steady radial flow to a fully penetrating well in a confined aquifer — definition sketch for Thiem equation derivation.</div>
+            </div>
+
+            <h3>Derivation</h3>
+
+            <p>
+                Consider a fully penetrating well of radius \(r_w\) pumping at a constant rate \(Q\) from a confined aquifer of thickness \(b\) and hydraulic conductivity \(K\). At steady state, the flow toward the well is purely radial and horizontal.
+            </p>
+
+            <p>
+                At any radial distance \(r\) from the well, consider a cylindrical surface of height \(b\) and circumference \(2\pi r\). By continuity, all the water flowing through this surface must equal the pumping rate:
+            </p>
+
+            <div class="equation">
+                $$ Q = A \cdot v = (2\pi r \cdot b) \cdot v $$
+            </div>
+
+            <p>By Darcy's law, the velocity at distance \(r\) is:</p>
+
+            <div class="equation">
+                $$ v = K \frac{dh}{dr} $$
+            </div>
+
+            <p>Substituting:</p>
+
+            <div class="equation">
+                $$ Q = 2\pi r b K \frac{dh}{dr} $$
+            </div>
+
+            <p>Separating variables:</p>
+
+            <div class="equation">
+                $$ \frac{Q}{2\pi K b} \frac{dr}{r} = dh $$
+            </div>
+
+            <p>Integrating between the well face (\(r = r_w\), \(h = h_w\)) and the radius of influence (\(r = R\), \(h = H\)):</p>
+
+            <div class="equation">
+                $$ \frac{Q}{2\pi K b} \int_{r_w}^{R} \frac{dr}{r} = \int_{h_w}^{H} dh $$
+            </div>
+
+            <div class="equation">
+                $$ \frac{Q}{2\pi K b} \ln\left(\frac{R}{r_w}\right) = H - h_w $$
+            </div>
+
+            <p>Since the drawdown at the well face \(s_w = H - h_w\) and the transmissivity \(T = Kb\):</p>
+
+            <div class="equation">
+                $$ \boxed{Q = \frac{2\pi T s_w}{\ln(R/r_w)} = \frac{2\pi K b \, s_w}{\ln(R/r_w)}} $$
+            </div>
+
+            <p>This is the <strong>Thiem equation</strong> for steady radial flow in a confined aquifer.</p>
+
+            <h3>General form between two observation wells</h3>
+            <p>If head measurements \(h_1\) and \(h_2\) are available at distances \(r_1\) and \(r_2\) from the pumping well:</p>
+
+            <div class="equation">
+                $$ Q = \frac{2\pi T (h_2 - h_1)}{\ln(r_2/r_1)} $$
+            </div>
+
+            <div class="grid-two">
+                <div class="mini-note">
+                    <h4>THIEM EQUATION — CONFINED</h4>
+                    <p>\(Q = \dfrac{2\pi K b \, s_w}{\ln(R/r_w)}\)</p>
+                    <p>or equivalently: \(Q = \dfrac{2\pi T \, s_w}{\ln(R/r_w)}\)</p>
+                </div>
+                <div class="mini-note">
+                    <h4>KEY INSIGHT</h4>
+                    <p>Discharge \(Q\) depends on \(\ln(R/r_w)\), not on \(R/r_w\) directly. Since the logarithm varies slowly, <strong>doubling the well diameter changes \(Q\) by only a few percent.</strong></p>
+                </div>
+            </div>
+
+            <table class="info-table">
+                <tr>
+                    <th>Symbol</th>
+                    <th>Meaning</th>
+                    <th>Typical Units</th>
+                </tr>
+                <tr>
+                    <td>\(Q\)</td>
+                    <td>Well discharge (pumping rate)</td>
+                    <td>m&sup3;/s or m&sup3;/day</td>
+                </tr>
+                <tr>
+                    <td>\(K\)</td>
+                    <td>Hydraulic conductivity</td>
+                    <td>m/s or m/day</td>
+                </tr>
+                <tr>
+                    <td>\(b\)</td>
+                    <td>Confined aquifer thickness</td>
+                    <td>m</td>
+                </tr>
+                <tr>
+                    <td>\(T\)</td>
+                    <td>Transmissivity = \(Kb\)</td>
+                    <td>m&sup2;/s or m&sup2;/day</td>
+                </tr>
+                <tr>
+                    <td>\(s_w\)</td>
+                    <td>Drawdown at the well face</td>
+                    <td>m</td>
+                </tr>
+                <tr>
+                    <td>\(R\)</td>
+                    <td>Radius of influence</td>
+                    <td>m</td>
+                </tr>
+                <tr>
+                    <td>\(r_w\)</td>
+                    <td>Well radius</td>
+                    <td>m</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.6 DUPUIT EQUATION — UNCONFINED AQUIFER -->
+        <!-- ============================================================ -->
+        <section id="sec-4-6">
+            <h2>4.6 DERIVATION: STEADY RADIAL FLOW TO A WELL IN AN UNCONFINED AQUIFER (DUPUIT EQUATION)</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Derive the equation for steady radial flow in an unconfined aquifer. [8] <em>(2072 Magh, Q5b)</em></li>
+                    <li>A fully penetrating well in an unconfined aquifer is pumped under steady conditions. Compute the steady-state discharge. [4] <em>(2073 Bhadra, Q4b)</em></li>
+                </ol>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="420" viewBox="0 0 780 420" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <!-- Impervious base -->
+                    <rect x="40" y="350" width="700" height="30" fill="url(#ground)" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="372" text-anchor="middle" font-style="italic" font-size="10">Impervious base</text>
+
+                    <!-- Aquifer body -->
+                    <rect x="40" y="200" width="700" height="150" fill="url(#dots)" stroke="black" stroke-width="1"/>
+
+                    <!-- Original water table -->
+                    <path d="M 40 200 Q 80 198 120 200" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="10,5"/>
+                    <line x1="120" y1="200" x2="660" y2="200" stroke="black" stroke-width="1.5" stroke-dasharray="10,5"/>
+                    <path d="M 660 200 Q 700 198 740 200" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="10,5"/>
+                    <text x="600" y="192" font-size="10" font-style="italic">Original water table</text>
+
+                    <!-- Cone of depression (water table drawdown) -->
+                    <path d="M 40 200 L 160 200 Q 240 204 300 220 Q 340 238 365 272 Q 378 296 390 320
+                             Q 402 296 415 272 Q 440 238 480 220 Q 540 204 620 200 L 740 200"
+                          fill="white" stroke="black" stroke-width="2"/>
+
+                    <!-- Ground surface -->
+                    <line x1="40" y1="140" x2="740" y2="140" stroke="black" stroke-width="2"/>
+                    <text x="390" y="132" text-anchor="middle" font-size="11">Ground surface</text>
+
+                    <!-- Well casing -->
+                    <rect x="387" y="80" width="6" height="270" fill="black"/>
+                    <rect x="380" y="200" width="20" height="150" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+                    <!-- Pump -->
+                    <circle cx="390" cy="74" r="8" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="78" text-anchor="middle" font-size="9" font-weight="bold">Q</text>
+                    <line x1="390" y1="66" x2="390" y2="56" stroke="black" stroke-width="2"/>
+                    <polygon points="383,58 390,50 397,58" fill="black"/>
+
+                    <!-- Dimension: H (original saturated thickness) -->
+                    <line x1="80" y1="200" x2="80" y2="350" stroke="black" stroke-width="0.8"/>
+                    <polygon points="77,200 80,194 83,200" fill="black"/>
+                    <polygon points="77,350 80,356 83,350" fill="black"/>
+                    <text x="68" y="280" text-anchor="end" font-weight="bold" font-size="12">H</text>
+
+                    <!-- Dimension: h_w (head at well) -->
+                    <line x1="420" y1="320" x2="420" y2="350" stroke="black" stroke-width="0.8"/>
+                    <polygon points="417,320 420,314 423,320" fill="black"/>
+                    <polygon points="417,350 420,356 423,350" fill="black"/>
+                    <text x="440" y="340" font-weight="bold" font-size="12">h<tspan dy="3" font-size="9">w</tspan></text>
+
+                    <!-- Dimension: s_w (drawdown at well) -->
+                    <line x1="450" y1="200" x2="450" y2="320" stroke="black" stroke-width="0.8"/>
+                    <polygon points="447,200 450,194 453,200" fill="black"/>
+                    <polygon points="447,320 450,326 453,320" fill="black"/>
+                    <text x="468" y="265" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">w</tspan></text>
+
+                    <!-- h at r -->
+                    <line x1="300" y1="220" x2="300" y2="350" stroke="black" stroke-width="0.6" stroke-dasharray="4,3"/>
+                    <text x="285" y="290" text-anchor="end" font-weight="bold">h</text>
+                    <text x="300" y="395" text-anchor="middle" font-size="10">r</text>
+
+                    <!-- R -->
+                    <line x1="390" y1="390" x2="160" y2="390" stroke="black" stroke-width="0.8"/>
+                    <polygon points="390,387 396,390 390,393" fill="black"/>
+                    <polygon points="160,387 154,390 160,393" fill="black"/>
+                    <text x="275" y="408" text-anchor="middle" font-weight="bold">R</text>
+
+                    <!-- Flow arrows -->
+                    <line x1="200" y1="280" x2="350" y2="280" stroke="black" stroke-width="1"/>
+                    <polygon points="340,276 356,280 340,284" fill="black"/>
+                    <line x1="580" y1="280" x2="430" y2="280" stroke="black" stroke-width="1"/>
+                    <polygon points="440,276 424,280 440,284" fill="black"/>
+
+                    <!-- Label -->
+                    <text x="150" y="260" font-size="11" font-weight="bold">Unconfined Aquifer</text>
+                </svg>
+                <div class="figcaption">Figure 4.5: Steady radial flow to a fully penetrating well in an unconfined aquifer — definition sketch for Dupuit equation derivation.</div>
+            </div>
+
+            <h3>Derivation</h3>
+
+            <p>
+                Consider a fully penetrating well of radius \(r_w\) pumping at a constant rate \(Q\) from an unconfined aquifer resting on an impervious base. The original (pre-pumping) saturated thickness is \(H\). Under the <strong>Dupuit assumptions</strong>, flow is horizontal and the hydraulic gradient equals the slope of the free surface.
+            </p>
+
+            <p>
+                At radial distance \(r\), the saturated thickness is \(h\) (which varies with \(r\)). The area of the cylindrical surface through which flow passes is \(A = 2\pi r \cdot h\). By continuity and Darcy's law:
+            </p>
+
+            <div class="equation">
+                $$ Q = 2\pi r \cdot h \cdot K \frac{dh}{dr} $$
+            </div>
+
+            <p>Separating variables:</p>
+
+            <div class="equation">
+                $$ \frac{Q}{2\pi K} \frac{dr}{r} = h \, dh $$
+            </div>
+
+            <p>Integrating between the well face (\(r = r_w\), \(h = h_w\)) and the radius of influence (\(r = R\), \(h = H\)):</p>
+
+            <div class="equation">
+                $$ \frac{Q}{2\pi K} \int_{r_w}^{R} \frac{dr}{r} = \int_{h_w}^{H} h \, dh $$
+            </div>
+
+            <div class="equation">
+                $$ \frac{Q}{2\pi K} \ln\left(\frac{R}{r_w}\right) = \frac{H^2 - h_w^2}{2} $$
+            </div>
+
+            <p>Solving for \(Q\):</p>
+
+            <div class="equation">
+                $$ \boxed{Q = \frac{\pi K (H^2 - h_w^2)}{\ln(R/r_w)}} $$
+            </div>
+
+            <p>This is the <strong>Dupuit equation</strong> for steady radial flow in an unconfined aquifer.</p>
+
+            <h3>General form between two observation wells</h3>
+            <p>If heads \(h_1\) and \(h_2\) are measured at distances \(r_1\) and \(r_2\):</p>
+
+            <div class="equation">
+                $$ Q = \frac{\pi K (h_2^2 - h_1^2)}{\ln(r_2/r_1)} $$
+            </div>
+
+            <div class="grid-two">
+                <div class="mini-note">
+                    <h4>DUPUIT EQUATION — UNCONFINED</h4>
+                    <p>\(Q = \dfrac{\pi K (H^2 - h_w^2)}{\ln(R/r_w)}\)</p>
+                </div>
+                <div class="mini-note">
+                    <h4>DUPUIT VALIDITY</h4>
+                    <p>The Dupuit equation is most accurate when the drawdown is small relative to the saturated thickness: \(s_w / H < 0.5\). For large drawdowns, vertical flow components become significant and the equation overestimates discharge.</p>
+                </div>
+            </div>
+
+            <h3>Comparison: Confined vs. Unconfined Well Equations</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Confined (Thiem)</th>
+                    <th>Unconfined (Dupuit)</th>
+                </tr>
+                <tr>
+                    <td>Aquifer thickness</td>
+                    <td>Constant (\(b\))</td>
+                    <td>Variable (\(h\), decreases near well)</td>
+                </tr>
+                <tr>
+                    <td>Flow cross-section area</td>
+                    <td>\(2\pi r b\)</td>
+                    <td>\(2\pi r h\)</td>
+                </tr>
+                <tr>
+                    <td>Equation form</td>
+                    <td>\(Q = \dfrac{2\pi Kb \, s_w}{\ln(R/r_w)}\)</td>
+                    <td>\(Q = \dfrac{\pi K(H^2 - h_w^2)}{\ln(R/r_w)}\)</td>
+                </tr>
+                <tr>
+                    <td>Head term</td>
+                    <td>Linear in \(h\) (or \(s_w\))</td>
+                    <td>Difference of squares (\(H^2 - h_w^2\))</td>
+                </tr>
+                <tr>
+                    <td>Specific capacity</td>
+                    <td>Approximately constant</td>
+                    <td>Decreases with increasing drawdown</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.7 UNSTEADY FLOW — THEIS EQUATION -->
+        <!-- ============================================================ -->
+        <section id="sec-4-7">
+            <h2>4.7 UNSTEADY (TRANSIENT) RADIAL FLOW — THEIS EQUATION (OVERVIEW)</h2>
+
+            <p>
+                In reality, when a well starts pumping, the cone of depression expands with time and steady state may not be achieved quickly (especially in confined aquifers). The <strong>Theis (1935)</strong> solution addresses this transient behavior.
+            </p>
+
+            <h3>Governing Equation</h3>
+            <p>The radial form of the groundwater flow equation in a confined aquifer is:</p>
+
+            <div class="equation">
+                $$ \frac{\partial^2 h}{\partial r^2} + \frac{1}{r}\frac{\partial h}{\partial r} = \frac{S}{T}\frac{\partial h}{\partial t} $$
+            </div>
+
+            <h3>Theis Solution</h3>
+            <p>Theis expressed the drawdown at distance \(r\) and time \(t\) as:</p>
+
+            <div class="equation">
+                $$ s = \frac{Q}{4\pi T} W(u) $$
+            </div>
+
+            <p>where the <strong>well function</strong> \(W(u)\) is:</p>
+
+            <div class="equation">
+                $$ W(u) = \int_u^{\infty} \frac{e^{-\eta}}{\eta} d\eta = -0.5772 - \ln u + u - \frac{u^2}{2 \cdot 2!} + \frac{u^3}{3 \cdot 3!} - \cdots $$
+            </div>
+
+            <p>and the dimensionless parameter \(u\) is:</p>
+
+            <div class="equation">
+                $$ u = \frac{r^2 S}{4Tt} $$
+            </div>
+
+            <table class="info-table">
+                <tr>
+                    <th>Symbol</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>\(s\)</td>
+                    <td>Drawdown at distance \(r\) and time \(t\)</td>
+                </tr>
+                <tr>
+                    <td>\(Q\)</td>
+                    <td>Constant pumping rate</td>
+                </tr>
+                <tr>
+                    <td>\(T\)</td>
+                    <td>Transmissivity of the aquifer</td>
+                </tr>
+                <tr>
+                    <td>\(S\)</td>
+                    <td>Storage coefficient (storativity)</td>
+                </tr>
+                <tr>
+                    <td>\(W(u)\)</td>
+                    <td>Theis well function</td>
+                </tr>
+                <tr>
+                    <td>\(u\)</td>
+                    <td>Dimensionless time parameter</td>
+                </tr>
+            </table>
+
+            <h3>Cooper–Jacob Approximation</h3>
+            <p>For large time or small distance (i.e., \(u < 0.01\)), the well function simplifies:</p>
+
+            <div class="equation">
+                $$ s \approx \frac{Q}{4\pi T} \left[ -0.5772 - \ln\left(\frac{r^2 S}{4Tt}\right) \right] = \frac{2.303\, Q}{4\pi T} \log_{10}\left(\frac{2.25\, Tt}{r^2 S}\right) $$
+            </div>
+
+            <p>This is the basis for the <strong>Cooper–Jacob straight-line method</strong> used in pumping test analysis (covered in detail in Chapter 5).</p>
+
+            <div class="mini-note">
+                <h4>EXAM NOTE</h4>
+                <p>The Theis equation and Cooper–Jacob method are more commonly examined in Chapter 5 (Pumping Tests). In Chapter 4, the focus is primarily on <strong>steady-state equations</strong> (Thiem for confined, Dupuit for unconfined).</p>
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.8 PAST QUESTION BANK -->
+        <!-- ============================================================ -->
+        <section id="sec-4-8">
+            <h2>4.8 PAST QUESTION BANK FOR CHAPTER 4</h2>
+
+            <h3>A. Theory Questions</h3>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2078 Chaitra</span>
+                    <span class="pill">Q4(a)</span>
+                    <span class="pill">6 marks</span>
+                    <span class="pill">Theory</span>
+                </div>
+                <p>Define cone of depression, radius of influence, well yield, and specific capacity of a well. Write down the assumptions used for the governing equation.</p>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2073 Bhadra</span>
+                    <span class="pill">Q4(a)</span>
+                    <span class="pill">7 marks</span>
+                    <span class="pill">Theory</span>
+                </div>
+                <p>Derive an expression for steady radial flow into a well in a confined aquifer with a neat sketch.</p>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2072 Magh</span>
+                    <span class="pill">Q4</span>
+                    <span class="pill">6 marks</span>
+                    <span class="pill">Theory</span>
+                </div>
+                <p>Define cone of depression, radius of influence, and area of influence with a neat sketch in well hydraulics.</p>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2072 Magh</span>
+                    <span class="pill">Q5(b)</span>
+                    <span class="pill">8 marks</span>
+                    <span class="pill">Theory</span>
+                </div>
+                <p>Derive the equation for steady radial flow in an unconfined aquifer.</p>
+            </div>
+
+            <h3>B. Numerical Questions</h3>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2078 Chaitra</span>
+                    <span class="pill">Q4(b)</span>
+                    <span class="pill">6 marks</span>
+                    <span class="pill">Numerical</span>
+                </div>
+                <p>A well penetrates an artesian aquifer. Determine the maximum yield for a given drawdown and the percentage change in discharge if the well diameter is reduced.</p>
+                <div class="data-block">
+                    <pre>Well diameter D = 30 cm
+Aquifer thickness b = 23 m
+Drawdown s_w = 3.5 m
+Hydraulic conductivity K = 2.8 &times; 10&sup1;&sup4; m/s
+Radius of influence R = 450 m
+Modified well diameter D' = 20 cm</pre>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2073 Bhadra</span>
+                    <span class="pill">Q4(b)</span>
+                    <span class="pill">4 marks</span>
+                    <span class="pill">Numerical</span>
+                </div>
+                <p>A fully penetrating well in an unconfined aquifer is pumped under steady conditions. Compute the steady-state discharge.</p>
+                <div class="data-block">
+                    <pre>Well radius r_w = 0.5 m
+Saturated thickness H = 50 m
+Hydraulic conductivity K = 30 m/day
+Water level at well h_w = 40 m
+Radius of influence R = 500 m</pre>
+                </div>
+            </div>
+
+            <h3>C. Quick Revision Matrix</h3>
+
+            <table class="question-table">
+                <tr>
+                    <th>Theme</th>
+                    <th>Years asked</th>
+                    <th>What to prepare</th>
+                </tr>
+                <tr>
+                    <td>Definitions: cone of depression, radius/area of influence, specific capacity</td>
+                    <td>2078, 2072 Magh</td>
+                    <td>Sketch of cone, definitions of all terms, formula for specific capacity</td>
+                </tr>
+                <tr>
+                    <td>Assumptions for well flow equations</td>
+                    <td>2078</td>
+                    <td>List all 9 assumptions; distinguish Dupuit assumptions for unconfined</td>
+                </tr>
+                <tr>
+                    <td>Derivation: Thiem equation (confined)</td>
+                    <td>2073</td>
+                    <td>Full derivation with neat figure, arrive at Q = 2&pi;Kb s<sub>w</sub> / ln(R/r<sub>w</sub>)</td>
+                </tr>
+                <tr>
+                    <td>Derivation: Dupuit equation (unconfined)</td>
+                    <td>2072 Magh</td>
+                    <td>Full derivation with figure, arrive at Q = &pi;K(H&sup2; &minus; h<sub>w</sub>&sup2;) / ln(R/r<sub>w</sub>)</td>
+                </tr>
+                <tr>
+                    <td>Numerical: confined well discharge</td>
+                    <td>2078</td>
+                    <td>Thiem formula application; effect of well diameter on Q (logarithmic insensitivity)</td>
+                </tr>
+                <tr>
+                    <td>Numerical: unconfined well discharge</td>
+                    <td>2073</td>
+                    <td>Dupuit formula application; Dupuit validity check (s<sub>w</sub>/H &lt; 0.5)</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- SUMMARY -->
+        <!-- ============================================================ -->
+        <section id="sec-summary">
+            <h2>CHAPTER SUMMARY AND EXAM FORMULA SHEET</h2>
+
+            <table class="formula-table">
+                <tr>
+                    <th>Concept</th>
+                    <th>Key relation / statement</th>
+                </tr>
+                <tr>
+                    <td>Drawdown</td>
+                    <td>\( s_w = H - h_w \) (confined: measured from piezometric surface; unconfined: from water table)</td>
+                </tr>
+                <tr>
+                    <td>Specific capacity</td>
+                    <td>\( Q / s_w \) — discharge per unit drawdown</td>
+                </tr>
+                <tr>
+                    <td>Thiem equation (confined)</td>
+                    <td>\( Q = \dfrac{2\pi K b \, s_w}{\ln(R/r_w)} = \dfrac{2\pi T \, s_w}{\ln(R/r_w)} \)</td>
+                </tr>
+                <tr>
+                    <td>Dupuit equation (unconfined)</td>
+                    <td>\( Q = \dfrac{\pi K (H^2 - h_w^2)}{\ln(R/r_w)} \)</td>
+                </tr>
+                <tr>
+                    <td>Between two observation wells (confined)</td>
+                    <td>\( Q = \dfrac{2\pi T (h_2 - h_1)}{\ln(r_2/r_1)} \)</td>
+                </tr>
+                <tr>
+                    <td>Between two observation wells (unconfined)</td>
+                    <td>\( Q = \dfrac{\pi K (h_2^2 - h_1^2)}{\ln(r_2/r_1)} \)</td>
+                </tr>
+                <tr>
+                    <td>Transmissivity</td>
+                    <td>\( T = K \cdot b \)</td>
+                </tr>
+                <tr>
+                    <td>Sichardt radius of influence</td>
+                    <td>\( R = 3000 \, s_w \sqrt{K} \) (K in m/s, R in m)</td>
+                </tr>
+                <tr>
+                    <td>Theis equation (transient)</td>
+                    <td>\( s = \dfrac{Q}{4\pi T} W(u) \), where \( u = \dfrac{r^2 S}{4Tt} \)</td>
+                </tr>
+                <tr>
+                    <td>Cooper–Jacob approximation</td>
+                    <td>\( s \approx \dfrac{2.303\, Q}{4\pi T} \log_{10}\!\left(\dfrac{2.25\, Tt}{r^2 S}\right) \) for \(u < 0.01\)</td>
+                </tr>
+                <tr>
+                    <td>Dupuit assumptions</td>
+                    <td>Horizontal flow lines, gradient = water-table slope, uniform velocity over depth</td>
+                </tr>
+            </table>
+
+            <div class="study-note">
+                <h4>LAST-MINUTE EXAM FOCUS</h4>
+                <ol>
+                    <li>Be able to <strong>sketch and label</strong> the cone of depression for both confined and unconfined wells, marking \(s_w\), \(R\), \(r_w\), \(b\) (or \(H\)), \(h_w\).</li>
+                    <li>Know all <strong>definitions</strong>: cone of depression, radius of influence, area of influence, specific capacity, well yield.</li>
+                    <li>List all <strong>9 assumptions</strong> for steady-state well equations; highlight the Dupuit assumptions for unconfined aquifers.</li>
+                    <li><strong>Derive from first principles</strong> both the Thiem (confined) and Dupuit (unconfined) equations — start from Darcy's law + continuity on a cylindrical surface.</li>
+                    <li>For numericals, remember: confined uses \(s_w\), unconfined uses \((H^2 - h_w^2)\). Always check units and convert diameters to radii.</li>
+                    <li>Understand the <strong>logarithmic insensitivity</strong> of discharge to well diameter — a common exam insight question.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    if (c === 'gold') { d.setAttribute('data-shimmer',''); }
+    else if (c === '#c0c0c0') { d.setAttribute('data-silver',''); }
+    else { d.style.background = c; }
+    d.onclick = function () {
+      color = (c === 'gold') ? '#d4a017' : c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+</body>
+</html>

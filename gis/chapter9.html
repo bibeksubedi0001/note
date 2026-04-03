@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 9 – River Network Generation</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── VS Code–style Math / Calculation blocks ── */
+    .code-editor {
+      margin: 22px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.18), 0 1px 4px rgba(0,0,0,.1);
+      font-family: "Consolas", "Fira Code", "Menlo", "Monaco", "Courier New", monospace;
+      font-size: 11pt;
+      line-height: 1.7;
+    }
+    .code-editor .editor-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #252526;
+      border-bottom: 1px solid #1e1e1e;
+      user-select: none;
+    }
+    .code-editor .editor-dots { display: flex; gap: 6px; }
+    .code-editor .editor-dots span { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+    .code-editor .editor-dots .dot-r { background: #ff5f56; }
+    .code-editor .editor-dots .dot-y { background: #ffbd2e; }
+    .code-editor .editor-dots .dot-g { background: #27c93f; }
+    .code-editor .editor-tab {
+      padding: 3px 14px; background: #1e1e1e; color: #cccccc;
+      font-size: 10pt; border-radius: 4px 4px 0 0;
+      border: 1px solid #333; border-bottom: 1px solid #1e1e1e;
+    }
+    .code-editor .editor-tab .tab-icon { color: #e8c96a; margin-right: 4px; }
+    .code-editor .editor-body { display: flex; background: #1e1e1e; padding: 16px 0; overflow-x: auto; }
+    .code-editor .line-numbers {
+      padding: 0 12px 0 16px; text-align: right; color: #858585;
+      user-select: none; border-right: 1px solid #333; min-width: 44px; flex-shrink: 0;
+    }
+    .code-editor .line-numbers div { line-height: 1.7; }
+    .code-editor .code-content { padding: 0 18px; color: #d4d4d4; white-space: pre; flex: 1; }
+    .code-editor .code-content div { line-height: 1.7; min-height: 1.7em; }
+    .m-cmt  { color: #6a9955; font-style: italic; }
+    .m-kw   { color: #569cd6; font-weight: bold; }
+    .m-var  { color: #9cdcfe; }
+    .m-fn   { color: #dcdcaa; }
+    .m-num  { color: #b5cea8; }
+    .m-op   { color: #d4d4d4; }
+    .m-str  { color: #ce9178; }
+    .m-res  { color: #4ec9b0; font-weight: bold; }
+    .m-unit { color: #c586c0; }
+    .m-sym  { color: #dcdcaa; font-style: italic; }
+    .code-editor .editor-statusbar {
+      display: flex; justify-content: space-between;
+      padding: 3px 14px; background: #007acc; color: #fff; font-size: 9pt;
+    }
+    [data-theme="dark"] .code-editor { box-shadow: 0 4px 24px rgba(0,0,0,.35), 0 1px 4px rgba(0,0,0,.2); }
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 9</div>
+    <h1>River Network Generation</h1>
+  </header>
+  <main>
+
+    <!-- 1. The Foundation: Watersheds and the DEM -->
+    <h2>1. The Foundation: Watersheds and the DEM <span class="exam-ref">Covers: 2072 Magh Q10 – Define watershed</span></h2>
+
+    <h3>Definition of a Watershed:</h3>
+    <p>A watershed (also known as a catchment area or drainage basin) is a topographically defined geographical area of land where all surface water (from rain, melting snow, or ice) converges and drains off into a single, common outlet point, usually known as a "pour point" (like a river mouth, a lake, or a dam). In GIS, the boundary of a watershed is defined by topographic ridges (drainage divides) extracted from a Digital Elevation Model (DEM).</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <linearGradient id="sky9" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b3d9f7"/><stop offset="100%" stop-color="#e8f4fd"/></linearGradient>
+            <linearGradient id="wtr9" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3498db" stop-opacity="0.6"/><stop offset="100%" stop-color="#2980b9" stop-opacity="0.4"/></linearGradient>
+            <filter id="s912"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+            <marker id="aw9" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#3498db"/></marker>
+          </defs>
+          <rect x="0" y="0" width="620" height="260" rx="8" fill="url(#sky9)"/>
+          <text x="310" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">Watershed (Catchment Area) Concept</text>
+          <!-- Left ridge -->
+          <path d="M 30,220 Q 80,100 150,130 Q 200,145 250,120" fill="none" stroke="#2d7d46" stroke-width="2"/>
+          <polygon points="30,220 80,100 150,130 200,145 250,120 250,220" fill="#8cc63f" fill-opacity="0.25" stroke="none"/>
+          <!-- Right ridge -->
+          <path d="M 250,120 Q 330,90 400,110 Q 470,135 530,220" fill="none" stroke="#2d7d46" stroke-width="2"/>
+          <polygon points="250,120 330,90 400,110 470,135 530,220 250,220" fill="#8cc63f" fill-opacity="0.25" stroke="none"/>
+          <!-- Valley/stream -->
+          <path d="M 250,120 Q 260,155 280,180 Q 300,200 310,220" fill="none" stroke="#3498db" stroke-width="3" marker-end="url(#aw9)"/>
+          <!-- Rain arrows -->
+          <line x1="120" y1="35" x2="140" y2="60" stroke="#3498db" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+          <line x1="200" y1="30" x2="210" y2="55" stroke="#3498db" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+          <line x1="350" y1="32" x2="340" y2="57" stroke="#3498db" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+          <line x1="440" y1="35" x2="420" y2="60" stroke="#3498db" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+          <text x="280" y="50" text-anchor="middle" font-size="9" fill="#3498db">Rain</text>
+          <!-- Surface runoff arrows -->
+          <line x1="100" y1="150" x2="200" y2="170" stroke="#3498db" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#aw9)"/>
+          <line x1="420" y1="140" x2="320" y2="175" stroke="#3498db" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#aw9)"/>
+          <text x="130" y="145" font-size="8" fill="#3498db">Surface runoff</text>
+          <text x="380" y="135" font-size="8" fill="#3498db">Surface runoff</text>
+          <!-- Drainage divide label -->
+          <rect x="60" y="88" width="95" height="22" rx="4" fill="#fff" fill-opacity="0.8" stroke="#2d7d46" stroke-width="0.8"/>
+          <text x="107" y="103" text-anchor="middle" font-size="8" fill="#2d7d46" font-weight="bold">Drainage Divide</text>
+          <rect x="420" y="98" width="95" height="22" rx="4" fill="#fff" fill-opacity="0.8" stroke="#2d7d46" stroke-width="0.8"/>
+          <text x="467" y="113" text-anchor="middle" font-size="8" fill="#2d7d46" font-weight="bold">Drainage Divide</text>
+          <!-- Pour point -->
+          <circle cx="310" cy="220" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2" filter="url(#s912)"/>
+          <text x="340" y="218" font-size="9" fill="#e74c3c" font-weight="bold">Pour Point</text>
+          <text x="340" y="230" font-size="8" fill="#555">(Outlet)</text>
+          <!-- Stream label -->
+          <text x="235" y="165" font-size="9" fill="#3498db" font-weight="bold">Stream</text>
+          <!-- Legend box -->
+          <g transform="translate(545,60)" filter="url(#s912)">
+            <rect x="0" y="0" width="70" height="75" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.6"/>
+            <text x="35" y="15" text-anchor="middle" font-size="7" font-weight="bold" fill="#1a3c5e">Legend</text>
+            <line x1="5" y1="22" x2="25" y2="22" stroke="#2d7d46" stroke-width="2"/><text x="30" y="26" font-size="6.5" fill="#555">Ridge</text>
+            <line x1="5" y1="35" x2="25" y2="35" stroke="#3498db" stroke-width="2.5"/><text x="30" y="39" font-size="6.5" fill="#555">Stream</text>
+            <circle cx="15" cy="50" r="4" fill="#e74c3c"/><text x="30" y="54" font-size="6.5" fill="#555">Outlet</text>
+            <rect x="5" y="60" width="20" height="8" fill="#8cc63f" fill-opacity="0.3"/><text x="30" y="68" font-size="6.5" fill="#555">Basin</text>
+          </g>
+          <!-- Bottom note -->
+          <text x="310" y="250" text-anchor="middle" font-size="8" fill="#555" font-style="italic">All precipitation within the watershed boundary drains to the single pour point</text>
+        </svg>
+        <figcaption>Fig 9.12 &ndash; Watershed concept: ridges define drainage divides, all surface water converges to a single pour point</figcaption>
+      </figure>
+    </div>
+
+    <!-- 2. Pre-processing the DEM: Sinks and Filled DEMs -->
+    <h2>2. Pre-processing the DEM: Sinks and Filled DEMs <span class="exam-ref">Covers: 2072 Magh Q10, 2074 Bhadra Q2a, 2075 Magh Q3a – Sinks and Filled DEM</span></h2>
+    <p>Before any hydrological analysis can begin, the raw DEM must be checked for errors.</p>
+
+    <h3>What is a Sink?</h3>
+    <p>A sink (or depression) is a cell or a group of adjacent cells in a DEM that are completely surrounded by cells with higher elevation values. Because water flows downhill by gravity, any water that enters a sink is trapped and cannot flow out, causing the digital river network to artificially disconnect and stop.</p>
+
+    <h3>How is a Sink Developed in a DEM?</h3>
+    <ol>
+      <li><strong>Data Errors (Artifacts):</strong> Most sinks are artificial errors created during the data collection process (e.g., radar shadow in SRTM or ASTER data) or during the spatial interpolation of the DEM grid.</li>
+      <li><strong>Resolution Limitations:</strong> If the grid resolution is too coarse (e.g., 90m pixels), a narrow gorge might be missed, making it look like a closed basin.</li>
+      <li><strong>Natural Sinks:</strong> Occasionally, they are real geographical features, such as glacial hollows, quarries, or karst (limestone) sinkholes.</li>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s913"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Three Causes of Sinks in DEMs</text>
+          <!-- Panel 1: Data Errors -->
+          <g filter="url(#s913)">
+            <rect x="15" y="30" width="210" height="135" rx="8" fill="#fdf0ec" stroke="#ed5565" stroke-width="1.2"/>
+            <text x="120" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#ed5565">1. Data Errors (Artifacts)</text>
+            <!-- Radar shadow illustration -->
+            <path d="M 35,110 L 60,75 L 85,110" fill="#c8a96e" fill-opacity="0.3" stroke="#8b6914" stroke-width="1"/>
+            <path d="M 85,110 L 95,100 L 105,110" fill="#c8a96e" fill-opacity="0.15" stroke="#8b6914" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <line x1="30" y1="55" x2="75" y2="68" stroke="#ed5565" stroke-width="1.5" stroke-dasharray="4,2"/>
+            <text x="30" y="50" font-size="7" fill="#ed5565">Radar signal</text>
+            <rect x="85" y="85" width="25" height="25" rx="2" fill="#ed5565" fill-opacity="0.15" stroke="#ed5565" stroke-width="0.8" stroke-dasharray="3,2"/>
+            <text x="97" y="100" text-anchor="middle" font-size="6" fill="#ed5565">Shadow</text>
+            <text x="120" y="130" text-anchor="middle" font-size="8" fill="#555">SRTM / ASTER radar</text>
+            <text x="120" y="142" text-anchor="middle" font-size="8" fill="#555">misses some areas</text>
+            <text x="120" y="158" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Most common cause</text>
+          </g>
+          <!-- Panel 2: Resolution Limitations -->
+          <g filter="url(#s913)">
+            <rect x="245" y="30" width="210" height="135" rx="8" fill="#fff5ec" stroke="#b8860b" stroke-width="1.2"/>
+            <text x="350" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#b8860b">2. Resolution Too Coarse</text>
+            <!-- Coarse vs fine grid -->
+            <g transform="translate(265,60)">
+              <rect x="0" y="0" width="30" height="30" fill="#a0d468" stroke="#fff" stroke-width="1"/><text x="15" y="20" text-anchor="middle" font-size="8" fill="#fff">90</text>
+              <rect x="30" y="0" width="30" height="30" fill="#c0e8a0" stroke="#fff" stroke-width="1"/><text x="45" y="20" text-anchor="middle" font-size="8">85</text>
+              <rect x="0" y="30" width="30" height="30" fill="#a0d468" stroke="#fff" stroke-width="1"/><text x="15" y="50" text-anchor="middle" font-size="8" fill="#fff">92</text>
+              <rect x="30" y="30" width="30" height="30" fill="#5aae5a" stroke="#fff" stroke-width="1"/><text x="45" y="50" text-anchor="middle" font-size="8" fill="#fff">88</text>
+              <text x="30" y="75" text-anchor="middle" font-size="7" fill="#b8860b">90m pixel</text>
+            </g>
+            <text x="335" y="100" font-size="14" fill="#b8860b">?</text>
+            <g transform="translate(345,60)">
+              <rect x="0" y="0" width="10" height="10" fill="#a0d468" stroke="#fff" stroke-width="0.5"/>
+              <rect x="10" y="0" width="10" height="10" fill="#7ac87a" stroke="#fff" stroke-width="0.5"/>
+              <rect x="20" y="0" width="10" height="10" fill="#c0e8a0" stroke="#fff" stroke-width="0.5"/>
+              <rect x="0" y="10" width="10" height="10" fill="#5aae5a" stroke="#fff" stroke-width="0.5"/>
+              <rect x="10" y="10" width="10" height="10" fill="#2a6e2a" stroke="#fff" stroke-width="0.5"/>
+              <rect x="20" y="10" width="10" height="10" fill="#7ac87a" stroke="#fff" stroke-width="0.5"/>
+              <rect x="0" y="20" width="10" height="10" fill="#a0d468" stroke="#fff" stroke-width="0.5"/>
+              <rect x="10" y="20" width="10" height="10" fill="#5aae5a" stroke="#fff" stroke-width="0.5"/>
+              <rect x="20" y="20" width="10" height="10" fill="#a0d468" stroke="#fff" stroke-width="0.5"/>
+              <text x="15" y="45" text-anchor="middle" font-size="7" fill="#2d7d46">30m pixel</text>
+            </g>
+            <text x="350" y="130" text-anchor="middle" font-size="8" fill="#555">Narrow gorge missed</text>
+            <text x="350" y="142" text-anchor="middle" font-size="8" fill="#555">by coarse grid</text>
+            <text x="350" y="158" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Solution: use finer DEM</text>
+          </g>
+          <!-- Panel 3: Natural Sinks -->
+          <g filter="url(#s913)">
+            <rect x="475" y="30" width="210" height="135" rx="8" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1.2"/>
+            <text x="580" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">3. Natural (Real) Sinks</text>
+            <!-- Glacial hollow / karst -->
+            <path d="M 500,105 Q 530,80 560,95 Q 575,100 580,120 Q 560,130 540,128 Q 520,125 500,105" fill="#4fc1e9" fill-opacity="0.3" stroke="#1a3c5e" stroke-width="1"/>
+            <text x="545" y="112" text-anchor="middle" font-size="7" fill="#1a3c5e">Lake</text>
+            <path d="M 600,110 Q 620,85 640,90 Q 660,95 665,120" fill="none" stroke="#8b6914" stroke-width="1.5"/>
+            <path d="M 620,120 L 630,100 L 640,120" fill="#c8a96e" fill-opacity="0.2" stroke="#8b6914" stroke-width="0.8"/>
+            <text x="635" y="98" font-size="7" fill="#8b6914">Sinkhole</text>
+            <text x="580" y="142" text-anchor="middle" font-size="8" fill="#555">Glacial hollows, quarries,</text>
+            <text x="580" y="154" text-anchor="middle" font-size="8" fill="#555">karst/limestone sinkholes</text>
+            <text x="580" y="168" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Do NOT fill these!</text>
+          </g>
+        </svg>
+        <figcaption>Fig 9.13 &ndash; Three causes of sinks: data artifacts (most common), coarse resolution limitations, and real natural depressions</figcaption>
+      </figure>
+    </div>
+    </ol>
+
+    <h3>How is it Removed? (The "Fill" Operation)</h3>
+    <p>Sinks are removed using the Fill Sink geoprocessing tool. The software algorithm identifies the trapped cells and artificially raises their elevation values until they are perfectly level with the lowest surrounding boundary cell (the "pour point" of the sink).</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 500 145" width="500" height="145" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a9r" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <linearGradient id="gSink" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffeaea"/><stop offset="100%" stop-color="#fdd"/></linearGradient>
+          <linearGradient id="gFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#eaf8ea"/><stop offset="100%" stop-color="#d4f0d4"/></linearGradient>
+          <linearGradient id="gWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4fc1e9" stop-opacity="0.5"/><stop offset="100%" stop-color="#3498db" stop-opacity="0.4"/></linearGradient>
+          <filter id="f91"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Before panel -->
+        <rect x="5" y="3" width="210" height="130" rx="8" fill="url(#gSink)" stroke="#ed5565" stroke-width="1" filter="url(#f91)"/>
+        <text x="110" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#ed5565">❌ Before: DEM with Sink</text>
+        <g transform="translate(15,24)">
+          <polyline points="0,20 35,30 70,72 100,82 135,60 165,25 190,15" fill="none" stroke="#2a8c2a" stroke-width="2.5"/>
+          <rect x="63" y="63" width="42" height="20" rx="2" fill="url(#gWater)"/>
+          <text x="84" y="76" text-anchor="middle" font-size="7" fill="#1a3c5e" font-weight="bold">trapped</text>
+          <line x1="84" y1="52" x2="84" y2="61" stroke="#ed5565" stroke-width="1.8" marker-end="url(#a9r)"/>
+          <text x="84" y="48" text-anchor="middle" font-size="7" fill="#ed5565" font-weight="bold">⬇ Sink</text>
+          <text x="84" y="105" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Water cannot drain out</text>
+        </g>
+        <!-- Arrow -->
+        <rect x="222" y="50" width="48" height="35" rx="6" fill="#f6bb42" fill-opacity="0.35" stroke="#b8860b" stroke-width="0.8"/>
+        <text x="246" y="65" text-anchor="middle" font-size="16" fill="#1a3c5e" font-weight="bold">→</text>
+        <text x="246" y="80" text-anchor="middle" font-size="8" fill="#8b6914" font-weight="bold">Fill</text>
+        <!-- After panel -->
+        <rect x="278" y="3" width="215" height="130" rx="8" fill="url(#gFill)" stroke="#2a8c2a" stroke-width="1" filter="url(#f91)"/>
+        <text x="385" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#2a8c2a">✅ After: Filled DEM</text>
+        <g transform="translate(288,24)">
+          <polyline points="0,20 35,30 70,60 100,60 135,60 165,25 190,15" fill="none" stroke="#2a8c2a" stroke-width="2.5"/>
+          <rect x="63" y="58" width="75" height="4" rx="1" fill="#f6bb42" fill-opacity="0.85"/>
+          <text x="100" y="54" text-anchor="middle" font-size="7" fill="#2a8c2a" font-weight="bold">⬆ Raised to pour point</text>
+          <line x1="140" y1="56" x2="168" y2="30" stroke="#4fc1e9" stroke-width="2" marker-end="url(#a9r)"/>
+          <text x="160" y="50" font-size="7" fill="#1a3c5e" font-weight="bold">flow →</text>
+          <text x="100" y="105" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Continuous drainage restored</text>
+        </g>
+      </svg>
+      <figcaption>Fig 9.1 – Sink and Fill Operation: Raising trapped depressions to allow continuous flow</figcaption>
+    </figure>
+
+    <h3>What is a Filled DEM?</h3>
+    <p>A Filled DEM (or Depressionless DEM) is the final output of the Fill operation. It is a corrected elevation surface where all artificial sinks have been eliminated, ensuring that water can flow continuously across the landscape to the edges of the map.</p>
+
+    <!-- 3. Core Hydrological Algorithms -->
+    <h2>3. Core Hydrological Algorithms <span class="exam-ref">Covers: 2074 Magh Q5a – Explain Flow Direction, Flow Accumulation, River Grid, Stream lines</span></h2>
+    <p>Once you have a Filled DEM, you run a sequence of specific tools to create the rivers.</p>
+
+    <h3>A. Flow Direction</h3>
+    <p>Flow Direction calculates the exact path water will take as it moves from one pixel to the next. The standard method used is the D8 (Eight-Direction) Algorithm. The software evaluates the center cell and its 8 immediate neighbors. It calculates the drop in elevation and assigns a flow direction code pointing to the single neighboring cell that has the steepest downward slope.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 460 140" width="460" height="140" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a9r2" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <linearGradient id="gD8a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8eef4"/><stop offset="100%" stop-color="#d0dde8"/></linearGradient>
+          <linearGradient id="gD8b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ec"/><stop offset="100%" stop-color="#fce8d8"/></linearGradient>
+          <filter id="f92"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- D8 direction codes panel -->
+        <rect x="5" y="3" width="175" height="125" rx="8" fill="url(#gD8a)" stroke="#1a3c5e" stroke-width="1" filter="url(#f92)"/>
+        <text x="92" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">🧭 D8 Direction Codes</text>
+        <g transform="translate(28,24)">
+          <rect x="0" y="0" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="19" y="14" text-anchor="middle" font-size="6" fill="#888">NW</text><text x="19" y="24" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">32</text>
+          <rect x="38" y="0" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="57" y="14" text-anchor="middle" font-size="6" fill="#888">N</text><text x="57" y="24" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">64</text>
+          <rect x="76" y="0" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="95" y="14" text-anchor="middle" font-size="6" fill="#888">NE</text><text x="95" y="24" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">128</text>
+          <rect x="0" y="28" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="19" y="42" text-anchor="middle" font-size="6" fill="#888">W</text><text x="19" y="52" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">16</text>
+          <rect x="38" y="28" width="38" height="28" rx="3" fill="#f6bb42" stroke="#b8860b" stroke-width="1.5"/><text x="57" y="46" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">X</text>
+          <rect x="76" y="28" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="95" y="42" text-anchor="middle" font-size="6" fill="#888">E</text><text x="95" y="52" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">1</text>
+          <rect x="0" y="56" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="19" y="70" text-anchor="middle" font-size="6" fill="#888">SW</text><text x="19" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">8</text>
+          <rect x="38" y="56" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="57" y="70" text-anchor="middle" font-size="6" fill="#888">S</text><text x="57" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">4</text>
+          <rect x="76" y="56" width="38" height="28" rx="3" fill="#e8eef4" stroke="#1a3c5e" stroke-width="0.6"/><text x="95" y="70" text-anchor="middle" font-size="6" fill="#888">SE</text><text x="95" y="80" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">2</text>
+        </g>
+        <text x="92" y="118" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Powers of 2 encode 8 directions</text>
+        <!-- Example panel -->
+        <rect x="195" y="3" width="260" height="125" rx="8" fill="url(#gD8b)" stroke="#8b2500" stroke-width="1" filter="url(#f92)"/>
+        <text x="325" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b2500">Example: Steepest Drop → SE</text>
+        <g transform="translate(208,24)">
+          <rect x="0" y="0" width="38" height="28" rx="3" fill="#5aae5a" stroke="#fff" stroke-width="0.6"/><text x="19" y="19" text-anchor="middle" font-size="9" fill="white">78</text>
+          <rect x="38" y="0" width="38" height="28" rx="3" fill="#5aae5a" stroke="#fff" stroke-width="0.6"/><text x="57" y="19" text-anchor="middle" font-size="9" fill="white">72</text>
+          <rect x="76" y="0" width="38" height="28" rx="3" fill="#7ac87a" stroke="#fff" stroke-width="0.6"/><text x="95" y="19" text-anchor="middle" font-size="9">69</text>
+          <rect x="0" y="28" width="38" height="28" rx="3" fill="#5aae5a" stroke="#fff" stroke-width="0.6"/><text x="19" y="47" text-anchor="middle" font-size="9" fill="white">74</text>
+          <rect x="38" y="28" width="38" height="28" rx="3" fill="#f6bb42" stroke="#b8860b" stroke-width="1.5"/><text x="57" y="47" text-anchor="middle" font-size="11" font-weight="bold">67</text>
+          <rect x="76" y="28" width="38" height="28" rx="3" fill="#a0d468" stroke="#fff" stroke-width="0.6"/><text x="95" y="47" text-anchor="middle" font-size="9">56</text>
+          <rect x="0" y="56" width="38" height="28" rx="3" fill="#7ac87a" stroke="#fff" stroke-width="0.6"/><text x="19" y="75" text-anchor="middle" font-size="9">68</text>
+          <rect x="38" y="56" width="38" height="28" rx="3" fill="#a0d468" stroke="#fff" stroke-width="0.6"/><text x="57" y="75" text-anchor="middle" font-size="9">58</text>
+          <rect x="76" y="56" width="38" height="28" rx="3" fill="#c0e8a0" stroke="#fff" stroke-width="0.6"/><text x="95" y="75" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">46</text>
+          <line x1="65" y1="50" x2="87" y2="68" stroke="#ed5565" stroke-width="3" marker-end="url(#a9r2)"/>
+        </g>
+        <rect x="345" y="42" width="100" height="55" rx="5" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="395" y="56" text-anchor="middle" font-size="8" font-weight="bold" fill="#8b2500">Result</text>
+        <text x="395" y="70" text-anchor="middle" font-size="8" fill="#555">Direction = <tspan font-weight="bold" fill="#1a3c5e">2</tspan></text>
+        <text x="395" y="82" text-anchor="middle" font-size="8" fill="#555">(Southeast)</text>
+        <text x="395" y="92" text-anchor="middle" font-size="7" fill="#ed5565">67→46 = −21m</text>
+        <text x="325" y="118" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Largest drop determines flow code</text>
+      </svg>
+      <figcaption>Fig 9.2 – D8 Flow Direction Algorithm: Direction codes and example (67→46 is steepest drop)</figcaption>
+    </figure>
+
+    <h3>B. Flow Accumulation</h3>
+    <p>Using the flow direction network, the Flow Accumulation tool calculates how much water flows into every single cell. It does this by counting the total number of upstream cells that pour into a specific downslope cell.</p>
+    <ul>
+      <li>A cell on a mountain ridge will have an accumulation of 0 (no water flows into it).</li>
+      <li>A cell at the bottom of a major valley will have a massive accumulation number (thousands of cells are draining into it).</li>
+    </ul>
+
+    
+
+    <!-- Fig 9.5 – Flow Accumulation Concept -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 500 310" xmlns="http://www.w3.org/2000/svg" style="max-width:500px">
+          <text x="250" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Flow Accumulation: Counting Upstream Cells</text>
+          <!-- 5x5 grid -->
+          <g transform="translate(70,35)">
+            <!-- Grid cells (elevation values) -->
+            <rect x="0" y="0" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="25" y="30" text-anchor="middle" font-size="10" fill="#555">78</text>
+            <rect x="50" y="0" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="75" y="30" text-anchor="middle" font-size="10" fill="#555">72</text>
+            <rect x="100" y="0" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="125" y="30" text-anchor="middle" font-size="10" fill="#555">69</text>
+            <rect x="150" y="0" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="175" y="30" text-anchor="middle" font-size="10" fill="#555">71</text>
+            <rect x="200" y="0" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="225" y="30" text-anchor="middle" font-size="10" fill="#555">58</text>
+
+            <rect x="0" y="50" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="25" y="80" text-anchor="middle" font-size="10" fill="#555">74</text>
+            <rect x="50" y="50" width="50" height="50" fill="#e8eef4" stroke="#999" stroke-width=".5"/><text x="75" y="80" text-anchor="middle" font-size="10" fill="#555">67</text>
+            <rect x="100" y="50" width="50" height="50" fill="#e8eef4" stroke="#999" stroke-width=".5"/><text x="125" y="80" text-anchor="middle" font-size="10" fill="#555">56</text>
+            <rect x="150" y="50" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="175" y="80" text-anchor="middle" font-size="10" fill="#555">49</text>
+            <rect x="200" y="50" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="225" y="80" text-anchor="middle" font-size="10" fill="#555">46</text>
+
+            <rect x="0" y="100" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="25" y="130" text-anchor="middle" font-size="10" fill="#555">69</text>
+            <rect x="50" y="100" width="50" height="50" fill="#e8eef4" stroke="#999" stroke-width=".5"/><text x="75" y="130" text-anchor="middle" font-size="10" fill="#555">53</text>
+            <rect x="100" y="100" width="50" height="50" fill="#edf7f0" stroke="#2d7d46" stroke-width="1.5"/><text x="125" y="130" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">44</text>
+            <rect x="150" y="100" width="50" height="50" fill="#e8eef4" stroke="#999" stroke-width=".5"/><text x="175" y="130" text-anchor="middle" font-size="10" fill="#555">37</text>
+            <rect x="200" y="100" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="225" y="130" text-anchor="middle" font-size="10" fill="#555">38</text>
+
+            <rect x="0" y="150" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="25" y="180" text-anchor="middle" font-size="10" fill="#555">64</text>
+            <rect x="50" y="150" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="75" y="180" text-anchor="middle" font-size="10" fill="#555">58</text>
+            <rect x="100" y="150" width="50" height="50" fill="#e8eef4" stroke="#999" stroke-width=".5"/><text x="125" y="180" text-anchor="middle" font-size="10" fill="#555">55</text>
+            <rect x="150" y="150" width="50" height="50" fill="#edf7f0" stroke="#2d7d46" stroke-width="1.5"/><text x="175" y="180" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">22</text>
+            <rect x="200" y="150" width="50" height="50" fill="#fdf0ec" stroke="#999" stroke-width=".5"/><text x="225" y="180" text-anchor="middle" font-size="10" fill="#555">31</text>
+
+            <!-- Flow arrows -->
+            <line x1="75" y1="68" x2="115" y2="108" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+            <line x1="125" y1="55" x2="125" y2="95" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+            <line x1="75" y1="118" x2="115" y2="118" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+            <line x1="125" y1="155" x2="165" y2="168" stroke="#2d7d46" stroke-width="2" marker-end="url(#arrowGreen)"/>
+            <line x1="175" y1="105" x2="165" y2="155" stroke="#2d7d46" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+            <!-- Labels -->
+            <text x="125" y="145" text-anchor="middle" font-size="7" fill="#2d7d46" font-weight="bold">Acc=3</text>
+            <text x="175" y="195" text-anchor="middle" font-size="7" fill="#2d7d46" font-weight="bold">Acc=5</text>
+          </g>
+          <defs>
+            <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#1a3c5e"/></marker>
+            <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#2d7d46"/></marker>
+          </defs>
+          <!-- Legend -->
+          <text x="70" y="260" font-size="8" fill="#1a3c5e" font-weight="bold">How it works:</text>
+          <text x="70" y="275" font-size="7.5" fill="#555">Each cell counts how many upstream cells drain into it. Cells with high accumulation values = stream channels.</text>
+          <text x="70" y="290" font-size="7.5" fill="#555">Apply threshold: if Accumulation &gt; T, classify as stream. Lower T = denser network.</text>
+          <text x="70" y="305" font-size="7.5" fill="#2d7d46">Green highlighted cells show higher accumulation (convergence points = likely streams).</text>
+        </svg>
+        <figcaption>Fig 9.5 &ndash; Flow Accumulation: each cell counts upstream contributing cells; high values indicate stream channels</figcaption>
+      </figure>
+    </div>
+
+    <h3>C. River Grid (Stream Definition)</h3>
+    <p>Not every cell with flow accumulation is a river; some are just muddy slopes. To define an actual river, you apply a Threshold using Map Algebra. For example, you might set a rule: If Flow Accumulation &gt; 500 cells, then it is a River (1), else it is Not a River (0). The output is a binary River Grid where the pixels representing streams are highlighted.</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s914"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Stream Threshold Effect on River Density</text>
+          <!-- Panel 1: Low threshold -->
+          <g filter="url(#s914)">
+            <rect x="15" y="30" width="210" height="155" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1.2"/>
+            <text x="120" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Low Threshold (T = 100)</text>
+            <!-- Dense stream network -->
+            <line x1="50" y1="65" x2="90" y2="100" stroke="#3498db" stroke-width="1.5"/>
+            <line x1="130" y1="60" x2="90" y2="100" stroke="#3498db" stroke-width="1.5"/>
+            <line x1="90" y1="100" x2="120" y2="140" stroke="#3498db" stroke-width="2"/>
+            <line x1="170" y1="70" x2="140" y2="95" stroke="#3498db" stroke-width="1"/>
+            <line x1="200" y1="85" x2="140" y2="95" stroke="#3498db" stroke-width="1"/>
+            <line x1="140" y1="95" x2="120" y2="140" stroke="#3498db" stroke-width="1.5"/>
+            <line x1="35" y1="90" x2="70" y2="115" stroke="#3498db" stroke-width="1"/>
+            <line x1="70" y1="115" x2="120" y2="140" stroke="#3498db" stroke-width="2.5"/>
+            <line x1="120" y1="140" x2="120" y2="170" stroke="#3498db" stroke-width="3"/>
+            <circle cx="120" cy="170" r="4" fill="#e74c3c"/>
+            <text x="120" y="180" text-anchor="middle" font-size="7" fill="#888">Dense network</text>
+          </g>
+          <!-- Panel 2: Medium threshold -->
+          <g filter="url(#s914)">
+            <rect x="245" y="30" width="210" height="155" rx="8" fill="#fff5ec" stroke="#b8860b" stroke-width="1.2"/>
+            <text x="350" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#b8860b">Medium Threshold (T = 500)</text>
+            <line x1="290" y1="75" x2="340" y2="110" stroke="#3498db" stroke-width="1.5"/>
+            <line x1="400" y1="80" x2="340" y2="110" stroke="#3498db" stroke-width="1.5"/>
+            <line x1="340" y1="110" x2="350" y2="150" stroke="#3498db" stroke-width="2.5"/>
+            <line x1="350" y1="150" x2="350" y2="170" stroke="#3498db" stroke-width="3"/>
+            <circle cx="350" cy="170" r="4" fill="#e74c3c"/>
+            <text x="350" y="180" text-anchor="middle" font-size="7" fill="#888">Moderate network</text>
+          </g>
+          <!-- Panel 3: High threshold -->
+          <g filter="url(#s914)">
+            <rect x="475" y="30" width="210" height="155" rx="8" fill="#fdf0ec" stroke="#ed5565" stroke-width="1.2"/>
+            <text x="580" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#ed5565">High Threshold (T = 2000)</text>
+            <line x1="580" y1="90" x2="580" y2="170" stroke="#3498db" stroke-width="3.5"/>
+            <circle cx="580" cy="170" r="4" fill="#e74c3c"/>
+            <text x="580" y="180" text-anchor="middle" font-size="7" fill="#888">Only main river</text>
+          </g>
+          <!-- Bottom note -->
+          <text x="350" y="198" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Rule: If Flow Accumulation &gt; T, cell is classified as stream. Lower T = denser network.</text>
+        </svg>
+        <figcaption>Fig 9.14 &ndash; Effect of threshold value on stream density: low thresholds capture all tributaries, high thresholds show only major rivers</figcaption>
+      </figure>
+    </div>
+
+    <h3>D. Stream Lines (Stream to Feature)</h3>
+    <p>The River Grid is still a raster (pixels). To make it useful for mapping, it is converted into vector polylines using the "Stream to Feature" tool. These resulting vector lines are the Stream Lines.</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 600 170" xmlns="http://www.w3.org/2000/svg" style="max-width:600px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s915"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+            <marker id="arr915" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+          </defs>
+          <text x="300" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Stream to Feature: Raster &#x2192; Vector Conversion</text>
+          <!-- Raster grid (binary river) -->
+          <g filter="url(#s915)">
+            <rect x="20" y="30" width="180" height="125" rx="8" fill="#faf8f4" stroke="#1a3c5e" stroke-width="1.2"/>
+            <text x="110" y="48" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Binary River Grid</text>
+            <g transform="translate(35,54)">
+              <rect x="0" y="0" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/><text x="10" y="12" text-anchor="middle" font-size="7" fill="#ccc">0</text>
+              <rect x="20" y="0" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/><text x="30" y="12" text-anchor="middle" font-size="7" fill="#ccc">0</text>
+              <rect x="40" y="0" width="20" height="16" fill="#3498db" stroke="#2980b9" stroke-width="0.5"/><text x="50" y="12" text-anchor="middle" font-size="7" fill="#fff">1</text>
+              <rect x="60" y="0" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/><text x="70" y="12" text-anchor="middle" font-size="7" fill="#ccc">0</text>
+              <rect x="80" y="0" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/><text x="90" y="12" text-anchor="middle" font-size="7" fill="#ccc">0</text>
+              <rect x="100" y="0" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/><text x="110" y="12" text-anchor="middle" font-size="7" fill="#ccc">0</text>
+              <rect x="120" y="0" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/><text x="130" y="12" text-anchor="middle" font-size="7" fill="#ccc">0</text>
+
+              <rect x="0" y="16" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="20" y="16" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="40" y="16" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="60" y="16" width="20" height="16" fill="#3498db" stroke="#2980b9" stroke-width="0.5"/><text x="70" y="28" text-anchor="middle" font-size="7" fill="#fff">1</text>
+              <rect x="80" y="16" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="100" y="16" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="120" y="16" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+
+              <rect x="0" y="32" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="20" y="32" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="40" y="32" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="60" y="32" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="80" y="32" width="20" height="16" fill="#3498db" stroke="#2980b9" stroke-width="0.5"/><text x="90" y="44" text-anchor="middle" font-size="7" fill="#fff">1</text>
+              <rect x="100" y="32" width="20" height="16" fill="#3498db" stroke="#2980b9" stroke-width="0.5"/><text x="110" y="44" text-anchor="middle" font-size="7" fill="#fff">1</text>
+              <rect x="120" y="32" width="20" height="16" fill="#3498db" stroke="#2980b9" stroke-width="0.5"/><text x="130" y="44" text-anchor="middle" font-size="7" fill="#fff">1</text>
+
+              <rect x="0" y="48" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="20" y="48" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="40" y="48" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="60" y="48" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="80" y="48" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="100" y="48" width="20" height="16" fill="#eee" stroke="#ddd" stroke-width="0.5"/>
+              <rect x="120" y="48" width="20" height="16" fill="#3498db" stroke="#2980b9" stroke-width="0.5"/><text x="130" y="60" text-anchor="middle" font-size="7" fill="#fff">1</text>
+            </g>
+            <text x="110" y="135" text-anchor="middle" font-size="7" fill="#888">Pixels (1 = river, 0 = land)</text>
+          </g>
+          <!-- Arrow -->
+          <g transform="translate(210,75)">
+            <rect x="0" y="0" width="80" height="35" rx="6" fill="#f6bb42" fill-opacity="0.3" stroke="#b8860b" stroke-width="0.8"/>
+            <text x="40" y="15" text-anchor="middle" font-size="8" fill="#b8860b" font-weight="bold">Stream to</text>
+            <text x="40" y="27" text-anchor="middle" font-size="8" fill="#b8860b" font-weight="bold">Feature</text>
+          </g>
+          <line x1="290" y1="92" x2="310" y2="92" stroke="#1a3c5e" stroke-width="2" marker-end="url(#arr915)"/>
+          <!-- Vector output -->
+          <g filter="url(#s915)">
+            <rect x="320" y="30" width="260" height="125" rx="8" fill="#faf8f4" stroke="#2d7d46" stroke-width="1.2"/>
+            <text x="450" y="48" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Vector Polylines (Shapefile)</text>
+            <!-- Vector lines -->
+            <path d="M 360,70 Q 390,85 420,90 Q 450,92 480,100 Q 510,110 540,130" fill="none" stroke="#3498db" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M 380,60 Q 400,75 420,90" fill="none" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 500,65 Q 490,80 480,100" fill="none" stroke="#3498db" stroke-width="1.5" stroke-linecap="round"/>
+            <!-- Vertices -->
+            <circle cx="360" cy="70" r="2.5" fill="#2d7d46"/>
+            <circle cx="420" cy="90" r="3" fill="#2d7d46"/>
+            <circle cx="480" cy="100" r="3" fill="#2d7d46"/>
+            <circle cx="540" cy="130" r="3.5" fill="#e74c3c"/>
+            <text x="450" y="135" text-anchor="middle" font-size="7" fill="#888">Smooth connected polylines</text>
+            <!-- Attribute table mini -->
+            <rect x="340" y="105" width="90" height="40" rx="3" fill="#fff" stroke="#d4cfc5" stroke-width="0.5"/>
+            <text x="385" y="116" text-anchor="middle" font-size="6" fill="#1a3c5e" font-weight="bold">Attribute Table</text>
+            <text x="350" y="128" font-size="5.5" fill="#555">ID | Length | Order</text>
+            <text x="350" y="138" font-size="5.5" fill="#555"> 1 | 2.4 km | 2</text>
+          </g>
+          <!-- Bottom label -->
+          <text x="300" y="165" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Raster pixels become smooth vector lines with attributes (length, order, connectivity)</text>
+        </svg>
+        <figcaption>Fig 9.15 &ndash; Stream to Feature conversion: binary raster river grid is converted into vector polylines for mapping and analysis</figcaption>
+      </figure>
+    </div>
+
+    <!-- 4. Stream Ordering: The Shreve Method -->
+    <h2>4. Stream Ordering: The Shreve Method <span class="exam-ref">Covers: 2075 Bhadra Q9b – Describe Shreve method</span></h2>
+    <p>Once stream lines are created, hydrologists classify their size and importance using stream ordering. While the Strahler method is the most common, the exams specifically ask for the Shreve Method.</p>
+
+    <h3>The Shreve Method:</h3>
+    <p>In the Shreve system, all exterior links (the smallest starting streams with no tributaries) are assigned a magnitude of 1.</p>
+    <p>Unlike other methods, when two streams intersect, their magnitudes are strictly added together.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 400 200" width="400" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f93"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="gShrv" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#d0e8f8"/></linearGradient>
+        </defs>
+        <rect x="2" y="2" width="396" height="196" rx="8" fill="url(#gShrv)" stroke="#1a3c5e" stroke-width="0.8" filter="url(#f93)"/>
+        <text x="200" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Shreve Method: Strictly Additive</text>
+        <!-- Stream network -->
+        <line x1="40" y1="38" x2="95" y2="78" stroke="#4fc1e9" stroke-width="2.5"/>
+        <line x1="145" y1="38" x2="95" y2="78" stroke="#4fc1e9" stroke-width="2.5"/>
+        <line x1="95" y1="78" x2="155" y2="118" stroke="#4fc1e9" stroke-width="4"/>
+        <line x1="215" y1="48" x2="155" y2="118" stroke="#4fc1e9" stroke-width="2.5"/>
+        <line x1="155" y1="118" x2="210" y2="168" stroke="#4fc1e9" stroke-width="5.5"/>
+        <line x1="290" y1="95" x2="260" y2="135" stroke="#4fc1e9" stroke-width="2.5"/>
+        <line x1="340" y1="95" x2="260" y2="135" stroke="#4fc1e9" stroke-width="2.5"/>
+        <line x1="260" y1="135" x2="210" y2="168" stroke="#4fc1e9" stroke-width="4"/>
+        <!-- Source nodes (magnitude 1) -->
+        <circle cx="40" cy="38" r="14" fill="#1a3c5e" stroke="white" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="40" y="42" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+        <circle cx="145" cy="38" r="14" fill="#1a3c5e" stroke="white" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="145" y="42" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+        <circle cx="215" cy="48" r="14" fill="#1a3c5e" stroke="white" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="215" y="52" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+        <circle cx="290" cy="95" r="14" fill="#1a3c5e" stroke="white" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="290" y="99" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+        <circle cx="340" cy="95" r="14" fill="#1a3c5e" stroke="white" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="340" y="99" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+        <!-- Confluence nodes -->
+        <circle cx="95" cy="78" r="16" fill="#f6bb42" stroke="#b8860b" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="95" y="82" text-anchor="middle" font-size="11" font-weight="bold">2</text>
+        <rect x="60" y="62" width="25" height="13" rx="3" fill="#ed5565" fill-opacity="0.15"/><text x="72" y="72" text-anchor="middle" font-size="7" fill="#ed5565" font-weight="bold">1+1</text>
+        <circle cx="260" cy="135" r="16" fill="#f6bb42" stroke="#b8860b" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="260" y="139" text-anchor="middle" font-size="11" font-weight="bold">2</text>
+        <rect x="225" y="122" width="25" height="13" rx="3" fill="#ed5565" fill-opacity="0.15"/><text x="237" y="132" text-anchor="middle" font-size="7" fill="#ed5565" font-weight="bold">1+1</text>
+        <circle cx="155" cy="118" r="16" fill="#ed5565" stroke="#c0392b" stroke-width="1.5" filter="url(#f93)"/>
+        <text x="155" y="122" text-anchor="middle" font-size="11" fill="white" font-weight="bold">3</text>
+        <rect x="120" y="105" width="25" height="13" rx="3" fill="#ed5565" fill-opacity="0.15"/><text x="132" y="115" text-anchor="middle" font-size="7" fill="#ed5565" font-weight="bold">2+1</text>
+        <!-- Outlet -->
+        <circle cx="210" cy="168" r="18" fill="#c0392b" stroke="#7b1a1a" stroke-width="2" filter="url(#f93)"/>
+        <text x="210" y="173" text-anchor="middle" font-size="12" fill="white" font-weight="bold">5</text>
+        <rect x="172" y="157" width="25" height="13" rx="3" fill="#ed5565" fill-opacity="0.15"/><text x="184" y="167" text-anchor="middle" font-size="7" fill="#ed5565" font-weight="bold">3+2</text>
+        <text x="210" y="195" text-anchor="middle" font-size="8" fill="#555" font-weight="bold">🏁 Outlet (total magnitude = 5 tributaries)</text>
+      </svg>
+      <figcaption>Fig 9.3 – Shreve Stream Ordering: Magnitudes are strictly additive at confluences</figcaption>
+    </figure>
+    <ul>
+      <li>If a magnitude 1 stream joins another magnitude 1 stream, the resulting downstream link is 2 (1+1).</li>
+      <li>If a magnitude 2 stream joins a magnitude 3 stream, the resulting downstream link is 5 (2+3).</li>
+      <li><strong>Advantage:</strong> Because it is purely additive, the magnitude of a downstream link perfectly represents the total number of starting tributaries contributing to that point, making it excellent for estimating total water discharge.</li>
+    </ul>
+
+    <!-- 5. The Complete Workflow / Scenario Question -->
+    
+
+    <!-- Fig 9.6 – Strahler vs Shreve Stream Ordering -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Stream Ordering: Strahler vs Shreve Methods</text>
+          <!-- Strahler side -->
+          <rect x="20" y="30" width="310" height="170" rx="6" fill="#fafafa" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="175" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Strahler Method</text>
+          <text x="175" y="64" text-anchor="middle" font-size="7.5" fill="#6b6b6b">Order increases only when same-order streams meet</text>
+          <!-- Stream diagram -->
+          <line x1="60" y1="85" x2="120" y2="130" stroke="#1a3c5e" stroke-width="1.5"/><text x="75" y="100" font-size="8" fill="#1a3c5e" font-weight="bold">1</text>
+          <line x1="180" y1="85" x2="120" y2="130" stroke="#1a3c5e" stroke-width="1.5"/><text x="160" y="100" font-size="8" fill="#1a3c5e" font-weight="bold">1</text>
+          <line x1="120" y1="130" x2="175" y2="170" stroke="#1a3c5e" stroke-width="2.5"/><text x="135" y="150" font-size="8" fill="#8b2500" font-weight="bold">2</text>
+          <line x1="260" y1="100" x2="175" y2="170" stroke="#1a3c5e" stroke-width="1.5"/><text x="230" y="128" font-size="8" fill="#1a3c5e" font-weight="bold">1</text>
+          <line x1="175" y1="170" x2="175" y2="195" stroke="#1a3c5e" stroke-width="2.5"/><text x="188" y="188" font-size="8" fill="#8b2500" font-weight="bold">2</text>
+          <!-- Rule -->
+          <text x="55" y="195" font-size="7" fill="#555">Rule: 1+1=2, 2+1=2, 2+2=3</text>
+
+          <!-- Shreve side -->
+          <rect x="370" y="30" width="310" height="170" rx="6" fill="#fafafa" stroke="#2d7d46" stroke-width="1"/>
+          <text x="525" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Shreve Method</text>
+          <text x="525" y="64" text-anchor="middle" font-size="7.5" fill="#6b6b6b">Magnitudes always add at every confluence</text>
+          <!-- Stream diagram -->
+          <line x1="410" y1="85" x2="470" y2="130" stroke="#2d7d46" stroke-width="1.5"/><text x="425" y="100" font-size="8" fill="#2d7d46" font-weight="bold">1</text>
+          <line x1="530" y1="85" x2="470" y2="130" stroke="#2d7d46" stroke-width="1.5"/><text x="510" y="100" font-size="8" fill="#2d7d46" font-weight="bold">1</text>
+          <line x1="470" y1="130" x2="525" y2="170" stroke="#2d7d46" stroke-width="2.5"/><text x="485" y="150" font-size="8" fill="#b8860b" font-weight="bold">2</text>
+          <line x1="610" y1="100" x2="525" y2="170" stroke="#2d7d46" stroke-width="1.5"/><text x="580" y="128" font-size="8" fill="#2d7d46" font-weight="bold">1</text>
+          <line x1="525" y1="170" x2="525" y2="195" stroke="#2d7d46" stroke-width="3"/><text x="538" y="188" font-size="8" fill="#b8860b" font-weight="bold">3</text>
+          <!-- Rule -->
+          <text x="405" y="195" font-size="7" fill="#555">Rule: 1+1=2, 2+1=3, 2+2=4 (always additive)</text>
+
+          <!-- VS -->
+          <circle cx="350" cy="115" r="14" fill="#b8860b" opacity=".15"/>
+          <text x="350" y="119" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">VS</text>
+        </svg>
+        <figcaption>Fig 9.6 &ndash; Strahler ordering increases only when equal orders meet; Shreve always adds magnitudes at confluences</figcaption>
+      </figure>
+    </div>
+
+    <h2>5. The Complete Workflow / Scenario Question <span class="exam-ref">Covers: 2082 Shrawan – Steps to generate a river network from multiple DEMs for a polygon area</span></h2>
+    <p>This is a comprehensive 10-mark question that requires you to outline the entire process, including initial data management.</p>
+
+    <h3>Question Workflow: Generating a River Network from Multiple DEMs</h3>
+
+    <h4>Step 1: Data Preparation (Mosaic)</h4>
+    <p>Since multiple DEMs cover the area, the first step is to use the Mosaic to New Raster tool. This stitches the multiple, separate DEM grids together into one large, continuous regional DEM.</p>
+
+    <h4>Step 2: Area Extraction (Clip/Extract by Mask)</h4>
+    <p>Use the provided "Polygon Vector Data" (the study area) as a mask. Use the Extract by Mask (or Clip) tool to cut the large mosaicked DEM down to the exact boundary of your study area to save processing time.</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s916"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+            <marker id="arr916" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+          </defs>
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Data Preparation: Mosaic + Clip for Multi-DEM Projects</text>
+          <!-- Multiple DEM tiles -->
+          <g filter="url(#s916)">
+            <rect x="15" y="35" width="150" height="130" rx="6" fill="#faf8f4" stroke="#1a3c5e" stroke-width="1"/>
+            <text x="90" y="52" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Raw DEM Tiles</text>
+            <rect x="25" y="58" width="55" height="40" rx="3" fill="#a0d468" fill-opacity="0.5" stroke="#2d7d46" stroke-width="0.8"/>
+            <text x="52" y="82" text-anchor="middle" font-size="7" fill="#2d7d46">Tile A</text>
+            <rect x="82" y="58" width="55" height="40" rx="3" fill="#7ac87a" fill-opacity="0.5" stroke="#2d7d46" stroke-width="0.8"/>
+            <text x="109" y="82" text-anchor="middle" font-size="7" fill="#2d7d46">Tile B</text>
+            <rect x="25" y="100" width="55" height="40" rx="3" fill="#5aae5a" fill-opacity="0.5" stroke="#2d7d46" stroke-width="0.8"/>
+            <text x="52" y="124" text-anchor="middle" font-size="7" fill="#fff">Tile C</text>
+            <rect x="82" y="100" width="55" height="40" rx="3" fill="#c0e8a0" fill-opacity="0.5" stroke="#2d7d46" stroke-width="0.8"/>
+            <text x="109" y="124" text-anchor="middle" font-size="7" fill="#2d7d46">Tile D</text>
+            <text x="90" y="155" text-anchor="middle" font-size="7" fill="#888">4 separate rasters</text>
+          </g>
+          <!-- Arrow 1 -->
+          <g>
+            <rect x="175" y="80" width="60" height="30" rx="5" fill="#f6bb42" fill-opacity="0.3" stroke="#b8860b" stroke-width="0.8"/>
+            <text x="205" y="100" text-anchor="middle" font-size="8" fill="#b8860b" font-weight="bold">Mosaic</text>
+          </g>
+          <line x1="235" y1="95" x2="252" y2="95" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr916)"/>
+          <!-- Mosaicked DEM -->
+          <g filter="url(#s916)">
+            <rect x="260" y="35" width="140" height="130" rx="6" fill="#faf8f4" stroke="#2d7d46" stroke-width="1"/>
+            <text x="330" y="52" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Merged DEM</text>
+            <rect x="275" y="58" width="110" height="82" rx="3" fill="#8cc63f" fill-opacity="0.3" stroke="#2d7d46" stroke-width="1"/>
+            <text x="330" y="105" text-anchor="middle" font-size="8" fill="#2d7d46">One continuous raster</text>
+            <!-- Study area polygon overlay -->
+            <ellipse cx="330" cy="95" rx="35" ry="25" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="5,3"/>
+            <text x="330" y="130" font-size="7" fill="#e74c3c" text-anchor="middle">Study area polygon</text>
+            <text x="330" y="155" text-anchor="middle" font-size="7" fill="#888">Seamless surface</text>
+          </g>
+          <!-- Arrow 2 -->
+          <g>
+            <rect x="410" y="80" width="60" height="30" rx="5" fill="#e74c3c" fill-opacity="0.2" stroke="#e74c3c" stroke-width="0.8"/>
+            <text x="440" y="100" text-anchor="middle" font-size="8" fill="#e74c3c" font-weight="bold">Clip</text>
+          </g>
+          <line x1="470" y1="95" x2="487" y2="95" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr916)"/>
+          <!-- Clipped DEM -->
+          <g filter="url(#s916)">
+            <rect x="495" y="35" width="190" height="130" rx="6" fill="#faf8f4" stroke="#e74c3c" stroke-width="1"/>
+            <text x="590" y="52" text-anchor="middle" font-size="9" font-weight="bold" fill="#e74c3c">Clipped DEM</text>
+            <ellipse cx="590" cy="100" rx="55" ry="38" fill="#8cc63f" fill-opacity="0.3" stroke="#2d7d46" stroke-width="1.5"/>
+            <text x="590" y="95" text-anchor="middle" font-size="8" fill="#2d7d46">Only study</text>
+            <text x="590" y="108" text-anchor="middle" font-size="8" fill="#2d7d46">area retained</text>
+            <text x="590" y="155" text-anchor="middle" font-size="7" fill="#888">Ready for Fill &#x2192; Flow Dir</text>
+          </g>
+          <!-- Bottom note -->
+          <text x="350" y="178" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Steps 1-2 of the workflow: combine multiple DEMs, then extract the study region before hydrological processing</text>
+        </svg>
+        <figcaption>Fig 9.16 &ndash; Data preparation steps: Mosaic merges multiple DEM tiles, then Clip (Extract by Mask) trims to the study area boundary</figcaption>
+      </figure>
+    </div>
+
+    <h4>Step 3: Remove Depressions (Fill)</h4>
+    <p>Run the Fill tool on the clipped DEM to remove any sinks and create a depressionless DEM.</p>
+
+    <h4>Step 4: Calculate Flow Direction</h4>
+    <p>Input the Filled DEM into the Flow Direction tool. This applies the D8 algorithm to determine the downslope path for every pixel.</p>
+
+    <h4>Step 5: Calculate Flow Accumulation</h4>
+    <p>Input the Flow Direction raster into the Flow Accumulation tool. This calculates the total number of upstream cells contributing to each pixel.</p>
+
+    <h4>Step 6: Stream Definition (Map Algebra/Raster Calculator)</h4>
+    <p>Apply a threshold to define the rivers. Use the Raster Calculator with a conditional statement: Con("Flow_Accumulation" &gt; Threshold_Value, 1). This outputs a binary River Grid.</p>
+
+    <h4>Step 7: Convert to Vector (Stream to Feature)</h4>
+    <p>Finally, use the Stream to Feature tool (inputting both the binary River Grid and the Flow Direction raster). This converts the raster pixels into smooth vector polylines, resulting in your final continuous River Network shapefile.</p>
+
+    <!-- Fig 9.4 – Complete Hydrological Workflow -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Complete River Network Generation Workflow (7 Steps)</text>
+          <!-- Step boxes -->
+          <rect x="10" y="35" width="82" height="50" rx="5" fill="#e8eef4" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="51" y="55" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#1a3c5e">1. Raw DEMs</text>
+          <text x="51" y="68" text-anchor="middle" font-size="6.5" fill="#555">Multiple tiles</text>
+          <text x="51" y="78" text-anchor="middle" font-size="6.5" fill="#555">from source</text>
+          <text x="102" y="63" font-size="11" fill="#b8860b">&#x2192;</text>
+
+          <rect x="112" y="35" width="82" height="50" rx="5" fill="#e8eef4" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="153" y="55" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#1a3c5e">2. Mosaic</text>
+          <text x="153" y="68" text-anchor="middle" font-size="6.5" fill="#555">Merge + Clip</text>
+          <text x="153" y="78" text-anchor="middle" font-size="6.5" fill="#555">to study area</text>
+          <text x="204" y="63" font-size="11" fill="#b8860b">&#x2192;</text>
+
+          <rect x="214" y="35" width="82" height="50" rx="5" fill="#fdf0ec" stroke="#8b2500" stroke-width="1"/>
+          <text x="255" y="55" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#8b2500">3. Fill Sinks</text>
+          <text x="255" y="68" text-anchor="middle" font-size="6.5" fill="#555">Remove false</text>
+          <text x="255" y="78" text-anchor="middle" font-size="6.5" fill="#555">depressions</text>
+          <text x="306" y="63" font-size="11" fill="#b8860b">&#x2192;</text>
+
+          <rect x="316" y="35" width="82" height="50" rx="5" fill="#e8eef4" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="357" y="55" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#1a3c5e">4. Flow Dir</text>
+          <text x="357" y="68" text-anchor="middle" font-size="6.5" fill="#555">D8 algorithm</text>
+          <text x="357" y="78" text-anchor="middle" font-size="6.5" fill="#555">8 directions</text>
+          <text x="408" y="63" font-size="11" fill="#b8860b">&#x2192;</text>
+
+          <rect x="418" y="35" width="82" height="50" rx="5" fill="#e8eef4" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="459" y="55" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#1a3c5e">5. Flow Acc</text>
+          <text x="459" y="68" text-anchor="middle" font-size="6.5" fill="#555">Count upstream</text>
+          <text x="459" y="78" text-anchor="middle" font-size="6.5" fill="#555">contributing cells</text>
+          <text x="510" y="63" font-size="11" fill="#b8860b">&#x2192;</text>
+
+          <rect x="520" y="35" width="82" height="50" rx="5" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+          <text x="561" y="55" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#2d7d46">6. Threshold</text>
+          <text x="561" y="68" text-anchor="middle" font-size="6.5" fill="#555">Acc &gt; T &#x2192; stream</text>
+          <text x="561" y="78" text-anchor="middle" font-size="6.5" fill="#555">Binary river grid</text>
+          <text x="612" y="63" font-size="11" fill="#b8860b">&#x2192;</text>
+
+          <rect x="622" y="35" width="68" height="50" rx="5" fill="#2d7d46" stroke="#2d7d46" stroke-width="1"/>
+          <text x="656" y="55" text-anchor="middle" font-size="7.5" font-weight="bold" fill="#fff">7. Stream</text>
+          <text x="656" y="68" text-anchor="middle" font-size="6.5" fill="#edf7f0">to Feature</text>
+          <text x="656" y="78" text-anchor="middle" font-size="6.5" fill="#edf7f0">&#x2192; Vector</text>
+
+          <!-- Data type labels below -->
+          <text x="51" y="105" text-anchor="middle" font-size="6.5" fill="#6b6b6b" font-style="italic">Raster</text>
+          <text x="153" y="105" text-anchor="middle" font-size="6.5" fill="#6b6b6b" font-style="italic">Raster</text>
+          <text x="255" y="105" text-anchor="middle" font-size="6.5" fill="#6b6b6b" font-style="italic">Raster</text>
+          <text x="357" y="105" text-anchor="middle" font-size="6.5" fill="#6b6b6b" font-style="italic">Raster</text>
+          <text x="459" y="105" text-anchor="middle" font-size="6.5" fill="#6b6b6b" font-style="italic">Raster</text>
+          <text x="561" y="105" text-anchor="middle" font-size="6.5" fill="#6b6b6b" font-style="italic">Raster</text>
+          <text x="656" y="105" text-anchor="middle" font-size="6.5" fill="#2d7d46" font-style="italic" font-weight="bold">Vector!</text>
+
+          <!-- Key notes -->
+          <rect x="40" y="120" width="620" height="68" rx="6" fill="#fafafa" stroke="#d4cfc5" stroke-width=".8"/>
+          <text x="60" y="138" font-size="8" fill="#1a3c5e" font-weight="bold">Key Decision Points:</text>
+          <text x="60" y="153" font-size="7.5" fill="#555">&#x2022; Step 3 is critical: unfilled sinks block flow and create false flat areas (broken drainage)</text>
+          <text x="60" y="166" font-size="7.5" fill="#555">&#x2022; Step 6 threshold value controls stream density: low T = many streams, high T = only major rivers</text>
+          <text x="60" y="179" font-size="7.5" fill="#555">&#x2022; Entire workflow is raster-based until final Step 7 converts to vector polylines for mapping</text>
+        </svg>
+        <figcaption>Fig 9.4 &ndash; Complete 7-step river network generation workflow from raw DEMs to vector stream network</figcaption>
+      </figure>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SOLVED NUMERICAL 1: 2080 Chaitra Q10 (30m DEM) -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h2>Solved Numerical 1 <span class="exam-ref">2080 Chaitra Q10 &ndash; [2+2+2+3+3] Marks</span></h2>
+    <p><strong>Question:</strong> Following diagram shows an elevation raster data at 30 m spatial resolution. Refer to any cell as columns (A to F) and rows (1 to 6). For example the value of cell B2 is 118. Answer the questions based on this elevation raster.</p>
+
+    <!-- Given DEM Grid -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 520 310" xmlns="http://www.w3.org/2000/svg" style="max-width:520px">
+          <text x="260" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Given: Elevation Raster (30 m resolution)</text>
+          <!-- Column headers -->
+          <text x="95" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">A</text>
+          <text x="160" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">B</text>
+          <text x="225" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">C</text>
+          <text x="290" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">D</text>
+          <text x="355" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">E</text>
+          <text x="420" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">F</text>
+          <!-- Row headers -->
+          <text x="42" y="70" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="42" y="112" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">2</text>
+          <text x="42" y="154" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">3</text>
+          <text x="42" y="196" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">4</text>
+          <text x="42" y="238" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">5</text>
+          <text x="42" y="280" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">6</text>
+          <!-- Grid -->
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="60" y1="45" x2="455" y2="45"/><line x1="60" y1="87" x2="455" y2="87"/>
+            <line x1="60" y1="129" x2="455" y2="129"/><line x1="60" y1="171" x2="455" y2="171"/>
+            <line x1="60" y1="213" x2="455" y2="213"/><line x1="60" y1="255" x2="455" y2="255"/>
+            <line x1="60" y1="297" x2="455" y2="297"/>
+            <line x1="60" y1="45" x2="60" y2="297"/><line x1="125" y1="45" x2="125" y2="297"/>
+            <line x1="190" y1="45" x2="190" y2="297"/><line x1="255" y1="45" x2="255" y2="297"/>
+            <line x1="320" y1="45" x2="320" y2="297"/><line x1="390" y1="45" x2="390" y2="297"/>
+            <line x1="455" y1="45" x2="455" y2="297"/>
+          </g>
+          <!-- Row 1: 130 128 102 101 124 138 -->
+          <text x="95" y="72" text-anchor="middle" font-size="12" fill="#555">130</text>
+          <text x="160" y="72" text-anchor="middle" font-size="12" fill="#555">128</text>
+          <text x="225" y="72" text-anchor="middle" font-size="12" fill="#555">102</text>
+          <text x="290" y="72" text-anchor="middle" font-size="12" fill="#555">101</text>
+          <text x="355" y="72" text-anchor="middle" font-size="12" fill="#555">124</text>
+          <text x="420" y="72" text-anchor="middle" font-size="12" fill="#555">138</text>
+          <!-- Row 2: 135 118 97 88 114 121 -->
+          <text x="95" y="114" text-anchor="middle" font-size="12" fill="#555">135</text>
+          <text x="160" y="114" text-anchor="middle" font-size="12" fill="#555">118</text>
+          <text x="225" y="114" text-anchor="middle" font-size="12" fill="#555">97</text>
+          <text x="290" y="114" text-anchor="middle" font-size="12" fill="#555">88</text>
+          <text x="355" y="114" text-anchor="middle" font-size="12" fill="#555">114</text>
+          <text x="420" y="114" text-anchor="middle" font-size="12" fill="#555">121</text>
+          <!-- Row 3: 110 98 84 68 92 103 -->
+          <text x="95" y="156" text-anchor="middle" font-size="12" fill="#555">110</text>
+          <text x="160" y="156" text-anchor="middle" font-size="12" fill="#555">98</text>
+          <text x="225" y="156" text-anchor="middle" font-size="12" fill="#555">84</text>
+          <text x="290" y="156" text-anchor="middle" font-size="12" fill="#8b2500" font-weight="bold">68</text>
+          <text x="355" y="156" text-anchor="middle" font-size="12" fill="#555">92</text>
+          <text x="420" y="156" text-anchor="middle" font-size="12" fill="#555">103</text>
+          <!-- Row 4: 115 86 81 78 76 87 -->
+          <text x="95" y="198" text-anchor="middle" font-size="12" fill="#555">115</text>
+          <text x="160" y="198" text-anchor="middle" font-size="12" fill="#555">86</text>
+          <text x="225" y="198" text-anchor="middle" font-size="12" fill="#555">81</text>
+          <text x="290" y="198" text-anchor="middle" font-size="12" fill="#555">78</text>
+          <text x="355" y="198" text-anchor="middle" font-size="12" fill="#1a3c5e" font-weight="bold">76</text>
+          <text x="420" y="198" text-anchor="middle" font-size="12" fill="#555">87</text>
+          <!-- Row 5: 112 102 84 73 96 105 -->
+          <text x="95" y="240" text-anchor="middle" font-size="12" fill="#555">112</text>
+          <text x="160" y="240" text-anchor="middle" font-size="12" fill="#555">102</text>
+          <text x="225" y="240" text-anchor="middle" font-size="12" fill="#555">84</text>
+          <text x="290" y="240" text-anchor="middle" font-size="12" fill="#8b2500" font-weight="bold">73</text>
+          <text x="355" y="240" text-anchor="middle" font-size="12" fill="#555">96</text>
+          <text x="420" y="240" text-anchor="middle" font-size="12" fill="#555">105</text>
+          <!-- Row 6: 129 118 103 85 119 105 -->
+          <text x="95" y="282" text-anchor="middle" font-size="12" fill="#555">129</text>
+          <text x="160" y="282" text-anchor="middle" font-size="12" fill="#555">118</text>
+          <text x="225" y="282" text-anchor="middle" font-size="12" fill="#555">103</text>
+          <text x="290" y="282" text-anchor="middle" font-size="12" fill="#555">85</text>
+          <text x="355" y="282" text-anchor="middle" font-size="12" fill="#555">119</text>
+          <text x="420" y="282" text-anchor="middle" font-size="12" fill="#555">105</text>
+          <!-- Sink highlights -->
+          <rect x="255" y="129" width="65" height="42" fill="#8b2500" opacity=".08" rx="3"/>
+          <rect x="255" y="213" width="65" height="42" fill="#8b2500" opacity=".08" rx="3"/>
+        </svg>
+        <figcaption>Fig 9.7 &ndash; Given elevation raster (30 m). Highlighted cells D3=68 and D5=73 are sinks.</figcaption>
+      </figure>
+    </div>
+
+    <!-- (a) Sink Cells -->
+    <h3>(a) Find the Sink Cells and Fill <span class="exam-ref">[2 Marks]</span></h3>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> sink_fill.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Sink Detection &amp; Filling  ·  30m DEM ──</span></div><div><span class="m-cmt">// A sink = cell lower than ALL 8 neighbors</span></div><div></div><div><span class="m-kw">Sink 1:</span> <span class="m-var">D3</span> <span class="m-op">=</span> <span class="m-num">68</span></div><div>  <span class="m-cmt">Neighbors: C2=97, D2=88, E2=114, C3=84, E3=92, C4=81, D4=78, E4=76</span></div><div>  <span class="m-var">Minimum neighbor</span> <span class="m-op">=</span> <span class="m-num">76</span> <span class="m-cmt">(E4)</span></div><div>  <span class="m-num">68</span> <span class="m-op">&lt;</span> <span class="m-num">76</span>  <span class="m-op">&rarr;</span>  <span class="m-res">SINK &#x2713;</span></div><div>  <span class="m-kw">Fill:</span> <span class="m-num">76</span> <span class="m-op">+</span> <span class="m-num">0.5</span> <span class="m-op">=</span> <span class="m-res">76.5</span></div><div></div><div><span class="m-kw">Sink 2:</span> <span class="m-var">D5</span> <span class="m-op">=</span> <span class="m-num">73</span></div><div>  <span class="m-cmt">Neighbors: C4=81, D4=78, E4=76, C5=84, E5=96, C6=103, D6=85, E6=119</span></div><div>  <span class="m-var">Minimum neighbor</span> <span class="m-op">=</span> <span class="m-num">76</span> <span class="m-cmt">(E4)</span></div><div>  <span class="m-num">73</span> <span class="m-op">&lt;</span> <span class="m-num">76</span>  <span class="m-op">&rarr;</span>  <span class="m-res">SINK &#x2713;</span></div><div>  <span class="m-kw">Fill:</span> <span class="m-num">76</span> <span class="m-op">+</span> <span class="m-num">0.5</span> <span class="m-op">=</span> <span class="m-res">76.5</span></div><div></div><div><span class="m-cmt">// After filling:  D3 = 76.5,  D5 = 76.5</span></div><div><span class="m-cmt">// E4 (76) now becomes lowest interior cell &rarr; drainage outlet</span></div><div><span class="m-cmt">// All 36 cells drain toward E4</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>Sink Fill &middot; 18 lines</span></div>
+    </div>
+
+    <!-- (b) Flow Direction -->
+    <h3>(b) Flow Direction for All Cells <span class="exam-ref">[2 Marks]</span></h3>
+    <p>Using the D8 algorithm on the filled DEM, each cell flows to the neighbor with the <strong>steepest downhill gradient</strong> (drop/distance; diagonal distance = 30&radic;2 &asymp; 42.43 m).</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 520 310" xmlns="http://www.w3.org/2000/svg" style="max-width:520px">
+          <text x="260" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">D8 Flow Direction (Arrows)</text>
+          <defs><marker id="fa1" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#1a3c5e"/></marker></defs>
+          <!-- Grid -->
+          <g stroke="#e0e0e0" stroke-width=".5">
+            <line x1="60" y1="35" x2="455" y2="35"/><line x1="60" y1="80" x2="455" y2="80"/>
+            <line x1="60" y1="125" x2="455" y2="125"/><line x1="60" y1="170" x2="455" y2="170"/>
+            <line x1="60" y1="215" x2="455" y2="215"/><line x1="60" y1="260" x2="455" y2="260"/>
+            <line x1="60" y1="305" x2="455" y2="305"/>
+            <line x1="60" y1="35" x2="60" y2="305"/><line x1="125" y1="35" x2="125" y2="305"/>
+            <line x1="190" y1="35" x2="190" y2="305"/><line x1="255" y1="35" x2="255" y2="305"/>
+            <line x1="320" y1="35" x2="320" y2="305"/><line x1="390" y1="35" x2="390" y2="305"/>
+            <line x1="455" y1="35" x2="455" y2="305"/>
+          </g>
+          <!-- Flow arrows (center of each cell to neighbor) -->
+          <!-- Row 1 -->
+          <line x1="92" y1="57" x2="148" y2="99" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="157" y1="57" x2="218" y2="57" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="222" y1="57" x2="278" y2="99" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="290" y1="60" x2="290" y2="95" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="355" y1="57" x2="299" y2="99" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="420" y1="60" x2="420" y2="95" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <!-- Row 2 -->
+          <line x1="92" y1="102" x2="148" y2="144" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="157" y1="102" x2="213" y2="144" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="222" y1="102" x2="278" y2="144" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="290" y1="105" x2="290" y2="140" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="355" y1="102" x2="299" y2="144" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="420" y1="102" x2="364" y2="144" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <!-- Row 3 -->
+          <line x1="92" y1="147" x2="148" y2="189" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="157" y1="147" x2="218" y2="147" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="222" y1="147" x2="283" y2="147" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="290" y1="147" x2="343" y2="189" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="355" y1="150" x2="355" y2="185" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="420" y1="147" x2="364" y2="189" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <!-- Row 4 -->
+          <line x1="92" y1="192" x2="153" y2="192" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="157" y1="192" x2="218" y2="192" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="222" y1="192" x2="283" y2="192" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="290" y1="192" x2="348" y2="192" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <circle cx="355" cy="192" r="8" fill="#2d7d46" opacity=".2" stroke="#2d7d46" stroke-width="1.5"/>
+          <text x="355" y="196" text-anchor="middle" font-size="7" fill="#2d7d46" font-weight="bold">OUT</text>
+          <line x1="420" y1="192" x2="362" y2="192" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <!-- Row 5 -->
+          <line x1="92" y1="237" x2="148" y2="195" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="157" y1="237" x2="218" y2="237" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="222" y1="237" x2="283" y2="237" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="290" y1="237" x2="348" y2="237" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="355" y1="235" x2="355" y2="200" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="420" y1="237" x2="364" y2="195" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <!-- Row 6 -->
+          <line x1="92" y1="282" x2="148" y2="240" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="157" y1="282" x2="213" y2="240" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="222" y1="280" x2="222" y2="245" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="290" y1="280" x2="290" y2="245" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="355" y1="282" x2="299" y2="282" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <line x1="420" y1="282" x2="364" y2="240" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#fa1)"/>
+          <!-- Labels -->
+          <text x="260" y="308" text-anchor="middle" font-size="7.5" fill="#888">All 36 cells drain to E4 (outlet)</text>
+        </svg>
+        <figcaption>Fig 9.8 &ndash; D8 Flow Direction arrows. All cells converge toward E4 (lowest point = drainage outlet).</figcaption>
+      </figure>
+    </div>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> flow_direction_Q1.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Flow Direction Summary (D8 Algorithm) ──</span></div><div><span class="m-cmt">//      A     B     C     D     E     F</span></div><div><span class="m-kw">Row 1:</span> <span class="m-str">SE</span>    <span class="m-str">E</span>    <span class="m-str">SE</span>     <span class="m-str">S</span>    <span class="m-str">SW</span>     <span class="m-str">S</span></div><div><span class="m-kw">Row 2:</span> <span class="m-str">SE</span>   <span class="m-str">SE</span>    <span class="m-str">SE</span>     <span class="m-str">S</span>    <span class="m-str">SW</span>    <span class="m-str">SW</span></div><div><span class="m-kw">Row 3:</span> <span class="m-str">SE</span>    <span class="m-str">E</span>     <span class="m-str">E</span>    <span class="m-str">SE</span>     <span class="m-str">S</span>    <span class="m-str">SW</span></div><div><span class="m-kw">Row 4:</span>  <span class="m-str">E</span>    <span class="m-str">E</span>     <span class="m-str">E</span>     <span class="m-str">E</span>   <span class="m-res">OUT</span>     <span class="m-str">W</span></div><div><span class="m-kw">Row 5:</span> <span class="m-str">NE</span>    <span class="m-str">E</span>     <span class="m-str">E</span>     <span class="m-str">E</span>     <span class="m-str">N</span>    <span class="m-str">NW</span></div><div><span class="m-kw">Row 6:</span> <span class="m-str">NE</span>   <span class="m-str">NE</span>     <span class="m-str">N</span>     <span class="m-str">N</span>     <span class="m-str">W</span>    <span class="m-str">NW</span></div><div></div><div><span class="m-cmt">// Pattern: North side flows S/SE, South side flows N/NE</span></div><div><span class="m-cmt">// Everything converges toward E4 (drainage outlet)</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; D8</span><span>Flow Direction &middot; 11 lines</span></div>
+    </div>
+
+    <!-- (c) Flow Accumulation -->
+    <h3>(c) Flow Accumulation <span class="exam-ref">[2 Marks]</span></h3>
+    <p>Flow accumulation counts how many upstream cells drain <em>through</em> each cell. A cell with FA=0 is a ridgeline; high FA values indicate channels.</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> flow_accumulation_Q1.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Flow Accumulation Grid ──</span></div><div><span class="m-cmt">//       A    B    C    D    E    F</span></div><div><span class="m-kw">Row 1:</span>  <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span></div><div><span class="m-kw">Row 2:</span>  <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">0</span>    <span class="m-num">4</span>    <span class="m-num">0</span>    <span class="m-num">1</span></div><div><span class="m-kw">Row 3:</span>  <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">4</span>   <span class="m-res">12</span>    <span class="m-num">2</span>    <span class="m-num">0</span></div><div><span class="m-kw">Row 4:</span>  <span class="m-num">0</span>    <span class="m-num">3</span>    <span class="m-num">4</span>    <span class="m-num">5</span>   <span class="m-res">35</span>    <span class="m-num">0</span></div><div><span class="m-kw">Row 5:</span>  <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">4</span>    <span class="m-num">7</span>    <span class="m-num">1</span>    <span class="m-num">0</span></div><div><span class="m-kw">Row 6:</span>  <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">0</span>    <span class="m-num">0</span></div><div></div><div><span class="m-cmt">// ── Key drainage paths ──</span></div><div><span class="m-cmt">// North channel:  D2(4) &rarr; D3(12) &rarr; E4(35)</span></div><div><span class="m-cmt">// West channel:   B4(3) &rarr; C4(4) &rarr; D4(5) &rarr; E4(35)</span></div><div><span class="m-cmt">// South channel:  C5(4) &rarr; D5(7) &rarr; E4(35)  (via D5&rarr;E4)</span></div><div></div><div><span class="m-cmt">// Verification: E4 = 35 upstream cells</span></div><div><span class="m-cmt">//   35 + 1 (self) = 36 = 6&times;6 total cells  &#x2713;</span></div><div></div><div><span class="m-kw">How to count:</span></div><div>  <span class="m-cmt">Start from ridge cells (FA=0), trace downstream.</span></div><div>  <span class="m-cmt">Each cell's FA = sum of (upstream cell's FA + 1) for all cells flowing into it.</span></div><div>  <span class="m-cmt">Example: D3 receives C2(0+1) + C3(4+1) + D2(4+1) + E2(0+1) = 1+5+5+1 = 12</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; FA</span><span>Flow Accumulation &middot; 23 lines</span></div>
+    </div>
+
+    <!-- (d) River Network at 4500 m² -->
+    <h3>(d) River Network (threshold = 4500 m&sup2;) <span class="exam-ref">[3 Marks]</span></h3>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> river_network_Q1.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Stream Definition ──</span></div><div><span class="m-kw">Given:</span> <span class="m-var">Cell size</span> <span class="m-op">=</span> <span class="m-num">30</span> <span class="m-unit">m</span>,  <span class="m-var">Threshold</span> <span class="m-op">=</span> <span class="m-num">4500</span> <span class="m-unit">m&sup2;</span></div><div><span class="m-var">Cell area</span> <span class="m-op">=</span> <span class="m-num">30</span> <span class="m-op">&times;</span> <span class="m-num">30</span> <span class="m-op">=</span> <span class="m-num">900</span> <span class="m-unit">m&sup2;</span></div><div><span class="m-var">Min FA</span>  <span class="m-op">=</span> <span class="m-num">4500</span> <span class="m-op">/</span> <span class="m-num">900</span> <span class="m-op">=</span> <span class="m-res">5 cells</span></div><div></div><div><span class="m-cmt">// Cells with FA &ge; 5  &rarr;  RIVER</span></div><div><span class="m-kw">River cells:</span></div><div>  <span class="m-var">D3</span>  <span class="m-op">=</span> <span class="m-num">12</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">D4</span>  <span class="m-op">=</span>  <span class="m-num">5</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">D5</span>  <span class="m-op">=</span>  <span class="m-num">7</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">E4</span>  <span class="m-op">=</span> <span class="m-num">35</span>  <span class="m-res">&#x2713;</span></div><div></div><div><span class="m-cmt">// River sketch:</span></div><div><span class="m-cmt">//   D3 flows SE to E4  (north tributary)</span></div><div><span class="m-cmt">//   D4 flows E  to E4  (west tributary)</span></div><div><span class="m-cmt">//   D5 flows E  to E4  (south tributary)</span></div><div><span class="m-cmt">//   Three branches converge at E4 (confluence)</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; River</span><span>Stream Definition &middot; 17 lines</span></div>
+    </div>
+
+    <!-- River sketch figure -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 520 310" xmlns="http://www.w3.org/2000/svg" style="max-width:520px">
+          <text x="260" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">River Network (FA &ge; 5)</text>
+          <!-- Grid background -->
+          <g stroke="#eee" stroke-width=".4">
+            <line x1="60" y1="35" x2="455" y2="35"/><line x1="60" y1="80" x2="455" y2="80"/>
+            <line x1="60" y1="125" x2="455" y2="125"/><line x1="60" y1="170" x2="455" y2="170"/>
+            <line x1="60" y1="215" x2="455" y2="215"/><line x1="60" y1="260" x2="455" y2="260"/>
+            <line x1="60" y1="305" x2="455" y2="305"/>
+            <line x1="60" y1="35" x2="60" y2="305"/><line x1="125" y1="35" x2="125" y2="305"/>
+            <line x1="190" y1="35" x2="190" y2="305"/><line x1="255" y1="35" x2="255" y2="305"/>
+            <line x1="320" y1="35" x2="320" y2="305"/><line x1="390" y1="35" x2="390" y2="305"/>
+            <line x1="455" y1="35" x2="455" y2="305"/>
+          </g>
+          <!-- FA values in light grey -->
+          <g font-size="9" fill="#ddd" text-anchor="middle">
+            <text x="95" y="62">0</text><text x="160" y="62">0</text><text x="225" y="62">1</text><text x="290" y="62">0</text><text x="355" y="62">0</text><text x="420" y="62">0</text>
+            <text x="95" y="107">0</text><text x="160" y="107">1</text><text x="225" y="107">0</text><text x="290" y="107">4</text><text x="355" y="107">0</text><text x="420" y="107">1</text>
+            <text x="95" y="152">0</text><text x="160" y="152">1</text><text x="225" y="152">4</text><text x="355" y="152">2</text><text x="420" y="152">0</text>
+            <text x="95" y="197">0</text><text x="160" y="197">3</text><text x="225" y="197">4</text><text x="420" y="197">0</text>
+            <text x="95" y="242">0</text><text x="160" y="242">1</text><text x="225" y="242">4</text><text x="355" y="242">1</text><text x="420" y="242">0</text>
+            <text x="95" y="287">0</text><text x="160" y="287">0</text><text x="225" y="287">0</text><text x="290" y="287">1</text><text x="355" y="287">0</text><text x="420" y="287">0</text>
+          </g>
+          <!-- River cells highlighted -->
+          <rect x="255" y="125" width="65" height="45" rx="4" fill="#2d7d46" opacity=".15"/>
+          <text x="290" y="152" text-anchor="middle" font-size="11" fill="#2d7d46" font-weight="bold">12</text>
+          <rect x="255" y="170" width="65" height="45" rx="4" fill="#2d7d46" opacity=".15"/>
+          <text x="290" y="197" text-anchor="middle" font-size="11" fill="#2d7d46" font-weight="bold">5</text>
+          <rect x="320" y="170" width="70" height="45" rx="4" fill="#2d7d46" opacity=".25"/>
+          <text x="355" y="197" text-anchor="middle" font-size="13" fill="#2d7d46" font-weight="bold">35</text>
+          <rect x="255" y="215" width="65" height="45" rx="4" fill="#2d7d46" opacity=".15"/>
+          <text x="290" y="242" text-anchor="middle" font-size="11" fill="#2d7d46" font-weight="bold">7</text>
+          <!-- River lines (blue) -->
+          <line x1="290" y1="148" x2="345" y2="192" stroke="#3498db" stroke-width="3" stroke-linecap="round"/>
+          <line x1="290" y1="192" x2="345" y2="192" stroke="#3498db" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="290" y1="237" x2="345" y2="197" stroke="#3498db" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Confluence marker -->
+          <circle cx="355" cy="192" r="6" fill="#3498db" opacity=".4"/>
+        </svg>
+        <figcaption>Fig 9.9 &ndash; River network: three tributaries (D3, D4, D5) converge at E4 (confluence point)</figcaption>
+      </figure>
+    </div>
+
+    <!-- (e) Biggest Watershed Area -->
+    <h3>(e) Area of the Biggest Watershed <span class="exam-ref">[3 Marks]</span></h3>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> watershed_Q1.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Watershed Area ──</span></div><div></div><div><span class="m-kw">Finding:</span> <span class="m-cmt">ALL 36 cells drain to E4 (single outlet)</span></div><div>  <span class="m-op">&rarr;</span> <span class="m-str">Entire grid is ONE watershed</span></div><div></div><div><span class="m-kw">Area:</span></div><div>  <span class="m-var">Cells</span> <span class="m-op">=</span> <span class="m-num">6</span> <span class="m-op">&times;</span> <span class="m-num">6</span> <span class="m-op">=</span> <span class="m-num">36</span></div><div>  <span class="m-var">Cell area</span> <span class="m-op">=</span> <span class="m-num">30</span> <span class="m-op">&times;</span> <span class="m-num">30</span> <span class="m-op">=</span> <span class="m-num">900</span> <span class="m-unit">m&sup2;</span></div><div>  <span class="m-fn">Total</span> <span class="m-op">=</span> <span class="m-num">36</span> <span class="m-op">&times;</span> <span class="m-num">900</span> <span class="m-op">=</span> <span class="m-res">32,400 m&sup2;</span> <span class="m-op">=</span> <span class="m-res">3.24 ha</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; Watershed</span><span>Area Calc &middot; 9 lines</span></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- SOLVED NUMERICAL 2: 2079 Chaitra Q8 (100m DEM) -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <h2>Solved Numerical 2 <span class="exam-ref">2079 Chaitra Q8 &ndash; [10] Marks</span></h2>
+    <p><strong>Question:</strong> The following grid represents a DEM data of certain area whose cell size is 100 m. Using this data answer the following questions: (a) Show the sink cell. (b) What will be the value of that cell when the sink is filled? (c) Calculate flow direction and flow accumulation value for each cell. (d) What is the area of the largest possible watershed? (e) Show the river when stream definition is limited to minimum catchment area of 40000 m&sup2;.</p>
+
+    <!-- Given DEM Grid -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 520 310" xmlns="http://www.w3.org/2000/svg" style="max-width:520px">
+          <text x="260" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Given: Elevation Raster (100 m resolution)</text>
+          <!-- Column headers -->
+          <text x="95" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">A</text>
+          <text x="160" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">B</text>
+          <text x="225" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">C</text>
+          <text x="290" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">D</text>
+          <text x="355" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">E</text>
+          <text x="420" y="38" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">F</text>
+          <!-- Row headers -->
+          <text x="42" y="70" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="42" y="112" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">2</text>
+          <text x="42" y="154" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">3</text>
+          <text x="42" y="196" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">4</text>
+          <text x="42" y="238" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">5</text>
+          <text x="42" y="280" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">6</text>
+          <!-- Grid -->
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="60" y1="45" x2="455" y2="45"/><line x1="60" y1="87" x2="455" y2="87"/>
+            <line x1="60" y1="129" x2="455" y2="129"/><line x1="60" y1="171" x2="455" y2="171"/>
+            <line x1="60" y1="213" x2="455" y2="213"/><line x1="60" y1="255" x2="455" y2="255"/>
+            <line x1="60" y1="297" x2="455" y2="297"/>
+            <line x1="60" y1="45" x2="60" y2="297"/><line x1="125" y1="45" x2="125" y2="297"/>
+            <line x1="190" y1="45" x2="190" y2="297"/><line x1="255" y1="45" x2="255" y2="297"/>
+            <line x1="320" y1="45" x2="320" y2="297"/><line x1="390" y1="45" x2="390" y2="297"/>
+            <line x1="455" y1="45" x2="455" y2="297"/>
+          </g>
+          <!-- Row 1: 78 72 69 71 58 49 -->
+          <text x="95" y="72" text-anchor="middle" font-size="12" fill="#555">78</text>
+          <text x="160" y="72" text-anchor="middle" font-size="12" fill="#555">72</text>
+          <text x="225" y="72" text-anchor="middle" font-size="12" fill="#555">69</text>
+          <text x="290" y="72" text-anchor="middle" font-size="12" fill="#555">71</text>
+          <text x="355" y="72" text-anchor="middle" font-size="12" fill="#555">58</text>
+          <text x="420" y="72" text-anchor="middle" font-size="12" fill="#555">49</text>
+          <!-- Row 2: 74 67 56 49 46 50 -->
+          <text x="95" y="114" text-anchor="middle" font-size="12" fill="#555">74</text>
+          <text x="160" y="114" text-anchor="middle" font-size="12" fill="#555">67</text>
+          <text x="225" y="114" text-anchor="middle" font-size="12" fill="#555">56</text>
+          <text x="290" y="114" text-anchor="middle" font-size="12" fill="#555">49</text>
+          <text x="355" y="114" text-anchor="middle" font-size="12" fill="#555">46</text>
+          <text x="420" y="114" text-anchor="middle" font-size="12" fill="#555">50</text>
+          <!-- Row 3: 69 40 44 37 37 48 -->
+          <text x="95" y="156" text-anchor="middle" font-size="12" fill="#555">69</text>
+          <text x="160" y="156" text-anchor="middle" font-size="12" fill="#8b2500" font-weight="bold">40</text>
+          <text x="225" y="156" text-anchor="middle" font-size="12" fill="#555">44</text>
+          <text x="290" y="156" text-anchor="middle" font-size="12" fill="#555">37</text>
+          <text x="355" y="156" text-anchor="middle" font-size="12" fill="#555">37</text>
+          <text x="420" y="156" text-anchor="middle" font-size="12" fill="#555">48</text>
+          <!-- Row 4: 64 58 55 22 22 24 -->
+          <text x="95" y="198" text-anchor="middle" font-size="12" fill="#555">64</text>
+          <text x="160" y="198" text-anchor="middle" font-size="12" fill="#555">58</text>
+          <text x="225" y="198" text-anchor="middle" font-size="12" fill="#555">55</text>
+          <text x="290" y="198" text-anchor="middle" font-size="12" fill="#555">22</text>
+          <text x="355" y="198" text-anchor="middle" font-size="12" fill="#555">22</text>
+          <text x="420" y="198" text-anchor="middle" font-size="12" fill="#555">24</text>
+          <!-- Row 5: 78 61 47 21 21 19 -->
+          <text x="95" y="240" text-anchor="middle" font-size="12" fill="#555">78</text>
+          <text x="160" y="240" text-anchor="middle" font-size="12" fill="#555">61</text>
+          <text x="225" y="240" text-anchor="middle" font-size="12" fill="#555">47</text>
+          <text x="290" y="240" text-anchor="middle" font-size="12" fill="#555">21</text>
+          <text x="355" y="240" text-anchor="middle" font-size="12" fill="#555">21</text>
+          <text x="420" y="240" text-anchor="middle" font-size="12" fill="#555">19</text>
+          <!-- Row 6: 74 61 47 11 11 12 -->
+          <text x="95" y="282" text-anchor="middle" font-size="12" fill="#555">74</text>
+          <text x="160" y="282" text-anchor="middle" font-size="12" fill="#555">61</text>
+          <text x="225" y="282" text-anchor="middle" font-size="12" fill="#555">47</text>
+          <text x="290" y="282" text-anchor="middle" font-size="12" fill="#1a3c5e" font-weight="bold">11</text>
+          <text x="355" y="282" text-anchor="middle" font-size="12" fill="#1a3c5e" font-weight="bold">11</text>
+          <text x="420" y="282" text-anchor="middle" font-size="12" fill="#555">12</text>
+          <!-- Sink highlight -->
+          <rect x="125" y="129" width="65" height="42" fill="#8b2500" opacity=".08" rx="3"/>
+        </svg>
+        <figcaption>Fig 9.10 &ndash; Given elevation raster (100 m). Highlighted cell B3=40 is the only sink.</figcaption>
+      </figure>
+    </div>
+
+    <!-- (a) & (b) Sink + Fill -->
+    <h3>(a) Sink Cell &amp; (b) Fill Value <span class="exam-ref">[2 Marks]</span></h3>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> sink_fill_Q2.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Sink Detection  ·  100m DEM ──</span></div><div></div><div><span class="m-kw">Sink:</span> <span class="m-var">B3</span> <span class="m-op">=</span> <span class="m-num">40</span></div><div>  <span class="m-cmt">Neighbors: A2=74, B2=67, C2=56, A3=69, C3=44, A4=64, B4=58, C4=55</span></div><div>  <span class="m-var">Minimum neighbor</span> <span class="m-op">=</span> <span class="m-num">44</span> <span class="m-cmt">(C3)</span></div><div>  <span class="m-num">40</span> <span class="m-op">&lt;</span> <span class="m-num">44</span>  <span class="m-op">&rarr;</span>  <span class="m-res">SINK &#x2713;</span></div><div></div><div><span class="m-kw">Fill value:</span></div><div>  <span class="m-cmt">Pour point = lowest rim cell = C3 (44)</span></div><div>  <span class="m-var">B3 (filled)</span> <span class="m-op">=</span> <span class="m-res">44</span></div><div></div><div><span class="m-cmt">// After filling, B3 = 44. Water at B3 now drains east toward C3.</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>Sink Fill &middot; 12 lines</span></div>
+    </div>
+
+    <!-- (c) Flow Direction + Accumulation -->
+    <h3>(c) Flow Direction &amp; Flow Accumulation <span class="exam-ref">[4 Marks]</span></h3>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> flow_dir_Q2.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Flow Direction (D8, steepest descent) ──</span></div><div><span class="m-cmt">//      A     B     C     D     E     F</span></div><div><span class="m-kw">Row 1:</span> <span class="m-str">SE</span>   <span class="m-str">SE</span>    <span class="m-str">SE</span>     <span class="m-str">S</span>     <span class="m-str">S</span>    <span class="m-str">SW</span></div><div><span class="m-kw">Row 2:</span> <span class="m-str">SE</span>    <span class="m-str">S</span>    <span class="m-str">SE</span>     <span class="m-str">S</span>     <span class="m-str">S</span>    <span class="m-str">SW</span></div><div><span class="m-kw">Row 3:</span>  <span class="m-str">E</span>    <span class="m-str">E</span>    <span class="m-str">SE</span>     <span class="m-str">S</span>     <span class="m-str">S</span>     <span class="m-str">S</span></div><div><span class="m-kw">Row 4:</span> <span class="m-str">NE</span>    <span class="m-str">N</span>     <span class="m-str">E</span>     <span class="m-str">S</span>    <span class="m-str">SE</span>     <span class="m-str">S</span></div><div><span class="m-kw">Row 5:</span>  <span class="m-str">E</span>    <span class="m-str">E</span>     <span class="m-str">E</span>     <span class="m-str">S</span>     <span class="m-str">S</span>     <span class="m-str">S</span></div><div><span class="m-kw">Row 6:</span>  <span class="m-str">E</span>    <span class="m-str">E</span>     <span class="m-str">E</span>   <span class="m-res">OUT</span>   <span class="m-res">OUT</span>     <span class="m-str">W</span></div><div></div><div><span class="m-cmt">// D6 and E6 = outlets (lowest boundary cells, elev 11)</span></div><div><span class="m-cmt">// Two watersheds: western (→D6) and eastern (→E6)</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; D8</span><span>Flow Direction &middot; 11 lines</span></div>
+    </div>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> flow_accum_Q2.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Flow Accumulation Grid ──</span></div><div><span class="m-cmt">//       A    B    C    D    E    F</span></div><div><span class="m-kw">Row 1:</span>  <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span></div><div><span class="m-kw">Row 2:</span>  <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">1</span>    <span class="m-num">2</span>    <span class="m-num">2</span>    <span class="m-num">0</span></div><div><span class="m-kw">Row 3:</span>  <span class="m-num">0</span>    <span class="m-num">6</span>    <span class="m-num">7</span>    <span class="m-num">5</span>    <span class="m-num">4</span>    <span class="m-num">0</span></div><div><span class="m-kw">Row 4:</span>  <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-res">15</span>    <span class="m-num">5</span>    <span class="m-num">1</span></div><div><span class="m-kw">Row 5:</span>  <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">2</span>   <span class="m-res">19</span>    <span class="m-num">0</span>    <span class="m-num">8</span></div><div><span class="m-kw">Row 6:</span>  <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">2</span>   <span class="m-res">23</span>   <span class="m-res">11</span>    <span class="m-num">9</span></div><div></div><div><span class="m-cmt">// ── How to compute (example) ──</span></div><div><span class="m-kw">B3 (FA=6):</span></div><div>  <span class="m-cmt">Receives: A2(0+1) + A3(0+1) + A4(0+1) + B2(1+1) + B4(0+1) = 6</span></div><div></div><div><span class="m-kw">D4 (FA=15):</span></div><div>  <span class="m-cmt">Receives: C3(7+1) + C4(0+1) + D3(5+1) = 8+1+6 = 15</span></div><div></div><div><span class="m-kw">D6 (FA=23):</span></div><div>  <span class="m-cmt">Receives: C6(2+1) + D5(19+1) = 3+20 = 23</span></div><div></div><div><span class="m-cmt">// Verification:</span></div><div><span class="m-cmt">//   D6 watershed: 23+1 = 24 cells</span></div><div><span class="m-cmt">//   E6 watershed: 11+1 = 12 cells</span></div><div><span class="m-cmt">//   Total: 24+12 = 36 = 6&times;6  &#x2713;</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; FA</span><span>Flow Accumulation &middot; 24 lines</span></div>
+    </div>
+
+    <!-- (d) Largest Watershed -->
+    <h3>(d) Area of the Largest Watershed <span class="exam-ref">[2 Marks]</span></h3>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> watershed_Q2.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Two Watersheds (two outlets at row 6) ──</span></div><div></div><div><span class="m-kw">Watershed 1</span> <span class="m-cmt">(outlet = D6)</span></div><div>  <span class="m-var">Cells</span>: <span class="m-cmt">A1-A6, B1-B6, C1-C6, D1-D6</span> <span class="m-op">=</span> <span class="m-num">24</span> <span class="m-unit">cells</span></div><div>  <span class="m-var">Area</span> <span class="m-op">=</span> <span class="m-num">24</span> <span class="m-op">&times;</span> (<span class="m-num">100</span> <span class="m-op">&times;</span> <span class="m-num">100</span>) <span class="m-op">=</span> <span class="m-res">240,000 m&sup2;</span> <span class="m-op">=</span> <span class="m-res">24 ha</span></div><div></div><div><span class="m-kw">Watershed 2</span> <span class="m-cmt">(outlet = E6)</span></div><div>  <span class="m-var">Cells</span>: <span class="m-cmt">E1-E6, F1-F6</span> <span class="m-op">=</span> <span class="m-num">12</span> <span class="m-unit">cells</span></div><div>  <span class="m-var">Area</span> <span class="m-op">=</span> <span class="m-num">12</span> <span class="m-op">&times;</span> <span class="m-num">10,000</span> <span class="m-op">=</span> <span class="m-num">120,000 m&sup2;</span></div><div></div><div><span class="m-kw">Answer:</span></div><div>  <span class="m-fn">Largest watershed</span> <span class="m-op">=</span> <span class="m-str">Watershed 1 (D6)</span></div><div>  <span class="m-fn">Area</span> <span class="m-op">=</span> <span class="m-res">240,000 m&sup2;</span> <span class="m-op">=</span> <span class="m-res">24 ha</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; Watershed</span><span>Area Comparison &middot; 14 lines</span></div>
+    </div>
+
+    <!-- (e) River Network at 40,000 m² -->
+    <h3>(e) River Network (min catchment = 40,000 m&sup2;) <span class="exam-ref">[2 Marks]</span></h3>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> river_Q2.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Stream Definition ──</span></div><div><span class="m-kw">Given:</span> <span class="m-var">Cell size</span> <span class="m-op">=</span> <span class="m-num">100</span> <span class="m-unit">m</span>,  <span class="m-var">Threshold</span> <span class="m-op">=</span> <span class="m-num">40,000</span> <span class="m-unit">m&sup2;</span></div><div><span class="m-var">Cell area</span> <span class="m-op">=</span> <span class="m-num">100</span> <span class="m-op">&times;</span> <span class="m-num">100</span> <span class="m-op">=</span> <span class="m-num">10,000</span> <span class="m-unit">m&sup2;</span></div><div><span class="m-var">Min FA</span>  <span class="m-op">=</span> <span class="m-num">40,000</span> <span class="m-op">/</span> <span class="m-num">10,000</span> <span class="m-op">=</span> <span class="m-res">4 cells</span></div><div></div><div><span class="m-cmt">// Cells with FA &ge; 4  &rarr;  RIVER</span></div><div><span class="m-kw">Western river</span> <span class="m-cmt">(Watershed 1 &rarr; D6):</span></div><div>  <span class="m-var">B3</span> <span class="m-op">=</span>  <span class="m-num">6</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">C3</span> <span class="m-op">=</span>  <span class="m-num">7</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">D3</span> <span class="m-op">=</span>  <span class="m-num">5</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">D4</span> <span class="m-op">=</span> <span class="m-num">15</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">D5</span> <span class="m-op">=</span> <span class="m-num">19</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">D6</span> <span class="m-op">=</span> <span class="m-num">23</span>  <span class="m-res">&#x2713;</span></div><div></div><div><span class="m-kw">Eastern river</span> <span class="m-cmt">(Watershed 2 &rarr; E6):</span></div><div>  <span class="m-var">E3</span> <span class="m-op">=</span>  <span class="m-num">4</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">E4</span> <span class="m-op">=</span>  <span class="m-num">5</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">F5</span> <span class="m-op">=</span>  <span class="m-num">8</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">F6</span> <span class="m-op">=</span>  <span class="m-num">9</span>  <span class="m-res">&#x2713;</span></div><div>  <span class="m-var">E6</span> <span class="m-op">=</span> <span class="m-num">11</span>  <span class="m-res">&#x2713;</span></div><div></div><div><span class="m-cmt">// Total river cells: 11 out of 36</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Hydrology &middot; River</span><span>Stream Network &middot; 22 lines</span></div>
+    </div>
+
+    <!-- River sketch figure -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 520 330" xmlns="http://www.w3.org/2000/svg" style="max-width:520px">
+          <text x="260" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">River Network (FA &ge; 4)</text>
+          <defs><marker id="fa2" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto"><polygon points="0 0, 6 2, 0 4" fill="#3498db"/></marker></defs>
+          <!-- Grid background -->
+          <g stroke="#eee" stroke-width=".4">
+            <line x1="60" y1="35" x2="455" y2="35"/><line x1="60" y1="80" x2="455" y2="80"/>
+            <line x1="60" y1="125" x2="455" y2="125"/><line x1="60" y1="170" x2="455" y2="170"/>
+            <line x1="60" y1="215" x2="455" y2="215"/><line x1="60" y1="260" x2="455" y2="260"/>
+            <line x1="60" y1="305" x2="455" y2="305"/>
+            <line x1="60" y1="35" x2="60" y2="305"/><line x1="125" y1="35" x2="125" y2="305"/>
+            <line x1="190" y1="35" x2="190" y2="305"/><line x1="255" y1="35" x2="255" y2="305"/>
+            <line x1="320" y1="35" x2="320" y2="305"/><line x1="390" y1="35" x2="390" y2="305"/>
+            <line x1="455" y1="35" x2="455" y2="305"/>
+          </g>
+          <!-- FA values in light grey for non-river cells -->
+          <g font-size="9" fill="#ddd" text-anchor="middle">
+            <text x="95" y="62">0</text><text x="160" y="62">0</text><text x="225" y="62">0</text><text x="290" y="62">0</text><text x="355" y="62">0</text><text x="420" y="62">0</text>
+            <text x="95" y="107">0</text><text x="160" y="107">1</text><text x="225" y="107">1</text><text x="290" y="107">2</text><text x="355" y="107">2</text><text x="420" y="107">0</text>
+            <text x="95" y="152">0</text><text x="420" y="152">0</text>
+            <text x="95" y="197">0</text><text x="160" y="197">0</text><text x="225" y="197">0</text><text x="420" y="197">1</text>
+            <text x="95" y="242">0</text><text x="160" y="242">1</text><text x="225" y="242">2</text><text x="355" y="242">0</text>
+            <text x="95" y="287">0</text><text x="160" y="287">1</text><text x="225" y="287">2</text>
+          </g>
+          <!-- Western river cells -->
+          <rect x="125" y="125" width="65" height="45" rx="4" fill="#2d7d46" opacity=".12"/>
+          <text x="160" y="152" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">6</text>
+          <rect x="190" y="125" width="65" height="45" rx="4" fill="#2d7d46" opacity=".12"/>
+          <text x="225" y="152" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">7</text>
+          <rect x="255" y="125" width="65" height="45" rx="4" fill="#2d7d46" opacity=".12"/>
+          <text x="290" y="152" text-anchor="middle" font-size="10" fill="#2d7d46" font-weight="bold">5</text>
+          <rect x="255" y="170" width="65" height="45" rx="4" fill="#2d7d46" opacity=".15"/>
+          <text x="290" y="197" text-anchor="middle" font-size="11" fill="#2d7d46" font-weight="bold">15</text>
+          <rect x="255" y="215" width="65" height="45" rx="4" fill="#2d7d46" opacity=".15"/>
+          <text x="290" y="242" text-anchor="middle" font-size="11" fill="#2d7d46" font-weight="bold">19</text>
+          <rect x="255" y="260" width="65" height="45" rx="4" fill="#2d7d46" opacity=".2"/>
+          <text x="290" y="287" text-anchor="middle" font-size="12" fill="#2d7d46" font-weight="bold">23</text>
+          <!-- Eastern river cells -->
+          <rect x="320" y="125" width="70" height="45" rx="4" fill="#b8860b" opacity=".1"/>
+          <text x="355" y="152" text-anchor="middle" font-size="10" fill="#b8860b" font-weight="bold">4</text>
+          <rect x="320" y="170" width="70" height="45" rx="4" fill="#b8860b" opacity=".1"/>
+          <text x="355" y="197" text-anchor="middle" font-size="10" fill="#b8860b" font-weight="bold">5</text>
+          <rect x="390" y="215" width="65" height="45" rx="4" fill="#b8860b" opacity=".12"/>
+          <text x="420" y="242" text-anchor="middle" font-size="10" fill="#b8860b" font-weight="bold">8</text>
+          <rect x="390" y="260" width="65" height="45" rx="4" fill="#b8860b" opacity=".12"/>
+          <text x="420" y="287" text-anchor="middle" font-size="10" fill="#b8860b" font-weight="bold">9</text>
+          <rect x="320" y="260" width="70" height="45" rx="4" fill="#b8860b" opacity=".15"/>
+          <text x="355" y="287" text-anchor="middle" font-size="12" fill="#b8860b" font-weight="bold">11</text>
+          <!-- River lines -->
+          <line x1="160" y1="148" x2="218" y2="148" stroke="#3498db" stroke-width="2" marker-end="url(#fa2)"/>
+          <line x1="225" y1="148" x2="278" y2="190" stroke="#3498db" stroke-width="2" marker-end="url(#fa2)"/>
+          <line x1="290" y1="148" x2="290" y2="185" stroke="#3498db" stroke-width="2.5" marker-end="url(#fa2)"/>
+          <line x1="290" y1="195" x2="290" y2="230" stroke="#3498db" stroke-width="3" marker-end="url(#fa2)"/>
+          <line x1="290" y1="240" x2="290" y2="275" stroke="#3498db" stroke-width="3.5" marker-end="url(#fa2)"/>
+          <!-- Eastern river -->
+          <line x1="355" y1="148" x2="355" y2="185" stroke="#e67e22" stroke-width="1.5" marker-end="url(#fa2)"/>
+          <line x1="355" y1="195" x2="413" y2="235" stroke="#e67e22" stroke-width="1.8"/>
+          <line x1="420" y1="240" x2="420" y2="275" stroke="#e67e22" stroke-width="2"/>
+          <line x1="420" y1="280" x2="362" y2="280" stroke="#e67e22" stroke-width="2.2" marker-end="url(#fa2)"/>
+          <!-- Legend -->
+          <line x1="80" y1="320" x2="110" y2="320" stroke="#3498db" stroke-width="2.5"/>
+          <text x="115" y="324" font-size="8" fill="#555">Western river (→D6, 24 ha)</text>
+          <line x1="260" y1="320" x2="290" y2="320" stroke="#e67e22" stroke-width="2"/>
+          <text x="295" y="324" font-size="8" fill="#555">Eastern river (→E6, 12 ha)</text>
+        </svg>
+        <figcaption>Fig 9.11 &ndash; River network: Western channel (B3&rarr;C3&rarr;D3&rarr;D4&rarr;D5&rarr;D6) and Eastern channel (E3&rarr;E4&rarr;F5&rarr;F6&rarr;E6)</figcaption>
+      </figure>
+    </div>
+
+    <p class="footer-note">End of Chapter 9 – River Network Generation</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 8 – Surface Model</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 8</div>
+    <h1>Surface Model</h1>
+  </header>
+  <main>
+
+    <!-- 1. DTM, Its Structures, and Applications -->
+    <h2>1. DTM, Its Structures, and Applications (6 Marks) <span class="exam-ref">Covers: 2071 Magh Q3b, 2075 Bhadra Q8</span></h2>
+
+    <h3>A. What is a DTM?</h3>
+    <p>A Digital Terrain Model (DTM) is a 3D digital representation of the bare-earth terrain surface. Unlike a Digital Surface Model (DSM) which includes buildings and tree canopies, a DTM mathematically filters out these above-ground features to represent only the natural ground elevation.</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <linearGradient id="sky86" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b3d9f7"/><stop offset="100%" stop-color="#e8f4fd"/></linearGradient>
+            <linearGradient id="ground86" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8a96e"/><stop offset="100%" stop-color="#a68b4b"/></linearGradient>
+            <filter id="shd86"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <!-- Background sky -->
+          <rect x="0" y="0" width="700" height="300" rx="8" fill="url(#sky86)"/>
+          <text x="350" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">DSM vs DTM vs DEM: Cross-Section Comparison</text>
+          <!-- Ground / bare earth (DTM line) -->
+          <path d="M 30,240 Q 100,210 170,220 Q 250,235 320,195 Q 400,160 450,175 Q 530,200 600,190 L 670,200" fill="none" stroke="#8b6914" stroke-width="2.5" stroke-dasharray="8,4"/>
+          <!-- Trees -->
+          <g filter="url(#shd86)">
+            <rect x="140" y="185" width="8" height="35" rx="2" fill="#6b4226"/>
+            <polygon points="144,145 120,190 168,190" fill="#2d8c2d"/>
+            <polygon points="144,155 125,185 163,185" fill="#3aad3a"/>
+          </g>
+          <g filter="url(#shd86)">
+            <rect x="430" y="148" width="7" height="28" rx="2" fill="#6b4226"/>
+            <polygon points="433,118 412,152 455,152" fill="#2d8c2d"/>
+            <polygon points="433,128 418,148 449,148" fill="#3aad3a"/>
+          </g>
+          <!-- Building -->
+          <g filter="url(#shd86)">
+            <rect x="290" y="155" width="50" height="40" rx="2" fill="#d4cfc5" stroke="#888" stroke-width="1"/>
+            <polygon points="288,157 315,135 342,157" fill="#c0392b" stroke="#888" stroke-width="0.8"/>
+            <rect x="305" y="170" width="12" height="16" rx="1" fill="#555"/>
+            <rect x="295" y="165" width="8" height="8" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+            <rect x="325" y="165" width="8" height="8" rx="1" fill="#87CEEB" stroke="#555" stroke-width="0.5"/>
+          </g>
+          <!-- DSM line (top of everything) -->
+          <path d="M 30,240 Q 100,210 125,210 Q 135,200 144,145 Q 152,200 170,220 Q 250,235 290,195 L 290,155 Q 315,135 340,155 L 340,195 Q 400,160 420,165 Q 430,120 445,165 Q 460,175 530,200 600,190 L 670,200" fill="none" stroke="#e74c3c" stroke-width="2.5"/>
+          <!-- DEM surface (smooth interpolation) -->
+          <path d="M 30,238 Q 100,215 170,218 Q 250,230 320,190 Q 400,158 450,170 Q 530,195 600,188 L 670,198" fill="none" stroke="#2980b9" stroke-width="2.5"/>
+          <!-- Labels -->
+          <g transform="translate(40,265)">
+            <line x1="0" y1="0" x2="25" y2="0" stroke="#e74c3c" stroke-width="2.5"/>
+            <text x="30" y="4" font-size="10" fill="#e74c3c" font-weight="bold">DSM – Includes buildings, trees</text>
+          </g>
+          <g transform="translate(40,282)">
+            <line x1="0" y1="0" x2="25" y2="0" stroke="#2980b9" stroke-width="2.5"/>
+            <text x="30" y="4" font-size="10" fill="#2980b9" font-weight="bold">DEM – Smoothed ground surface</text>
+          </g>
+          <g transform="translate(400,265)">
+            <line x1="0" y1="0" x2="25" y2="0" stroke="#8b6914" stroke-width="2.5" stroke-dasharray="8,4"/>
+            <text x="30" y="4" font-size="10" fill="#8b6914" font-weight="bold">DTM – Bare earth only</text>
+          </g>
+          <!-- Height annotations -->
+          <line x1="315" y1="135" x2="315" y2="195" stroke="#e74c3c" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="325" y="148" font-size="7" fill="#e74c3c">Building height</text>
+          <line x1="144" y1="145" x2="144" y2="220" stroke="#2d8c2d" stroke-width="1" stroke-dasharray="3,2"/>
+          <text x="152" y="170" font-size="7" fill="#2d8c2d">Canopy height</text>
+          <!-- Annotations -->
+          <text x="580" y="50" text-anchor="middle" font-size="9" fill="#555" font-style="italic">DSM = DTM + Objects</text>
+          <text x="580" y="65" text-anchor="middle" font-size="9" fill="#555" font-style="italic">DEM ≈ DTM (often used</text>
+          <text x="580" y="78" text-anchor="middle" font-size="9" fill="#555" font-style="italic">interchangeably)</text>
+        </svg>
+        <figcaption>Fig 8.6 &ndash; Cross-section comparing DSM (includes surface objects), DEM (smoothed ground), and DTM (bare earth terrain)</figcaption>
+      </figure>
+    </div>
+
+    <h3>B. Structures of DTM:</h3>
+    <p>DTMs can be structured in a GIS database in three primary ways:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 145" width="560" height="145" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="g81" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#d0e8f8"/></linearGradient>
+          <linearGradient id="g82" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5f0ff"/><stop offset="100%" stop-color="#e8dff8"/></linearGradient>
+          <linearGradient id="g83" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ec"/><stop offset="100%" stop-color="#fce8d8"/></linearGradient>
+          <filter id="f81"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/></filter>
+        </defs>
+        <!-- Raster Grid -->
+        <g transform="translate(5,8)" filter="url(#f81)">
+          <rect x="0" y="0" width="170" height="125" rx="8" fill="url(#g81)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="85" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">1. Raster Grid</text>
+          <g transform="translate(25,24)">
+            <rect x="0" y="0" width="22" height="18" rx="1" fill="#2a6e2a" stroke="#fff" stroke-width="0.5"/><text x="11" y="13" text-anchor="middle" font-size="7" fill="white">82</text>
+            <rect x="22" y="0" width="22" height="18" rx="1" fill="#3a8e3a" stroke="#fff" stroke-width="0.5"/><text x="33" y="13" text-anchor="middle" font-size="7" fill="white">76</text>
+            <rect x="44" y="0" width="22" height="18" rx="1" fill="#5aae5a" stroke="#fff" stroke-width="0.5"/><text x="55" y="13" text-anchor="middle" font-size="7">65</text>
+            <rect x="66" y="0" width="22" height="18" rx="1" fill="#7ac87a" stroke="#fff" stroke-width="0.5"/><text x="77" y="13" text-anchor="middle" font-size="7">52</text>
+            <rect x="88" y="0" width="22" height="18" rx="1" fill="#a0d468" stroke="#fff" stroke-width="0.5"/><text x="99" y="13" text-anchor="middle" font-size="7">40</text>
+            <rect x="0" y="18" width="22" height="18" rx="1" fill="#3a8e3a" stroke="#fff" stroke-width="0.5"/><text x="11" y="31" text-anchor="middle" font-size="7" fill="white">78</text>
+            <rect x="22" y="18" width="22" height="18" rx="1" fill="#5aae5a" stroke="#fff" stroke-width="0.5"/><text x="33" y="31" text-anchor="middle" font-size="7">68</text>
+            <rect x="44" y="18" width="22" height="18" rx="1" fill="#7ac87a" stroke="#fff" stroke-width="0.5"/><text x="55" y="31" text-anchor="middle" font-size="7">55</text>
+            <rect x="66" y="18" width="22" height="18" rx="1" fill="#a0d468" stroke="#fff" stroke-width="0.5"/><text x="77" y="31" text-anchor="middle" font-size="7">43</text>
+            <rect x="88" y="18" width="22" height="18" rx="1" fill="#c0e8a0" stroke="#fff" stroke-width="0.5"/><text x="99" y="31" text-anchor="middle" font-size="7">30</text>
+            <rect x="0" y="36" width="22" height="18" rx="1" fill="#5aae5a" stroke="#fff" stroke-width="0.5"/><text x="11" y="49" text-anchor="middle" font-size="7">70</text>
+            <rect x="22" y="36" width="22" height="18" rx="1" fill="#7ac87a" stroke="#fff" stroke-width="0.5"/><text x="33" y="49" text-anchor="middle" font-size="7">58</text>
+            <rect x="44" y="36" width="22" height="18" rx="1" fill="#a0d468" stroke="#fff" stroke-width="0.5"/><text x="55" y="49" text-anchor="middle" font-size="7">45</text>
+            <rect x="66" y="36" width="22" height="18" rx="1" fill="#c0e8a0" stroke="#fff" stroke-width="0.5"/><text x="77" y="49" text-anchor="middle" font-size="7">32</text>
+            <rect x="88" y="36" width="22" height="18" rx="1" fill="#e0f0d0" stroke="#fff" stroke-width="0.5"/><text x="99" y="49" text-anchor="middle" font-size="7">20</text>
+          </g>
+          <text x="85" y="100" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Equal-sized pixels</text>
+          <text x="85" y="114" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Each cell = Z value</text>
+        </g>
+        <!-- TIN -->
+        <g transform="translate(195,8)" filter="url(#f81)">
+          <rect x="0" y="0" width="170" height="125" rx="8" fill="url(#g82)" stroke="#6c4f9e" stroke-width="1.2"/>
+          <text x="85" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#6c4f9e">2. TIN</text>
+          <polygon points="25,35 75,25 55,62" fill="#ac92ec" fill-opacity="0.2" stroke="#6c4f9e" stroke-width="0.8"/>
+          <polygon points="75,25 125,32 55,62" fill="#ac92ec" fill-opacity="0.35" stroke="#6c4f9e" stroke-width="0.8"/>
+          <polygon points="125,32 135,68 55,62" fill="#ac92ec" fill-opacity="0.15" stroke="#6c4f9e" stroke-width="0.8"/>
+          <polygon points="25,35 55,62 30,82" fill="#ac92ec" fill-opacity="0.25" stroke="#6c4f9e" stroke-width="0.8"/>
+          <polygon points="55,62 135,68 90,84" fill="#ac92ec" fill-opacity="0.35" stroke="#6c4f9e" stroke-width="0.8"/>
+          <polygon points="30,82 55,62 90,84" fill="#ac92ec" fill-opacity="0.2" stroke="#6c4f9e" stroke-width="0.8"/>
+          <circle cx="25" cy="35" r="3.5" fill="#6c4f9e" stroke="white" stroke-width="0.8"/>
+          <circle cx="75" cy="25" r="3.5" fill="#6c4f9e" stroke="white" stroke-width="0.8"/>
+          <circle cx="125" cy="32" r="3.5" fill="#6c4f9e" stroke="white" stroke-width="0.8"/>
+          <circle cx="55" cy="62" r="3.5" fill="#6c4f9e" stroke="white" stroke-width="0.8"/>
+          <circle cx="135" cy="68" r="3.5" fill="#6c4f9e" stroke="white" stroke-width="0.8"/>
+          <circle cx="30" cy="82" r="3.5" fill="#6c4f9e" stroke="white" stroke-width="0.8"/>
+          <circle cx="90" cy="84" r="3.5" fill="#6c4f9e" stroke="white" stroke-width="0.8"/>
+          <text x="85" y="100" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="bold">Irregular triangles</text>
+          <text x="85" y="114" text-anchor="middle" font-size="7" fill="#888" font-style="italic">△ Vector-based surface</text>
+        </g>
+        <!-- Contour Lines -->
+        <g transform="translate(385,8)" filter="url(#f81)">
+          <rect x="0" y="0" width="170" height="125" rx="8" fill="url(#g83)" stroke="#8b2500" stroke-width="1.2"/>
+          <text x="85" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b2500">3. Contour Lines</text>
+          <path d="M 25,82 C 55,75 85,72 115,78 Q 140,82 150,76" fill="none" stroke="#8b6914" stroke-width="1.3"/>
+          <path d="M 30,65 C 60,56 85,53 115,60 Q 135,65 145,58" fill="none" stroke="#8b6914" stroke-width="1.3"/>
+          <path d="M 40,48 C 65,40 90,38 115,45 Q 130,48 140,44" fill="none" stroke="#8b6914" stroke-width="1.3"/>
+          <path d="M 55,34 C 75,28 95,27 115,34" fill="none" stroke="#8b6914" stroke-width="1"/>
+          <text x="152" y="78" font-size="7" fill="#8b2500" font-weight="bold">100m</text>
+          <text x="148" y="60" font-size="7" fill="#8b2500" font-weight="bold">200m</text>
+          <text x="143" y="46" font-size="7" fill="#8b2500" font-weight="bold">300m</text>
+          <text x="120" y="34" font-size="7" fill="#8b2500">400m</text>
+          <text x="85" y="100" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="bold">Isolines</text>
+          <text x="85" y="114" text-anchor="middle" font-size="7" fill="#888" font-style="italic">➰ Equal elevation lines</text>
+        </g>
+      </svg>
+      <figcaption>Fig 8.1 – Three Structures of Digital Terrain Models: Raster Grid, TIN, and Contour Lines</figcaption>
+    </figure>
+
+    <ol>
+      <li><strong>Raster Grid:</strong> A continuous matrix of equally sized square pixels, where each pixel stores a single elevation (Z) value.</li>
+      <li><strong>TIN (Triangulated Irregular Network):</strong> A vector-based model consisting of non-overlapping triangles formed by connecting scattered elevation points. It efficiently represents sharp ridges and valleys.</li>
+      <li><strong>Contour Lines (Isolines):</strong> Vector lines connecting points of equal elevation, traditionally used in topographic maps.</li>
+    </ol>
+
+    <h3>C. Three Applications of DTM:</h3>
+    <ol>
+      <li><strong>Hydrological Modeling:</strong> DTMs are the foundational data required to delineate watershed boundaries, calculate flow accumulation, and model runoff networks in software like the mesoscale Hydrologic Model (mHM).</li>
+      <li><strong>Transportation Engineering:</strong> Used extensively to extract topographic profiles for highway alignment and to calculate precise cut-and-fill earthwork volumes.</li>
+      <li><strong>Hazard Mapping:</strong> Used to identify extremely steep terrain profiles, which is critical for mapping landslide susceptibility or avalanche risks on high-altitude routes.</li>
+    </ol>
+
+    <!-- 2. Creation of DEMs and Data Sources -->
+    
+
+    <!-- Fig 8.5 – DTM Applications in Civil Engineering -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">DTM Applications in Civil Engineering</text>
+          <!-- Central DTM hub -->
+          <circle cx="350" cy="130" r="45" fill="#e8eef4" stroke="#1a3c5e" stroke-width="1.5"/>
+          <text x="350" y="125" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">DTM</text>
+          <text x="350" y="140" text-anchor="middle" font-size="7.5" fill="#555">Digital Terrain</text>
+          <text x="350" y="150" text-anchor="middle" font-size="7.5" fill="#555">Model</text>
+          <!-- Application 1: Hydrology -->
+          <rect x="30" y="30" width="140" height="55" rx="6" fill="#fff" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="100" y="50" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">&#x223f; Hydrology</text>
+          <text x="100" y="64" text-anchor="middle" font-size="7" fill="#555">Watershed delineation</text>
+          <text x="100" y="75" text-anchor="middle" font-size="7" fill="#555">Flood modeling</text>
+          <line x1="170" y1="57" x2="305" y2="115" stroke="#1a3c5e" stroke-width=".8"/>
+          <!-- Application 2: Transport -->
+          <rect x="530" y="30" width="140" height="55" rx="6" fill="#fff" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="600" y="50" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">&#x2694; Transport</text>
+          <text x="600" y="64" text-anchor="middle" font-size="7" fill="#555">Road cut/fill volumes</text>
+          <text x="600" y="75" text-anchor="middle" font-size="7" fill="#555">Route optimization</text>
+          <line x1="530" y1="57" x2="395" y2="115" stroke="#1a3c5e" stroke-width=".8"/>
+          <!-- Application 3: Hazard -->
+          <rect x="30" y="155" width="140" height="55" rx="6" fill="#fff" stroke="#8b2500" stroke-width="1"/>
+          <text x="100" y="175" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">&#x26a0; Hazard Mapping</text>
+          <text x="100" y="189" text-anchor="middle" font-size="7" fill="#555">Landslide susceptibility</text>
+          <text x="100" y="200" text-anchor="middle" font-size="7" fill="#555">Earthquake risk zones</text>
+          <line x1="170" y1="182" x2="305" y2="145" stroke="#8b2500" stroke-width=".8"/>
+          <!-- Application 4: Volume -->
+          <rect x="530" y="155" width="140" height="55" rx="6" fill="#fff" stroke="#2d7d46" stroke-width="1"/>
+          <text x="600" y="175" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">&#x25b3; Volume Calc</text>
+          <text x="600" y="189" text-anchor="middle" font-size="7" fill="#555">Reservoir capacity</text>
+          <text x="600" y="200" text-anchor="middle" font-size="7" fill="#555">Earthwork estimation</text>
+          <line x1="530" y1="182" x2="395" y2="145" stroke="#2d7d46" stroke-width=".8"/>
+          <!-- Application 5: Visibility -->
+          <rect x="280" y="195" width="140" height="40" rx="6" fill="#fff" stroke="#b8860b" stroke-width="1"/>
+          <text x="350" y="213" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">&#x1f441; Viewshed / Visibility</text>
+          <text x="350" y="226" text-anchor="middle" font-size="7" fill="#555">Tower &amp; antenna placement</text>
+          <line x1="350" y1="195" x2="350" y2="175" stroke="#b8860b" stroke-width=".8"/>
+        </svg>
+        <figcaption>Fig 8.5 &ndash; Five key DTM applications in civil engineering: hydrology, transport, hazard mapping, volume calculation, and visibility analysis</figcaption>
+      </figure>
+    </div>
+
+    <h2>2. Creation of DEMs and Data Sources (5 Marks) <span class="exam-ref">Covers: 2072 Ashwin Q2c, 2075 Bhadra Q8</span></h2>
+
+    <h3>A. Data Sources of DEM:</h3>
+    <ul>
+      <li><strong>LiDAR (Light Detection and Ranging):</strong> Highly accurate laser pulses fired from aircraft or drones.</li>
+      <li><strong>Satellite Imagery (Stereo-photogrammetry):</strong> Global datasets like SRTM (Shuttle Radar Topography Mission) or ASTER.</li>
+      <li><strong>Ground Surveys:</strong> Spot elevations collected using DGPS or Total Stations during field research.</li>
+      <li><strong>Digitized Topo Maps:</strong> Scanning and digitizing historical paper contour maps.</li>
+    </ul>
+
+    
+
+    <!-- Fig 8.4 – DEM Data Sources Comparison -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">DEM Data Sources: Resolution &amp; Method Comparison</text>
+          <!-- Headers -->
+          <rect x="20" y="34" width="105" height="26" rx="4" fill="#1a3c5e"/><text x="72" y="52" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Source</text>
+          <rect x="130" y="34" width="85" height="26" rx="4" fill="#1a3c5e"/><text x="172" y="52" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Resolution</text>
+          <rect x="220" y="34" width="120" height="26" rx="4" fill="#1a3c5e"/><text x="280" y="52" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Method</text>
+          <rect x="345" y="34" width="100" height="26" rx="4" fill="#1a3c5e"/><text x="395" y="52" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Coverage</text>
+          <rect x="450" y="34" width="110" height="26" rx="4" fill="#1a3c5e"/><text x="505" y="52" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Accuracy</text>
+          <rect x="565" y="34" width="115" height="26" rx="4" fill="#1a3c5e"/><text x="622" y="52" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="bold">Best For</text>
+          <!-- SRTM -->
+          <rect x="20" y="64" width="660" height="32" rx="3" fill="#f5f0e8"/>
+          <text x="72" y="84" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#1a3c5e">SRTM</text>
+          <text x="172" y="84" text-anchor="middle" font-size="8" fill="#555">30m / 90m</text>
+          <text x="280" y="84" text-anchor="middle" font-size="8" fill="#555">Radar interferometry</text>
+          <text x="395" y="84" text-anchor="middle" font-size="8" fill="#555">Global (60&#xb0;N-56&#xb0;S)</text>
+          <text x="505" y="84" text-anchor="middle" font-size="8" fill="#555">&#xb1;16m vertical</text>
+          <text x="622" y="84" text-anchor="middle" font-size="8" fill="#555">Regional studies</text>
+          <!-- ASTER -->
+          <rect x="20" y="100" width="660" height="32" rx="3" fill="#fff"/>
+          <text x="72" y="120" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#1a3c5e">ASTER GDEM</text>
+          <text x="172" y="120" text-anchor="middle" font-size="8" fill="#555">30m</text>
+          <text x="280" y="120" text-anchor="middle" font-size="8" fill="#555">Stereo photogrammetry</text>
+          <text x="395" y="120" text-anchor="middle" font-size="8" fill="#555">Global (83&#xb0;N-83&#xb0;S)</text>
+          <text x="505" y="120" text-anchor="middle" font-size="8" fill="#555">&#xb1;17m vertical</text>
+          <text x="622" y="120" text-anchor="middle" font-size="8" fill="#555">Mountain terrain</text>
+          <!-- LiDAR -->
+          <rect x="20" y="136" width="660" height="32" rx="3" fill="#edf7f0"/>
+          <text x="72" y="156" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#2d7d46">LiDAR</text>
+          <text x="172" y="156" text-anchor="middle" font-size="8" fill="#555">0.5m &#x2013; 2m</text>
+          <text x="280" y="156" text-anchor="middle" font-size="8" fill="#555">Laser pulse returns</text>
+          <text x="395" y="156" text-anchor="middle" font-size="8" fill="#555">Local (flight area)</text>
+          <text x="505" y="156" text-anchor="middle" font-size="8" fill="#2d7d46">&#xb1;15cm vertical</text>
+          <text x="622" y="156" text-anchor="middle" font-size="8" fill="#555">Engineering design</text>
+          <!-- Ground Survey -->
+          <rect x="20" y="172" width="660" height="32" rx="3" fill="#fff"/>
+          <text x="72" y="192" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#1a3c5e">Ground Survey</text>
+          <text x="172" y="192" text-anchor="middle" font-size="8" fill="#555">Point-based</text>
+          <text x="280" y="192" text-anchor="middle" font-size="8" fill="#555">Total station / GNSS</text>
+          <text x="395" y="192" text-anchor="middle" font-size="8" fill="#555">Very local</text>
+          <text x="505" y="192" text-anchor="middle" font-size="8" fill="#555">&#xb1;1-5cm</text>
+          <text x="622" y="192" text-anchor="middle" font-size="8" fill="#555">Site-level detail</text>
+          <!-- Topo Maps -->
+          <rect x="20" y="208" width="660" height="32" rx="3" fill="#f5f0e8"/>
+          <text x="72" y="228" text-anchor="middle" font-size="8.5" font-weight="bold" fill="#1a3c5e">Topo Maps</text>
+          <text x="172" y="228" text-anchor="middle" font-size="8" fill="#555">~20m contour</text>
+          <text x="280" y="228" text-anchor="middle" font-size="8" fill="#555">Digitized contours</text>
+          <text x="395" y="228" text-anchor="middle" font-size="8" fill="#555">National coverage</text>
+          <text x="505" y="228" text-anchor="middle" font-size="8" fill="#555">Variable</text>
+          <text x="622" y="228" text-anchor="middle" font-size="8" fill="#555">Legacy data / Nepal</text>
+          <!-- Arrow: accuracy scale -->
+          <text x="350" y="260" text-anchor="middle" font-size="8" fill="#b8860b" font-weight="bold">&#x2190; Lower cost / larger area &#x2014;&#x2014;&#x2014; Higher accuracy / smaller area &#x2192;</text>
+          <line x1="120" y1="268" x2="580" y2="268" stroke="#b8860b" stroke-width="1.5" marker-end="url(#arrowGold)"/>
+        </svg>
+        <figcaption>Fig 8.4 &ndash; DEM Data Sources: comparison of resolution, accuracy, coverage, and best-use scenarios</figcaption>
+      </figure>
+    </div>
+
+    <h3>B. How is a DEM created in Raster GIS?</h3>
+    <p>A raster DEM is rarely captured perfectly as a grid in the field. It is created through Spatial Interpolation.</p>
+    <ol>
+      <li>First, scattered elevation data (like a GPS track from a Mardi Himal or Tsho Rolpa trek) is imported into the GIS as a point shapefile.</li>
+      <li>An interpolation algorithm (such as Inverse Distance Weighted, Spline, or Kriging) is applied to these discrete points.</li>
+      <li>The software calculates the estimated elevation for all the "empty" spaces between the surveyed points.</li>
+      <li>The output is a continuous raster grid where every single pixel has an assigned elevation value, effectively creating a smooth digital surface.</li>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 160" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <linearGradient id="step1bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#cce5f6"/></linearGradient>
+            <linearGradient id="step2bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5f0ff"/><stop offset="100%" stop-color="#e4d8f8"/></linearGradient>
+            <linearGradient id="step3bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ec"/><stop offset="100%" stop-color="#fce0c4"/></linearGradient>
+            <linearGradient id="step4bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#c8ecc8"/></linearGradient>
+            <marker id="arr87" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+            <filter id="s87"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">DEM Creation Workflow</text>
+          <!-- Step 1 -->
+          <g filter="url(#s87)">
+            <rect x="15" y="30" width="140" height="110" rx="8" fill="url(#step1bg)" stroke="#1a3c5e" stroke-width="1.2"/>
+            <text x="85" y="48" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Step 1</text>
+            <text x="85" y="62" text-anchor="middle" font-size="9" fill="#1a3c5e">Collect Data</text>
+            <!-- Scattered points -->
+            <circle cx="45" cy="80" r="3" fill="#1a3c5e"/><text x="45" y="95" text-anchor="middle" font-size="6" fill="#555">1250m</text>
+            <circle cx="85" cy="88" r="3" fill="#1a3c5e"/><text x="85" y="103" text-anchor="middle" font-size="6" fill="#555">980m</text>
+            <circle cx="120" cy="76" r="3" fill="#1a3c5e"/><text x="120" y="91" text-anchor="middle" font-size="6" fill="#555">1400m</text>
+            <circle cx="65" cy="110" r="3" fill="#1a3c5e"/><text x="65" y="125" text-anchor="middle" font-size="6" fill="#555">870m</text>
+            <circle cx="110" cy="115" r="3" fill="#1a3c5e"/>
+            <text x="85" y="138" text-anchor="middle" font-size="7" fill="#888">GPS / Survey / LiDAR</text>
+          </g>
+          <!-- Arrow 1→2 -->
+          <line x1="160" y1="85" x2="188" y2="85" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr87)"/>
+          <!-- Step 2 -->
+          <g filter="url(#s87)">
+            <rect x="195" y="30" width="140" height="110" rx="8" fill="url(#step2bg)" stroke="#6c4f9e" stroke-width="1.2"/>
+            <text x="265" y="48" text-anchor="middle" font-size="10" font-weight="bold" fill="#6c4f9e">Step 2</text>
+            <text x="265" y="62" text-anchor="middle" font-size="9" fill="#6c4f9e">Import as Points</text>
+            <!-- Point shapefile icon -->
+            <rect x="225" y="72" width="80" height="50" rx="4" fill="#fff" stroke="#6c4f9e" stroke-width="0.8"/>
+            <circle cx="240" cy="85" r="2.5" fill="#6c4f9e"/>
+            <circle cx="260" cy="95" r="2.5" fill="#6c4f9e"/>
+            <circle cx="280" cy="82" r="2.5" fill="#6c4f9e"/>
+            <circle cx="250" cy="105" r="2.5" fill="#6c4f9e"/>
+            <circle cx="290" cy="100" r="2.5" fill="#6c4f9e"/>
+            <text x="265" y="138" text-anchor="middle" font-size="7" fill="#888">Point Shapefile in GIS</text>
+          </g>
+          <!-- Arrow 2→3 -->
+          <line x1="340" y1="85" x2="368" y2="85" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr87)"/>
+          <!-- Step 3 -->
+          <g filter="url(#s87)">
+            <rect x="375" y="30" width="140" height="110" rx="8" fill="url(#step3bg)" stroke="#b8860b" stroke-width="1.2"/>
+            <text x="445" y="48" text-anchor="middle" font-size="10" font-weight="bold" fill="#b8860b">Step 3</text>
+            <text x="445" y="62" text-anchor="middle" font-size="9" fill="#b8860b">Interpolation</text>
+            <!-- Wave/function symbol -->
+            <path d="M 400,90 Q 420,70 440,90 Q 460,110 480,90" fill="none" stroke="#b8860b" stroke-width="2"/>
+            <text x="445" y="115" text-anchor="middle" font-size="8" fill="#555">IDW / Kriging /</text>
+            <text x="445" y="126" text-anchor="middle" font-size="8" fill="#555">Spline / TIN</text>
+            <text x="445" y="138" text-anchor="middle" font-size="7" fill="#888">Estimate empty cells</text>
+          </g>
+          <!-- Arrow 3→4 -->
+          <line x1="520" y1="85" x2="548" y2="85" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#arr87)"/>
+          <!-- Step 4 -->
+          <g filter="url(#s87)">
+            <rect x="555" y="30" width="130" height="110" rx="8" fill="url(#step4bg)" stroke="#2d7d46" stroke-width="1.2"/>
+            <text x="620" y="48" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Step 4</text>
+            <text x="620" y="62" text-anchor="middle" font-size="9" fill="#2d7d46">Continuous DEM</text>
+            <!-- Mini raster grid -->
+            <g transform="translate(583,70)">
+              <rect x="0" y="0" width="16" height="12" fill="#2d7d46"/><rect x="16" y="0" width="16" height="12" fill="#4a9e4a"/><rect x="32" y="0" width="16" height="12" fill="#6cbe6c"/><rect x="48" y="0" width="16" height="12" fill="#90d890"/>
+              <rect x="0" y="12" width="16" height="12" fill="#4a9e4a"/><rect x="16" y="12" width="16" height="12" fill="#6cbe6c"/><rect x="32" y="12" width="16" height="12" fill="#90d890"/><rect x="48" y="12" width="16" height="12" fill="#b0e8b0"/>
+              <rect x="0" y="24" width="16" height="12" fill="#6cbe6c"/><rect x="16" y="24" width="16" height="12" fill="#90d890"/><rect x="32" y="24" width="16" height="12" fill="#b0e8b0"/><rect x="48" y="24" width="16" height="12" fill="#d0f0d0"/>
+              <rect x="0" y="36" width="16" height="12" fill="#90d890"/><rect x="16" y="36" width="16" height="12" fill="#b0e8b0"/><rect x="32" y="36" width="16" height="12" fill="#d0f0d0"/><rect x="48" y="36" width="16" height="12" fill="#e8f8e8"/>
+            </g>
+            <text x="620" y="138" text-anchor="middle" font-size="7" fill="#888">Every pixel = elevation</text>
+          </g>
+        </svg>
+        <figcaption>Fig 8.7 &ndash; DEM Creation Workflow: from scattered field data to continuous raster surface via spatial interpolation</figcaption>
+      </figure>
+    </div>
+    </ol>
+
+    <!-- 3. Slope and Aspect Functions -->
+    <h2>3. Slope and Aspect Functions (5 Marks) <span class="exam-ref">Covers: 2076 Bhadra Q7b</span></h2>
+    <p>In the exam, when asked to explain these with illustrations, define the concept and draw a simple grid showing a central pixel surrounded by its 8 neighbors.</p>
+
+    <h3>A. Slope Function:</h3>
+    <ul>
+      <li><strong>Concept:</strong> Slope calculates the maximum rate of change in elevation between a specific cell and its eight immediate neighbors. It identifies the steepness of the terrain.</li>
+      <li><strong>Output:</strong> The output raster displays values either in Degrees (0° for flat, 90° for vertical) or Percent Rise (elevation difference divided by horizontal distance, multiplied by 100).</li>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s88"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          </defs>
+          <text x="310" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Horn&#x2019;s Method: How Slope is Calculated</text>
+          <!-- 3x3 grid with labeled cells -->
+          <g transform="translate(30,35)" filter="url(#s88)">
+            <rect x="0" y="0" width="200" height="175" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+            <text x="100" y="18" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">3&#xd7;3 Neighbourhood</text>
+            <!-- Cell labels -->
+            <rect x="15" y="28" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="41" y="44" text-anchor="middle" font-size="8" fill="#888">a</text>
+            <text x="41" y="58" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">110</text>
+            <rect x="72" y="28" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="98" y="44" text-anchor="middle" font-size="8" fill="#888">b</text>
+            <text x="98" y="58" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">105</text>
+            <rect x="129" y="28" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="155" y="44" text-anchor="middle" font-size="8" fill="#888">c</text>
+            <text x="155" y="58" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">95</text>
+            <rect x="15" y="71" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="41" y="87" text-anchor="middle" font-size="8" fill="#888">d</text>
+            <text x="41" y="101" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">108</text>
+            <rect x="72" y="71" width="52" height="38" rx="3" fill="#f6bb42" stroke="#b8860b" stroke-width="2"/>
+            <text x="98" y="87" text-anchor="middle" font-size="8" fill="#888">e</text>
+            <text x="98" y="101" text-anchor="middle" font-size="11" font-weight="bold" fill="#8b2500">100</text>
+            <rect x="129" y="71" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="155" y="87" text-anchor="middle" font-size="8" fill="#888">f</text>
+            <text x="155" y="101" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">80</text>
+            <rect x="15" y="114" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="41" y="130" text-anchor="middle" font-size="8" fill="#888">g</text>
+            <text x="41" y="144" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">100</text>
+            <rect x="72" y="114" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="98" y="130" text-anchor="middle" font-size="8" fill="#888">h</text>
+            <text x="98" y="144" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">85</text>
+            <rect x="129" y="114" width="52" height="38" rx="3" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="0.8"/>
+            <text x="155" y="130" text-anchor="middle" font-size="8" fill="#888">i</text>
+            <text x="155" y="144" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">50</text>
+          </g>
+          <!-- Formulas -->
+          <g transform="translate(260,35)" filter="url(#s88)">
+            <rect x="0" y="0" width="330" height="175" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+            <text x="165" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Horn&#x2019;s Formula (ArcGIS Default)</text>
+            <!-- dz/dx -->
+            <text x="15" y="48" font-size="9" fill="#1a3c5e" font-weight="bold">dz/dx =</text>
+            <text x="75" y="48" font-size="9" fill="#555">(c + 2f + i) &#x2212; (a + 2d + g)</text>
+            <line x1="75" y1="52" x2="275" y2="52" stroke="#555" stroke-width="0.8"/>
+            <text x="165" y="64" text-anchor="middle" font-size="9" fill="#555">8 &#xd7; cellSize</text>
+            <!-- dz/dy -->
+            <text x="15" y="90" font-size="9" fill="#1a3c5e" font-weight="bold">dz/dy =</text>
+            <text x="75" y="90" font-size="9" fill="#555">(g + 2h + i) &#x2212; (a + 2b + c)</text>
+            <line x1="75" y1="94" x2="275" y2="94" stroke="#555" stroke-width="0.8"/>
+            <text x="165" y="106" text-anchor="middle" font-size="9" fill="#555">8 &#xd7; cellSize</text>
+            <!-- Slope formula -->
+            <text x="15" y="135" font-size="10" fill="#8b2500" font-weight="bold">Slope =</text>
+            <text x="85" y="135" font-size="10" fill="#8b2500">arctan( &#x221a;(dz/dx&#xb2; + dz/dy&#xb2;) )</text>
+            <!-- Percent rise -->
+            <text x="15" y="162" font-size="9" fill="#b8860b" font-weight="bold">% Rise =</text>
+            <text x="80" y="162" font-size="9" fill="#b8860b">tan(slope&#xb0;) &#xd7; 100</text>
+          </g>
+          <!-- Key note -->
+          <text x="310" y="230" text-anchor="middle" font-size="9" fill="#555" font-style="italic">The highlighted center cell (e) is the target pixel; slope is computed from its 8 neighbours using weighted differences</text>
+          <text x="310" y="248" text-anchor="middle" font-size="8" fill="#888">Cell size = horizontal resolution of DEM (e.g. 30m for SRTM)</text>
+        </svg>
+        <figcaption>Fig 8.8 &ndash; Horn&#x2019;s Slope Calculation: 3&#xd7;3 neighbourhood grid with the mathematical formula used by ArcGIS and QGIS</figcaption>
+      </figure>
+    </div>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 490 170" width="490" height="170" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a8r" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <filter id="f82"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- DEM grid -->
+        <rect x="8" y="3" width="148" height="138" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8" filter="url(#f82)"/>
+        <text x="82" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">DEM (Elevation)</text>
+        <g transform="translate(22,24)">
+          <rect x="0" y="0" width="38" height="32" rx="2" fill="#2a6e2a" stroke="#fff" stroke-width="0.8"/><text x="19" y="21" text-anchor="middle" font-size="10" fill="white">110</text>
+          <rect x="38" y="0" width="38" height="32" rx="2" fill="#5aae5a" stroke="#fff" stroke-width="0.8"/><text x="57" y="21" text-anchor="middle" font-size="10" fill="white">105</text>
+          <rect x="76" y="0" width="38" height="32" rx="2" fill="#7ac87a" stroke="#fff" stroke-width="0.8"/><text x="95" y="21" text-anchor="middle" font-size="10">95</text>
+          <rect x="0" y="32" width="38" height="32" rx="2" fill="#5aae5a" stroke="#fff" stroke-width="0.8"/><text x="19" y="53" text-anchor="middle" font-size="10" fill="white">108</text>
+          <rect x="38" y="32" width="38" height="32" rx="2" fill="#f6bb42" stroke="#b8860b" stroke-width="1.5"/><text x="57" y="53" text-anchor="middle" font-size="11" font-weight="bold">100</text>
+          <rect x="76" y="32" width="38" height="32" rx="2" fill="#a0d468" stroke="#fff" stroke-width="0.8"/><text x="95" y="53" text-anchor="middle" font-size="10">80</text>
+          <rect x="0" y="64" width="38" height="32" rx="2" fill="#7ac87a" stroke="#fff" stroke-width="0.8"/><text x="19" y="85" text-anchor="middle" font-size="10">100</text>
+          <rect x="38" y="64" width="38" height="32" rx="2" fill="#a0d468" stroke="#fff" stroke-width="0.8"/><text x="57" y="85" text-anchor="middle" font-size="10">85</text>
+          <rect x="76" y="64" width="38" height="32" rx="2" fill="#c0e8a0" stroke="#fff" stroke-width="0.8"/><text x="95" y="85" text-anchor="middle" font-size="10">50</text>
+        </g>
+        <line x1="80" y1="82" x2="118" y2="108" stroke="#ed5565" stroke-width="2.5" marker-end="url(#a8r)"/>
+        <text x="130" y="108" font-size="7" fill="#ed5565" font-weight="bold">← Steepest</text>
+        <text x="130" y="118" font-size="7" fill="#ed5565">100→50 = −50m</text>
+        <!-- Arrow -->
+        <text x="173" y="78" font-size="16" fill="#1a3c5e" font-weight="bold">→</text>
+        <text x="173" y="92" font-size="7" fill="#888">Slope fn</text>
+        <!-- Slope output -->
+        <rect x="195" y="3" width="148" height="138" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8" filter="url(#f82)"/>
+        <text x="269" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b2500">Slope Output (°)</text>
+        <g transform="translate(209,24)">
+          <rect x="0" y="0" width="38" height="32" rx="2" fill="#ffe0b2" stroke="#fff" stroke-width="0.8"/><text x="19" y="21" text-anchor="middle" font-size="10">8°</text>
+          <rect x="38" y="0" width="38" height="32" rx="2" fill="#ffcc80" stroke="#fff" stroke-width="0.8"/><text x="57" y="21" text-anchor="middle" font-size="10">12°</text>
+          <rect x="76" y="0" width="38" height="32" rx="2" fill="#ff9800" stroke="#fff" stroke-width="0.8"/><text x="95" y="21" text-anchor="middle" font-size="10">18°</text>
+          <rect x="0" y="32" width="38" height="32" rx="2" fill="#ffcc80" stroke="#fff" stroke-width="0.8"/><text x="19" y="53" text-anchor="middle" font-size="10">10°</text>
+          <rect x="38" y="32" width="38" height="32" rx="2" fill="#ff9800" stroke="#fff" stroke-width="0.8"/><text x="57" y="53" text-anchor="middle" font-size="10">22°</text>
+          <rect x="76" y="32" width="38" height="32" rx="2" fill="#e65100" stroke="#fff" stroke-width="0.8"/><text x="95" y="53" text-anchor="middle" font-size="10" fill="white">35°</text>
+          <rect x="0" y="64" width="38" height="32" rx="2" fill="#ffe0b2" stroke="#fff" stroke-width="0.8"/><text x="19" y="85" text-anchor="middle" font-size="10">6°</text>
+          <rect x="38" y="64" width="38" height="32" rx="2" fill="#ff9800" stroke="#fff" stroke-width="0.8"/><text x="57" y="85" text-anchor="middle" font-size="10">20°</text>
+          <rect x="76" y="64" width="38" height="32" rx="2" fill="#bf360c" stroke="#fff" stroke-width="0.8"/><text x="95" y="85" text-anchor="middle" font-size="10" fill="white">40°</text>
+        </g>
+        <!-- Legend bar -->
+        <rect x="360" y="24" width="115" height="95" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="417" y="40" text-anchor="middle" font-size="8" font-weight="bold" fill="#333">Scale</text>
+        <rect x="370" y="48" width="20" height="10" fill="#ffe0b2"/><text x="398" y="57" font-size="7">Flat (0–10°)</text>
+        <rect x="370" y="62" width="20" height="10" fill="#ff9800"/><text x="398" y="71" font-size="7">Moderate</text>
+        <rect x="370" y="76" width="20" height="10" fill="#e65100"/><text x="398" y="85" font-size="7">Steep (30°+)</text>
+        <rect x="370" y="90" width="20" height="10" fill="#bf360c"/><text x="398" y="99" font-size="7">V. Steep (40°+)</text>
+        <text x="245" y="160" text-anchor="middle" font-size="8" fill="#888" font-style="italic">Steepness computed from 3×3 neighbourhood elevation differences</text>
+      </svg>
+      <figcaption>Fig 8.2 – Slope Function: 3×3 DEM grid and its resulting Slope raster (steepest drop highlighted)</figcaption>
+    </figure>
+
+    <h3>B. Aspect Function:</h3>
+    <ul>
+      <li><strong>Concept:</strong> Aspect calculates the downslope direction of the maximum rate of change in value from each cell to its neighbors. In simple terms, it identifies which compass direction the slope is facing.</li>
+      <li><strong>Output:</strong> The output raster displays values in degrees from 0° to 360°, measured clockwise from North. (e.g., 90° is an East-facing slope, 180° is a South-facing slope). Flat areas are usually assigned a value of -1.</li>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="max-width:500px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s89"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+            <radialGradient id="cg89" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff"/>
+              <stop offset="100%" stop-color="#e8f0f8"/>
+            </radialGradient>
+          </defs>
+          <text x="250" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Aspect: 8-Direction Compass Classification</text>
+          <!-- Main compass circle -->
+          <circle cx="180" cy="155" r="110" fill="url(#cg89)" stroke="#1a3c5e" stroke-width="1.5" filter="url(#s89)"/>
+          <!-- 8 colored sectors (pie slices) -->
+          <!-- N: 337.5-360, 0-22.5 -->
+          <path d="M 180,155 L 180,45 A 110,110 0 0,1 222,56 Z" fill="#4fc1e9" fill-opacity="0.4"/>
+          <!-- NE: 22.5-67.5 -->
+          <path d="M 180,155 L 222,56 A 110,110 0 0,1 280,82 Z" fill="#48cfad" fill-opacity="0.4"/>
+          <!-- E: 67.5-112.5 -->
+          <path d="M 180,155 L 280,82 A 110,110 0 0,1 290,198 Z" fill="#ffce54" fill-opacity="0.4"/>
+          <!-- SE: 112.5-157.5 -->
+          <path d="M 180,155 L 290,198 A 110,110 0 0,1 236,255 Z" fill="#fc6e51" fill-opacity="0.4"/>
+          <!-- S: 157.5-202.5 -->
+          <path d="M 180,155 L 236,255 A 110,110 0 0,1 132,258 Z" fill="#ed5565" fill-opacity="0.4"/>
+          <!-- SW: 202.5-247.5 -->
+          <path d="M 180,155 L 132,258 A 110,110 0 0,1 74,210 Z" fill="#ac92ec" fill-opacity="0.4"/>
+          <!-- W: 247.5-292.5 -->
+          <path d="M 180,155 L 74,210 A 110,110 0 0,1 74,100 Z" fill="#a0d468" fill-opacity="0.4"/>
+          <!-- NW: 292.5-337.5 -->
+          <path d="M 180,155 L 74,100 A 110,110 0 0,1 138,56 Z" fill="#5d9cec" fill-opacity="0.4"/>
+          <path d="M 180,155 L 138,56 A 110,110 0 0,1 180,45 Z" fill="#4fc1e9" fill-opacity="0.4"/>
+          <!-- Direction labels on the compass -->
+          <text x="180" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">N</text>
+          <text x="180" y="42" text-anchor="middle" font-size="8" fill="#555">0&#xb0;/360&#xb0;</text>
+          <text x="270" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">NE</text>
+          <text x="278" y="112" text-anchor="middle" font-size="8" fill="#555">45&#xb0;</text>
+          <text x="290" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">E</text>
+          <text x="300" y="170" text-anchor="middle" font-size="8" fill="#555">90&#xb0;</text>
+          <text x="270" y="218" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">SE</text>
+          <text x="278" y="230" text-anchor="middle" font-size="8" fill="#555">135&#xb0;</text>
+          <text x="180" y="262" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">S</text>
+          <text x="180" y="275" text-anchor="middle" font-size="8" fill="#555">180&#xb0;</text>
+          <text x="98" y="218" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">SW</text>
+          <text x="90" y="230" text-anchor="middle" font-size="8" fill="#555">225&#xb0;</text>
+          <text x="72" y="158" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">W</text>
+          <text x="62" y="170" text-anchor="middle" font-size="8" fill="#555">270&#xb0;</text>
+          <text x="98" y="100" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">NW</text>
+          <text x="90" y="112" text-anchor="middle" font-size="8" fill="#555">315&#xb0;</text>
+          <!-- Center point -->
+          <circle cx="180" cy="155" r="4" fill="#1a3c5e"/>
+          <!-- Legend table -->
+          <g transform="translate(320,38)" filter="url(#s89)">
+            <rect x="0" y="0" width="170" height="225" rx="6" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8"/>
+            <text x="85" y="18" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Aspect Classes</text>
+            <rect x="10" y="26" width="14" height="10" rx="2" fill="#4fc1e9" fill-opacity="0.6"/><text x="30" y="35" font-size="8" fill="#555">N: 337.5&#xb0; &#x2013; 22.5&#xb0;</text>
+            <rect x="10" y="42" width="14" height="10" rx="2" fill="#48cfad" fill-opacity="0.6"/><text x="30" y="51" font-size="8" fill="#555">NE: 22.5&#xb0; &#x2013; 67.5&#xb0;</text>
+            <rect x="10" y="58" width="14" height="10" rx="2" fill="#ffce54" fill-opacity="0.6"/><text x="30" y="67" font-size="8" fill="#555">E: 67.5&#xb0; &#x2013; 112.5&#xb0;</text>
+            <rect x="10" y="74" width="14" height="10" rx="2" fill="#fc6e51" fill-opacity="0.6"/><text x="30" y="83" font-size="8" fill="#555">SE: 112.5&#xb0; &#x2013; 157.5&#xb0;</text>
+            <rect x="10" y="90" width="14" height="10" rx="2" fill="#ed5565" fill-opacity="0.6"/><text x="30" y="99" font-size="8" fill="#555">S: 157.5&#xb0; &#x2013; 202.5&#xb0;</text>
+            <rect x="10" y="106" width="14" height="10" rx="2" fill="#ac92ec" fill-opacity="0.6"/><text x="30" y="115" font-size="8" fill="#555">SW: 202.5&#xb0; &#x2013; 247.5&#xb0;</text>
+            <rect x="10" y="122" width="14" height="10" rx="2" fill="#a0d468" fill-opacity="0.6"/><text x="30" y="131" font-size="8" fill="#555">W: 247.5&#xb0; &#x2013; 292.5&#xb0;</text>
+            <rect x="10" y="138" width="14" height="10" rx="2" fill="#5d9cec" fill-opacity="0.6"/><text x="30" y="147" font-size="8" fill="#555">NW: 292.5&#xb0; &#x2013; 337.5&#xb0;</text>
+            <line x1="10" y1="158" x2="155" y2="158" stroke="#d4cfc5" stroke-width="0.5"/>
+            <rect x="10" y="166" width="14" height="10" rx="2" fill="#ddd" stroke="#888" stroke-width="0.5"/><text x="30" y="175" font-size="8" fill="#555">Flat: &#x2212;1 (no aspect)</text>
+            <text x="85" y="200" text-anchor="middle" font-size="7.5" fill="#888" font-style="italic">Measured clockwise</text>
+            <text x="85" y="212" text-anchor="middle" font-size="7.5" fill="#888" font-style="italic">from North (0&#xb0;)</text>
+          </g>
+        </svg>
+        <figcaption>Fig 8.9 &ndash; Aspect classification compass wheel showing 8 directional classes with degree ranges used in GIS analysis</figcaption>
+      </figure>
+    </div>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 380 185" width="380" height="185" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gSun" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#ffe570"/><stop offset="100%" stop-color="#f6bb42"/></linearGradient>
+          <linearGradient id="gMtn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8cc63f" stop-opacity="0.4"/><stop offset="100%" stop-color="#5a9a20" stop-opacity="0.25"/></linearGradient>
+          <filter id="f83"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Mountain -->
+        <polygon points="185,22 70,140 300,140" fill="url(#gMtn)" stroke="#2a8c2a" stroke-width="1.5"/>
+        <!-- Sun -->
+        <circle cx="320" cy="42" r="22" fill="url(#gSun)" stroke="#ff9800" stroke-width="1.5" filter="url(#f83)"/>
+        <text x="320" y="46" text-anchor="middle" font-size="14">☀</text>
+        <!-- Sun rays -->
+        <line x1="298" y1="50" x2="240" y2="85" stroke="#ff9800" stroke-width="1" stroke-dasharray="5,3" opacity="0.45"/>
+        <line x1="298" y1="58" x2="250" y2="105" stroke="#ff9800" stroke-width="1" stroke-dasharray="5,3" opacity="0.45"/>
+        <line x1="298" y1="42" x2="235" y2="70" stroke="#ff9800" stroke-width="1" stroke-dasharray="5,3" opacity="0.35"/>
+        <!-- South-facing label -->
+        <rect x="215" y="68" width="90" height="35" rx="6" fill="#f6bb42" fill-opacity="0.3" stroke="#8b6914" stroke-width="1" filter="url(#f83)"/>
+        <text x="260" y="82" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b6914">☀ South-facing</text>
+        <text x="260" y="95" text-anchor="middle" font-size="8" fill="#8b6914">Aspect = 180°</text>
+        <!-- North-facing label -->
+        <rect x="60" y="68" width="95" height="35" rx="6" fill="#4fc1e9" fill-opacity="0.3" stroke="#1a3c5e" stroke-width="1" filter="url(#f83)"/>
+        <text x="107" y="82" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">❄North-facing</text>
+        <text x="107" y="95" text-anchor="middle" font-size="8" fill="#1a3c5e">Aspect = 0°/360°</text>
+        <!-- Compass -->
+        <g transform="translate(15,8)" filter="url(#f83)">
+          <circle cx="28" cy="28" r="22" fill="#faf8f4" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="28" y="14" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">N 0°</text>
+          <text x="54" y="32" text-anchor="middle" font-size="7" fill="#555">E 90°</text>
+          <text x="28" y="48" text-anchor="middle" font-size="7" fill="#555">S 180°</text>
+          <text x="3" y="32" text-anchor="middle" font-size="7" fill="#555">W</text>
+          <line x1="28" y1="10" x2="28" y2="46" stroke="#1a3c5e" stroke-width="0.5" stroke-dasharray="2,2"/>
+          <line x1="8" y1="28" x2="48" y2="28" stroke="#1a3c5e" stroke-width="0.5" stroke-dasharray="2,2"/>
+        </g>
+        <!-- Ground line -->
+        <line x1="45" y1="140" x2="320" y2="140" stroke="#555" stroke-width="1.2"/>
+        <!-- Peak -->
+        <text x="185" y="18" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">⛰Peak</text>
+        <!-- Bottom note -->
+        <text x="190" y="165" text-anchor="middle" font-size="8" fill="#555" font-style="italic">South-facing slopes receive maximum solar radiation in Nepal</text>
+        <text x="190" y="178" text-anchor="middle" font-size="7" fill="#888">(Important for agriculture, solar panels, snow melt modeling)</text>
+      </svg>
+      <figcaption>Fig 8.3 – Aspect Function: Compass direction of the downslope face (South-facing receives most sunlight)</figcaption>
+    </figure>
+
+        <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="max-width:700px" font-family="'EB Garamond','Times New Roman',serif">
+          <defs>
+            <filter id="s810"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+            <linearGradient id="slpbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ec"/><stop offset="100%" stop-color="#fce0c4"/></linearGradient>
+            <linearGradient id="aspbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#cce5f6"/></linearGradient>
+            <linearGradient id="cmbbg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#c8ecc8"/></linearGradient>
+          </defs>
+          <text x="350" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Slope &amp; Aspect: Civil Engineering Applications</text>
+          <!-- Slope applications box -->
+          <g filter="url(#s810)">
+            <rect x="15" y="35" width="210" height="170" rx="8" fill="url(#slpbg)" stroke="#8b2500" stroke-width="1.2"/>
+            <text x="120" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#8b2500">Slope Applications</text>
+            <line x1="30" y1="62" x2="210" y2="62" stroke="#8b2500" stroke-width="0.5" opacity="0.5"/>
+            <text x="30" y="80" font-size="9" fill="#555">&#x25b6; Road gradient design</text>
+            <text x="30" y="97" font-size="9" fill="#555">&#x25b6; Landslide susceptibility</text>
+            <text x="30" y="114" font-size="9" fill="#555">&#x25b6; Soil erosion prediction</text>
+            <text x="30" y="131" font-size="9" fill="#555">&#x25b6; Construction suitability</text>
+            <text x="30" y="148" font-size="9" fill="#555">&#x25b6; Dam site selection</text>
+            <text x="30" y="168" font-size="8" fill="#888" font-style="italic">Key: Steepness &#x2192; Risk level</text>
+            <text x="30" y="182" font-size="8" fill="#888" font-style="italic">&gt;30&#xb0; = Very steep = high risk</text>
+            <text x="30" y="196" font-size="8" fill="#888" font-style="italic">&lt;5&#xb0; = Flat = suitable for building</text>
+          </g>
+          <!-- Aspect applications box -->
+          <g filter="url(#s810)">
+            <rect x="245" y="35" width="210" height="170" rx="8" fill="url(#aspbg)" stroke="#1a3c5e" stroke-width="1.2"/>
+            <text x="350" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Aspect Applications</text>
+            <line x1="260" y1="62" x2="440" y2="62" stroke="#1a3c5e" stroke-width="0.5" opacity="0.5"/>
+            <text x="260" y="80" font-size="9" fill="#555">&#x25b6; Solar panel orientation</text>
+            <text x="260" y="97" font-size="9" fill="#555">&#x25b6; Agriculture crop planning</text>
+            <text x="260" y="114" font-size="9" fill="#555">&#x25b6; Snow melt prediction</text>
+            <text x="260" y="131" font-size="9" fill="#555">&#x25b6; Building energy efficiency</text>
+            <text x="260" y="148" font-size="9" fill="#555">&#x25b6; Vegetation analysis</text>
+            <text x="260" y="168" font-size="8" fill="#888" font-style="italic">Key: Direction &#x2192; Sun exposure</text>
+            <text x="260" y="182" font-size="8" fill="#888" font-style="italic">South-facing = Max solar in Nepal</text>
+            <text x="260" y="196" font-size="8" fill="#888" font-style="italic">North-facing = Cold, shaded</text>
+          </g>
+          <!-- Combined uses box -->
+          <g filter="url(#s810)">
+            <rect x="475" y="35" width="210" height="170" rx="8" fill="url(#cmbbg)" stroke="#2d7d46" stroke-width="1.2"/>
+            <text x="580" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Combined (Slope+Aspect)</text>
+            <line x1="490" y1="62" x2="670" y2="62" stroke="#2d7d46" stroke-width="0.5" opacity="0.5"/>
+            <text x="490" y="80" font-size="9" fill="#555">&#x25b6; Hillshade visualization</text>
+            <text x="490" y="97" font-size="9" fill="#555">&#x25b6; Terrain classification</text>
+            <text x="490" y="114" font-size="9" fill="#555">&#x25b6; Wildfire spread modeling</text>
+            <text x="490" y="131" font-size="9" fill="#555">&#x25b6; Ski resort planning</text>
+            <text x="490" y="148" font-size="9" fill="#555">&#x25b6; Habitat suitability</text>
+            <text x="490" y="168" font-size="8" fill="#888" font-style="italic">Hillshade requires both:</text>
+            <text x="490" y="182" font-size="8" fill="#888" font-style="italic">slope (steepness) + aspect</text>
+            <text x="490" y="196" font-size="8" fill="#888" font-style="italic">(direction) + sun angle</text>
+          </g>
+        </svg>
+        <figcaption>Fig 8.10 &ndash; Practical applications of Slope, Aspect, and their combined use in civil engineering and environmental analysis</figcaption>
+      </figure>
+    </div>
+
+<p class="footer-note">End of Chapter 8 – Surface Model</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

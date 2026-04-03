@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 1 – Introduction and Overview of GIS and Software</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 1</div>
+    <h1>Introduction and Overview of GIS and Software</h1>
+  </header>
+  <main>
+
+    <!-- 1. Definition of GIS and its Key Features -->
+    <h2>1. Definition of GIS and its Key Features <span class="exam-ref">Covers: 2076 Bhadra Q1a, 2074 Magh Q1, 2072 Magh Q1, 2081 Chaitra</span></h2>
+    <p><strong>Definition:</strong> A Geographic Information System (GIS) is a computer-based tool designed to capture, store, manipulate, analyze, manage, and present spatial or geographic data. In simple terms, it is a smart map that links "where things are" with "what things are like."</p>
+
+    <p><strong>The Figure (For the 2072 Magh Question):</strong> If asked to define GIS with a figure, draw a simple block diagram showing the real world at the bottom, and multiple floating "layers" stacked above it.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 460 340" width="460" height="340" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <marker id="arrowUp" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto"><polygon points="0 7, 5 0, 10 7" fill="#1a3c5e"/></marker>
+          <filter id="layerShadow"><feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.15"/></filter>
+          <linearGradient id="gStreets" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f06878"/><stop offset="100%" stop-color="#d94452"/></linearGradient>
+          <linearGradient id="gParcels" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6dd5f5"/><stop offset="100%" stop-color="#38a7d4"/></linearGradient>
+          <linearGradient id="gLand" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fdd56d"/><stop offset="100%" stop-color="#e5a222"/></linearGradient>
+          <linearGradient id="gElev" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#7fbf4a"/></linearGradient>
+          <linearGradient id="gRealW" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5a4a2a"/><stop offset="100%" stop-color="#3e3218"/></linearGradient>
+        </defs>
+        <!-- Real World base -->
+        <rect x="55" y="262" width="220" height="55" rx="8" fill="url(#gRealW)" filter="url(#layerShadow)"/>
+        <text x="165" y="294" text-anchor="middle" font-size="14" fill="#f5f0e8" font-weight="bold">Real World</text>
+        <!-- Layer shadows + layers (3D perspective via skew + stacking) -->
+        <!-- Layer 1: Elevation -->
+        <g filter="url(#layerShadow)">
+          <rect x="75" y="200" width="220" height="40" rx="5" fill="url(#gElev)" stroke="#5a9a30" stroke-width=".8" opacity="0.92" transform="skewX(-8)"/>
+          <!-- mini terrain line -->
+          <polyline points="110,218 125,210 138,222 155,208 170,215 190,207 210,220 230,212 255,218" fill="none" stroke="#3e7a1a" stroke-width="1" opacity="0.3" transform="skewX(-8)"/>
+          <text x="185" y="226" text-anchor="middle" font-size="11.5" fill="#2a5a10" font-weight="600">Elevation</text>
+        </g>
+        <!-- Layer 2: Land Use -->
+        <g filter="url(#layerShadow)">
+          <rect x="75" y="153" width="220" height="40" rx="5" fill="url(#gLand)" stroke="#c49018" stroke-width=".8" opacity="0.92" transform="skewX(-8)"/>
+          <!-- mini land parcels -->
+          <rect x="115" y="162" width="18" height="12" rx="1" fill="#c49018" fill-opacity="0.25" transform="skewX(-8)"/>
+          <rect x="140" y="164" width="24" height="10" rx="1" fill="#c49018" fill-opacity="0.25" transform="skewX(-8)"/>
+          <rect x="200" y="161" width="20" height="13" rx="1" fill="#c49018" fill-opacity="0.25" transform="skewX(-8)"/>
+          <text x="185" y="179" text-anchor="middle" font-size="11.5" fill="#6d5010" font-weight="600">Land Use</text>
+        </g>
+        <!-- Layer 3: Parcels -->
+        <g filter="url(#layerShadow)">
+          <rect x="75" y="106" width="220" height="40" rx="5" fill="url(#gParcels)" stroke="#2085aa" stroke-width=".8" opacity="0.92" transform="skewX(-8)"/>
+          <!-- mini polygon outlines -->
+          <polygon points="120,118 140,115 145,130 125,132" fill="none" stroke="#186a8a" stroke-width=".7" opacity="0.35" transform="skewX(-8)"/>
+          <polygon points="175,116 200,114 205,130 180,131 170,124" fill="none" stroke="#186a8a" stroke-width=".7" opacity="0.35" transform="skewX(-8)"/>
+          <text x="185" y="132" text-anchor="middle" font-size="11.5" fill="#0e4a66" font-weight="600">Parcels</text>
+        </g>
+        <!-- Layer 4: Streets -->
+        <g filter="url(#layerShadow)">
+          <rect x="75" y="59" width="220" height="40" rx="5" fill="url(#gStreets)" stroke="#a03040" stroke-width=".8" opacity="0.92" transform="skewX(-8)"/>
+          <!-- mini road lines -->
+          <line x1="110" y1="75" x2="260" y2="75" stroke="#fff" stroke-width="1.2" opacity="0.3" transform="skewX(-8)"/>
+          <line x1="170" y1="62" x2="170" y2="96" stroke="#fff" stroke-width=".8" opacity="0.2" transform="skewX(-8)"/>
+          <text x="185" y="84" text-anchor="middle" font-size="11.5" fill="#fff" font-weight="600">Streets</text>
+        </g>
+        <!-- Vertical arrow with bracket -->
+        <line x1="330" y1="282" x2="330" y2="72" stroke="#1a3c5e" stroke-width="2" marker-end="url(#arrowUp)"/>
+        <text x="355" y="178" font-size="11" fill="#1a3c5e" font-weight="bold" writing-mode="tb" letter-spacing="1">GIS Layers</text>
+        <!-- Dashed connection lines from layers to arrow -->
+        <line x1="297" y1="80" x2="326" y2="80" stroke="#1a3c5e" stroke-width=".5" stroke-dasharray="3,2" opacity=".4"/>
+        <line x1="297" y1="127" x2="326" y2="127" stroke="#1a3c5e" stroke-width=".5" stroke-dasharray="3,2" opacity=".4"/>
+        <line x1="297" y1="174" x2="326" y2="174" stroke="#1a3c5e" stroke-width=".5" stroke-dasharray="3,2" opacity=".4"/>
+        <line x1="297" y1="221" x2="326" y2="221" stroke="#1a3c5e" stroke-width=".5" stroke-dasharray="3,2" opacity=".4"/>
+      </svg>
+      <figcaption>Fig 1.1 – GIS separates complex reality into manageable thematic layers</figcaption>
+    </figure>
+
+    <p><strong>Key Features/Functions:</strong></p>
+    <ul>
+      <li><strong>Integration:</strong> It integrates spatial geometry with tabular attribute data.</li>
+      <li><strong>Layering:</strong> It organizes data into distinct thematic layers that can be overlaid.</li>
+      <li><strong>Analysis:</strong> It performs complex spatial mathematics (like buffering or intersecting) that cannot be done on paper maps.</li>
+    </ul>
+
+    <!-- 2. The Five Components of GIS -->
+    <h2>2. The Five Components of GIS <span class="exam-ref">Covers: 2079 Chaitra Q1a, 2071 Magh Q1a, 2071 Bhadra Q1a, 2075 Magh Q1a</span></h2>
+    <p>To secure full marks for this highly repeated question, you must list and briefly explain all five interconnected components.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 280" width="520" height="280" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <filter id="fShadow1"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.18"/></filter>
+          <radialGradient id="gcCenter" cx="40%" cy="35%"><stop offset="0%" stop-color="#2a5a8a"/><stop offset="100%" stop-color="#0e2a44"/></radialGradient>
+          <radialGradient id="gcHW" cx="40%" cy="35%"><stop offset="0%" stop-color="#7ae0ff"/><stop offset="100%" stop-color="#3aadda"/></radialGradient>
+          <radialGradient id="gcSW" cx="40%" cy="35%"><stop offset="0%" stop-color="#c8f09a"/><stop offset="100%" stop-color="#7fbf4a"/></radialGradient>
+          <radialGradient id="gcDA" cx="40%" cy="35%"><stop offset="0%" stop-color="#ffe080"/><stop offset="100%" stop-color="#d9a010"/></radialGradient>
+          <radialGradient id="gcPE" cx="40%" cy="35%"><stop offset="0%" stop-color="#ff8888"/><stop offset="100%" stop-color="#c83838"/></radialGradient>
+          <radialGradient id="gcME" cx="40%" cy="35%"><stop offset="0%" stop-color="#cbb8f0"/><stop offset="100%" stop-color="#8a6cc8"/></radialGradient>
+        </defs>
+        <!-- Connection lines (behind circles) -->
+        <line x1="138" y1="78" x2="213" y2="118" stroke="#b8b0a0" stroke-width="2" stroke-dasharray="5,3"/>
+        <line x1="382" y1="78" x2="298" y2="118" stroke="#b8b0a0" stroke-width="2" stroke-dasharray="5,3"/>
+        <line x1="395" y1="192" x2="297" y2="155" stroke="#b8b0a0" stroke-width="2" stroke-dasharray="5,3"/>
+        <line x1="118" y1="192" x2="215" y2="155" stroke="#b8b0a0" stroke-width="2" stroke-dasharray="5,3"/>
+        <line x1="260" y1="212" x2="260" y2="178" stroke="#b8b0a0" stroke-width="2" stroke-dasharray="5,3"/>
+        <!-- Central GIS circle -->
+        <circle cx="260" cy="140" r="46" fill="url(#gcCenter)" filter="url(#fShadow1)"/>
+        <text x="260" y="136" text-anchor="middle" font-size="18" fill="#f5f0e8" font-weight="bold">GIS</text>
+        <text x="260" y="152" text-anchor="middle" font-size="8" fill="#a0c8e8" letter-spacing=".1em">SYSTEM</text>
+        <!-- Hardware -->
+        <circle cx="105" cy="62" r="42" fill="url(#gcHW)" filter="url(#fShadow1)"/>
+        <text x="105" y="54" text-anchor="middle" font-size="16">&#x1F5A5;</text>
+        <text x="105" y="72" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#0e4a66">Hardware</text>
+        <!-- Software -->
+        <circle cx="415" cy="62" r="42" fill="url(#gcSW)" filter="url(#fShadow1)"/>
+        <text x="415" y="54" text-anchor="middle" font-size="16">&#x1F4BB;</text>
+        <text x="415" y="72" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#2a5a10">Software</text>
+        <!-- Data -->
+        <circle cx="430" cy="205" r="42" fill="url(#gcDA)" filter="url(#fShadow1)"/>
+        <text x="430" y="197" text-anchor="middle" font-size="16">&#x1F4CA;</text>
+        <text x="430" y="215" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#6d5010">Data</text>
+        <!-- People -->
+        <circle cx="90" cy="205" r="42" fill="url(#gcPE)" filter="url(#fShadow1)"/>
+        <text x="90" y="197" text-anchor="middle" font-size="16">&#x1F465;</text>
+        <text x="90" y="215" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#fff">People</text>
+        <!-- Methods -->
+        <circle cx="260" cy="252" r="42" fill="url(#gcME)" filter="url(#fShadow1)"/>
+        <text x="260" y="244" text-anchor="middle" font-size="16">&#x2699;</text>
+        <text x="260" y="262" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#3a2860">Methods</text>
+      </svg>
+      <figcaption>Fig 1.2 – The Five Interconnected Components of GIS</figcaption>
+    </figure>
+
+    <ol>
+      <li><strong>Hardware:</strong> The physical equipment used to operate the GIS. This includes the computer workstation, GPS receivers for field data collection, servers for data storage, and plotters for printing the final maps.</li>
+      <li><strong>Software:</strong> The programs that provide the functions and tools needed to store, analyze, and display geographic information. Examples include ArcGIS Pro, QGIS, and database management systems (DBMS) like PostgreSQL.</li>
+      <li><strong>Data (The most important/expensive component):</strong> The actual information being analyzed. It consists of both spatial data (the map geometries) and non-spatial attribute data (the tables describing those geometries).</li>
+      <li><strong>People:</strong> GIS technology is useless without the people who manage the system, develop plans, and apply it to real-world problems. This ranges from highly trained GIS analysts to the end-users viewing a map on their phones.</li>
+      <li><strong>Methods (Procedures):</strong> A successful GIS operates according to a well-designed plan and business rules. This includes the specific algorithms, analytical workflows, and standardized data collection protocols used by an engineering firm.</li>
+    </ol>
+
+    <!-- 3. How Does GIS Work? -->
+    <h2>3. How Does GIS Work? <span class="exam-ref">Covers: 2082 Shrawan</span></h2>
+    <p>If asked how the system actually operates, outline the standard GIS workflow:</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 540 100" width="540" height="100" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <marker id="arrRight" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#1a3c5e"/></marker>
+          <filter id="fBox"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <linearGradient id="gCapture" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6dd5f5"/><stop offset="100%" stop-color="#38a7d4"/></linearGradient>
+          <linearGradient id="gStore" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#7fbf4a"/></linearGradient>
+          <linearGradient id="gAnalyse" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdd56d"/><stop offset="100%" stop-color="#d9a010"/></linearGradient>
+          <linearGradient id="gOutput" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f07888"/><stop offset="100%" stop-color="#c83848"/></linearGradient>
+        </defs>
+        <!-- Step 1: Data Capture -->
+        <rect x="5" y="18" width="115" height="52" rx="8" fill="url(#gCapture)" filter="url(#fBox)"/>
+        <text x="62" y="38" text-anchor="middle" font-size="15">&#x1F6F0;</text>
+        <text x="62" y="56" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#0e4a66">Data Capture</text>
+        <!-- Arrow 1 -->
+        <line x1="124" y1="44" x2="146" y2="44" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#arrRight)"/>
+        <!-- Step 2: Storage -->
+        <rect x="150" y="18" width="115" height="52" rx="8" fill="url(#gStore)" filter="url(#fBox)"/>
+        <text x="207" y="38" text-anchor="middle" font-size="15">&#x1F4BE;</text>
+        <text x="207" y="56" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#2a5a10">Storage</text>
+        <!-- Arrow 2 -->
+        <line x1="269" y1="44" x2="291" y2="44" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#arrRight)"/>
+        <!-- Step 3: Analysis -->
+        <rect x="295" y="18" width="115" height="52" rx="8" fill="url(#gAnalyse)" filter="url(#fBox)"/>
+        <text x="352" y="38" text-anchor="middle" font-size="15">&#x1F50D;</text>
+        <text x="352" y="56" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#6d5010">Analysis</text>
+        <!-- Arrow 3 -->
+        <line x1="414" y1="44" x2="436" y2="44" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#arrRight)"/>
+        <!-- Step 4: Output -->
+        <rect x="440" y="18" width="95" height="52" rx="8" fill="url(#gOutput)" filter="url(#fBox)"/>
+        <text x="487" y="38" text-anchor="middle" font-size="15">&#x1F5FA;</text>
+        <text x="487" y="56" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#fff">Output</text>
+        <!-- Step numbers -->
+        <text x="62" y="82" text-anchor="middle" font-size="8" fill="#6b6b6b">Step 1</text>
+        <text x="207" y="82" text-anchor="middle" font-size="8" fill="#6b6b6b">Step 2</text>
+        <text x="352" y="82" text-anchor="middle" font-size="8" fill="#6b6b6b">Step 3</text>
+        <text x="487" y="82" text-anchor="middle" font-size="8" fill="#6b6b6b">Step 4</text>
+      </svg>
+      <figcaption>Fig 1.3 – The Standard GIS Workflow</figcaption>
+    </figure>
+
+    <ol>
+      <li><strong>Data Capture (Input):</strong> Gathering data from the real world using satellites, drones, GPS surveys, or digitizing old paper maps.</li>
+      <li><strong>Data Management (Storage):</strong> Storing the captured data securely in a spatial database where it can be easily queried and updated.</li>
+      <li><strong>Spatial Analysis:</strong> Using mathematical tools (like overlay, proximity, or network analysis) to find patterns, identify suitable sites, or model environmental impacts.</li>
+      <li><strong>Output (Display):</strong> Presenting the final results of the analysis as a printed map, an interactive web dashboard, or a 3D visualization.</li>
+    </ol>
+
+    <!-- 4. Spatial vs. Non-Spatial Data & Types of Spatial Data -->
+    <h2>4. Spatial vs. Non-Spatial Data &amp; Types of Spatial Data <span class="exam-ref">Covers: 2071 Bhadra Q1b, 2075 Magh Q1b, 2071 Bhadra Q1a</span></h2>
+    <p>This distinction is the absolute core of how GIS databases operate.</p>
+
+    <h3>Spatial Data:</h3>
+    <ul>
+      <li><strong>Definition:</strong> Data that defines the absolute, physical location and geometry of an object on the Earth's surface using a coordinate system (X, Y coordinates). It answers the question: "Where is it?"</li>
+      <li><strong>Examples:</strong> The exact latitude/longitude of a water well, the boundary lines of a municipality, or the routing of a highway.</li>
+      <li><strong>Basic Types of Spatial Data:</strong>
+        <ul>
+          <li><strong>Vector Data:</strong> Represents discrete features using Points, Lines, and Polygons.</li>
+          <li><strong>Raster Data:</strong> Represents continuous surfaces (like elevation or temperature) using a grid of equally sized pixels.</li>
+        </ul>
+
+        <figure class="figure">
+          <svg viewBox="0 0 500 160" width="500" height="160" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+            <defs>
+              <filter id="fPanel"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+              <linearGradient id="gVec" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fc"/><stop offset="100%" stop-color="#cce4f4"/></linearGradient>
+              <linearGradient id="gRas" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef4e8"/><stop offset="100%" stop-color="#f8e4c8"/></linearGradient>
+            </defs>
+            <!-- Vector panel -->
+            <rect x="5" y="5" width="235" height="145" rx="8" fill="url(#gVec)" filter="url(#fPanel)" stroke="#a0c8e0" stroke-width=".5"/>
+            <text x="122" y="24" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a3c5e">Vector Data</text>
+            <line x1="30" y1="30" x2="215" y2="30" stroke="#a0c8e0" stroke-width=".5"/>
+            <!-- Points with location dots + crosshairs -->
+            <circle cx="42" cy="62" r="6" fill="#c83848" stroke="#8b2500" stroke-width=".8"/>
+            <circle cx="62" cy="80" r="6" fill="#c83848" stroke="#8b2500" stroke-width=".8"/>
+            <circle cx="35" cy="92" r="6" fill="#c83848" stroke="#8b2500" stroke-width=".8"/>
+            <line x1="42" y1="56" x2="42" y2="68" stroke="#8b2500" stroke-width=".3"/>
+            <line x1="36" y1="62" x2="48" y2="62" stroke="#8b2500" stroke-width=".3"/>
+            <text x="48" y="118" text-anchor="middle" font-size="10" fill="#6b6b6b">Points</text>
+            <!-- Lines with styled polyline -->
+            <polyline points="100,52 118,74 138,58 158,85" fill="none" stroke="#38a7d4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="100" cy="52" r="2.5" fill="#0e4a66"/>
+            <circle cx="118" cy="74" r="2.5" fill="#0e4a66"/>
+            <circle cx="138" cy="58" r="2.5" fill="#0e4a66"/>
+            <circle cx="158" cy="85" r="2.5" fill="#0e4a66"/>
+            <text x="130" y="118" text-anchor="middle" font-size="10" fill="#6b6b6b">Lines</text>
+            <!-- Polygon with fill pattern -->
+            <polygon points="182,52 212,46 218,84 195,98 178,76" fill="#7fbf4a" fill-opacity="0.35" stroke="#2a8c2a" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle cx="182" cy="52" r="2" fill="#2a8c2a"/>
+            <circle cx="212" cy="46" r="2" fill="#2a8c2a"/>
+            <circle cx="218" cy="84" r="2" fill="#2a8c2a"/>
+            <circle cx="195" cy="98" r="2" fill="#2a8c2a"/>
+            <circle cx="178" cy="76" r="2" fill="#2a8c2a"/>
+            <text x="198" y="118" text-anchor="middle" font-size="10" fill="#6b6b6b">Polygons</text>
+            <!-- VS divider -->
+            <text x="250" y="82" text-anchor="middle" font-size="12" fill="#b8860b" font-weight="bold" font-style="italic">vs</text>
+            <!-- Raster panel -->
+            <rect x="260" y="5" width="235" height="145" rx="8" fill="url(#gRas)" filter="url(#fPanel)" stroke="#d8c8a0" stroke-width=".5"/>
+            <text x="377" y="24" text-anchor="middle" font-size="13" font-weight="bold" fill="#8b2500">Raster Data</text>
+            <line x1="285" y1="30" x2="470" y2="30" stroke="#d8c8a0" stroke-width=".5"/>
+            <!-- Raster grid with gradient elevation colours -->
+            <g transform="translate(310,40)">
+              <rect x="0" y="0" width="22" height="22" fill="#1a5c1a" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="22" y="0" width="22" height="22" fill="#2a8c2a" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="44" y="0" width="22" height="22" fill="#4aaa4a" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="66" y="0" width="22" height="22" fill="#6cc46c" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="88" y="0" width="22" height="22" fill="#90d890" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="0" y="22" width="22" height="22" fill="#2a8c2a" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="22" y="22" width="22" height="22" fill="#4aaa4a" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="44" y="22" width="22" height="22" fill="#6cc46c" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="66" y="22" width="22" height="22" fill="#90d890" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="88" y="22" width="22" height="22" fill="#b8ecb8" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="0" y="44" width="22" height="22" fill="#4aaa4a" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="22" y="44" width="22" height="22" fill="#6cc46c" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="44" y="44" width="22" height="22" fill="#90d890" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="66" y="44" width="22" height="22" fill="#b8ecb8" stroke="#fff" stroke-width="1" rx="1"/>
+              <rect x="88" y="44" width="22" height="22" fill="#daf4da" stroke="#fff" stroke-width="1" rx="1"/>
+              <!-- elevation values -->
+              <text x="11" y="14" text-anchor="middle" font-size="7" fill="#fff">50</text>
+              <text x="33" y="14" text-anchor="middle" font-size="7" fill="#fff">45</text>
+              <text x="55" y="14" text-anchor="middle" font-size="7" fill="#fff">38</text>
+              <text x="77" y="14" text-anchor="middle" font-size="7" fill="#1a5c1a">30</text>
+              <text x="99" y="14" text-anchor="middle" font-size="7" fill="#1a5c1a">22</text>
+            </g>
+            <text x="377" y="118" text-anchor="middle" font-size="10" fill="#6b6b6b">Grid of Pixels (cells)</text>
+          </svg>
+          <figcaption>Fig 1.4 – Vector Data (Points, Lines, Polygons) vs. Raster Data (Grid of Pixels)</figcaption>
+        </figure>
+      </li>
+    </ul>
+
+    <h3>Non-Spatial Data (Attribute Data):</h3>
+    <ul>
+      <li><strong>Definition:</strong> The tabular, descriptive information that is linked to the spatial data. It defines the characteristics, traits, or qualities of the geographic feature. It answers the question: "What is it?" or "What are its properties?"</li>
+      <li><strong>Examples:</strong> The depth and water quality of that well, the population size and mayor's name of that municipality, or the speed limit and pavement type of that highway.</li>
+    </ul>
+
+    <!-- 1.2 Features and Functions of GIS -->
+    <h2>1.2 Features and Functions of GIS <span class="exam-ref">Covers: 2071 Bhadra Q1c, 2075 Bhadra Q1b, 2075 Bhadra Q1c</span></h2>
+
+    <h3>1. The Major Functions of GIS</h3>
+    <p>To answer what the major functions are, you should list the standard sequence of how data moves through a GIS:</p>
+    <ul>
+      <li><strong>Data Capture/Input:</strong> Digitizing paper maps, importing GPS coordinates, or loading satellite imagery.</li>
+      <li><strong>Data Storage and Management:</strong> Organizing spatial and attribute data into a structured geodatabase so it can be easily updated and queried.</li>
+      <li><strong>Data Manipulation and Analysis:</strong> Performing geoprocessing tasks (like buffering, overlaying, or network analysis) to extract new information.</li>
+      <li><strong>Data Output/Presentation:</strong> Generating final maps, 3D scenes, or statistical reports.</li>
+    </ul>
+
+    <h3>2. The "Four Ms" of GIS</h3>
+    <p>This is a classic conceptual question. The Four Ms summarize the ultimate goals of using GIS:</p>
+    <ol>
+      <li><strong>Measurement:</strong> Calculating exact spatial metrics, such as the area of a flooded zone, the length of a proposed highway, or the volume of a reservoir.</li>
+      <li><strong>Mapping:</strong> Creating visual, cartographic representations of data so humans can easily understand complex spatial relationships.</li>
+      <li><strong>Monitoring:</strong> Tracking changes over time, such as measuring the rate of urban sprawl, tracking deforestation over a decade, or monitoring glacier retreat.</li>
+      <li><strong>Modeling:</strong> Simulating real-world processes to predict future outcomes, such as predicting where water will flow during a 100-year storm, or modeling traffic congestion on a new road network.</li>
+    </ol>
+
+    <h3>3. Which basic function is the most important and why?</h3>
+    <ul>
+      <li><strong>The Answer:</strong> Data Analysis (Spatial Analysis) is the most important function.</li>
+      <li><strong>The Reason:</strong> Without spatial analysis, a GIS is nothing more than a digital filing cabinet or a static drawing tool (like AutoCAD). The true power of GIS—and what separates it from all other software—is its ability to combine multiple layers of data using mathematical logic to answer complex "what-if" questions, solve problems, and drive engineering decisions.</li>
+    </ul>
+
+    <!-- 1.3 Why GIS is Important (Specifically for Civil Engineering) -->
+    <h2>1.3 Why GIS is Important (Specifically for Civil Engineering) <span class="exam-ref">Covers: 2073 Magh Q1, 2081 Chaitra</span></h2>
+
+    <h3>1. Importance in Civil Engineering</h3>
+    <p>Civil engineering is inherently spatial—everything you build has a location, an elevation, and interacts with the surrounding environment. GIS is critical because:</p>
+    <ul>
+      <li><strong>Site Suitability:</strong> It allows engineers to mathematically overlay constraints (slope, soil type, distance to rivers) to find the absolute safest and most cost-effective location for a dam, landfill, or hospital.</li>
+      <li><strong>Hazard Mitigation:</strong> It helps in mapping flood plains, landslide susceptibility zones, and seismic fault lines to prevent building critical infrastructure in danger zones.</li>
+      <li><strong>Asset Management:</strong> It provides a central database for municipalities to track exactly where underground water pipes, sewer lines, and electrical grids are buried, making maintenance vastly more efficient.</li>
+    </ul>
+
+    <h3>2. Why it is an important tool in today's world</h3>
+    <p>Beyond just engineering, the modern world generates massive amounts of "Big Data." GIS is the only tool capable of taking global, complex datasets (climate change models, global supply chains, pandemic spread) and making them understandable. It breaks down silos between different scientific disciplines by giving them a common language: geography.</p>
+
+    <!-- 1.4 How GIS is Applied -->
+    <h2>1.4 How GIS is Applied <span class="exam-ref">Covers: 2072 Magh Q1, 2071 Magh Q1a, 2075 Bhadra Q1a, 2081 Chaitra</span></h2>
+
+    <h3>1. Application in Infrastructure Planning and Design</h3>
+    <p>If the exam specifically asks about infrastructure, use these examples:</p>
+    <ul>
+      <li><strong>Route Optimization:</strong> Using "Least Cost Path" analysis to design a new highway alignment that avoids steep slopes, bypasses expensive private land, and minimizes environmental destruction.</li>
+      <li><strong>Earthwork Calculations:</strong> Using Digital Elevation Models (DEMs) to precisely calculate the "cut and fill" volumes required to level a construction site.</li>
+      <li><strong>Hydrological Design:</strong> Delineating watersheds to calculate the peak discharge for a specific catchment, ensuring a new highway culvert is sized correctly so it doesn't wash away.</li>
+    </ul>
+
+    <h3>2. Three Examples of GIS Applications in Different Fields</h3>
+    <p>To show breadth of knowledge, cite applications completely outside of civil engineering:</p>
+    <ol>
+      <li><strong>Public Health &amp; Epidemiology:</strong> Mapping the spread of infectious diseases (like COVID-19 or Dengue) to identify outbreak hotspots and efficiently distribute vaccines or medical supplies.</li>
+      <li><strong>Precision Agriculture:</strong> Using satellite remote sensing (NDVI) to identify exactly which parts of a massive farm lack water or fertilizer, allowing farmers to apply resources only where needed.</li>
+      <li><strong>Disaster Management:</strong> Real-time tracking of hurricane paths or forest fires, allowing emergency management agencies to map the exact evacuation zones and route ambulances around blocked roads.</li>
+    </ol>
+
+    <!-- 1.6 & 1.7 GIS vs. Cartography, CAD, and DBMS -->
+    <h2>1.6 &amp; 1.7 GIS vs. Cartography, CAD, and DBMS <span class="exam-ref">Covers: 2072 Ashwin Q1a, 2071 Magh Q6e, 2073 Bhadra Q1a, 2076 Bhadra Q1a, 2078 Chaitra Q1a</span></h2>
+    <p>Examiners frequently ask you to differentiate GIS from other allied systems to prove you understand its unique analytical capabilities.</p>
+
+    <h3>1. GIS vs. Cartography <span class="exam-ref">Tested in: 2072 Ashwin Q1a, 2071 Magh Q6e, 2073 Bhadra Q1a, 2076 Bhadra Q1a</span></h3>
+    <ul>
+      <li><strong>Cartography:</strong> The art and science of making maps. Its primary focus is on the visual display and communication of spatial information. A cartographic map is static; once printed, the data cannot be queried or updated.</li>
+      <li><strong>GIS:</strong> An analytical system. While GIS uses cartography to produce its final output, its primary focus is on data management and spatial analysis. A GIS map is dynamic; it is backed by a database where you can query features, update attributes, and run mathematical models.</li>
+    </ul>
+
+    <h3>2. GIS vs. CAD (Computer-Aided Design) <span class="exam-ref">Tested in: 2073 Bhadra Q1a, 2078 Chaitra Q1a</span></h3>
+    <ul>
+      <li><strong>CAD:</strong> Used primarily by engineers and architects to draw highly precise graphics (lines, arcs, circles) for buildings or machine parts. It typically uses a local Cartesian coordinate system (X, Y) rather than real-world geographic coordinates (Lat/Long). Historically, CAD does not link drawing elements to robust attribute tables.</li>
+      <li><strong>GIS:</strong> Uses real-world geographic coordinate systems. Instead of just drawing a line, GIS understands the "topology" of that line (what it connects to) and links it directly to a deep database table containing its non-spatial properties.</li>
+    </ul>
+
+    <h3>3. GIS vs. DBMS (Database Management System) <span class="exam-ref">Tested in: 2076 Bhadra Q1a, 2078 Chaitra Q1a</span></h3>
+    <ul>
+      <li><strong>DBMS:</strong> A system (like Oracle or standard SQL) designed to store, manage, and query massive amounts of tabular data (text and numbers). However, a traditional DBMS cannot understand spatial geometries. You cannot ask a standard DBMS, "Which addresses fall inside this flood polygon?"</li>
+      <li><strong>GIS:</strong> Acts as a Spatial DBMS. It extends standard database capabilities by adding a geometry column, allowing it to perform spatial queries (intersections, buffers) alongside standard tabular queries.</li>
+    </ul>
+
+    <h3>4. The Development of GIS (Evolution) <span class="exam-ref">Tested in: 2078 Chaitra Q1a</span></h3>
+    <p>GIS did not invent these concepts; it evolved by merging the best features of its allied disciplines. It took the visual presentation capabilities of Cartography, the precise geometric drawing tools of CAD, and the massive data-handling power of a DBMS, combining them into a single, unified spatial analysis tool.</p>
+
+    <!-- 1.8 GIS Data Feed (Sources of Data) -->
+    <h2>1.8 GIS Data Feed (Sources of Data) <span class="exam-ref">Covers: 2073 Bhadra Q1b, 2082 Shrawan, 2078 Chaitra, 2076 Bhadra, 2072 Ashwin</span></h2>
+    <p>Data collection is a massive focus for examiners because it dictates the accuracy of an engineering project.</p>
+
+    <h3>1. Primary vs. Secondary Sources of GIS Data <span class="exam-ref">Tested in: 2082 Shrawan, 2076 Bhadra, 2073 Bhadra Q1b</span></h3>
+    <ul>
+      <li><strong>Primary Data Sources:</strong> Data collected directly from the real world specifically for a GIS project.
+        <ul>
+          <li><strong>Examples:</strong> GPS/GNSS field surveys, flying a drone to capture aerial imagery, capturing satellite Remote Sensing data, or collecting field samples using mobile GIS apps.</li>
+          <li><strong>Characteristics:</strong> Highly accurate, up-to-date, but generally very expensive and time-consuming to gather.</li>
+        </ul>
+      </li>
+      <li><strong>Secondary Data Sources:</strong> Data derived by converting or extracting information from existing sources.
+        <ul>
+          <li><strong>Examples:</strong> Digitizing paper topographic maps, scanning historical property plans, or downloading existing datasets from government portals (like OpenStreetMap or USGS DEMs).</li>
+          <li><strong>Characteristics:</strong> Cheaper and faster to acquire, but may be outdated, less accurate, or subject to the errors of the original mapmaker.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>2. Why Data Collection is the Most Important Process <span class="exam-ref">Tested in: 2078 Chaitra</span></h3>
+    <p>Data collection is the most critical phase because of the strict "Garbage In, Garbage Out" (GIGO) principle. The most advanced spatial analysis tools in the world cannot fix fundamentally flawed input data. Furthermore, in any major GIS engineering project, data acquisition and cleaning typically consume 60% to 80% of the entire project budget and timeline.</p>
+
+    <h3>3. Recent Developments in Data Acquisition Techniques <span class="exam-ref">Tested in: 2082 Shrawan</span></h3>
+    <p>To answer this, highlight modern technological shifts:</p>
+    <ul>
+      <li><strong>UAVs (Drones):</strong> Have revolutionized local surveying, allowing civil engineers to capture ultra-high-resolution imagery and 3D point clouds on-demand for a fraction of the cost of traditional airplanes.</li>
+      <li><strong>LiDAR (Light Detection and Ranging):</strong> Active laser scanning from the air or ground that can penetrate dense forest canopies to generate incredibly accurate bare-earth Digital Terrain Models (DTMs).</li>
+      <li><strong>Crowdsourcing / VGI (Volunteered Geographic Information):</strong> Platforms like OpenStreetMap where millions of global citizens constantly update road networks and building footprints using their smartphones.</li>
+      <li><strong>Cloud-based APIs:</strong> Systems directly feeding real-time IoT (Internet of Things) sensor data into GIS (e.g., live traffic sensors, real-time river gauge levels).</li>
+    </ul>
+
+    <p class="footer-note">End of Chapter 1 – Introduction and Overview of GIS and Software</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

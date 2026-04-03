@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Assessment – GIS &amp; Remote Sensing – All Questions</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Internal Assessment &bull; Chaitra 9, 2082 &bull; Total: 75 Minutes</div>
+    <h1>GIS Applications &amp; Remote Sensing — All Questions Solved</h1>
+  </header>
+  <main>
+
+    <!-- TABLE OF CONTENTS -->
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#q1">Q1: Define GNSS &amp; GIS Database for Water Supply [5+25]</a></li>
+        <li><a href="#q2">Q2: IDW Interpolation [10]</a></li>
+        <li><a href="#q3">Q3: Seasonal Land-Use Variation Analysis [30]</a></li>
+        <li><a href="#q4">Q4: Parameters from Elevation Data [10]</a></li>
+        <li><a href="#q5">Q5: Flow Accumulation in River Channel Analysis [10]</a></li>
+        <li><a href="#q6">Q6: Low Pass &amp; High Pass Filters [5+5]</a></li>
+      </ol>
+    </nav>
+
+
+    <!-- ================================================================ -->
+    <!--                        QUESTION 1                                -->
+    <!-- ================================================================ -->
+    <h2 id="q1">Question 1: GNSS Definition &amp; GIS Database for Water Supply Infrastructure <span class="exam-ref">[5 + 25 Marks]</span></h2>
+
+    <!-- ========== PART (a) ========== -->
+    <h3>Part (a): Define GNSS [5 Marks]</h3>
+
+    <p><strong>GNSS (Global Navigation Satellite System)</strong> is a general term describing any satellite constellation that provides positioning, navigation, and timing (PNT) services on a global or regional basis. Unlike "GPS," which refers only to the U.S. system, GNSS is an umbrella term covering all such systems worldwide.</p>
+
+    <div class="callout">
+      <strong>Key Point:</strong> GNSS = the entire family of satellite navigation systems. GPS is just one member of that family.
+    </div>
+
+    <h4>Major GNSS Constellations</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Country / Region</th>
+            <th>Satellites</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>GPS</strong> (Global Positioning System)</td><td>United States</td><td>~31</td><td>Fully Operational</td></tr>
+          <tr><td><strong>GLONASS</strong></td><td>Russia</td><td>~24</td><td>Fully Operational</td></tr>
+          <tr><td><strong>Galileo</strong></td><td>European Union</td><td>~30</td><td>Operational</td></tr>
+          <tr><td><strong>BeiDou</strong> (BDS)</td><td>China</td><td>~35</td><td>Fully Operational</td></tr>
+          <tr><td><strong>NavIC</strong> (IRNSS)</td><td>India</td><td>7</td><td>Regional</td></tr>
+          <tr><td><strong>QZSS</strong></td><td>Japan</td><td>4</td><td>Regional</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>How GNSS Works</h4>
+
+    <figure class="figure">
+      <svg viewBox="0 0 600 340" width="600" height="340" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <defs>
+          <radialGradient id="q1earth" cx="50%" cy="60%" r="50%">
+            <stop offset="0%" stop-color="#4fa86a"/>
+            <stop offset="70%" stop-color="#2d7d46"/>
+            <stop offset="100%" stop-color="#1a5a30"/>
+          </radialGradient>
+          <marker id="q1arr" markerWidth="8" markerHeight="6" refX="4" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#b8860b"/>
+          </marker>
+        </defs>
+        <rect width="600" height="340" rx="6" fill="#eaf2fb"/>
+        <ellipse cx="300" cy="500" rx="340" ry="220" fill="url(#q1earth)" opacity="0.25"/>
+        <g font-size="11" fill="#1a3c5e" font-weight="600">
+          <rect x="60" y="30" width="70" height="30" rx="4" fill="#5ea3e0" opacity="0.85"/>
+          <text x="95" y="50" text-anchor="middle" fill="white" font-size="10">GPS</text>
+          <line x1="95" y1="60" x2="270" y2="260" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#q1arr)"/>
+          <rect x="230" y="15" width="80" height="30" rx="4" fill="#e87055" opacity="0.85"/>
+          <text x="270" y="35" text-anchor="middle" fill="white" font-size="10">GLONASS</text>
+          <line x1="270" y1="45" x2="290" y2="260" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#q1arr)"/>
+          <rect x="420" y="25" width="70" height="30" rx="4" fill="#b8860b" opacity="0.85"/>
+          <text x="455" y="45" text-anchor="middle" fill="white" font-size="10">Galileo</text>
+          <line x1="455" y1="55" x2="310" y2="260" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#q1arr)"/>
+          <rect x="510" y="90" width="70" height="30" rx="4" fill="#2d7d46" opacity="0.85"/>
+          <text x="545" y="110" text-anchor="middle" fill="white" font-size="10">BeiDou</text>
+          <line x1="530" y1="120" x2="320" y2="260" stroke="#b8860b" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#q1arr)"/>
+        </g>
+        <rect x="260" y="260" width="80" height="40" rx="6" fill="#1a3c5e"/>
+        <text x="300" y="285" text-anchor="middle" fill="white" font-size="11" font-weight="700">Receiver</text>
+        <text x="300" y="320" text-anchor="middle" fill="#6b6b6b" font-size="10" font-style="italic">GNSS receiver receives signals from multiple constellations simultaneously</text>
+      </svg>
+      <figcaption><strong>Figure 1.1:</strong> GNSS concept — a receiver processes signals from multiple satellite constellations to determine precise location.</figcaption>
+    </figure>
+
+    <h4>Three Segments of GNSS</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Segment</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Space Segment</strong></td><td>The satellites orbiting Earth, continuously broadcasting navigation signals.</td></tr>
+          <tr><td><strong>Control Segment</strong></td><td>Ground stations that monitor satellite health, update orbits, and synchronize clocks.</td></tr>
+          <tr><td><strong>User Segment</strong></td><td>GNSS receivers (survey-grade, smartphones, vehicles) that compute position from satellite signals.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Advantages of Multi-Constellation GNSS</h4>
+    <ul>
+      <li><strong>More satellites visible</strong> = better accuracy, especially in urban canyons and hilly terrain</li>
+      <li><strong>Faster fix</strong> — time-to-first-fix (TTFF) is reduced</li>
+      <li><strong>Redundancy</strong> — if one system degrades, others maintain positioning</li>
+      <li><strong>Better coverage</strong> in high-latitude and obstructed environments</li>
+    </ul>
+
+    <!-- ========== PART (b) ========== -->
+    <h3>Part (b): Preparing a GIS Database of Water Supply Infrastructure Using GNSS [25 Marks]</h3>
+
+    <p class="lead">Scenario: You are a GIS expert tasked with creating a complete GIS vector database of water supply infrastructure (source, pipelines, household benefited) in a municipality. You have manpower for field work.</p>
+
+    <h4>Step 1: Planning &amp; Preparation</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Task</th><th>Details</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Define scope</td><td>Identify the municipal boundary, list all infrastructure types: water sources (springs, reservoirs, wells), pipelines (transmission, distribution), and benefited households.</td></tr>
+          <tr><td>Data model design</td><td>Design a geodatabase schema with feature classes for Point (sources, households), Line (pipelines), and Polygon (service zones).</td></tr>
+          <tr><td>Coordinate system</td><td>Choose an appropriate CRS (e.g., MUTM for Nepal-based municipalities) and ensure all data are in the same projection.</td></tr>
+          <tr><td>Collect existing data</td><td>Gather any existing maps, engineering drawings, pipe layout plans from the municipality.</td></tr>
+          <tr><td>Prepare equipment</td><td>GNSS receivers (handheld/survey-grade), smartphones with GIS apps, measurement tape, data collection forms.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Step 2: Database Schema Design</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Feature Class</th><th>Geometry</th><th>Key Attributes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Water Source</strong></td><td>Point</td><td>Source ID, Name, Type (spring/well/reservoir), Capacity (liters/sec), Elevation, Condition, Photo</td></tr>
+          <tr><td><strong>Pipeline</strong></td><td>Line</td><td>Pipe ID, Material (HDPE/GI/PVC), Diameter (mm), Length (m), Installation Year, Pressure Zone</td></tr>
+          <tr><td><strong>Household (Benefited)</strong></td><td>Point</td><td>HH ID, Owner Name, Ward No., Connection Type (tap/shared), No. of Members, Status (active/inactive)</td></tr>
+          <tr><td><strong>Storage Tank</strong></td><td>Point</td><td>Tank ID, Capacity (liters), Type (RCC/ferro-cement), Elevation, Condition</td></tr>
+          <tr><td><strong>Service Zone</strong></td><td>Polygon</td><td>Zone ID, Name, Total HH Served, Source Linked, Ward Coverage</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 600 400" width="600" height="400" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <defs>
+          <marker id="q1pipeArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/>
+          </marker>
+        </defs>
+        <rect width="600" height="400" rx="6" fill="#f8f6f0"/>
+        <text x="300" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a3c5e">Water Supply Infrastructure — GIS Vector Data Model</text>
+        <circle cx="100" cy="100" r="22" fill="#5ea3e0" stroke="#1a3c5e" stroke-width="1.5"/>
+        <text x="100" y="105" text-anchor="middle" fill="white" font-size="10" font-weight="700">Source</text>
+        <text x="100" y="140" text-anchor="middle" fill="#6b6b6b" font-size="9" font-style="italic">Point feature</text>
+        <rect x="230" y="80" width="50" height="40" rx="5" fill="#b8860b" stroke="#8b6508" stroke-width="1.5"/>
+        <text x="255" y="105" text-anchor="middle" fill="white" font-size="9" font-weight="700">Tank</text>
+        <text x="255" y="140" text-anchor="middle" fill="#6b6b6b" font-size="9" font-style="italic">Point feature</text>
+        <line x1="122" y1="100" x2="228" y2="100" stroke="#1a3c5e" stroke-width="3" marker-end="url(#q1pipeArr)"/>
+        <text x="175" y="90" text-anchor="middle" fill="#1a3c5e" font-size="9">Transmission Line</text>
+        <rect x="340" y="60" width="230" height="160" rx="10" fill="#edf7f0" stroke="#2d7d46" stroke-width="1" stroke-dasharray="6,3"/>
+        <text x="455" y="80" text-anchor="middle" fill="#2d7d46" font-size="10" font-weight="600">Service Zone (Polygon)</text>
+        <line x1="280" y1="100" x2="370" y2="110" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#q1pipeArr)"/>
+        <line x1="370" y1="110" x2="370" y2="160" stroke="#1a3c5e" stroke-width="2"/>
+        <line x1="370" y1="110" x2="450" y2="110" stroke="#1a3c5e" stroke-width="2"/>
+        <line x1="450" y1="110" x2="450" y2="160" stroke="#1a3c5e" stroke-width="2"/>
+        <line x1="450" y1="110" x2="530" y2="130" stroke="#1a3c5e" stroke-width="2"/>
+        <text x="330" y="95" fill="#1a3c5e" font-size="8">Distribution</text>
+        <g fill="#e87055" stroke="#8b2500" stroke-width="1">
+          <rect x="358" y="165" width="24" height="20" rx="3"/>
+          <rect x="438" y="165" width="24" height="20" rx="3"/>
+          <rect x="518" y="135" width="24" height="20" rx="3"/>
+          <rect x="395" y="190" width="24" height="20" rx="3"/>
+          <rect x="475" y="190" width="24" height="20" rx="3"/>
+        </g>
+        <text x="455" y="230" text-anchor="middle" fill="#8b2500" font-size="9" font-style="italic">Household Points</text>
+        <rect x="30" y="260" width="540" height="120" rx="6" fill="white" stroke="#d4cfc5" stroke-width="0.8"/>
+        <text x="300" y="280" text-anchor="middle" font-size="11" font-weight="700" fill="#1a3c5e">Legend</text>
+        <circle cx="70" cy="305" r="8" fill="#5ea3e0" stroke="#1a3c5e" stroke-width="1"/>
+        <text x="90" y="310" font-size="10" fill="#2c2c2c">Water Source (Point)</text>
+        <rect x="62" y="335" width="16" height="12" rx="2" fill="#b8860b" stroke="#8b6508" stroke-width="1"/>
+        <text x="90" y="345" font-size="10" fill="#2c2c2c">Storage Tank (Point)</text>
+        <line x1="250" y1="305" x2="290" y2="305" stroke="#1a3c5e" stroke-width="3"/>
+        <text x="300" y="310" font-size="10" fill="#2c2c2c">Pipeline (Line)</text>
+        <rect x="250" y="332" width="40" height="16" rx="4" fill="#edf7f0" stroke="#2d7d46" stroke-width="1" stroke-dasharray="4,2"/>
+        <text x="300" y="345" font-size="10" fill="#2c2c2c">Service Zone (Polygon)</text>
+        <rect x="462" y="297" width="16" height="14" rx="2" fill="#e87055" stroke="#8b2500" stroke-width="1"/>
+        <text x="488" y="310" font-size="10" fill="#2c2c2c">Household (Point)</text>
+      </svg>
+      <figcaption><strong>Figure 1.2:</strong> Schematic of GIS vector data model for water supply infrastructure.</figcaption>
+    </figure>
+
+    <h4>Step 3: Field Data Collection Using GNSS &amp; Mobile GIS Apps</h4>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tool / App</th><th>Purpose</th><th>Platform</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>QField</strong></td><td>Mobile GIS data collection app linked to QGIS projects</td><td>Android</td></tr>
+          <tr><td><strong>ArcGIS Field Maps</strong></td><td>Esri's mobile field collection app with GNSS support</td><td>Android / iOS</td></tr>
+          <tr><td><strong>KoBoToolbox / ODK Collect</strong></td><td>Form-based data collection with GPS, photos, attributes</td><td>Android</td></tr>
+          <tr><td><strong>SW Maps</strong></td><td>Free GIS app for collecting points, lines, polygons with external GNSS</td><td>Android</td></tr>
+          <tr><td><strong>Handheld GNSS Receiver</strong></td><td>Survey-grade positioning (e.g., Trimble, Leica)</td><td>Hardware</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 280" width="620" height="280" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <defs>
+          <marker id="q1flowArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/>
+          </marker>
+        </defs>
+        <rect width="620" height="280" rx="6" fill="#f8f6f0"/>
+        <g font-size="10" text-anchor="middle">
+          <rect x="20" y="40" width="110" height="55" rx="6" fill="#5ea3e0"/>
+          <text x="75" y="62" fill="white" font-weight="700" font-size="10">1. Prepare</text>
+          <text x="75" y="78" fill="white" font-size="8">Load forms + base map</text>
+          <line x1="132" y1="67" x2="155" y2="67" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q1flowArr)"/>
+          <rect x="158" y="40" width="110" height="55" rx="6" fill="#b8860b"/>
+          <text x="213" y="62" fill="white" font-weight="700" font-size="10">2. Navigate</text>
+          <text x="213" y="78" fill="white" font-size="8">Go to each feature</text>
+          <line x1="270" y1="67" x2="293" y2="67" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q1flowArr)"/>
+          <rect x="296" y="40" width="110" height="55" rx="6" fill="#2d7d46"/>
+          <text x="351" y="62" fill="white" font-weight="700" font-size="10">3. Collect</text>
+          <text x="351" y="78" fill="white" font-size="8">GNSS + attributes + photo</text>
+          <line x1="408" y1="67" x2="431" y2="67" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q1flowArr)"/>
+          <rect x="434" y="40" width="110" height="55" rx="6" fill="#e87055"/>
+          <text x="489" y="62" fill="white" font-weight="700" font-size="10">4. Trace Lines</text>
+          <text x="489" y="78" fill="white" font-size="8">Walk along pipeline</text>
+        </g>
+        <g font-size="10" text-anchor="middle">
+          <line x1="489" y1="97" x2="489" y2="120" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q1flowArr)"/>
+          <rect x="434" y="124" width="110" height="55" rx="6" fill="#8b2500"/>
+          <text x="489" y="146" fill="white" font-weight="700" font-size="10">5. QC in Field</text>
+          <text x="489" y="162" fill="white" font-size="8">Check completeness</text>
+          <line x1="432" y1="151" x2="409" y2="151" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q1flowArr)"/>
+          <rect x="296" y="124" width="110" height="55" rx="6" fill="#1a3c5e"/>
+          <text x="351" y="146" fill="white" font-weight="700" font-size="10">6. Sync / Export</text>
+          <text x="351" y="162" fill="white" font-size="8">Upload to GIS</text>
+          <line x1="294" y1="151" x2="271" y2="151" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q1flowArr)"/>
+          <rect x="158" y="124" width="110" height="55" rx="6" fill="#5ea3e0"/>
+          <text x="213" y="146" fill="white" font-weight="700" font-size="10">7. Clean &amp; Edit</text>
+          <text x="213" y="162" fill="white" font-size="8">Fix topology in GIS</text>
+          <line x1="156" y1="151" x2="133" y2="151" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q1flowArr)"/>
+          <rect x="20" y="124" width="110" height="55" rx="6" fill="#b8860b"/>
+          <text x="75" y="146" fill="white" font-weight="700" font-size="10">8. Map Output</text>
+          <text x="75" y="162" fill="white" font-size="8">Thematic maps + reports</text>
+        </g>
+        <text x="310" y="210" text-anchor="middle" font-size="11" fill="#1a3c5e" font-weight="600">Complete Field-to-Map Workflow</text>
+        <text x="310" y="228" text-anchor="middle" font-size="10" fill="#6b6b6b">Using GNSS-enabled mobile GIS applications for water supply mapping</text>
+      </svg>
+      <figcaption><strong>Figure 1.3:</strong> Step-by-step workflow from field data collection using GNSS/mobile GIS apps to final map output.</figcaption>
+    </figure>
+
+    <h4>Step 4: Detailed Field Procedures</h4>
+    <p><strong>Collecting Water Sources (Points):</strong> Stand at the source with GNSS receiver, wait for satellite lock (4+ satellites, PDOP &lt; 3), record the point, fill attributes (type, capacity, condition), take geotagged photographs.</p>
+    <p><strong>Tracing Pipelines (Lines):</strong> Start at a known point, enable continuous GNSS tracking, walk along the pipe route, pause at junctions to add vertices with attributes (diameter, material, burial depth).</p>
+    <p><strong>Recording Benefited Households (Points):</strong> Visit each household, record GNSS point at the tap/connection, fill in owner name, ward number, connection type, household members, and status.</p>
+
+    <h4>Step 5: Data Processing in GIS</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Process</th><th>Tool</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Import field data</td><td>QGIS / ArcGIS</td><td>Load collected shapefiles, GeoJSON, or sync from cloud</td></tr>
+          <tr><td>Topology check</td><td>Topology Rules</td><td>Ensure pipes are connected, no dangles, sources snap to pipe network</td></tr>
+          <tr><td>Attribute validation</td><td>Field Calculator</td><td>Check for missing values, normalize names, calculate pipe lengths</td></tr>
+          <tr><td>Projection alignment</td><td>Reproject tool</td><td>Ensure all layers are in the same CRS (e.g., MUTM Zone 45)</td></tr>
+          <tr><td>Service zone creation</td><td>Buffer / Dissolve</td><td>Create service area polygons from household clusters</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Step 6: Map Production &amp; Outputs</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Map / Output</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Water Source Location Map</strong></td><td>Shows all sources with type classification (spring, well, reservoir)</td></tr>
+          <tr><td><strong>Pipeline Network Map</strong></td><td>Displays the entire pipe network with diameter and material symbolization</td></tr>
+          <tr><td><strong>Household Coverage Map</strong></td><td>Maps all benefited households colored by ward or connection status</td></tr>
+          <tr><td><strong>Service Zone Map</strong></td><td>Shows service area polygons overlaid with population density</td></tr>
+          <tr><td><strong>Infrastructure Summary Report</strong></td><td>Tabular report: total sources, pipe length, households served, etc.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <strong>Exam Tip:</strong> Always mention: (1) the data model/schema, (2) field tools and apps used, (3) GNSS procedures, (4) data processing/cleaning in GIS, and (5) final map outputs. Including a simple diagram of the workflow earns extra marks.
+    </div>
+
+
+    <!-- ================================================================ -->
+    <!--                        QUESTION 2                                -->
+    <!-- ================================================================ -->
+    <h2 id="q2">Question 2: Interpolation &amp; IDW (Inverse Distance Weighted) <span class="exam-ref">[10 Marks]</span></h2>
+
+    <h3>1. What is Interpolation?</h3>
+
+    <p><strong>Interpolation</strong> is the process of estimating unknown values at unsampled locations based on known values at surrounding sampled points. In GIS, it is the primary technique for creating continuous surfaces (rasters) from discrete point observations.</p>
+
+    <div class="callout">
+      <strong>Why do we need interpolation?</strong> We can never measure a phenomenon (e.g., elevation, rainfall, temperature) at every single location. Interpolation fills the gaps using mathematical models.
+    </div>
+
+    <h4>Types of Interpolation</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Category</th><th>Method</th><th>Key Idea</th></tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="3"><strong>Deterministic</strong></td><td>IDW</td><td>Closer points have more influence (weight decreases with distance)</td></tr>
+          <tr><td>Spline</td><td>Fits a smooth surface through points like bending a rubber sheet</td></tr>
+          <tr><td>Natural Neighbor</td><td>Uses Voronoi tessellation to assign weights based on area</td></tr>
+          <tr><td rowspan="2"><strong>Geostatistical</strong></td><td>Kriging</td><td>Uses a semivariogram model to account for spatial dependency</td></tr>
+          <tr><td>Co-Kriging</td><td>Uses a correlated secondary variable (e.g., elevation for rainfall)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 600 260" width="600" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="600" height="260" rx="6" fill="#f8f6f0"/>
+        <text x="300" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Interpolation Concept: From Points to Continuous Surface</text>
+        <rect x="30" y="45" width="240" height="170" rx="6" fill="white" stroke="#d4cfc5" stroke-width="0.8"/>
+        <text x="150" y="66" text-anchor="middle" font-size="10" font-weight="600" fill="#1a3c5e">Sample Points</text>
+        <circle cx="80" cy="100" r="6" fill="#e87055"/><text x="80" y="95" text-anchor="middle" font-size="8" fill="#2c2c2c" font-weight="700">15</text>
+        <circle cx="160" cy="90" r="6" fill="#e87055"/><text x="160" y="85" text-anchor="middle" font-size="8" fill="#2c2c2c" font-weight="700">22</text>
+        <circle cx="120" cy="150" r="6" fill="#e87055"/><text x="120" y="145" text-anchor="middle" font-size="8" fill="#2c2c2c" font-weight="700">18</text>
+        <circle cx="200" cy="130" r="6" fill="#e87055"/><text x="200" y="125" text-anchor="middle" font-size="8" fill="#2c2c2c" font-weight="700">25</text>
+        <circle cx="60" cy="180" r="6" fill="#e87055"/><text x="60" y="175" text-anchor="middle" font-size="8" fill="#2c2c2c" font-weight="700">12</text>
+        <circle cx="220" cy="180" r="6" fill="#e87055"/><text x="220" y="175" text-anchor="middle" font-size="8" fill="#2c2c2c" font-weight="700">20</text>
+        <text x="140" y="120" text-anchor="middle" font-size="22" fill="#b8860b" font-weight="700">?</text>
+        <text x="150" y="225" text-anchor="middle" font-size="9" fill="#6b6b6b" font-style="italic">What value at the unknown location?</text>
+        <g><line x1="278" y1="130" x2="318" y2="130" stroke="#1a3c5e" stroke-width="2"/><polygon points="318,125 330,130 318,135" fill="#1a3c5e"/><text x="304" y="120" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="600">IDW</text></g>
+        <rect x="335" y="45" width="240" height="170" rx="6" fill="white" stroke="#d4cfc5" stroke-width="0.8"/>
+        <text x="455" y="66" text-anchor="middle" font-size="10" font-weight="600" fill="#1a3c5e">Continuous Surface</text>
+        <g opacity="0.7">
+          <rect x="350" y="78" width="30" height="25" fill="#ffffb2"/><rect x="380" y="78" width="30" height="25" fill="#fecc5c"/><rect x="410" y="78" width="30" height="25" fill="#fd8d3c"/><rect x="440" y="78" width="30" height="25" fill="#fd8d3c"/><rect x="470" y="78" width="30" height="25" fill="#f03b20"/><rect x="500" y="78" width="30" height="25" fill="#e31a1c"/><rect x="530" y="78" width="25" height="25" fill="#bd0026"/>
+          <rect x="350" y="103" width="30" height="25" fill="#ffffb2"/><rect x="380" y="103" width="30" height="25" fill="#fecc5c"/><rect x="410" y="103" width="30" height="25" fill="#fecc5c"/><rect x="440" y="103" width="30" height="25" fill="#fd8d3c"/><rect x="470" y="103" width="30" height="25" fill="#fd8d3c"/><rect x="500" y="103" width="30" height="25" fill="#f03b20"/><rect x="530" y="103" width="25" height="25" fill="#f03b20"/>
+          <rect x="350" y="128" width="30" height="25" fill="#ffffb2"/><rect x="380" y="128" width="30" height="25" fill="#ffffb2"/><rect x="410" y="128" width="30" height="25" fill="#fecc5c"/><rect x="440" y="128" width="30" height="25" fill="#fecc5c"/><rect x="470" y="128" width="30" height="25" fill="#fd8d3c"/><rect x="500" y="128" width="30" height="25" fill="#fd8d3c"/><rect x="530" y="128" width="25" height="25" fill="#f03b20"/>
+          <rect x="350" y="153" width="30" height="25" fill="#ffffb2"/><rect x="380" y="153" width="30" height="25" fill="#ffffb2"/><rect x="410" y="153" width="30" height="25" fill="#ffffb2"/><rect x="440" y="153" width="30" height="25" fill="#fecc5c"/><rect x="470" y="153" width="30" height="25" fill="#fecc5c"/><rect x="500" y="153" width="30" height="25" fill="#fd8d3c"/><rect x="530" y="153" width="25" height="25" fill="#fd8d3c"/>
+          <rect x="350" y="178" width="30" height="25" fill="#ffffb2"/><rect x="380" y="178" width="30" height="25" fill="#ffffb2"/><rect x="410" y="178" width="30" height="25" fill="#fecc5c"/><rect x="440" y="178" width="30" height="25" fill="#fecc5c"/><rect x="470" y="178" width="30" height="25" fill="#fd8d3c"/><rect x="500" y="178" width="30" height="25" fill="#f03b20"/><rect x="530" y="178" width="25" height="25" fill="#f03b20"/>
+        </g>
+        <text x="455" y="225" text-anchor="middle" font-size="9" fill="#6b6b6b" font-style="italic">Every cell gets an estimated value</text>
+      </svg>
+      <figcaption><strong>Figure 2.1:</strong> Known sample points (left) are used to estimate a continuous raster surface (right) using IDW.</figcaption>
+    </figure>
+
+    <h3>2. Inverse Distance Weighted (IDW) Method</h3>
+
+    <p><strong>IDW</strong> is a deterministic interpolation technique based on <strong>Tobler's First Law of Geography</strong>: <em>"Everything is related to everything else, but near things are more related than distant things."</em></p>
+    <p>The value at an unknown point is estimated as a weighted average of nearby known values, where the weights decrease as the distance increases.</p>
+
+    <h4>IDW Formula</h4>
+    <div class="formula">
+      <p style="text-align:center;font-size:16pt;">
+        $$\hat{Z}(x_0) = \frac{\sum_{i=1}^{n} \frac{Z(x_i)}{d_i^p}}{\sum_{i=1}^{n} \frac{1}{d_i^p}}$$
+      </p>
+      <p style="text-align:left; margin-top:10px;">Where:</p>
+      <ul style="text-align:left;">
+        <li>$\hat{Z}(x_0)$ = estimated value at the unknown point</li>
+        <li>$Z(x_i)$ = known value at point $i$</li>
+        <li>$d_i$ = distance between point $i$ and $x_0$</li>
+        <li>$p$ = power parameter (commonly $p = 2$)</li>
+        <li>$n$ = number of nearby sample points used</li>
+      </ul>
+    </div>
+
+    <h4>How IDW Works — Visual Explanation</h4>
+    <figure class="figure">
+      <svg viewBox="0 0 560 380" width="560" height="380" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="560" height="380" rx="6" fill="#f8f6f0"/>
+        <text x="280" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">IDW: Weight Calculation for Unknown Point</text>
+        <g stroke="#e0ddd5" stroke-width="0.4">
+          <line x1="60" y1="50" x2="60" y2="300"/><line x1="120" y1="50" x2="120" y2="300"/><line x1="180" y1="50" x2="180" y2="300"/><line x1="240" y1="50" x2="240" y2="300"/><line x1="300" y1="50" x2="300" y2="300"/><line x1="360" y1="50" x2="360" y2="300"/><line x1="420" y1="50" x2="420" y2="300"/><line x1="480" y1="50" x2="480" y2="300"/>
+          <line x1="60" y1="50" x2="480" y2="50"/><line x1="60" y1="110" x2="480" y2="110"/><line x1="60" y1="170" x2="480" y2="170"/><line x1="60" y1="230" x2="480" y2="230"/><line x1="60" y1="290" x2="480" y2="290"/>
+        </g>
+        <circle cx="270" cy="170" r="10" fill="#b8860b" stroke="#8b6508" stroke-width="2"/>
+        <text x="270" y="174" text-anchor="middle" fill="white" font-size="10" font-weight="700">?</text>
+        <line x1="270" y1="170" x2="150" y2="100" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <circle cx="150" cy="100" r="8" fill="#5ea3e0" stroke="#1a3c5e" stroke-width="1.5"/>
+        <text x="150" y="104" text-anchor="middle" fill="white" font-size="9" font-weight="700">A</text>
+        <text x="130" y="88" font-size="9" fill="#2c2c2c">Z=20</text>
+        <text x="200" y="125" text-anchor="middle" font-size="8" fill="#b8860b">d&#8321; = 2 km</text>
+        <line x1="270" y1="170" x2="420" y2="90" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <circle cx="420" cy="90" r="8" fill="#e87055" stroke="#8b2500" stroke-width="1.5"/>
+        <text x="420" y="94" text-anchor="middle" fill="white" font-size="9" font-weight="700">B</text>
+        <text x="440" y="82" font-size="9" fill="#2c2c2c">Z=30</text>
+        <text x="360" y="118" text-anchor="middle" font-size="8" fill="#b8860b">d&#8322; = 4 km</text>
+        <line x1="270" y1="170" x2="400" y2="260" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <circle cx="400" cy="260" r="8" fill="#2d7d46" stroke="#1a5a30" stroke-width="1.5"/>
+        <text x="400" y="264" text-anchor="middle" fill="white" font-size="9" font-weight="700">C</text>
+        <text x="420" y="252" font-size="9" fill="#2c2c2c">Z=10</text>
+        <text x="355" y="228" text-anchor="middle" font-size="8" fill="#b8860b">d&#8323; = 6 km</text>
+        <line x1="270" y1="170" x2="120" y2="240" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+        <circle cx="120" cy="240" r="8" fill="#8b2500" stroke="#5a1500" stroke-width="1.5"/>
+        <text x="120" y="244" text-anchor="middle" fill="white" font-size="9" font-weight="700">D</text>
+        <text x="100" y="232" font-size="9" fill="#2c2c2c">Z=25</text>
+        <text x="180" y="218" text-anchor="middle" font-size="8" fill="#b8860b">d&#8324; = 3 km</text>
+        <circle cx="270" cy="170" r="40" fill="none" stroke="#b8860b" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.3"/>
+        <circle cx="270" cy="170" r="80" fill="none" stroke="#b8860b" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.2"/>
+        <circle cx="270" cy="170" r="120" fill="none" stroke="#b8860b" stroke-width="0.6" stroke-dasharray="3,3" opacity="0.15"/>
+        <rect x="60" y="310" width="440" height="55" rx="6" fill="white" stroke="#d4cfc5" stroke-width="0.8"/>
+        <text x="280" y="330" text-anchor="middle" font-size="10" font-weight="700" fill="#1a3c5e">Closer points (A, D) get HIGHER weights &#8594; more influence on result</text>
+        <text x="280" y="350" text-anchor="middle" font-size="10" fill="#6b6b6b">Farther points (B, C) get LOWER weights &#8594; less influence on result</text>
+      </svg>
+      <figcaption><strong>Figure 2.2:</strong> IDW assigns higher weights to nearby points (A, D) and lower weights to distant points (B, C).</figcaption>
+    </figure>
+
+    <h4>Numerical Example (p = 2)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Point</th><th>Value Z</th><th>Distance d (km)</th><th>1/d&#178;</th><th>Weight (w)</th><th>w &#215; Z</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>20</td><td>2</td><td>0.250</td><td><strong>0.631</strong></td><td>12.63</td></tr>
+          <tr><td>B</td><td>30</td><td>4</td><td>0.0625</td><td><strong>0.158</strong></td><td>4.73</td></tr>
+          <tr><td>C</td><td>10</td><td>6</td><td>0.0278</td><td><strong>0.070</strong></td><td>0.70</td></tr>
+          <tr><td>D</td><td>25</td><td>3</td><td>0.1111</td><td><strong>0.281</strong></td><td>7.01</td></tr>
+          <tr style="background:#edf7f0; font-weight:700;"><td colspan="3">Sum</td><td>0.396</td><td>1.000</td><td style="color:#2d7d46;">&#8776; 21.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula">
+      <p style="text-align:center;">Estimated Value &#8776; <strong>21.4</strong></p>
+      <p style="text-align:center; font-size: 10pt; color: var(--muted);">Point A (closest, d=2) dominates the result, pulling it towards 20.</p>
+    </div>
+
+    <h4>Effect of the Power Parameter (p)</h4>
+    <figure class="figure">
+      <svg viewBox="0 0 560 220" width="560" height="220" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="560" height="220" rx="6" fill="#f8f6f0"/>
+        <text x="280" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Effect of Power Parameter (p) on Weight Decay</text>
+        <line x1="80" y1="190" x2="520" y2="190" stroke="#2c2c2c" stroke-width="1"/>
+        <line x1="80" y1="190" x2="80" y2="40" stroke="#2c2c2c" stroke-width="1"/>
+        <text x="300" y="215" text-anchor="middle" font-size="10" fill="#2c2c2c">Distance (d)</text>
+        <text x="40" y="115" text-anchor="middle" font-size="10" fill="#2c2c2c" transform="rotate(-90,40,115)">Weight (w)</text>
+        <polyline points="80,50 140,80 200,105 260,125 320,140 380,152 440,160 500,168" fill="none" stroke="#5ea3e0" stroke-width="2.5"/>
+        <text x="505" y="165" font-size="9" fill="#5ea3e0" font-weight="600">p = 1</text>
+        <polyline points="80,50 140,100 200,135 260,155 320,168 380,175 440,180 500,183" fill="none" stroke="#b8860b" stroke-width="2.5"/>
+        <text x="505" y="180" font-size="9" fill="#b8860b" font-weight="600">p = 2</text>
+        <polyline points="80,50 140,140 200,168 260,178 320,183 380,186 440,187 500,188" fill="none" stroke="#e87055" stroke-width="2.5"/>
+        <text x="505" y="194" font-size="9" fill="#e87055" font-weight="600">p = 4</text>
+        <text x="160" y="60" font-size="9" fill="#6b6b6b">High p &#8594; only nearest points matter</text>
+        <text x="160" y="75" font-size="9" fill="#6b6b6b">Low p &#8594; distant points still influential</text>
+      </svg>
+      <figcaption><strong>Figure 2.3:</strong> As power <em>p</em> increases, weight drops off more steeply with distance. p=2 is the most common choice.</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Power (p)</th><th>Behavior</th></tr></thead>
+        <tbody>
+          <tr><td><strong>p = 1</strong></td><td>Gentle decay — distant points still have moderate influence. Smoother surface.</td></tr>
+          <tr><td><strong>p = 2</strong> (default)</td><td>Balanced decay — standard choice in most GIS software.</td></tr>
+          <tr><td><strong>p &gt; 2</strong></td><td>Steep decay — only the very closest points dominate. More "peaky" surface.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Advantages &amp; Limitations</h4>
+    <div class="two-col">
+      <div>
+        <h4>Advantages</h4>
+        <ul>
+          <li>Simple, intuitive, easy to understand</li>
+          <li>Fast computation</li>
+          <li>No assumptions about data distribution</li>
+          <li>Works well when sample points are evenly distributed</li>
+          <li>Available in all GIS software</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Limitations</h4>
+        <ul>
+          <li><strong>Bull's eye effect</strong> — concentric patterns around sample points</li>
+          <li>Cannot extrapolate beyond data range</li>
+          <li>Sensitive to clustered data</li>
+          <li>Does not consider spatial autocorrelation</li>
+          <li>No estimate of prediction uncertainty</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4>IDW vs. Other Methods</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>IDW</th><th>Spline</th><th>Kriging</th></tr></thead>
+        <tbody>
+          <tr><td>Type</td><td>Deterministic</td><td>Deterministic</td><td>Geostatistical</td></tr>
+          <tr><td>Surface</td><td>Passes through points</td><td>Smooth through points</td><td>Best unbiased estimate</td></tr>
+          <tr><td>Error estimate</td><td>No</td><td>No</td><td>Yes (variance map)</td></tr>
+          <tr><td>Computation</td><td>Fast</td><td>Moderate</td><td>Slow (needs variogram)</td></tr>
+          <tr><td>Best for</td><td>Dense, evenly spaced data</td><td>Smooth phenomena</td><td>Sparse data, need uncertainty</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <strong>Exam Tip:</strong> For 10 marks: (1) Define interpolation, (2) State Tobler's Law, (3) Write formula, (4) Explain power parameter, (5) List advantages/limitations. A diagram earns extra marks.
+    </div>
+
+
+    <!-- ================================================================ -->
+    <!--                        QUESTION 3                                -->
+    <!-- ================================================================ -->
+    <h2 id="q3">Question 3: Seasonal Land-Use Variation Analysis (10 Years) <span class="exam-ref">[30 Marks]</span></h2>
+
+    <p class="lead">Scenario: Analyze seasonal variation of land-use before and after monsoon in a municipality for the last 10 years using remote sensing and GIS tools. Software-agnostic answer expected.</p>
+
+    <h3>1. Choice of Remote Sensing Data</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Satellite / Sensor</th><th>Spatial Resolution</th><th>Temporal Resolution</th><th>Cost</th><th>Suitability</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Landsat 8/9 (OLI)</strong></td><td>30 m / 15 m pan</td><td>16 days</td><td>Free (USGS)</td><td>Best — free, 10+ year archive, ideal for municipality-level LULC</td></tr>
+          <tr><td><strong>Sentinel-2 (MSI)</strong></td><td>10 m / 20 m</td><td>5 days</td><td>Free (ESA)</td><td>Excellent — higher resolution, archive from 2015</td></tr>
+          <tr><td><strong>Landsat 7 (ETM+)</strong></td><td>30 m</td><td>16 days</td><td>Free</td><td>Useful for years before 2013 (has SLC-off issue from 2003)</td></tr>
+          <tr><td><strong>MODIS</strong></td><td>250–500 m</td><td>Daily</td><td>Free (NASA)</td><td>Too coarse for municipality-level</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>Recommended:</strong> Use <strong>Landsat 8/9</strong> (2013–present) + <strong>Landsat 7</strong> (earlier years) for full 10-year coverage. If entirely after 2015, <strong>Sentinel-2</strong> at 10 m resolution is preferable.
+    </div>
+
+    <h4>Image Selection Criteria</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Criterion</th><th>Pre-Monsoon Image</th><th>Post-Monsoon Image</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Season / Month</strong></td><td>March–May (dry, clear sky)</td><td>October–November (after monsoon, vegetation peak)</td></tr>
+          <tr><td><strong>Cloud cover</strong></td><td>&lt; 10% over study area</td><td>&lt; 10% (may need compositing)</td></tr>
+          <tr><td><strong>Number of images</strong></td><td>1 per year &#215; 10 years = <strong>10</strong></td><td>1 per year &#215; 10 years = <strong>10</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Total images needed: 20 scenes</strong> (10 pre-monsoon + 10 post-monsoon)</p>
+
+    <h3>2. Complete Workflow</h3>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 520" width="620" height="520" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <defs>
+          <marker id="q3fArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/>
+          </marker>
+        </defs>
+        <rect width="620" height="520" rx="6" fill="#f8f6f0"/>
+        <text x="310" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1a3c5e">Complete Workflow: Seasonal Land-Use Change Analysis</text>
+        <rect x="180" y="40" width="260" height="38" rx="6" fill="#5ea3e0"/>
+        <text x="310" y="64" text-anchor="middle" fill="white" font-size="11" font-weight="700">1. Data Acquisition &amp; Download</text>
+        <line x1="310" y1="78" x2="310" y2="92" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q3fArr)"/>
+        <rect x="180" y="96" width="260" height="38" rx="6" fill="#b8860b"/>
+        <text x="310" y="120" text-anchor="middle" fill="white" font-size="11" font-weight="700">2. Pre-processing &amp; Correction</text>
+        <line x1="310" y1="134" x2="310" y2="148" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q3fArr)"/>
+        <rect x="180" y="152" width="260" height="38" rx="6" fill="#2d7d46"/>
+        <text x="310" y="176" text-anchor="middle" fill="white" font-size="11" font-weight="700">3. Study Area Extraction (Clip)</text>
+        <line x1="310" y1="190" x2="310" y2="204" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q3fArr)"/>
+        <rect x="180" y="208" width="260" height="38" rx="6" fill="#e87055"/>
+        <text x="310" y="232" text-anchor="middle" fill="white" font-size="11" font-weight="700">4. Land-Use Classification</text>
+        <line x1="310" y1="246" x2="310" y2="260" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q3fArr)"/>
+        <rect x="180" y="264" width="260" height="38" rx="6" fill="#8b2500"/>
+        <text x="310" y="288" text-anchor="middle" fill="white" font-size="11" font-weight="700">5. Accuracy Assessment</text>
+        <line x1="310" y1="302" x2="310" y2="316" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q3fArr)"/>
+        <rect x="180" y="320" width="260" height="38" rx="6" fill="#1a3c5e"/>
+        <text x="310" y="344" text-anchor="middle" fill="white" font-size="11" font-weight="700">6. Change Detection Analysis</text>
+        <line x1="310" y1="358" x2="310" y2="372" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q3fArr)"/>
+        <rect x="180" y="376" width="260" height="38" rx="6" fill="#5ea3e0"/>
+        <text x="310" y="400" text-anchor="middle" fill="white" font-size="11" font-weight="700">7. Statistical &amp; Trend Analysis</text>
+        <line x1="310" y1="414" x2="310" y2="428" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q3fArr)"/>
+        <rect x="180" y="432" width="260" height="38" rx="6" fill="#b8860b"/>
+        <text x="310" y="456" text-anchor="middle" fill="white" font-size="11" font-weight="700">8. Map Production &amp; Reporting</text>
+        <g font-size="9" fill="#6b6b6b" font-style="italic">
+          <text x="460" y="64">USGS Earth Explorer, Copernicus Hub</text>
+          <text x="460" y="120">Atmospheric, radiometric, geometric</text>
+          <text x="460" y="176">Municipality boundary shapefile</text>
+          <text x="460" y="232">Supervised / unsupervised</text>
+          <text x="460" y="288">Confusion matrix, Kappa</text>
+          <text x="460" y="344">Post-classification comparison</text>
+          <text x="460" y="400">Area statistics, transition matrix</text>
+          <text x="460" y="456">Thematic maps, charts, reports</text>
+        </g>
+        <text x="310" y="500" text-anchor="middle" font-size="10" fill="#6b6b6b" font-style="italic">Applicable in QGIS, ArcGIS, ERDAS, ENVI, Google Earth Engine</text>
+      </svg>
+      <figcaption><strong>Figure 3.1:</strong> Complete 8-step workflow for seasonal land-use change analysis over 10 years.</figcaption>
+    </figure>
+
+    <h4>Pre-processing Details</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Correction Type</th><th>What It Does</th><th>Why Needed</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Radiometric Calibration</strong></td><td>Converts DN &#8594; TOA radiance/reflectance</td><td>Makes pixel values comparable across dates</td></tr>
+          <tr><td><strong>Atmospheric Correction</strong></td><td>Removes haze &#8594; Surface Reflectance</td><td>Essential for multi-temporal comparison</td></tr>
+          <tr><td><strong>Geometric Correction</strong></td><td>Ensures images align spatially</td><td>Pixel-to-pixel comparison needs exact match</td></tr>
+          <tr><td><strong>Cloud Masking</strong></td><td>Removes cloud pixels using QA bands</td><td>Critical for post-monsoon images</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Classification Scheme</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Description</th><th>Expected Seasonal Change</th></tr></thead>
+        <tbody>
+          <tr><td>Agriculture</td><td>Cultivated land, paddy, crops</td><td>Most variable — bare pre-monsoon, green post-monsoon</td></tr>
+          <tr><td>Forest</td><td>Dense/sparse forest, tree cover</td><td>Greener post-monsoon</td></tr>
+          <tr><td>Built-up</td><td>Urban areas, roads, buildings</td><td>Relatively stable</td></tr>
+          <tr><td>Water Body</td><td>Rivers, ponds, reservoirs</td><td>Expands post-monsoon, shrinks pre-monsoon</td></tr>
+          <tr><td>Barren Land</td><td>Rocky, exposed soil, fallow</td><td>More visible pre-monsoon</td></tr>
+          <tr><td>Wetland / Marsh</td><td>Seasonal water-logged areas</td><td>Appears mainly post-monsoon</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>Supervised Classification (Recommended):</strong> User selects training samples; algorithm (Maximum Likelihood / Random Forest) assigns all pixels. More accurate and consistent across dates than unsupervised methods.
+    </div>
+
+    <h4>Change Detection: Post-Classification Comparison</h4>
+    <p><strong>Reason:</strong> Directly produces a "from&#8211;to" change matrix, works across different sensors/dates, and provides clear interpretable change classes.</p>
+
+    <h4>Transition Matrix Example</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Agri (Post)</th><th>Forest (Post)</th><th>Built-up (Post)</th><th>Water (Post)</th><th>Barren (Post)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Agri (Pre)</strong></td><td style="background:#edf7f0;">850 ha</td><td>20 ha</td><td style="color:#8b2500; font-weight:700;">150 ha</td><td>5 ha</td><td>25 ha</td></tr>
+          <tr><td><strong>Forest (Pre)</strong></td><td>30 ha</td><td style="background:#edf7f0;">680 ha</td><td>10 ha</td><td>0 ha</td><td>5 ha</td></tr>
+          <tr><td><strong>Built-up (Pre)</strong></td><td>5 ha</td><td>0 ha</td><td style="background:#edf7f0;">400 ha</td><td>0 ha</td><td>2 ha</td></tr>
+          <tr><td><strong>Water (Pre)</strong></td><td>10 ha</td><td>2 ha</td><td>0 ha</td><td style="background:#edf7f0;">180 ha</td><td>8 ha</td></tr>
+          <tr><td><strong>Barren (Pre)</strong></td><td>40 ha</td><td>15 ha</td><td>20 ha</td><td>5 ha</td><td style="background:#edf7f0;">120 ha</td></tr>
+        </tbody>
+        <caption>Diagonal = no change; off-diagonal = change. Red = significant conversion.</caption>
+      </table>
+    </div>
+
+    <h4>10-Year Trend (Illustrative)</h4>
+    <figure class="figure">
+      <svg viewBox="0 0 580 260" width="580" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="580" height="260" rx="6" fill="#f8f6f0"/>
+        <text x="290" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">10-Year Land-Use Trend</text>
+        <line x1="60" y1="220" x2="550" y2="220" stroke="#2c2c2c" stroke-width="1"/>
+        <line x1="60" y1="220" x2="60" y2="40" stroke="#2c2c2c" stroke-width="1"/>
+        <text x="305" y="250" text-anchor="middle" font-size="10" fill="#2c2c2c">Year</text>
+        <text x="25" y="130" text-anchor="middle" font-size="10" fill="#2c2c2c" transform="rotate(-90,25,130)">Area (ha)</text>
+        <g font-size="8" fill="#6b6b6b" text-anchor="middle">
+          <text x="90" y="235">2016</text><text x="140" y="235">2017</text><text x="190" y="235">2018</text><text x="240" y="235">2019</text><text x="290" y="235">2020</text><text x="340" y="235">2021</text><text x="390" y="235">2022</text><text x="440" y="235">2023</text><text x="490" y="235">2024</text><text x="540" y="235">2025</text>
+        </g>
+        <polyline points="90,70 140,75 190,80 240,90 290,100 340,105 390,115 440,120 490,130 540,135" fill="none" stroke="#2d7d46" stroke-width="2.5"/>
+        <text x="555" y="138" font-size="8" fill="#2d7d46" font-weight="600">Agri &#8595;</text>
+        <polyline points="90,180 140,175 190,168 240,160 290,150 340,140 390,130 440,120 490,112 540,105" fill="none" stroke="#e87055" stroke-width="2.5"/>
+        <text x="555" y="102" font-size="8" fill="#e87055" font-weight="600">Built &#8593;</text>
+        <polyline points="90,110 140,112 190,114 240,118 290,120 340,123 390,126 440,130 490,134 540,138" fill="none" stroke="#1a5a30" stroke-width="2" stroke-dasharray="6,3"/>
+        <text x="555" y="142" font-size="8" fill="#1a5a30" font-weight="600">Forest</text>
+        <polyline points="90,160 140,158 190,162 240,155 290,160 340,157 390,163 440,156 490,160 540,158" fill="none" stroke="#5ea3e0" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="555" y="160" font-size="8" fill="#5ea3e0" font-weight="600">Water</text>
+      </svg>
+      <figcaption><strong>Figure 3.2:</strong> Illustrative 10-year trend — built-up increasing, agricultural land decreasing.</figcaption>
+    </figure>
+
+    <h4>Summary of Key Decisions</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Decision</th><th>Choice</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td>Satellite data</td><td>Landsat 8/9 + Landsat 7</td><td>Free, 30 m, longest archive</td></tr>
+          <tr><td>Pre-processing</td><td>Surface Reflectance (Level-2)</td><td>Removes atmospheric effects for comparison</td></tr>
+          <tr><td>Classification</td><td>Supervised (MLC / Random Forest)</td><td>More accurate, consistent across dates</td></tr>
+          <tr><td>Change detection</td><td>Post-classification comparison</td><td>Gives from&#8211;to transition information</td></tr>
+          <tr><td>Seasonal timing</td><td>Mar&#8211;May vs Oct&#8211;Nov</td><td>Maximum seasonal contrast</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <strong>Exam Tip (30 marks):</strong> Structure: (1) Data choice + reason [6], (2) Pre-processing [5], (3) Classification + reason [6], (4) Accuracy assessment [3], (5) Change detection + reason [5], (6) Statistics [3], (7) Map outputs [2]. Include workflow diagram.
+    </div>
+
+
+    <!-- ================================================================ -->
+    <!--                        QUESTION 4                                -->
+    <!-- ================================================================ -->
+    <h2 id="q4">Question 4: Parameters Extracted from Elevation Data <span class="exam-ref">[10 Marks]</span></h2>
+
+    <p class="lead">Elevation data (DEM/DTM) is one of the most powerful GIS datasets. By analyzing how elevation values change across a surface, we can derive numerous terrain parameters.</p>
+
+    <h3>1. Slope</h3>
+    <p><strong>Slope</strong> measures the steepness or gradient of a terrain surface — the rate of change of elevation over horizontal distance, expressed in degrees (0&#176;&#8211;90&#176;) or percent.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 500 200" width="500" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="500" height="200" rx="6" fill="#f8f6f0"/>
+        <text x="250" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Slope — Rate of Elevation Change</text>
+        <polyline points="50,170 100,165 150,150 200,110 250,70 300,60 350,65 400,80 450,120" fill="none" stroke="#2d7d46" stroke-width="3"/>
+        <polygon points="50,170 100,165 150,150 200,110 250,70 300,60 350,65 400,80 450,120 450,185 50,185" fill="#2d7d46" opacity="0.1"/>
+        <line x1="150" y1="150" x2="250" y2="150" stroke="#e87055" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <line x1="250" y1="150" x2="250" y2="70" stroke="#e87055" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <line x1="150" y1="150" x2="250" y2="70" stroke="#e87055" stroke-width="2.5"/>
+        <text x="200" y="168" text-anchor="middle" font-size="9" fill="#e87055" font-weight="600">Run (horizontal)</text>
+        <text x="265" y="115" font-size="9" fill="#e87055" font-weight="600">Rise</text>
+        <text x="180" y="100" font-size="10" fill="#1a3c5e" font-weight="700">Slope angle</text>
+        <path d="M 170,150 A 20,20 0 0,1 163,135" fill="none" stroke="#1a3c5e" stroke-width="1.5"/>
+        <text x="350" y="160" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="600">Slope = arctan(Rise / Run)</text>
+      </svg>
+      <figcaption><strong>Figure 4.1:</strong> Slope is the angle of the terrain surface, calculated from rise over run.</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Slope Range</th><th>Terrain Type</th><th>Application</th></tr></thead>
+        <tbody>
+          <tr><td>0&#176;&#8211;5&#176;</td><td>Flat / Gentle</td><td>Suitable for agriculture, construction</td></tr>
+          <tr><td>5&#176;&#8211;15&#176;</td><td>Moderate</td><td>Roads feasible, terrace farming</td></tr>
+          <tr><td>15&#176;&#8211;30&#176;</td><td>Steep</td><td>Erosion risk, needs engineering measures</td></tr>
+          <tr><td>&gt; 30&#176;</td><td>Very Steep</td><td>Landslide prone, unsuitable for development</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2. Aspect</h3>
+    <p><strong>Aspect</strong> is the compass direction a slope faces — measured 0&#176;&#8211;360&#176; (0&#176;/360&#176; = North, 90&#176; = East, 180&#176; = South, 270&#176; = West).</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 400 280" width="400" height="280" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="400" height="280" rx="6" fill="#f8f6f0"/>
+        <text x="200" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Aspect — Direction of Slope Face</text>
+        <circle cx="200" cy="150" r="95" fill="none" stroke="#d4cfc5" stroke-width="1"/>
+        <path d="M200,150 L200,60 A90,90 0 0,1 290,150 Z" fill="#5ea3e0" opacity="0.15"/>
+        <path d="M200,150 L290,150 A90,90 0 0,1 200,240 Z" fill="#fdd56d" opacity="0.15"/>
+        <path d="M200,150 L200,240 A90,90 0 0,1 110,150 Z" fill="#e87055" opacity="0.15"/>
+        <path d="M200,150 L110,150 A90,90 0 0,1 200,60 Z" fill="#2d7d46" opacity="0.1"/>
+        <text x="200" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#1a3c5e">N (0&#176;)</text>
+        <text x="305" y="154" font-size="11" font-weight="700" fill="#1a3c5e">E (90&#176;)</text>
+        <text x="200" y="262" text-anchor="middle" font-size="11" font-weight="700" fill="#1a3c5e">S (180&#176;)</text>
+        <text x="90" y="154" text-anchor="end" font-size="11" font-weight="700" fill="#1a3c5e">W (270&#176;)</text>
+        <text x="245" y="110" font-size="8" fill="#1a3c5e">NE: Morning sun</text>
+        <text x="245" y="190" font-size="8" fill="#8b2500">SE: Max sun</text>
+        <text x="120" y="190" font-size="8" fill="#2d7d46" text-anchor="end">SW: Afternoon</text>
+        <text x="120" y="110" font-size="8" fill="#5ea3e0" text-anchor="end">NW: Shade</text>
+        <text x="200" y="278" text-anchor="middle" font-size="9" fill="#6b6b6b" font-style="italic">South-facing slopes receive maximum sunlight (N. Hemisphere)</text>
+      </svg>
+      <figcaption><strong>Figure 4.2:</strong> Aspect shows slope orientation. South-facing = most sunlight; north-facing = cooler/wetter.</figcaption>
+    </figure>
+
+    <h3>3. Contour Lines</h3>
+    <p><strong>Contour lines</strong> are lines connecting points of equal elevation — generated from a DEM for topographic mapping, engineering design, and volume estimation.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 230" width="480" height="230" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="480" height="230" rx="6" fill="#f8f6f0"/>
+        <text x="240" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Contour Lines from DEM</text>
+        <ellipse cx="220" cy="130" rx="180" ry="75" fill="none" stroke="#2d7d46" stroke-width="1.2"/>
+        <text x="408" y="134" font-size="9" fill="#2d7d46" font-weight="600">100 m</text>
+        <ellipse cx="225" cy="128" rx="140" ry="58" fill="none" stroke="#2d7d46" stroke-width="1.2"/>
+        <text x="370" y="122" font-size="9" fill="#2d7d46" font-weight="600">200 m</text>
+        <ellipse cx="228" cy="125" rx="100" ry="40" fill="none" stroke="#2d7d46" stroke-width="1.2"/>
+        <text x="332" y="112" font-size="9" fill="#2d7d46" font-weight="600">300 m</text>
+        <ellipse cx="230" cy="122" rx="60" ry="24" fill="none" stroke="#2d7d46" stroke-width="1.5"/>
+        <text x="294" y="108" font-size="9" fill="#2d7d46" font-weight="600">400 m</text>
+        <ellipse cx="232" cy="120" rx="25" ry="10" fill="#2d7d46" opacity="0.15" stroke="#2d7d46" stroke-width="1.5"/>
+        <text x="232" y="124" text-anchor="middle" font-size="9" fill="#2d7d46" font-weight="700">500 m</text>
+        <text x="50" y="200" font-size="9" fill="#e87055">Wide spacing = gentle slope</text>
+        <text x="300" y="80" font-size="9" fill="#1a3c5e">Close spacing = steep slope</text>
+        <text x="240" y="225" text-anchor="middle" font-size="9" fill="#6b6b6b" font-style="italic">Contour interval = 100 m</text>
+      </svg>
+      <figcaption><strong>Figure 4.3:</strong> Closely spaced contours = steep terrain; widely spaced = gentle slopes.</figcaption>
+    </figure>
+
+    <h3>4. Hillshade</h3>
+    <p><strong>Hillshade</strong> simulates how terrain looks illuminated from a specific sun angle — creating realistic 3D shaded relief useful for visualization and map backgrounds.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 480 190" width="480" height="190" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="480" height="190" rx="6" fill="#f8f6f0"/>
+        <text x="240" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Hillshade — Simulated Terrain Illumination</text>
+        <circle cx="80" cy="55" r="18" fill="#fdd56d" stroke="#b8860b" stroke-width="1"/>
+        <text x="80" y="59" text-anchor="middle" font-size="9" fill="#8b6508" font-weight="700">Sun</text>
+        <line x1="98" y1="62" x2="160" y2="90" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="98" y1="68" x2="200" y2="110" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3"/>
+        <polygon points="140,160 200,70 260,90 320,50 380,80 420,160" fill="#9a9a9a" opacity="0.3"/>
+        <polygon points="140,160 200,70 260,90 200,160" fill="#e0ddd5"/>
+        <polygon points="260,90 320,50 380,80 420,160 260,160" fill="#4a4a4a" opacity="0.5"/>
+        <text x="180" y="145" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="600">Illuminated</text>
+        <text x="345" y="145" text-anchor="middle" font-size="white" font-weight="600" fill="white">Shadow</text>
+        <text x="240" y="182" text-anchor="middle" font-size="9" fill="#6b6b6b" font-style="italic">Default: Azimuth 315&#176; (NW), Altitude 45&#176;</text>
+      </svg>
+      <figcaption><strong>Figure 4.4:</strong> Hillshade — illuminated (bright) and shadowed (dark) sides of terrain.</figcaption>
+    </figure>
+
+    <h4>Summary Table</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parameter</th><th>What It Measures</th><th>Unit</th><th>Key Application</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Slope</strong></td><td>Steepness / gradient</td><td>Degrees or %</td><td>Landslide susceptibility, road design, erosion</td></tr>
+          <tr><td><strong>Aspect</strong></td><td>Compass direction slope faces</td><td>Degrees (0&#176;&#8211;360&#176;)</td><td>Solar radiation, crop suitability, building orientation</td></tr>
+          <tr><td><strong>Contour Lines</strong></td><td>Lines of equal elevation</td><td>Meters (interval)</td><td>Topographic mapping, volume calculation, engineering</td></tr>
+          <tr><td><strong>Hillshade</strong></td><td>Simulated light/shadow</td><td>0&#8211;255 (grayscale)</td><td>3D visualization, map backgrounds</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <strong>Exam Tip:</strong> For 10 marks, describe exactly 4 parameters — one sentence definition + brief application. Simple figures for slope and aspect strengthen the answer.
+    </div>
+
+
+    <!-- ================================================================ -->
+    <!--                        QUESTION 5                                -->
+    <!-- ================================================================ -->
+    <h2 id="q5">Question 5: Flow Accumulation in River Channel Analysis <span class="exam-ref">[10 Marks]</span></h2>
+
+    <h3>1. What is Flow Accumulation?</h3>
+
+    <p><strong>Flow accumulation</strong> calculates, for each cell in a DEM, the total number of upstream cells whose water would drain through it. It answers: <em>"How much water collects at each point on the landscape?"</em></p>
+
+    <div class="callout">
+      <strong>Key Concept:</strong> High flow accumulation = stream/river channel. Flow accumulation of 0 = ridgeline/hilltop (no upstream contributors).
+    </div>
+
+    <h3>2. Hydrological Workflow</h3>
+
+    <figure class="figure">
+      <svg viewBox="0 0 600 200" width="600" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <defs>
+          <marker id="q5hArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/>
+          </marker>
+        </defs>
+        <rect width="600" height="200" rx="6" fill="#f8f6f0"/>
+        <text x="300" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Hydrological Workflow</text>
+        <rect x="20" y="50" width="105" height="45" rx="6" fill="#5ea3e0"/>
+        <text x="72" y="70" text-anchor="middle" fill="white" font-size="10" font-weight="700">1. Raw DEM</text>
+        <text x="72" y="85" text-anchor="middle" fill="white" font-size="8">Elevation grid</text>
+        <line x1="127" y1="72" x2="150" y2="72" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q5hArr)"/>
+        <rect x="154" y="50" width="105" height="45" rx="6" fill="#b8860b"/>
+        <text x="206" y="70" text-anchor="middle" fill="white" font-size="10" font-weight="700">2. Fill Sinks</text>
+        <text x="206" y="85" text-anchor="middle" fill="white" font-size="8">Remove depressions</text>
+        <line x1="261" y1="72" x2="284" y2="72" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q5hArr)"/>
+        <rect x="288" y="50" width="115" height="45" rx="6" fill="#2d7d46"/>
+        <text x="345" y="70" text-anchor="middle" fill="white" font-size="10" font-weight="700">3. Flow Direction</text>
+        <text x="345" y="85" text-anchor="middle" fill="white" font-size="8">D8 algorithm</text>
+        <line x1="405" y1="72" x2="428" y2="72" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q5hArr)"/>
+        <rect x="432" y="45" width="120" height="55" rx="6" fill="#e87055" stroke="#8b2500" stroke-width="2"/>
+        <text x="492" y="70" text-anchor="middle" fill="white" font-size="10" font-weight="700">4. Flow</text>
+        <text x="492" y="85" text-anchor="middle" fill="white" font-size="10" font-weight="700">Accumulation</text>
+        <line x1="492" y1="102" x2="492" y2="125" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q5hArr)"/>
+        <rect x="395" y="130" width="100" height="35" rx="6" fill="#1a3c5e"/>
+        <text x="445" y="152" text-anchor="middle" fill="white" font-size="10" font-weight="700">5. Streams</text>
+        <line x1="393" y1="147" x2="370" y2="147" stroke="#1a3c5e" stroke-width="1.5" marker-end="url(#q5hArr)"/>
+        <rect x="260" y="130" width="105" height="35" rx="6" fill="#5ea3e0"/>
+        <text x="312" y="152" text-anchor="middle" fill="white" font-size="10" font-weight="700">6. Watershed</text>
+        <text x="300" y="190" text-anchor="middle" font-size="10" fill="#6b6b6b" font-style="italic">Each step depends on the previous — never skip.</text>
+      </svg>
+      <figcaption><strong>Figure 5.1:</strong> Flow accumulation is Step 4 in the hydrological workflow.</figcaption>
+    </figure>
+
+    <h3>3. How Flow Accumulation Works (D8 Example)</h3>
+
+    <figure class="figure">
+      <svg viewBox="0 0 580 400" width="580" height="400" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <defs>
+          <marker id="q5dArr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/>
+          </marker>
+        </defs>
+        <rect width="580" height="400" rx="6" fill="#f8f6f0"/>
+        <text x="290" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Flow Accumulation — Step-by-Step Example</text>
+        <!-- DEM Grid -->
+        <text x="120" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#1a3c5e">DEM (Elevation)</text>
+        <g stroke="#d4cfc5" stroke-width="1">
+          <rect x="30" y="60" width="60" height="40" fill="#edf7f0"/><rect x="90" y="60" width="60" height="40" fill="#edf7f0"/><rect x="150" y="60" width="60" height="40" fill="#edf7f0"/>
+          <rect x="30" y="100" width="60" height="40" fill="#edf7f0"/><rect x="90" y="100" width="60" height="40" fill="#edf7f0"/><rect x="150" y="100" width="60" height="40" fill="#edf7f0"/>
+          <rect x="30" y="140" width="60" height="40" fill="#edf7f0"/><rect x="90" y="140" width="60" height="40" fill="#edf7f0"/><rect x="150" y="140" width="60" height="40" fill="#edf7f0"/>
+        </g>
+        <g font-size="13" text-anchor="middle" fill="#2c2c2c" font-weight="600">
+          <text x="60" y="85">78</text><text x="120" y="85">72</text><text x="180" y="85">69</text>
+          <text x="60" y="125">74</text><text x="120" y="125">67</text><text x="180" y="125">56</text>
+          <text x="60" y="165">69</text><text x="120" y="165">53</text><text x="180" y="165">44</text>
+        </g>
+        <!-- Flow Direction -->
+        <text x="370" y="50" text-anchor="middle" font-size="11" font-weight="700" fill="#1a3c5e">Flow Direction (D8)</text>
+        <g stroke="#d4cfc5" stroke-width="1">
+          <rect x="280" y="60" width="60" height="40" fill="white"/><rect x="340" y="60" width="60" height="40" fill="white"/><rect x="400" y="60" width="60" height="40" fill="white"/>
+          <rect x="280" y="100" width="60" height="40" fill="white"/><rect x="340" y="100" width="60" height="40" fill="white"/><rect x="400" y="100" width="60" height="40" fill="white"/>
+          <rect x="280" y="140" width="60" height="40" fill="white"/><rect x="340" y="140" width="60" height="40" fill="white"/><rect x="400" y="140" width="60" height="40" fill="white"/>
+        </g>
+        <g stroke="#e87055" stroke-width="2" fill="#e87055">
+          <line x1="310" y1="75" x2="345" y2="105" marker-end="url(#q5dArr)"/>
+          <line x1="370" y1="78" x2="410" y2="108" marker-end="url(#q5dArr)"/>
+          <line x1="430" y1="78" x2="430" y2="108" marker-end="url(#q5dArr)"/>
+          <line x1="310" y1="118" x2="345" y2="148" marker-end="url(#q5dArr)"/>
+          <line x1="370" y1="118" x2="410" y2="148" marker-end="url(#q5dArr)"/>
+          <line x1="430" y1="118" x2="430" y2="148" marker-end="url(#q5dArr)"/>
+          <line x1="310" y1="158" x2="345" y2="158" marker-end="url(#q5dArr)"/>
+          <line x1="370" y1="158" x2="410" y2="158" marker-end="url(#q5dArr)"/>
+        </g>
+        <!-- Flow Accumulation Grid -->
+        <text x="290" y="210" text-anchor="middle" font-size="11" font-weight="700" fill="#1a3c5e">Flow Accumulation</text>
+        <g stroke="#d4cfc5" stroke-width="1">
+          <rect x="200" y="225" width="60" height="48" fill="#ffffb2"/><rect x="260" y="225" width="60" height="48" fill="#ffffb2"/><rect x="320" y="225" width="60" height="48" fill="#ffffb2"/>
+          <rect x="200" y="273" width="60" height="48" fill="#ffffb2"/><rect x="260" y="273" width="60" height="48" fill="#fecc5c"/><rect x="320" y="273" width="60" height="48" fill="#fd8d3c"/>
+          <rect x="200" y="321" width="60" height="48" fill="#ffffb2"/><rect x="260" y="321" width="60" height="48" fill="#f03b20"/><rect x="320" y="321" width="60" height="48" fill="#bd0026"/>
+        </g>
+        <g font-size="16" text-anchor="middle" font-weight="700">
+          <text x="230" y="256" fill="#6b6b6b">0</text><text x="290" y="256" fill="#6b6b6b">0</text><text x="350" y="256" fill="#6b6b6b">0</text>
+          <text x="230" y="304" fill="#6b6b6b">0</text><text x="290" y="304" fill="#b8860b">2</text><text x="350" y="304" fill="#e87055">2</text>
+          <text x="230" y="352" fill="#6b6b6b">0</text><text x="290" y="352" fill="#e87055">4</text><text x="350" y="352" fill="#8b2500">8</text>
+        </g>
+        <text x="430" y="250" font-size="9" fill="#6b6b6b">0 = Ridge (no upstream)</text>
+        <text x="430" y="270" font-size="9" fill="#b8860b">2 = 2 upstream cells</text>
+        <text x="430" y="290" font-size="9" fill="#e87055">4 = 4 upstream cells</text>
+        <text x="430" y="310" font-size="9" fill="#8b2500" font-weight="700">8 = ALL 8 cells (outlet)</text>
+        <text x="430" y="340" font-size="9" fill="#1a3c5e" font-weight="600">High value = stream channel</text>
+        <text x="290" y="390" text-anchor="middle" font-size="10" fill="#6b6b6b" font-style="italic">Cell (3,3) = 8 &#8594; All water drains here (outlet).</text>
+      </svg>
+      <figcaption><strong>Figure 5.2:</strong> Flow accumulation on a 3&#215;3 DEM grid. Bottom-right cell (44m) accumulates all 8 other cells.</figcaption>
+    </figure>
+
+    <h3>4. Stream Extraction via Threshold</h3>
+    <div class="formula">
+      <p style="text-align:center;font-size:14pt;"><strong>Stream = (Flow Accumulation &gt; Threshold)</strong></p>
+      <p style="text-align:center; font-size:10pt; color:var(--muted);">Common threshold: 500&#8211;1000 cells</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Threshold</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Low (e.g., 100)</strong></td><td>Extracts many small tributaries &#8594; denser network</td></tr>
+          <tr><td><strong>High (e.g., 5000)</strong></td><td>Only major rivers &#8594; sparser network</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5. Applications</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Application</th><th>How Flow Accumulation Helps</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Stream network extraction</strong></td><td>Identifies where streams form based on accumulated drainage</td></tr>
+          <tr><td><strong>Watershed delineation</strong></td><td>Combined with flow direction, defines catchment boundaries</td></tr>
+          <tr><td><strong>Stream ordering</strong></td><td>Strahler/Shreve ordering on extracted stream links</td></tr>
+          <tr><td><strong>Flood risk assessment</strong></td><td>High accumulation = most vulnerable to flooding</td></tr>
+          <tr><td><strong>Erosion modeling</strong></td><td>Flow concentration indicates high erosion potential</td></tr>
+          <tr><td><strong>Infrastructure planning</strong></td><td>Bridges, culverts, drainage design</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <strong>Exam Tip:</strong> Define flow accumulation, explain prerequisites (Fill &#8594; Flow Direction &#8594; Flow Accumulation), show grid example, mention threshold-based stream extraction.
+    </div>
+
+
+    <!-- ================================================================ -->
+    <!--                        QUESTION 6                                -->
+    <!-- ================================================================ -->
+    <h2 id="q6">Question 6: Low Pass &amp; High Pass Filters in Remote Sensing <span class="exam-ref">[5 + 5 Marks]</span></h2>
+
+    <p class="lead">Spatial filters are convolution-based image processing techniques that replace each pixel's value with a weighted combination of its neighbors using a moving kernel window.</p>
+
+    <h3>Part (a): Low Pass Filter [5 Marks]</h3>
+
+    <p>A <strong>low pass filter</strong> (smoothing/averaging filter) allows low spatial frequencies to pass through while <strong>suppressing high frequencies</strong>. It replaces each pixel with the average of its neighbors.</p>
+    <ul>
+      <li><strong>Smooths</strong> the image, reduces sharp variations</li>
+      <li><strong>Reduces noise</strong> (salt-and-pepper)</li>
+      <li><strong>Blurs edges</strong> — boundaries become less distinct</li>
+      <li><strong>Generalizes</strong> — reveals broad patterns</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 280" width="520" height="280" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="520" height="280" rx="6" fill="#f8f6f0"/>
+        <text x="260" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">Low Pass Filter — 3&#215;3 Mean Kernel</text>
+        <!-- Kernel -->
+        <text x="100" y="50" text-anchor="middle" font-size="10" font-weight="600" fill="#1a3c5e">Kernel:</text>
+        <g stroke="#d4cfc5" stroke-width="1">
+          <rect x="40" y="60" width="40" height="35" fill="#5ea3e0" opacity="0.15"/><rect x="80" y="60" width="40" height="35" fill="#5ea3e0" opacity="0.15"/><rect x="120" y="60" width="40" height="35" fill="#5ea3e0" opacity="0.15"/>
+          <rect x="40" y="95" width="40" height="35" fill="#5ea3e0" opacity="0.15"/><rect x="80" y="95" width="40" height="35" fill="#5ea3e0" opacity="0.15"/><rect x="120" y="95" width="40" height="35" fill="#5ea3e0" opacity="0.15"/>
+          <rect x="40" y="130" width="40" height="35" fill="#5ea3e0" opacity="0.15"/><rect x="80" y="130" width="40" height="35" fill="#5ea3e0" opacity="0.15"/><rect x="120" y="130" width="40" height="35" fill="#5ea3e0" opacity="0.15"/>
+        </g>
+        <g font-size="12" text-anchor="middle" fill="#1a3c5e" font-weight="600">
+          <text x="60" y="83">1/9</text><text x="100" y="83">1/9</text><text x="140" y="83">1/9</text>
+          <text x="60" y="118">1/9</text><text x="100" y="118">1/9</text><text x="140" y="118">1/9</text>
+          <text x="60" y="153">1/9</text><text x="100" y="153">1/9</text><text x="140" y="153">1/9</text>
+        </g>
+        <!-- Example -->
+        <text x="360" y="50" text-anchor="middle" font-size="10" font-weight="600" fill="#1a3c5e">Input Neighborhood:</text>
+        <g stroke="#d4cfc5" stroke-width="1">
+          <rect x="280" y="60" width="50" height="35" fill="white"/><rect x="330" y="60" width="50" height="35" fill="white"/><rect x="380" y="60" width="50" height="35" fill="white"/>
+          <rect x="280" y="95" width="50" height="35" fill="white"/><rect x="330" y="95" width="50" height="35" fill="#fdd56d" opacity="0.4"/><rect x="380" y="95" width="50" height="35" fill="white"/>
+          <rect x="280" y="130" width="50" height="35" fill="white"/><rect x="330" y="130" width="50" height="35" fill="white"/><rect x="380" y="130" width="50" height="35" fill="white"/>
+        </g>
+        <g font-size="12" text-anchor="middle" fill="#2c2c2c" font-weight="600">
+          <text x="305" y="83">10</text><text x="355" y="83">15</text><text x="405" y="83">20</text>
+          <text x="305" y="118">12</text><text x="355" y="118">90</text><text x="405" y="118">18</text>
+          <text x="305" y="153">14</text><text x="355" y="153">16</text><text x="405" y="153">22</text>
+        </g>
+        <!-- Result -->
+        <rect x="170" y="190" width="180" height="50" rx="6" fill="white" stroke="#5ea3e0" stroke-width="1.5"/>
+        <text x="260" y="210" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="600">Output center pixel:</text>
+        <text x="260" y="230" text-anchor="middle" font-size="11" fill="#2d7d46" font-weight="700">(10+15+20+12+90+18+14+16+22) / 9 = 24.1</text>
+        <text x="260" y="268" text-anchor="middle" font-size="9" fill="#6b6b6b" font-style="italic">Noisy pixel (90) smoothed down to 24.1 — noise removed!</text>
+      </svg>
+      <figcaption><strong>Figure 6.1:</strong> Low pass (3&#215;3 mean) averages all 9 pixels, smoothing the anomalous 90 to 24.1.</figcaption>
+    </figure>
+
+    <h3>Part (b): High Pass Filter [5 Marks]</h3>
+
+    <p>A <strong>high pass filter</strong> (edge enhancement/sharpening filter) allows high spatial frequencies to pass through while <strong>suppressing low frequencies</strong>. It highlights edges, boundaries, and fine details.</p>
+    <ul>
+      <li><strong>Sharpens</strong> the image — enhances edges and boundaries</li>
+      <li><strong>Highlights rapid changes</strong> — roads, field edges, lineaments</li>
+      <li><strong>Removes gradual trends</strong> — suppresses smooth areas</li>
+      <li><strong>May amplify noise</strong> (side effect)</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 260" width="520" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif">
+        <rect width="520" height="260" rx="6" fill="#f8f6f0"/>
+        <text x="260" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1a3c5e">High Pass Filter — 3&#215;3 Edge Enhancement Kernel</text>
+        <!-- Kernel -->
+        <text x="100" y="50" text-anchor="middle" font-size="10" font-weight="600" fill="#1a3c5e">Kernel:</text>
+        <g stroke="#d4cfc5" stroke-width="1">
+          <rect x="40" y="60" width="40" height="35" fill="#e87055" opacity="0.1"/><rect x="80" y="60" width="40" height="35" fill="#e87055" opacity="0.1"/><rect x="120" y="60" width="40" height="35" fill="#e87055" opacity="0.1"/>
+          <rect x="40" y="95" width="40" height="35" fill="#e87055" opacity="0.1"/><rect x="80" y="95" width="40" height="35" fill="#fdd56d" opacity="0.3"/><rect x="120" y="95" width="40" height="35" fill="#e87055" opacity="0.1"/>
+          <rect x="40" y="130" width="40" height="35" fill="#e87055" opacity="0.1"/><rect x="80" y="130" width="40" height="35" fill="#e87055" opacity="0.1"/><rect x="120" y="130" width="40" height="35" fill="#e87055" opacity="0.1"/>
+        </g>
+        <g font-size="14" text-anchor="middle" fill="#8b2500" font-weight="700">
+          <text x="60" y="83">-1</text><text x="100" y="83">-1</text><text x="140" y="83">-1</text>
+          <text x="60" y="118">-1</text><text x="140" y="118">-1</text>
+          <text x="60" y="153">-1</text><text x="100" y="153">-1</text><text x="140" y="153">-1</text>
+        </g>
+        <text x="100" y="118" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="700">+9</text>
+        <!-- Explanation -->
+        <text x="360" y="90" text-anchor="middle" font-size="10" font-weight="600" fill="#1a3c5e">Uniform area (no edge):</text>
+        <text x="360" y="110" text-anchor="middle" font-size="10" fill="#6b6b6b">All pixels = 50 &#8594; Output = 50</text>
+        <text x="360" y="130" text-anchor="middle" font-size="9" fill="#6b6b6b">(50&#215;9 + 50&#215;(-8) = 50, no change)</text>
+        <text x="360" y="170" text-anchor="middle" font-size="10" font-weight="600" fill="#1a3c5e">At an edge (sharp change):</text>
+        <text x="360" y="190" text-anchor="middle" font-size="10" fill="#6b6b6b">Center=100, neighbors=50</text>
+        <text x="360" y="210" text-anchor="middle" font-size="10" fill="#e87055" font-weight="700">Output = 100&#215;9 + 50&#215;(-8) = 500</text>
+        <text x="360" y="230" text-anchor="middle" font-size="9" fill="#6b6b6b">(Edge amplified!)</text>
+        <text x="260" y="255" text-anchor="middle" font-size="9" fill="#6b6b6b" font-style="italic">High pass produces large values at edges, near-zero in uniform areas.</text>
+      </svg>
+      <figcaption><strong>Figure 6.2:</strong> High pass kernel (+9 center, -1 neighbors). Uniform areas unchanged; edges produce large values.</figcaption>
+    </figure>
+
+    <h4>Comparison: Low Pass vs. High Pass</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Low Pass Filter</th><th>High Pass Filter</th></tr></thead>
+        <tbody>
+          <tr><td>Also called</td><td>Smoothing / Averaging</td><td>Sharpening / Edge enhancement</td></tr>
+          <tr><td>Passes through</td><td>Low spatial frequencies</td><td>High spatial frequencies</td></tr>
+          <tr><td>Suppresses</td><td>High frequencies (sharp changes)</td><td>Low frequencies (gradual changes)</td></tr>
+          <tr><td>Effect on image</td><td>Blurs / smooths</td><td>Sharpens / enhances edges</td></tr>
+          <tr><td>Kernel weights</td><td>All positive, equal</td><td>Mixed (+/-), large positive center</td></tr>
+          <tr><td>Noise</td><td>Reduces noise</td><td>May amplify noise</td></tr>
+          <tr><td>Best for</td><td>Noise removal, generalization</td><td>Edge detection, feature extraction</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <strong>Exam Tip:</strong> For 5 marks each: (1) Define, (2) Explain what passes/suppresses, (3) Show kernel, (4) Give 2&#8211;3 applications. Drawing the 3&#215;3 kernel matrix earns full marks.
+    </div>
+
+    <div class="footer-note">
+      <p>GIS &amp; Remote Sensing &bull; Internal Assessment &bull; Chaitra 9, 2082</p>
+    </div>
+  </main>
+</div>
+
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

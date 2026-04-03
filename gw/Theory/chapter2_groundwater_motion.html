@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: Fundamentals of Groundwater Motion</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --base-size: 12pt; }
+        body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
+            font-family: 'Times New Roman', Times, serif; font-size: var(--base-size);
+            color: black; background-color: white; line-height: 1.5; margin: 0; padding: 0;
+        }
+        * { box-sizing: border-box; }
+        body { max-width: 860px; margin: 0 auto; padding: 2rem; }
+        h1 { font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid black; padding-bottom: 0.5rem; }
+        h2 { font-weight: bold; text-transform: uppercase; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid black; }
+        h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        h4 { font-weight: bold; font-style: italic; margin-top: 1rem; margin-bottom: 0.5rem; }
+        p { text-align: justify; margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+        li { text-align: justify; margin-bottom: 0.5rem; }
+        .equation { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; overflow-x: auto; }
+        .exam-note, .study-note, .question-card, .solution-box { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .exam-note h4, .study-note h4, .question-card h4, .solution-box h4 { margin-top: 0; border-bottom: 1px dashed black; padding-bottom: 0.25rem; }
+        .solution-box { border-width: 2px; }
+        .solution-box h4 { font-weight: bold; }
+        .callout { border-left: 3px solid black; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; }
+        .figure-container { text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid black; overflow-x: auto; }
+        .figcaption { font-style: italic; margin-top: 0.5rem; text-align: center; }
+        table.info-table, table.question-table, table.formula-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table.info-table th, table.info-table td, table.question-table th, table.question-table td, table.formula-table th, table.formula-table td { border: 1px solid black; padding: 6px 10px; text-align: left; vertical-align: top; }
+        table.info-table th, table.question-table th, table.formula-table th { font-weight: bold; background: #f5f5f5; }
+        .toc { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .toc ol { margin-bottom: 0; } .toc a { text-decoration: none; }
+        .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .mini-note { border: 1px solid black; padding: 0.85rem; margin: 1rem 0; }
+        .question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .pill { display: inline-block; border: 1px solid black; padding: 2px 8px; font-size: 0.9rem; }
+        .data-block { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid black; }
+        .data-block pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.92rem; line-height: 1.45; }
+        .print-btn { position: fixed; top: 1rem; right: 1rem; border: 2px solid black; background-color: white; color: black; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer; font-family: 'Times New Roman', Times, serif; font-size: var(--base-size); }
+        .print-btn:hover { background-color: black; color: white; }
+        @media (max-width: 720px) { body { padding: 1rem; } .grid-two { grid-template-columns: 1fr; } }
+        @media print { body { padding: 0; max-width: 100%; } .print-btn { display: none; } .figure-container, .exam-note, .study-note, .question-card, .mini-note, .solution-box { page-break-inside: avoid; } h2, h3 { page-break-after: avoid; } }
+    </style>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+        <defs>
+            <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+            <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#777"/><circle cx="9" cy="9" r="2" fill="#777"/></pattern>
+            <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+            <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="black"/></marker>
+            <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="black"/></marker>
+        </defs>
+    </svg>
+    <button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+    <main>
+        <header>
+            <p style="text-align:center;font-style:italic;margin-bottom:1rem;">Groundwater Engineering — CE 76509</p>
+            <h1>CHAPTER 2: FUNDAMENTALS OF GROUNDWATER MOTION</h1>
+            <p style="text-align:center;font-style:italic;margin-bottom:2rem;">(Syllabus Weight: 8 hours, 16 marks)</p>
+        </header>
+        <section class="toc">
+            <h4>CHAPTER ROADMAP</h4>
+            <ol>
+                <li><a href="#sec-2-1">Continuum approach and Representative Elementary Volume (REV)</a></li>
+                <li><a href="#sec-2-2">Darcy's experiment and one-dimensional groundwater flow</a></li>
+                <li><a href="#sec-2-3">Three-dimensional Darcy law and velocity concepts</a></li>
+                <li><a href="#sec-2-4">Validity of Darcy's law and non-Darcian flow</a></li>
+                <li><a href="#sec-2-5">Hydraulic conductivity, permeability, and transmissivity</a></li>
+                <li><a href="#sec-2-6">Aquifer heterogeneity and anisotropy</a></li>
+                <li><a href="#sec-2-7">Past question bank for Chapter 2</a></li>
+                <li><a href="#sec-2-8">Worked numerical solutions</a></li>
+                <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
+            </ol>
+        </section>
+
+        <!-- ======== 2.1 REV ======== -->
+        <section id="sec-2-1">
+            <h2>2.1 CONTINUUM APPROACH AND REPRESENTATIVE ELEMENTARY VOLUME</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Define REV and continuum approach. Explain the importance, validity, and limitations of Darcy's law. [6] <em>(2078 Chaitra, Q2a)</em></li>
+                    <li>Explain the continuum and REV approach. Define permeability and transmissibility. [4+2] <em>(2073 Bhadra, Q2a)</em></li>
+                    <li>What do you understand by REV? Explain. [4] <em>(2071 Bhadra, Q2)</em></li>
+                </ol>
+            </div>
+            <div class="callout">
+                <strong>CORE IDEA:</strong> Groundwater actually moves through an intricate network of pores and fractures, but engineering analysis becomes possible only when the porous medium is treated as a continuum whose averaged properties represent the microscopic void system.
+            </div>
+            <p>At pore scale, water flow is highly irregular. The <strong>continuum approach</strong> replaces the actual porous mass with an equivalent continuous material having averaged properties such as porosity, hydraulic conductivity, and storage. The averaging is performed over a <strong>Representative Elementary Volume (REV)</strong> — large compared with individual pores but still small compared with the total aquifer.</p>
+
+            <div class="figure-container">
+                <svg width="780" height="300" viewBox="0 0 780 300" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <!-- Stage 1: Pore scale -->
+                    <rect x="20" y="50" width="210" height="170" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="125" y="38" text-anchor="middle" font-weight="bold" font-size="15">PORE SCALE</text>
+                    <!-- Grains -->
+                    <circle cx="65" cy="95" r="18" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <circle cx="120" cy="85" r="22" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <circle cx="175" cy="100" r="20" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <circle cx="85" cy="150" r="24" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <circle cx="150" cy="155" r="18" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <circle cx="195" cy="165" r="22" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <circle cx="55" cy="195" r="16" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <circle cx="120" cy="198" r="17" fill="#ddd" stroke="black" stroke-width="2"/>
+                    <!-- REV box -->
+                    <rect x="85" y="105" width="80" height="70" fill="none" stroke="black" stroke-width="3" stroke-dasharray="8,5"/>
+                    <text x="125" y="148" text-anchor="middle" font-weight="bold" font-size="12">REV</text>
+                    <text x="125" y="240" text-anchor="middle" font-size="13">Irregular grains &amp; pores</text>
+
+                    <!-- Arrow 1 -->
+                    <line x1="235" y1="135" x2="290" y2="135" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+                    <text x="262" y="122" text-anchor="middle" font-style="italic" font-size="12">Average</text>
+
+                    <!-- Stage 2: REV averaged -->
+                    <rect x="295" y="50" width="210" height="170" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="400" y="38" text-anchor="middle" font-weight="bold" font-size="15">REV AVERAGED</text>
+                    <path d="M 320 190 Q 360 140 400 150 Q 440 160 475 100" fill="none" stroke="black" stroke-width="2.5"/>
+                    <polygon points="472,108 480,95 468,98" fill="black"/>
+                    <text x="400" y="82" text-anchor="middle" font-size="13">Smooth head field h</text>
+                    <path d="M 320 120 Q 370 130 420 115 Q 460 105 490 130" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="400" y="195" text-anchor="middle" font-size="13">Seepage velocity path</text>
+                    <text x="400" y="240" text-anchor="middle" font-size="13">Averaged head &amp; flux meaningful</text>
+
+                    <!-- Arrow 2 -->
+                    <line x1="510" y1="135" x2="565" y2="135" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+                    <text x="537" y="122" text-anchor="middle" font-style="italic" font-size="12">Model</text>
+
+                    <!-- Stage 3: Continuum -->
+                    <rect x="570" y="50" width="190" height="170" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="665" y="38" text-anchor="middle" font-weight="bold" font-size="15">CONTINUUM</text>
+                    <!-- Gradient lines -->
+                    <line x1="595" y1="190" x2="730" y2="80" stroke="black" stroke-width="3"/>
+                    <polygon points="726,88 736,74 720,80" fill="black"/>
+                    <text x="665" y="82" text-anchor="middle" font-size="14" font-weight="bold">h(x,y,z)</text>
+                    <line x1="630" y1="180" x2="630" y2="70" stroke="black" stroke-width="1.5" stroke-dasharray="5,4"/>
+                    <line x1="595" y1="160" x2="740" y2="160" stroke="black" stroke-width="1.5" stroke-dasharray="5,4"/>
+                    <text x="665" y="208" text-anchor="middle" font-size="14" font-weight="bold">q = &minus;K&nabla;h</text>
+                    <text x="665" y="240" text-anchor="middle" font-size="13">Continuous medium</text>
+
+                    <text x="390" y="280" text-anchor="middle" font-size="13">Pores &amp; grains &rarr; Average over REV &rarr; Differential equations with K, n, S</text>
+                </svg>
+                <div class="figcaption">Figure 2.1: Groundwater modeling: from pore-scale complexity through REV-based averaging to a continuum description with macroscopic properties.</div>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="300" viewBox="0 0 780 300" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <!-- Axes -->
+                    <line x1="90" y1="240" x2="720" y2="240" stroke="black" stroke-width="2.5"/>
+                    <line x1="90" y1="40" x2="90" y2="240" stroke="black" stroke-width="2.5"/>
+                    <polygon points="720,240 706,234 706,246" fill="black"/>
+                    <polygon points="90,40 84,54 96,54" fill="black"/>
+                    <text x="405" y="272" text-anchor="middle" font-weight="bold" font-size="14">Sample Volume Used for Averaging &rarr;</text>
+                    <text x="30" y="145" text-anchor="middle" transform="rotate(-90 30 145)" font-weight="bold" font-size="14">Measured Property</text>
+                    <text x="55" y="120" text-anchor="middle" transform="rotate(-90 55 120)" font-size="12">(porosity or K)</text>
+
+                    <!-- Noisy left, stable right -->
+                    <polyline points="105,200 130,78 160,210 190,92 220,175 250,118 285,140 320,132 350,136 380,135 400,134 430,135 460,135 490,136 520,135 550,135 580,136 610,135 640,135 670,135 700,135" fill="none" stroke="black" stroke-width="3"/>
+
+                    <!-- REV threshold -->
+                    <line x1="365" y1="55" x2="365" y2="240" stroke="black" stroke-width="2.5" stroke-dasharray="10,5"/>
+                    <text x="365" y="50" text-anchor="middle" font-weight="bold" font-size="14">REV THRESHOLD</text>
+
+                    <!-- Zone labels -->
+                    <rect x="130" y="60" width="160" height="24" fill="white" stroke="none"/>
+                    <text x="210" y="78" text-anchor="middle" font-weight="bold" font-size="14">Large fluctuations</text>
+                    <text x="210" y="96" text-anchor="middle" font-size="12">(too few pores to average)</text>
+
+                    <rect x="450" y="92" width="200" height="24" fill="white" stroke="none"/>
+                    <text x="550" y="110" text-anchor="middle" font-weight="bold" font-size="14">Property stabilizes</text>
+                    <text x="550" y="128" text-anchor="middle" font-size="12">(REV-scale averages valid)</text>
+
+                    <!-- Stable value line -->
+                    <line x1="365" y1="135" x2="710" y2="135" stroke="black" stroke-width="1.5" stroke-dasharray="5,4"/>
+                    <text x="725" y="140" font-size="12" font-style="italic">n&#x0304;</text>
+                </svg>
+                <div class="figcaption">Figure 2.2: REV threshold — as the averaging volume increases, the measured property stops fluctuating and stabilizes at a meaningful macroscopic value.</div>
+            </div>
+
+            <h3>Why the Continuum Approach Is Important</h3>
+            <ol>
+                <li>It permits the use of differential equations for groundwater flow.</li>
+                <li>It allows the definition of field-scale properties such as K and storativity.</li>
+                <li>It links lab and pumping-test results to aquifer-scale predictions.</li>
+                <li>It justifies Darcy's law as a macroscopic law.</li>
+            </ol>
+            <h3>Limitations of the REV/Continuum Assumption</h3>
+            <ul>
+                <li>Weak in highly fractured rock with discrete fractures.</li>
+                <li>May fail near cavities, karst conduits, or very coarse gravel.</li>
+                <li>Scale-dependent: an acceptable REV in one formation may not work in another.</li>
+                <li>Does not eliminate heterogeneity; it only smooths material to define local averages.</li>
+            </ul>
+        </section>
+
+        <!-- ======== 2.2 DARCY ======== -->
+        <section id="sec-2-2">
+            <h2>2.2 DARCY'S EXPERIMENT AND ONE-DIMENSIONAL GROUNDWATER FLOW</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>What is Darcy's law? Derive the 1D form and explain its validity. [6] <em>(2072 Magh, Q2)</em></li>
+                    <li>Derive the 3D form of groundwater flow from Darcy's law. [6] <em>(2072 Ashwin, Q2)</em></li>
+                </ol>
+            </div>
+            <p>In 1856, Henry Darcy performed controlled sand-column experiments and found: discharge through a porous medium is proportional to the cross-sectional area and head loss, and inversely proportional to the flow length.</p>
+
+            <div class="figure-container">
+                <svg width="780" height="360" viewBox="0 0 780 360" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <!-- Sand column -->
+                    <rect x="140" y="110" width="430" height="110" fill="url(#dots)" stroke="black" stroke-width="2.5"/>
+                    <text x="355" y="170" text-anchor="middle" font-weight="bold" font-size="15">SAND SPECIMEN</text>
+
+                    <!-- Inlet reservoir -->
+                    <rect x="50" y="80" width="90" height="170" fill="none" stroke="black" stroke-width="2.5"/>
+                    <path d="M 55 110 Q 72 104 90 110 Q 108 116 125 110 Q 133 107 140 110" fill="none" stroke="black" stroke-width="2"/>
+                    <text x="95" y="66" text-anchor="middle" font-weight="bold" font-size="14">INFLOW</text>
+
+                    <!-- Outlet reservoir -->
+                    <rect x="570" y="105" width="120" height="120" fill="none" stroke="black" stroke-width="2.5"/>
+                    <path d="M 575 135 Q 595 129 615 135 Q 635 141 655 135 Q 672 130 690 135" fill="none" stroke="black" stroke-width="2"/>
+                    <text x="630" y="66" text-anchor="middle" font-weight="bold" font-size="14">OUTFLOW</text>
+                    <!-- Overflow -->
+                    <line x1="690" y1="135" x2="720" y2="135" stroke="black" stroke-width="2"/>
+                    <line x1="720" y1="135" x2="720" y2="200" stroke="black" stroke-width="2"/>
+                    <polygon points="717,195 720,208 723,195" fill="black"/>
+                    <text x="738" y="175" font-weight="bold" font-size="13">Q</text>
+
+                    <!-- Piezometer 1 (left) -->
+                    <line x1="240" y1="110" x2="240" y2="30" stroke="black" stroke-width="2.5"/>
+                    <line x1="228" y1="30" x2="252" y2="30" stroke="black" stroke-width="2"/>
+                    <path d="M 228 55 Q 234 49 240 55 Q 246 61 252 55" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="240" y="20" text-anchor="middle" font-weight="bold" font-size="15">h&#x2081;</text>
+
+                    <!-- Piezometer 2 (right) -->
+                    <line x1="460" y1="110" x2="460" y2="60" stroke="black" stroke-width="2.5"/>
+                    <line x1="448" y1="60" x2="472" y2="60" stroke="black" stroke-width="2"/>
+                    <path d="M 448 82 Q 454 76 460 82 Q 466 88 472 82" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="460" y="50" text-anchor="middle" font-weight="bold" font-size="15">h&#x2082;</text>
+
+                    <!-- Head difference arrow -->
+                    <line x1="200" y1="55" x2="200" y2="30" stroke="black" stroke-width="1.5"/>
+                    <line x1="197" y1="55" x2="203" y2="55" stroke="black" stroke-width="1.5"/>
+                    <line x1="197" y1="30" x2="203" y2="30" stroke="black" stroke-width="1.5"/>
+                    <text x="178" y="46" text-anchor="end" font-size="13">&Delta;h</text>
+
+                    <!-- Datum line -->
+                    <line x1="50" y1="250" x2="690" y2="250" stroke="black" stroke-width="1.5" stroke-dasharray="8,5"/>
+                    <text x="710" y="255" font-size="13" font-style="italic">Datum</text>
+
+                    <!-- h1 full dimension -->
+                    <line x1="215" y1="55" x2="215" y2="250" stroke="black" stroke-width="1.5" stroke-dasharray="5,4"/>
+                    <!-- h2 full dimension -->
+                    <line x1="485" y1="82" x2="485" y2="250" stroke="black" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+                    <!-- L dimension -->
+                    <line x1="140" y1="245" x2="570" y2="245" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <rect x="310" y="233" width="40" height="20" fill="white" stroke="none"/>
+                    <text x="330" y="248" text-anchor="middle" font-weight="bold" font-size="15">L</text>
+
+                    <!-- Flow arrow inside -->
+                    <line x1="260" y1="165" x2="430" y2="165" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="345" y="195" text-anchor="middle" font-weight="bold" font-size="14">Q &rarr;</text>
+
+                    <!-- A label -->
+                    <line x1="140" y1="270" x2="140" y2="290" stroke="black" stroke-width="1.5"/>
+                    <text x="140" y="305" text-anchor="middle" font-size="13">Cross-sectional area A</text>
+
+                    <!-- Formula -->
+                    <rect x="140" y="320" width="500" height="30" fill="white" stroke="black" stroke-width="1.5"/>
+                    <text x="390" y="342" text-anchor="middle" font-weight="bold" font-size="14">Darcy's Law: Q = K &middot; A &middot; (h&#x2081; &minus; h&#x2082;) / L = K &middot; A &middot; i</text>
+                </svg>
+                <div class="figcaption">Figure 2.3: Darcy's 1856 sand-column experiment — piezometric heads h&#x2081; and h&#x2082; at two points along the flow path, discharge Q measured at outflow.</div>
+            </div>
+
+            <div class="callout">
+                <strong>DARCY'S LAW:</strong> The discharge through a saturated porous medium is proportional to the hydraulic gradient and the cross-sectional area normal to flow.
+            </div>
+            <div class="equation">$$ Q = K A \frac{h_1 - h_2}{L} = K A i $$</div>
+            <p>In sign-conscious form:</p>
+            <div class="equation">$$ q = \frac{Q}{A} = -K \frac{dh}{dl} $$</div>
+            <p>where <strong>q</strong> = Darcy flux (specific discharge), <strong>K</strong> = hydraulic conductivity, <strong>dh/dl</strong> = hydraulic gradient. The negative sign indicates head decreases in the flow direction.</p>
+
+            <div class="grid-two">
+                <div class="mini-note">
+                    <h4>DARCY FLUX</h4>
+                    <p>Discharge per total cross-sectional area. Does not represent real velocity in pores.</p>
+                    <div class="equation">$$ q = \frac{Q}{A} $$</div>
+                </div>
+                <div class="mini-note">
+                    <h4>SEEPAGE VELOCITY</h4>
+                    <p>Actual average velocity through pore spaces; divide by effective porosity.</p>
+                    <div class="equation">$$ v_s = \frac{q}{n_e} = \frac{K i}{n_e} $$</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 2.3 3D DARCY ======== -->
+        <section id="sec-2-3">
+            <h2>2.3 THREE-DIMENSIONAL DARCY LAW AND HEAD GRADIENTS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Derive the 3D form of groundwater flow from Darcy's law. [6] <em>(2072 Ashwin, Q2)</em></li>
+                    <li>What is Darcy's law? Derive the 1D form. [6] <em>(2072 Magh, Q2)</em></li>
+                </ol>
+            </div>
+            <div class="equation">$$ q_x = -K_x \frac{\partial h}{\partial x}, \qquad q_y = -K_y \frac{\partial h}{\partial y}, \qquad q_z = -K_z \frac{\partial h}{\partial z} $$</div>
+            <p>In isotropic media (\(K_x = K_y = K_z = K\)):</p>
+            <div class="equation">$$ \vec{q} = -K \nabla h $$</div>
+
+            <div class="figure-container">
+                <svg width="780" height="310" viewBox="0 0 780 310" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:14px;">
+                    <!-- Control volume (3D box) -->
+                    <polygon points="200,250 430,250 530,175 300,175" fill="none" stroke="black" stroke-width="2.5"/>
+                    <polygon points="200,250 200,115 300,50 300,175" fill="none" stroke="black" stroke-width="2.5"/>
+                    <polygon points="300,175 530,175 530,50 300,50" fill="none" stroke="black" stroke-width="2.5"/>
+                    <line x1="300" y1="50" x2="300" y2="175" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+                    <!-- Coordinate axes -->
+                    <line x1="380" y1="275" x2="520" y2="275" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="540" y="282" font-weight="bold" font-size="16">x</text>
+
+                    <line x1="380" y1="275" x2="380" y2="115" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="392" y="118" font-weight="bold" font-size="16">z</text>
+
+                    <line x1="380" y1="275" x2="270" y2="225" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="255" y="222" font-weight="bold" font-size="16">y</text>
+
+                    <!-- Head labels -->
+                    <text x="230" y="210" font-weight="bold">h + &part;h/&part;x &middot; dx</text>
+                    <text x="500" y="150" font-weight="bold">h</text>
+
+                    <!-- Flux vector -->
+                    <line x1="350" y1="200" x2="490" y2="140" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="435" y="160" font-weight="bold" font-size="14">q&#x20D7;</text>
+                    <text x="435" y="180" font-size="13">(flux vector)</text>
+
+                    <!-- Volume label -->
+                    <text x="360" y="115" text-anchor="middle" font-weight="bold" font-size="14">dx &middot; dy &middot; dz</text>
+
+                    <!-- Right info box -->
+                    <rect x="580" y="60" width="180" height="120" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="670" y="85" text-anchor="middle" font-weight="bold" font-size="14">Components:</text>
+                    <text x="670" y="110" text-anchor="middle" font-size="13">q<tspan dy="3" font-size="10">x</tspan><tspan dy="-3"> = &minus;K</tspan><tspan dy="3" font-size="10">x</tspan><tspan dy="-3"> &part;h/&part;x</tspan></text>
+                    <text x="670" y="135" text-anchor="middle" font-size="13">q<tspan dy="3" font-size="10">y</tspan><tspan dy="-3"> = &minus;K</tspan><tspan dy="3" font-size="10">y</tspan><tspan dy="-3"> &part;h/&part;y</tspan></text>
+                    <text x="670" y="160" text-anchor="middle" font-size="13">q<tspan dy="3" font-size="10">z</tspan><tspan dy="-3"> = &minus;K</tspan><tspan dy="3" font-size="10">z</tspan><tspan dy="-3"> &part;h/&part;z</tspan></text>
+                </svg>
+                <div class="figcaption">Figure 2.4: Differential control volume in 3D showing directional head gradients and the flux vector components.</div>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="290" viewBox="0 0 780 290" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <!-- Datum -->
+                    <line x1="80" y1="240" x2="700" y2="240" stroke="black" stroke-width="2.5"/>
+                    <text x="710" y="245" font-weight="bold" font-size="14">DATUM</text>
+
+                    <!-- Porous medium block -->
+                    <rect x="260" y="120" width="180" height="120" fill="url(#dots)" stroke="black" stroke-width="2.5"/>
+                    <text x="350" y="185" text-anchor="middle" font-weight="bold" font-size="14">Porous</text>
+                    <text x="350" y="203" text-anchor="middle" font-weight="bold" font-size="14">Medium</text>
+
+                    <!-- Left piezometer -->
+                    <line x1="310" y1="120" x2="310" y2="45" stroke="black" stroke-width="3"/>
+                    <path d="M 293 65 Q 301 58 310 65 Q 319 72 327 65" fill="none" stroke="black" stroke-width="2"/>
+                    <text x="310" y="32" text-anchor="middle" font-weight="bold" font-size="15">h&#x2081;</text>
+
+                    <!-- Right piezometer -->
+                    <line x1="400" y1="120" x2="400" y2="80" stroke="black" stroke-width="3"/>
+                    <path d="M 383 100 Q 391 93 400 100 Q 409 107 417 100" fill="none" stroke="black" stroke-width="2"/>
+                    <text x="400" y="68" text-anchor="middle" font-weight="bold" font-size="15">h&#x2082;</text>
+
+                    <!-- Elevation head z -->
+                    <line x1="500" y1="240" x2="500" y2="120" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="520" y="185" font-weight="bold" font-size="14">z</text>
+                    <text x="520" y="205" font-size="12">(elevation head)</text>
+
+                    <!-- Total head h -->
+                    <line x1="560" y1="240" x2="560" y2="65" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="580" y="150" font-weight="bold" font-size="14">h = z + p/&gamma;</text>
+                    <text x="580" y="170" font-size="12">(total head)</text>
+
+                    <!-- Pressure head p/gamma -->
+                    <line x1="625" y1="120" x2="625" y2="65" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="645" y="98" font-weight="bold" font-size="14">p/&gamma;</text>
+                    <text x="645" y="118" font-size="12">(pressure head)</text>
+
+                    <!-- Info box -->
+                    <rect x="80" y="30" width="170" height="70" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="165" y="55" text-anchor="middle" font-weight="bold" font-size="14">Hydraulic Head:</text>
+                    <text x="165" y="78" text-anchor="middle" font-size="14">h = z + p/&gamma;</text>
+                    <text x="165" y="95" text-anchor="middle" font-size="12">Flow: high h &rarr; low h</text>
+                </svg>
+                <div class="figcaption">Figure 2.5: Hydraulic head decomposition into elevation head (z) and pressure head (p/&gamma;). Flow is driven by differences in total head.</div>
+            </div>
+        </section>
+
+        <!-- ======== 2.4 VALIDITY ======== -->
+        <section id="sec-2-4">
+            <h2>2.4 VALIDITY OF DARCY'S LAW AND NON-DARCIAN FLOW</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Explain validity and limitations of Darcy's law. [Part of 6] <em>(2078 Chaitra, Q2a)</em></li>
+                    <li>Determine the valid domain around a pumping well for which Darcy's law applies. [6] <em>(2078 Chaitra, Q2b)</em></li>
+                    <li>Determine the domain for Darcy's law applicability around a pumping well. [8] <em>(2073 Bhadra, Q2b)</em></li>
+                    <li>State whether Darcy's law is applicable and determine pore velocity. [8] <em>(2071 Bhadra, Q6)</em></li>
+                </ol>
+            </div>
+            <p>Darcy's law is valid when pore flow is essentially laminar. This is checked by a Reynolds number:</p>
+            <div class="equation">$$ Re = \frac{q \, d_m}{\nu} \qquad \text{or} \qquad Re = \frac{v_s \, d_m}{\nu} $$</div>
+            <p>where \(d_m\) = average grain diameter and \(\nu\) = kinematic viscosity. Darcy's law is valid when \(Re \leq Re_{cr}\) (typically 1–10 depending on convention).</p>
+
+            <div class="figure-container">
+                <svg width="780" height="330" viewBox="0 0 780 330" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:14px;">
+                    <!-- Axes -->
+                    <line x1="100" y1="260" x2="720" y2="260" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+                    <line x1="100" y1="260" x2="100" y2="40" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+                    <text x="420" y="298" text-anchor="middle" font-weight="bold" font-size="15">Hydraulic Gradient, i &rarr;</text>
+                    <text x="40" y="155" text-anchor="middle" transform="rotate(-90 40 155)" font-weight="bold" font-size="15">Specific Discharge, q</text>
+
+                    <!-- Linear (Darcy) region -->
+                    <line x1="100" y1="245" x2="420" y2="95" stroke="black" stroke-width="3"/>
+                    <!-- Non-linear region -->
+                    <path d="M 420 95 Q 490 65 560 95 Q 630 130 690 195" fill="none" stroke="black" stroke-width="3"/>
+
+                    <!-- Deviation line -->
+                    <line x1="420" y1="55" x2="420" y2="260" stroke="black" stroke-width="2.5" stroke-dasharray="10,5"/>
+
+                    <!-- Zone labels with backgrounds -->
+                    <rect x="170" y="108" width="170" height="30" fill="white" stroke="none"/>
+                    <text x="255" y="130" text-anchor="middle" font-weight="bold" font-size="16">DARCY REGION</text>
+                    <text x="255" y="150" text-anchor="middle" font-size="13">(Linear: q = Ki)</text>
+
+                    <rect x="495" y="65" width="190" height="30" fill="white" stroke="none"/>
+                    <text x="590" y="88" text-anchor="middle" font-weight="bold" font-size="16">NON-DARCIAN</text>
+                    <text x="590" y="108" text-anchor="middle" font-size="13">(Inertial effects dominate)</text>
+
+                    <text x="420" y="48" text-anchor="middle" font-weight="bold" font-size="14">Deviation begins</text>
+                    <text x="420" y="310" text-anchor="middle" font-size="13">Re = Re<tspan dy="3" font-size="11">cr</tspan></text>
+                </svg>
+                <div class="figcaption">Figure 2.6: Darcy's law gives a linear relationship between q and i. At high gradients (near wells), inertial effects cause nonlinear deviation.</div>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="360" viewBox="0 0 780 360" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                    <!-- Well at center -->
+                    <circle cx="390" cy="175" r="18" fill="white" stroke="black" stroke-width="3"/>
+                    <text x="390" y="180" text-anchor="middle" font-weight="bold" font-size="14">WELL</text>
+
+                    <!-- Concentric circles -->
+                    <circle cx="390" cy="175" r="55" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <circle cx="390" cy="175" r="100" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <circle cx="390" cy="175" r="155" fill="none" stroke="black" stroke-width="3"/>
+                    <circle cx="390" cy="175" r="165" fill="none" stroke="black" stroke-width="1" stroke-dasharray="4,3"/>
+
+                    <!-- r_min circle highlighted -->
+                    <text x="555" y="175" font-weight="bold" font-size="15">r<tspan dy="4" font-size="11">min</tspan></text>
+                    <line x1="390" y1="175" x2="545" y2="175" stroke="black" stroke-width="2"/>
+
+                    <!-- r dimension -->
+                    <line x1="390" y1="175" x2="390" y2="20" stroke="black" stroke-width="1.5" stroke-dasharray="5,4"/>
+                    <line x1="390" y1="20" x2="545" y2="20" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <text x="467" y="15" text-anchor="middle" font-weight="bold" font-size="14">r</text>
+
+                    <!-- Zone labels -->
+                    <rect x="50" y="55" width="240" height="80" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="170" y="78" text-anchor="middle" font-weight="bold" font-size="14">NEAR WELL ZONE</text>
+                    <text x="170" y="98" text-anchor="middle" font-size="13">High velocity &rarr; Re &gt; Re<tspan dy="3" font-size="10">cr</tspan></text>
+                    <text x="170" y="118" text-anchor="middle" font-size="13" font-weight="bold">Darcy's law MAY FAIL</text>
+                    <line x1="285" y1="100" x2="350" y2="140" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                    <rect x="570" y="240" width="195" height="70" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="668" y="262" text-anchor="middle" font-weight="bold" font-size="14">FAR-FIELD ZONE</text>
+                    <text x="668" y="282" text-anchor="middle" font-size="13">Re &le; Re<tspan dy="3" font-size="10">cr</tspan></text>
+                    <text x="668" y="302" text-anchor="middle" font-weight="bold" font-size="13">Darcy flow VALID</text>
+                    <line x1="575" y1="260" x2="530" y2="230" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+
+                    <!-- Formula -->
+                    <rect x="105" y="280" width="370" height="60" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="290" y="305" text-anchor="middle" font-weight="bold" font-size="14">q<tspan dy="3" font-size="10">r</tspan><tspan dy="-3"> = Q / (2&pi;rb)</tspan></text>
+                    <text x="290" y="328" text-anchor="middle" font-weight="bold" font-size="14">r<tspan dy="3" font-size="10">min</tspan><tspan dy="-3"> = Q d</tspan><tspan dy="3" font-size="10">m</tspan><tspan dy="-3"> / (2&pi;b&nu; Re</tspan><tspan dy="3" font-size="10">cr</tspan><tspan dy="-3">)</tspan></text>
+                </svg>
+                <div class="figcaption">Figure 2.7: Radial flow into a pumping well — velocity is highest near the well. Darcy's law is valid only for r &ge; r<sub>min</sub> where Re &le; Re<sub>cr</sub>.</div>
+            </div>
+
+            <div class="study-note">
+                <h4>STANDARD EXAM PROCEDURE FOR WELL-DOMAIN PROBLEMS</h4>
+                <ol>
+                    <li>Write radial Darcy flux: \( q_r = \frac{Q}{2\pi r b} \)</li>
+                    <li>Define Reynolds number: \( Re = \frac{q_r d_m}{\nu} = \frac{Q d_m}{2\pi r b \nu} \)</li>
+                    <li>Set \( Re = Re_{cr} \) to find boundary of validity</li>
+                    <li>Solve: \( r_{min} = \frac{Q d_m}{2\pi b \nu Re_{cr}} \). Darcy flow valid for \( r \geq r_{min} \).</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ======== 2.5 K, k, T ======== -->
+        <section id="sec-2-5">
+            <h2>2.5 HYDRAULIC CONDUCTIVITY, PERMEABILITY, AND TRANSMISSIVITY</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Define permeability and transmissibility. [2] <em>(2073 Bhadra, Q2a)</em></li>
+                    <li>Define specific storage, specific yield, transmissibility, and anisotropy. [4] <em>(2072 Ashwin, Q1)</em></li>
+                </ol>
+            </div>
+            <div class="callout">
+                <strong>KEY DISTINCTION:</strong> Permeability (k) is a property of the medium alone; hydraulic conductivity (K) depends on both medium and fluid.
+            </div>
+            <div class="equation">$$ K = \frac{k \rho g}{\mu} = \frac{k g}{\nu} \qquad \text{and} \qquad T = K b $$</div>
+
+            <div class="figure-container">
+                <svg width="780" height="350" viewBox="0 0 780 350" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:14px;">
+                    <!-- Axes -->
+                    <line x1="130" y1="290" x2="700" y2="290" stroke="black" stroke-width="2.5"/>
+                    <line x1="130" y1="30" x2="130" y2="290" stroke="black" stroke-width="2.5"/>
+                    <text x="415" y="330" text-anchor="middle" font-weight="bold" font-size="14">Material (increasing grain size &rarr;)</text>
+                    <text x="55" y="170" text-anchor="middle" transform="rotate(-90 55 170)" font-weight="bold" font-size="14">K (m/s, log scale)</text>
+
+                    <!-- Tick marks -->
+                    <line x1="120" y1="260" x2="130" y2="260" stroke="black" stroke-width="1.5"/>
+                    <text x="112" y="265" text-anchor="end" font-size="12">10<tspan dy="-5" font-size="9">&minus;10</tspan></text>
+                    <line x1="120" y1="210" x2="130" y2="210" stroke="black" stroke-width="1.5"/>
+                    <text x="112" y="215" text-anchor="end" font-size="12">10<tspan dy="-5" font-size="9">&minus;8</tspan></text>
+                    <line x1="120" y1="160" x2="130" y2="160" stroke="black" stroke-width="1.5"/>
+                    <text x="112" y="165" text-anchor="end" font-size="12">10<tspan dy="-5" font-size="9">&minus;6</tspan></text>
+                    <line x1="120" y1="110" x2="130" y2="110" stroke="black" stroke-width="1.5"/>
+                    <text x="112" y="115" text-anchor="end" font-size="12">10<tspan dy="-5" font-size="9">&minus;4</tspan></text>
+                    <line x1="120" y1="60" x2="130" y2="60" stroke="black" stroke-width="1.5"/>
+                    <text x="112" y="65" text-anchor="end" font-size="12">10<tspan dy="-5" font-size="9">&minus;2</tspan></text>
+
+                    <!-- Bars -->
+                    <rect x="165" y="240" width="75" height="45" fill="url(#hatch)" stroke="black" stroke-width="2"/>
+                    <text x="202" y="300" text-anchor="middle" font-weight="bold" font-size="13">Clay</text>
+
+                    <rect x="270" y="195" width="75" height="90" fill="url(#dots-fine)" stroke="black" stroke-width="2"/>
+                    <text x="307" y="300" text-anchor="middle" font-weight="bold" font-size="13">Silt</text>
+
+                    <rect x="375" y="140" width="75" height="145" fill="url(#dots)" stroke="black" stroke-width="2"/>
+                    <text x="412" y="300" text-anchor="middle" font-weight="bold" font-size="13">Fine sand</text>
+
+                    <rect x="480" y="85" width="75" height="200" fill="url(#dots)" stroke="black" stroke-width="2"/>
+                    <text x="517" y="300" text-anchor="middle" font-weight="bold" font-size="13">Coarse sand</text>
+
+                    <rect x="585" y="50" width="75" height="235" fill="white" stroke="black" stroke-width="2"/>
+                    <text x="622" y="300" text-anchor="middle" font-weight="bold" font-size="13">Gravel</text>
+
+                    <!-- Labels on bars -->
+                    <text x="202" y="235" text-anchor="middle" font-size="11">Very low</text>
+                    <text x="307" y="188" text-anchor="middle" font-size="11">Low</text>
+                    <text x="412" y="133" text-anchor="middle" font-size="11">Moderate</text>
+                    <text x="517" y="78" text-anchor="middle" font-size="11">High</text>
+                    <text x="622" y="43" text-anchor="middle" font-size="11">Very high</text>
+                </svg>
+                <div class="figcaption">Figure 2.8: Typical range of hydraulic conductivity K for common geological materials (log scale).</div>
+            </div>
+
+            <div class="figure-container">
+                <svg width="780" height="200" viewBox="0 0 780 200" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:14px;">
+                    <!-- Three boxes connected by arrows -->
+                    <rect x="40" y="40" width="195" height="120" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="137" y="70" text-anchor="middle" font-weight="bold" font-size="18">k</text>
+                    <text x="137" y="95" text-anchor="middle" font-size="13">Intrinsic Permeability</text>
+                    <text x="137" y="115" text-anchor="middle" font-size="12">Medium property only</text>
+                    <text x="137" y="135" text-anchor="middle" font-size="12">Units: m&sup2;</text>
+
+                    <line x1="235" y1="100" x2="295" y2="100" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+                    <text x="265" y="88" text-anchor="middle" font-size="12" font-style="italic">+ fluid</text>
+
+                    <rect x="295" y="40" width="195" height="120" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="392" y="70" text-anchor="middle" font-weight="bold" font-size="18">K</text>
+                    <text x="392" y="95" text-anchor="middle" font-size="13">Hydraulic Conductivity</text>
+                    <text x="392" y="115" text-anchor="middle" font-size="12">K = k&rho;g/&mu;</text>
+                    <text x="392" y="135" text-anchor="middle" font-size="12">Units: m/s or m/day</text>
+
+                    <line x1="490" y1="100" x2="550" y2="100" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+                    <text x="520" y="88" text-anchor="middle" font-size="12" font-style="italic">&times; b</text>
+
+                    <rect x="550" y="40" width="195" height="120" fill="white" stroke="black" stroke-width="2.5"/>
+                    <text x="647" y="70" text-anchor="middle" font-weight="bold" font-size="18">T</text>
+                    <text x="647" y="95" text-anchor="middle" font-size="13">Transmissivity</text>
+                    <text x="647" y="115" text-anchor="middle" font-size="12">T = K &middot; b</text>
+                    <text x="647" y="135" text-anchor="middle" font-size="12">Units: m&sup2;/s or m&sup2;/day</text>
+                </svg>
+                <div class="figcaption">Figure 2.9: Relationship chain — intrinsic permeability (medium only) &rarr; hydraulic conductivity (+ fluid) &rarr; transmissivity (&times; aquifer thickness).</div>
+            </div>
+        </section>
+
+        <!-- ======== 2.6 ANISOTROPY ======== -->
+        <section id="sec-2-6">
+            <h2>2.6 AQUIFER HETEROGENEITY AND ANISOTROPY</h2>
+            <p><strong>Homogeneous:</strong> Same K everywhere. <strong>Heterogeneous:</strong> K varies spatially. <strong>Isotropic:</strong> K same in all directions at one point. <strong>Anisotropic:</strong> K depends on direction.</p>
+
+            <div class="figure-container">
+                <svg width="780" height="300" viewBox="0 0 780 300" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:14px;">
+                    <!-- Layered deposit -->
+                    <rect x="60" y="60" width="300" height="180" fill="none" stroke="black" stroke-width="2.5"/>
+                    <rect x="60" y="60" width="300" height="45" fill="url(#dots-fine)" stroke="black" stroke-width="1.5"/>
+                    <rect x="60" y="105" width="300" height="45" fill="url(#dots)" stroke="black" stroke-width="1.5"/>
+                    <rect x="60" y="150" width="300" height="45" fill="url(#dots-fine)" stroke="black" stroke-width="1.5"/>
+                    <rect x="60" y="195" width="300" height="45" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+                    <text x="210" y="87" text-anchor="middle" font-weight="bold">Fine sand</text>
+                    <text x="210" y="132" text-anchor="middle" font-weight="bold">Silty sand</text>
+                    <text x="210" y="177" text-anchor="middle" font-weight="bold">Fine sand</text>
+                    <text x="210" y="222" text-anchor="middle" font-weight="bold">Clayey silt</text>
+                    <text x="210" y="48" text-anchor="middle" font-weight="bold" font-size="15">LAYERED DEPOSIT</text>
+
+                    <!-- K_h arrow (long horizontal) -->
+                    <line x1="100" y1="142" x2="320" y2="142" stroke="black" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="280" y="135" font-weight="bold" font-size="16">K<tspan dy="4" font-size="12">h</tspan><tspan dy="-4"> (large)</tspan></text>
+
+                    <!-- K_v arrow (short vertical) -->
+                    <line x1="210" y1="240" x2="210" y2="80" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <text x="228" y="260" font-weight="bold" font-size="14">K<tspan dy="4" font-size="12">v</tspan><tspan dy="-4"> (small)</tspan></text>
+
+                    <!-- Conductivity ellipse -->
+                    <ellipse cx="570" cy="150" rx="120" ry="60" fill="none" stroke="black" stroke-width="3"/>
+                    <line x1="450" y1="150" x2="690" y2="150" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <line x1="570" y1="60" x2="570" y2="240" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+                    <!-- K_h radius -->
+                    <line x1="570" y1="150" x2="687" y2="150" stroke="black" stroke-width="2.5" marker-end="url(#arr)"/>
+                    <text x="660" y="140" font-weight="bold" font-size="15">K<tspan dy="4" font-size="12">h</tspan></text>
+
+                    <!-- K_v radius -->
+                    <line x1="570" y1="150" x2="570" y2="93" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+                    <text x="585" y="105" font-weight="bold" font-size="14">K<tspan dy="4" font-size="12">v</tspan></text>
+
+                    <text x="570" y="48" text-anchor="middle" font-weight="bold" font-size="15">CONDUCTIVITY ELLIPSE</text>
+                    <circle cx="570" cy="150" r="4" fill="black"/>
+                    <text x="570" y="280" text-anchor="middle" font-size="13">K<tspan dy="4" font-size="11">h</tspan><tspan dy="-4"> / K</tspan><tspan dy="4" font-size="11">v</tspan><tspan dy="-4"> = 3 to 100+ in layered sediments</tspan></text>
+                </svg>
+                <div class="figcaption">Figure 2.10: Anisotropy in layered deposits — horizontal flow encounters less resistance than vertical flow, producing a conductivity ellipse.</div>
+            </div>
+        </section>
+
+        <!-- ======== 2.7 QUESTION BANK ======== -->
+        <section id="sec-2-7">
+            <h2>2.7 PAST QUESTION BANK FOR CHAPTER 2</h2>
+            <h3>A. Theory Questions</h3>
+            <div class="question-card"><div class="question-meta"><span class="pill">2078 Chaitra</span><span class="pill">Q2(a)</span><span class="pill">Theory</span></div><p>Define REV and continuum approach. Explain the importance, validity, and limitations of Darcy's law. [6]</p></div>
+            <div class="question-card"><div class="question-meta"><span class="pill">2073 Bhadra</span><span class="pill">Q2(a)</span><span class="pill">Theory</span></div><p>Explain the continuum and REV approach. Define permeability and transmissibility. [4+2]</p></div>
+            <div class="question-card"><div class="question-meta"><span class="pill">2072 Ashwin</span><span class="pill">Q1</span><span class="pill">Definition</span></div><p>Define specific storage, specific yield, transmissibility, and anisotropy of an aquifer. [4]</p></div>
+            <div class="question-card"><div class="question-meta"><span class="pill">2072 Ashwin</span><span class="pill">Q2</span><span class="pill">Derivation</span></div><p>Derive the 3D form of groundwater flow from Darcy's law. [8]</p></div>
+            <div class="question-card"><div class="question-meta"><span class="pill">2072 Magh</span><span class="pill">Q2</span><span class="pill">Derivation</span></div><p>What is Darcy's law? Derive the 1D form and explain its validity. [6]</p></div>
+            <div class="question-card"><div class="question-meta"><span class="pill">2071 Bhadra</span><span class="pill">Q2</span><span class="pill">Theory</span></div><p>What do you understand by REV? Explain. [4]</p></div>
+
+            <h3>B. Numerical Questions</h3>
+            <div class="question-card"><div class="question-meta"><span class="pill">2078 Chaitra</span><span class="pill">Q2(b)</span><span class="pill">Numerical</span></div><p>Determine the valid domain around a pumping well for Darcy's law applicability. [6]</p><div class="data-block"><pre>Aquifer thickness = 18 m,  Pumping rate = 0.3 m³/s
+Average grain diameter = 1 mm,  Reynolds limit = 8
+Kinematic viscosity = 1 centistoke</pre></div></div>
+            <div class="question-card"><div class="question-meta"><span class="pill">2073 Bhadra</span><span class="pill">Q2(b)</span><span class="pill">Numerical</span></div><p>Determine the domain around a pumping well for which Darcy's law is applicable. [8]</p><div class="data-block"><pre>Pumping rate = 1000 m³/hr,  Aquifer thickness = 28 m
+Average grain diameter = 1 mm,  Reynolds limit = 6
+Kinematic viscosity = 1 centistoke</pre></div></div>
+            <div class="question-card"><div class="question-meta"><span class="pill">2071 Bhadra</span><span class="pill">Q6</span><span class="pill">Numerical</span></div><p>State whether Darcy's law is applicable and determine the pore velocity. [4+4]</p><div class="data-block"><pre>Aquifer thickness = 25 m,  Effective porosity = 20%
+Permeability = 15 m/day,  Well spacing = 1100 m
+Piezometric heads = 5.5 m and 3 m
+Grain diameter = 1 mm,  Kinematic viscosity = 0.01 cm²/s</pre></div></div>
+        </section>
+
+        <!-- ======== 2.8 WORKED SOLUTIONS ======== -->
+        <section id="sec-2-8">
+            <h2>2.8 WORKED NUMERICAL SOLUTIONS</h2>
+
+            <div class="solution-box">
+                <h4>SOLUTION 1: 2078 Chaitra Q2(b) — Darcy Validity Domain</h4>
+                <p><strong>Given:</strong> \(Q = 0.3\) m&sup3;/s, \(b = 18\) m, \(d_m = 1\) mm = \(0.001\) m, \(Re_{cr} = 8\), \(\nu = 1\) centistoke = \(1 \times 10^{-6}\) m&sup2;/s.</p>
+                <p><strong>Required:</strong> Minimum radius \(r_{min}\) from the well beyond which Darcy's law is valid.</p>
+                <p><strong>Step 1:</strong> For a fully penetrating well in a confined aquifer, the Darcy flux at radial distance \(r\) is:</p>
+                <div class="equation">$$ q_r = \frac{Q}{2\pi r b} $$</div>
+                <p><strong>Step 2:</strong> Reynolds number defined using Darcy flux:</p>
+                <div class="equation">$$ Re = \frac{q_r \cdot d_m}{\nu} = \frac{Q \cdot d_m}{2\pi \cdot r \cdot b \cdot \nu} $$</div>
+                <p><strong>Step 3:</strong> At the boundary of Darcy validity, \(Re = Re_{cr}\). Solve for \(r_{min}\):</p>
+                <div class="equation">$$ r_{min} = \frac{Q \cdot d_m}{2\pi \cdot b \cdot \nu \cdot Re_{cr}} $$</div>
+                <p><strong>Step 4:</strong> Substitute values:</p>
+                <div class="equation">$$ r_{min} = \frac{0.3 \times 0.001}{2\pi \times 18 \times 1 \times 10^{-6} \times 8} $$</div>
+                <div class="equation">$$ r_{min} = \frac{3 \times 10^{-4}}{2\pi \times 144 \times 10^{-6}} = \frac{3 \times 10^{-4}}{9.0478 \times 10^{-4}} $$</div>
+                <div class="equation">$$ \boxed{r_{min} = 0.332 \text{ m} \approx 0.33 \text{ m}} $$</div>
+                <p><strong>Conclusion:</strong> Darcy's law is valid for \(r \geq 0.33\) m from the well centre. Within 0.33 m, flow velocities are too high and non-Darcian effects dominate.</p>
+            </div>
+
+            <div class="solution-box">
+                <h4>SOLUTION 2: 2073 Bhadra Q2(b) — Darcy Validity Domain</h4>
+                <p><strong>Given:</strong> \(Q = 1000\) m&sup3;/hr, \(b = 28\) m, \(d_m = 1\) mm = \(0.001\) m, \(Re_{cr} = 6\), \(\nu = 1\) centistoke = \(1 \times 10^{-6}\) m&sup2;/s.</p>
+                <p><strong>Step 1:</strong> Convert units: \(Q = \frac{1000}{3600} = 0.2778\) m&sup3;/s.</p>
+                <p><strong>Step 2:</strong> Apply the formula:</p>
+                <div class="equation">$$ r_{min} = \frac{Q \cdot d_m}{2\pi \cdot b \cdot \nu \cdot Re_{cr}} = \frac{0.2778 \times 0.001}{2\pi \times 28 \times 10^{-6} \times 6} $$</div>
+                <div class="equation">$$ r_{min} = \frac{2.778 \times 10^{-4}}{2\pi \times 168 \times 10^{-6}} = \frac{2.778 \times 10^{-4}}{1.0556 \times 10^{-3}} $$</div>
+                <div class="equation">$$ \boxed{r_{min} = 0.263 \text{ m} \approx 0.26 \text{ m}} $$</div>
+                <p><strong>Conclusion:</strong> Darcy's law is applicable for \(r \geq 0.26\) m from the pumping well.</p>
+            </div>
+
+            <div class="solution-box">
+                <h4>SOLUTION 3: 2071 Bhadra Q6 — Darcy Applicability and Pore Velocity</h4>
+                <p><strong>Given:</strong> \(b = 25\) m, \(n_e = 0.20\), \(K = 15\) m/day, \(L = 1100\) m, \(h_1 = 5.5\) m, \(h_2 = 3.0\) m, \(d_m = 1\) mm = \(0.001\) m, \(\nu = 0.01\) cm&sup2;/s = \(1 \times 10^{-6}\) m&sup2;/s.</p>
+                <p><strong>Step 1: Hydraulic gradient</strong></p>
+                <div class="equation">$$ i = \frac{h_1 - h_2}{L} = \frac{5.5 - 3.0}{1100} = \frac{2.5}{1100} = 2.273 \times 10^{-3} $$</div>
+                <p><strong>Step 2: Darcy flux (specific discharge)</strong></p>
+                <div class="equation">$$ q = K \cdot i = 15 \times 2.273 \times 10^{-3} = 0.0341 \text{ m/day} $$</div>
+                <p>Convert to m/s: \(q = \frac{0.0341}{86400} = 3.945 \times 10^{-7}\) m/s.</p>
+                <p><strong>Step 3: Check Darcy validity (Reynolds number)</strong></p>
+                <div class="equation">$$ Re = \frac{q \cdot d_m}{\nu} = \frac{3.945 \times 10^{-7} \times 0.001}{1 \times 10^{-6}} = \frac{3.945 \times 10^{-10}}{10^{-6}} $$</div>
+                <div class="equation">$$ \boxed{Re = 3.95 \times 10^{-4} \ll 1} $$</div>
+                <p><strong>Conclusion:</strong> Since \(Re \approx 0.0004\), which is far below any commonly accepted limit (1–10), <strong>Darcy's law is fully applicable</strong>.</p>
+                <p><strong>Step 4: Average pore velocity (seepage velocity)</strong></p>
+                <div class="equation">$$ v_s = \frac{q}{n_e} = \frac{0.0341}{0.20} $$</div>
+                <div class="equation">$$ \boxed{v_s = 0.170 \text{ m/day} = 1.973 \times 10^{-6} \text{ m/s}} $$</div>
+                <p>The actual groundwater velocity in the pores is about 5 times the Darcy flux, and the flow is deeply in the laminar regime.</p>
+            </div>
+        </section>
+
+        <!-- ======== SUMMARY ======== -->
+        <section id="sec-summary">
+            <h2>CHAPTER SUMMARY AND EXAM FORMULA SHEET</h2>
+            <table class="formula-table">
+                <tr><th>Concept</th><th>Key relation / statement</th></tr>
+                <tr><td>Continuum assumption</td><td>Porous medium is treated as continuous once REV is identified.</td></tr>
+                <tr><td>Darcy law</td><td>\( Q = KAi \), or \( q = -K \frac{dh}{dl} \)</td></tr>
+                <tr><td>Seepage velocity</td><td>\( v_s = q / n_e \)</td></tr>
+                <tr><td>3D Darcy law</td><td>\( q_x = -K_x \partial h/\partial x,\ q_y = -K_y \partial h/\partial y,\ q_z = -K_z \partial h/\partial z \)</td></tr>
+                <tr><td>Vector form (isotropic)</td><td>\( \vec{q} = -K \nabla h \)</td></tr>
+                <tr><td>Hydraulic head</td><td>\( h = z + p/\gamma \)</td></tr>
+                <tr><td>Intrinsic permeability</td><td>\( K = k \rho g / \mu = k g / \nu \)</td></tr>
+                <tr><td>Transmissivity</td><td>\( T = K b \)</td></tr>
+                <tr><td>Darcy validity</td><td>\( Re = q d_m / \nu \leq Re_{cr} \)</td></tr>
+                <tr><td>Radial well validity</td><td>\( r_{min} = Q d_m / (2 \pi b \nu Re_{cr}) \)</td></tr>
+                <tr><td>Anisotropy</td><td>\(K_h > K_v\) in layered alluvium; conductivity ellipse</td></tr>
+            </table>
+            <div class="study-note">
+                <h4>LAST-MINUTE EXAM FOCUS</h4>
+                <ol>
+                    <li>Memorize the physical meaning of REV.</li>
+                    <li>Be able to derive 1D and 3D Darcy equations with sign convention.</li>
+                    <li>Distinguish Darcy flux from seepage velocity.</li>
+                    <li>Practice Reynolds-number based well-domain problems (3 solved above).</li>
+                    <li>Don't mix up K, k, and T.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

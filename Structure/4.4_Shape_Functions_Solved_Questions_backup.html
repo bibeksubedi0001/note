@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>4.4 Shape Functions — Solved Exam Questions | FEM</title>
+
+ <!-- MathJax / KaTeX -->
+ <script>
+MathJax = {
+ tex: {
+ inlineMath: [['$','$'],['\\(','\\)']],
+ displayMath: [['$$','$$'],['\\[','\\]']],
+ processEscapes: true
+ }
+};
+</script>
+ <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+ <style>
+ :root {
+ --base-size: 12pt;
+ }
+
+ body,
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ p,
+ span,
+ div,
+ li,
+ table,
+ td,
+ th {
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ color: black;
+ background-color: white;
+ line-height: 1.5;
+ margin: 0;
+ padding: 0;
+ }
+
+ body {
+ max-width: 800px;
+ margin: 0 auto;
+ padding: 2rem;
+ }
+
+ h1 {
+ font-weight: bold;
+ text-transform: uppercase;
+ text-align: center;
+ margin-bottom: 2rem;
+ border-bottom: 2px solid black;
+ padding-bottom: 0.5rem;
+ }
+
+ h2 {
+ font-weight: bold;
+ text-transform: uppercase;
+ margin-top: 2rem;
+ margin-bottom: 1rem;
+ border-bottom: 1px solid black;
+ }
+
+ h3 {
+ font-weight: bold;
+ margin-top: 1.5rem;
+ margin-bottom: 0.5rem;
+ }
+
+ h4 {
+ font-weight: bold;
+ font-style: italic;
+ margin-top: 1rem;
+ margin-bottom: 0.5rem;
+ }
+
+ p {
+ text-align: justify;
+ margin-bottom: 1rem;
+ }
+
+ ul,
+ ol {
+ margin-bottom: 1rem;
+ padding-left: 2rem;
+ }
+
+ li {
+ text-align: justify;
+ margin-bottom: 0.5rem;
+ }
+
+ .equation {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ margin: 1.5rem 0;
+ overflow-x: auto;
+ }
+
+ .exam-note {
+ border: 1px solid black;
+ padding: 1rem;
+ margin-bottom: 1.5rem;
+ }
+
+ .exam-note h4 {
+ margin-top: 0;
+ border-bottom: 1px dashed black;
+ padding-bottom: 0.25rem;
+ }
+
+ .callout {
+ border-left: 3px solid black;
+ padding-left: 1rem;
+ margin: 1.5rem 0;
+ font-style: italic;
+ }
+
+ .figure-container {
+ text-align: center;
+ margin: 2rem 0;
+ padding: 1rem;
+ border: 1px solid black;
+ }
+
+ .figcaption {
+ font-style: italic;
+ margin-top: 0.5rem;
+ text-align: center;
+ }
+
+ table.info-table {
+ width: 100%;
+ border-collapse: collapse;
+ margin: 1rem 0;
+ }
+
+ table.info-table th,
+ table.info-table td {
+ border: 1px solid black;
+ padding: 6px 10px;
+ text-align: left;
+ vertical-align: top;
+ }
+
+ table.info-table th {
+ font-weight: bold;
+ background: white;
+ }
+
+ .print-btn {
+ position: fixed;
+ top: 1rem;
+ right: 1rem;
+ border: 2px solid black;
+ background-color: white;
+ color: black;
+ padding: 0.5rem 1rem;
+ font-weight: bold;
+ cursor: pointer;
+ font-family: 'Times New Roman', Times, serif;
+ font-size: var(--base-size);
+ }
+
+ .print-btn:hover {
+ background-color: black;
+ color: white;
+ }
+
+ @media print {
+ body {
+ padding: 0;
+ max-width: 100%;
+ }
+
+ .print-btn {
+ display: none;
+ }
+
+ .figure-container,
+ .exam-note {
+ page-break-inside: avoid;
+ }
+
+ h2,
+ h3 {
+ page-break-after: avoid;
+ }
+ }
+ 
+        
+        /* ── Topbar ── */
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            background: white; color: black;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; height: 44px;
+            border-bottom: 2px solid black;
+        }
+        .topbar a { color: black; text-decoration: none; font-weight: 700; }
+        .topbar a:hover { text-decoration: underline; }
+        .topbar span { font-size: 10pt; opacity: .65; }
+
+        /* ── Chapter Header ── */
+        .ch-header {
+            background: white; color: black;
+            text-align: center; padding: 40px 24px 32px;
+            border-bottom: 2px solid black;
+        }
+        .ch-header h1 {
+            color: black; font-size: 16pt; text-transform: uppercase;
+            border-bottom: none; margin-bottom: 6px;
+        }
+        .ch-header .meta { font-size: 11pt; font-style: italic; }
+        .ch-header .author { font-size: 9pt; opacity: .55; margin-top: 8px; }
+
+        /* ── Content wrapper ── */
+        .content { max-width: 800px; margin: 0 auto; padding: 30px 24px 50px; }
+
+        /* ── Equation blocks ── */
+        .eq-block {
+            margin: 14px 0; padding: 12px 18px;
+            background: white; border-left: 3px solid black;
+            overflow-x: auto;
+        }
+        .eq-block.hl {
+            background: white; border: 2px dashed black;
+            border-left: 4px solid black;
+        }
+
+        /* ── Definition box ── */
+        .def-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+        .def-box .dt { font-weight: 700; margin-bottom: 4px; }
+
+        /* ── Step box ── */
+        .step-box {
+            background: white; border: 1px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Note ── */
+        .note {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Result box ── */
+        .result-box {
+            background: white; border: 2px solid black;
+            padding: 12px 16px; margin: 14px 0;
+        }
+
+        /* ── Given / Answer ── */
+        .given { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+        .answer { background: white; border: 1px solid black; padding: 12px 16px; margin: 12px 0; }
+
+        /* ── Example ── */
+        .example {
+            border: 1px solid black; padding: 16px; margin: 20px 0;
+            page-break-inside: avoid;
+        }
+        .ex-title {
+            font-weight: bold; border-bottom: 1px solid black;
+            padding-bottom: 6px; margin-bottom: 10px;
+        }
+        .ex-q {
+            background: white; border-left: 3px solid black;
+            padding: 10px 14px; margin: 8px 0; font-style: italic;
+        }
+
+        /* ── Solution label ── */
+        .soln-label {
+            display: inline-block; background: black; color: white;
+            padding: 2px 10px; font-weight: bold; margin: 12px 0 6px; font-size: 10pt;
+        }
+
+        /* ── Figures ── */
+        .figure, .svg-wrap { text-align: center; margin: 16px auto; max-width: 100%; overflow-x: auto; }
+        .figure .caption, .figcaption {
+            font-style: italic; margin-top: 6px; text-align: center; font-size: 10pt;
+        }
+
+        /* ── Tables ── */
+        .matrix-table, .summary-table, .comp-table {
+            width: 100%; border-collapse: collapse; margin: 14px 0;
+        }
+        .matrix-table th, .summary-table th, .comp-table th {
+            background: white; color: black; border: 1px solid black;
+            padding: 6px 10px; text-align: center; font-weight: bold;
+        }
+        .matrix-table td, .summary-table td, .comp-table td {
+            border: 1px solid black; padding: 6px 10px; text-align: center; vertical-align: top;
+        }
+
+        /* ── Chapter navigation ── */
+        .ch-nav { display: flex; gap: 12px; margin: 30px 0; flex-wrap: wrap; }
+        .ch-nav a {
+            flex: 1; min-width: 200px; display: flex; align-items: center; gap: 8px;
+            padding: 12px 16px; background: white; border: 1px solid black;
+            text-decoration: none; color: black; font-weight: bold;
+        }
+        .ch-nav a:hover { background: #f5f5f5; }
+        .ch-nav .next { justify-content: flex-end; text-align: right; }
+
+        /* ── Footer ── */
+        .footer {
+            background: white; color: black; text-align: center;
+            padding: 20px; font-size: 10pt; border-top: 2px solid black;
+        }
+        .footer p { color: black; text-align: center; }
+        .footer a { color: black; text-decoration: underline; }
+
+        /* ── Back to top ── */
+        .btt {
+            position: fixed; bottom: 24px; right: 80px; width: 40px; height: 40px;
+            border-radius: 50%; background: black; color: white; border: none;
+            cursor: pointer; font-size: 18px; display: none;
+            align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,.3); z-index: 90;
+        }
+        .btt.show { display: flex; }
+
+        /* ── Hero panel ── */
+        .hero-panel { margin-bottom: 24px; }
+        .hero-card { border: 1px solid black; padding: 20px; margin-bottom: 16px; }
+        .hero-card h2 { border-bottom: 2px solid black; padding-bottom: 6px; }
+        .hero-card p { margin: 8px 0; }
+
+        /* ── Chip row ── */
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .chip {
+            display: inline-block; background: white; border: 1px solid black;
+            padding: 4px 10px; font-size: 10pt;
+        }
+
+        /* ── TOC card / grid ── */
+        .toc-card { margin: 16px 0; }
+        .toc-card h3 { margin-bottom: 10px; font-weight: bold; }
+        .toc-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px;
+        }
+        .toc-grid a {
+            display: block; padding: 10px 14px; background: white;
+            border: 1px solid black; text-decoration: none; color: black; font-weight: bold;
+        }
+        .toc-grid a:hover { background: #f5f5f5; }
+
+        /* ── Visual grid ── */
+        .visual-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px; margin: 16px 0;
+        }
+        .visual-card { border: 1px solid black; padding: 14px; }
+        .visual-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Chapter band ── */
+        .chapter-band { display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+        .band-card {
+            flex: 1; min-width: 140px; border: 1px solid black;
+            padding: 14px; text-align: center;
+        }
+        .band-card .num { font-size: 20pt; font-weight: bold; }
+        .band-card .label { font-size: 10pt; margin-top: 4px; }
+
+        /* ── Mini grid / notes ── */
+        .mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+        .mini-note { border: 1px solid black; padding: 12px; }
+        .mini-note h4 { font-weight: bold; margin-bottom: 6px; }
+
+        /* ── Quick formulas ── */
+        .quick-formulas {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px; margin: 16px 0;
+        }
+        .formula-card { border: 1px solid black; padding: 14px; }
+        .formula-card h4 { font-weight: bold; margin-bottom: 8px; }
+
+        /* ── Formula box / concept box ── */
+        .formula-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .concept-box {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+        .derivation {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px 0;
+        }
+
+        /* ── Question map ── */
+        .qmap { margin: 14px 0; }
+        .yr { font-size: 9pt; font-style: italic; }
+
+        /* ── Hero (index page) ── */
+        .hero {
+            background: white; color: black;
+            text-align: center; padding: 50px 24px 40px;
+            border-bottom: 2px solid black;
+        }
+        .hero h1 { color: black; border-bottom: none; text-align: center; }
+        .hero .sub { font-style: italic; }
+        .hero .author { opacity: .55; margin-top: 8px; }
+        .hero .divider { width: 80px; height: 3px; background: black; margin: 14px auto; }
+        .hero .stats { display: flex; justify-content: center; gap: 40px; margin-top: 16px; }
+        .hero .stat-val { font-size: 18pt; font-weight: bold; }
+
+        /* ── Card grid (index) ── */
+        .card { border: 1px solid black; padding: 16px; margin: 10px 0; }
+        .card h3 { font-weight: bold; margin-bottom: 6px; }
+        .card a {
+            display: inline-block; padding: 6px 14px; border: 1px solid black;
+            color: black; text-decoration: none; font-weight: bold; margin-top: 8px;
+        }
+        .card a:hover { background: black; color: white; }
+
+        /* ── Chapter card (index TOC) ── */
+        .toc-title {
+            text-transform: uppercase; border-bottom: 2px solid black;
+            padding-bottom: 8px; margin-bottom: 20px;
+        }
+        .ch-card {
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 18px; margin: 8px 0;
+            border: 1px solid black; border-left: 4px solid black;
+            text-decoration: none; color: black;
+            transition: background .15s;
+        }
+        .ch-card:hover { background: #f5f5f5; }
+        .ch-num { font-size: 16pt; font-weight: bold; min-width: 40px; text-align: center; }
+        .ch-body { flex: 1; }
+        .ch-title { font-weight: bold; }
+        .ch-pages { font-size: 10pt; margin-top: 4px; opacity: .6; }
+        .ch-arrow { font-size: 16pt; opacity: .4; }
+
+        /* ── Warning ── */
+        .warning {
+            background: white; border-left: 4px solid black;
+            padding: 10px 16px; margin: 12px 0;
+        }
+
+        /* ── Pre/diagram ── */
+        pre.diagram {
+            background: white; border: 1px solid black;
+            padding: 14px 18px; margin: 14px auto; overflow-x: auto;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 11pt; line-height: 1.5; text-align: center;
+            max-width: 700px; white-space: pre;
+        }
+
+        /* ── Accordion problems ── */
+        details.problem { border: 1px solid black; margin: 10px 0; }
+        details.problem > summary {
+            background: white; color: black; padding: 10px 16px;
+            font-weight: bold; cursor: pointer;
+        }
+        details.problem[open] > summary { border-bottom: 1px solid black; }
+
+        @media (max-width: 768px) {
+            .content { padding: 16px 12px 40px; }
+            .ch-header h1 { font-size: 13pt; }
+            .visual-grid, .quick-formulas { grid-template-columns: 1fr; }
+            .mini-grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            .topbar, .btt, .ch-nav { display: none !important; }
+            .ch-header { border-bottom: 2px solid black; padding: 20px 0; }
+        }
+
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+ border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+ cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+ box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+ --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+ --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+ --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+ --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+ --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+ This single rule ensures NO text stays dark on dark bg.
+ Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .formula-box h3{color:#e8e5dd!important}
+[data-theme="dark"] .concept-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .concept-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .derivation{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .derivation h4{color:#e8e5dd!important}
+[data-theme="dark"] .warning{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .warning strong{color:#e8e5dd!important}
+[data-theme="dark"] .method-box{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .method-box h4{color:#e8e5dd!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#e0ddd5!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card h3{color:#e8e5dd!important}
+[data-theme="dark"] .card a{color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .card a:hover{background:#3a3d44!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+ box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+ .dm-toggle{display:none!important}
+ [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+ transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<nav class="topbar">
+ <a href="index.html" style="font-weight:700"> FEM Textbook</a>
+ <span style="opacity:.65">Computational Technique &mdash; Solved Exam Questions</span>
+</nav>
+
+<header class="ch-header">
+ <h1>4.4 Shape Functions &mdash; Solved Exam Questions</h1>
+ <div class="meta">Triangular &amp; Rectangular Element Shape Function Derivations</div>
+ <div class="author">Reference: 4.4 Shape Functions (Er. Sanjay Kumar Sah) &bull; IOE Past Paper Solutions</div>
+</header>
+
+<div class="content">
+
+<!-- ===== QUESTION MAP ===== -->
+<h2>Question Index</h2>
+<div class="qmap">
+ <a href="#q3">Q3. 10-Noded Triangular Element <span class="yr">2078 Chaitra, Q4, Group B [6]</span></a>
+ <a href="#q4">Q4. 8-Noded Rectangular Element <span class="yr">2078 Kartik, Q4, Group B [6]</span></a>
+ <a href="#q5">Q5. Triangular Element (CST) <span class="yr">2076 Bhadra, Q9, Group B [6]</span></a>
+ <a href="#q6">Q6. 8-Noded 2D Rectangular Element <span class="yr">2075 Bhadra, Q10, Group B [8]</span></a>
+ <a href="#q7">Q7. 8-Noded Rectangular Element <span class="yr">2074 Bhadra, Q9, Group B [5]</span></a>
+ <a href="#q8">Q8. 3-Noded Isoparametric Triangle <span class="yr">2074 Magh, Q8, Group B [2]</span></a>
+ <a href="#q9">Q9. 6-Noded Triangular 2D Element <span class="yr">2073 Bhadra, Q9, Group B [6]</span></a>
+ <a href="#q10">Q10. 6-Noded Element (Area Coords) <span class="yr">2072 Ashwin, Q7b, Group B [8]</span></a>
+</div>
+
+<div class="note">
+All derivations below reference the theory, methods, and notation from <strong>Chapter 4.4 &mdash; Shape Functions</strong>. Three main approaches are used: (1) Polynomial / Generalized Coordinate, (2) Serendipity Concept, and (3) Lagrange Polynomial. Natural/area coordinates ($L_1, L_2, L_3$) and isoparametric coordinates ($\xi, \eta$) are used as appropriate.
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q3: 10-Noded Triangular Element (2078 Chaitra) -->
+<!-- ================================================================== -->
+<div class="example" id="q3">
+<div class="ex-title">Q3. Derive the shape function for the 10-noded triangular element &nbsp;[6] &mdash; 2078 Chaitra, Q4, Group B</div>
+<div class="ex-q">Derive the shape functions for the element as shown in figure (a 10-noded triangular element with 3 corner nodes, 6 side nodes, and 1 interior node).</div>
+
+<div class="figure">
+<svg viewBox="0 0 360 300" style="max-width:380px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <polygon points="60,260 300,260 180,40" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Corner Nodes -->
+ <circle cx="60" cy="260" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="38" y="265" fill="#1a365d" font-weight="bold">1</text>
+ <circle cx="300" cy="260" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="310" y="265" fill="#1a365d" font-weight="bold">2</text>
+ <circle cx="180" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="188" y="38" fill="#1a365d" font-weight="bold">3</text>
+ <!-- Side 1→2 -->
+ <circle cx="140" cy="260" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="140" y="280" text-anchor="middle" fill="#27ae60" font-weight="bold">4</text>
+ <circle cx="220" cy="260" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="220" y="280" text-anchor="middle" fill="#27ae60" font-weight="bold">5</text>
+ <!-- Side 2→3 -->
+ <circle cx="260" cy="187" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="272" y="183" fill="#27ae60" font-weight="bold">6</text>
+ <circle cx="220" cy="113" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="232" y="109" fill="#27ae60" font-weight="bold">7</text>
+ <!-- Side 3→1 -->
+ <circle cx="140" cy="113" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="120" y="109" fill="#27ae60" font-weight="bold">9</text>
+ <circle cx="100" cy="187" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="80" y="183" fill="#27ae60" font-weight="bold">8</text>
+ <!-- Interior -->
+ <circle cx="180" cy="187" r="5" fill="#e67e22" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="192" y="183" fill="#e67e22" font-weight="bold">10</text>
+</svg>
+<div class="caption">10-noded cubic triangular element with area coordinates $(L_1, L_2, L_3)$</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>We use <strong>area (natural) coordinates</strong> $L_1, L_2, L_3$ with the constraint $L_1 + L_2 + L_3 = 1$. The element is a <strong>complete cubic triangle</strong> requiring $m = \frac{(3+1)(3+2)}{2} = 10$ terms.</p>
+
+<h4>Corner Nodes ($L_i = 1$ at vertex $i$, cubic in $L_i$):</h4>
+
+<p>For $N_1$: must be zero at $L_1 = 0$, $L_1 = \frac{1}{3}$, and $L_1 = \frac{2}{3}$, and equal to 1 at $L_1 = 1$.</p>
+<div class="eq-block">
+$$N_1 = C \cdot L_1 \left(L_1 - \frac{1}{3}\right)\left(L_1 - \frac{2}{3}\right)$$
+</div>
+<p>At $L_1 = 1$: $1 = C(1)\left(\frac{2}{3}\right)\left(\frac{1}{3}\right) = \frac{2C}{9} \implies C = \frac{9}{2}$</p>
+
+<div class="eq-block hl">
+$$N_1 = \frac{9}{2}L_1\left(L_1 - \frac{1}{3}\right)\left(L_1 - \frac{2}{3}\right)$$
+$$N_2 = \frac{9}{2}L_2\left(L_2 - \frac{1}{3}\right)\left(L_2 - \frac{2}{3}\right)$$
+$$N_3 = \frac{9}{2}L_3\left(L_3 - \frac{1}{3}\right)\left(L_3 - \frac{2}{3}\right)$$
+</div>
+
+<h4>Side Nodes (between corners, at $\frac{1}{3}$ and $\frac{2}{3}$ positions):</h4>
+
+<p>For $N_4$ (between nodes 1 and 2, at $L_1 = \frac{2}{3}$, $L_2 = \frac{1}{3}$):</p>
+<div class="eq-block">
+$$N_4 = C \cdot L_1 L_2 \left(L_1 - \frac{1}{3}\right)$$
+</div>
+<p>At node 4: $1 = C\left(\frac{2}{3}\right)\left(\frac{1}{3}\right)\left(\frac{1}{3}\right) \implies C = \frac{27}{2}$</p>
+
+<div class="eq-block hl">
+$$N_4 = \frac{27}{2}L_1 L_2\left(L_1 - \frac{1}{3}\right), \qquad N_5 = \frac{27}{2}L_1 L_2\left(L_2 - \frac{1}{3}\right)$$
+$$N_6 = \frac{27}{2}L_2 L_3\left(L_2 - \frac{1}{3}\right), \qquad N_7 = \frac{27}{2}L_2 L_3\left(L_3 - \frac{1}{3}\right)$$
+$$N_8 = \frac{27}{2}L_1 L_3\left(L_3 - \frac{1}{3}\right), \qquad N_9 = \frac{27}{2}L_1 L_3\left(L_1 - \frac{1}{3}\right)$$
+</div>
+
+<h4>Interior Node (centroid at $L_1 = L_2 = L_3 = \frac{1}{3}$):</h4>
+<div class="eq-block">
+$$N_{10} = C \cdot L_1 L_2 L_3$$
+</div>
+<p>At node 10: $1 = C\left(\frac{1}{3}\right)^3 = \frac{C}{27} \implies C = 27$</p>
+
+<div class="result-box">
+$$\boxed{N_{10} = 27\,L_1 L_2 L_3}$$
+<p>This completes the 10 shape functions for the cubic triangular element.</p>
+</div>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q4: 8-Noded Rectangular Element (2078 Kartik) -->
+<!-- ================================================================== -->
+<div class="example" id="q4">
+<div class="ex-title">Q4. Derive the shape functions for the given eight-noded rectangular element &nbsp;[6] &mdash; 2078 Kartik, Q4, Group B</div>
+<div class="ex-q">Derive the shape functions for the 8-noded rectangular element (Serendipity element) with nodes at corners and mid-sides in natural coordinates $\xi, \eta \in [-1, +1]$.</div>
+
+<div class="figure">
+<svg viewBox="0 0 340 280" style="max-width:360px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <defs><marker id="arr4" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a365d"/></marker></defs>
+ <rect x="60" y="40" width="220" height="180" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Axes -->
+ <line x1="170" y1="130" x2="310" y2="130" stroke="#1a365d" stroke-width="1.2" marker-end="url(#arr4)"/>
+ <text x="315" y="134" fill="#1a365d" font-size="13" font-style="italic">&xi;</text>
+ <line x1="170" y1="130" x2="170" y2="15" stroke="#1a365d" stroke-width="1.2" marker-end="url(#arr4)"/>
+ <text x="175" y="12" fill="#1a365d" font-size="13" font-style="italic">&eta;</text>
+ <!-- Corner Nodes -->
+ <circle cx="60" cy="220" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="40" y="238" fill="#1a365d" font-weight="bold">1</text>
+ <circle cx="280" cy="220" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="286" y="238" fill="#1a365d" font-weight="bold">2</text>
+ <circle cx="280" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="286" y="36" fill="#1a365d" font-weight="bold">3</text>
+ <circle cx="60" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="40" y="36" fill="#1a365d" font-weight="bold">4</text>
+ <!-- Mid-side Nodes -->
+ <circle cx="170" cy="220" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="170" y="242" text-anchor="middle" fill="#27ae60" font-weight="bold">5</text>
+ <circle cx="280" cy="130" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="295" y="134" fill="#27ae60" font-weight="bold">6</text>
+ <circle cx="170" cy="40" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="170" y="30" text-anchor="middle" fill="#27ae60" font-weight="bold">7</text>
+ <circle cx="60" cy="130" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="40" y="134" fill="#27ae60" font-weight="bold">8</text>
+ <!-- Coordinate labels -->
+ <text x="35" y="225" fill="#555" font-size="8">(-1,-1)</text>
+ <text x="284" y="225" fill="#555" font-size="8">(1,-1)</text>
+ <text x="284" y="55" fill="#555" font-size="8">(1,1)</text>
+ <text x="35" y="55" fill="#555" font-size="8">(-1,1)</text>
+</svg>
+<div class="caption">8-noded serendipity rectangular element</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>We use the <strong>Serendipity concept</strong> (Ref: Section 4.4 &mdash; Serendipity Family). Each $N_i$ must equal 1 at node $i$ and 0 at all other nodes.</p>
+
+<h4>Corner Nodes:</h4>
+
+<p>For $N_1$ at $(\xi_1, \eta_1) = (-1, -1)$:</p>
+<ul>
+ <li>$N_1 = 0$ when $\xi = 1 \implies (1-\xi)$ is a factor</li>
+ <li>$N_1 = 0$ when $\eta = 1 \implies (1-\eta)$ is a factor</li>
+ <li>$N_1 = 0$ at node 5 ($\xi=0,\eta=-1$) and node 8 ($\xi=-1,\eta=0$): the line through these mid-side nodes is $\xi + \eta + 1 = 0$, so $(1+\xi+\eta)$ is a factor</li>
+</ul>
+
+<p>Assume $N_1 = C(1-\xi)(1-\eta)(1+\xi+\eta)$.</p>
+<p>At node 1: $1 = C(1+1)(1+1)(1-1-1) = C(2)(2)(-1) = -4C \implies C = -\frac{1}{4}$</p>
+
+<div class="eq-block">
+$$N_1 = -\frac{1}{4}(1-\xi)(1-\eta)(1+\xi+\eta)$$
+</div>
+
+<p>By similar reasoning for the other corners:</p>
+<div class="eq-block hl">
+$$N_1 = -\frac{1}{4}(1-\xi)(1-\eta)(1+\xi+\eta)$$
+$$N_2 = -\frac{1}{4}(1+\xi)(1-\eta)(1-\xi+\eta)$$
+$$N_3 = -\frac{1}{4}(1+\xi)(1+\eta)(1-\xi-\eta)$$
+$$N_4 = -\frac{1}{4}(1-\xi)(1+\eta)(1+\xi-\eta)$$
+</div>
+
+<p><strong>General corner formula:</strong> $N_i = \frac{1}{4}(1+\xi\xi_i)(1+\eta\eta_i)(\xi\xi_i + \eta\eta_i - 1)$</p>
+
+<h4>Mid-side Nodes:</h4>
+
+<p>For $N_5$ at $(0, -1)$:</p>
+<ul>
+ <li>$N_5 = 0$ when $\xi = \pm 1 \implies (1-\xi^2)$ is a factor</li>
+ <li>$N_5 = 0$ when $\eta = 1 \implies (1-\eta)$ is a factor</li>
+</ul>
+
+<p>Assume $N_5 = C(1-\xi^2)(1-\eta)$. At node 5: $1 = C(1)(2) \implies C = \frac{1}{2}$</p>
+
+<div class="eq-block hl">
+$$N_5 = \frac{1}{2}(1-\xi^2)(1-\eta)$$
+$$N_6 = \frac{1}{2}(1+\xi)(1-\eta^2)$$
+$$N_7 = \frac{1}{2}(1-\xi^2)(1+\eta)$$
+$$N_8 = \frac{1}{2}(1-\xi)(1-\eta^2)$$
+</div>
+
+<div class="result-box">
+<p><strong>Summary of general formulas for 8-noded serendipity element:</strong></p>
+$$\text{Corners } (\xi_i = \pm 1, \eta_i = \pm 1): \quad N_i = \frac{1}{4}(1+\xi\xi_i)(1+\eta\eta_i)(\xi\xi_i + \eta\eta_i - 1)$$
+$$\text{Mid-sides } (\xi_i = 0, \eta_i = \pm 1): \quad N_i = \frac{1}{2}(1-\xi^2)(1+\eta\eta_i)$$
+$$\text{Mid-sides } (\xi_i = \pm 1, \eta_i = 0): \quad N_i = \frac{1}{2}(1+\xi\xi_i)(1-\eta^2)$$
+</div>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q5: Triangular Element / CST (2076 Bhadra) -->
+<!-- ================================================================== -->
+<div class="example" id="q5">
+<div class="ex-title">Q5. Obtain the shape function for the triangular element shown &nbsp;[6] &mdash; 2076 Bhadra, Q9, Group B</div>
+<div class="ex-q">Obtain the shape functions for a 3-noded triangular element (CST &mdash; Constant Strain Triangle).</div>
+
+<div class="figure">
+<svg viewBox="0 0 300 230" style="max-width:320px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="12">
+ <polygon points="50,200 260,200 155,40" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <circle cx="50" cy="200" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="50" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">1</text>
+ <text x="20" y="215" fill="#555" font-size="9">(x&#8321;,y&#8321;)</text>
+ <circle cx="260" cy="200" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="260" y="204" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">2</text>
+ <text x="262" y="218" fill="#555" font-size="9">(x&#8322;,y&#8322;)</text>
+ <circle cx="155" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="155" y="44" text-anchor="middle" font-weight="bold" fill="#1a365d" font-size="10">3</text>
+ <text x="158" y="30" fill="#555" font-size="9">(x&#8323;,y&#8323;)</text>
+ <circle cx="145" cy="140" r="3" fill="#c0392b"/>
+ <text x="160" y="140" fill="#c0392b" font-size="10">P(x,y)</text>
+</svg>
+<div class="caption">3-noded CST element</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<h4>Method 1: Polynomial (Cartesian Coordinate) Approach</h4>
+
+<p>6 nodal displacements ($u_1, u_2, u_3, v_1, v_2, v_3$) $\implies$ select polynomial with 3 coefficients each:</p>
+<div class="eq-block">
+$$u = \alpha_1 + \alpha_2 x + \alpha_3 y, \qquad v = \alpha_4 + \alpha_5 x + \alpha_6 y$$
+</div>
+
+<p>Applying boundary conditions for $u$:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix} = \begin{bmatrix} 1 & x_1 & y_1 \\ 1 & x_2 & y_2 \\ 1 & x_3 & y_3 \end{bmatrix} \begin{Bmatrix} \alpha_1 \\ \alpha_2 \\ \alpha_3 \end{Bmatrix}$$
+</div>
+
+<p>Inverting:</p>
+<div class="eq-block">
+$$\begin{Bmatrix} \alpha_1 \\ \alpha_2 \\ \alpha_3 \end{Bmatrix} = \frac{1}{2A} \begin{bmatrix} a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \\ c_1 & c_2 & c_3 \end{bmatrix} \begin{Bmatrix} u_1 \\ u_2 \\ u_3 \end{Bmatrix}$$
+</div>
+
+<p>where $2A = \det \begin{vmatrix} 1 & x_1 & y_1 \\ 1 & x_2 & y_2 \\ 1 & x_3 & y_3 \end{vmatrix}$ and:</p>
+
+<div class="def-box">
+<div class="dt">Constants (cyclic permutation of 1, 2, 3)</div>
+<p>$a_i = x_j y_k - x_k y_j$, &ensp; $b_i = y_j - y_k$, &ensp; $c_i = x_k - x_j$</p>
+<p>where $(i, j, k)$ = cyclic: $(1,2,3)$, $(2,3,1)$, $(3,1,2)$</p>
+</div>
+
+<p>Substituting back: $u = [1 \;\; x \;\; y] \cdot \frac{1}{2A}[C]\{u_i\}$</p>
+
+<div class="result-box">
+$$\boxed{N_i = \frac{1}{2A}(a_i + b_i x + c_i y)} \quad \text{for } i = 1, 2, 3$$
+<p>where $a_1 = x_2 y_3 - x_3 y_2$, $b_1 = y_2 - y_3$, $c_1 = x_3 - x_2$, etc.</p>
+</div>
+
+<h4>Method 2: Natural (Area) Coordinate Approach</h4>
+<p>Using area coordinates $L_1, L_2, L_3$ with $L_1 + L_2 + L_3 = 1$:</p>
+<div class="eq-block">
+$$u = \alpha_1 L_1 + \alpha_2 L_2 + \alpha_3 L_3$$
+</div>
+<p>At node 1 $(L_1=1, L_2=0, L_3=0)$: $u_1 = \alpha_1$. Similarly $u_2 = \alpha_2$, $u_3 = \alpha_3$.</p>
+
+<div class="result-box">
+$$\boxed{N_1 = L_1, \quad N_2 = L_2, \quad N_3 = L_3}$$
+</div>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q6: 8-Noded 2D Rectangular Element (2075 Bhadra) -->
+<!-- ================================================================== -->
+<div class="example" id="q6">
+<div class="ex-title">Q6. Derive the shape functions for the eight-noded 2-D rectangular element &nbsp;[8] &mdash; 2075 Bhadra, Q10, Group B</div>
+<div class="ex-q">Derive shape functions for the eight-noded 2D rectangular element with dimensions $2a \times 2b$ centered at the origin, with nodes at corners and mid-sides.</div>
+
+<div class="figure">
+<svg viewBox="0 0 380 300" style="max-width:400px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <defs><marker id="arr6" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a365d"/></marker></defs>
+ <rect x="70" y="50" width="240" height="180" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Axes -->
+ <line x1="190" y1="140" x2="340" y2="140" stroke="#1a365d" stroke-width="1" marker-end="url(#arr6)"/>
+ <text x="345" y="144" fill="#1a365d" font-size="12" font-style="italic">&xi;</text>
+ <line x1="190" y1="140" x2="190" y2="20" stroke="#1a365d" stroke-width="1" marker-end="url(#arr6)"/>
+ <text x="195" y="16" fill="#1a365d" font-size="12" font-style="italic">&eta;</text>
+ <!-- Corner Nodes -->
+ <circle cx="70" cy="230" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="55" y="248" fill="#1a365d" font-weight="bold">1</text>
+ <circle cx="310" cy="230" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="316" y="248" fill="#1a365d" font-weight="bold">2</text>
+ <circle cx="310" cy="50" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="316" y="46" fill="#1a365d" font-weight="bold">3</text>
+ <circle cx="70" cy="50" r="5" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="55" y="46" fill="#1a365d" font-weight="bold">4</text>
+ <!-- Mid-side Nodes -->
+ <circle cx="190" cy="230" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="190" y="250" text-anchor="middle" fill="#27ae60" font-weight="bold">5</text>
+ <circle cx="310" cy="140" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="326" y="144" fill="#27ae60" font-weight="bold">6</text>
+ <circle cx="190" cy="50" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="190" y="40" text-anchor="middle" fill="#27ae60" font-weight="bold">7</text>
+ <circle cx="70" cy="140" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="50" y="144" fill="#27ae60" font-weight="bold">8</text>
+ <!-- Dimension labels -->
+ <line x1="70" y1="265" x2="190" y2="265" stroke="#888" stroke-width="1"/>
+ <text x="125" y="278" text-anchor="middle" fill="#888" font-size="10" font-style="italic">a</text>
+ <line x1="190" y1="265" x2="310" y2="265" stroke="#888" stroke-width="1"/>
+ <text x="250" y="278" text-anchor="middle" fill="#888" font-size="10" font-style="italic">a</text>
+ <line x1="330" y1="140" x2="330" y2="230" stroke="#888" stroke-width="1"/>
+ <text x="340" y="188" fill="#888" font-size="10" font-style="italic">b</text>
+</svg>
+<div class="caption">8-noded rectangular element with dimensions $2a \times 2b$</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>This is identical to Q4 above. Using the natural coordinate mapping $\xi = x/a$, $\eta = y/b$ (so that $\xi, \eta \in [-1,1]$), the derivation follows the <strong>Serendipity approach</strong> from Section 4.4.</p>
+
+<p>The shape functions are derived exactly as in Q4. For completeness, restating the results:</p>
+
+<h4>Corner Nodes ($\xi_i = \pm 1$, $\eta_i = \pm 1$):</h4>
+<div class="eq-block hl">
+$$N_i = \frac{1}{4}(1+\xi\xi_i)(1+\eta\eta_i)(\xi\xi_i + \eta\eta_i - 1)$$
+</div>
+
+<h4>Mid-side Nodes:</h4>
+<div class="eq-block hl">
+$$\text{Nodes 5, 7 } (\xi_i = 0): \quad N_i = \frac{1}{2}(1-\xi^2)(1+\eta\eta_i)$$
+$$\text{Nodes 6, 8 } (\eta_i = 0): \quad N_i = \frac{1}{2}(1+\xi\xi_i)(1-\eta^2)$$
+</div>
+
+<h4>Verification:</h4>
+<table>
+<tr><th>Node</th><th>$(\xi_i, \eta_i)$</th><th>$N_i$ at that node</th></tr>
+<tr><td>1</td><td>$(-1,-1)$</td><td>$\frac{1}{4}(2)(2)(-1-1-1) = -\frac{1}{4}(4)(-1) = 1$ &#10003;</td></tr>
+<tr><td>5</td><td>$(0,-1)$</td><td>$\frac{1}{2}(1-0)(1+1) = 1$ &#10003;</td></tr>
+</table>
+
+<div class="result-box">
+<p>Also verify partition of unity: $\sum_{i=1}^{8} N_i = 1$ for all $(\xi, \eta)$. &#10003;</p>
+</div>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q7: 8-Noded Rectangular Element (2074 Bhadra) -->
+<!-- ================================================================== -->
+<div class="example" id="q7">
+<div class="ex-title">Q7. Obtain shape functions $N_i$ for the eight-noded rectangular element &nbsp;[5] &mdash; 2074 Bhadra, Q9, Group B</div>
+<div class="ex-q">Obtain shape functions $N_i$ for the eight-noded rectangular element as shown (with natural coordinates $\xi, \eta$).</div>
+
+<div class="soln-label">Solution</div>
+
+<p>This is again the <strong>8-noded serendipity element</strong> as derived in Q4 and Q6. The Serendipity approach yields:</p>
+
+<div class="eq-block hl">
+<p><strong>Corner nodes</strong> ($i = 1, 2, 3, 4$):</p>
+$$N_i = \frac{1}{4}(1+\xi_0)(1+\eta_0)(\xi_0 + \eta_0 - 1)$$
+<p>where $\xi_0 = \xi\xi_i$, $\eta_0 = \eta\eta_i$.</p>
+</div>
+
+<p>Expanding individually:</p>
+<div class="eq-block">
+$$N_1 = -\frac{1}{4}(1-\xi)(1-\eta)(1+\xi+\eta) \quad \text{at } (-1,-1)$$
+$$N_2 = -\frac{1}{4}(1+\xi)(1-\eta)(1-\xi+\eta) \quad \text{at } (1,-1)$$
+$$N_3 = -\frac{1}{4}(1+\xi)(1+\eta)(1-\xi-\eta) \quad \text{at } (1,1)$$
+$$N_4 = -\frac{1}{4}(1-\xi)(1+\eta)(1+\xi-\eta) \quad \text{at } (-1,1)$$
+</div>
+
+<div class="eq-block hl">
+<p><strong>Mid-side nodes</strong> ($i = 5, 6, 7, 8$):</p>
+$$N_5 = \frac{1}{2}(1-\xi^2)(1-\eta) \quad \text{at } (0,-1)$$
+$$N_6 = \frac{1}{2}(1+\xi)(1-\eta^2) \quad \text{at } (1,0)$$
+$$N_7 = \frac{1}{2}(1-\xi^2)(1+\eta) \quad \text{at } (0,1)$$
+$$N_8 = \frac{1}{2}(1-\xi)(1-\eta^2) \quad \text{at } (-1,0)$$
+</div>
+
+<div class="result-box">
+<p><strong>Property check:</strong> $N_i(\xi_j, \eta_j) = \delta_{ij}$ (Kronecker delta). Each $N_i = 1$ at node $i$ and $0$ at all other nodes. &#10003;</p>
+</div>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q8: 3-Noded Isoparametric Triangle (2074 Magh) -->
+<!-- ================================================================== -->
+<div class="example" id="q8">
+<div class="ex-title">Q8. Derive shape functions of a three-noded iso-parametric triangular element &nbsp;[2] &mdash; 2074 Magh, Q8, Group B</div>
+<div class="ex-q">Derive the shape functions of a three-noded isoparametric triangular element.</div>
+
+<div class="figure">
+<svg viewBox="0 0 260 220" style="max-width:280px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <defs><marker id="arr8" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a365d"/></marker></defs>
+ <polygon points="50,190 230,190 50,30" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Axes -->
+ <line x1="50" y1="190" x2="250" y2="190" stroke="#1a365d" stroke-width="1" marker-end="url(#arr8)"/>
+ <text x="252" y="195" fill="#1a365d" font-size="12" font-style="italic">&xi;</text>
+ <line x1="50" y1="190" x2="50" y2="15" stroke="#1a365d" stroke-width="1" marker-end="url(#arr8)"/>
+ <text x="55" y="12" fill="#1a365d" font-size="12" font-style="italic">&eta;</text>
+ <!-- Nodes -->
+ <circle cx="50" cy="190" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="32" y="210" fill="#1a365d" font-weight="bold">1</text>
+ <text x="32" y="195" fill="#555" font-size="9">(0,0)</text>
+ <circle cx="230" cy="190" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="234" y="210" fill="#1a365d" font-weight="bold">2</text>
+ <text x="220" y="180" fill="#555" font-size="9">(1,0)</text>
+ <circle cx="50" cy="30" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="32" y="25" fill="#1a365d" font-weight="bold">3</text>
+ <text x="58" y="35" fill="#555" font-size="9">(0,1)</text>
+ <!-- Hypotenuse label -->
+ <text x="155" y="100" fill="#888" font-size="9">&xi;+&eta;=1</text>
+</svg>
+<div class="caption">3-noded isoparametric triangle in $(\xi, \eta)$ space</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>The parent element has vertices at $(0,0)$, $(1,0)$, $(0,1)$ with constraint $\xi + \eta \leq 1$.</p>
+
+<p><strong>For $N_1$</strong> at $(0,0)$: Must be zero on the hypotenuse $\xi + \eta - 1 = 0$.</p>
+<div class="eq-block">
+$$N_1 = C(\xi + \eta - 1), \quad \text{At node 1: } 1 = C(0+0-1) \implies C = -1$$
+</div>
+
+<p><strong>For $N_2$</strong> at $(1,0)$: Must be zero at $\xi = 0$.</p>
+<div class="eq-block">
+$$N_2 = C \cdot \xi, \quad \text{At node 2: } 1 = C(1) \implies C = 1$$
+</div>
+
+<p><strong>For $N_3$</strong> at $(0,1)$: Must be zero at $\eta = 0$.</p>
+<div class="eq-block">
+$$N_3 = C \cdot \eta, \quad \text{At node 3: } 1 = C(1) \implies C = 1$$
+</div>
+
+<div class="result-box">
+$$\boxed{N_1 = 1 - \xi - \eta, \qquad N_2 = \xi, \qquad N_3 = \eta}$$
+<p>Verification: $N_1 + N_2 + N_3 = (1 - \xi - \eta) + \xi + \eta = 1$ &#10003;</p>
+</div>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q9: 6-Noded Triangular 2D Element (2073 Bhadra) -->
+<!-- ================================================================== -->
+<div class="example" id="q9">
+<div class="ex-title">Q9. Derive the shape functions $N_i$ for the six-noded triangular 2D element &nbsp;[6] &mdash; 2073 Bhadra, Q9, Group B</div>
+<div class="ex-q">Derive the shape functions $N_i$ for the six-noded triangular 2D element shown in the figure, with 3 corner nodes and 3 mid-side nodes. Base = $2a$, height = $2b$, origin at mid-point of base.</div>
+
+<div class="figure">
+<svg viewBox="0 0 380 310" style="max-width:400px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="11">
+ <defs><marker id="arr9" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#1a365d"/></marker></defs>
+ <!-- Axes -->
+ <line x1="190" y1="240" x2="350" y2="240" stroke="#1a365d" stroke-width="1.2" marker-end="url(#arr9)"/>
+ <text x="355" y="244" fill="#1a365d" font-size="12">x, u</text>
+ <line x1="190" y1="240" x2="190" y2="20" stroke="#1a365d" stroke-width="1.2" marker-end="url(#arr9)"/>
+ <text x="195" y="16" fill="#1a365d" font-size="12">y, v</text>
+ <!-- Triangle -->
+ <polygon points="80,240 300,240 190,50" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Corner nodes -->
+ <circle cx="80" cy="240" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="62" y="248" fill="#1a365d" font-weight="bold" font-size="13" font-style="italic">1</text>
+ <circle cx="300" cy="240" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="308" y="248" fill="#1a365d" font-weight="bold" font-size="13" font-style="italic">2</text>
+ <circle cx="190" cy="50" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="198" y="50" fill="#1a365d" font-weight="bold" font-size="13" font-style="italic">3</text>
+ <!-- Mid-side nodes -->
+ <circle cx="190" cy="240" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="193" y="256" fill="#27ae60" font-weight="bold" font-size="12" font-style="italic">4</text>
+ <circle cx="245" cy="145" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="256" y="148" fill="#27ae60" font-weight="bold" font-size="12" font-style="italic">5</text>
+ <circle cx="135" cy="145" r="5" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="115" y="148" fill="#27ae60" font-weight="bold" font-size="12" font-style="italic">6</text>
+ <!-- Dimension: "a" on bottom left and right -->
+ <line x1="80" y1="275" x2="190" y2="275" stroke="#888" stroke-width="1"/>
+ <line x1="80" y1="270" x2="80" y2="280" stroke="#888" stroke-width="1"/>
+ <line x1="190" y1="270" x2="190" y2="280" stroke="#888" stroke-width="1"/>
+ <text x="135" y="290" text-anchor="middle" fill="#888" font-size="11" font-style="italic">a</text>
+ <line x1="190" y1="275" x2="300" y2="275" stroke="#888" stroke-width="1"/>
+ <line x1="300" y1="270" x2="300" y2="280" stroke="#888" stroke-width="1"/>
+ <text x="245" y="290" text-anchor="middle" fill="#888" font-size="11" font-style="italic">a</text>
+ <!-- Dimension: "b" on left side -->
+ <line x1="55" y1="240" x2="55" y2="145" stroke="#888" stroke-width="1"/>
+ <line x1="50" y1="240" x2="60" y2="240" stroke="#888" stroke-width="1"/>
+ <line x1="50" y1="145" x2="60" y2="145" stroke="#888" stroke-width="1"/>
+ <text x="42" y="195" fill="#888" font-size="11" font-style="italic">b</text>
+ <line x1="55" y1="145" x2="55" y2="50" stroke="#888" stroke-width="1"/>
+ <line x1="50" y1="50" x2="60" y2="50" stroke="#888" stroke-width="1"/>
+ <text x="42" y="100" fill="#888" font-size="11" font-style="italic">b</text>
+</svg>
+<div class="caption">6-noded quadratic triangular element with Cartesian coordinates</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<h4>Step 1: Node Coordinates</h4>
+<p>From the figure, with origin at the midpoint of the base:</p>
+<table>
+<tr><th>Node</th><th>$x$</th><th>$y$</th><th>Type</th></tr>
+<tr><td>1</td><td>$-a$</td><td>$0$</td><td>Corner</td></tr>
+<tr><td>2</td><td>$a$</td><td>$0$</td><td>Corner</td></tr>
+<tr><td>3</td><td>$0$</td><td>$2b$</td><td>Corner</td></tr>
+<tr><td>4</td><td>$0$</td><td>$0$</td><td>Mid-side (1&ndash;2)</td></tr>
+<tr><td>5</td><td>$a/2$</td><td>$b$</td><td>Mid-side (2&ndash;3)</td></tr>
+<tr><td>6</td><td>$-a/2$</td><td>$b$</td><td>Mid-side (3&ndash;1)</td></tr>
+</table>
+
+<h4>Step 2: Area Coordinates for this Triangle</h4>
+<p>Vertices: $(x_1, y_1) = (-a, 0)$, $(x_2, y_2) = (a, 0)$, $(x_3, y_3) = (0, 2b)$.</p>
+<div class="eq-block">
+$$2A = \begin{vmatrix} 1 & -a & 0 \\ 1 & a & 0 \\ 1 & 0 & 2b \end{vmatrix} = 1(2ab - 0) - (-a)(2b - 0) + 0 = 2ab + 2ab = 4ab$$
+</div>
+<p>So the total area $A = 2ab$.</p>
+
+<p>The area coordinates $L_i = \frac{1}{2A}(a_i + b_i x + c_i y)$ where:</p>
+<div class="def-box">
+<div class="dt">Computing $a_i, b_i, c_i$ with cyclic $(i,j,k)$:</div>
+<table style="font-size:.9rem">
+<tr><th></th><th>$a_i = x_j y_k - x_k y_j$</th><th>$b_i = y_j - y_k$</th><th>$c_i = x_k - x_j$</th></tr>
+<tr><td>$i=1,\;j=2,\;k=3$</td><td>$a(2b) - 0 = 2ab$</td><td>$0 - 2b = -2b$</td><td>$0 - a = -a$</td></tr>
+<tr><td>$i=2,\;j=3,\;k=1$</td><td>$0 - (-a)(2b) = 2ab$</td><td>$2b - 0 = 2b$</td><td>$-a - 0 = -a$</td></tr>
+<tr><td>$i=3,\;j=1,\;k=2$</td><td>$(-a)(0) - a(0) = 0$</td><td>$0 - 0 = 0$</td><td>$a - (-a) = 2a$</td></tr>
+</table>
+</div>
+
+<div class="eq-block hl">
+$$L_1 = \frac{1}{4ab}(2ab - 2bx - ay) = \frac{1}{2} - \frac{x}{2a} - \frac{y}{4b}$$
+$$L_2 = \frac{1}{4ab}(2ab + 2bx - ay) = \frac{1}{2} + \frac{x}{2a} - \frac{y}{4b}$$
+$$L_3 = \frac{1}{4ab}(0 + 0 + 2ay) = \frac{y}{2b}$$
+</div>
+
+<div class="step-box">
+<strong>Verification of $L_i$:</strong><br>
+&#8226; At node 1 $(-a,0)$: $L_1 = \frac{1}{2}+\frac{1}{2}-0 = 1$, $L_2 = \frac{1}{2}-\frac{1}{2}-0 = 0$, $L_3 = 0$ &#10003;<br>
+&#8226; At node 2 $(a,0)$: $L_1 = 0$, $L_2 = 1$, $L_3 = 0$ &#10003;<br>
+&#8226; At node 3 $(0,2b)$: $L_1 = \frac{1}{2}-0-\frac{1}{2} = 0$, $L_2 = 0$, $L_3 = 1$ &#10003;<br>
+&#8226; $L_1 + L_2 + L_3 = 1 - \frac{y}{2b} + \frac{y}{2b} = 1$ &#10003;
+</div>
+
+<h4>Step 3: Shape Functions in Area Coordinates</h4>
+<p>For a <strong>6-noded quadratic triangle</strong>, using the standard area coordinate formulas (Ref: Sec. 4.4):</p>
+
+<p><strong>Corner nodes</strong> ($N_i$ must vanish at $L_i = 0$ and $L_i = \frac{1}{2}$):</p>
+<div class="eq-block">
+$$N_i = L_i(2L_i - 1) \quad \text{for } i = 1, 2, 3$$
+</div>
+
+<p><strong>Mid-side nodes</strong> ($N_k$ at midpoint of side between $i$ and $j$):</p>
+<div class="eq-block">
+$$N_4 = 4L_1 L_2, \quad N_5 = 4L_2 L_3, \quad N_6 = 4L_1 L_3$$
+</div>
+
+<h4>Step 4: Shape Functions in Cartesian Coordinates $(x, y)$</h4>
+<p>Substituting the expressions for $L_1, L_2, L_3$:</p>
+
+<div class="eq-block hl">
+$$N_1 = L_1(2L_1 - 1) = \left(\frac{1}{2} - \frac{x}{2a} - \frac{y}{4b}\right)\!\left(- \frac{x}{a} - \frac{y}{2b}\right)$$
+$$N_2 = L_2(2L_2 - 1) = \left(\frac{1}{2} + \frac{x}{2a} - \frac{y}{4b}\right)\!\left(\frac{x}{a} - \frac{y}{2b}\right)$$
+$$N_3 = L_3(2L_3 - 1) = \frac{y}{2b}\!\left(\frac{y}{b} - 1\right)$$
+</div>
+
+<div class="eq-block hl">
+$$N_4 = 4L_1 L_2 = 4\left(\frac{1}{2} - \frac{x}{2a} - \frac{y}{4b}\right)\!\left(\frac{1}{2} + \frac{x}{2a} - \frac{y}{4b}\right)$$
+$$= \left(1 - \frac{y}{2b}\right)^2 - \frac{x^2}{a^2}$$
+$$N_5 = 4L_2 L_3 = 4\left(\frac{1}{2} + \frac{x}{2a} - \frac{y}{4b}\right)\frac{y}{2b} = \frac{2y}{b}\left(\frac{1}{2} + \frac{x}{2a} - \frac{y}{4b}\right)$$
+$$N_6 = 4L_1 L_3 = 4\left(\frac{1}{2} - \frac{x}{2a} - \frac{y}{4b}\right)\frac{y}{2b} = \frac{2y}{b}\left(\frac{1}{2} - \frac{x}{2a} - \frac{y}{4b}\right)$$
+</div>
+
+<div class="result-box">
+<p><strong>Final shape functions (area coordinate form):</strong></p>
+$$\boxed{N_1 = L_1(2L_1-1), \quad N_2 = L_2(2L_2-1), \quad N_3 = L_3(2L_3-1)}$$
+$$\boxed{N_4 = 4L_1 L_2, \quad N_5 = 4L_2 L_3, \quad N_6 = 4L_1 L_3}$$
+<p>where $\;L_1 = \frac{1}{2} - \frac{x}{2a} - \frac{y}{4b}$, $\;L_2 = \frac{1}{2} + \frac{x}{2a} - \frac{y}{4b}$, $\;L_3 = \frac{y}{2b}$</p>
+</div>
+
+<h4>Verification at nodes:</h4>
+<table style="font-size:.88rem">
+<tr><th>Node</th><th>$(x, y)$</th><th>$(L_1, L_2, L_3)$</th><th>$N_i = 1$?</th></tr>
+<tr><td>1</td><td>$(-a, 0)$</td><td>$(1, 0, 0)$</td><td>$N_1 = 1(2-1)=1$ &#10003;</td></tr>
+<tr><td>2</td><td>$(a, 0)$</td><td>$(0, 1, 0)$</td><td>$N_2 = 1(2-1)=1$ &#10003;</td></tr>
+<tr><td>3</td><td>$(0, 2b)$</td><td>$(0, 0, 1)$</td><td>$N_3 = 1(2-1)=1$ &#10003;</td></tr>
+<tr><td>4</td><td>$(0, 0)$</td><td>$(\frac{1}{2}, \frac{1}{2}, 0)$</td><td>$N_4 = 4 \cdot \frac{1}{2} \cdot \frac{1}{2} = 1$ &#10003;</td></tr>
+<tr><td>5</td><td>$(a/2, b)$</td><td>$(0, \frac{1}{2}, \frac{1}{2})$</td><td>$N_5 = 4 \cdot \frac{1}{2} \cdot \frac{1}{2} = 1$ &#10003;</td></tr>
+<tr><td>6</td><td>$(-a/2, b)$</td><td>$(\frac{1}{2}, 0, \frac{1}{2})$</td><td>$N_6 = 4 \cdot \frac{1}{2} \cdot \frac{1}{2} = 1$ &#10003;</td></tr>
+</table>
+</div>
+
+
+<!-- ================================================================== -->
+<!-- Q10: 6-Noded Element with Area Coordinates (2072 Ashwin) -->
+<!-- ================================================================== -->
+<div class="example" id="q10">
+<div class="ex-title">Q10. Derive the shape function for the element shown &nbsp;[8] &mdash; 2072 Ashwin, Q7b, Group B</div>
+<div class="ex-q">Derive the shape functions for a 6-noded triangular element using area (natural) coordinates $L_1, L_2, L_3$. The figure shows a 6-noded triangle with values of $L_i$ marked at each node.</div>
+
+<div class="figure">
+<svg viewBox="0 0 320 270" style="max-width:340px;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" font-family="'Times New Roman',Times,serif" font-size="10">
+ <polygon points="60,230 280,230 170,40" fill="#eef4fb" stroke="#2c5282" stroke-width="2"/>
+ <!-- Corner nodes -->
+ <circle cx="60" cy="230" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="38" y="228" fill="#1a365d" font-weight="bold" font-size="11">1</text>
+ <text x="25" y="248" fill="#555" font-size="9">$L_1=1$</text>
+ <circle cx="280" cy="230" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="288" y="228" fill="#1a365d" font-weight="bold" font-size="11">2</text>
+ <text x="268" y="252" fill="#555" font-size="9">$L_2=1$</text>
+ <circle cx="170" cy="40" r="6" fill="#c9a84c" stroke="#1a365d" stroke-width="2"/>
+ <text x="178" y="36" fill="#1a365d" font-weight="bold" font-size="11">3</text>
+ <text x="180" y="30" fill="#555" font-size="9">$L_3=1$</text>
+ <!-- Mid-side nodes -->
+ <circle cx="170" cy="230" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="170" y="252" text-anchor="middle" fill="#27ae60" font-weight="bold" font-size="11">4</text>
+ <text x="170" y="220" text-anchor="middle" fill="#555" font-size="8">$L_1=L_2=\frac{1}{2}$</text>
+ <circle cx="225" cy="135" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="238" y="132" fill="#27ae60" font-weight="bold" font-size="11">5</text>
+ <text x="240" y="145" fill="#555" font-size="8">$L_2=L_3=\frac{1}{2}$</text>
+ <circle cx="115" cy="135" r="4" fill="#27ae60" stroke="#1a365d" stroke-width="1.5"/>
+ <text x="95" y="132" fill="#27ae60" font-weight="bold" font-size="11">6</text>
+ <text x="60" y="145" fill="#555" font-size="8">$L_1=L_3=\frac{1}{2}$</text>
+</svg>
+<div class="caption">6-noded triangle with area coordinates $L_1, L_2, L_3$</div>
+</div>
+
+<div class="soln-label">Solution</div>
+
+<p>Using <strong>area coordinates</strong> $L_1, L_2, L_3$ with $L_1 + L_2 + L_3 = 1$ (Ref: Section 4.4 &mdash; Shape Functions for Isoparametric Triangular Elements).</p>
+
+<h4>Corner Nodes:</h4>
+
+<p><strong>$N_1$</strong> at node 1 ($L_1=1, L_2=0, L_3=0$): Must vanish when $L_1 = 0$ and when $L_1 = \frac{1}{2}$.</p>
+<div class="eq-block">
+$$N_1 = C \cdot L_1\left(L_1 - \frac{1}{2}\right)$$
+$$\text{At node 1 } (L_1=1): \quad 1 = C \cdot 1 \cdot \frac{1}{2} \implies C = 2$$
+</div>
+
+<div class="eq-block hl">
+$$N_1 = 2L_1\left(L_1 - \frac{1}{2}\right) = L_1(2L_1 - 1)$$
+$$N_2 = 2L_2\left(L_2 - \frac{1}{2}\right) = L_2(2L_2 - 1)$$
+$$N_3 = 2L_3\left(L_3 - \frac{1}{2}\right) = L_3(2L_3 - 1)$$
+</div>
+
+<h4>Mid-side Nodes:</h4>
+
+<p><strong>$N_4$</strong> at node 4 ($L_1 = \frac{1}{2}, L_2 = \frac{1}{2}, L_3 = 0$): Must vanish when $L_1 = 0$ and $L_2 = 0$.</p>
+<div class="eq-block">
+$$N_4 = C \cdot L_1 L_2$$
+$$\text{At node 4: } 1 = C \cdot \frac{1}{2} \cdot \frac{1}{2} \implies C = 4$$
+</div>
+
+<p>Similarly for nodes 5 and 6:</p>
+
+<div class="result-box">
+<p><strong>Corner nodes:</strong></p>
+$$\boxed{N_1 = L_1(2L_1 - 1), \quad N_2 = L_2(2L_2 - 1), \quad N_3 = L_3(2L_3 - 1)}$$
+<p><strong>Mid-side nodes:</strong></p>
+$$\boxed{N_4 = 4L_1 L_2, \quad N_5 = 4L_2 L_3, \quad N_6 = 4L_1 L_3}$$
+</div>
+
+<h4>Verification:</h4>
+<table>
+<tr><th>Node</th><th>$(L_1, L_2, L_3)$</th><th>$N_i$ value</th></tr>
+<tr><td>1</td><td>$(1, 0, 0)$</td><td>$N_1 = 1(2-1) = 1$, all others = 0 &#10003;</td></tr>
+<tr><td>4</td><td>$(\frac{1}{2}, \frac{1}{2}, 0)$</td><td>$N_4 = 4 \cdot \frac{1}{2} \cdot \frac{1}{2} = 1$, $N_1 = \frac{1}{2}(0) = 0$ &#10003;</td></tr>
+<tr><td>5</td><td>$(0, \frac{1}{2}, \frac{1}{2})$</td><td>$N_5 = 4 \cdot \frac{1}{2} \cdot \frac{1}{2} = 1$, $N_2 = \frac{1}{2}(0) = 0$ &#10003;</td></tr>
+</table>
+
+<div class="note">
+<strong>Partition of unity:</strong> $\sum_{i=1}^{6} N_i = 1$ for all $(L_1, L_2, L_3)$. This can be verified by algebraic expansion using $L_1 + L_2 + L_3 = 1$.
+</div>
+</div>
+
+
+<!-- ===== SUMMARY TABLE ===== -->
+<h2>Summary of All Shape Function Results</h2>
+
+<table style="font-size:.88rem;text-align:left">
+<tr><th>Element</th><th>Type</th><th>Coordinate System</th><th>Key Result</th></tr>
+<tr>
+ <td>3-noded triangle (CST)</td>
+ <td>Linear</td>
+ <td>Area coordinates</td>
+ <td>$N_i = L_i$</td>
+</tr>
+<tr>
+ <td>3-noded triangle</td>
+ <td>Linear</td>
+ <td>Isoparametric $(\xi,\eta)$</td>
+ <td>$N_1 = 1-\xi-\eta$, $N_2 = \xi$, $N_3 = \eta$</td>
+</tr>
+<tr>
+ <td>6-noded triangle</td>
+ <td>Quadratic</td>
+ <td>Area coordinates</td>
+ <td>$N_i = L_i(2L_i-1)$ (corner); $N_{ij} = 4L_iL_j$ (mid)</td>
+</tr>
+<tr>
+ <td>6-noded triangle</td>
+ <td>Quadratic</td>
+ <td>Isoparametric $(\xi,\eta)$</td>
+ <td>$N_1 = (1-\xi-\eta)(1-2\xi-2\eta)$, etc.</td>
+</tr>
+<tr>
+ <td>10-noded triangle</td>
+ <td>Cubic</td>
+ <td>Area coordinates</td>
+ <td>$N_i = \frac{9}{2}L_i(L_i-\frac{1}{3})(L_i-\frac{2}{3})$ (corner)</td>
+</tr>
+<tr>
+ <td>8-noded rectangle</td>
+ <td>Serendipity</td>
+ <td>Natural $(\xi,\eta)$</td>
+ <td>Corner: $\frac{1}{4}(1+\xi_0)(1+\eta_0)(\xi_0+\eta_0-1)$</td>
+</tr>
+</table>
+
+<div class="note">
+<strong>Key Reference:</strong> All derivations follow the methods presented in Chapter 4.4 &mdash; Shape Functions. Three core approaches were used:
+<ul>
+ <li><strong>Polynomial / Generalized Coordinate:</strong> Used for CST (Q5)</li>
+ <li><strong>Serendipity Concept:</strong> Used for 8-noded rectangle (Q4, Q6, Q7)</li>
+ <li><strong>Natural / Area Coordinates:</strong> Used for triangular elements (Q3, Q5, Q8, Q9, Q10)</li>
+</ul>
+</div>
+
+
+<!-- ===== NAVIGATION ===== -->
+<div class="ch-nav">
+ <a href="4.4_Shape_Functions.html">&larr; Back to: 4.4 Shape Functions (Theory)</a>
+ <a href="index.html" class="next">Table of Contents &rarr;</a>
+</div>
+
+</div><!-- /content -->
+
+<footer class="footer">
+ <p>Shape Functions &mdash; Solved IOE Exam Questions &bull; FEM Computational Technique</p>
+ <p>Reference: Chapter 4.4, Er. Sanjay Kumar Sah, Pulchowk Campus</p>
+</footer>
+
+<button class="btt" id="btt" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&uarr;</button>
+<script>
+window.addEventListener('scroll',function(){document.getElementById('btt').classList.toggle('show',window.scrollY>400)});
+</script>
+<script src="annotate.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+ 'use strict';
+ var on = false, drawing = false, erasing = false;
+ var COLORS = [
+ '#e63946', /* red */
+ '#1a365d', /* navy */
+ '#2d6a4f', /* forest green */
+ '#e67e22', /* orange */
+ '#7c3aed', /* violet */
+ '#000000', /* black */
+ '#ffffff', /* white */
+ '#f0f0f0', /* light gray */
+ '#0ea5e9', /* sky blue */
+ '#ec4899', /* hot pink */
+ '#f59e0b', /* amber gold */
+ '#06b6d4', /* cyan */
+ '#ff6b6b', /* coral */
+ '#a855f7', /* purple glow */
+ '#22d3ee', /* electric teal */
+ '#facc15', /* yellow */
+ '#fef9c3', /* pale yellow */
+ 'gold', /* golden shimmer */
+ '#c0c0c0' /* silver */
+ ];
+ var SHIMMER = { 'gold': true, '#c0c0c0': true };
+ var color = COLORS[0], penW = 3;
+ var strokes = []; // finished: [{c,w,er,p:[x,y,x,y,...]}]
+ var pts = []; // current stroke points (flat: x,y,x,y,...)
+ var drawn = 0; // how many points already rendered
+ var raf = 0;
+
+ /* --- CSS --- */
+ var st = document.createElement('style');
+ st.textContent =
+ '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+ '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+ '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+ '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+ '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+ '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+ document.head.appendChild(st);
+
+ /* --- fixed viewport canvas (small and fast) --- */
+ var cv = document.createElement('canvas');
+ cv.className = 'dw-cv';
+ document.body.appendChild(cv);
+
+ // allow mouse wheel to scroll through the canvas
+ cv.addEventListener('wheel', function (e) {
+ window.scrollBy(0, e.deltaY);
+ paint();
+ }, { passive: true });
+ var cx = cv.getContext('2d');
+
+ function sized() {
+ var dpr = window.devicePixelRatio || 1;
+ var w = window.innerWidth, h = window.innerHeight;
+ cv.width = w * dpr; cv.height = h * dpr;
+ cv.style.width = w + 'px'; cv.style.height = h + 'px';
+ cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ paint();
+ }
+ sized();
+ window.addEventListener('resize', sized);
+
+ /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+ function paint() {
+ var sx = window.scrollX, sy = window.scrollY;
+ cx.clearRect(0, 0, cv.width, cv.height);
+ for (var s = 0; s < strokes.length; s++) {
+ var sk = strokes[s], p = sk.p;
+ if (p.length < 4) continue;
+ cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+ cx.strokeStyle = sk.c;
+ cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ cx.beginPath();
+ cx.moveTo(p[0] - sx, p[1] - sy);
+ for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+ cx.stroke();
+ }
+ }
+ window.addEventListener('scroll', paint);
+
+ /* --- UI --- */
+ var btn = document.createElement('button');
+ btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+ document.body.appendChild(btn);
+
+ var tb = document.createElement('div'); tb.className = 'dw-tb';
+ var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+ COLORS.forEach(function (c) {
+ var d = document.createElement('div');
+ d.className = 'dw-dot' + (c === color ? ' on' : '');
+ d.style.background = c;
+ d.onclick = function () {
+ color = c; erasing = false; erBtn.classList.remove('on');
+ tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+ d.classList.add('on');
+ };
+ cGrid.appendChild(d);
+ });
+ tb.appendChild(cGrid);
+ var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+ tb.appendChild(lbl);
+ var sl = document.createElement('input');
+ sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+ sl.oninput = function () { penW = +sl.value; };
+ tb.appendChild(sl);
+
+ var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+ erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+ tb.appendChild(erBtn);
+
+ var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+ unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+ tb.appendChild(unBtn);
+
+ var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+ clBtn.onclick = function () { strokes.length = 0; paint(); };
+ tb.appendChild(clBtn);
+
+ document.body.appendChild(tb);
+
+ // stop toolbar clicks from reaching canvas
+ ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+ tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+ btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+ });
+
+ btn.onclick = function () {
+ on = !on;
+ btn.classList.toggle('on', on);
+ tb.classList.toggle('show', on);
+ cv.classList.toggle('on', on);
+ };
+
+ /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+ function tick() {
+ if (!drawing) { raf = 0; return; }
+ var n = pts.length;
+ if (drawn < n) {
+ var sx = window.scrollX, sy = window.scrollY;
+ // continue the existing path from last drawn point
+ if (drawn === 0) {
+ cx.beginPath();
+ cx.moveTo(pts[0] - sx, pts[1] - sy);
+ drawn = 2;
+ }
+ for (var i = drawn; i < n; i += 2) {
+ cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+ }
+ cx.stroke();
+ // continue the SAME path (no beginPath) — keeps it connected
+ drawn = n;
+ }
+ raf = requestAnimationFrame(tick);
+ }
+
+ /* --- pointer handlers --- */
+ cv.addEventListener('pointerdown', function (e) {
+ if (!on || e.button !== 0 || e.target !== cv) return;
+ e.preventDefault();
+ cv.setPointerCapture(e.pointerId);
+ drawing = true;
+ // store document coords
+ var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+ pts = [dx, dy];
+ drawn = 0;
+ // set style once for whole stroke
+ cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+ cx.strokeStyle = color;
+ cx.lineWidth = erasing ? penW * 4 : penW;
+ cx.lineCap = 'round';
+ cx.lineJoin = 'round';
+ // start rAF loop
+ if (!raf) raf = requestAnimationFrame(tick);
+ });
+
+ cv.addEventListener('pointermove', function (e) {
+ if (!drawing) return;
+ // just push coords — rAF will render them
+ pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+ });
+
+ function stop() {
+ if (!drawing) return;
+ drawing = false;
+ if (pts.length >= 4) {
+ strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+ }
+ pts = []; drawn = 0;
+ // full repaint to clean up
+ paint();
+ }
+ cv.addEventListener('pointerup', stop);
+ cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+ var t=document.getElementById('dmToggle'),h=document.documentElement,
+ s=localStorage.getItem('theme');
+ if(s)h.setAttribute('data-theme',s);
+ function updateIcon(){
+ if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+ }
+ updateIcon();
+ if(t){
+ t.addEventListener('click',function(){
+ var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+ h.setAttribute('data-theme',n);
+ localStorage.setItem('theme',n);
+ updateIcon();
+ fixInline(n==='dark');
+ });
+ }
+ /* Fix inline and style="color:..." */
+ function fixInline(dark){
+ var els=document.querySelectorAll('[style]');
+ for(var i=0;i<els.length;i++){
+ var el=els[i];
+ /* Skip SVG internals */
+ if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+ if(el.closest&&el.closest('svg'))continue;
+ var st=el.style;
+ if(dark){
+ /* Background */
+ if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+ el.setAttribute('data-dm-bg',st.backgroundColor);
+ if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+ }
+ if(st.background&&!el.getAttribute('data-dm-bgf')){
+ el.setAttribute('data-dm-bgf',st.background);
+ if(lum(st.background)>160)st.background='#1e222a';
+ }
+ /* Text color */
+ if(st.color&&!el.getAttribute('data-dm-fg')){
+ el.setAttribute('data-dm-fg',st.color);
+ if(lum(st.color)<100)st.color='#d0cdc5';
+ }
+ }else{
+ if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+ if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+ if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+ }
+ }
+ }
+ /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+ function lum(c){
+ if(!c)return -1;
+ c=c.trim().toLowerCase();
+ if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+ if(c==='black'||c==='#000'||c==='#000000')return 0;
+ var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+ if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+ var hx=c.match(/^#([0-9a-f]{3,8})$/);
+ if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+ return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+ return -1;
+ }
+ /* Apply on load if dark */
+ if(h.getAttribute('data-theme')==='dark'){
+ if(document.readyState==='loading')
+ document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+ else fixInline(true);
+ }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>

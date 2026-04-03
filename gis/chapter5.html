@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 5 – Database Concepts</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── VS Code–style SQL code blocks ── */
+    .code-editor {
+      margin: 22px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.18), 0 1px 4px rgba(0,0,0,.1);
+      font-family: "Consolas", "Fira Code", "Menlo", "Monaco", "Courier New", monospace;
+      font-size: 11pt;
+      line-height: 1.7;
+    }
+    /* Title bar (mimics VS Code tab bar) */
+    .code-editor .editor-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #252526;
+      border-bottom: 1px solid #1e1e1e;
+      user-select: none;
+    }
+    .code-editor .editor-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .code-editor .editor-dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .code-editor .editor-dots .dot-r { background: #ff5f56; }
+    .code-editor .editor-dots .dot-y { background: #ffbd2e; }
+    .code-editor .editor-dots .dot-g { background: #27c93f; }
+    .code-editor .editor-tab {
+      padding: 3px 14px;
+      background: #1e1e1e;
+      color: #cccccc;
+      font-size: 10pt;
+      border-radius: 4px 4px 0 0;
+      border: 1px solid #333;
+      border-bottom: 1px solid #1e1e1e;
+      letter-spacing: .02em;
+    }
+    .code-editor .editor-tab .tab-icon {
+      color: #e8c96a;
+      margin-right: 4px;
+    }
+    /* Code body */
+    .code-editor .editor-body {
+      display: flex;
+      background: #1e1e1e;
+      padding: 16px 0;
+      overflow-x: auto;
+    }
+    /* Line numbers gutter */
+    .code-editor .line-numbers {
+      padding: 0 12px 0 16px;
+      text-align: right;
+      color: #858585;
+      user-select: none;
+      border-right: 1px solid #333;
+      min-width: 44px;
+      flex-shrink: 0;
+    }
+    .code-editor .line-numbers div {
+      line-height: 1.7;
+    }
+    /* Actual code */
+    .code-editor .code-content {
+      padding: 0 18px;
+      color: #d4d4d4;
+      white-space: pre;
+      flex: 1;
+    }
+    .code-editor .code-content div {
+      line-height: 1.7;
+      min-height: 1.7em;
+    }
+    /* Syntax highlighting tokens */
+    .sql-kw   { color: #569cd6; font-weight: bold; }  /* Keywords: SELECT, FROM, WHERE */
+    .sql-fn   { color: #dcdcaa; }                      /* Functions */
+    .sql-str  { color: #ce9178; }                      /* Strings */
+    .sql-num  { color: #b5cea8; }                      /* Numbers */
+    .sql-op   { color: #d4d4d4; }                      /* Operators: =, >=, <= */
+    .sql-col  { color: #9cdcfe; }                      /* Column/table names */
+    .sql-tbl  { color: #4ec9b0; }                      /* Table names */
+    .sql-cmt  { color: #6a9955; font-style: italic; }  /* Comments */
+    .sql-punc { color: #d4d4d4; }                      /* Punctuation: ; , . */
+    .sql-join { color: #c586c0; font-weight: bold; }   /* JOIN keywords */
+
+    /* Dark mode adjustments (already dark, just ensure consistency) */
+    [data-theme="dark"] .code-editor {
+      box-shadow: 0 4px 24px rgba(0,0,0,.35), 0 1px 4px rgba(0,0,0,.2);
+    }
+    /* Status bar */
+    .code-editor .editor-statusbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 14px;
+      background: #007acc;
+      color: #fff;
+      font-size: 9pt;
+      letter-spacing: .02em;
+    }
+  </style>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 5</div>
+    <h1>Database Concepts</h1>
+  </header>
+  <main>
+
+    <!-- ============================================================
+         Part 1: Databases and Spatial DBMS Basics
+         ============================================================ -->
+    <h2>Part 1: Databases and Spatial DBMS Basics <span class="exam-ref">Covers: 2071 Magh Q3a, 2073 Magh Q5</span></h2>
+
+    <h3>1. What is a Database and a Spatial DBMS? <span class="exam-ref">Tested in: 2071 Magh Q3a, 2073 Magh Q5</span></h3>
+    <ul>
+      <li><strong>Database:</strong> An organized, structured collection of data stored electronically in a computer system, designed for rapid search, retrieval, and updating.</li>
+      <li><strong>Spatial DBMS:</strong> A specialized database system engineered specifically to store, query, and manage geographic geometries (Points, Lines, Polygons) alongside traditional tabular data. Standard databases only understand text and numbers; a Spatial DBMS understands coordinates and spatial relationships (like "inside" or "touches").</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 260" width="620" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f53s"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="g53m" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#c4e8c0"/></linearGradient>
+          <linearGradient id="g53t" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff8ec"/><stop offset="100%" stop-color="#f8e8c8"/></linearGradient>
+          <linearGradient id="g53e" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1a3c5e"/><stop offset="100%" stop-color="#2a5c8e"/></linearGradient>
+          <marker id="arw53" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ed5565"/></marker>
+        </defs>
+        <!-- ═══ MAP PANEL ═══ -->
+        <g filter="url(#f53s)">
+          <rect x="10" y="10" width="210" height="240" rx="10" fill="url(#g53m)" stroke="#2a8c2a" stroke-width="1"/>
+          <rect x="52" y="16" width="126" height="22" rx="11" fill="#2a8c2a"/>
+          <text x="115" y="31" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Map View</text>
+          <!-- Polygons -->
+          <polygon points="40,70 95,55 130,82 115,130 50,120" fill="#48cfad" fill-opacity="0.5" stroke="#1a6b1a" stroke-width="1.5"/>
+          <text x="82" y="98" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">P1</text>
+          <polygon points="130,82 190,65 200,120 155,140 115,130" fill="#87d37c" fill-opacity="0.5" stroke="#1a6b1a" stroke-width="1.5"/>
+          <text x="160" y="108" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">P2</text>
+          <polygon points="50,120 115,130 155,140 140,190 55,180" fill="#37bc9b" fill-opacity="0.5" stroke="#1a6b1a" stroke-width="1.5"/>
+          <text x="102" y="165" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">P3</text>
+          <!-- Points -->
+          <circle cx="70" cy="210" r="4" fill="#ed5565"/><text x="82" y="214" font-size="8" fill="#555">Well</text>
+          <circle cx="148" cy="210" r="4" fill="#4fc1e9"/><text x="160" y="214" font-size="8" fill="#555">Station</text>
+          <text x="115" y="242" text-anchor="middle" font-size="9" fill="#555" font-style="italic">Geometry (coordinates)</text>
+        </g>
+        <!-- ═══ ATTRIBUTE TABLE PANEL ═══ -->
+        <g filter="url(#f53s)">
+          <rect x="340" y="10" width="270" height="240" rx="10" fill="url(#g53t)" stroke="#8b6914" stroke-width="1"/>
+          <rect x="402" y="16" width="146" height="22" rx="11" fill="#8b6914"/>
+          <text x="475" y="31" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Attribute Table</text>
+          <!-- Header -->
+          <rect x="352" y="48" width="42" height="20" rx="2 0 0 0" fill="#b8860b" stroke="#8b6914" stroke-width=".8"/>
+          <text x="373" y="62" text-anchor="middle" font-size="8" fill="white" font-weight="bold">FID</text>
+          <rect x="394" y="48" width="70" height="20" fill="#b8860b" stroke="#8b6914" stroke-width=".8"/>
+          <text x="429" y="62" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Land Use</text>
+          <rect x="464" y="48" width="55" height="20" fill="#b8860b" stroke="#8b6914" stroke-width=".8"/>
+          <text x="491" y="62" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Area m²</text>
+          <rect x="519" y="48" width="55" height="20" rx="0 2 0 0" fill="#b8860b" stroke="#8b6914" stroke-width=".8"/>
+          <text x="546" y="62" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Owner</text>
+          <!-- Row 1 -->
+          <rect x="352" y="68" width="42" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="373" y="80" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">P1</text>
+          <rect x="394" y="68" width="70" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="429" y="80" text-anchor="middle" font-size="8">Forest</text>
+          <rect x="464" y="68" width="55" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="491" y="80" text-anchor="middle" font-size="8">1200</text>
+          <rect x="519" y="68" width="55" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="546" y="80" text-anchor="middle" font-size="8">Gov.</text>
+          <!-- Row 2 -->
+          <rect x="352" y="86" width="42" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width=".3"/><text x="373" y="98" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">P2</text>
+          <rect x="394" y="86" width="70" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width=".3"/><text x="429" y="98" text-anchor="middle" font-size="8">Farmland</text>
+          <rect x="464" y="86" width="55" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width=".3"/><text x="491" y="98" text-anchor="middle" font-size="8">800</text>
+          <rect x="519" y="86" width="55" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width=".3"/><text x="546" y="98" text-anchor="middle" font-size="8">Ram</text>
+          <!-- Row 3 -->
+          <rect x="352" y="104" width="42" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="373" y="116" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">P3</text>
+          <rect x="394" y="104" width="70" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="429" y="116" text-anchor="middle" font-size="8">Wetland</text>
+          <rect x="464" y="104" width="55" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="491" y="116" text-anchor="middle" font-size="8">600</text>
+          <rect x="519" y="104" width="55" height="18" fill="#fff" stroke="#d4cfc5" stroke-width=".3"/><text x="546" y="116" text-anchor="middle" font-size="8">Sita</text>
+          <text x="475" y="148" text-anchor="middle" font-size="9" fill="#555" font-style="italic">Non-spatial attributes</text>
+          <!-- DBMS engine -->
+          <rect x="365" y="164" width="188" height="52" rx="8" fill="url(#g53e)"/>
+          <text x="459" y="186" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Spatial DBMS Engine</text>
+          <text x="459" y="202" text-anchor="middle" font-size="9" fill="#aaccee">PostGIS · SDE · SpatiaLite</text>
+        </g>
+        <!-- Connection arrows -->
+        <path d="M 220 90 C 260 90, 300 76, 340 76" fill="none" stroke="#ed5565" stroke-width="2" marker-end="url(#arw53)"/>
+        <path d="M 220 130 C 260 130, 300 94, 340 94" fill="none" stroke="#4fc1e9" stroke-width="2" marker-end="url(#arw53)"/>
+        <path d="M 220 165 C 260 165, 300 112, 340 112" fill="none" stroke="#48cfad" stroke-width="2" marker-end="url(#arw53)"/>
+        <text x="280" y="68" text-anchor="middle" font-size="10" fill="#ed5565" font-weight="bold">Linked by</text>
+        <text x="280" y="82" text-anchor="middle" font-size="9" fill="#888">Feature ID</text>
+      </svg>
+      <figcaption><strong>Fig 5.3</strong> – Spatial DBMS: How Map Features are Linked to Their Attribute Data</figcaption>
+    </figure>
+
+    <h3>2. Reasons for using a Database Management System (DBMS) <span class="exam-ref">Tested in: 2071 Magh Q3a</span></h3>
+    <p>Instead of keeping a bunch of messy Excel spreadsheets (Flat Files), engineers use a DBMS for several critical reasons:</p>
+    <ol>
+      <li><strong>Reduces Data Redundancy:</strong> Data is stored in one central location, preventing multiple conflicting copies of the same file.</li>
+      <li><strong>Maintains Data Integrity:</strong> Enforces strict rules (e.g., you cannot enter text into a column meant for numeric Pipe Diameters).</li>
+      <li><strong>Data Security:</strong> Allows administrators to restrict who can view or edit specific data layers.</li>
+      <li><strong>Concurrent Access:</strong> Multiple engineers can view and edit the database simultaneously without crashing the file.</li>
+    </ol>
+
+    <!-- ============================================================
+         Part 2: The Four Major Database Models
+         ============================================================ -->
+    <h2>Part 2: The Four Major Database Models <span class="exam-ref">Covers: 2071 Bhadra Q4a, 2075 Magh Q4a, 2074 Bhadra Q6i, 2073 Magh Q5, 2071 Magh Q3a, 2072 Magh Q5</span></h2>
+    <p>When asked to explain the different types of DBMS structures, you must list these four.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 220" width="620" height="220" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gH" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#d0e8f8"/></linearGradient>
+          <linearGradient id="gN" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#d0f0d0"/></linearGradient>
+          <linearGradient id="gR" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ec"/><stop offset="100%" stop-color="#fce8d8"/></linearGradient>
+          <linearGradient id="gO" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5f0ff"/><stop offset="100%" stop-color="#e8dff8"/></linearGradient>
+          <filter id="f51"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/></filter>
+        </defs>
+        <!-- Hierarchical -->
+        <g transform="translate(5,8)" filter="url(#f51)">
+          <rect x="0" y="0" width="145" height="200" rx="8" fill="url(#gH)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <rect x="18" y="6" width="110" height="22" rx="11" fill="#1a3c5e"/>
+          <text x="73" y="21" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Hierarchical</text>
+          <circle cx="73" cy="56" r="14" fill="#4fc1e9" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="73" y="60" text-anchor="middle" font-size="9" fill="white" font-weight="bold">P</text>
+          <line x1="63" y1="70" x2="40" y2="90" stroke="#1a3c5e" stroke-width="1.2"/>
+          <line x1="83" y1="70" x2="106" y2="90" stroke="#1a3c5e" stroke-width="1.2"/>
+          <circle cx="40" cy="98" r="11" fill="#4fc1e9" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="40" y="102" text-anchor="middle" font-size="8" fill="white">C1</text>
+          <circle cx="106" cy="98" r="11" fill="#4fc1e9" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="106" y="102" text-anchor="middle" font-size="8" fill="white">C2</text>
+          <line x1="33" y1="109" x2="22" y2="126" stroke="#1a3c5e" stroke-width="0.8"/>
+          <line x1="47" y1="109" x2="58" y2="126" stroke="#1a3c5e" stroke-width="0.8"/>
+          <circle cx="22" cy="132" r="8" fill="#4fc1e9" stroke="#1a3c5e" stroke-width="0.6"/>
+          <circle cx="58" cy="132" r="8" fill="#4fc1e9" stroke="#1a3c5e" stroke-width="0.6"/>
+          <text x="73" y="158" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">Tree structure</text>
+          <text x="73" y="172" text-anchor="middle" font-size="8" fill="#555">1-to-Many (1:M)</text>
+          <text x="73" y="190" text-anchor="middle" font-size="8" fill="#888">Parent → Children</text>
+        </g>
+        <!-- Network -->
+        <g transform="translate(160,8)" filter="url(#f51)">
+          <rect x="0" y="0" width="145" height="200" rx="8" fill="url(#gN)" stroke="#2a8c2a" stroke-width="1.2"/>
+          <rect x="22" y="6" width="100" height="22" rx="11" fill="#2a8c2a"/>
+          <text x="72" y="21" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Network</text>
+          <circle cx="48" cy="56" r="14" fill="#a0d468" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="48" y="60" text-anchor="middle" font-size="9" fill="white" font-weight="bold">A</text>
+          <circle cx="98" cy="56" r="14" fill="#a0d468" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="98" y="60" text-anchor="middle" font-size="9" fill="white" font-weight="bold">B</text>
+          <circle cx="28" cy="108" r="11" fill="#a0d468" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="28" y="112" text-anchor="middle" font-size="8" fill="white">C</text>
+          <circle cx="72" cy="108" r="11" fill="#a0d468" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="72" y="112" text-anchor="middle" font-size="8" fill="white">D</text>
+          <circle cx="116" cy="108" r="11" fill="#a0d468" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="116" y="112" text-anchor="middle" font-size="8" fill="white">E</text>
+          <line x1="48" y1="70" x2="28" y2="97" stroke="#2a8c2a" stroke-width="1"/>
+          <line x1="48" y1="70" x2="72" y2="97" stroke="#2a8c2a" stroke-width="1"/>
+          <line x1="98" y1="70" x2="72" y2="97" stroke="#2a8c2a" stroke-width="1"/>
+          <line x1="98" y1="70" x2="116" y2="97" stroke="#2a8c2a" stroke-width="1"/>
+          <line x1="28" y1="108" x2="116" y2="108" stroke="#2a8c2a" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <text x="72" y="138" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">Web / Graph</text>
+          <text x="72" y="152" text-anchor="middle" font-size="8" fill="#555">Many-to-Many (M:N)</text>
+          <text x="72" y="190" text-anchor="middle" font-size="8" fill="#888">Cross-linked nodes</text>
+        </g>
+        <!-- Relational (GIS Standard) -->
+        <g transform="translate(315,8)" filter="url(#f51)">
+          <rect x="0" y="0" width="145" height="200" rx="8" fill="url(#gR)" stroke="#8b2500" stroke-width="1.5"/>
+          <rect x="14" y="6" width="118" height="22" rx="11" fill="#8b2500"/>
+          <text x="73" y="21" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Relational</text>
+          <rect x="14" y="38" width="118" height="16" rx="2" fill="#b8860b" stroke="#8b6914" stroke-width="0.8"/>
+          <text x="73" y="50" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">ID | Name | Type</text>
+          <rect x="14" y="54" width="118" height="12" fill="#fff" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="73" y="63" text-anchor="middle" font-size="7" fill="#555">101 | Ram | Forest</text>
+          <rect x="14" y="66" width="118" height="12" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="73" y="75" text-anchor="middle" font-size="7" fill="#555">102 | Sita | Farm</text>
+          <rect x="14" y="88" width="118" height="16" rx="2" fill="#b8860b" stroke="#8b6914" stroke-width="0.8"/>
+          <text x="73" y="100" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">FID | Desc | Area</text>
+          <rect x="14" y="104" width="118" height="12" fill="#fff" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="73" y="113" text-anchor="middle" font-size="7" fill="#555">101 | Parcel A | 500</text>
+          <rect x="14" y="116" width="118" height="12" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.5"/>
+          <text x="73" y="125" text-anchor="middle" font-size="7" fill="#555">102 | Parcel B | 800</text>
+          <path d="M 28 78 C 28 83, 58 83, 58 88" fill="none" stroke="#ed5565" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="44" y="86" font-size="7" fill="#ed5565" font-weight="bold">PK=FK</text>
+          <text x="73" y="148" text-anchor="middle" font-size="9" fill="#8b2500" font-weight="bold">Tables + Keys</text>
+          <text x="73" y="162" text-anchor="middle" font-size="8" fill="#555">JOIN on PK / FK</text>
+          <rect x="22" y="174" width="100" height="18" rx="9" fill="#ed5565" fill-opacity="0.15" stroke="#ed5565" stroke-width=".8"/>
+          <text x="72" y="187" text-anchor="middle" font-size="8" fill="#ed5565" font-weight="bold">GIS Standard</text>
+        </g>
+        <!-- Object-Oriented -->
+        <g transform="translate(470,8)" filter="url(#f51)">
+          <rect x="0" y="0" width="145" height="200" rx="8" fill="url(#gO)" stroke="#6c4f9e" stroke-width="1.2"/>
+          <rect x="8" y="6" width="130" height="22" rx="11" fill="#6c4f9e"/>
+          <text x="73" y="21" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Object-Oriented</text>
+          <rect x="18" y="38" width="110" height="92" rx="6" fill="#ac92ec" fill-opacity="0.15" stroke="#6c4f9e" stroke-width="1.2"/>
+          <text x="73" y="56" text-anchor="middle" font-size="9" font-weight="bold" fill="#6c4f9e">Building</text>
+          <line x1="24" y1="62" x2="122" y2="62" stroke="#6c4f9e" stroke-width="0.8"/>
+          <text x="73" y="76" text-anchor="middle" font-size="8" fill="#555">height, area, floors</text>
+          <line x1="24" y1="84" x2="122" y2="84" stroke="#6c4f9e" stroke-width="0.8"/>
+          <text x="73" y="98" text-anchor="middle" font-size="8" fill="#555">draw(), calcArea()</text>
+          <text x="73" y="118" text-anchor="middle" font-size="7" fill="#6c4f9e">Encapsulation</text>
+          <text x="73" y="148" text-anchor="middle" font-size="9" fill="#6c4f9e" font-weight="bold">Data + Methods</text>
+          <text x="73" y="162" text-anchor="middle" font-size="8" fill="#555">OOP bundled object</text>
+          <text x="73" y="190" text-anchor="middle" font-size="8" fill="#888">Self-contained</text>
+        </g>
+      </svg>
+      <figcaption><strong>Fig 5.1</strong> – The Four Major Database Models (Relational is the GIS standard)</figcaption>
+    </figure>
+
+    <h3>1. Hierarchical Database Model</h3>
+    <ul>
+      <li><strong>Concept:</strong> Organizes data in a top-down, tree-like structure. A "parent" record can have multiple "child" records, but a child can strictly only have one parent (a 1-to-Many relationship).</li>
+      <li><strong>Example:</strong> A Province (Parent) contains multiple Districts (Children).</li>
+      <li><strong>Disadvantage:</strong> Very rigid. If you want to search across different branches of the tree, it is extremely slow. (Draw a simple organization chart tree structure for the exam).</li>
+    </ul>
+
+    <h3>2. Network Database Model</h3>
+    <ul>
+      <li><strong>Concept:</strong> Similar to the hierarchical model, but it allows a child record to have multiple parent records (a Many-to-Many relationship), forming a complex web or graph.</li>
+      <li><strong>Disadvantage:</strong> Highly complex to program and maintain. If one link breaks, the whole web can fail.</li>
+    </ul>
+
+    <h3>3. Relational Database Model (RDBMS)</h3>
+    <ul>
+      <li><strong>Concept:</strong> Data is stored in simple, flat 2D tables consisting of Rows (records) and Columns (attributes). Tables are independent but can be mathematically "joined" together using common ID fields.</li>
+      <li><strong>Advantage:</strong> Highly flexible, intuitive, and the undisputed standard for modern GIS.</li>
+    </ul>
+
+    <h3>4. Object-Oriented Database Model</h3>
+    <ul>
+      <li><strong>Concept:</strong> Data is stored as "objects" (similar to object-oriented programming like Python or C++). An object contains both the data (attributes) and the executable code (methods/behaviors) that act upon it.</li>
+    </ul>
+
+    <!-- ============================================================
+         Part 3: RDBMS in GIS and Maintaining Relationships
+         ============================================================ -->
+    <h2>Part 3: RDBMS in GIS and Maintaining Relationships <span class="exam-ref">Covers: 2072 Ashwin Q2b, 2074 Magh Q4a, 2076 Bhadra Q5a, 2079 Chaitra Q5a, 2078 Chaitra Q5a, 2073 Bhadra Q5a, 2071 Bhadra Q4b, 2073 Bhadra Q5b, 2075 Magh Q4b</span></h2>
+    <p>This is the most heavily tested concept in the chapter.</p>
+
+    <h3>1. What is an RDBMS and How is it Used in GIS? <span class="exam-ref">Tested in: 2072 Ashwin Q2b, 2074 Magh Q4a, 2078 Chaitra Q5a</span></h3>
+    <p>A Relational Database Management System (RDBMS) organizes spatial and non-spatial data into tables (called relations).</p>
+    <ul>
+      <li><strong>How it is used in GIS:</strong> The GIS software stores the geographic geometry (the shape of a land parcel) in one table, and the descriptive attributes (owner name, tax value) in another table. It seamlessly links them together behind the scenes, allowing you to click a polygon on the map and instantly see its tabular data.</li>
+    </ul>
+
+    <h3>2. How are Relationships Maintained in an RDBMS? (3 Marks) <span class="exam-ref">Tested in: 2071 Bhadra Q4b, 2073 Bhadra Q5b, 2075 Magh Q4b</span></h3>
+    <p>Relationships between separate tables are established and maintained using mathematical keys, strictly avoiding hard-coded links.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 500 165" width="500" height="165" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f52"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/></filter>
+        </defs>
+        <!-- Table A -->
+        <g filter="url(#f52)">
+        <rect x="15" y="15" width="195" height="22" rx="4 4 0 0" fill="#1a3c5e" stroke="#0e2a42" stroke-width="1"/>
+        <text x="112" y="31" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Table A: Land Parcels</text>
+        <rect x="15" y="37" width="65" height="20" fill="#b8860b" stroke="#8b6914" stroke-width="0.8"/>
+        <text x="47" y="51" text-anchor="middle" font-size="8" fill="white" font-weight="bold">PK Parcel_ID</text>
+        <rect x="80" y="37" width="65" height="20" fill="#f0ece4" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="112" y="51" text-anchor="middle" font-size="8" fill="#333">Owner</text>
+        <rect x="145" y="37" width="65" height="20" fill="#f0ece4" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="177" y="51" text-anchor="middle" font-size="8" fill="#333">Area</text>
+        <rect x="15" y="57" width="65" height="18" fill="#fff" stroke="#d4cfc5" stroke-width="0.3"/><text x="47" y="70" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">101</text>
+        <rect x="80" y="57" width="65" height="18" fill="#fff" stroke="#d4cfc5" stroke-width="0.3"/><text x="112" y="70" text-anchor="middle" font-size="8">Ram</text>
+        <rect x="145" y="57" width="65" height="18" fill="#fff" stroke="#d4cfc5" stroke-width="0.3"/><text x="177" y="70" text-anchor="middle" font-size="8">500m²</text>
+        <rect x="15" y="75" width="65" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.3"/><text x="47" y="88" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">102</text>
+        <rect x="80" y="75" width="65" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.3"/><text x="112" y="88" text-anchor="middle" font-size="8">Sita</text>
+        <rect x="145" y="75" width="65" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.3"/><text x="177" y="88" text-anchor="middle" font-size="8">800m²</text>
+        </g>
+        <!-- Table B -->
+        <g filter="url(#f52)">
+        <rect x="290" y="15" width="195" height="22" rx="4 4 0 0" fill="#1a3c5e" stroke="#0e2a42" stroke-width="1"/>
+        <text x="387" y="31" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Table B: Tax Records</text>
+        <rect x="290" y="37" width="65" height="20" fill="#4fc1e9" stroke="#2a7cb5" stroke-width="0.8"/>
+        <text x="322" y="51" text-anchor="middle" font-size="8" fill="white" font-weight="bold">FK FK_Parcel</text>
+        <rect x="355" y="37" width="65" height="20" fill="#f0ece4" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="387" y="51" text-anchor="middle" font-size="8" fill="#333">Tax_Amt</text>
+        <rect x="420" y="37" width="65" height="20" fill="#f0ece4" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="452" y="51" text-anchor="middle" font-size="8" fill="#333">Year</text>
+        <rect x="290" y="57" width="65" height="18" fill="#fff" stroke="#d4cfc5" stroke-width="0.3"/><text x="322" y="70" text-anchor="middle" font-size="9" fill="#2a7cb5" font-weight="bold">101</text>
+        <rect x="355" y="57" width="65" height="18" fill="#fff" stroke="#d4cfc5" stroke-width="0.3"/><text x="387" y="70" text-anchor="middle" font-size="8">5000</text>
+        <rect x="420" y="57" width="65" height="18" fill="#fff" stroke="#d4cfc5" stroke-width="0.3"/><text x="452" y="70" text-anchor="middle" font-size="8">2025</text>
+        <rect x="290" y="75" width="65" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.3"/><text x="322" y="88" text-anchor="middle" font-size="9" fill="#2a7cb5" font-weight="bold">102</text>
+        <rect x="355" y="75" width="65" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.3"/><text x="387" y="88" text-anchor="middle" font-size="8">8000</text>
+        <rect x="420" y="75" width="65" height="18" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.3"/><text x="452" y="88" text-anchor="middle" font-size="8">2025</text>
+        </g>
+        <!-- Relationship curve -->
+        <path d="M 78 93 C 78 132, 322 132, 322 93" fill="none" stroke="#ed5565" stroke-width="2.5" stroke-dasharray="6,3"/>
+        <circle cx="78" cy="93" r="3" fill="#ed5565"/>
+        <circle cx="322" cy="93" r="3" fill="#ed5565"/>
+        <text x="200" y="128" text-anchor="middle" font-size="10" fill="#ed5565" font-weight="bold">Primary Key = Foreign Key</text>
+        <text x="200" y="145" text-anchor="middle" font-size="9" fill="#555" font-style="italic">Parcel_ID (PK) ↔ FK_Parcel (FK)</text>
+        <text x="200" y="160" text-anchor="middle" font-size="8" fill="#888">Matching values JOIN rows across tables</text>
+      </svg>
+      <figcaption><strong>Fig 5.2</strong> – How Primary Keys and Foreign Keys Maintain Relationships Between Tables</figcaption>
+    </figure>
+    <ul>
+      <li><strong>Primary Key:</strong> A column in a table where every single row has a unique, non-repeating identifier (e.g., a unique Citizen ID number).</li>
+      <li><strong>Foreign Key:</strong> A column in a different table that contains values corresponding to the Primary Key of the first table.</li>
+      <li><strong>The Mechanism:</strong> By matching the Foreign Key in Table B to the Primary Key in Table A, the database temporarily joins the rows together, creating a unified view of the data.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 200" width="620" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f54s"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <linearGradient id="g54a" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fc"/><stop offset="100%" stop-color="#d0e4f4"/></linearGradient>
+          <linearGradient id="g54b" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef4e8"/><stop offset="100%" stop-color="#f0ddb8"/></linearGradient>
+          <linearGradient id="g54c" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0e8fc"/><stop offset="100%" stop-color="#dcc8f4"/></linearGradient>
+        </defs>
+        <!-- ═══ 1:1 ═══ -->
+        <g filter="url(#f54s)">
+          <rect x="8" y="8" width="192" height="180" rx="10" fill="url(#g54a)" stroke="#1a3c5e" stroke-width="1"/>
+          <rect x="52" y="14" width="104" height="22" rx="11" fill="#1a3c5e"/>
+          <text x="104" y="29" text-anchor="middle" font-size="11" fill="white" font-weight="bold">One-to-One</text>
+          <rect x="28" y="52" width="80" height="34" rx="6" fill="white" stroke="#4fc1e9" stroke-width="1.5"/>
+          <text x="68" y="73" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">Citizen</text>
+          <rect x="28" y="110" width="80" height="34" rx="6" fill="white" stroke="#4fc1e9" stroke-width="1.5"/>
+          <text x="68" y="131" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">Passport</text>
+          <line x1="68" y1="86" x2="68" y2="110" stroke="#1a3c5e" stroke-width="2"/>
+          <text x="82" y="102" font-size="14" fill="#1a3c5e" font-weight="bold">1</text>
+          <text x="82" y="90" font-size="9" fill="#888">has</text>
+          <text x="104" y="160" text-anchor="middle" font-size="9" fill="#555">Each citizen has exactly</text>
+          <text x="104" y="173" text-anchor="middle" font-size="9" fill="#555">one passport &amp; vice versa</text>
+          <!-- Cardinality markers -->
+          <circle cx="68" cy="86" r="3" fill="#1a3c5e"/>
+          <circle cx="68" cy="110" r="3" fill="#1a3c5e"/>
+          <text x="56" y="92" font-size="11" fill="#ed5565" font-weight="bold">1</text>
+          <text x="56" y="115" font-size="11" fill="#ed5565" font-weight="bold">1</text>
+        </g>
+        <!-- ═══ 1:M ═══ -->
+        <g filter="url(#f54s)">
+          <rect x="214" y="8" width="192" height="180" rx="10" fill="url(#g54b)" stroke="#8b6914" stroke-width="1"/>
+          <rect x="254" y="14" width="112" height="22" rx="11" fill="#8b6914"/>
+          <text x="310" y="29" text-anchor="middle" font-size="11" fill="white" font-weight="bold">One-to-Many</text>
+          <rect x="268" y="52" width="84" height="34" rx="6" fill="white" stroke="#b8860b" stroke-width="1.5"/>
+          <text x="310" y="73" text-anchor="middle" font-size="10" fill="#8b6914" font-weight="bold">Province</text>
+          <rect x="234" y="110" width="60" height="28" rx="5" fill="white" stroke="#b8860b" stroke-width="1.2"/>
+          <text x="264" y="128" text-anchor="middle" font-size="9" fill="#8b6914">Dist. 1</text>
+          <rect x="300" y="110" width="60" height="28" rx="5" fill="white" stroke="#b8860b" stroke-width="1.2"/>
+          <text x="330" y="128" text-anchor="middle" font-size="9" fill="#8b6914">Dist. 2</text>
+          <rect x="366" y="110" width="30" height="28" rx="5" fill="white" stroke="#b8860b" stroke-width="1.2"/>
+          <text x="381" y="128" text-anchor="middle" font-size="10" fill="#8b6914">…</text>
+          <line x1="310" y1="86" x2="264" y2="110" stroke="#8b6914" stroke-width="1.5"/>
+          <line x1="310" y1="86" x2="330" y2="110" stroke="#8b6914" stroke-width="1.5"/>
+          <line x1="310" y1="86" x2="381" y2="110" stroke="#8b6914" stroke-width="1.5"/>
+          <text x="292" y="93" font-size="11" fill="#ed5565" font-weight="bold">1</text>
+          <text x="248" y="115" font-size="10" fill="#ed5565" font-weight="bold">M</text>
+          <text x="310" y="158" text-anchor="middle" font-size="9" fill="#555">One province contains</text>
+          <text x="310" y="171" text-anchor="middle" font-size="9" fill="#555">many districts</text>
+        </g>
+        <!-- ═══ M:N ═══ -->
+        <g filter="url(#f54s)">
+          <rect x="420" y="8" width="192" height="180" rx="10" fill="url(#g54c)" stroke="#6c4f9e" stroke-width="1"/>
+          <rect x="454" y="14" width="124" height="22" rx="11" fill="#6c4f9e"/>
+          <text x="516" y="29" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Many-to-Many</text>
+          <rect x="434" y="52" width="68" height="30" rx="5" fill="white" stroke="#ac92ec" stroke-width="1.5"/>
+          <text x="468" y="71" text-anchor="middle" font-size="9" fill="#6c4f9e" font-weight="bold">Student A</text>
+          <rect x="434" y="85" width="68" height="30" rx="5" fill="white" stroke="#ac92ec" stroke-width="1.5"/>
+          <text x="468" y="104" text-anchor="middle" font-size="9" fill="#6c4f9e" font-weight="bold">Student B</text>
+          <rect x="540" y="52" width="60" height="30" rx="5" fill="white" stroke="#ac92ec" stroke-width="1.5"/>
+          <text x="570" y="71" text-anchor="middle" font-size="9" fill="#6c4f9e" font-weight="bold">GIS</text>
+          <rect x="540" y="85" width="60" height="30" rx="5" fill="white" stroke="#ac92ec" stroke-width="1.5"/>
+          <text x="570" y="104" text-anchor="middle" font-size="9" fill="#6c4f9e" font-weight="bold">Survey</text>
+          <!-- Cross links -->
+          <line x1="502" y1="67" x2="540" y2="67" stroke="#6c4f9e" stroke-width="1.2"/>
+          <line x1="502" y1="67" x2="540" y2="100" stroke="#6c4f9e" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <line x1="502" y1="100" x2="540" y2="67" stroke="#6c4f9e" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <line x1="502" y1="100" x2="540" y2="100" stroke="#6c4f9e" stroke-width="1.2"/>
+          <text x="444" y="130" font-size="10" fill="#ed5565" font-weight="bold">M</text>
+          <text x="564" y="130" font-size="10" fill="#ed5565" font-weight="bold">N</text>
+          <text x="516" y="152" text-anchor="middle" font-size="9" fill="#555">Many students enroll in</text>
+          <text x="516" y="165" text-anchor="middle" font-size="9" fill="#555">many courses &amp; vice versa</text>
+        </g>
+      </svg>
+      <figcaption><strong>Fig 5.4</strong> – Three Types of Table Relationships: One-to-One, One-to-Many, and Many-to-Many</figcaption>
+    </figure>
+
+    <h3>3. Why does GIS use RDBMS instead of other database systems? (3 Marks) <span class="exam-ref">Tested in: 2076 Bhadra Q5a, 2079 Chaitra Q5a</span></h3>
+    <ol>
+      <li><strong>Flexibility:</strong> Unlike the rigid hierarchical model, RDBMS allows you to join any table to any other table dynamically, as long as they share a common key.</li>
+      <li><strong>Simplicity:</strong> Tables (rows and columns) are extremely intuitive for humans to read and understand.</li>
+      <li><strong>SQL Support:</strong> RDBMS uses Structured Query Language (SQL), standardizing how data is queried and edited across almost all software platforms (ArcGIS, QGIS, PostGIS).</li>
+    </ol>
+
+    <!-- ============================================================
+         Part 4: The SQL Join Scenario (10 Marks)
+         ============================================================ -->
+    <h2>Part 4: The SQL Join Scenario (10 Marks) <span class="exam-ref">Covers: 2082 Shrawan</span></h2>
+    <p>How can you join two different tables having one common attribute using a SQL, assuming the following tables with common attribute landuse id in Table-1 and id in Table-2?</p>
+    <p>Table-1: Vector data of landuse polygons with columns <strong>fid</strong>, <strong>landuse_id</strong> both being integer.<br>
+    Table-2: Non-spatial table describing the land use with columns <strong>id</strong> and <strong>landuse_type</strong> (such as built-up, farmland etc.). (2082 Shrawan)</p>
+    <p>This question tests if you can actually write the SQL code to perform the theoretical join we just discussed.</p>
+
+    <h3>The Problem Setup:</h3>
+    <ul>
+      <li><strong>Table-1 (Spatial):</strong> Contains landuse polygons. Columns: fid, landuse_id.</li>
+      <li><strong>Table-2 (Non-spatial):</strong> Contains descriptive text. Columns: id, landuse_type.</li>
+    </ul>
+    <p>How to join them: You join the two tables by matching the common attribute: landuse_id from Table-1 must equal id from Table-2.</p>
+
+    <h3>The SQL Query Answer:</h3>
+    <p>Write this exact SQL statement on your exam paper:</p>
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x2756;</span> join_query.sql</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+        <div class="code-content"><div><span class="sql-kw">SELECT</span></div><div>    <span class="sql-tbl">Table_1</span><span class="sql-punc">.</span><span class="sql-col">fid</span><span class="sql-punc">,</span></div><div>    <span class="sql-tbl">Table_2</span><span class="sql-punc">.</span><span class="sql-col">landuse_type</span></div><div><span class="sql-kw">FROM</span></div><div>    <span class="sql-tbl">Table_1</span></div><div><span class="sql-join">INNER JOIN</span></div><div>    <span class="sql-tbl">Table_2</span></div><div><span class="sql-kw">ON</span></div><div>    <span class="sql-tbl">Table_1</span><span class="sql-punc">.</span><span class="sql-col">landuse_id</span> <span class="sql-op">=</span> <span class="sql-tbl">Table_2</span><span class="sql-punc">.</span><span class="sql-col">id</span><span class="sql-punc">;</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>SQL</span><span>UTF-8 &middot; LF &middot; 9 lines</span></div>
+    </div>
+
+    <h3>Explanation for the Examiner:</h3>
+    <ul>
+      <li><strong>SELECT:</strong> Specifies exactly which columns we want to see in the final output (the feature ID and its text description).</li>
+      <li><strong>FROM:</strong> Specifies the primary spatial table.</li>
+      <li><strong>INNER JOIN:</strong> Tells the database to combine it with Table-2.</li>
+      <li><strong>ON:</strong> The logical condition that maintains the relationship. It instructs the software to link the rows only where the Foreign Key (landuse_id) matches the Primary Key (id).</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 310" width="620" height="310" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f55s"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <marker id="arw55" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1a3c5e"/></marker>
+        </defs>
+        <!-- ═══ TABLE 1 (Left) ═══ -->
+        <g filter="url(#f55s)">
+          <rect x="15" y="12" width="220" height="22" rx="4 4 0 0" fill="#1a3c5e"/>
+          <text x="125" y="28" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Table 1: Landuse Polygons</text>
+          <rect x="15" y="34" width="80" height="18" fill="#b8860b" stroke="#8b6914" stroke-width=".6"/>
+          <text x="55" y="47" text-anchor="middle" font-size="8" fill="white" font-weight="bold">fid</text>
+          <rect x="95" y="34" width="140" height="18" fill="#b8860b" stroke="#8b6914" stroke-width=".6"/>
+          <text x="165" y="47" text-anchor="middle" font-size="8" fill="white" font-weight="bold">landuse_id</text>
+          <!-- Rows -->
+          <rect x="15" y="52" width="80" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="55" y="63" text-anchor="middle" font-size="8">1</text>
+          <rect x="95" y="52" width="140" height="16" fill="#e8f4e8" stroke="#ddd" stroke-width=".3"/><text x="165" y="63" text-anchor="middle" font-size="9" fill="#1a6b1a" font-weight="bold">10</text>
+          <rect x="15" y="68" width="80" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="55" y="79" text-anchor="middle" font-size="8">2</text>
+          <rect x="95" y="68" width="140" height="16" fill="#e8f4e8" stroke="#ddd" stroke-width=".3"/><text x="165" y="79" text-anchor="middle" font-size="9" fill="#1a6b1a" font-weight="bold">20</text>
+          <rect x="15" y="84" width="80" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="55" y="95" text-anchor="middle" font-size="8">3</text>
+          <rect x="95" y="84" width="140" height="16" fill="#e8f4e8" stroke="#ddd" stroke-width=".3"/><text x="165" y="95" text-anchor="middle" font-size="9" fill="#1a6b1a" font-weight="bold">10</text>
+          <rect x="15" y="100" width="80" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="55" y="111" text-anchor="middle" font-size="8">4</text>
+          <rect x="95" y="100" width="140" height="16" fill="#e8f4e8" stroke="#ddd" stroke-width=".3"/><text x="165" y="111" text-anchor="middle" font-size="9" fill="#1a6b1a" font-weight="bold">30</text>
+        </g>
+        <!-- ═══ TABLE 2 (Right) ═══ -->
+        <g filter="url(#f55s)">
+          <rect x="380" y="12" width="230" height="22" rx="4 4 0 0" fill="#1a3c5e"/>
+          <text x="495" y="28" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Table 2: Landuse Description</text>
+          <rect x="380" y="34" width="80" height="18" fill="#4fc1e9" stroke="#2a7cb5" stroke-width=".6"/>
+          <text x="420" y="47" text-anchor="middle" font-size="8" fill="white" font-weight="bold">id</text>
+          <rect x="460" y="34" width="150" height="18" fill="#4fc1e9" stroke="#2a7cb5" stroke-width=".6"/>
+          <text x="535" y="47" text-anchor="middle" font-size="8" fill="white" font-weight="bold">landuse_type</text>
+          <rect x="380" y="52" width="80" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="420" y="63" text-anchor="middle" font-size="9" fill="#2a7cb5" font-weight="bold">10</text>
+          <rect x="460" y="52" width="150" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="535" y="63" text-anchor="middle" font-size="8">Built-up</text>
+          <rect x="380" y="68" width="80" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="420" y="79" text-anchor="middle" font-size="9" fill="#2a7cb5" font-weight="bold">20</text>
+          <rect x="460" y="68" width="150" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="535" y="79" text-anchor="middle" font-size="8">Farmland</text>
+          <rect x="380" y="84" width="80" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="420" y="95" text-anchor="middle" font-size="9" fill="#2a7cb5" font-weight="bold">30</text>
+          <rect x="460" y="84" width="150" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="535" y="95" text-anchor="middle" font-size="8">Forest</text>
+        </g>
+        <!-- JOIN keyword in center -->
+        <rect x="255" y="50" width="110" height="36" rx="18" fill="#ed5565" filter="url(#f55s)"/>
+        <text x="310" y="73" text-anchor="middle" font-size="12" fill="white" font-weight="bold">INNER JOIN</text>
+        <!-- Match lines -->
+        <path d="M 235 60 L 255 62" stroke="#1a6b1a" stroke-width="1.5" marker-end="url(#arw55)"/>
+        <path d="M 365 76 L 380 60" stroke="#2a7cb5" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="310" y="100" text-anchor="middle" font-size="9" fill="#888">ON Table1.landuse_id = Table2.id</text>
+        <!-- Down arrow -->
+        <line x1="310" y1="112" x2="310" y2="140" stroke="#1a3c5e" stroke-width="2" marker-end="url(#arw55)"/>
+        <!-- ═══ RESULT TABLE ═══ -->
+        <g filter="url(#f55s)">
+          <rect x="130" y="145" width="360" height="22" rx="4 4 0 0" fill="#2a8c2a"/>
+          <text x="310" y="160" text-anchor="middle" font-size="10" fill="white" font-weight="bold">Result: Joined Data</text>
+          <rect x="130" y="167" width="70" height="18" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="165" y="180" text-anchor="middle" font-size="8" fill="white" font-weight="bold">fid</text>
+          <rect x="200" y="167" width="100" height="18" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="250" y="180" text-anchor="middle" font-size="8" fill="white" font-weight="bold">landuse_id</text>
+          <rect x="300" y="167" width="90" height="18" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="345" y="180" text-anchor="middle" font-size="8" fill="white" font-weight="bold">id</text>
+          <rect x="390" y="167" width="100" height="18" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="440" y="180" text-anchor="middle" font-size="8" fill="white" font-weight="bold">landuse_type</text>
+          <!-- Result rows -->
+          <rect x="130" y="185" width="70" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="165" y="196" text-anchor="middle" font-size="8">1</text>
+          <rect x="200" y="185" width="100" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="250" y="196" text-anchor="middle" font-size="8">10</text>
+          <rect x="300" y="185" width="90" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="345" y="196" text-anchor="middle" font-size="8">10</text>
+          <rect x="390" y="185" width="100" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="440" y="196" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">Built-up</text>
+          <rect x="130" y="201" width="70" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="165" y="212" text-anchor="middle" font-size="8">2</text>
+          <rect x="200" y="201" width="100" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="250" y="212" text-anchor="middle" font-size="8">20</text>
+          <rect x="300" y="201" width="90" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="345" y="212" text-anchor="middle" font-size="8">20</text>
+          <rect x="390" y="201" width="100" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="440" y="212" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">Farmland</text>
+          <rect x="130" y="217" width="70" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="165" y="228" text-anchor="middle" font-size="8">3</text>
+          <rect x="200" y="217" width="100" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="250" y="228" text-anchor="middle" font-size="8">10</text>
+          <rect x="300" y="217" width="90" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="345" y="228" text-anchor="middle" font-size="8">10</text>
+          <rect x="390" y="217" width="100" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="440" y="228" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">Built-up</text>
+          <rect x="130" y="233" width="70" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="165" y="244" text-anchor="middle" font-size="8">4</text>
+          <rect x="200" y="233" width="100" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="250" y="244" text-anchor="middle" font-size="8">30</text>
+          <rect x="300" y="233" width="90" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="345" y="244" text-anchor="middle" font-size="8">30</text>
+          <rect x="390" y="233" width="100" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="440" y="244" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">Forest</text>
+        </g>
+        <text x="310" y="272" text-anchor="middle" font-size="9" fill="#555" font-style="italic">Matching rows are combined; non-matching rows are excluded from INNER JOIN</text>
+        <rect x="160" y="280" width="300" height="20" rx="10" fill="#e8f4e8" stroke="#2a8c2a" stroke-width=".6"/>
+        <text x="310" y="294" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">landuse_id = id  ➜  Rows linked successfully</text>
+      </svg>
+      <figcaption><strong>Fig 5.5</strong> – SQL INNER JOIN: How Two Tables are Combined Using a Common Key</figcaption>
+    </figure>
+
+    <!-- ============================================================
+         Database Normalization
+         ============================================================ -->
+    <h2>Database Normalization <span class="exam-ref">Covers: 2076 Bhadra Q5b, 2078 Chaitra Q5b</span></h2>
+
+    <h3>1. What is Data Normalization?</h3>
+    <p>Data Normalization is a systematic process of organizing data within a relational database to minimize redundancy (unnecessary duplication of data) and ensure data integrity (accuracy and consistency). It involves breaking down large, clunky tables into smaller, well-structured tables and defining relationships between them using primary and foreign keys.</p>
+    <p>By normalizing a database, a GIS engineer ensures that updating a property owner's name only requires changing it in one single place, rather than updating hundreds of separate parcel records.</p>
+
+    <h3>2. Explain 1NF and 2NF (with rules)</h3>
+    <p>Normalization is done in stages called "Normal Forms."</p>
+    <ul>
+      <li><strong>First Normal Form (1NF):</strong>
+        <ul>
+          <li><strong>The Rule of Atomicity:</strong> To be in 1NF, every cell in a table must contain a single, indivisible (atomic) value.</li>
+          <li><strong>Explanation:</strong> You cannot have a column that holds multiple values. For example, if a table has a column called "Phone_Numbers" and a single row contains "9841234567, 9801234567", it violates 1NF.</li>
+          <li><strong>The Fix:</strong> You must split this data so that each phone number gets its own distinct row, and ensure every column has a unique name.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 270" width="620" height="270" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f56s"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <linearGradient id="g56bad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fde8e8"/><stop offset="100%" stop-color="#f8c8c8"/></linearGradient>
+          <linearGradient id="g56good" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#c8f0c8"/></linearGradient>
+          <marker id="arw56" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1a3c5e"/></marker>
+        </defs>
+        <!-- === BEFORE (Violates 1NF) === -->
+        <g filter="url(#f56s)">
+          <rect x="10" y="8" width="260" height="164" rx="10" fill="url(#g56bad)" stroke="#cc3333" stroke-width="1"/>
+          <rect x="60" y="14" width="160" height="22" rx="11" fill="#cc3333"/>
+          <text x="140" y="29" text-anchor="middle" font-size="10" fill="white" font-weight="bold">BEFORE (Violates 1NF)</text>
+          <!-- Table header -->
+          <rect x="22" y="46" width="55" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="49" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Emp_ID</text>
+          <rect x="77" y="46" width="70" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="112" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Name</text>
+          <rect x="147" y="46" width="112" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="203" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Phone_Numbers</text>
+          <!-- Row 1 -->
+          <rect x="22" y="64" width="55" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="49" y="75" text-anchor="middle" font-size="8">101</text>
+          <rect x="77" y="64" width="70" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="112" y="75" text-anchor="middle" font-size="8">Ram</text>
+          <rect x="147" y="64" width="112" height="16" fill="#ffe0e0" stroke="#cc3333" stroke-width="1"/>
+          <text x="203" y="75" text-anchor="middle" font-size="7.5" fill="#cc0000" font-weight="bold">9841234, 9801234</text>
+          <!-- Row 2 -->
+          <rect x="22" y="80" width="55" height="16" fill="#faf5f5" stroke="#ddd" stroke-width=".3"/><text x="49" y="91" text-anchor="middle" font-size="8">102</text>
+          <rect x="77" y="80" width="70" height="16" fill="#faf5f5" stroke="#ddd" stroke-width=".3"/><text x="112" y="91" text-anchor="middle" font-size="8">Sita</text>
+          <rect x="147" y="80" width="112" height="16" fill="#ffe0e0" stroke="#cc3333" stroke-width="1"/>
+          <text x="203" y="91" text-anchor="middle" font-size="7.5" fill="#cc0000" font-weight="bold">9812345, 9842345, 9862345</text>
+          <!-- Warning -->
+          <text x="140" y="116" text-anchor="middle" font-size="22" fill="#cc3333">✖</text>
+          <text x="140" y="138" text-anchor="middle" font-size="9" fill="#cc3333" font-weight="bold">Multiple values in one cell!</text>
+          <text x="140" y="152" text-anchor="middle" font-size="8" fill="#888">Not atomic → Violates 1NF</text>
+        </g>
+        <!-- Arrow -->
+        <line x1="280" y1="90" x2="340" y2="90" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#arw56)"/>
+        <text x="310" y="82" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">Fix</text>
+        <!-- === AFTER (Satisfies 1NF) === -->
+        <g filter="url(#f56s)">
+          <rect x="350" y="8" width="260" height="250" rx="10" fill="url(#g56good)" stroke="#2a8c2a" stroke-width="1"/>
+          <rect x="400" y="14" width="160" height="22" rx="11" fill="#2a8c2a"/>
+          <text x="480" y="29" text-anchor="middle" font-size="10" fill="white" font-weight="bold">AFTER (Satisfies 1NF)</text>
+          <!-- Table header -->
+          <rect x="362" y="46" width="55" height="18" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="389" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Emp_ID</text>
+          <rect x="417" y="46" width="70" height="18" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="452" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Name</text>
+          <rect x="487" y="46" width="112" height="18" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="543" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Phone</text>
+          <!-- Row 1 -->
+          <rect x="362" y="64" width="55" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="389" y="75" text-anchor="middle" font-size="8">101</text>
+          <rect x="417" y="64" width="70" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="452" y="75" text-anchor="middle" font-size="8">Ram</text>
+          <rect x="487" y="64" width="112" height="16" fill="#e8ffe8" stroke="#2a8c2a" stroke-width=".6"/><text x="543" y="75" text-anchor="middle" font-size="8" fill="#1a6b1a" font-weight="bold">9841234</text>
+          <!-- Row 2 -->
+          <rect x="362" y="80" width="55" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="389" y="91" text-anchor="middle" font-size="8">101</text>
+          <rect x="417" y="80" width="70" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="452" y="91" text-anchor="middle" font-size="8">Ram</text>
+          <rect x="487" y="80" width="112" height="16" fill="#e8ffe8" stroke="#2a8c2a" stroke-width=".6"/><text x="543" y="91" text-anchor="middle" font-size="8" fill="#1a6b1a" font-weight="bold">9801234</text>
+          <!-- Row 3 -->
+          <rect x="362" y="96" width="55" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="389" y="107" text-anchor="middle" font-size="8">102</text>
+          <rect x="417" y="96" width="70" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="452" y="107" text-anchor="middle" font-size="8">Sita</text>
+          <rect x="487" y="96" width="112" height="16" fill="#e8ffe8" stroke="#2a8c2a" stroke-width=".6"/><text x="543" y="107" text-anchor="middle" font-size="8" fill="#1a6b1a" font-weight="bold">9812345</text>
+          <!-- Row 4 -->
+          <rect x="362" y="112" width="55" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="389" y="123" text-anchor="middle" font-size="8">102</text>
+          <rect x="417" y="112" width="70" height="16" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="452" y="123" text-anchor="middle" font-size="8">Sita</text>
+          <rect x="487" y="112" width="112" height="16" fill="#e8ffe8" stroke="#2a8c2a" stroke-width=".6"/><text x="543" y="123" text-anchor="middle" font-size="8" fill="#1a6b1a" font-weight="bold">9842345</text>
+          <!-- Row 5 -->
+          <rect x="362" y="128" width="55" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="389" y="139" text-anchor="middle" font-size="8">102</text>
+          <rect x="417" y="128" width="70" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="452" y="139" text-anchor="middle" font-size="8">Sita</text>
+          <rect x="487" y="128" width="112" height="16" fill="#e8ffe8" stroke="#2a8c2a" stroke-width=".6"/><text x="543" y="139" text-anchor="middle" font-size="8" fill="#1a6b1a" font-weight="bold">9862345</text>
+          <!-- Check -->
+          <text x="480" y="168" text-anchor="middle" font-size="22" fill="#2a8c2a">✔</text>
+          <text x="480" y="190" text-anchor="middle" font-size="9" fill="#2a8c2a" font-weight="bold">Each cell has ONE atomic value</text>
+          <text x="480" y="206" text-anchor="middle" font-size="8" fill="#888">Rule: No multi-valued columns</text>
+          <text x="480" y="222" text-anchor="middle" font-size="8" fill="#888">Rule: Each column has unique name</text>
+          <text x="480" y="238" text-anchor="middle" font-size="8" fill="#888">Rule: Order of rows doesn’t matter</text>
+        </g>
+      </svg>
+      <figcaption><strong>Fig 5.6</strong> – First Normal Form (1NF): Eliminating Multi-Valued Cells</figcaption>
+    </figure>
+
+    <ul>
+      <li><strong>Second Normal Form (2NF):</strong>
+        <ul>
+          <li><strong>The Rule of Full Dependency:</strong> To be in 2NF, the table must already be in 1NF, and it must have no partial dependencies.</li>
+          <li><strong>Explanation:</strong> This applies when a table uses a composite primary key (a primary key made of two or more columns combined). Every non-key attribute must depend on the entire composite key, not just part of it.</li>
+          <li><strong>The Fix:</strong> If your table has a composite key of Project_ID and Engineer_ID, but also has a column for Engineer_Name, the name only depends on the Engineer_ID, not the Project_ID. This is a partial dependency. You must remove Engineer_Name and place it in a separate "Engineers" table.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 300" width="620" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f57s"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <linearGradient id="g57bad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fde8e8"/><stop offset="100%" stop-color="#f8c8c8"/></linearGradient>
+          <linearGradient id="g57good" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#c8f0c8"/></linearGradient>
+          <marker id="arw57" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1a3c5e"/></marker>
+        </defs>
+        <!-- === BEFORE (Violates 2NF) === -->
+        <g filter="url(#f57s)">
+          <rect x="10" y="8" width="600" height="128" rx="10" fill="url(#g57bad)" stroke="#cc3333" stroke-width="1"/>
+          <rect x="200" y="14" width="220" height="22" rx="11" fill="#cc3333"/>
+          <text x="310" y="29" text-anchor="middle" font-size="10" fill="white" font-weight="bold">BEFORE (Violates 2NF — Partial Dependency)</text>
+          <!-- Header -->
+          <rect x="22" y="46" width="90" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="67" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Project_ID (PK)</text>
+          <rect x="112" y="46" width="100" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="162" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Engineer_ID (PK)</text>
+          <rect x="212" y="46" width="110" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="267" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Engineer_Name</text>
+          <rect x="322" y="46" width="90" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="367" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Hours</text>
+          <rect x="412" y="46" width="100" height="18" fill="#cc6666" stroke="#aa4444" stroke-width=".6"/>
+          <text x="462" y="59" text-anchor="middle" font-size="8" fill="white" font-weight="bold">Project_Name</text>
+          <!-- Rows -->
+          <rect x="22" y="64" width="90" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="67" y="75" text-anchor="middle" font-size="8">P1</text>
+          <rect x="112" y="64" width="100" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="162" y="75" text-anchor="middle" font-size="8">E1</text>
+          <rect x="212" y="64" width="110" height="16" fill="#ffe0e0" stroke="#cc3333" stroke-width=".8"/><text x="267" y="75" text-anchor="middle" font-size="8" fill="#cc0000">Hari</text>
+          <rect x="322" y="64" width="90" height="16" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="367" y="75" text-anchor="middle" font-size="8">40</text>
+          <rect x="412" y="64" width="100" height="16" fill="#ffe0e0" stroke="#cc3333" stroke-width=".8"/><text x="462" y="75" text-anchor="middle" font-size="8" fill="#cc0000">Survey</text>
+          <rect x="22" y="80" width="90" height="16" fill="#faf5f5" stroke="#ddd" stroke-width=".3"/><text x="67" y="91" text-anchor="middle" font-size="8">P1</text>
+          <rect x="112" y="80" width="100" height="16" fill="#faf5f5" stroke="#ddd" stroke-width=".3"/><text x="162" y="91" text-anchor="middle" font-size="8">E2</text>
+          <rect x="212" y="80" width="110" height="16" fill="#ffe0e0" stroke="#cc3333" stroke-width=".8"/><text x="267" y="91" text-anchor="middle" font-size="8" fill="#cc0000">Gita</text>
+          <rect x="322" y="80" width="90" height="16" fill="#faf5f5" stroke="#ddd" stroke-width=".3"/><text x="367" y="91" text-anchor="middle" font-size="8">35</text>
+          <rect x="412" y="80" width="100" height="16" fill="#ffe0e0" stroke="#cc3333" stroke-width=".8"/><text x="462" y="91" text-anchor="middle" font-size="8" fill="#cc0000">Survey</text>
+          <!-- Dependency arrows -->
+          <path d="M 162 100 C 162 112, 267 112, 267 100" fill="none" stroke="#cc3333" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="214" y="122" text-anchor="middle" font-size="8" fill="#cc3333" font-weight="bold">Partial: Name depends only on Engineer_ID</text>
+          <text x="530" y="75" font-size="18" fill="#cc3333">✖</text>
+          <text x="530" y="95" font-size="8" fill="#cc3333" font-weight="bold">Redundant!</text>
+        </g>
+        <!-- Arrow down -->
+        <line x1="310" y1="140" x2="310" y2="165" stroke="#1a3c5e" stroke-width="2.5" marker-end="url(#arw57)"/>
+        <text x="330" y="158" font-size="10" fill="#1a3c5e" font-weight="bold">Split into 2NF</text>
+        <!-- === AFTER === -->
+        <g filter="url(#f57s)">
+          <rect x="10" y="170" width="280" height="120" rx="10" fill="url(#g57good)" stroke="#2a8c2a" stroke-width="1"/>
+          <rect x="55" y="176" width="190" height="20" rx="10" fill="#2a8c2a"/>
+          <text x="150" y="190" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Project_Assignments Table</text>
+          <!-- Header -->
+          <rect x="22" y="202" width="80" height="16" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="62" y="213" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">Project_ID (PK)</text>
+          <rect x="102" y="202" width="80" height="16" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="142" y="213" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">Engineer_ID (PK)</text>
+          <rect x="182" y="202" width="60" height="16" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="212" y="213" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">Hours</text>
+          <!-- Rows -->
+          <rect x="22" y="218" width="80" height="14" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="62" y="228" text-anchor="middle" font-size="8">P1</text>
+          <rect x="102" y="218" width="80" height="14" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="142" y="228" text-anchor="middle" font-size="8">E1</text>
+          <rect x="182" y="218" width="60" height="14" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="212" y="228" text-anchor="middle" font-size="8">40</text>
+          <rect x="22" y="232" width="80" height="14" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="62" y="242" text-anchor="middle" font-size="8">P1</text>
+          <rect x="102" y="232" width="80" height="14" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="142" y="242" text-anchor="middle" font-size="8">E2</text>
+          <rect x="182" y="232" width="60" height="14" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="212" y="242" text-anchor="middle" font-size="8">35</text>
+          <text x="150" y="268" text-anchor="middle" font-size="8" fill="#2a8c2a" font-weight="bold">✔ Full dependency on composite key</text>
+        </g>
+        <g filter="url(#f57s)">
+          <rect x="330" y="170" width="280" height="120" rx="10" fill="url(#g57good)" stroke="#2a8c2a" stroke-width="1"/>
+          <rect x="395" y="176" width="150" height="20" rx="10" fill="#2a8c2a"/>
+          <text x="470" y="190" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Engineers Table</text>
+          <!-- Header -->
+          <rect x="342" y="202" width="100" height="16" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="392" y="213" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">Engineer_ID (PK)</text>
+          <rect x="442" y="202" width="120" height="16" fill="#48cfad" stroke="#2a8c2a" stroke-width=".6"/>
+          <text x="502" y="213" text-anchor="middle" font-size="7.5" fill="white" font-weight="bold">Engineer_Name</text>
+          <rect x="342" y="218" width="100" height="14" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="392" y="228" text-anchor="middle" font-size="8">E1</text>
+          <rect x="442" y="218" width="120" height="14" fill="#fff" stroke="#ddd" stroke-width=".3"/><text x="502" y="228" text-anchor="middle" font-size="8">Hari</text>
+          <rect x="342" y="232" width="100" height="14" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="392" y="242" text-anchor="middle" font-size="8">E2</text>
+          <rect x="442" y="232" width="120" height="14" fill="#faf8f4" stroke="#ddd" stroke-width=".3"/><text x="502" y="242" text-anchor="middle" font-size="8">Gita</text>
+          <text x="470" y="268" text-anchor="middle" font-size="8" fill="#2a8c2a" font-weight="bold">✔ Name depends fully on Engineer_ID</text>
+        </g>
+      </svg>
+      <figcaption><strong>Fig 5.7</strong> – Second Normal Form (2NF): Removing Partial Dependencies from Composite Keys</figcaption>
+    </figure>
+
+    <!-- ============================================================
+         6.7 Database Analysis (SQL and Keys)
+         ============================================================ -->
+    <h2>Database Analysis (SQL and Keys) <span class="exam-ref">Covers: 2080 Chaitra Q9a, 2080 Chaitra Q9b</span></h2>
+
+    <h3>1. What is SQL? Give an example. <span class="exam-ref">Tested in: 2080 Chaitra Q9a</span></h3>
+    <ul>
+      <li><strong>Definition:</strong> SQL (Structured Query Language) is the standard programming language designed specifically for managing, querying, and manipulating data stored in Relational Database Management Systems (RDBMS). In GIS, it is the exact language running behind the scenes whenever you use the "Select by Attributes" tool.</li>
+      <li><strong>The Example:</strong> If the exam asks you to select a few rows based on a condition, write down a simple scenario and the corresponding SQL code.
+        <ul>
+          <li><strong>Scenario:</strong> We have a database table named Land_Parcels and we want to find all parcels that have an area greater than 500 square meters.</li>
+          <li><strong>SQL Code:</strong></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x2756;</span> select_parcels.sql</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div></div>
+        <div class="code-content"><div><span class="sql-kw">SELECT</span> <span class="sql-col">Parcel_ID</span><span class="sql-punc">,</span> <span class="sql-col">Owner_Name</span><span class="sql-punc">,</span> <span class="sql-col">Area</span></div><div><span class="sql-kw">FROM</span> <span class="sql-tbl">Land_Parcels</span></div><div><span class="sql-kw">WHERE</span> <span class="sql-col">Area</span> <span class="sql-op">&gt;</span> <span class="sql-num">500</span><span class="sql-punc">;</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>SQL</span><span>UTF-8 &middot; LF &middot; 3 lines</span></div>
+    </div>
+
+    <h3>2. What is the function of a Primary Key in a database table? <span class="exam-ref">Tested in: 2080 Chaitra Q9b</span></h3>
+    <p>The primary key is the absolute most important column in any GIS attribute table (often automatically generated as FID or OBJECTID). You should list these specific functions for full marks:</p>
+    <ol>
+      <li><strong>Guarantees Uniqueness:</strong> It ensures that no two rows in a table are exactly identical. Even if two landowners have the exact same name and address, their unique Primary Key (e.g., Citizen_ID) separates them.</li>
+      <li><strong>Prevents Null Values:</strong> A primary key column strictly cannot be empty (NULL). Every single spatial feature must have an identifier.</li>
+      <li><strong>Anchors Relationships:</strong> It serves as the mathematical anchor point to link to other tables. When another table wants to reference this record, it uses the Primary Key as a "Foreign Key," allowing the RDBMS to instantly join the tables together.</li>
+      <li><strong>Optimizes Searching:</strong> Databases automatically "index" primary keys, making spatial queries and data retrieval extremely fast, even with millions of geographic records.</li>
+    </ol>
+
+    <!-- ============================================================
+         Querying a Database & SQL Municipality Example
+         ============================================================ -->
+    <h2>Querying a Database <span class="exam-ref">Tested in: 2081 Chaitra</span></h2>
+
+    <h3>1. What is meant by querying a database?</h3>
+    <p><strong>Definition:</strong> Querying a database means submitting a specific, logically structured request to the Database Management System (DBMS) to retrieve a subset of data that matches certain defined conditions.</p>
+    <p><strong>In the context of GIS:</strong> A query acts as a strict mathematical filter. Instead of scrolling through an attribute table with 753 local level boundaries looking for specific ones, a query automatically searches the database and isolates only the spatial features (polygons) and tabular records that meet your exact engineering or demographic criteria, completely ignoring the rest. Crucially, a query only views or selects the data; it does not permanently delete or alter the original database.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 200" width="620" height="200" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="f58s"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <marker id="arw58" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#1a3c5e"/></marker>
+        </defs>
+        <!-- Step 1: FROM -->
+        <g filter="url(#f58s)">
+          <rect x="10" y="60" width="100" height="70" rx="10" fill="#e8f4fc" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="60" y="84" text-anchor="middle" font-size="11" fill="#1a3c5e" font-weight="bold">FROM</text>
+          <text x="60" y="100" text-anchor="middle" font-size="9" fill="#555">Select the</text>
+          <text x="60" y="114" text-anchor="middle" font-size="9" fill="#555">source table</text>
+        </g>
+        <line x1="110" y1="95" x2="140" y2="95" stroke="#1a3c5e" stroke-width="2" marker-end="url(#arw58)"/>
+        <!-- Step 2: WHERE -->
+        <g filter="url(#f58s)">
+          <rect x="145" y="60" width="120" height="70" rx="10" fill="#fef4e8" stroke="#b8860b" stroke-width="1.2"/>
+          <text x="205" y="84" text-anchor="middle" font-size="11" fill="#8b6914" font-weight="bold">WHERE</text>
+          <text x="205" y="100" text-anchor="middle" font-size="9" fill="#555">Apply filter</text>
+          <text x="205" y="114" text-anchor="middle" font-size="9" fill="#555">conditions</text>
+        </g>
+        <line x1="265" y1="95" x2="295" y2="95" stroke="#1a3c5e" stroke-width="2" marker-end="url(#arw58)"/>
+        <!-- Step 3: SELECT -->
+        <g filter="url(#f58s)">
+          <rect x="300" y="60" width="110" height="70" rx="10" fill="#f0e8fc" stroke="#6c4f9e" stroke-width="1.2"/>
+          <text x="355" y="84" text-anchor="middle" font-size="11" fill="#6c4f9e" font-weight="bold">SELECT</text>
+          <text x="355" y="100" text-anchor="middle" font-size="9" fill="#555">Pick which</text>
+          <text x="355" y="114" text-anchor="middle" font-size="9" fill="#555">columns to show</text>
+        </g>
+        <line x1="410" y1="95" x2="440" y2="95" stroke="#1a3c5e" stroke-width="2" marker-end="url(#arw58)"/>
+        <!-- Step 4: RESULT -->
+        <g filter="url(#f58s)">
+          <rect x="445" y="60" width="165" height="70" rx="10" fill="#e8f8e8" stroke="#2a8c2a" stroke-width="1.2"/>
+          <text x="527" y="84" text-anchor="middle" font-size="11" fill="#2a8c2a" font-weight="bold">RESULT SET</text>
+          <text x="527" y="100" text-anchor="middle" font-size="9" fill="#555">Filtered rows with</text>
+          <text x="527" y="114" text-anchor="middle" font-size="9" fill="#555">selected columns only</text>
+        </g>
+        <!-- Example SQL at top -->
+        <rect x="100" y="8" width="420" height="36" rx="6" fill="#1a3c5e" filter="url(#f58s)"/>
+        <text x="310" y="22" text-anchor="middle" font-size="9" fill="#aaccee">Example:</text>
+        <text x="310" y="36" text-anchor="middle" font-size="10" fill="white" font-weight="bold">SELECT id, name FROM Parcels WHERE area &gt; 500;</text>
+        <!-- Annotations -->
+        <text x="60" y="148" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">Parcels</text>
+        <text x="60" y="160" text-anchor="middle" font-size="8" fill="#888">(all 10,000 rows)</text>
+        <text x="205" y="148" text-anchor="middle" font-size="8" fill="#8b6914" font-weight="bold">area &gt; 500</text>
+        <text x="205" y="160" text-anchor="middle" font-size="8" fill="#888">(filters to 243 rows)</text>
+        <text x="355" y="148" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="bold">id, name</text>
+        <text x="355" y="160" text-anchor="middle" font-size="8" fill="#888">(2 of 8 columns)</text>
+        <text x="527" y="148" text-anchor="middle" font-size="8" fill="#2a8c2a" font-weight="bold">243 rows × 2 cols</text>
+        <text x="527" y="160" text-anchor="middle" font-size="8" fill="#888">(precise subset)</text>
+        <!-- Bottom note -->
+        <rect x="130" y="175" width="360" height="18" rx="9" fill="#f0f4f8"/>
+        <text x="310" y="188" text-anchor="middle" font-size="9" fill="#555" font-style="italic">SQL processes: FROM → WHERE → SELECT (this is the logical execution order)</text>
+      </svg>
+      <figcaption><strong>Fig 5.8</strong> – SQL Query Execution Flow: How a Database Processes Your Query</figcaption>
+    </figure>
+
+    <h3>2. SQL Example: Select Rural Municipalities by Population <span class="exam-ref">Tested in: 2081 Chaitra</span></h3>
+    <p>How can you use a SQL to select all the rural municipalities having population between 10000 and 30000, provided that you have a polygon vector data of municipalities with columns: id, name, type-of-municipality (gaunpalika: rural municipality, nagarpalika, upmahanagarpalika, mahanagarpalika) and population?</p>
+
+    <h4>The Problem Setup:</h4>
+    <ul>
+      <li><strong>Data Source:</strong> A polygon vector table (let's call the table Municipalities).</li>
+      <li><strong>Available Columns:</strong> id, name, type-of-municipality, population.</li>
+      <li><strong>The Goal:</strong> Find all rows where the municipality is a Rural Municipality ("gaunpalika") AND the population is between 10,000 and 30,000.</li>
+    </ul>
+
+    <h4>The SQL Query Answer:</h4>
+    <p>To secure full marks, write this exact SQL statement on your exam paper. (Note: When column names contain hyphens like type-of-municipality, they are usually wrapped in quotes or brackets in SQL to prevent math errors, but writing it standardly is accepted in theory exams).</p>
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x2756;</span> rural_municipalities.sql</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div></div>
+        <div class="code-content"><div><span class="sql-kw">SELECT</span> <span class="sql-col">id</span><span class="sql-punc">,</span> <span class="sql-col">name</span><span class="sql-punc">,</span> <span class="sql-col">population</span></div><div><span class="sql-kw">FROM</span> <span class="sql-tbl">Municipalities</span></div><div><span class="sql-kw">WHERE</span> <span class="sql-col">type-of-municipality</span> <span class="sql-op">=</span> <span class="sql-str">'gaunpalika'</span></div><div><span class="sql-kw">AND</span> <span class="sql-col">population</span> <span class="sql-op">&gt;=</span> <span class="sql-num">10000</span></div><div><span class="sql-kw">AND</span> <span class="sql-col">population</span> <span class="sql-op">&lt;=</span> <span class="sql-num">30000</span><span class="sql-punc">;</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>SQL</span><span>UTF-8 &middot; LF &middot; 5 lines</span></div>
+    </div>
+    <p>(Alternative valid syntax for the population line: <strong>AND population BETWEEN 10000 AND 30000;</strong>)</p>
+
+    <h4>Explanation for the Examiner:</h4>
+    <p>To guarantee maximum marks, briefly explain what your code does below the query:</p>
+    <ul>
+      <li><strong>SELECT id, name, population:</strong> This command tells the database which specific columns of data you want returned to look at. (You could also use SELECT * to return all columns).</li>
+      <li><strong>FROM Municipalities:</strong> This identifies the specific spatial attribute table you are pulling the data from.</li>
+      <li><strong>WHERE type-of-municipality = 'gaunpalika':</strong> This is the first filter condition. It forces the database to ignore all nagarpalikas, upmahanagarpalikas, and mahanagarpalikas. (Note: Text strings must be enclosed in single quotes).</li>
+      <li><strong>AND:</strong> This logical Boolean operator ensures that both conditions must be strictly true for a row to be selected.</li>
+      <li><strong>population &gt;= 10000 AND population &lt;= 30000:</strong> This applies the mathematical range filter to the numeric population column.</li>
+    </ul>
+
+    <p class="footer-note">End of Chapter 5 – Database Concepts</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 7: Water Well Design</title>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root { --base-size: 12pt; }
+        body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
+            font-family: 'Times New Roman', Times, serif; font-size: var(--base-size);
+            color: black; background-color: white; line-height: 1.5; margin: 0; padding: 0;
+        }
+        * { box-sizing: border-box; }
+        body { max-width: 860px; margin: 0 auto; padding: 2rem; }
+        h1 { font-weight: bold; text-transform: uppercase; text-align: center; margin-bottom: 2rem; border-bottom: 2px solid black; padding-bottom: 0.5rem; }
+        h2 { font-weight: bold; text-transform: uppercase; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid black; }
+        h3 { font-weight: bold; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        h4 { font-weight: bold; font-style: italic; margin-top: 1rem; margin-bottom: 0.5rem; }
+        p { text-align: justify; margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 2rem; }
+        li { text-align: justify; margin-bottom: 0.5rem; }
+        .equation { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; overflow-x: auto; }
+        .exam-note, .study-note, .question-card, .solution-box { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .exam-note h4, .study-note h4, .question-card h4, .solution-box h4 { margin-top: 0; border-bottom: 1px dashed black; padding-bottom: 0.25rem; }
+        .solution-box { border-width: 2px; }
+        .solution-box h4 { font-weight: bold; }
+        .callout { border-left: 3px solid black; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; }
+        .figure-container { text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid black; overflow-x: auto; }
+        .figcaption { font-style: italic; margin-top: 0.5rem; text-align: center; }
+        table.info-table, table.question-table, table.formula-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        table.info-table th, table.info-table td, table.question-table th, table.question-table td, table.formula-table th, table.formula-table td { border: 1px solid black; padding: 6px 10px; text-align: left; vertical-align: top; }
+        table.info-table th, table.question-table th, table.formula-table th { font-weight: bold; background: #f5f5f5; }
+        .toc { border: 1px solid black; padding: 1rem; margin-bottom: 1.5rem; }
+        .toc ol { margin-bottom: 0; } .toc a { text-decoration: none; }
+        .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+        .mini-note { border: 1px solid black; padding: 0.85rem; margin: 1rem 0; }
+        .question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .pill { display: inline-block; border: 1px solid black; padding: 2px 8px; font-size: 0.9rem; }
+        .data-block { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid black; }
+        .print-btn { position: fixed; top: 1rem; right: 1rem; border: 2px solid black; background-color: white; color: black; padding: 0.5rem 1rem; font-weight: bold; cursor: pointer; font-family: 'Times New Roman', Times, serif; font-size: var(--base-size); }
+        .print-btn:hover { background-color: black; color: white; }
+        @media (max-width: 720px) { body { padding: 1rem; } .grid-two { grid-template-columns: 1fr; } }
+        @media print { body { padding: 0; max-width: 100%; } .print-btn { display: none; } .figure-container, .exam-note, .study-note, .question-card, .mini-note, .solution-box { page-break-inside: avoid; } h2, h3 { page-break-after: avoid; } }
+    </style>
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+[data-theme="dark"]{color-scheme:dark}
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,
+[data-theme="dark"] h4,[data-theme="dark"] h5,[data-theme="dark"] h6{color:#e8e5dd!important}
+[data-theme="dark"] strong,[data-theme="dark"] b{color:#e8e5dd!important}
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+[data-theme="dark"] div,[data-theme="dark"] p,[data-theme="dark"] section,
+[data-theme="dark"] article,[data-theme="dark"] aside,[data-theme="dark"] nav,
+[data-theme="dark"] header,[data-theme="dark"] footer,[data-theme="dark"] main,
+[data-theme="dark"] table,[data-theme="dark"] tr,[data-theme="dark"] td,
+[data-theme="dark"] th,[data-theme="dark"] input,[data-theme="dark"] select,
+[data-theme="dark"] textarea,[data-theme="dark"] button,[data-theme="dark"] details,
+[data-theme="dark"] summary,[data-theme="dark"] hr,[data-theme="dark"] ul,
+[data-theme="dark"] ol,[data-theme="dark"] li,[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,[data-theme="dark"] code,[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+[data-theme="dark"] section,[data-theme="dark"] article,[data-theme="dark"] main,
+[data-theme="dark"] .page,[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .study-note{background:#1e222a!important}
+[data-theme="dark"] .question-card{background:#1e222a!important}
+[data-theme="dark"] .mini-note{background:#1e222a!important}
+[data-theme="dark"] .solution-box{background:#1e222a!important}
+[data-theme="dark"] .callout{background:#1e222a!important}
+[data-theme="dark"] .toc{background:#1e222a!important}
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+        <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+        <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="#777"/><circle cx="9" cy="9" r="2" fill="#777"/></pattern>
+        <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+        <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse"><line x1="0" y1="10" x2="7" y2="0" stroke="black" stroke-width=".8"/><line x1="7" y1="10" x2="14" y2="0" stroke="black" stroke-width=".8"/></pattern>
+        <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="black"/></marker>
+        <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="black"/></marker>
+    </defs>
+</svg>
+    <button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+    <main>
+        <header>
+            <p style="text-align:center;font-style:italic;margin-bottom:1rem;">Groundwater Engineering &mdash; CE 76509</p>
+            <h1>CHAPTER 7: WATER WELL DESIGN</h1>
+            <p style="text-align:center;font-style:italic;margin-bottom:2rem;">(Syllabus Weight: 6 hours, ~8 marks)</p>
+        </header>
+
+        <section class="toc">
+            <h4>CHAPTER ROADMAP</h4>
+            <ol>
+                <li><a href="#sec-7-1">Introduction &mdash; types of water wells</a></li>
+                <li><a href="#sec-7-2">Open wells</a></li>
+                <li><a href="#sec-7-3">Tube wells</a></li>
+                <li><a href="#sec-7-4">Comparison of open wells and tube wells</a></li>
+                <li><a href="#sec-7-5">Recuperation test on open wells</a></li>
+                <li><a href="#sec-7-6">Yield of open wells</a></li>
+                <li><a href="#sec-7-7">Design of tube wells</a></li>
+                <li><a href="#sec-7-8">Well screens</a></li>
+                <li><a href="#sec-7-9">Gravel pack</a></li>
+                <li><a href="#sec-7-10">Well development and maintenance</a></li>
+                <li><a href="#sec-7-11">Past question bank for Chapter 7</a></li>
+                <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
+            </ol>
+        </section>
+
+        <!-- ======== 7.1 INTRODUCTION ======== -->
+        <section id="sec-7-1">
+            <h2>7.1 INTRODUCTION &mdash; TYPES OF WATER WELLS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2073 Bhadra Q8(a) [3]:</strong> Differentiate between open well and tube well.</p>
+                <p><strong>2072 Ashwin Q10 [4+2]:</strong> What do you mean by a tube well? Explain different types of tube well with figure.</p>
+            </div>
+
+            <p>A <strong>water well</strong> is a structure created by digging, drilling, or driving into the ground to access groundwater from aquifers. Wells are the primary means of extracting groundwater for domestic, agricultural, and industrial use. The design and type of well depends on the geological conditions, depth to water table, required yield, and available resources.</p>
+
+            <p>Wells can be broadly classified as:</p>
+            <ol>
+                <li><strong>Open wells</strong> (dug wells) &mdash; large diameter, shallow depth</li>
+                <li><strong>Tube wells</strong> (drilled wells) &mdash; small diameter, greater depth</li>
+                <li><strong>Driven wells</strong> &mdash; small diameter pipes driven into soft formations</li>
+                <li><strong>Bored wells</strong> &mdash; constructed using hand or power augers</li>
+                <li><strong>Jetted wells</strong> &mdash; constructed by jetting water to wash away soil</li>
+            </ol>
+
+            <p>For the IOE syllabus, the focus is on <strong>open wells</strong> and <strong>tube wells</strong>, which are the two most important types.</p>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 300" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="14">Classification of Water Wells</text>
+
+                    <rect x="235" y="35" width="230" height="30" rx="4" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="350" y="55" text-anchor="middle" font-weight="bold" font-size="12">WATER WELLS</text>
+
+                    <!-- Lines -->
+                    <line x1="200" y1="65" x2="200" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="500" y1="65" x2="500" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="200" y1="65" x2="500" y2="65" stroke="black" stroke-width="1"/>
+
+                    <!-- Open Wells -->
+                    <rect x="100" y="90" width="200" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="200" y="109" text-anchor="middle" font-weight="bold" font-size="11">OPEN WELLS (DUG WELLS)</text>
+                    <line x1="200" y1="118" x2="200" y2="138" stroke="black" stroke-width="1"/>
+                    <rect x="60" y="138" width="280" height="130" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="80" y="158" font-size="11">&bull; Diameter: 2&ndash;8 m</text>
+                    <text x="80" y="176" font-size="11">&bull; Depth: 5&ndash;20 m</text>
+                    <text x="80" y="194" font-size="11">&bull; Lined or unlined</text>
+                    <text x="80" y="212" font-size="11">&bull; Yield: 5&ndash;50 m&sup3;/hr</text>
+                    <text x="80" y="230" font-size="11">&bull; Tested by: Recuperation test</text>
+                    <text x="80" y="248" font-size="11">&bull; Yield depends on well area</text>
+
+                    <!-- Tube Wells -->
+                    <rect x="400" y="90" width="200" height="28" rx="4" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="500" y="109" text-anchor="middle" font-weight="bold" font-size="11">TUBE WELLS (DRILLED WELLS)</text>
+                    <line x1="500" y1="118" x2="500" y2="138" stroke="black" stroke-width="1"/>
+                    <rect x="370" y="138" width="280" height="130" rx="3" fill="none" stroke="black" stroke-width="0.8" stroke-dasharray="4,3"/>
+                    <text x="390" y="158" font-size="11">&bull; Diameter: 10&ndash;45 cm</text>
+                    <text x="390" y="176" font-size="11">&bull; Depth: 30&ndash;300+ m</text>
+                    <text x="390" y="194" font-size="11">&bull; Cased with screen section</text>
+                    <text x="390" y="212" font-size="11">&bull; Yield: 20&ndash;500+ m&sup3;/hr</text>
+                    <text x="390" y="230" font-size="11">&bull; Tested by: Pumping test</text>
+                    <text x="390" y="248" font-size="11">&bull; Yield depends on screen length</text>
+
+                    <text x="350" y="290" text-anchor="middle" font-size="11" font-style="italic">Both types asked frequently in IOE exams (theory + numerical)</text>
+                </svg>
+                <div class="figcaption">Figure 7.1: Classification of water wells &mdash; open wells vs. tube wells.</div>
+            </div>
+        </section>
+
+        <!-- ======== 7.2 OPEN WELLS ======== -->
+        <section id="sec-7-2">
+            <h2>7.2 OPEN WELLS (DUG WELLS)</h2>
+
+            <p>Open wells (also called <strong>dug wells</strong>) are the oldest and simplest type of groundwater structures. They are excavated by manual digging or mechanical means to a depth below the water table.</p>
+
+            <h3>7.2.1 Description and Construction</h3>
+            <ul>
+                <li><strong>Diameter:</strong> Typically 2 to 8 m</li>
+                <li><strong>Depth:</strong> Usually 5 to 20 m (limited to shallow aquifers)</li>
+                <li><strong>Shape:</strong> Circular (most common), rectangular, or square</li>
+                <li><strong>Lining:</strong> Brick masonry, stone masonry, concrete rings, or RCC lining (to prevent collapse)</li>
+                <li><strong>Water entry:</strong> Through the bottom and/or through porous lining on the sides</li>
+            </ul>
+
+            <h3>7.2.2 Types of Open Wells</h3>
+            <h4>(a) Unlined Open Wells (Kutcha Wells)</h4>
+            <p>Temporary wells without any lining. Water enters from all sides and the bottom. Used in areas with stable soil (clay or stiff formations). Prone to collapse in loose sandy soils.</p>
+
+            <h4>(b) Lined Open Wells (Pucca Wells)</h4>
+            <p>Permanent wells with masonry or concrete lining. The lining provides structural support and prevents contamination from surface water. They may have:</p>
+            <ul>
+                <li><strong>Pervious lining:</strong> Dry brick or stone masonry without mortar in the water-bearing zone, allowing water to enter through the sides</li>
+                <li><strong>Impervious lining:</strong> Cement-mortared masonry in the upper portion to prevent entry of contaminated surface water</li>
+            </ul>
+
+            <h4>(c) Well with Bore (Bored Open Well)</h4>
+            <p>An open well with one or more bores (small-diameter pipes) drilled at the bottom, extending into deeper aquifer zones. This increases the yield significantly by tapping deeper water-bearing formations.</p>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 440" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Cross-Section of a Lined Open Well</text>
+
+                    <!-- Ground surface -->
+                    <rect x="30" y="60" width="175" height="18" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <rect x="495" y="60" width="175" height="18" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <text x="680" y="72" font-size="10">Ground surface</text>
+
+                    <!-- Parapet wall -->
+                    <rect x="190" y="40" width="20" height="38" fill="none" stroke="black" stroke-width="1.5"/>
+                    <rect x="490" y="40" width="20" height="38" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="350" y="38" text-anchor="middle" font-size="10">Parapet wall</text>
+
+                    <!-- Platform -->
+                    <rect x="140" y="60" width="420" height="16" fill="#e0e0e0" stroke="black" stroke-width="1"/>
+                    <text x="350" y="72" text-anchor="middle" font-size="9">Concrete platform</text>
+
+                    <!-- Well walls - impervious upper -->
+                    <rect x="205" y="76" width="20" height="140" fill="#ccc" stroke="black" stroke-width="1.5"/>
+                    <rect x="475" y="76" width="20" height="140" fill="#ccc" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Label: impervious -->
+                    <line x1="225" y1="130" x2="260" y2="110" stroke="black" stroke-width="0.8"/>
+                    <text x="265" y="108" font-size="10">Impervious lining</text>
+                    <text x="265" y="120" font-size="10">(cement mortar)</text>
+
+                    <!-- Static water level -->
+                    <line x1="30" y1="200" x2="205" y2="200" stroke="black" stroke-width="1.5" stroke-dasharray="8,4"/>
+                    <line x1="495" y1="200" x2="670" y2="200" stroke="black" stroke-width="1.5" stroke-dasharray="8,4"/>
+                    <text x="30" y="195" font-size="10">Static water level</text>
+
+                    <!-- Water in well -->
+                    <rect x="225" y="200" width="250" height="160" fill="#d4e8ff" stroke="none"/>
+
+                    <!-- Well walls - pervious lower -->
+                    <rect x="205" y="216" width="20" height="160" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="4,4"/>
+                    <rect x="475" y="216" width="20" height="160" fill="none" stroke="black" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+                    <!-- Label: pervious -->
+                    <line x1="475" y1="300" x2="530" y2="280" stroke="black" stroke-width="0.8"/>
+                    <text x="535" y="278" font-size="10">Pervious lining</text>
+                    <text x="535" y="290" font-size="10">(dry masonry)</text>
+
+                    <!-- Water entry arrows -->
+                    <line x1="180" y1="260" x2="205" y2="260" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="180" y1="300" x2="205" y2="300" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="180" y1="340" x2="205" y2="340" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="520" y1="260" x2="495" y2="260" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="520" y1="300" x2="495" y2="300" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="520" y1="340" x2="495" y2="340" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <text x="150" y="264" font-size="9">Water</text>
+                    <text x="150" y="274" font-size="9">entry</text>
+
+                    <!-- Bottom entry -->
+                    <line x1="300" y1="400" x2="300" y2="376" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="350" y1="400" x2="350" y2="376" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="400" y1="400" x2="400" y2="376" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <!-- Well bottom -->
+                    <line x1="205" y1="376" x2="495" y2="376" stroke="black" stroke-width="1.5"/>
+
+                    <!-- Diameter -->
+                    <line x1="225" y1="420" x2="475" y2="420" stroke="black" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="350" y="436" text-anchor="middle" font-weight="bold" font-size="12">D (2&ndash;8 m)</text>
+
+                    <!-- Depth -->
+                    <line x1="540" y1="78" x2="540" y2="376" stroke="black" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="560" y="230" font-weight="bold" font-size="12">Depth</text>
+                    <text x="560" y="246" font-size="11">(5&ndash;20 m)</text>
+                </svg>
+                <div class="figcaption">Figure 7.2: Cross-section of a lined open well showing impervious upper lining, pervious lower lining for water entry, and water entry through the bottom.</div>
+            </div>
+
+            <h3>7.2.3 Advantages and Limitations of Open Wells</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>Simple construction &mdash; can be built with local labour</li>
+                        <li>Low construction cost for shallow aquifers</li>
+                        <li>Provides storage within the well itself</li>
+                        <li>Easy to clean and maintain</li>
+                        <li>Suitable for hand-operated lifting devices</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>Limited to shallow aquifers (&lt; 20 m)</li>
+                        <li>Low yield compared to tube wells</li>
+                        <li>Susceptible to contamination from surface</li>
+                        <li>Affected by seasonal water table fluctuations</li>
+                        <li>Large land area required for construction</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 7.3 TUBE WELLS ======== -->
+        <section id="sec-7-3">
+            <h2>7.3 TUBE WELLS (DRILLED WELLS)</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+                <p><strong>2072 Ashwin Q10 [4+2]:</strong> What do you mean by a tube well? Explain different types of tube well with figure.</p>
+            </div>
+
+            <p>A <strong>tube well</strong> is a well constructed by drilling or boring a hole into the ground and installing a casing pipe with a screen section that allows water to enter from the aquifer. Tube wells can reach much greater depths than open wells and are the primary method of groundwater extraction for large-scale water supply and irrigation.</p>
+
+            <h3>7.3.1 Components of a Tube Well</h3>
+            <ul>
+                <li><strong>Casing pipe:</strong> Steel or PVC pipe that lines the borehole and prevents collapse. It is impervious in the non-aquifer zones.</li>
+                <li><strong>Well screen:</strong> Slotted or perforated section of the casing placed opposite the aquifer to allow water entry while excluding sand particles.</li>
+                <li><strong>Gravel pack:</strong> Graded gravel placed around the screen to improve hydraulic efficiency and filter fine particles.</li>
+                <li><strong>Sanitary seal:</strong> Cement grout placed around the upper casing to prevent surface contamination.</li>
+                <li><strong>Pump housing:</strong> Section above the screen that houses the pump intake.</li>
+            </ul>
+
+            <h3>7.3.2 Types of Tube Wells</h3>
+
+            <h4>(a) Strainer Tube Well</h4>
+            <p>Used in alluvial formations (sand and gravel). A strainer (well screen) is placed in the aquifer zone to filter out sand while allowing water to enter. This is the most common type in the Terai region of Nepal.</p>
+
+            <h4>(b) Cavity Tube Well</h4>
+            <p>Used in areas where a thin layer of sand aquifer is confined between two clay layers. No screen is used. Instead, a cavity is created at the bottom by pumping out sand along with water, forming a natural cavity in the sand layer. Suitable for shallow confined aquifers with moderate yield.</p>
+
+            <h4>(c) Slotted Tube Well</h4>
+            <p>Similar to strainer type but uses factory-cut slots in the casing pipe instead of a wire-wound screen. Less efficient but cheaper than strainer type.</p>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 500" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Components of a Tube Well</text>
+
+                    <!-- Ground surface -->
+                    <rect x="50" y="60" width="220" height="16" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <rect x="430" y="60" width="220" height="16" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+
+                    <!-- Pump at top -->
+                    <rect x="310" y="30" width="80" height="30" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="350" y="50" text-anchor="middle" font-size="10">Pump</text>
+                    <line x1="395" y1="45" x2="450" y2="45" stroke="black" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <text x="460" y="50" font-size="10">Discharge</text>
+
+                    <!-- Sanitary seal -->
+                    <rect x="260" y="76" width="180" height="40" fill="#e0e0e0" stroke="black" stroke-width="1"/>
+                    <text x="350" y="100" text-anchor="middle" font-size="10">Sanitary seal (cement grout)</text>
+
+                    <!-- Casing - upper impervious zone -->
+                    <rect x="310" y="116" width="10" height="120" fill="#999" stroke="black" stroke-width="1"/>
+                    <rect x="380" y="116" width="10" height="120" fill="#999" stroke="black" stroke-width="1"/>
+                    <line x1="410" y1="170" x2="460" y2="150" stroke="black" stroke-width="0.8"/>
+                    <text x="465" y="148" font-size="10">Casing pipe</text>
+                    <text x="465" y="160" font-size="10">(impervious)</text>
+
+                    <!-- Clay layer 1 -->
+                    <rect x="50" y="76" width="260" height="60" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                    <rect x="390" y="76" width="260" height="60" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                    <text x="130" y="110" font-size="10">Clay</text>
+
+                    <!-- Aquifer zone background -->
+                    <rect x="50" y="236" width="260" height="140" fill="#fff3cd" stroke="none" opacity="0.4"/>
+                    <rect x="390" y="236" width="260" height="140" fill="#fff3cd" stroke="none" opacity="0.4"/>
+                    <text x="100" y="310" font-size="11" font-weight="bold">AQUIFER</text>
+                    <text x="100" y="325" font-size="10">(sand/gravel)</text>
+
+                    <!-- Gravel pack -->
+                    <rect x="280" y="246" width="30" height="120" fill="url(#dots)" stroke="black" stroke-width="0.8"/>
+                    <rect x="390" y="246" width="30" height="120" fill="url(#dots)" stroke="black" stroke-width="0.8"/>
+                    <line x1="420" y1="290" x2="470" y2="270" stroke="black" stroke-width="0.8"/>
+                    <text x="475" y="268" font-size="10">Gravel pack</text>
+
+                    <!-- Screen section -->
+                    <rect x="310" y="246" width="10" height="120" fill="none" stroke="black" stroke-width="1" stroke-dasharray="3,3"/>
+                    <rect x="380" y="246" width="10" height="120" fill="none" stroke="black" stroke-width="1" stroke-dasharray="3,3"/>
+                    <line x1="480" y1="310" x2="395" y2="310" stroke="black" stroke-width="0.8"/>
+                    <text x="485" y="308" font-size="10">Well screen</text>
+                    <text x="485" y="320" font-size="10">(slotted/perforated)</text>
+
+                    <!-- Water entry arrows -->
+                    <line x1="260" y1="280" x2="280" y2="280" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="260" y1="310" x2="280" y2="310" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="260" y1="340" x2="280" y2="340" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="440" y1="280" x2="420" y2="280" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="440" y1="310" x2="420" y2="310" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+                    <line x1="440" y1="340" x2="420" y2="340" stroke="black" stroke-width="1" marker-end="url(#arr)"/>
+
+                    <!-- Bottom cap / bail plug -->
+                    <rect x="310" y="366" width="80" height="10" fill="#999" stroke="black" stroke-width="1"/>
+                    <text x="350" y="394" text-anchor="middle" font-size="10">Bail plug / bottom cap</text>
+
+                    <!-- Clay layer 2 below -->
+                    <rect x="50" y="376" width="260" height="50" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                    <rect x="390" y="376" width="260" height="50" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                    <text x="130" y="405" font-size="10">Clay / Bedrock</text>
+
+                    <!-- Diameter label -->
+                    <line x1="310" y1="450" x2="390" y2="450" stroke="black" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="350" y="470" text-anchor="middle" font-size="10">D (10&ndash;45 cm)</text>
+
+                    <!-- Total depth -->
+                    <line x1="640" y1="76" x2="640" y2="376" stroke="black" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="650" y="230" font-weight="bold" font-size="11">Total</text>
+                    <text x="650" y="245" font-size="10">depth</text>
+                </svg>
+                <div class="figcaption">Figure 7.3: Components of a typical tube well showing casing, screen, gravel pack, and sanitary seal.</div>
+            </div>
+
+            <h3>7.3.3 Advantages and Limitations of Tube Wells</h3>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Advantages:</strong>
+                    <ul>
+                        <li>Can reach deep aquifers (&gt; 300 m)</li>
+                        <li>High yield (up to hundreds of m&sup3;/hr)</li>
+                        <li>Small footprint (land area)</li>
+                        <li>Less susceptible to surface contamination</li>
+                        <li>Can be designed for multiple aquifer zones</li>
+                    </ul>
+                </div>
+                <div class="mini-note">
+                    <strong>Limitations:</strong>
+                    <ul>
+                        <li>High construction cost (drilling + casing)</li>
+                        <li>Requires specialized equipment and expertise</li>
+                        <li>Dependent on electricity for pumping</li>
+                        <li>Difficult to clean and rehabilitate</li>
+                        <li>Screen clogging can reduce yield over time</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== 7.4 COMPARISON ======== -->
+        <section id="sec-7-4">
+            <h2>7.4 COMPARISON OF OPEN WELLS AND TUBE WELLS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+                <p><strong>2073 Bhadra Q8(a) [3]:</strong> Differentiate between open well and tube well.</p>
+            </div>
+
+            <table class="info-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Open Well</th>
+                    <th>Tube Well</th>
+                </tr>
+                <tr>
+                    <td>Diameter</td>
+                    <td>2&ndash;8 m (large)</td>
+                    <td>10&ndash;45 cm (small)</td>
+                </tr>
+                <tr>
+                    <td>Depth</td>
+                    <td>5&ndash;20 m (shallow)</td>
+                    <td>30&ndash;300+ m (deep)</td>
+                </tr>
+                <tr>
+                    <td>Construction</td>
+                    <td>Manual digging + masonry lining</td>
+                    <td>Rotary/percussion drilling + casing</td>
+                </tr>
+                <tr>
+                    <td>Water entry</td>
+                    <td>Through bottom and pervious sides</td>
+                    <td>Through well screen along depth</td>
+                </tr>
+                <tr>
+                    <td>Yield</td>
+                    <td>5&ndash;50 m&sup3;/hr (low to moderate)</td>
+                    <td>20&ndash;500+ m&sup3;/hr (moderate to high)</td>
+                </tr>
+                <tr>
+                    <td>Yield depends on</td>
+                    <td>Cross-sectional area (A = &pi;D&sup2;/4)</td>
+                    <td>Screen length and aquifer properties</td>
+                </tr>
+                <tr>
+                    <td>Yield test</td>
+                    <td>Recuperation test</td>
+                    <td>Pumping test</td>
+                </tr>
+                <tr>
+                    <td>Aquifer type</td>
+                    <td>Unconfined, shallow</td>
+                    <td>Confined or unconfined, any depth</td>
+                </tr>
+                <tr>
+                    <td>Cost</td>
+                    <td>Low (local materials and labour)</td>
+                    <td>High (drilling rig, casing, pump)</td>
+                </tr>
+                <tr>
+                    <td>Contamination risk</td>
+                    <td>High (open to surface)</td>
+                    <td>Low (sealed at surface)</td>
+                </tr>
+                <tr>
+                    <td>Yield formula</td>
+                    <td>\( Q = C \times A \times H \)</td>
+                    <td>Theis / Cooper-Jacob equations</td>
+                </tr>
+            </table>
+
+            <div class="mini-note">
+                <strong>Exam Tip:</strong> When asked to differentiate, present as a table with at least 6&ndash;8 features. Include water entry mechanism, yield test method, and yield formula for each.
+            </div>
+        </section>
+
+        <!-- ======== 7.5 RECUPERATION TEST ======== -->
+        <section id="sec-7-5">
+            <h2>7.5 RECUPERATION TEST ON OPEN WELLS</h2>
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED (NUMERICAL):</h4>
+                <p><strong>2078 Chaitra Q7 [6]:</strong> Recuperation test: s<sub>1</sub> = 4 m, rise = 2.2 m, T = 90 min. Find specific yield. Yield from 5 m well at 2.5 m depression.</p>
+                <p><strong>2073 Bhadra Q8(b) [2+2+3]:</strong> s<sub>1</sub> = 3 m, rise = 1.75 m, T = 75 min. Find C, Q (D=5m, H=2.5m), and D for Q=12 L/s at H=2m.</p>
+                <p><strong>2071 Bhadra Q10 [3+3+4]:</strong> Identical to 2073 Bhadra Q8(b).</p>
+            </div>
+
+            <h3>7.5.1 Purpose and Procedure</h3>
+            <p>The <strong>recuperation test</strong> (or recovery test for open wells) is conducted to determine the <strong>specific yield</strong> of an open well. The specific yield (C) is a measure of the aquifer&rsquo;s capacity to supply water to the well per unit area per unit depression head.</p>
+
+            <p><strong>Procedure:</strong></p>
+            <ol>
+                <li>Note the <strong>static water level</strong> (SWL) in the well before pumping</li>
+                <li>Pump (or bail) water out of the well to <strong>depress the water level</strong> below SWL by a known amount (s<sub>1</sub>)</li>
+                <li>Stop pumping and allow the well to <strong>recuperate</strong> (recover)</li>
+                <li>After a measured time period (T), note the new water level. The <strong>rise</strong> in water level gives s<sub>2</sub> = s<sub>1</sub> &minus; rise</li>
+                <li>Use the formula to calculate specific yield C</li>
+            </ol>
+
+            <h3>7.5.2 Theory and Derivation</h3>
+            <p>The recuperation test is based on the assumption that the rate of water inflow into the well is proportional to the depression head:</p>
+            <div class="equation">
+                \[ \frac{dV}{dt} = C \cdot A \cdot s \]
+            </div>
+            <p>where V = volume of water in the well, A = cross-sectional area, s = depression head at time t, and C = specific yield.</p>
+
+            <p>Since \( dV = A \cdot ds \) (increase in volume = area &times; rise in water level), and noting that as the well recovers, the depression head <em>decreases</em>:</p>
+            <div class="equation">
+                \[ A \cdot \frac{ds}{dt} = -C \cdot A \cdot s \]
+            </div>
+            <div class="equation">
+                \[ \frac{ds}{s} = -C \, dt \]
+            </div>
+
+            <p>Integrating from t = 0 (when s = s<sub>1</sub>) to t = T (when s = s<sub>2</sub>):</p>
+            <div class="equation">
+                \[ \int_{s_1}^{s_2} \frac{ds}{s} = -C \int_0^T dt \]
+            </div>
+            <div class="equation">
+                \[ \ln\left(\frac{s_2}{s_1}\right) = -CT \]
+            </div>
+            <div class="equation">
+                \[ CT = \ln\left(\frac{s_1}{s_2}\right) = 2.303 \log_{10}\left(\frac{s_1}{s_2}\right) \]
+            </div>
+
+            <p>Therefore, the <strong>specific yield</strong> is:</p>
+            <div class="equation">
+                \[ \boxed{C = \frac{2.303}{T} \log_{10}\left(\frac{s_1}{s_2}\right)} \]
+            </div>
+
+            <p>where:</p>
+            <ul>
+                <li>\( s_1 \) = initial depression head (m)</li>
+                <li>\( s_2 = s_1 - \text{rise} \) = depression head after time T (m)</li>
+                <li>\( T \) = recovery time (in hours &mdash; <strong>must convert from minutes!</strong>)</li>
+                <li>\( C \) = specific yield (per hour)</li>
+            </ul>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 320" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Recuperation Test &mdash; Concept Diagram</text>
+
+                    <!-- Well -->
+                    <rect x="180" y="50" width="100" height="230" fill="none" stroke="black" stroke-width="2"/>
+
+                    <!-- Ground -->
+                    <rect x="50" y="50" width="130" height="16" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+                    <rect x="280" y="50" width="130" height="16" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+
+                    <!-- Static water level -->
+                    <line x1="50" y1="110" x2="180" y2="110" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <line x1="280" y1="110" x2="410" y2="110" stroke="black" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <text x="50" y="105" font-size="10" font-weight="bold">SWL</text>
+
+                    <!-- Depressed level -->
+                    <path d="M183,230 Q210,225 230,230 Q250,235 277,230" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="165" y="235" text-anchor="end" font-size="10">t = 0</text>
+
+                    <!-- Recovered level -->
+                    <path d="M183,170 Q210,165 230,170 Q250,175 277,170" fill="none" stroke="blue" stroke-width="1.5"/>
+                    <text x="165" y="175" text-anchor="end" font-size="10" fill="blue">t = T</text>
+
+                    <!-- s1 -->
+                    <line x1="300" y1="110" x2="300" y2="230" stroke="black" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="315" y="175" font-weight="bold" font-size="12">s<tspan baseline-shift="sub" font-size="9">1</tspan></text>
+
+                    <!-- s2 -->
+                    <line x1="330" y1="110" x2="330" y2="170" stroke="blue" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="345" y="145" font-weight="bold" font-size="12" fill="blue">s<tspan baseline-shift="sub" font-size="9">2</tspan></text>
+
+                    <!-- Rise -->
+                    <line x1="360" y1="170" x2="360" y2="230" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                    <text x="375" y="205" font-weight="bold" font-size="12">Rise</text>
+
+                    <!-- Recovery formula -->
+                    <text x="490" y="100" font-size="11">s<tspan baseline-shift="sub" font-size="9">2</tspan> = s<tspan baseline-shift="sub" font-size="9">1</tspan> &minus; rise</text>
+
+                    <rect x="440" y="115" width="240" height="60" rx="3" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="560" y="140" text-anchor="middle" font-weight="bold" font-size="12">C = (2.303/T) &times;</text>
+                    <text x="560" y="163" text-anchor="middle" font-weight="bold" font-size="12">log<tspan baseline-shift="sub" font-size="9">10</tspan>(s<tspan baseline-shift="sub" font-size="9">1</tspan>/s<tspan baseline-shift="sub" font-size="9">2</tspan>)</text>
+
+                    <!-- Yield formula -->
+                    <rect x="440" y="190" width="240" height="35" rx="3" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="560" y="213" text-anchor="middle" font-weight="bold" font-size="12">Q = C &times; A &times; H</text>
+
+                    <!-- Notes -->
+                    <text x="560" y="248" text-anchor="middle" font-size="10">where A = (&pi;/4)D&sup2;</text>
+                    <text x="560" y="263" text-anchor="middle" font-size="10">H = operating depression head</text>
+
+                    <!-- Key warnings -->
+                    <rect x="440" y="275" width="240" height="30" rx="3" fill="none" stroke="black" stroke-width="1" stroke-dasharray="4,3"/>
+                    <text x="560" y="295" text-anchor="middle" font-size="10" font-weight="bold">Convert T from minutes to hours!</text>
+                </svg>
+                <div class="figcaption">Figure 7.4: Recuperation test concept &mdash; well is depressed by s<sub>1</sub> and recovers to s<sub>2</sub> after time T.</div>
+            </div>
+
+            <div class="mini-note">
+                <strong>Critical Exam Warning:</strong> The most common mistake is forgetting to convert time from minutes to hours. Always check: T must be in <strong>hours</strong> when using the standard formula.
+            </div>
+        </section>
+
+        <!-- ======== 7.6 YIELD OF OPEN WELLS ======== -->
+        <section id="sec-7-6">
+            <h2>7.6 YIELD OF OPEN WELLS</h2>
+
+            <p>Once the specific yield (C) is determined from the recuperation test, the <strong>yield</strong> (discharge) of any open well in the same aquifer can be estimated using:</p>
+
+            <div class="equation">
+                \[ \boxed{Q = C \times A \times H} \]
+            </div>
+
+            <p>where:</p>
+            <ul>
+                <li>\( Q \) = yield of the well (m&sup3;/hr)</li>
+                <li>\( C \) = specific yield from recuperation test (per hour)</li>
+                <li>\( A = \frac{\pi}{4} D^2 \) = cross-sectional area of the well (m&sup2;)</li>
+                <li>\( H \) = operating depression head (m) &mdash; the depression head under which the well is to operate</li>
+            </ul>
+
+            <h3>7.6.1 Design of Well Diameter for Target Yield</h3>
+            <p>If a target discharge Q is required, the required well diameter can be found by rearranging the yield formula:</p>
+            <div class="equation">
+                \[ Q = C \times \frac{\pi}{4} D^2 \times H \]
+            </div>
+            <div class="equation">
+                \[ \boxed{D = \sqrt{\frac{4Q}{\pi \cdot C \cdot H}}} \]
+            </div>
+
+            <div class="callout">
+                <strong>Important relationship:</strong> The yield of an open well is directly proportional to (a) the specific yield C, (b) the cross-sectional area A (i.e., D&sup2;), and (c) the depression head H. Doubling the diameter quadruples the yield.
+            </div>
+
+            <h3>7.6.2 Critical Depression Head</h3>
+            <p>There is a maximum depression head beyond which the well yield does not increase linearly. This is called the <strong>critical depression head</strong> (H<sub>c</sub>). If the well is depressed beyond H<sub>c</sub>, the surrounding material may collapse, turbulent flow conditions may develop, and the actual yield will be less than the theoretical value. The working depression head should always be kept below H<sub>c</sub>.</p>
+
+            <p>In practice, the working depression head is usually kept at about <strong>one-third of the total depth of water</strong> in the well.</p>
+
+            <table class="info-table">
+                <tr>
+                    <th>Soil Type</th>
+                    <th>Typical C Value (per hour)</th>
+                    <th>Classification</th>
+                </tr>
+                <tr>
+                    <td>Mota (coarse sand/gravel)</td>
+                    <td>1.0 &ndash; 2.0</td>
+                    <td>Good aquifer</td>
+                </tr>
+                <tr>
+                    <td>Sandy soil</td>
+                    <td>0.5 &ndash; 1.0</td>
+                    <td>Moderate aquifer</td>
+                </tr>
+                <tr>
+                    <td>Fine sand</td>
+                    <td>0.25 &ndash; 0.5</td>
+                    <td>Fair aquifer</td>
+                </tr>
+                <tr>
+                    <td>Clayey sand</td>
+                    <td>&lt; 0.25</td>
+                    <td>Poor aquifer</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- ======== 7.7 DESIGN OF TUBE WELLS ======== -->
+        <section id="sec-7-7">
+            <h2>7.7 DESIGN OF TUBE WELLS</h2>
+
+            <p>The design of a tube well involves the following considerations:</p>
+
+            <h3>7.7.1 Design Parameters</h3>
+            <ul>
+                <li><strong>Total depth:</strong> Based on the depth to aquifer from geological/geophysical exploration data</li>
+                <li><strong>Well diameter:</strong> Must accommodate the pump and allow adequate entrance velocity. Common sizes: 150 mm (6&Prime;), 200 mm (8&Prime;), 250 mm (10&Prime;), 300 mm (12&Prime;)</li>
+                <li><strong>Screen length:</strong> The length of screen placed in the aquifer. For confined aquifers, 80&ndash;90% of the aquifer thickness is screened. For unconfined aquifers, the lower one-third to two-thirds is screened.</li>
+                <li><strong>Screen slot size:</strong> Selected to retain the aquifer material (or gravel pack). Typically sized to retain 40&ndash;60% of the formation material.</li>
+                <li><strong>Entrance velocity:</strong> The velocity at which water enters the screen slots. Should be &le; 3 cm/s to avoid incrustation and sand pumping.</li>
+            </ul>
+
+            <h3>7.7.2 Screen Length Design Rules</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Aquifer Type</th>
+                    <th>Recommended Screen Length</th>
+                    <th>Reason</th>
+                </tr>
+                <tr>
+                    <td>Confined aquifer</td>
+                    <td>80&ndash;90% of aquifer thickness</td>
+                    <td>Maximize yield; water enters from full thickness</td>
+                </tr>
+                <tr>
+                    <td>Unconfined aquifer</td>
+                    <td>Lower 1/3 to 2/3 of saturated thickness</td>
+                    <td>Screen placed in lower part to maintain submergence during drawdown</td>
+                </tr>
+                <tr>
+                    <td>Multiple aquifer layers</td>
+                    <td>Screen opposite each productive zone</td>
+                    <td>Blank casing opposite non-aquifer zones</td>
+                </tr>
+            </table>
+
+            <h3>7.7.3 Open Area of Screen</h3>
+            <p>The total open area of the screen must be sufficient to limit the entrance velocity. The open area is calculated as:</p>
+            <div class="equation">
+                \[ A_s = \pi \cdot d \cdot L_s \cdot p \]
+            </div>
+            <p>where d = screen diameter, L<sub>s</sub> = screen length, and p = percent open area of the screen (typically 5&ndash;20%).</p>
+
+            <p>The entrance velocity is:</p>
+            <div class="equation">
+                \[ v_e = \frac{Q}{A_s} \leq 0.03 \text{ m/s} \]
+            </div>
+        </section>
+
+        <!-- ======== 7.8 WELL SCREENS ======== -->
+        <section id="sec-7-8">
+            <h2>7.8 WELL SCREENS</h2>
+
+            <p>The well screen is the most critical component of a tube well. It serves two functions: (a) allow water to enter the well freely, and (b) prevent sand and aquifer material from entering.</p>
+
+            <h3>7.8.1 Types of Well Screens</h3>
+
+            <h4>(a) Continuous Slot Screen (Wire-Wound Screen)</h4>
+            <p>Made by winding a specially shaped wire around a series of longitudinal rods, creating a continuous V-shaped slot. The V-shape prevents clogging by allowing particles to pass through without wedging.</p>
+            <ul>
+                <li><strong>Advantages:</strong> Maximum open area (up to 60%), non-clogging V-slots, high efficiency</li>
+                <li><strong>Disadvantage:</strong> Expensive</li>
+            </ul>
+
+            <h4>(b) Slotted Pipe Screen</h4>
+            <p>Machine-cut slots in mild steel or PVC casing. Simple and cheap, but low open area (5&ndash;10%) and slots tend to clog.</p>
+
+            <h4>(c) Perforated Pipe with Mesh</h4>
+            <p>Holes drilled in the casing wrapped with brass or stainless steel wire mesh. Moderate cost and efficiency.</p>
+
+            <h4>(d) Coconut Coir Screen</h4>
+            <p>Used in shallow wells in developing countries. A coconut coir rope is wound around a bamboo or PVC frame. Low cost but limited lifespan.</p>
+
+            <h3>7.8.2 Screen Slot Size Selection</h3>
+            <p>The slot size is selected based on the <strong>grain-size analysis</strong> of the aquifer material:</p>
+            <ul>
+                <li><strong>Without gravel pack:</strong> Slot size is chosen to retain 40&ndash;60% of the aquifer material. The size corresponding to D<sub>40</sub> to D<sub>60</sub> on the grain-size distribution curve is used.</li>
+                <li><strong>With gravel pack:</strong> Slot size is chosen to retain 90% of the gravel pack material (D<sub>10</sub> of gravel pack).</li>
+            </ul>
+        </section>
+
+        <!-- ======== 7.9 GRAVEL PACK ======== -->
+        <section id="sec-7-9">
+            <h2>7.9 GRAVEL PACK</h2>
+
+            <p>A <strong>gravel pack</strong> (also called filter pack or artificial gravel pack) is a selected gradation of clean gravel placed between the well screen and the aquifer material. It is used when the aquifer material is fine-grained (fine sand or silt) and would pass through the screen slots.</p>
+
+            <h3>7.9.1 Functions of Gravel Pack</h3>
+            <ul>
+                <li>Acts as a filter to prevent fine aquifer material from entering the well</li>
+                <li>Increases the effective diameter of the well, reducing entrance velocity</li>
+                <li>Provides a zone of high permeability around the screen, improving well efficiency</li>
+                <li>Supports the borehole wall and prevents collapse</li>
+            </ul>
+
+            <h3>7.9.2 Gravel Pack Design Criteria</h3>
+            <p>The gravel pack material is selected based on the grain-size distribution of the aquifer formation:</p>
+            <ul>
+                <li><strong>Pack-to-aquifer ratio:</strong> The ratio of D<sub>50</sub> (gravel pack) to D<sub>50</sub> (aquifer) should be between <strong>4 and 6</strong></li>
+                <li><strong>Uniformity coefficient of pack:</strong> C<sub>u</sub> should be &le; 2.5 (well-graded pack causes segregation &mdash; <strong>uniform gravel is preferred</strong>)</li>
+                <li><strong>Pack thickness:</strong> Typically 75&ndash;200 mm (3&ndash;8 inches)</li>
+            </ul>
+
+            <div class="mini-note">
+                <strong>Key Design Rule:</strong> D<sub>50</sub>(pack) / D<sub>50</sub>(aquifer) = 4 to 6. The gravel pack should be <strong>uniform</strong> (low C<sub>u</sub>), not well-graded.
+            </div>
+        </section>
+
+        <!-- ======== 7.10 WELL DEVELOPMENT ======== -->
+        <section id="sec-7-10">
+            <h2>7.10 WELL DEVELOPMENT AND MAINTENANCE</h2>
+
+            <h3>7.10.1 Well Development</h3>
+            <p><strong>Well development</strong> is the process of removing fines from the aquifer near the well screen and rearranging the formation material to increase the permeability of the zone around the well. It is done immediately after well construction.</p>
+
+            <p>Methods of well development include:</p>
+            <ul>
+                <li><strong>Overpumping:</strong> Pumping the well at a rate higher than the design capacity to pull out fine particles</li>
+                <li><strong>Surging:</strong> Using a surge block (plunger) to create alternating inflow and outflow, loosening and removing fines</li>
+                <li><strong>Backwashing:</strong> Forcing water back into the formation through the screen to dislodge fines, then pumping out</li>
+                <li><strong>Jetting:</strong> High-pressure water jets directed at the screen to remove encrustation and fines</li>
+                <li><strong>Air-lift development:</strong> Using compressed air to alternately lift water and allow it to surge back, creating vigorous flow reversals</li>
+                <li><strong>Chemical treatment:</strong> Using acids (HCl) or polyphosphates to dissolve encrustation or disperse clay</li>
+            </ul>
+
+            <h3>7.10.2 Well Maintenance</h3>
+            <p>Over time, well yield may decline due to:</p>
+            <ul>
+                <li><strong>Incrustation:</strong> Deposition of calcium carbonate, iron compounds, or manganese on the screen slots</li>
+                <li><strong>Biofouling:</strong> Growth of iron bacteria that produce slime deposits</li>
+                <li><strong>Sand clogging:</strong> Fine particles blocking screen slots and gravel pack pores</li>
+                <li><strong>Corrosion:</strong> Deterioration of metal screens in aggressive water</li>
+            </ul>
+
+            <p>Regular monitoring of well performance (yield vs. drawdown) allows early detection of problems. Rehabilitation methods include periodic jetting, acid treatment, and redevelopment by surging.</p>
+        </section>
+
+        <!-- ======== 7.11 PAST QUESTION BANK ======== -->
+        <section id="sec-7-11">
+            <h2>7.11 PAST QUESTION BANK FOR CHAPTER 7</h2>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2078 Chaitra</span>
+                    <span class="pill">Q7</span>
+                    <span class="pill">6 marks</span>
+                    <span class="pill">NUMERICAL</span>
+                </div>
+                <p>For an irrigation project, a recuperation test was conducted on an open well. Determine the specific yield of the open well and the yield from a 5 m diameter well under the given depression head.</p>
+                <div class="data-block">
+                    <p><strong>Given:</strong> Initial depression = 4 m, Water level rise = 2.2 m, Recovery time = 90 minutes, Well diameter = 5 m, Depression head for yield = 2.5 m</p>
+                </div>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>s<sub>2</sub> = 4 &minus; 2.2 = 1.8 m. T = 90/60 = 1.5 hr.</p>
+                    <p>\( C = \frac{2.303}{1.5} \log_{10}(4/1.8) = 1.535 \times 0.3468 = 0.532 \text{ /hr} \)</p>
+                    <p>\( Q = 0.532 \times (\pi/4)(5)^2 \times 2.5 = 0.532 \times 19.635 \times 2.5 = 26.1 \text{ m}^3/\text{hr} \)</p>
+                    <p>See <a href="numerical/chapter7.html">Solved Numerical (Problem 17)</a> for full solution with diagrams.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2073 Bhadra</span>
+                    <span class="pill">Q8(a)</span>
+                    <span class="pill">3 marks</span>
+                </div>
+                <p>Differentiate between open well and tube well.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>Draw a comparison table with 6&ndash;8 features: diameter, depth, construction, water entry, yield, yield test, cost, contamination risk. See Section 7.4.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2073 Bhadra</span>
+                    <span class="pill">Q8(b)</span>
+                    <span class="pill">2+2+3 marks</span>
+                    <span class="pill">NUMERICAL</span>
+                </div>
+                <p>From a recuperation test on an open well, determine specific yield, yield from a 5 m diameter well, and required diameter to obtain a target discharge.</p>
+                <div class="data-block">
+                    <p><strong>Given:</strong> s<sub>1</sub> = 3 m, rise = 1.75 m, T = 75 min, D = 5 m, H = 2.5 m, Target Q = 12 L/s at H = 2 m</p>
+                </div>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>(i) C = 0.700/hr. (ii) Q = 34.4 m&sup3;/hr = 9.54 L/s. (iii) D = 6.27 m.</p>
+                    <p>See <a href="numerical/chapter7.html">Solved Numerical (Problem 18)</a> for full solution.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2072 Ashwin</span>
+                    <span class="pill">Q10</span>
+                    <span class="pill">4+2 marks</span>
+                </div>
+                <p>What do you mean by a tube well? Explain different types of tube well with figure.</p>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p><strong>Part 1 (4 marks):</strong> Definition of tube well + diagram showing components (casing, screen, gravel pack, sanitary seal). See Section 7.3 and Figure 7.3.</p>
+                    <p><strong>Part 2 (2 marks):</strong> Types: strainer, cavity, slotted. Brief description of each. See Section 7.3.2.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-meta">
+                    <span class="pill">2071 Bhadra</span>
+                    <span class="pill">Q10</span>
+                    <span class="pill">3+3+4 marks</span>
+                    <span class="pill">NUMERICAL</span>
+                </div>
+                <p>During a recuperation test on an open well, determine specific yield, yield from a 5 m diameter well, and required diameter for a target discharge.</p>
+                <div class="data-block">
+                    <p><strong>Given:</strong> Same data as 2073 Bhadra Q8(b): s<sub>1</sub> = 3 m, rise = 1.75 m, T = 75 min</p>
+                </div>
+                <div class="study-note">
+                    <h4>ANSWER GUIDE:</h4>
+                    <p>Identical to 2073 Bhadra Q8(b). C = 0.700/hr, Q = 34.4 m&sup3;/hr, D = 6.27 m.</p>
+                    <p>See <a href="numerical/chapter7.html">Solved Numerical (Problem 19)</a>.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== SUMMARY ======== -->
+        <section id="sec-summary">
+            <h2>CHAPTER SUMMARY AND EXAM FORMULA SHEET</h2>
+
+            <div class="study-note">
+                <h4>EXAM FORMULA SHEET &mdash; CHAPTER 7</h4>
+                <table class="formula-table">
+                    <tr>
+                        <th>Item</th>
+                        <th>Formula / Key Fact</th>
+                        <th>Context</th>
+                    </tr>
+                    <tr>
+                        <td>Specific yield (recuperation test)</td>
+                        <td>\( C = \frac{2.303}{T} \log_{10}\!\left(\frac{s_1}{s_2}\right) \)</td>
+                        <td>T in hours; s<sub>2</sub> = s<sub>1</sub> &minus; rise</td>
+                    </tr>
+                    <tr>
+                        <td>Depression decay</td>
+                        <td>\( s(t) = s_1 \, e^{-Ct} \)</td>
+                        <td>Exponential recovery of depression head</td>
+                    </tr>
+                    <tr>
+                        <td>Open well yield</td>
+                        <td>\( Q = C \times A \times H \)</td>
+                        <td>A = (&pi;/4)D&sup2;; H = depression head</td>
+                    </tr>
+                    <tr>
+                        <td>Required well diameter</td>
+                        <td>\( D = \sqrt{\frac{4Q}{\pi C H}} \)</td>
+                        <td>Rearranging yield formula for D</td>
+                    </tr>
+                    <tr>
+                        <td>Gravel pack ratio</td>
+                        <td>D<sub>50</sub>(pack) / D<sub>50</sub>(aquifer) = 4 to 6</td>
+                        <td>Design criterion for artificial filter</td>
+                    </tr>
+                    <tr>
+                        <td>Screen entrance velocity</td>
+                        <td>\( v_e = Q / A_s \leq 0.03 \) m/s</td>
+                        <td>A<sub>s</sub> = &pi; d L<sub>s</sub> p (open area)</td>
+                    </tr>
+                    <tr>
+                        <td>Screen length (confined)</td>
+                        <td>80&ndash;90% of aquifer thickness</td>
+                        <td>Maximize yield from full thickness</td>
+                    </tr>
+                    <tr>
+                        <td>Screen length (unconfined)</td>
+                        <td>Lower 1/3 to 2/3 of saturated depth</td>
+                        <td>Maintain screen submergence during pumping</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="study-note">
+                <h4>KEY TAKEAWAYS FOR EXAM</h4>
+                <ol>
+                    <li><strong>Open wells vs tube wells:</strong> Most asked comparison question. Know at least 8 differences including yield formula for each.</li>
+                    <li><strong>Recuperation test:</strong> Appeared in 3 out of 4 exam years (2071, 2073, 2078). Always convert minutes to hours. Know the derivation.</li>
+                    <li><strong>Three formulas to memorize:</strong> C (specific yield), Q (yield), and D (required diameter). They are all derived from the same exponential decay model.</li>
+                    <li><strong>Tube well types:</strong> Know strainer, cavity, and slotted types with brief descriptions.</li>
+                    <li><strong>Tube well components:</strong> Casing, screen, gravel pack, sanitary seal, bail plug. Draw labelled cross-section.</li>
+                    <li><strong>Gravel pack rule:</strong> D<sub>50</sub>(pack) / D<sub>50</sub>(aquifer) = 4 to 6; uniform gravel preferred.</li>
+                    <li><strong>Screen entrance velocity:</strong> Must be &le; 3 cm/s to prevent incrustation and sand entry.</li>
+                </ol>
+            </div>
+
+            <div class="figure-container">
+                <svg viewBox="0 0 700 220" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                    <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Exam Strategy: Chapter 7 Decision Flowchart</text>
+
+                    <rect x="240" y="35" width="220" height="30" rx="4" fill="none" stroke="black" stroke-width="1.5"/>
+                    <text x="350" y="55" text-anchor="middle" font-weight="bold" font-size="11">CHAPTER 7 QUESTION</text>
+
+                    <!-- Branches -->
+                    <line x1="140" y1="65" x2="140" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="350" y1="65" x2="350" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="570" y1="65" x2="570" y2="90" stroke="black" stroke-width="1"/>
+                    <line x1="140" y1="65" x2="570" y2="65" stroke="black" stroke-width="1"/>
+
+                    <!-- Differentiate -->
+                    <rect x="40" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="140" y="109" text-anchor="middle" font-size="11">&ldquo;Differentiate wells?&rdquo;</text>
+                    <line x1="140" y1="118" x2="140" y2="135" stroke="black" stroke-width="1"/>
+                    <rect x="40" y="135" width="200" height="40" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="140" y="153" text-anchor="middle" font-size="10">Table: 8+ features</text>
+                    <text x="140" y="168" text-anchor="middle" font-size="10">(Sec 7.4, Table)</text>
+
+                    <!-- Recuperation numerical -->
+                    <rect x="255" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="355" y="109" text-anchor="middle" font-size="11">&ldquo;Recuperation test?&rdquo;</text>
+                    <line x1="355" y1="118" x2="355" y2="135" stroke="black" stroke-width="1"/>
+                    <rect x="255" y="135" width="200" height="55" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="355" y="152" text-anchor="middle" font-size="10">1. Convert T to hours</text>
+                    <text x="355" y="167" text-anchor="middle" font-size="10">2. Find C, then Q, then D</text>
+                    <text x="355" y="182" text-anchor="middle" font-size="10">(Sec 7.5&ndash;7.6)</text>
+
+                    <!-- Tube well types -->
+                    <rect x="475" y="90" width="200" height="28" rx="3" fill="#f5f5f5" stroke="black" stroke-width="1"/>
+                    <text x="575" y="109" text-anchor="middle" font-size="11">&ldquo;Tube well types?&rdquo;</text>
+                    <line x1="575" y1="118" x2="575" y2="135" stroke="black" stroke-width="1"/>
+                    <rect x="475" y="135" width="200" height="40" rx="3" fill="none" stroke="black" stroke-width="0.8"/>
+                    <text x="575" y="153" text-anchor="middle" font-size="10">Strainer, Cavity, Slotted</text>
+                    <text x="575" y="168" text-anchor="middle" font-size="10">+ component diagram (Sec 7.3)</text>
+
+                    <text x="350" y="215" text-anchor="middle" font-size="11" font-style="italic">Recuperation numerical = 6&ndash;10 marks. Very high-frequency topic.</text>
+                </svg>
+                <div class="figcaption">Figure 7.5: Exam strategy for answering Chapter 7 questions.</div>
+            </div>
+        </section>
+    </main>
+
+<!-- Draw/Annotate toggle -->
+<script>
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000000','#ffffff',
+    '#f0f0f0','#0ea5e9','#ec4899','#f59e0b','#06b6d4','#ff6b6b','#a855f7',
+    '#22d3ee','#facc15','#fef9c3','gold','#c0c0c0'
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [], pts = [], drawn = 0, raf = 0;
+
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+  cv.addEventListener('wheel', function (e) { window.scrollBy(0, e.deltaY); paint(); }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1, w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0); paint();
+  }
+  sized(); window.addEventListener('resize', sized);
+
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p; if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c; cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round'; cx.lineJoin = 'round'; cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    if (SHIMMER[c]) d.setAttribute(c === 'gold' ? 'data-shimmer' : 'data-silver', '');
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+  document.body.appendChild(tb);
+
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on; btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on); cv.classList.toggle('on', on);
+  };
+
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      if (drawn === 0) { cx.beginPath(); cx.moveTo(pts[0] - sx, pts[1] - sy); drawn = 2; }
+      for (var i = drawn; i < n; i += 2) cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      cx.stroke(); drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault(); cv.setPointerCapture(e.pointerId); drawing = true;
+    pts = [e.clientX + window.scrollX, e.clientY + window.scrollY]; drawn = 0;
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color; cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round'; cx.lineJoin = 'round';
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return; drawing = false;
+    if (pts.length >= 4) strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    pts = []; drawn = 0; paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  function lum(c){
+    if(!c)return -1;c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

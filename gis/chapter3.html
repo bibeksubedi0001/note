@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3 – Spatial Data Models</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 3</div>
+    <h1>Spatial Data Models</h1>
+  </header>
+  <main>
+
+    <!-- 1. Types of Spatial Data Models in GIS -->
+    <h2>1. Types of Spatial Data Models in GIS <span class="exam-ref">Addresses: 2073 Bhadra, Q3a; 2076 Bhadra, Q3a; 2078 Chaitra, Q1</span></h2>
+    <p>A data model in GIS is a mathematical and conceptual framework used to represent real-world geographic features in a digital format. The primary spatial data models used to abstract and manage this information include:</p>
+    <ul>
+      <li><strong>Vector Data Model:</strong> Represents discrete geographic features using coordinates to form points, lines, and polygons. It is ideal for objects with distinct boundaries, such as buildings, administrative borders, or road networks.</li>
+      <li><strong>Raster Data Model:</strong> Represents continuous spatial phenomena through a grid of equally sized cells (pixels), where each cell holds a specific value. It is best suited for continuous data like elevation, temperature, or satellite imagery.</li>
+      <li><strong>TIN (Triangulated Irregular Network):</strong> A vector-based representation of a continuous surface consisting of non-overlapping, contiguous triangles. It is primarily used for high-precision elevation modeling and terrain analysis.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 260" width="620" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond', 'Times New Roman', serif">
+        <defs>
+          <filter id="f3s"><feDropShadow dx="1" dy="2" stdDeviation="2.5" flood-opacity="0.12"/></filter>
+          <linearGradient id="g3vec" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fc"/><stop offset="100%" stop-color="#c4ddf0"/></linearGradient>
+          <linearGradient id="g3ras" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fef4e8"/><stop offset="100%" stop-color="#f0ddb8"/></linearGradient>
+          <linearGradient id="g3tin" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0e8fc"/><stop offset="100%" stop-color="#d4c0f4"/></linearGradient>
+          <linearGradient id="g3elev" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#1a5c1a"/><stop offset="30%" stop-color="#4aaa4a"/><stop offset="60%" stop-color="#b8860b"/><stop offset="100%" stop-color="#8b4513"/></linearGradient>
+        </defs>
+
+        <!-- ═══ VECTOR PANEL ═══ -->
+        <g transform="translate(8,8)" filter="url(#f3s)">
+          <rect width="190" height="238" rx="10" fill="url(#g3vec)" stroke="#8bb8d8" stroke-width="1"/>
+          <!-- Header badge -->
+          <rect x="50" y="6" width="90" height="24" rx="12" fill="#1a3c5e"/>
+          <text x="95" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Vector</text>
+          <line x1="15" y1="36" x2="175" y2="36" stroke="#8bb8d8" stroke-width=".6"/>
+
+          <!-- Points section -->
+          <text x="15" y="54" font-size="9" fill="#1a3c5e" font-weight="bold">Points</text>
+          <circle cx="85" cy="55" r="5.5" fill="#ed5565" stroke="#a03030" stroke-width="1"/>
+          <line x1="79" y1="55" x2="91" y2="55" stroke="#a03030" stroke-width=".4" opacity=".5"/>
+          <line x1="85" y1="49" x2="85" y2="61" stroke="#a03030" stroke-width=".4" opacity=".5"/>
+          <circle cx="110" cy="48" r="5.5" fill="#ed5565" stroke="#a03030" stroke-width="1"/>
+          <circle cx="140" cy="58" r="5.5" fill="#ed5565" stroke="#a03030" stroke-width="1"/>
+          <text x="157" y="58" font-size="7" fill="#888">(x,y)</text>
+
+          <!-- Lines section -->
+          <text x="15" y="82" font-size="9" fill="#1a3c5e" font-weight="bold">Lines</text>
+          <polyline points="40,86 65,76 95,92 125,74 160,88" fill="none" stroke="#38a7d4" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="40" cy="86" r="2.5" fill="#0e4a66"/>
+          <circle cx="65" cy="76" r="2.5" fill="#0e4a66"/>
+          <circle cx="95" cy="92" r="2.5" fill="#0e4a66"/>
+          <circle cx="125" cy="74" r="2.5" fill="#0e4a66"/>
+          <circle cx="160" cy="88" r="2.5" fill="#0e4a66"/>
+          <text x="170" y="78" font-size="6" fill="#888">vertices</text>
+
+          <!-- Polygons section -->
+          <text x="15" y="116" font-size="9" fill="#1a3c5e" font-weight="bold">Polygons</text>
+          <polygon points="35,125 80,118 100,135 90,160 55,162 30,148" fill="#7fbf4a" fill-opacity=".35" stroke="#2a8c2a" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="35" cy="125" r="2" fill="#2a8c2a"/><circle cx="80" cy="118" r="2" fill="#2a8c2a"/>
+          <circle cx="100" cy="135" r="2" fill="#2a8c2a"/><circle cx="90" cy="160" r="2" fill="#2a8c2a"/>
+          <circle cx="55" cy="162" r="2" fill="#2a8c2a"/><circle cx="30" cy="148" r="2" fill="#2a8c2a"/>
+          <!-- Second polygon (adjacent) -->
+          <polygon points="100,135 145,122 168,145 155,168 90,160" fill="#4fc1e9" fill-opacity=".3" stroke="#1a6c8e" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="4,2"/>
+          <text x="130" y="148" font-size="7" fill="#1a6c8e">B</text>
+          <text x="60" y="145" font-size="7" fill="#2a6c2a">A</text>
+
+          <!-- Footer labels -->
+          <rect x="15" y="178" width="160" height="50" rx="6" fill="rgba(26,60,94,.06)" stroke="none"/>
+          <text x="95" y="194" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">✓ Precise boundaries</text>
+          <text x="95" y="207" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">✓ Small file size</text>
+          <text x="95" y="220" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">✓ Network analysis</text>
+        </g>
+
+        <!-- ═══ RASTER PANEL ═══ -->
+        <g transform="translate(215,8)" filter="url(#f3s)">
+          <rect width="190" height="238" rx="10" fill="url(#g3ras)" stroke="#d8c090" stroke-width="1"/>
+          <rect x="50" y="6" width="90" height="24" rx="12" fill="#8b2500"/>
+          <text x="95" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Raster</text>
+          <line x1="15" y1="36" x2="175" y2="36" stroke="#d8c090" stroke-width=".6"/>
+
+          <!-- 6x5 grid with elevation values & colors -->
+          <g transform="translate(20,42)">
+            <!-- Row 1 -->
+            <rect x="0"   y="0" width="25" height="22" fill="#1a5c1a" stroke="#fff" stroke-width="1" rx="1"/><text x="12" y="15" text-anchor="middle" font-size="8" fill="#cfc">50</text>
+            <rect x="25"  y="0" width="25" height="22" fill="#2a8c2a" stroke="#fff" stroke-width="1" rx="1"/><text x="37" y="15" text-anchor="middle" font-size="8" fill="#cfc">45</text>
+            <rect x="50"  y="0" width="25" height="22" fill="#4aaa4a" stroke="#fff" stroke-width="1" rx="1"/><text x="62" y="15" text-anchor="middle" font-size="8" fill="#fff">38</text>
+            <rect x="75"  y="0" width="25" height="22" fill="#6cc46c" stroke="#fff" stroke-width="1" rx="1"/><text x="87" y="15" text-anchor="middle" font-size="8" fill="#1a5">30</text>
+            <rect x="100" y="0" width="25" height="22" fill="#90d890" stroke="#fff" stroke-width="1" rx="1"/><text x="112" y="15" text-anchor="middle" font-size="8" fill="#1a5">22</text>
+            <rect x="125" y="0" width="25" height="22" fill="#b8ecb8" stroke="#fff" stroke-width="1" rx="1"/><text x="137" y="15" text-anchor="middle" font-size="8" fill="#1a5">15</text>
+            <!-- Row 2 -->
+            <rect x="0"   y="22" width="25" height="22" fill="#2a8c2a" stroke="#fff" stroke-width="1" rx="1"/><text x="12" y="37" text-anchor="middle" font-size="8" fill="#cfc">48</text>
+            <rect x="25"  y="22" width="25" height="22" fill="#4aaa4a" stroke="#fff" stroke-width="1" rx="1"/><text x="37" y="37" text-anchor="middle" font-size="8" fill="#fff">40</text>
+            <rect x="50"  y="22" width="25" height="22" fill="#6cc46c" stroke="#fff" stroke-width="1" rx="1"/><text x="62" y="37" text-anchor="middle" font-size="8" fill="#1a5">32</text>
+            <rect x="75"  y="22" width="25" height="22" fill="#90d890" stroke="#fff" stroke-width="1" rx="1"/><text x="87" y="37" text-anchor="middle" font-size="8" fill="#1a5">25</text>
+            <rect x="100" y="22" width="25" height="22" fill="#b8ecb8" stroke="#fff" stroke-width="1" rx="1"/><text x="112" y="37" text-anchor="middle" font-size="8" fill="#1a5">18</text>
+            <rect x="125" y="22" width="25" height="22" fill="#daf4da" stroke="#fff" stroke-width="1" rx="1"/><text x="137" y="37" text-anchor="middle" font-size="8" fill="#1a5">10</text>
+            <!-- Row 3 -->
+            <rect x="0"   y="44" width="25" height="22" fill="#4aaa4a" stroke="#fff" stroke-width="1" rx="1"/><text x="12" y="59" text-anchor="middle" font-size="8" fill="#fff">42</text>
+            <rect x="25"  y="44" width="25" height="22" fill="#6cc46c" stroke="#fff" stroke-width="1" rx="1"/><text x="37" y="59" text-anchor="middle" font-size="8" fill="#1a5">35</text>
+            <rect x="50"  y="44" width="25" height="22" fill="#90d890" stroke="#fff" stroke-width="1" rx="1"/><text x="62" y="59" text-anchor="middle" font-size="8" fill="#1a5">28</text>
+            <rect x="75"  y="44" width="25" height="22" fill="#b8ecb8" stroke="#fff" stroke-width="1" rx="1"/><text x="87" y="59" text-anchor="middle" font-size="8" fill="#1a5">20</text>
+            <rect x="100" y="44" width="25" height="22" fill="#daf4da" stroke="#fff" stroke-width="1" rx="1"/><text x="112" y="59" text-anchor="middle" font-size="8" fill="#1a5">12</text>
+            <rect x="125" y="44" width="25" height="22" fill="#f0faf0" stroke="#fff" stroke-width="1" rx="1"/><text x="137" y="59" text-anchor="middle" font-size="8" fill="#666">5</text>
+          </g>
+          <!-- Color ramp legend bar -->
+          <rect x="20" y="116" width="150" height="8" rx="4" fill="url(#g3elev)"/>
+          <text x="20" y="136" font-size="7" fill="#888">High</text>
+          <text x="153" y="136" font-size="7" fill="#888" text-anchor="end">Low</text>
+          <text x="95" y="136" font-size="7" fill="#666" text-anchor="middle">← Elevation →</text>
+
+          <!-- Magnify one cell annotation -->
+          <rect x="52" y="148" width="86" height="28" rx="5" fill="rgba(139,37,0,.08)" stroke="#8b2500" stroke-width=".6" stroke-dasharray="3,2"/>
+          <text x="95" y="160" text-anchor="middle" font-size="7" fill="#8b2500">Each cell = one value</text>
+          <text x="95" y="170" text-anchor="middle" font-size="7" fill="#8b2500">(pixel with attribute)</text>
+
+          <rect x="15" y="178" width="160" height="50" rx="6" fill="rgba(139,37,0,.06)" stroke="none"/>
+          <text x="95" y="194" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="600">✓ Continuous surfaces</text>
+          <text x="95" y="207" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="600">✓ Satellite imagery</text>
+          <text x="95" y="220" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="600">✓ Simple overlay ops</text>
+        </g>
+
+        <!-- ═══ TIN PANEL ═══ -->
+        <g transform="translate(422,8)" filter="url(#f3s)">
+          <rect width="190" height="238" rx="10" fill="url(#g3tin)" stroke="#b8a0d8" stroke-width="1"/>
+          <rect x="50" y="6" width="90" height="24" rx="12" fill="#6c4f9e"/>
+          <text x="95" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">TIN</text>
+          <line x1="15" y1="36" x2="175" y2="36" stroke="#b8a0d8" stroke-width=".6"/>
+
+          <!-- 3D-ish triangle network with shading -->
+          <polygon points="25,50 80,42 60,88" fill="#d8c0f0" fill-opacity=".5" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="80,42 135,50 100,72" fill="#c0a8e8" fill-opacity=".6" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="80,42 100,72 60,88" fill="#e0d0f8" fill-opacity=".4" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="135,50 165,82 100,72" fill="#b898e0" fill-opacity=".55" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="60,88 100,72 85,120" fill="#d0b8f0" fill-opacity=".45" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="100,72 165,82 140,115" fill="#c8a8e8" fill-opacity=".5" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="100,72 140,115 85,120" fill="#e0d0f8" fill-opacity=".35" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="25,50 60,88 20,110" fill="#d0b8f0" fill-opacity=".3" stroke="#6c4f9e" stroke-width="1.2"/>
+          <polygon points="60,88 85,120 20,110" fill="#c0a8e8" fill-opacity=".4" stroke="#6c4f9e" stroke-width="1.2"/>
+
+          <!-- Elevation nodes with labels -->
+          <circle cx="25" cy="50" r="5" fill="#6c4f9e" stroke="#4a3080" stroke-width="1"/>
+          <text x="12" y="46" font-size="7" fill="#4a3080" font-weight="bold">320m</text>
+          <circle cx="80" cy="42" r="5" fill="#6c4f9e" stroke="#4a3080" stroke-width="1"/>
+          <text x="80" y="36" text-anchor="middle" font-size="7" fill="#4a3080" font-weight="bold">490m</text>
+          <circle cx="135" cy="50" r="5" fill="#6c4f9e" stroke="#4a3080" stroke-width="1"/>
+          <text x="150" y="46" font-size="7" fill="#4a3080" font-weight="bold">260m</text>
+          <circle cx="60" cy="88" r="4" fill="#6c4f9e" stroke="#4a3080" stroke-width=".8"/>
+          <circle cx="100" cy="72" r="4" fill="#6c4f9e" stroke="#4a3080" stroke-width=".8"/>
+          <circle cx="165" cy="82" r="4" fill="#6c4f9e" stroke="#4a3080" stroke-width=".8"/>
+          <circle cx="85" cy="120" r="4" fill="#6c4f9e" stroke="#4a3080" stroke-width=".8"/>
+          <circle cx="140" cy="115" r="4" fill="#6c4f9e" stroke="#4a3080" stroke-width=".8"/>
+          <circle cx="20" cy="110" r="4" fill="#6c4f9e" stroke="#4a3080" stroke-width=".8"/>
+
+          <!-- Annotation: Delaunay label -->
+          <text x="95" y="140" text-anchor="middle" font-size="8" fill="#6c4f9e" font-style="italic">Delaunay Triangulation</text>
+
+          <rect x="15" y="178" width="160" height="50" rx="6" fill="rgba(108,79,158,.06)" stroke="none"/>
+          <text x="95" y="194" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="600">✓ Variable resolution</text>
+          <text x="95" y="207" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="600">✓ Terrain modeling</text>
+          <text x="95" y="220" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="600">✓ Slope &amp; aspect analysis</text>
+        </g>
+      </svg>
+      <figcaption>Fig 3.1 – The Three Primary Spatial Data Models in GIS: Vector (geometry-based), Raster (grid-based), and TIN (irregular triangles)</figcaption>
+    </figure>
+
+    <!-- 2. The Network Data Model -->
+    <h2>2. The Network Data Model <span class="exam-ref">Addresses: 2075 Bhadra, Q5</span></h2>
+    <p>The Network Data Model is a specialized, topologically structured vector model designed to represent interconnected linear features. It defines how lines connect to each other at nodes (intersections) to model the flow of resources or movement.</p>
+    <ul>
+      <li><strong>Examples:</strong> It is heavily used in civil engineering and urban planning to map road networks (for finding the shortest route), river systems (for tracing hydrological flow), and utility grids (such as water pipes or electrical lines to manage distribution and outages).</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 540 220" width="540" height="220" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fNet"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+          <marker id="aNet" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+          <linearGradient id="gNetBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0f7ff"/><stop offset="100%" stop-color="#e0ecf8"/></linearGradient>
+        </defs>
+        <rect x="4" y="4" width="532" height="200" rx="10" fill="url(#gNetBg)" stroke="#b0c8e0" stroke-width="1" filter="url(#fNet)"/>
+        <text x="270" y="24" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Network Data Model – Road Network Example</text>
+
+        <!-- Roads (edges) with weight labels -->
+        <line x1="80" y1="70" x2="200" y2="55" stroke="#888" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+        <line x1="80" y1="70" x2="200" y2="55" stroke="#38a7d4" stroke-width="3" stroke-linecap="round"/>
+        <text x="135" y="52" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">3.2 km</text>
+
+        <line x1="200" y1="55" x2="340" y2="50" stroke="#888" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+        <line x1="200" y1="55" x2="340" y2="50" stroke="#38a7d4" stroke-width="3" stroke-linecap="round"/>
+        <text x="270" y="42" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">4.5 km</text>
+
+        <line x1="340" y1="50" x2="460" y2="80" stroke="#888" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+        <line x1="340" y1="50" x2="460" y2="80" stroke="#38a7d4" stroke-width="3" stroke-linecap="round"/>
+        <text x="405" y="55" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">2.8 km</text>
+
+        <line x1="80" y1="70" x2="160" y2="150" stroke="#888" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+        <line x1="80" y1="70" x2="160" y2="150" stroke="#7fbf4a" stroke-width="3" stroke-linecap="round"/>
+        <text x="105" y="120" font-size="8" fill="#2a6c2a" font-weight="bold">2.1 km</text>
+
+        <line x1="160" y1="150" x2="340" y2="160" stroke="#888" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+        <line x1="160" y1="150" x2="340" y2="160" stroke="#7fbf4a" stroke-width="3" stroke-linecap="round"/>
+        <text x="250" y="148" text-anchor="middle" font-size="8" fill="#2a6c2a" font-weight="bold">5.0 km</text>
+
+        <line x1="340" y1="160" x2="460" y2="80" stroke="#888" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+        <line x1="340" y1="160" x2="460" y2="80" stroke="#ed5565" stroke-width="3" stroke-linecap="round" stroke-dasharray="8,4"/>
+        <text x="410" y="130" font-size="8" fill="#a03030" font-weight="bold">3.6 km</text>
+
+        <line x1="200" y1="55" x2="160" y2="150" stroke="#888" stroke-width="6" stroke-linecap="round" opacity=".25"/>
+        <line x1="200" y1="55" x2="160" y2="150" stroke="#b8860b" stroke-width="2" stroke-linecap="round" stroke-dasharray="6,3"/>
+        <text x="190" y="108" font-size="8" fill="#8b6914" font-weight="bold">3.0 km</text>
+
+        <!-- Nodes (intersections) -->
+        <circle cx="80" cy="70" r="12" fill="#fff" stroke="#1a3c5e" stroke-width="2" filter="url(#fNet)"/>
+        <text x="80" y="74" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">A</text>
+
+        <circle cx="200" cy="55" r="12" fill="#fff" stroke="#1a3c5e" stroke-width="2" filter="url(#fNet)"/>
+        <text x="200" y="59" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">B</text>
+
+        <circle cx="340" cy="50" r="12" fill="#fff" stroke="#1a3c5e" stroke-width="2" filter="url(#fNet)"/>
+        <text x="340" y="54" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">C</text>
+
+        <circle cx="460" cy="80" r="12" fill="#ed5565" stroke="#a03030" stroke-width="2" filter="url(#fNet)"/>
+        <text x="460" y="84" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">D</text>
+
+        <circle cx="160" cy="150" r="12" fill="#fff" stroke="#1a3c5e" stroke-width="2" filter="url(#fNet)"/>
+        <text x="160" y="154" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">E</text>
+
+        <circle cx="340" cy="160" r="12" fill="#fff" stroke="#1a3c5e" stroke-width="2" filter="url(#fNet)"/>
+        <text x="340" y="164" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">F</text>
+
+        <!-- Legend -->
+        <rect x="15" y="176" width="510" height="22" rx="4" fill="rgba(26,60,94,.05)"/>
+        <circle cx="30" cy="187" r="5" fill="#fff" stroke="#1a3c5e" stroke-width="1.5"/>
+        <text x="40" y="191" font-size="8" fill="#555">= Node (junction)</text>
+        <line x1="115" y1="187" x2="140" y2="187" stroke="#38a7d4" stroke-width="2.5"/>
+        <text x="145" y="191" font-size="8" fill="#555">= Edge (road segment)</text>
+        <text x="280" y="191" font-size="8" fill="#555">Edge weight = distance/cost</text>
+        <text x="430" y="191" font-size="8" fill="#ed5565" font-weight="bold">D</text>
+        <text x="440" y="191" font-size="8" fill="#555">= Destination</text>
+      </svg>
+      <figcaption>Fig 3.5 – Network Data Model: Nodes (junctions) connected by edges (road segments) with distance weights for shortest-path analysis</figcaption>
+    </figure>
+
+    <!-- 3. Attribute Variables: Qualitative vs. Quantitative -->
+    <h2>3. Attribute Variables: Qualitative vs. Quantitative <span class="exam-ref">Addresses: 2074 Bhadra, Q6iii; 2080 Chaitra, Q8a</span></h2>
+    <p>Attribute data provides the descriptive, non-spatial information linked to spatial geometries. These variables are broadly categorized into two types:</p>
+    <ul>
+      <li><strong>Qualitative Attributes:</strong> Describe categorical or descriptive properties without a numerical value or rank. In a vector dataset, this could be the name of a city, soil types (e.g., "sandy", "clay"), or zoning categories.</li>
+      <li><strong>Quantitative Attributes:</strong> Represent measurable, numerical quantities that define magnitude. These can be discrete counts (e.g., population numbers, number of lanes on a road) or continuous measurements (e.g., length, area, temperature).</li>
+    </ul>
+
+    <!-- 4. Levels of Measurement and their Impact on Symbology -->
+    <h2>4. Levels of Measurement and their Impact on Symbology <span class="exam-ref">Addresses: 2079 Chaitra, Q3a; 2081 Chaitra</span></h2>
+    <p>The scale of measurement of attribute data dictates the analytical operations possible and directly determines the symbology used to visually communicate the map's message.</p>
+    <ul>
+      <li><strong>Nominal Data:</strong> Categorical data with no inherent order or ranking (e.g., land use types like forest, agriculture, urban).
+        <ul><li><strong>Symbology:</strong> Represented using "Unique Values." Different categories are shown using distinct, unranked colors or distinct symbols (e.g., green for forest, gray for urban).</li></ul>
+      </li>
+      <li><strong>Ordinal Data:</strong> Categorical data that has a logical order or rank, but the intervals between ranks are not mathematically equal (e.g., risk zones classified as low, medium, and high).
+        <ul><li><strong>Symbology:</strong> Represented using "Graduated Colors," typically a sequential color ramp (e.g., light yellow for low risk, transitioning to dark red for high risk).</li></ul>
+      </li>
+      <li><strong>Interval Data:</strong> Numeric data with a known, equal interval between values, but lacking a true zero point (e.g., Temperature in Celsius or elevation above sea level, where zero does not signify the absolute absence of the quantity).
+        <ul><li><strong>Symbology:</strong> Often mapped using classified numeric ranges with graduated color schemes, or diverging color ramps to show variation above and below a central mean.</li></ul>
+      </li>
+      <li><strong>Ratio Data:</strong> Numeric data with a true, absolute zero point, allowing for proportional comparisons (e.g., population count, area, distance).
+        <ul><li><strong>Symbology:</strong> Effectively represented using "Proportional Symbols" (e.g., larger circles for cities with higher populations) or "Graduated Colors" normalized by area (like a choropleth map showing population density).</li></ul>
+      </li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 580 260" width="580" height="260" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fMeas"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.10"/></filter>
+        </defs>
+
+        <!-- NOMINAL -->
+        <g transform="translate(8,8)" filter="url(#fMeas)">
+          <rect width="135" height="240" rx="8" fill="#e8f4fc" stroke="#8bb8d8" stroke-width="1"/>
+          <rect x="18" y="8" width="100" height="22" rx="11" fill="#1a3c5e"/>
+          <text x="68" y="23" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Nominal</text>
+          <text x="68" y="44" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Categories, no order</text>
+          <!-- Color swatches -->
+          <rect x="20" y="55" width="28" height="20" rx="4" fill="#2a8c2a"/><text x="34" y="82" text-anchor="middle" font-size="7" fill="#555">Forest</text>
+          <rect x="54" y="55" width="28" height="20" rx="4" fill="#4fc1e9"/><text x="68" y="82" text-anchor="middle" font-size="7" fill="#555">Water</text>
+          <rect x="88" y="55" width="28" height="20" rx="4" fill="#aaa"/><text x="102" y="82" text-anchor="middle" font-size="7" fill="#555">Urban</text>
+          <!-- Distinct symbols -->
+          <circle cx="34" cy="105" r="6" fill="none" stroke="#2a8c2a" stroke-width="2"/>
+          <rect x="62" y="99" width="12" height="12" fill="none" stroke="#4fc1e9" stroke-width="2"/>
+          <polygon points="102,99 108,111 96,111" fill="none" stroke="#aaa" stroke-width="2"/>
+          <text x="68" y="130" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">Unique Values</text>
+          <!-- Scale bar -->
+          <rect x="15" y="142" width="106" height="24" rx="4" fill="rgba(26,60,94,.06)"/>
+          <text x="68" y="158" text-anchor="middle" font-size="7" fill="#888">= / ≠ only</text>
+          <!-- Example -->
+          <text x="68" y="180" text-anchor="middle" font-size="7" fill="#555">e.g., Land use types,</text>
+          <text x="68" y="192" text-anchor="middle" font-size="7" fill="#555">soil classifications</text>
+        </g>
+
+        <!-- ORDINAL -->
+        <g transform="translate(152,8)" filter="url(#fMeas)">
+          <rect width="135" height="240" rx="8" fill="#fef4e8" stroke="#d8c090" stroke-width="1"/>
+          <rect x="18" y="8" width="100" height="22" rx="11" fill="#8b2500"/>
+          <text x="68" y="23" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Ordinal</text>
+          <text x="68" y="44" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Ranked categories</text>
+          <!-- Graduated color ramp (3 levels) -->
+          <rect x="20" y="55" width="28" height="20" rx="4" fill="#ffd966"/><text x="34" y="82" text-anchor="middle" font-size="7" fill="#555">Low</text>
+          <rect x="54" y="55" width="28" height="20" rx="4" fill="#e88c30"/><text x="68" y="82" text-anchor="middle" font-size="7" fill="#555">Med</text>
+          <rect x="88" y="55" width="28" height="20" rx="4" fill="#c0392b"/><text x="102" y="82" text-anchor="middle" font-size="7" fill="#555">High</text>
+          <!-- Arrow showing order -->
+          <line x1="25" y1="100" x2="110" y2="100" stroke="#8b2500" stroke-width="1.5"/>
+          <polygon points="110,96 118,100 110,104" fill="#8b2500"/>
+          <text x="68" y="114" text-anchor="middle" font-size="7" fill="#8b2500">Order matters</text>
+          <text x="68" y="130" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="600">Graduated Colors</text>
+          <rect x="15" y="142" width="106" height="24" rx="4" fill="rgba(139,37,0,.06)"/>
+          <text x="68" y="158" text-anchor="middle" font-size="7" fill="#888">&lt; &gt; = (rank)</text>
+          <text x="68" y="180" text-anchor="middle" font-size="7" fill="#555">e.g., Risk zones,</text>
+          <text x="68" y="192" text-anchor="middle" font-size="7" fill="#555">satisfaction ratings</text>
+        </g>
+
+        <!-- INTERVAL -->
+        <g transform="translate(296,8)" filter="url(#fMeas)">
+          <rect width="135" height="240" rx="8" fill="#e8f8e8" stroke="#a0d0a0" stroke-width="1"/>
+          <rect x="18" y="8" width="100" height="22" rx="11" fill="#2d7d46"/>
+          <text x="68" y="23" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Interval</text>
+          <text x="68" y="44" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Equal spacing, no true 0</text>
+          <!-- Diverging color ramp -->
+          <rect x="15" y="55" width="22" height="20" rx="4" fill="#2166ac"/>
+          <rect x="37" y="55" width="22" height="20" rx="4" fill="#92c5de"/>
+          <rect x="59" y="55" width="22" height="20" rx="4" fill="#f7f7f7" stroke="#ccc" stroke-width=".5"/>
+          <rect x="81" y="55" width="22" height="20" rx="4" fill="#f4a582"/>
+          <rect x="103" y="55" width="22" height="20" rx="4" fill="#b2182b"/>
+          <text x="26" y="82" text-anchor="middle" font-size="6" fill="#555">-20°</text>
+          <text x="68" y="82" text-anchor="middle" font-size="6" fill="#555">0°</text>
+          <text x="114" y="82" text-anchor="middle" font-size="6" fill="#555">+40°</text>
+          <!-- Thermometer icon -->
+          <rect x="60" y="92" width="8" height="30" rx="4" fill="none" stroke="#2d7d46" stroke-width="1.2"/>
+          <rect x="62" y="102" width="4" height="18" rx="2" fill="#ed5565"/>
+          <circle cx="64" cy="125" r="5" fill="#ed5565" stroke="#2d7d46" stroke-width="1"/>
+          <text x="68" y="145" text-anchor="middle" font-size="8" fill="#2d7d46" font-weight="600">Diverging Ramp</text>
+          <rect x="15" y="152" width="106" height="24" rx="4" fill="rgba(45,125,70,.06)"/>
+          <text x="68" y="168" text-anchor="middle" font-size="7" fill="#888">+ − × (equal gaps)</text>
+          <text x="68" y="190" text-anchor="middle" font-size="7" fill="#555">e.g., Temperature °C,</text>
+          <text x="68" y="202" text-anchor="middle" font-size="7" fill="#555">calendar year</text>
+        </g>
+
+        <!-- RATIO -->
+        <g transform="translate(440,8)" filter="url(#fMeas)">
+          <rect width="135" height="240" rx="8" fill="#f0e8fc" stroke="#c0a8e0" stroke-width="1"/>
+          <rect x="18" y="8" width="100" height="22" rx="11" fill="#6c4f9e"/>
+          <text x="68" y="23" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Ratio</text>
+          <text x="68" y="44" text-anchor="middle" font-size="8" fill="#555" font-style="italic">True zero, proportional</text>
+          <!-- Proportional symbols -->
+          <circle cx="30" cy="72" r="6" fill="#6c4f9e" fill-opacity=".3" stroke="#6c4f9e" stroke-width="1"/>
+          <text x="30" y="75" text-anchor="middle" font-size="6" fill="#4a3080">5k</text>
+          <circle cx="60" cy="72" r="11" fill="#6c4f9e" fill-opacity=".3" stroke="#6c4f9e" stroke-width="1"/>
+          <text x="60" y="75" text-anchor="middle" font-size="7" fill="#4a3080">25k</text>
+          <circle cx="100" cy="72" r="18" fill="#6c4f9e" fill-opacity=".3" stroke="#6c4f9e" stroke-width="1"/>
+          <text x="100" y="75" text-anchor="middle" font-size="8" fill="#4a3080">100k</text>
+          <text x="68" y="100" text-anchor="middle" font-size="7" fill="#555">(population)</text>
+          <!-- True zero mark -->
+          <line x1="25" y1="115" x2="115" y2="115" stroke="#6c4f9e" stroke-width="1"/>
+          <line x1="25" y1="112" x2="25" y2="118" stroke="#6c4f9e" stroke-width="1.5"/>
+          <text x="25" y="128" text-anchor="middle" font-size="7" fill="#6c4f9e" font-weight="bold">0</text>
+          <text x="115" y="128" text-anchor="middle" font-size="7" fill="#6c4f9e">∞</text>
+          <text x="68" y="145" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="600">Proportional Symbols</text>
+          <rect x="15" y="152" width="106" height="24" rx="4" fill="rgba(108,79,158,.06)"/>
+          <text x="68" y="168" text-anchor="middle" font-size="7" fill="#888">+ − × ÷ (all ops)</text>
+          <text x="68" y="190" text-anchor="middle" font-size="7" fill="#555">e.g., Population, area,</text>
+          <text x="68" y="202" text-anchor="middle" font-size="7" fill="#555">distance, income</text>
+        </g>
+
+        <!-- Complexity arrow at bottom -->
+        <line x1="50" y1="252" x2="530" y2="252" stroke="#888" stroke-width="1"/>
+        <polygon points="530,249 538,252 530,255" fill="#888"/>
+        <text x="290" y="248" text-anchor="middle" font-size="8" fill="#888">Increasing measurement complexity and analytical power →</text>
+      </svg>
+      <figcaption>Fig 3.6 – Four Levels of Measurement: Nominal, Ordinal, Interval, and Ratio with their corresponding symbology methods</figcaption>
+    </figure>
+
+    <!-- Vector vs. Raster Data Models -->
+    <h2>1. Vector vs. Raster Data Models <span class="exam-ref">Addresses past questions: 2074 Magh, 2072 Ashwin, 2080 Chaitra, 2072 Magh</span></h2>
+    <p>Geographic Information Systems (GIS) use two main ways to represent the real world: Vector and Raster.</p>
+
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Vector Data Model</th>
+          <th>Raster Data Model</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Basic Concept</strong></td>
+          <td>Uses <strong>geometry</strong> (points, lines, polygons) to represent exact real-world shapes.</td>
+          <td>Uses a <strong>grid of square cells</strong> (pixels) to cover an area, where each cell has a value.</td>
+        </tr>
+        <tr>
+          <td><strong>Best Used For</strong></td>
+          <td><strong>Discrete data</strong> with clear boundaries (e.g., a specific building, a road, a property line).</td>
+          <td><strong>Continuous data</strong> that changes smoothly over space (e.g., elevation, temperature, rainfall).</td>
+        </tr>
+        <tr>
+          <td><strong>Visualizing a Scene</strong></td>
+          <td>A tree is a single point, a road is a smooth line, and a building is an exact enclosed shape (polygon).</td>
+          <td>The entire area is a grid. A building is a group of cells colored "building," and a road is a jagged line of "road" cells.</td>
+        </tr>
+        <tr>
+          <td><strong>Advantages</strong></td>
+          <td>Very accurate boundaries; smaller file sizes; excellent for network analysis (like finding the shortest driving route).</td>
+          <td>Simple structure; great for overlaying maps; handles continuous surfaces and satellite imagery perfectly.</td>
+        </tr>
+        <tr>
+          <td><strong>Disadvantages</strong></td>
+          <td>Complex data structure; bad for continuous gradients like elevation; overlaying maps requires heavy computing.</td>
+          <td>Can look pixelated/blocky; large file sizes; terrible for precise network routing.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <!-- 2. Types of Raster Models -->
+    <h2>2. Types of Raster Models <span class="exam-ref">Addresses past question: 2071 Bhadra</span></h2>
+    <p>Raster models are grouped into three basic types based on what their grid cells represent:</p>
+    <ul>
+      <li><strong>Continuous (Surface) Rasters:</strong> Values change gradually. For example, an elevation map where cell values represent height above sea level. There are no sudden boundaries.</li>
+      <li><strong>Discrete (Thematic) Rasters:</strong> Values represent categories. For example, a land-use map where all cells representing "forest" have a value of 1, and all cells representing "water" have a value of 2.</li>
+      <li><strong>Image Rasters:</strong> Values represent light or energy. This is typical for satellite imagery or drone photos.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 580 180" width="580" height="180" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fRas"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.10"/></filter>
+          <linearGradient id="gContR" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a5c1a"/><stop offset="40%" stop-color="#6cc46c"/><stop offset="70%" stop-color="#b8860b"/><stop offset="100%" stop-color="#8b4513"/></linearGradient>
+        </defs>
+
+        <!-- CONTINUOUS -->
+        <g transform="translate(8,8)" filter="url(#fRas)">
+          <rect width="178" height="160" rx="8" fill="#f0f8f0" stroke="#6aa86a" stroke-width="1"/>
+          <rect x="30" y="6" width="118" height="22" rx="11" fill="#2d7d46"/>
+          <text x="89" y="21" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Continuous</text>
+          <!-- Smooth gradient grid (no hard boundaries) -->
+          <rect x="20" y="36" width="138" height="70" rx="4" fill="url(#gContR)"/>
+          <!-- Contour lines overlaid -->
+          <path d="M30,46 Q60,50 80,58 Q100,66 120,64 Q140,62 150,68" fill="none" stroke="#fff" stroke-width=".8" opacity=".5"/>
+          <path d="M30,60 Q55,65 75,72 Q100,80 130,78 Q145,76 150,82" fill="none" stroke="#fff" stroke-width=".8" opacity=".5"/>
+          <path d="M30,78 Q50,82 70,90 Q100,96 140,94" fill="none" stroke="#fff" stroke-width=".8" opacity=".5"/>
+          <text x="89" y="122" text-anchor="middle" font-size="8" fill="#2d7d46" font-weight="600">Values change gradually</text>
+          <text x="89" y="136" text-anchor="middle" font-size="7" fill="#888">Elevation, temperature,</text>
+          <text x="89" y="148" text-anchor="middle" font-size="7" fill="#888">rainfall surfaces</text>
+        </g>
+
+        <!-- DISCRETE -->
+        <g transform="translate(200,8)" filter="url(#fRas)">
+          <rect width="178" height="160" rx="8" fill="#fff5ec" stroke="#d8a860" stroke-width="1"/>
+          <rect x="30" y="6" width="118" height="22" rx="11" fill="#b8860b"/>
+          <text x="89" y="21" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Discrete</text>
+          <!-- Categorical blocks with hard boundaries -->
+          <g transform="translate(20,36)">
+            <rect x="0" y="0" width="46" height="35" fill="#2a8c2a" rx="1"/><text x="23" y="21" text-anchor="middle" font-size="8" fill="#fff">Forest</text>
+            <rect x="46" y="0" width="46" height="35" fill="#4fc1e9" rx="1"/><text x="69" y="21" text-anchor="middle" font-size="8" fill="#fff">Water</text>
+            <rect x="92" y="0" width="46" height="35" fill="#aaa" rx="1"/><text x="115" y="21" text-anchor="middle" font-size="8" fill="#fff">Urban</text>
+            <rect x="0" y="35" width="69" height="35" fill="#ffd966" rx="1"/><text x="35" y="56" text-anchor="middle" font-size="8" fill="#666">Agriculture</text>
+            <rect x="69" y="35" width="69" height="35" fill="#2a8c2a" rx="1"/><text x="104" y="56" text-anchor="middle" font-size="8" fill="#fff">Forest</text>
+          </g>
+          <text x="89" y="122" text-anchor="middle" font-size="8" fill="#b8860b" font-weight="600">Cells = categories</text>
+          <text x="89" y="136" text-anchor="middle" font-size="7" fill="#888">Land use, soil type,</text>
+          <text x="89" y="148" text-anchor="middle" font-size="7" fill="#888">zoning classification</text>
+        </g>
+
+        <!-- IMAGE -->
+        <g transform="translate(392,8)" filter="url(#fRas)">
+          <rect width="178" height="160" rx="8" fill="#f0e8fc" stroke="#b0a0d0" stroke-width="1"/>
+          <rect x="30" y="6" width="118" height="22" rx="11" fill="#6c4f9e"/>
+          <text x="89" y="21" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Image</text>
+          <!-- Simulated satellite imagery (multi-band grayscale) -->
+          <g transform="translate(20,36)">
+            <rect x="0" y="0" width="23" height="23" fill="#333" rx="1"/><rect x="23" y="0" width="23" height="23" fill="#555" rx="1"/><rect x="46" y="0" width="23" height="23" fill="#888" rx="1"/><rect x="69" y="0" width="23" height="23" fill="#bbb" rx="1"/><rect x="92" y="0" width="23" height="23" fill="#ddd" rx="1"/><rect x="115" y="0" width="23" height="23" fill="#eee" rx="1"/>
+            <rect x="0" y="23" width="23" height="23" fill="#444" rx="1"/><rect x="23" y="23" width="23" height="23" fill="#666" rx="1"/><rect x="46" y="23" width="23" height="23" fill="#999" rx="1"/><rect x="69" y="23" width="23" height="23" fill="#aaa" rx="1"/><rect x="92" y="23" width="23" height="23" fill="#ccc" rx="1"/><rect x="115" y="23" width="23" height="23" fill="#e5e5e5" rx="1"/>
+            <rect x="0" y="46" width="23" height="23" fill="#555" rx="1"/><rect x="23" y="46" width="23" height="23" fill="#777" rx="1"/><rect x="46" y="46" width="23" height="23" fill="#aaa" rx="1"/><rect x="69" y="46" width="23" height="23" fill="#bbb" rx="1"/><rect x="92" y="46" width="23" height="23" fill="#ddd" rx="1"/><rect x="115" y="46" width="23" height="23" fill="#f0f0f0" rx="1"/>
+          </g>
+          <!-- RGB band indicator -->
+          <rect x="30" y="108" width="10" height="10" rx="2" fill="#e44"/><text x="44" y="117" font-size="7" fill="#666">R</text>
+          <rect x="60" y="108" width="10" height="10" rx="2" fill="#4e4"/><text x="74" y="117" font-size="7" fill="#666">G</text>
+          <rect x="90" y="108" width="10" height="10" rx="2" fill="#44e"/><text x="104" y="117" font-size="7" fill="#666">B</text>
+          <text x="89" y="136" text-anchor="middle" font-size="8" fill="#6c4f9e" font-weight="600">Pixel = reflectance value</text>
+          <text x="89" y="148" text-anchor="middle" font-size="7" fill="#888">Satellite imagery, aerial</text>
+          <text x="89" y="160" text-anchor="middle" font-size="7" fill="#888">photos, drone captures</text>
+        </g>
+      </svg>
+      <figcaption>Fig 3.7 – Three Types of Raster Models: Continuous (gradual change), Discrete (categories), and Image (reflectance/energy)</figcaption>
+    </figure>
+
+    <!-- 3. Raster Compression & Vectorization -->
+    <h2>3. Raster Compression &amp; Vectorization <span class="exam-ref">Addresses past questions: 2079 Chaitra, 2071 Magh, 2078 Chaitra, 2081 Chaitra</span></h2>
+    <p>Raster files (grids) can get huge. We use compression techniques to make the files smaller without losing information.</p>
+    <ul>
+      <li><strong>Run Length Encoding (RLE):</strong>
+        <ul>
+          <li><strong>How it works:</strong> Instead of saving the value of every single cell in a row, it groups identical values together.</li>
+          <li><strong>Example:</strong> If a row has five cells of "Forest" (Value 1), instead of storing 1, 1, 1, 1, 1, RLE stores it as (5 of 1).</li>
+        </ul>
+      </li>
+      <li><strong>Region Quadtree:</strong>
+        <ul>
+          <li><strong>How it works:</strong> It divides the entire map grid into four large square blocks (quadrants). If a block is completely uniform (e.g., all water), it stops. If a block has mixed values (e.g., water and land), it splits that block into four smaller blocks. It repeats this until every block contains only one uniform value.</li>
+        </ul>
+      </li>
+      <li><strong>Vectorization (Concept):</strong>
+        <ul>
+          <li><strong>How it works:</strong> This is the process of converting a Raster grid into Vector lines and polygons. Think of it as tracing a scanned pixelated image to create smooth, editable lines.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <!-- 4. Raster Data Storage Formats (BSQ, BIL, BIP) -->
+    <h2>4. Raster Data Storage Formats (BSQ, BIL, BIP) <span class="exam-ref">Addresses past question: 2075 Magh</span></h2>
+    <p>When working with satellite images that have multiple layers (like a Red band, a Green band, and a Blue band), the computer needs a rule for how to store that data line-by-line.</p>
+    <ul>
+      <li><strong>BSQ (Band Sequential):</strong> Stores all the data for Band 1 first, then all the data for Band 2, and so on. (Great if you only want to look at one band at a time).</li>
+      <li><strong>BIL (Band Interleaved by Line):</strong> Stores row 1 of Band 1, then row 1 of Band 2, then row 1 of Band 3. Then it moves to row 2. (A good middle-ground format).</li>
+      <li><strong>BIP (Band Interleaved by Pixel):</strong> Stores pixel 1 of Band 1, pixel 1 of Band 2, pixel 1 of Band 3. Then moves to pixel 2. (Great for analyzing the exact color of a specific spot quickly).</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 580 230" width="580" height="230" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fBand"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.10"/></filter>
+        </defs>
+
+        <!-- ═══ BSQ ═══ -->
+        <g transform="translate(8,8)" filter="url(#fBand)">
+          <rect width="178" height="210" rx="8" fill="#fef0f0" stroke="#e08080" stroke-width="1"/>
+          <rect x="25" y="6" width="128" height="22" rx="11" fill="#c0392b"/>
+          <text x="89" y="21" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">BSQ</text>
+          <text x="89" y="40" text-anchor="middle" font-size="7" fill="#888">Band Sequential</text>
+          <!-- Band 1 (Red) all rows -->
+          <g transform="translate(15,50)">
+            <rect x="0" y="0" width="148" height="18" rx="3" fill="#e44" opacity=".8"/><text x="74" y="13" text-anchor="middle" font-size="8" fill="#fff">Band 1 – Row 1</text>
+            <rect x="0" y="20" width="148" height="18" rx="3" fill="#e44" opacity=".65"/><text x="74" y="33" text-anchor="middle" font-size="8" fill="#fff">Band 1 – Row 2</text>
+            <rect x="0" y="40" width="148" height="18" rx="3" fill="#e44" opacity=".5"/><text x="74" y="53" text-anchor="middle" font-size="8" fill="#fff">Band 1 – Row 3</text>
+          </g>
+          <!-- Band 2 (Green) all rows -->
+          <g transform="translate(15,110)">
+            <rect x="0" y="0" width="148" height="18" rx="3" fill="#4e4" opacity=".8"/><text x="74" y="13" text-anchor="middle" font-size="8" fill="#fff">Band 2 – Row 1</text>
+            <rect x="0" y="20" width="148" height="18" rx="3" fill="#4e4" opacity=".65"/><text x="74" y="33" text-anchor="middle" font-size="8" fill="#fff">Band 2 – Row 2</text>
+          </g>
+          <!-- Ellipsis for Band 3 -->
+          <text x="89" y="162" text-anchor="middle" font-size="10" fill="#888">⋮ Band 3 …</text>
+          <rect x="15" y="170" width="148" height="36" rx="4" fill="rgba(192,57,43,.06)"/>
+          <text x="89" y="186" text-anchor="middle" font-size="7" fill="#c0392b" font-weight="600">All of Band 1, then all of Band 2…</text>
+          <text x="89" y="198" text-anchor="middle" font-size="7" fill="#888">Best for single-band access</text>
+        </g>
+
+        <!-- ═══ BIL ═══ -->
+        <g transform="translate(200,8)" filter="url(#fBand)">
+          <rect width="178" height="210" rx="8" fill="#f0f5ff" stroke="#80a0e0" stroke-width="1"/>
+          <rect x="25" y="6" width="128" height="22" rx="11" fill="#2980b9"/>
+          <text x="89" y="21" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">BIL</text>
+          <text x="89" y="40" text-anchor="middle" font-size="7" fill="#888">Band Interleaved by Line</text>
+          <!-- Row 1: all bands -->
+          <g transform="translate(15,50)">
+            <rect x="0" y="0" width="148" height="16" rx="3" fill="#e44" opacity=".8"/><text x="74" y="12" text-anchor="middle" font-size="7" fill="#fff">Row 1 – Band 1 (R)</text>
+            <rect x="0" y="17" width="148" height="16" rx="3" fill="#4e4" opacity=".8"/><text x="74" y="29" text-anchor="middle" font-size="7" fill="#fff">Row 1 – Band 2 (G)</text>
+            <rect x="0" y="34" width="148" height="16" rx="3" fill="#44e" opacity=".8"/><text x="74" y="46" text-anchor="middle" font-size="7" fill="#fff">Row 1 – Band 3 (B)</text>
+          </g>
+          <!-- Row 2: all bands -->
+          <g transform="translate(15,106)">
+            <rect x="0" y="0" width="148" height="16" rx="3" fill="#e44" opacity=".55"/><text x="74" y="12" text-anchor="middle" font-size="7" fill="#fff">Row 2 – Band 1 (R)</text>
+            <rect x="0" y="17" width="148" height="16" rx="3" fill="#4e4" opacity=".55"/><text x="74" y="29" text-anchor="middle" font-size="7" fill="#fff">Row 2 – Band 2 (G)</text>
+            <rect x="0" y="34" width="148" height="16" rx="3" fill="#44e" opacity=".55"/><text x="74" y="46" text-anchor="middle" font-size="7" fill="#fff">Row 2 – Band 3 (B)</text>
+          </g>
+          <text x="89" y="164" text-anchor="middle" font-size="10" fill="#888">⋮</text>
+          <rect x="15" y="170" width="148" height="36" rx="4" fill="rgba(41,128,185,.06)"/>
+          <text x="89" y="186" text-anchor="middle" font-size="7" fill="#2980b9" font-weight="600">Row 1 all bands, then Row 2 all bands…</text>
+          <text x="89" y="198" text-anchor="middle" font-size="7" fill="#888">Good balance of both</text>
+        </g>
+
+        <!-- ═══ BIP ═══ -->
+        <g transform="translate(392,8)" filter="url(#fBand)">
+          <rect width="178" height="210" rx="8" fill="#f0fff0" stroke="#80c080" stroke-width="1"/>
+          <rect x="25" y="6" width="128" height="22" rx="11" fill="#27ae60"/>
+          <text x="89" y="21" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">BIP</text>
+          <text x="89" y="40" text-anchor="middle" font-size="7" fill="#888">Band Interleaved by Pixel</text>
+          <!-- Pixel 1: all bands, then pixel 2, etc -->
+          <g transform="translate(15,50)">
+            <!-- Pixel 1 -->
+            <rect x="0" y="0" width="48" height="14" rx="2" fill="#e44" opacity=".8"/><text x="24" y="11" text-anchor="middle" font-size="6" fill="#fff">P1-R</text>
+            <rect x="48" y="0" width="48" height="14" rx="2" fill="#4e4" opacity=".8"/><text x="72" y="11" text-anchor="middle" font-size="6" fill="#fff">P1-G</text>
+            <rect x="96" y="0" width="48" height="14" rx="2" fill="#44e" opacity=".8"/><text x="120" y="11" text-anchor="middle" font-size="6" fill="#fff">P1-B</text>
+            <!-- Pixel 2 -->
+            <rect x="0" y="16" width="48" height="14" rx="2" fill="#e44" opacity=".65"/><text x="24" y="27" text-anchor="middle" font-size="6" fill="#fff">P2-R</text>
+            <rect x="48" y="16" width="48" height="14" rx="2" fill="#4e4" opacity=".65"/><text x="72" y="27" text-anchor="middle" font-size="6" fill="#fff">P2-G</text>
+            <rect x="96" y="16" width="48" height="14" rx="2" fill="#44e" opacity=".65"/><text x="120" y="27" text-anchor="middle" font-size="6" fill="#fff">P2-B</text>
+            <!-- Pixel 3 -->
+            <rect x="0" y="32" width="48" height="14" rx="2" fill="#e44" opacity=".5"/><text x="24" y="43" text-anchor="middle" font-size="6" fill="#fff">P3-R</text>
+            <rect x="48" y="32" width="48" height="14" rx="2" fill="#4e4" opacity=".5"/><text x="72" y="43" text-anchor="middle" font-size="6" fill="#fff">P3-G</text>
+            <rect x="96" y="32" width="48" height="14" rx="2" fill="#44e" opacity=".5"/><text x="120" y="43" text-anchor="middle" font-size="6" fill="#fff">P3-B</text>
+            <!-- Pixel 4-6 -->
+            <rect x="0" y="48" width="48" height="14" rx="2" fill="#e44" opacity=".35"/><text x="24" y="59" text-anchor="middle" font-size="6" fill="#fff">P4-R</text>
+            <rect x="48" y="48" width="48" height="14" rx="2" fill="#4e4" opacity=".35"/><text x="72" y="59" text-anchor="middle" font-size="6" fill="#fff">P4-G</text>
+            <rect x="96" y="48" width="48" height="14" rx="2" fill="#44e" opacity=".35"/><text x="120" y="59" text-anchor="middle" font-size="6" fill="#fff">P4-B</text>
+          </g>
+          <!-- Annotation: one pixel bracket -->
+          <rect x="14" y="50" width="150" height="14" rx="2" fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="89" y="124" text-anchor="middle" font-size="7" fill="#27ae60">↑ One pixel = all bands together</text>
+          <text x="89" y="140" text-anchor="middle" font-size="10" fill="#888">⋮</text>
+          <rect x="15" y="170" width="148" height="36" rx="4" fill="rgba(39,174,96,.06)"/>
+          <text x="89" y="186" text-anchor="middle" font-size="7" fill="#27ae60" font-weight="600">Pixel 1 all bands, Pixel 2 all bands…</text>
+          <text x="89" y="198" text-anchor="middle" font-size="7" fill="#888">Best for per-pixel spectral analysis</text>
+        </g>
+      </svg>
+      <figcaption>Fig 3.8 – Raster Storage Formats: BSQ (band-first), BIL (line-interleaved), and BIP (pixel-interleaved) for multi-band satellite imagery</figcaption>
+    </figure>
+
+    <!-- Concept and Importance of Topology -->
+    <h2>1. Concept and Importance of Topology <span class="exam-ref">Addresses: 2071 Magh, Q6b; 2075 Bhadra, Q3b</span></h2>
+    <p><strong>What is Topology?</strong> Topology is a set of rules and mathematical concepts that define the spatial relationships between adjacent or connected geographic features (points, lines, and polygons) in a vector data model. It dictates how features share geometry.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 580 210" width="580" height="210" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gConn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#c8ddf0"/></linearGradient>
+          <linearGradient id="gAdj" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#c8f0c8"/></linearGradient>
+          <linearGradient id="gCont" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff5ec"/><stop offset="100%" stop-color="#f8e0c8"/></linearGradient>
+          <filter id="fTopo"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+        </defs>
+
+        <!-- ═══ CONNECTIVITY ═══ -->
+        <g transform="translate(8,8)" filter="url(#fTopo)">
+          <rect width="180" height="190" rx="10" fill="url(#gConn)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <rect x="30" y="6" width="120" height="24" rx="12" fill="#1a3c5e"/>
+          <text x="90" y="22" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Connectivity</text>
+
+          <!-- Road-like network -->
+          <line x1="35" y1="75" x2="90" y2="75" stroke="#b0c8e0" stroke-width="8" stroke-linecap="round"/>
+          <line x1="90" y1="75" x2="145" y2="50" stroke="#b0c8e0" stroke-width="8" stroke-linecap="round"/>
+          <line x1="90" y1="75" x2="145" y2="100" stroke="#b0c8e0" stroke-width="8" stroke-linecap="round"/>
+          <line x1="35" y1="75" x2="90" y2="75" stroke="#38a7d4" stroke-width="3" stroke-linecap="round"/>
+          <line x1="90" y1="75" x2="145" y2="50" stroke="#38a7d4" stroke-width="3" stroke-linecap="round"/>
+          <line x1="90" y1="75" x2="145" y2="100" stroke="#38a7d4" stroke-width="3" stroke-linecap="round"/>
+
+          <!-- End nodes -->
+          <circle cx="35" cy="75" r="6" fill="#fff" stroke="#1a3c5e" stroke-width="1.5"/>
+          <circle cx="145" cy="50" r="6" fill="#fff" stroke="#1a3c5e" stroke-width="1.5"/>
+          <circle cx="145" cy="100" r="6" fill="#fff" stroke="#1a3c5e" stroke-width="1.5"/>
+          <!-- Central junction node (highlighted) -->
+          <circle cx="90" cy="75" r="10" fill="#ed5565" stroke="#a03030" stroke-width="2"/>
+          <text x="90" y="79" text-anchor="middle" font-size="9" fill="white" font-weight="bold">N</text>
+
+          <!-- Edge labels -->
+          <text x="58" y="67" text-anchor="middle" font-size="7" fill="#1a3c5e">Arc 1</text>
+          <text x="125" y="52" font-size="7" fill="#1a3c5e">Arc 2</text>
+          <text x="125" y="96" font-size="7" fill="#1a3c5e">Arc 3</text>
+
+          <rect x="15" y="118" width="150" height="60" rx="6" fill="rgba(26,60,94,.05)"/>
+          <text x="90" y="134" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="600">Lines share nodes</text>
+          <text x="90" y="148" text-anchor="middle" font-size="7" fill="#555">Arcs meet at junction N</text>
+          <text x="90" y="162" text-anchor="middle" font-size="7" fill="#555">→ enables routing analysis</text>
+        </g>
+
+        <!-- ═══ ADJACENCY ═══ -->
+        <g transform="translate(200,8)" filter="url(#fTopo)">
+          <rect width="180" height="190" rx="10" fill="url(#gAdj)" stroke="#2a8c2a" stroke-width="1.2"/>
+          <rect x="30" y="6" width="120" height="24" rx="12" fill="#2a8c2a"/>
+          <text x="90" y="22" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Adjacency</text>
+
+          <!-- Two polygons sharing a boundary -->
+          <polygon points="22,48 85,40 85,110 22,115" fill="#a0d468" fill-opacity="0.45" stroke="#2a8c2a" stroke-width="1.8"/>
+          <polygon points="85,40 155,48 155,115 85,110" fill="#4fc1e9" fill-opacity="0.45" stroke="#1a3c5e" stroke-width="1.8"/>
+          <!-- Shared boundary (highlighted) -->
+          <line x1="85" y1="40" x2="85" y2="110" stroke="#ed5565" stroke-width="3"/>
+          <!-- Pulsing dots on shared edge -->
+          <circle cx="85" cy="55" r="3" fill="#ed5565"/>
+          <circle cx="85" cy="75" r="3" fill="#ed5565"/>
+          <circle cx="85" cy="95" r="3" fill="#ed5565"/>
+
+          <text x="50" y="82" text-anchor="middle" font-size="14" font-weight="bold" fill="#2a6c2a">A</text>
+          <text x="122" y="82" text-anchor="middle" font-size="14" font-weight="bold" fill="#1a3c5e">B</text>
+
+          <rect x="15" y="118" width="150" height="60" rx="6" fill="rgba(42,140,42,.05)"/>
+          <text x="90" y="134" text-anchor="middle" font-size="8" fill="#2a8c2a" font-weight="600">Shared boundary</text>
+          <text x="90" y="148" text-anchor="middle" font-size="7" fill="#555">Polygons A &amp; B share</text>
+          <text x="90" y="162" text-anchor="middle" font-size="7" fill="#555">a common edge (red line)</text>
+        </g>
+
+        <!-- ═══ CONTAINMENT ═══ -->
+        <g transform="translate(392,8)" filter="url(#fTopo)">
+          <rect width="180" height="190" rx="10" fill="url(#gCont)" stroke="#8b2500" stroke-width="1.2"/>
+          <rect x="30" y="6" width="120" height="24" rx="12" fill="#8b2500"/>
+          <text x="90" y="22" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Containment</text>
+
+          <!-- Outer region polygon -->
+          <polygon points="20,44 160,44 160,110 20,110" fill="#f6bb42" fill-opacity="0.2" stroke="#b8860b" stroke-width="2" stroke-dasharray="6,3"/>
+          <text x="152" y="54" font-size="7" fill="#8b6914" font-weight="bold">Region</text>
+
+          <!-- Inner polygon (contained) -->
+          <polygon points="50,58 130,55 140,95 45,100" fill="#ed5565" fill-opacity="0.3" stroke="#a03030" stroke-width="2"/>
+          <text x="90" y="82" text-anchor="middle" font-size="9" font-weight="bold" fill="#a03030">Zone</text>
+
+          <!-- Point inside -->
+          <circle cx="90" cy="72" r="4" fill="#1a3c5e"/>
+          <text x="90" y="68" text-anchor="middle" font-size="6" fill="#1a3c5e">P</text>
+
+          <!-- Containment arrows -->
+          <text x="30" y="76" font-size="10" fill="#8b2500">⊃</text>
+
+          <rect x="15" y="118" width="150" height="60" rx="6" fill="rgba(139,37,0,.05)"/>
+          <text x="90" y="134" text-anchor="middle" font-size="8" fill="#8b2500" font-weight="600">Feature within feature</text>
+          <text x="90" y="148" text-anchor="middle" font-size="7" fill="#555">Point P is inside Zone,</text>
+          <text x="90" y="162" text-anchor="middle" font-size="7" fill="#555">Zone is inside Region</text>
+        </g>
+      </svg>
+      <figcaption>Fig 3.4 – Three Key Topological Relationships: Connectivity (shared nodes), Adjacency (shared edges), and Containment (within boundaries)</figcaption>
+    </figure>
+
+    <h3>Why is it important in GIS?</h3>
+    <ul>
+      <li><strong>Data Quality and Validation:</strong> Topology ensures data integrity by preventing common digitizing errors. It forces boundaries to match perfectly, eliminating overlapping polygons or empty gaps (slivers) between adjacent features like land parcels.</li>
+      <li><strong>Connectivity (Network Analysis):</strong> It explicitly defines how lines connect at intersections (nodes). This is absolutely critical for network analysis, such as finding the shortest driving route, modeling water flow in pipes, or analyzing traffic.</li>
+      <li><strong>Adjacency and Containment:</strong> Topology allows the GIS software to "know" spatial facts without calculating them on the fly. It knows which countries share a border (adjacency) or which cities are located entirely within a specific province (containment).</li>
+    </ul>
+
+    <!-- 2. The TIN (Triangulated Irregular Network) Data Model -->
+    <h2>2. The TIN (Triangulated Irregular Network) Data Model <span class="exam-ref">Addresses: 2072 Ashwin, Q1c; 2071 Magh, Q2a</span></h2>
+    <p><strong>What is a TIN?</strong> A TIN is a digital data structure used to represent continuous 3D surfaces, most commonly terrain or elevation. It constructs this surface using a network of non-overlapping, contiguous triangles. The corners of these triangles are created from irregularly spaced data points (called mass points), where each point contains an X, Y, and Z (elevation) coordinate.</p>
+
+    <h3>Does TIN belong to Raster or Vector?</h3>
+    <p>A TIN strictly belongs to the vector data model.</p>
+    <p><strong>Why?</strong> Unlike a raster model, which relies on a uniform grid of identical square cells (pixels) to represent a surface, a TIN is built entirely from fundamental vector geometries. It uses points (the nodes with XYZ coordinates) connected by lines (the edges) to form polygons (the triangular faces). Because it does not use a continuous pixel grid, it is classified as a vector surface model.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 250" width="560" height="250" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fTIN3"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.10"/></filter>
+          <linearGradient id="tGrad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b4513"/><stop offset="100%" stop-color="#b8860b"/></linearGradient>
+          <linearGradient id="tGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8860b"/><stop offset="100%" stop-color="#daa520"/></linearGradient>
+          <linearGradient id="tGrad3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a8c2a"/><stop offset="100%" stop-color="#6cc46c"/></linearGradient>
+          <linearGradient id="tGrad4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6cc46c"/><stop offset="100%" stop-color="#b8ecb8"/></linearGradient>
+        </defs>
+
+        <rect x="4" y="4" width="552" height="238" rx="10" fill="#faf8f4" stroke="#c8b8e0" stroke-width="1" filter="url(#fTIN3)"/>
+        <text x="280" y="24" text-anchor="middle" font-size="12" font-weight="bold" fill="#6c4f9e">TIN Surface Model – 3D Terrain Representation</text>
+
+        <!-- 3D perspective triangle terrain -->
+        <!-- Back row (higher) -->
+        <polygon points="60,65 140,50 110,95" fill="url(#tGrad1)" stroke="#6c4f9e" stroke-width="1.2" opacity=".9"/>
+        <polygon points="140,50 225,58 180,85" fill="url(#tGrad2)" stroke="#6c4f9e" stroke-width="1.2" opacity=".85"/>
+        <polygon points="140,50 180,85 110,95" fill="url(#tGrad1)" stroke="#6c4f9e" stroke-width="1" opacity=".88"/>
+        <polygon points="225,58 310,52 270,78" fill="url(#tGrad1)" stroke="#6c4f9e" stroke-width="1.2" opacity=".9"/>
+        <polygon points="225,58 270,78 180,85" fill="url(#tGrad2)" stroke="#6c4f9e" stroke-width="1" opacity=".82"/>
+        <polygon points="310,52 390,60 350,88" fill="url(#tGrad2)" stroke="#6c4f9e" stroke-width="1.2" opacity=".85"/>
+        <polygon points="310,52 350,88 270,78" fill="url(#tGrad1)" stroke="#6c4f9e" stroke-width="1" opacity=".88"/>
+        <polygon points="390,60 460,70 430,95" fill="url(#tGrad3)" stroke="#6c4f9e" stroke-width="1.2" opacity=".9"/>
+        <polygon points="390,60 430,95 350,88" fill="url(#tGrad2)" stroke="#6c4f9e" stroke-width="1" opacity=".85"/>
+
+        <!-- Middle row -->
+        <polygon points="60,65 110,95 70,130" fill="url(#tGrad3)" stroke="#6c4f9e" stroke-width="1" opacity=".85"/>
+        <polygon points="110,95 180,85 160,130" fill="url(#tGrad3)" stroke="#6c4f9e" stroke-width="1.2" opacity=".88"/>
+        <polygon points="110,95 160,130 70,130" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".82"/>
+        <polygon points="180,85 270,78 240,125" fill="url(#tGrad3)" stroke="#6c4f9e" stroke-width="1.2" opacity=".9"/>
+        <polygon points="180,85 240,125 160,130" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".85"/>
+        <polygon points="270,78 350,88 320,128" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1.2" opacity=".88"/>
+        <polygon points="270,78 320,128 240,125" fill="url(#tGrad3)" stroke="#6c4f9e" stroke-width="1" opacity=".82"/>
+        <polygon points="350,88 430,95 400,132" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1.2" opacity=".88"/>
+        <polygon points="350,88 400,132 320,128" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".82"/>
+        <polygon points="430,95 500,105 470,138" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".85"/>
+        <polygon points="430,95 470,138 400,132" fill="url(#tGrad3)" stroke="#6c4f9e" stroke-width="1" opacity=".82"/>
+
+        <!-- Front row -->
+        <polygon points="70,130 160,130 120,170" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".85"/>
+        <polygon points="160,130 240,125 200,168" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1.2" opacity=".88"/>
+        <polygon points="160,130 200,168 120,170" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".8"/>
+        <polygon points="240,125 320,128 280,170" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".85"/>
+        <polygon points="240,125 280,170 200,168" fill="url(#tGrad3)" stroke="#6c4f9e" stroke-width="1" opacity=".82"/>
+        <polygon points="320,128 400,132 360,172" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".85"/>
+        <polygon points="320,128 360,172 280,170" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".8"/>
+        <polygon points="400,132 470,138 440,175" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1.2" opacity=".85"/>
+        <polygon points="400,132 440,175 360,172" fill="url(#tGrad4)" stroke="#6c4f9e" stroke-width="1" opacity=".8"/>
+
+        <!-- Peak nodes -->
+        <circle cx="140" cy="50" r="5" fill="#8b4513" stroke="#fff" stroke-width="1.5"/>
+        <text x="140" y="42" text-anchor="middle" font-size="7" fill="#8b4513" font-weight="bold">520m</text>
+        <circle cx="310" cy="52" r="5" fill="#8b4513" stroke="#fff" stroke-width="1.5"/>
+        <text x="310" y="44" text-anchor="middle" font-size="7" fill="#8b4513" font-weight="bold">480m</text>
+
+        <!-- Right side annotations -->
+        <rect x="18" y="192" width="524" height="40" rx="6" fill="rgba(108,79,158,.05)" stroke="#c8b8e0" stroke-width=".5"/>
+        <text x="50" y="208" font-size="8" fill="#6c4f9e" font-weight="bold">Node (x,y,z)</text>
+        <circle cx="36" cy="205" r="4" fill="#6c4f9e" stroke="#fff" stroke-width="1"/>
+        <text x="140" y="208" font-size="8" fill="#555">→ Irregular sample points with elevation</text>
+        <text x="50" y="224" font-size="8" fill="#6c4f9e" font-weight="bold">Triangles</text>
+        <polygon points="30,218 42,218 36,226" fill="#6c4f9e" opacity=".3" stroke="#6c4f9e" stroke-width=".8"/>
+        <text x="140" y="224" font-size="8" fill="#555">→ More triangles where terrain is complex (peaks, valleys)</text>
+        <text x="380" y="208" font-size="8" fill="#888">Higher density = higher accuracy</text>
+        <text x="380" y="224" font-size="8" fill="#888">Slope, aspect, visibility analysis</text>
+      </svg>
+      <figcaption>Fig 3.10 – TIN 3D Terrain Surface: irregular triangles model elevation, with denser triangulation in complex terrain areas</figcaption>
+    </figure>
+
+    <!-- 3. Topology within the TIN Data Model -->
+    <h2>3. Topology within the TIN Data Model <span class="exam-ref">Addresses: 2073 Bhadra, Q3b</span></h2>
+    <p><strong>What is topology in a TIN?</strong></p>
+    <p>In a TIN model, topology refers to the explicit mathematical relationships maintained between its components: the nodes, edges, and triangular faces.</p>
+    <ul>
+      <li><strong>The Structure:</strong> The TIN database doesn't just draw triangles; it explicitly records which three nodes make up a specific triangle, and which triangles share a common edge.</li>
+      <li><strong>The Rule:</strong> In a proper TIN topology, every edge is shared by exactly two adjacent triangles (unless it is on the outer boundary of the model), and multiple triangles share the same corner node.</li>
+      <li><strong>The Benefit:</strong> Because these topological relationships are hardcoded, the GIS can rapidly perform complex 3D surface analyses across the terrain, such as calculating slope, aspect (the direction a slope faces), and line-of-sight visibility, without having to recalculate how the points connect every time.</li>
+    </ul>
+
+    <!-- Numerical Procedures -->
+    <h2>Numerical Procedures</h2>
+
+    <h3>1. Run Length Encoding (RLE)</h3>
+    <p>(Applies to questions asking for Run Length Encoding)</p>
+    <p>This method compresses data by grouping identical, adjacent cell values in a single row.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 140" width="520" height="140" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gRLE1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef"/><stop offset="100%" stop-color="#3ba8d8"/></linearGradient>
+          <linearGradient id="gRLE2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#8cc63f"/></linearGradient>
+          <linearGradient id="gRLEbox1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#d0e8f8"/></linearGradient>
+          <linearGradient id="gRLEbox2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f8e8"/><stop offset="100%" stop-color="#d0f0d0"/></linearGradient>
+          <filter id="fRLE"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+          <marker id="a3r" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#1a3c5e"/></marker>
+        </defs>
+        <!-- Original grid panel -->
+        <rect x="5" y="5" width="148" height="90" rx="6" fill="#faf8f4" stroke="#ccc" stroke-width="0.8" filter="url(#fRLE)"/>
+        <text x="79" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Original Grid</text>
+        <g transform="translate(15,28)">
+          <rect x="0" y="0" width="32" height="28" rx="2" fill="url(#gRLE1)" stroke="#2a7cb5" stroke-width="0.8"/><text x="16" y="19" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+          <rect x="32" y="0" width="32" height="28" rx="2" fill="url(#gRLE1)" stroke="#2a7cb5" stroke-width="0.8"/><text x="48" y="19" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+          <rect x="64" y="0" width="32" height="28" rx="2" fill="url(#gRLE1)" stroke="#2a7cb5" stroke-width="0.8"/><text x="80" y="19" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+          <rect x="96" y="0" width="32" height="28" rx="2" fill="url(#gRLE2)" stroke="#5a9a20" stroke-width="0.8"/><text x="112" y="19" text-anchor="middle" font-size="11" fill="white" font-weight="bold">2</text>
+          <rect x="0" y="30" width="32" height="28" rx="2" fill="url(#gRLE1)" stroke="#2a7cb5" stroke-width="0.8"/><text x="16" y="49" text-anchor="middle" font-size="11" fill="white" font-weight="bold">1</text>
+          <rect x="32" y="30" width="32" height="28" rx="2" fill="url(#gRLE2)" stroke="#5a9a20" stroke-width="0.8"/><text x="48" y="49" text-anchor="middle" font-size="11" fill="white" font-weight="bold">2</text>
+          <rect x="64" y="30" width="32" height="28" rx="2" fill="url(#gRLE2)" stroke="#5a9a20" stroke-width="0.8"/><text x="80" y="49" text-anchor="middle" font-size="11" fill="white" font-weight="bold">2</text>
+          <rect x="96" y="30" width="32" height="28" rx="2" fill="url(#gRLE2)" stroke="#5a9a20" stroke-width="0.8"/><text x="112" y="49" text-anchor="middle" font-size="11" fill="white" font-weight="bold">2</text>
+        </g>
+        <!-- Row brackets -->
+        <text x="5" y="52" font-size="8" fill="#888">R1→</text>
+        <text x="5" y="82" font-size="8" fill="#888">R2→</text>
+        <!-- Arrow -->
+        <line x1="162" y1="55" x2="210" y2="55" stroke="#1a3c5e" stroke-width="2" marker-end="url(#a3r)"/>
+        <text x="186" y="46" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">RLE</text>
+        <text x="186" y="70" text-anchor="middle" font-size="7" fill="#888">compress</text>
+        <!-- Encoded panel -->
+        <rect x="220" y="5" width="170" height="90" rx="6" fill="#faf8f4" stroke="#ccc" stroke-width="0.8" filter="url(#fRLE)"/>
+        <text x="305" y="20" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">RLE Encoded</text>
+        <g transform="translate(230,28)">
+          <rect x="0" y="0" width="150" height="28" rx="5" fill="url(#gRLEbox1)" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="75" y="19" text-anchor="middle" font-size="11" fill="#1a3c5e">Row 1: <tspan font-weight="bold">(3,1)</tspan> <tspan font-weight="bold">(1,2)</tspan></text>
+          <rect x="0" y="33" width="150" height="28" rx="5" fill="url(#gRLEbox2)" stroke="#2a8c2a" stroke-width="1"/>
+          <text x="75" y="52" text-anchor="middle" font-size="11" fill="#2a6c2a">Row 2: <tspan font-weight="bold">(1,1)</tspan> <tspan font-weight="bold">(3,2)</tspan></text>
+        </g>
+        <!-- Savings badge -->
+        <rect x="405" y="30" width="106" height="52" rx="8" fill="#1a3c5e" stroke="none" filter="url(#fRLE)"/>
+        <text x="458" y="52" text-anchor="middle" font-size="10" fill="#f6bb42" font-weight="bold">8 → 4 pairs</text>
+        <text x="458" y="68" text-anchor="middle" font-size="12" fill="white" font-weight="bold">50% saved</text>
+        <!-- Bottom label -->
+        <text x="260" y="130" text-anchor="middle" font-size="9" fill="#555" font-style="italic">Identical consecutive values are grouped as (count, value) pairs per row</text>
+      </svg>
+      <figcaption>Fig 3.2 – Run Length Encoding (RLE) Compression Example</figcaption>
+    </figure>
+    <ol>
+      <li><strong>Read Row by Row:</strong> Start at the top-left cell of the raster grid and read across the first row.</li>
+      <li><strong>Count Consecutive Values:</strong> Count how many times a specific value repeats sequentially.</li>
+      <li><strong>Write the Pair:</strong> Write down the count followed by the value. (For example, if you see five cells with the number "27", write it as (5, 27) or 5:27).</li>
+      <li><strong>Reset at Changes or New Rows:</strong> When the number changes, start a new count. When you reach the end of a row, always start a fresh count for the next row (standard row-by-row RLE).</li>
+      <li><strong>Final Output:</strong> Your answer should be a linear list of these pairs for the entire grid.</li>
+    </ol>
+
+    <h3>2. Quadtree Encoding</h3>
+    <p>(Applies to questions asking for Quad tree encoding)</p>
+    <p>This is a spatial compression method that divides grids into four quadrants (NW, NE, SW, SE).</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 440 210" width="440" height="210" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <linearGradient id="gQG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#8cc63f"/></linearGradient>
+          <linearGradient id="gQB" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef"/><stop offset="100%" stop-color="#3ba8d8"/></linearGradient>
+          <filter id="fQT"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Grid panel -->
+        <rect x="8" y="8" width="145" height="155" rx="6" fill="#faf8f4" stroke="#ccc" stroke-width="0.8" filter="url(#fQT)"/>
+        <text x="80" y="24" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">4×4 Grid</text>
+        <!-- Grid cells (4x4) -->
+        <g transform="translate(18,32)">
+          <rect x="0" y="0" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="15" y="18" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="30" y="0" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="45" y="18" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="60" y="0" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="75" y="18" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="90" y="0" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="105" y="18" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="0" y="28" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="15" y="46" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="30" y="28" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="45" y="46" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="60" y="28" width="30" height="28" rx="2" fill="url(#gQB)" stroke="#2a7cb5" stroke-width="0.8"/><text x="75" y="46" text-anchor="middle" font-size="9" fill="white" font-weight="bold">2</text>
+          <rect x="90" y="28" width="30" height="28" rx="2" fill="url(#gQB)" stroke="#2a7cb5" stroke-width="0.8"/><text x="105" y="46" text-anchor="middle" font-size="9" fill="white" font-weight="bold">2</text>
+          <rect x="0" y="56" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="15" y="74" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="30" y="56" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="45" y="74" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="60" y="56" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="75" y="74" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="90" y="56" width="30" height="28" rx="2" fill="url(#gQB)" stroke="#2a7cb5" stroke-width="0.8"/><text x="105" y="74" text-anchor="middle" font-size="9" fill="white" font-weight="bold">2</text>
+          <rect x="0" y="84" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="15" y="102" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="30" y="84" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="45" y="102" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="60" y="84" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="75" y="102" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+          <rect x="90" y="84" width="30" height="28" rx="2" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.8"/><text x="105" y="102" text-anchor="middle" font-size="9" fill="white" font-weight="bold">1</text>
+        </g>
+        <!-- Quadrant dividers -->
+        <line x1="78" y1="32" x2="78" y2="144" stroke="#ed5565" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <line x1="18" y1="88" x2="138" y2="88" stroke="#ed5565" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="42" y="152" font-size="7" fill="#888" text-anchor="middle">NW</text>
+        <text x="108" y="152" font-size="7" fill="#888" text-anchor="middle">NE/SE mixed</text>
+        <!-- Arrow -->
+        <text x="165" y="90" font-size="20" fill="#1a3c5e" font-weight="bold">→</text>
+        <text x="165" y="106" font-size="8" fill="#888">decompose</text>
+        <!-- Tree panel -->
+        <rect x="195" y="8" width="238" height="185" rx="6" fill="#faf8f4" stroke="#ccc" stroke-width="0.8" filter="url(#fQT)"/>
+        <text x="314" y="24" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Quadtree Structure</text>
+        <!-- Root -->
+        <circle cx="314" cy="46" r="14" fill="#b8860b" stroke="#8b6914" stroke-width="1.2"/>
+        <text x="314" y="50" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Root</text>
+        <!-- Level 1 branches -->
+        <line x1="300" y1="60" x2="235" y2="88" stroke="#555" stroke-width="1.2"/>
+        <line x1="306" y1="60" x2="280" y2="88" stroke="#555" stroke-width="1.2"/>
+        <line x1="322" y1="60" x2="348" y2="88" stroke="#555" stroke-width="1.2"/>
+        <line x1="328" y1="60" x2="393" y2="88" stroke="#555" stroke-width="1.2"/>
+        <!-- NW leaf (all 1 = uniform) -->
+        <rect x="216" y="90" width="38" height="22" rx="4" fill="url(#gQG)" stroke="#5a9a20" stroke-width="1"/>
+        <text x="235" y="105" text-anchor="middle" font-size="8" fill="white" font-weight="bold">NW=1</text>
+        <!-- NE mixed -->
+        <circle cx="280" cy="100" r="11" fill="#f6bb42" stroke="#8b6914" stroke-width="1"/>
+        <text x="280" y="104" text-anchor="middle" font-size="7" fill="#333" font-weight="bold">NE</text>
+        <!-- SW leaf -->
+        <rect x="329" y="90" width="38" height="22" rx="4" fill="url(#gQG)" stroke="#5a9a20" stroke-width="1"/>
+        <text x="348" y="105" text-anchor="middle" font-size="8" fill="white" font-weight="bold">SW=1</text>
+        <!-- SE mixed -->
+        <circle cx="393" cy="100" r="11" fill="#f6bb42" stroke="#8b6914" stroke-width="1"/>
+        <text x="393" y="104" text-anchor="middle" font-size="7" fill="#333" font-weight="bold">SE</text>
+        <!-- NE children -->
+        <line x1="271" y1="111" x2="245" y2="135" stroke="#555" stroke-width="0.8"/>
+        <line x1="275" y1="111" x2="265" y2="135" stroke="#555" stroke-width="0.8"/>
+        <line x1="285" y1="111" x2="290" y2="135" stroke="#555" stroke-width="0.8"/>
+        <line x1="289" y1="111" x2="310" y2="135" stroke="#555" stroke-width="0.8"/>
+        <rect x="233" y="137" width="24" height="16" rx="3" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.6"/><text x="245" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">1</text>
+        <rect x="257" y="137" width="24" height="16" rx="3" fill="url(#gQB)" stroke="#2a7cb5" stroke-width="0.6"/><text x="269" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">2</text>
+        <rect x="281" y="137" width="24" height="16" rx="3" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.6"/><text x="293" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">1</text>
+        <rect x="305" y="137" width="24" height="16" rx="3" fill="url(#gQB)" stroke="#2a7cb5" stroke-width="0.6"/><text x="317" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">2</text>
+        <!-- SE children -->
+        <line x1="384" y1="111" x2="360" y2="135" stroke="#555" stroke-width="0.8"/>
+        <line x1="389" y1="111" x2="380" y2="135" stroke="#555" stroke-width="0.8"/>
+        <line x1="397" y1="111" x2="403" y2="135" stroke="#555" stroke-width="0.8"/>
+        <line x1="402" y1="111" x2="420" y2="135" stroke="#555" stroke-width="0.8"/>
+        <rect x="348" y="137" width="24" height="16" rx="3" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.6"/><text x="360" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">1</text>
+        <rect x="372" y="137" width="24" height="16" rx="3" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.6"/><text x="384" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">1</text>
+        <rect x="396" y="137" width="24" height="16" rx="3" fill="url(#gQG)" stroke="#5a9a20" stroke-width="0.6"/><text x="408" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">1</text>
+        <rect x="413" y="137" width="24" height="16" rx="3" fill="url(#gQB)" stroke="#2a7cb5" stroke-width="0.6"/><text x="425" y="149" text-anchor="middle" font-size="6" fill="white" font-weight="bold">2</text>
+        <!-- Legend -->
+        <text x="314" y="178" text-anchor="middle" font-size="8" fill="#555" font-style="italic">● Uniform → leaf | ● Mixed → subdivide further</text>
+      </svg>
+      <figcaption>Fig 3.3 – Quadtree Encoding: Grid division into quadrants with tree structure</figcaption>
+    </figure>
+    <ol>
+      <li><strong>Check the Whole Grid:</strong> Look at the entire grid (e.g., 8x8). Does every single cell have the exact same value?
+        <ul>
+          <li>If yes: The entire grid is just one value. Stop.</li>
+          <li>If no: Proceed to Step 2.</li>
+        </ul>
+      </li>
+      <li><strong>Divide into Four:</strong> Split the grid evenly into four quadrants.</li>
+      <li><strong>Evaluate Each Quadrant:</strong> Look at the top-left quadrant (NW) first.
+        <ul>
+          <li>Are all cells inside it identical? If yes, record that value.</li>
+          <li>If there are mixed values, split that specific quadrant into four smaller quadrants.</li>
+        </ul>
+      </li>
+      <li><strong>Repeat (Recurse):</strong> Continue this process of evaluating and splitting for the NE, SW, and SE quadrants. Keep splitting mixed blocks until every block you have contains only a single uniform value.</li>
+      <li><strong>Final Output:</strong> Draw a tree diagram. The top root is the whole grid, branching into 4 nodes. Uniform nodes stop (leaf nodes). Mixed nodes branch into 4 more nodes.</li>
+    </ol>
+
+    <h3>3. Block Encoding</h3>
+    <p>(Applies to questions asking for Block encoding)</p>
+    <p>Instead of grouping rows or dividing by strict quadrants, this method looks for the largest possible square blocks of identical values anywhere in the grid.</p>
+    <ol>
+      <li><strong>Find the Largest Squares:</strong> Scan the grid for the biggest possible square (e.g., 4x4) where all cells are the exact same value.</li>
+      <li><strong>Record the Block:</strong> Write down three things for that block:
+        <ul>
+          <li>Its starting coordinate (usually the row and column of its top-left or bottom-left corner).</li>
+          <li>The size of the square (e.g., 4).</li>
+          <li>The value of the cells inside it.</li>
+        </ul>
+      </li>
+      <li><strong>Move to Smaller Squares:</strong> Once you've mapped out the largest squares, find the next largest (e.g., 2x2 squares) and record them.</li>
+      <li><strong>Record Single Cells:</strong> Finally, any leftover cells that don't form a 2x2 or larger square must be recorded as 1x1 blocks.</li>
+      <li><strong>Final Output:</strong> A list of coordinates, sizes, and values.</li>
+    </ol>
+
+    <h3>4. Chain Encoding</h3>
+    <p>(Applies to questions asking for Chain encoding)</p>
+    <p>This method is used to trace the boundary of a specific feature (like a polygon of "forest" cells). It relies on a directional grid (usually 0 to 7, where 0 is East, 1 is North-East, 2 is North, etc.).</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 220" width="560" height="220" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <filter id="fChain"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.10"/></filter>
+          <marker id="aChain" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+        </defs>
+
+        <!-- Direction Compass (left panel) -->
+        <g transform="translate(8,8)" filter="url(#fChain)">
+          <rect width="200" height="200" rx="10" fill="#f8f4ff" stroke="#b0a0d0" stroke-width="1"/>
+          <text x="100" y="24" text-anchor="middle" font-size="11" font-weight="bold" fill="#6c4f9e">Direction Codes (0–7)</text>
+
+          <!-- Compass circle -->
+          <circle cx="100" cy="115" r="65" fill="none" stroke="#d0c0e8" stroke-width="1"/>
+          <circle cx="100" cy="115" r="4" fill="#6c4f9e"/>
+
+          <!-- Direction arrows -->
+          <!-- 0 = East -->
+          <line x1="108" y1="115" x2="162" y2="115" stroke="#1a3c5e" stroke-width="2" marker-end="url(#aChain)"/>
+          <rect x="163" y="108" width="22" height="16" rx="4" fill="#1a3c5e"/><text x="174" y="119" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">0</text>
+          <text x="174" y="130" text-anchor="middle" font-size="6" fill="#888">East</text>
+
+          <!-- 1 = NE -->
+          <line x1="106" y1="109" x2="147" y2="68" stroke="#38a7d4" stroke-width="1.5" marker-end="url(#aChain)"/>
+          <circle cx="152" cy="62" r="10" fill="#38a7d4"/><text x="152" y="66" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">1</text>
+
+          <!-- 2 = North -->
+          <line x1="100" y1="107" x2="100" y2="53" stroke="#2a8c2a" stroke-width="2" marker-end="url(#aChain)"/>
+          <rect x="89" y="37" width="22" height="16" rx="4" fill="#2a8c2a"/><text x="100" y="48" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">2</text>
+
+          <!-- 3 = NW -->
+          <line x1="94" y1="109" x2="53" y2="68" stroke="#b8860b" stroke-width="1.5" marker-end="url(#aChain)"/>
+          <circle cx="47" cy="62" r="10" fill="#b8860b"/><text x="47" y="66" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">3</text>
+
+          <!-- 4 = West -->
+          <line x1="92" y1="115" x2="38" y2="115" stroke="#ed5565" stroke-width="2" marker-end="url(#aChain)"/>
+          <rect x="16" y="108" width="22" height="16" rx="4" fill="#ed5565"/><text x="27" y="119" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">4</text>
+
+          <!-- 5 = SW -->
+          <line x1="94" y1="121" x2="53" y2="162" stroke="#e88c30" stroke-width="1.5" marker-end="url(#aChain)"/>
+          <circle cx="47" cy="168" r="10" fill="#e88c30"/><text x="47" y="172" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">5</text>
+
+          <!-- 6 = South -->
+          <line x1="100" y1="123" x2="100" y2="176" stroke="#c0392b" stroke-width="2" marker-end="url(#aChain)"/>
+          <rect x="89" y="177" width="22" height="16" rx="4" fill="#c0392b"/><text x="100" y="188" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">6</text>
+
+          <!-- 7 = SE -->
+          <line x1="106" y1="121" x2="147" y2="162" stroke="#8b4513" stroke-width="1.5" marker-end="url(#aChain)"/>
+          <circle cx="152" cy="168" r="10" fill="#8b4513"/><text x="152" y="172" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">7</text>
+        </g>
+
+        <!-- Tracing Example (right panel) -->
+        <g transform="translate(225,8)" filter="url(#fChain)">
+          <rect width="326" height="200" rx="10" fill="#f8fbff" stroke="#90b8d8" stroke-width="1"/>
+          <text x="163" y="24" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Chain Code Tracing Example</text>
+
+          <!-- Grid with boundary shape -->
+          <g transform="translate(20,36)">
+            <!-- Empty cells -->
+            <rect x="0" y="0" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="28" y="0" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="56" y="0" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="84" y="0" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="112" y="0" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+
+            <!-- Filled cells (the shape to trace) -->
+            <rect x="28" y="24" width="28" height="24" fill="#4fc1e9" fill-opacity=".5" stroke="#1a6c8e" stroke-width="1" rx="1"/>
+            <rect x="56" y="24" width="28" height="24" fill="#4fc1e9" fill-opacity=".5" stroke="#1a6c8e" stroke-width="1" rx="1"/>
+            <rect x="84" y="24" width="28" height="24" fill="#4fc1e9" fill-opacity=".5" stroke="#1a6c8e" stroke-width="1" rx="1"/>
+            <rect x="28" y="48" width="28" height="24" fill="#4fc1e9" fill-opacity=".5" stroke="#1a6c8e" stroke-width="1" rx="1"/>
+            <rect x="56" y="48" width="28" height="24" fill="#4fc1e9" fill-opacity=".5" stroke="#1a6c8e" stroke-width="1" rx="1"/>
+            <rect x="84" y="48" width="28" height="24" fill="#4fc1e9" fill-opacity=".5" stroke="#1a6c8e" stroke-width="1" rx="1"/>
+            <rect x="56" y="72" width="28" height="24" fill="#4fc1e9" fill-opacity=".5" stroke="#1a6c8e" stroke-width="1" rx="1"/>
+
+            <!-- More empty cells around -->
+            <rect x="0" y="24" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="112" y="24" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="0" y="48" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="112" y="48" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="0" y="72" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="28" y="72" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="84" y="72" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+            <rect x="112" y="72" width="28" height="24" fill="#f0f0f0" stroke="#ddd" stroke-width=".5" rx="1"/>
+
+            <!-- Start marker -->
+            <circle cx="42" cy="36" r="5" fill="#ed5565" stroke="#a03030" stroke-width="1.5"/>
+            <text x="42" y="39" text-anchor="middle" font-size="6" fill="#fff" font-weight="bold">S</text>
+
+            <!-- Boundary trace arrows (clockwise) -->
+            <polyline points="42,36 70,36 98,36 98,60 70,84 70,60 42,60 42,36" fill="none" stroke="#ed5565" stroke-width="1.8" stroke-dasharray="4,2" marker-end="url(#aChain)"/>
+          </g>
+
+          <!-- Chain code output -->
+          <rect x="165" y="42" width="148" height="105" rx="6" fill="rgba(26,60,94,.04)" stroke="#b0c8e0" stroke-width=".8"/>
+          <text x="239" y="58" text-anchor="middle" font-size="9" fill="#1a3c5e" font-weight="bold">Output:</text>
+          <text x="239" y="76" text-anchor="middle" font-size="9" fill="#555">Start: (2, 1)</text>
+          <text x="239" y="96" text-anchor="middle" font-size="10" fill="#1a3c5e" font-weight="bold">Code: 0, 0, 6, 5, 4, 2, 2</text>
+          <text x="239" y="116" text-anchor="middle" font-size="7" fill="#888">(trace returns to start)</text>
+          <text x="239" y="136" text-anchor="middle" font-size="7" fill="#888">Compact boundary encoding</text>
+
+          <text x="163" y="174" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Trace the boundary clockwise, recording each</text>
+          <text x="163" y="186" text-anchor="middle" font-size="8" fill="#555" font-style="italic">movement direction (0–7) until you return to start</text>
+        </g>
+      </svg>
+      <figcaption>Fig 3.9 – Chain Encoding: 8-direction compass codes (left) and boundary tracing example (right)</figcaption>
+    </figure>
+    <ol>
+      <li><strong>Pick a Start Node:</strong> Choose an outer boundary pixel of the shape you are tracing. Record its (X, Y) coordinate as the starting point.</li>
+      <li><strong>Trace the Boundary:</strong> Move to the next adjacent pixel along the boundary of the shape.</li>
+      <li><strong>Record the Direction:</strong> Write down the directional code (0-7) that corresponds to the direction you just moved.</li>
+      <li><strong>Loop Back:</strong> Continue moving along the edge, recording the direction code for every step, until you arrive back at your starting pixel.</li>
+      <li><strong>Final Output:</strong> The starting coordinate followed by a sequence of directional numbers.</li>
+    </ol>
+
+    <h3>5. Value Point Encoding</h3>
+    <p>(Applies to questions asking for Value point encoding)</p>
+    <p>This is basically an index of coordinates for every value.</p>
+    <ol>
+      <li><strong>List Unique Values:</strong> Look at the grid and write down every unique value that appears (e.g., Forest, Water, Settlement).</li>
+      <li><strong>Find Coordinates:</strong> Establish a coordinate system (e.g., top-left cell is 0,0 or 1,1).</li>
+      <li><strong>Group by Value:</strong> For each unique value, simply write a list of the (X, Y) coordinates of every single cell that contains that value.</li>
+      <li><strong>Final Output:</strong> A grouped list: Value A: (1,1), (1,2), (2,1)...</li>
+    </ol>
+
+    <h3>6. Calculating Percentage Decrease in Size</h3>
+    <p>(Applies to questions asking for % decrease in size)</p>
+    <p>This proves how effective your compression was.</p>
+    <ol>
+      <li><strong>Calculate Uncompressed Size:</strong> Count the total number of cells in the original grid (e.g., an 8x8 grid = 64 cells).</li>
+      <li><strong>Calculate Compressed Size:</strong> Count the number of data elements in your compressed version. (For RLE, count the number of data pairs you created. For Quadtree, count the total number of leaf nodes in your tree).</li>
+      <li><strong>Apply the Formula:</strong> Use the standard percentage decrease formula:
+        <div class="formula">
+          Percentage Decrease = ((Uncompressed Size − Compressed Size) / Uncompressed Size) × 100%
+        </div>
+      </li>
+    </ol>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- SOLVED NUMERICAL EXAMPLES (PAST EXAM QUESTIONS)              -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <h2>Solved Numerical Examples (Past Exam Questions)</h2>
+    <p>The following are fully worked solutions from past examination papers, demonstrating the practical application of every raster encoding method. Study the step-by-step approach carefully — the same methodology applies to any grid you encounter in the exam.</p>
+
+    <!-- ──────────────────────── EXAMPLE 1 ──────────────────────── -->
+    <h3>Example 1 <span class="exam-ref">2074 Bhadra, Q1b [6 marks]</span></h3>
+    <div class="exam-box">
+      <strong>Question:</strong> Illustrate three raster encoding methods for the following 6 × 6 grid and also find the percentage decrease in size for each method.
+    </div>
+
+    <p><strong>Given Grid (6 × 6):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th style="width:32px;"></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th></tr></thead>
+        <tbody>
+          <tr><th>R1</th><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
+          <tr><th>R2</th><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
+          <tr><th>R3</th><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
+          <tr><th>R4</th><td>5</td><td>5</td><td>5</td><td>10</td><td>10</td><td>10</td></tr>
+          <tr><th>R5</th><td>5</td><td>5</td><td>5</td><td>12</td><td>12</td><td>12</td></tr>
+          <tr><th>R6</th><td>5</td><td>5</td><td>5</td><td>15</td><td>12</td><td>12</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Original (uncompressed) size = 6 × 6 = <strong>36 cells</strong>.</p>
+
+    <p><strong>Solution (a) — Run-Length Encoding (RLE):</strong></p>
+    <p>Scan each row left-to-right and record (value, count) pairs:</p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Row</th><th>RLE Pairs</th><th>No. of Pairs</th></tr></thead>
+        <tbody>
+          <tr><td>R1</td><td>(25, 6)</td><td>1</td></tr>
+          <tr><td>R2</td><td>(25, 6)</td><td>1</td></tr>
+          <tr><td>R3</td><td>(25, 6)</td><td>1</td></tr>
+          <tr><td>R4</td><td>(5, 3), (10, 3)</td><td>2</td></tr>
+          <tr><td>R5</td><td>(5, 3), (12, 3)</td><td>2</td></tr>
+          <tr><td>R6</td><td>(5, 3), (15, 1), (12, 2)</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total RLE pairs (compressed size) = 1 + 1 + 1 + 2 + 2 + 3 = <strong>10</strong></p>
+    <div class="formula">
+      % Decrease = ((36 − 10) / 36) × 100 = (26 / 36) × 100 = <strong>72.22 %</strong>
+    </div>
+
+    <p><strong>Solution (b) — Block Encoding:</strong></p>
+    <p>Identify the largest homogeneous rectangular blocks in the grid. Each block is recorded as (Value, Start Row, Start Col, Height × Width):</p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th>Block</th><th>Value</th><th>Start</th><th>Size</th><th>Cells Covered</th></tr></thead>
+        <tbody>
+          <tr><td>B1</td><td>25</td><td>(R1, C1)</td><td>3 × 6</td><td>18</td></tr>
+          <tr><td>B2</td><td>5</td><td>(R4, C1)</td><td>3 × 3</td><td>9</td></tr>
+          <tr><td>B3</td><td>10</td><td>(R4, C4)</td><td>1 × 3</td><td>3</td></tr>
+          <tr><td>B4</td><td>12</td><td>(R5, C4)</td><td>1 × 3</td><td>3</td></tr>
+          <tr><td>B5</td><td>15</td><td>(R6, C4)</td><td>1 × 1</td><td>1</td></tr>
+          <tr><td>B6</td><td>12</td><td>(R6, C5)</td><td>1 × 2</td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total blocks (compressed size) = <strong>6</strong></p>
+    <div class="formula">
+      % Decrease = ((36 − 6) / 36) × 100 = (30 / 36) × 100 = <strong>83.33 %</strong>
+    </div>
+
+    <p><strong>Solution (c) — Value Point Encoding:</strong></p>
+    <p>List each unique value followed by the coordinates of every cell containing that value:</p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Value</th><th>Coordinates (Row, Col)</th><th>Count</th></tr></thead>
+        <tbody>
+          <tr><td><strong>25</strong></td><td>(1,1) (1,2) (1,3) (1,4) (1,5) (1,6) (2,1) (2,2) (2,3) (2,4) (2,5) (2,6) (3,1) (3,2) (3,3) (3,4) (3,5) (3,6)</td><td>18</td></tr>
+          <tr><td><strong>5</strong></td><td>(4,1) (4,2) (4,3) (5,1) (5,2) (5,3) (6,1) (6,2) (6,3)</td><td>9</td></tr>
+          <tr><td><strong>10</strong></td><td>(4,4) (4,5) (4,6)</td><td>3</td></tr>
+          <tr><td><strong>12</strong></td><td>(5,4) (5,5) (5,6) (6,5) (6,6)</td><td>5</td></tr>
+          <tr><td><strong>15</strong></td><td>(6,4)</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Unique values = <strong>5</strong>. Total coordinates stored = 36 (same as original, so this method is less efficient for grids with many distinct locations per value).</p>
+
+    <!-- ──────────────────────── EXAMPLE 2 ──────────────────────── -->
+    <h3>Example 2 <span class="exam-ref">2073 Magh, Q3 [6 marks]</span></h3>
+    <div class="exam-box">
+      <strong>Question:</strong> Given the following 8 × 8 raster grid (F = Forest, W = Water, O = Open Space, S = Settlement), encode it using: (a) Full Raster, (b) Run-Length Encoding, (c) Quadtree, and (d) Value Point Encoding.
+    </div>
+
+    <p><strong>Given Grid (8 × 8):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th style="width:32px;"></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr></thead>
+        <tbody>
+          <tr><th>R1</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>F</td><td>F</td></tr>
+          <tr><th>R2</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>F</td><td>F</td></tr>
+          <tr><th>R3</th><td>F</td><td>F</td><td>F</td><td>F</td><td>O</td><td>O</td><td>F</td><td>F</td></tr>
+          <tr><th>R4</th><td>F</td><td>F</td><td>F</td><td>F</td><td>O</td><td>O</td><td>F</td><td>F</td></tr>
+          <tr><th>R5</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+          <tr><th>R6</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+          <tr><th>R7</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>W</td><td>W</td></tr>
+          <tr><th>R8</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>W</td><td>W</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Original (uncompressed) size = 8 × 8 = <strong>64 cells</strong>.</p>
+
+    <p><strong>Solution (a) — Full Raster:</strong></p>
+    <p>Simply list every cell value row by row. Total stored values = <strong>64</strong> (no compression).</p>
+    <p style="word-break:break-all; font-family:monospace; font-size:10pt; background:var(--soft); padding:10px; border-radius:4px;">
+      F F F F W W F F &nbsp;|&nbsp; F F F F W W F F &nbsp;|&nbsp; F F F F O O F F &nbsp;|&nbsp; F F F F O O F F &nbsp;|&nbsp; F F F F S S S S &nbsp;|&nbsp; F F F F S S S S &nbsp;|&nbsp; F F F F S S W W &nbsp;|&nbsp; F F F F S S W W
+    </p>
+
+    <p><strong>Solution (b) — Run-Length Encoding (RLE):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Row</th><th>RLE Pairs</th><th>Pairs</th></tr></thead>
+        <tbody>
+          <tr><td>R1</td><td>(F, 4), (W, 2), (F, 2)</td><td>3</td></tr>
+          <tr><td>R2</td><td>(F, 4), (W, 2), (F, 2)</td><td>3</td></tr>
+          <tr><td>R3</td><td>(F, 4), (O, 2), (F, 2)</td><td>3</td></tr>
+          <tr><td>R4</td><td>(F, 4), (O, 2), (F, 2)</td><td>3</td></tr>
+          <tr><td>R5</td><td>(F, 4), (S, 4)</td><td>2</td></tr>
+          <tr><td>R6</td><td>(F, 4), (S, 4)</td><td>2</td></tr>
+          <tr><td>R7</td><td>(F, 4), (S, 2), (W, 2)</td><td>3</td></tr>
+          <tr><td>R8</td><td>(F, 4), (S, 2), (W, 2)</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total RLE pairs = 3 + 3 + 3 + 3 + 2 + 2 + 3 + 3 = <strong>22</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 22) / 64) × 100 = (42 / 64) × 100 = <strong>65.63 %</strong>
+    </div>
+
+    <p><strong>Solution (c) — Quadtree Encoding:</strong></p>
+    <p>Recursively divide the 8 × 8 grid into four equal quadrants. If a quadrant is homogeneous (all cells same value), it becomes a <em>leaf node</em>. Otherwise, subdivide again.</p>
+    <ul>
+      <li><strong>Root (8 × 8):</strong> Not uniform → Split into four 4 × 4 quadrants
+        <ul>
+          <li><strong>NW (R1–4, C1–4):</strong> All F → <strong>Leaf: F</strong></li>
+          <li><strong>NE (R1–4, C5–8):</strong> Mixed (W, F, O) → Split into four 2 × 2
+            <ul>
+              <li><strong>NE-NW (R1–2, C5–6):</strong> All W → <strong>Leaf: W</strong></li>
+              <li><strong>NE-NE (R1–2, C7–8):</strong> All F → <strong>Leaf: F</strong></li>
+              <li><strong>NE-SW (R3–4, C5–6):</strong> All O → <strong>Leaf: O</strong></li>
+              <li><strong>NE-SE (R3–4, C7–8):</strong> All F → <strong>Leaf: F</strong></li>
+            </ul>
+          </li>
+          <li><strong>SW (R5–8, C1–4):</strong> All F → <strong>Leaf: F</strong></li>
+          <li><strong>SE (R5–8, C5–8):</strong> Mixed (S, W) → Split into four 2 × 2
+            <ul>
+              <li><strong>SE-NW (R5–6, C5–6):</strong> All S → <strong>Leaf: S</strong></li>
+              <li><strong>SE-NE (R5–6, C7–8):</strong> All S → <strong>Leaf: S</strong></li>
+              <li><strong>SE-SW (R7–8, C5–6):</strong> All S → <strong>Leaf: S</strong></li>
+              <li><strong>SE-SE (R7–8, C7–8):</strong> All W → <strong>Leaf: W</strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Total leaf nodes = <strong>10</strong> (F, W, F, O, F, F, S, S, S, W)</p>
+    <div class="formula">
+      % Decrease = ((64 − 10) / 64) × 100 = (54 / 64) × 100 = <strong>84.38 %</strong>
+    </div>
+
+    <p><strong>Solution (d) — Value Point Encoding:</strong></p>
+    <p>List every unique value and the (Row, Col) coordinates of each cell containing that value:</p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Value</th><th>Coordinates</th><th>Count</th></tr></thead>
+        <tbody>
+          <tr><td><strong>F</strong></td><td>(1,1)–(1,4), (1,7)–(1,8), (2,1)–(2,4), (2,7)–(2,8), (3,1)–(3,4), (3,7)–(3,8), (4,1)–(4,4), (4,7)–(4,8), (5,1)–(5,4), (6,1)–(6,4), (7,1)–(7,4), (8,1)–(8,4)</td><td>40</td></tr>
+          <tr><td><strong>W</strong></td><td>(1,5), (1,6), (2,5), (2,6), (7,7), (7,8), (8,7), (8,8)</td><td>8</td></tr>
+          <tr><td><strong>O</strong></td><td>(3,5), (3,6), (4,5), (4,6)</td><td>4</td></tr>
+          <tr><td><strong>S</strong></td><td>(5,5)–(5,8), (6,5)–(6,8), (7,5), (7,6), (8,5), (8,6)</td><td>12</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Unique values = <strong>4</strong>. All 64 cell positions are recorded, grouped under their respective values.</p>
+
+    <!-- ──────────────────────── EXAMPLE 3 ──────────────────────── -->
+    <h3>Example 3 <span class="exam-ref">2075 Bhadra, Q3a</span></h3>
+    <div class="exam-box">
+      <strong>Question:</strong> Construct a Quadtree for the following 8 × 8 raster grid.
+    </div>
+
+    <p><strong>Given Grid (8 × 8):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th style="width:32px;"></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr></thead>
+        <tbody>
+          <tr><th>R1</th><td>12</td><td>12</td><td>12</td><td>12</td><td>10</td><td>10</td><td>10</td><td>10</td></tr>
+          <tr><th>R2</th><td>12</td><td>12</td><td>12</td><td>12</td><td>10</td><td>10</td><td>10</td><td>10</td></tr>
+          <tr><th>R3</th><td>12</td><td>12</td><td>12</td><td>12</td><td>10</td><td>10</td><td>10</td><td>10</td></tr>
+          <tr><th>R4</th><td>12</td><td>12</td><td>12</td><td>12</td><td>10</td><td>10</td><td>10</td><td>10</td></tr>
+          <tr><th>R5</th><td>9</td><td>9</td><td>7</td><td>2</td><td>6</td><td>6</td><td>4</td><td>4</td></tr>
+          <tr><th>R6</th><td>9</td><td>9</td><td>1</td><td>3</td><td>6</td><td>6</td><td>4</td><td>4</td></tr>
+          <tr><th>R7</th><td>3</td><td>3</td><td>8</td><td>8</td><td>2</td><td>2</td><td>5</td><td>5</td></tr>
+          <tr><th>R8</th><td>3</td><td>3</td><td>8</td><td>8</td><td>2</td><td>2</td><td>5</td><td>5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Original size = 8 × 8 = <strong>64 cells</strong>.</p>
+
+    <p><strong>Quadtree Decomposition:</strong></p>
+    <ul>
+      <li><strong>Root (8 × 8):</strong> Not uniform → Split
+        <ul>
+          <li><strong>NW (R1–4, C1–4):</strong> All 12 → <strong>Leaf: 12</strong></li>
+          <li><strong>NE (R1–4, C5–8):</strong> All 10 → <strong>Leaf: 10</strong></li>
+          <li><strong>SW (R5–8, C1–4):</strong> Mixed → Split
+            <ul>
+              <li><strong>SW-NW (R5–6, C1–2):</strong> All 9 → <strong>Leaf: 9</strong></li>
+              <li><strong>SW-NE (R5–6, C3–4):</strong> Mixed (7, 2, 1, 3) → Split
+                <ul>
+                  <li><strong>SW-NE-NW (R5, C3):</strong> 7 → <strong>Leaf: 7</strong></li>
+                  <li><strong>SW-NE-NE (R5, C4):</strong> 2 → <strong>Leaf: 2</strong></li>
+                  <li><strong>SW-NE-SW (R6, C3):</strong> 1 → <strong>Leaf: 1</strong></li>
+                  <li><strong>SW-NE-SE (R6, C4):</strong> 3 → <strong>Leaf: 3</strong></li>
+                </ul>
+              </li>
+              <li><strong>SW-SW (R7–8, C1–2):</strong> All 3 → <strong>Leaf: 3</strong></li>
+              <li><strong>SW-SE (R7–8, C3–4):</strong> All 8 → <strong>Leaf: 8</strong></li>
+            </ul>
+          </li>
+          <li><strong>SE (R5–8, C5–8):</strong> Mixed → Split
+            <ul>
+              <li><strong>SE-NW (R5–6, C5–6):</strong> All 6 → <strong>Leaf: 6</strong></li>
+              <li><strong>SE-NE (R5–6, C7–8):</strong> All 4 → <strong>Leaf: 4</strong></li>
+              <li><strong>SE-SW (R7–8, C5–6):</strong> All 2 → <strong>Leaf: 2</strong></li>
+              <li><strong>SE-SE (R7–8, C7–8):</strong> All 5 → <strong>Leaf: 5</strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Total leaf nodes = <strong>13</strong>: (12, 10, 9, 7, 2, 1, 3, 3, 8, 6, 4, 2, 5)</p>
+    <div class="formula">
+      % Decrease = ((64 − 13) / 64) × 100 = (51 / 64) × 100 = <strong>79.69 %</strong>
+    </div>
+
+    <!-- ──────────────────────── EXAMPLE 4 ──────────────────────── -->
+    <h3>Example 4 <span class="exam-ref">2080 Chaitra, Q7 [4+2+2+2 marks]</span></h3>
+    <div class="exam-box">
+      <strong>Question:</strong> Encode the following 8 × 8 raster grid using (a) Run-Length Encoding, (b) Quadtree, (c) Block Encoding, and (d) Chain Encoding.
+    </div>
+
+    <p><strong>Given Grid (8 × 8):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th style="width:32px;"></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr></thead>
+        <tbody>
+          <tr><th>R1</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+          <tr><th>R2</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+          <tr><th>R3</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+          <tr><th>R4</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+          <tr><th>R5</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td></tr>
+          <tr><th>R6</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td></tr>
+          <tr><th>R7</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>35</td><td>27</td></tr>
+          <tr><th>R8</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Original size = 8 × 8 = <strong>64 cells</strong>.</p>
+
+    <p><strong>Solution (a) — Run-Length Encoding (RLE) [4 marks]:</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Row</th><th>RLE Pairs</th><th>Pairs</th></tr></thead>
+        <tbody>
+          <tr><td>R1</td><td>(25, 2), (31, 2), (25, 2), (3, 2)</td><td>4</td></tr>
+          <tr><td>R2</td><td>(25, 2), (31, 2), (25, 2), (3, 2)</td><td>4</td></tr>
+          <tr><td>R3</td><td>(25, 2), (31, 2), (25, 2), (3, 2)</td><td>4</td></tr>
+          <tr><td>R4</td><td>(25, 2), (31, 2), (25, 2), (3, 2)</td><td>4</td></tr>
+          <tr><td>R5</td><td>(27, 8)</td><td>1</td></tr>
+          <tr><td>R6</td><td>(27, 8)</td><td>1</td></tr>
+          <tr><td>R7</td><td>(27, 6), (35, 1), (27, 1)</td><td>3</td></tr>
+          <tr><td>R8</td><td>(27, 8)</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total RLE pairs = 4 + 4 + 4 + 4 + 1 + 1 + 3 + 1 = <strong>22</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 22) / 64) × 100 = (42 / 64) × 100 = <strong>65.63 %</strong>
+    </div>
+
+    <p><strong>Solution (b) — Quadtree Encoding [2 marks]:</strong></p>
+    <ul>
+      <li><strong>Root (8 × 8):</strong> Not uniform → Split
+        <ul>
+          <li><strong>NW (R1–4, C1–4):</strong> Mixed (25, 31) → Split
+            <ul>
+              <li><strong>NW-NW (R1–2, C1–2):</strong> All 25 → <strong>Leaf: 25</strong></li>
+              <li><strong>NW-NE (R1–2, C3–4):</strong> All 31 → <strong>Leaf: 31</strong></li>
+              <li><strong>NW-SW (R3–4, C1–2):</strong> All 25 → <strong>Leaf: 25</strong></li>
+              <li><strong>NW-SE (R3–4, C3–4):</strong> All 31 → <strong>Leaf: 31</strong></li>
+            </ul>
+          </li>
+          <li><strong>NE (R1–4, C5–8):</strong> Mixed (25, 3) → Split
+            <ul>
+              <li><strong>NE-NW (R1–2, C5–6):</strong> All 25 → <strong>Leaf: 25</strong></li>
+              <li><strong>NE-NE (R1–2, C7–8):</strong> All 3 → <strong>Leaf: 3</strong></li>
+              <li><strong>NE-SW (R3–4, C5–6):</strong> All 25 → <strong>Leaf: 25</strong></li>
+              <li><strong>NE-SE (R3–4, C7–8):</strong> All 3 → <strong>Leaf: 3</strong></li>
+            </ul>
+          </li>
+          <li><strong>SW (R5–8, C1–4):</strong> All 27 → <strong>Leaf: 27</strong></li>
+          <li><strong>SE (R5–8, C5–8):</strong> Mixed (27, 35) → Split
+            <ul>
+              <li><strong>SE-NW (R5–6, C5–6):</strong> All 27 → <strong>Leaf: 27</strong></li>
+              <li><strong>SE-NE (R5–6, C7–8):</strong> All 27 → <strong>Leaf: 27</strong></li>
+              <li><strong>SE-SW (R7–8, C5–6):</strong> All 27 → <strong>Leaf: 27</strong></li>
+              <li><strong>SE-SE (R7–8, C7–8):</strong> Mixed (35, 27) → Split
+                <ul>
+                  <li><strong>SE-SE-NW (R7, C7):</strong> 35 → <strong>Leaf: 35</strong></li>
+                  <li><strong>SE-SE-NE (R7, C8):</strong> 27 → <strong>Leaf: 27</strong></li>
+                  <li><strong>SE-SE-SW (R8, C7):</strong> 27 → <strong>Leaf: 27</strong></li>
+                  <li><strong>SE-SE-SE (R8, C8):</strong> 27 → <strong>Leaf: 27</strong></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Total leaf nodes = <strong>16</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 16) / 64) × 100 = (48 / 64) × 100 = <strong>75.00 %</strong>
+    </div>
+
+    <p><strong>Solution (c) — Block Encoding [2 marks]:</strong></p>
+    <p>Identify the largest homogeneous rectangular blocks:</p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th>Block</th><th>Value</th><th>Start</th><th>Size</th><th>Cells</th></tr></thead>
+        <tbody>
+          <tr><td>B1</td><td>25</td><td>(R1, C1)</td><td>4 × 2</td><td>8</td></tr>
+          <tr><td>B2</td><td>31</td><td>(R1, C3)</td><td>4 × 2</td><td>8</td></tr>
+          <tr><td>B3</td><td>25</td><td>(R1, C5)</td><td>4 × 2</td><td>8</td></tr>
+          <tr><td>B4</td><td>3</td><td>(R1, C7)</td><td>4 × 2</td><td>8</td></tr>
+          <tr><td>B5</td><td>27</td><td>(R5, C1)</td><td>4 × 6</td><td>24</td></tr>
+          <tr><td>B6</td><td>27</td><td>(R5, C7)</td><td>2 × 2</td><td>4</td></tr>
+          <tr><td>B7</td><td>35</td><td>(R7, C7)</td><td>1 × 1</td><td>1</td></tr>
+          <tr><td>B8</td><td>27</td><td>(R7, C8)</td><td>1 × 1</td><td>1</td></tr>
+          <tr><td>B9</td><td>27</td><td>(R8, C7)</td><td>1 × 2</td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total blocks = <strong>9</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 9) / 64) × 100 = (55 / 64) × 100 = <strong>85.94 %</strong>
+    </div>
+
+    <p><strong>Solution (d) — Chain Encoding [2 marks]:</strong></p>
+    <p>Chain encoding traces the boundary of each connected region using the 8-direction Freeman chain code:</p>
+    <p style="font-family:monospace; font-size:10pt; background:var(--soft); padding:10px; border-radius:4px;">
+      2 = North (↑) &nbsp;&nbsp; 0 = East (→) &nbsp;&nbsp; 6 = South (↓) &nbsp;&nbsp; 4 = West (←)
+    </p>
+    <p>Trace the boundary of each distinct region clockwise from its top-left cell:</p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Region (Value)</th><th>Start Cell</th><th>Freeman Chain Code</th></tr></thead>
+        <tbody>
+          <tr><td>25 (Patch 1: R1–4, C1–2)</td><td>(1, 1)</td><td>0, 6, 6, 6, 4, 2, 2, 2</td></tr>
+          <tr><td>31 (R1–4, C3–4)</td><td>(1, 3)</td><td>0, 6, 6, 6, 4, 2, 2, 2</td></tr>
+          <tr><td>25 (Patch 2: R1–4, C5–6)</td><td>(1, 5)</td><td>0, 6, 6, 6, 4, 2, 2, 2</td></tr>
+          <tr><td>3 (R1–4, C7–8)</td><td>(1, 7)</td><td>0, 6, 6, 6, 4, 2, 2, 2</td></tr>
+          <tr><td>27 (R5–8, C1–8, except (7,7))</td><td>(5, 1)</td><td>0, 0, 0, 0, 0, 0, 0, 6, 6, 6, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2</td></tr>
+          <tr><td>35 (single cell R7, C7)</td><td>(7, 7)</td><td>0, 6, 4, 2 (single-cell boundary)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ──────────────────────── EXAMPLE 5 ──────────────────────── -->
+    <h3>Example 5 <span class="exam-ref">2076 Bhadra, Q3b [6 marks]</span></h3>
+    <div class="exam-box">
+      <strong>Question:</strong> Construct a Quadtree and perform Run-Length Encoding for the following 8 × 8 grid.
+    </div>
+
+    <p><strong>Given Grid (8 × 8):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th style="width:32px;"></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr></thead>
+        <tbody>
+          <tr><th>R1</th><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>4</td><td>4</td></tr>
+          <tr><th>R2</th><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>4</td><td>4</td></tr>
+          <tr><th>R3</th><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>4</td><td>4</td></tr>
+          <tr><th>R4</th><td>1</td><td>1</td><td>1</td><td>1</td><td>5</td><td>5</td><td>5</td><td>4</td></tr>
+          <tr><th>R5</th><td>2</td><td>2</td><td>2</td><td>2</td><td>5</td><td>5</td><td>5</td><td>5</td></tr>
+          <tr><th>R6</th><td>2</td><td>2</td><td>2</td><td>2</td><td>5</td><td>5</td><td>5</td><td>5</td></tr>
+          <tr><th>R7</th><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>5</td><td>5</td></tr>
+          <tr><th>R8</th><td>1</td><td>1</td><td>1</td><td>1</td><td>3</td><td>3</td><td>5</td><td>5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Original size = 8 × 8 = <strong>64 cells</strong>.</p>
+
+    <p><strong>Solution (a) — Quadtree Encoding:</strong></p>
+    <ul>
+      <li><strong>Root (8 × 8):</strong> Not uniform → Split
+        <ul>
+          <li><strong>NW (R1–4, C1–4):</strong> All 1 → <strong>Leaf: 1</strong></li>
+          <li><strong>NE (R1–4, C5–8):</strong> Mixed (3, 4, 5) → Split
+            <ul>
+              <li><strong>NE-NW (R1–2, C5–6):</strong> All 3 → <strong>Leaf: 3</strong></li>
+              <li><strong>NE-NE (R1–2, C7–8):</strong> All 4 → <strong>Leaf: 4</strong></li>
+              <li><strong>NE-SW (R3–4, C5–6):</strong> Mixed (3,3,5,5) → Split
+                <ul>
+                  <li>NE-SW-NW (R3, C5): 3 → <strong>Leaf: 3</strong></li>
+                  <li>NE-SW-NE (R3, C6): 3 → <strong>Leaf: 3</strong></li>
+                  <li>NE-SW-SW (R4, C5): 5 → <strong>Leaf: 5</strong></li>
+                  <li>NE-SW-SE (R4, C6): 5 → <strong>Leaf: 5</strong></li>
+                </ul>
+              </li>
+              <li><strong>NE-SE (R3–4, C7–8):</strong> Mixed (4,4,5,4) → Split
+                <ul>
+                  <li>NE-SE-NW (R3, C7): 4 → <strong>Leaf: 4</strong></li>
+                  <li>NE-SE-NE (R3, C8): 4 → <strong>Leaf: 4</strong></li>
+                  <li>NE-SE-SW (R4, C7): 5 → <strong>Leaf: 5</strong></li>
+                  <li>NE-SE-SE (R4, C8): 4 → <strong>Leaf: 4</strong></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><strong>SW (R5–8, C1–4):</strong> Mixed (2, 1) → Split
+            <ul>
+              <li><strong>SW-NW (R5–6, C1–2):</strong> All 2 → <strong>Leaf: 2</strong></li>
+              <li><strong>SW-NE (R5–6, C3–4):</strong> All 2 → <strong>Leaf: 2</strong></li>
+              <li><strong>SW-SW (R7–8, C1–2):</strong> All 1 → <strong>Leaf: 1</strong></li>
+              <li><strong>SW-SE (R7–8, C3–4):</strong> All 1 → <strong>Leaf: 1</strong></li>
+            </ul>
+          </li>
+          <li><strong>SE (R5–8, C5–8):</strong> Mixed (5, 3) → Split
+            <ul>
+              <li><strong>SE-NW (R5–6, C5–6):</strong> All 5 → <strong>Leaf: 5</strong></li>
+              <li><strong>SE-NE (R5–6, C7–8):</strong> All 5 → <strong>Leaf: 5</strong></li>
+              <li><strong>SE-SW (R7–8, C5–6):</strong> All 3 → <strong>Leaf: 3</strong></li>
+              <li><strong>SE-SE (R7–8, C7–8):</strong> All 5 → <strong>Leaf: 5</strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Total leaf nodes = <strong>19</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 19) / 64) × 100 = (45 / 64) × 100 = <strong>70.31 %</strong>
+    </div>
+
+    <p><strong>Solution (b) — Run-Length Encoding (RLE):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Row</th><th>RLE Pairs</th><th>Pairs</th></tr></thead>
+        <tbody>
+          <tr><td>R1</td><td>(1, 4), (3, 2), (4, 2)</td><td>3</td></tr>
+          <tr><td>R2</td><td>(1, 4), (3, 2), (4, 2)</td><td>3</td></tr>
+          <tr><td>R3</td><td>(1, 4), (3, 2), (4, 2)</td><td>3</td></tr>
+          <tr><td>R4</td><td>(1, 4), (5, 3), (4, 1)</td><td>3</td></tr>
+          <tr><td>R5</td><td>(2, 4), (5, 4)</td><td>2</td></tr>
+          <tr><td>R6</td><td>(2, 4), (5, 4)</td><td>2</td></tr>
+          <tr><td>R7</td><td>(1, 4), (3, 2), (5, 2)</td><td>3</td></tr>
+          <tr><td>R8</td><td>(1, 4), (3, 2), (5, 2)</td><td>3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total RLE pairs = 3 + 3 + 3 + 3 + 2 + 2 + 3 + 3 = <strong>22</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 22) / 64) × 100 = (42 / 64) × 100 = <strong>65.63 %</strong>
+    </div>
+
+    <!-- ──────────────────────── EXAMPLE 6 ──────────────────────── -->
+    <h3>Example 6 <span class="exam-ref">2073 Bhadra, Q3c [6 marks]</span></h3>
+    <div class="exam-box">
+      <strong>Question:</strong> Perform Run-Length Encoding and construct a Quadtree for the following 8 × 8 grid.
+    </div>
+
+    <p><strong>Given Grid (8 × 8):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th style="width:32px;"></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr></thead>
+        <tbody>
+          <tr><th>R1</th><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td></tr>
+          <tr><th>R2</th><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td></tr>
+          <tr><th>R3</th><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td></tr>
+          <tr><th>R4</th><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td><td>12</td></tr>
+          <tr><th>R5</th><td>5</td><td>5</td><td>6</td><td>6</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+          <tr><th>R6</th><td>5</td><td>5</td><td>61</td><td>62</td><td>9</td><td>6</td><td>9</td><td>9</td></tr>
+          <tr><th>R7</th><td>7</td><td>7</td><td>7</td><td>7</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+          <tr><th>R8</th><td>7</td><td>7</td><td>7</td><td>7</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Original size = 8 × 8 = <strong>64 cells</strong>.</p>
+
+    <p><strong>Solution (a) — Run-Length Encoding (RLE):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Row</th><th>RLE Pairs</th><th>Pairs</th></tr></thead>
+        <tbody>
+          <tr><td>R1</td><td>(12, 8)</td><td>1</td></tr>
+          <tr><td>R2</td><td>(12, 8)</td><td>1</td></tr>
+          <tr><td>R3</td><td>(12, 8)</td><td>1</td></tr>
+          <tr><td>R4</td><td>(12, 8)</td><td>1</td></tr>
+          <tr><td>R5</td><td>(5, 2), (6, 2), (9, 4)</td><td>3</td></tr>
+          <tr><td>R6</td><td>(5, 2), (61, 1), (62, 1), (9, 1), (6, 1), (9, 2)</td><td>6</td></tr>
+          <tr><td>R7</td><td>(7, 4), (9, 4)</td><td>2</td></tr>
+          <tr><td>R8</td><td>(7, 4), (9, 4)</td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total RLE pairs = 1 + 1 + 1 + 1 + 3 + 6 + 2 + 2 = <strong>17</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 17) / 64) × 100 = (47 / 64) × 100 = <strong>73.44 %</strong>
+    </div>
+
+    <p><strong>Solution (b) — Quadtree Encoding:</strong></p>
+    <ul>
+      <li><strong>Root (8 × 8):</strong> Not uniform → Split
+        <ul>
+          <li><strong>NW (R1–4, C1–4):</strong> All 12 → <strong>Leaf: 12</strong></li>
+          <li><strong>NE (R1–4, C5–8):</strong> All 12 → <strong>Leaf: 12</strong></li>
+          <li><strong>SW (R5–8, C1–4):</strong> Mixed → Split
+            <ul>
+              <li><strong>SW-NW (R5–6, C1–2):</strong> All 5 → <strong>Leaf: 5</strong></li>
+              <li><strong>SW-NE (R5–6, C3–4):</strong> Mixed (6, 6, 61, 62) → Split
+                <ul>
+                  <li>SW-NE-NW (R5, C3): 6 → <strong>Leaf: 6</strong></li>
+                  <li>SW-NE-NE (R5, C4): 6 → <strong>Leaf: 6</strong></li>
+                  <li>SW-NE-SW (R6, C3): 61 → <strong>Leaf: 61</strong></li>
+                  <li>SW-NE-SE (R6, C4): 62 → <strong>Leaf: 62</strong></li>
+                </ul>
+              </li>
+              <li><strong>SW-SW (R7–8, C1–2):</strong> All 7 → <strong>Leaf: 7</strong></li>
+              <li><strong>SW-SE (R7–8, C3–4):</strong> All 7 → <strong>Leaf: 7</strong></li>
+            </ul>
+          </li>
+          <li><strong>SE (R5–8, C5–8):</strong> Mixed → Split
+            <ul>
+              <li><strong>SE-NW (R5–6, C5–6):</strong> Mixed (9, 9, 9, 6) → Split
+                <ul>
+                  <li>SE-NW-NW (R5, C5): 9 → <strong>Leaf: 9</strong></li>
+                  <li>SE-NW-NE (R5, C6): 9 → <strong>Leaf: 9</strong></li>
+                  <li>SE-NW-SW (R6, C5): 9 → <strong>Leaf: 9</strong></li>
+                  <li>SE-NW-SE (R6, C6): 6 → <strong>Leaf: 6</strong></li>
+                </ul>
+              </li>
+              <li><strong>SE-NE (R5–6, C7–8):</strong> All 9 → <strong>Leaf: 9</strong></li>
+              <li><strong>SE-SW (R7–8, C5–6):</strong> All 9 → <strong>Leaf: 9</strong></li>
+              <li><strong>SE-SE (R7–8, C7–8):</strong> All 9 → <strong>Leaf: 9</strong></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Total leaf nodes = <strong>16</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 16) / 64) × 100 = (48 / 64) × 100 = <strong>75.00 %</strong>
+    </div>
+
+    <!-- ──────────────────────── EXAMPLE 7 ──────────────────────── -->
+    <h3>Example 7 <span class="exam-ref">Past Exam Q7</span></h3>
+    <div class="exam-box">
+      <strong>Question:</strong> Perform Run-Length Encoding and construct a Quadtree for the following 8 × 8 grid.
+    </div>
+
+    <p><strong>Given Grid (8 × 8):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:center;">
+        <thead><tr><th style="width:32px;"></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr></thead>
+        <tbody>
+          <tr><th>R1</th><td>88</td><td>88</td><td>75</td><td>34</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+          <tr><th>R2</th><td>88</td><td>88</td><td>33</td><td>75</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+          <tr><th>R3</th><td>88</td><td>88</td><td>88</td><td>34</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+          <tr><th>R4</th><td>77</td><td>77</td><td>77</td><td>77</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+          <tr><th>R5</th><td>56</td><td>56</td><td>56</td><td>56</td><td>56</td><td>56</td><td>10</td><td>10</td></tr>
+          <tr><th>R6</th><td>56</td><td>56</td><td>56</td><td>56</td><td>33</td><td>25</td><td>10</td><td>10</td></tr>
+          <tr><th>R7</th><td>56</td><td>56</td><td>56</td><td>56</td><td>33</td><td>33</td><td>33</td><td>9</td></tr>
+          <tr><th>R8</th><td>56</td><td>56</td><td>56</td><td>56</td><td>33</td><td>33</td><td>33</td><td>33</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Original size = 8 × 8 = <strong>64 cells</strong>.</p>
+
+    <p><strong>Solution (a) — Run-Length Encoding (RLE):</strong></p>
+    <div class="table-wrap">
+      <table style="width:auto; text-align:left;">
+        <thead><tr><th>Row</th><th>RLE Pairs</th><th>Pairs</th></tr></thead>
+        <tbody>
+          <tr><td>R1</td><td>(88, 2), (75, 1), (34, 1), (9, 4)</td><td>4</td></tr>
+          <tr><td>R2</td><td>(88, 2), (33, 1), (75, 1), (9, 4)</td><td>4</td></tr>
+          <tr><td>R3</td><td>(88, 3), (34, 1), (9, 4)</td><td>3</td></tr>
+          <tr><td>R4</td><td>(77, 4), (9, 4)</td><td>2</td></tr>
+          <tr><td>R5</td><td>(56, 6), (10, 2)</td><td>2</td></tr>
+          <tr><td>R6</td><td>(56, 4), (33, 1), (25, 1), (10, 2)</td><td>4</td></tr>
+          <tr><td>R7</td><td>(56, 4), (33, 3), (9, 1)</td><td>3</td></tr>
+          <tr><td>R8</td><td>(56, 4), (33, 4)</td><td>2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Total RLE pairs = 4 + 4 + 3 + 2 + 2 + 4 + 3 + 2 = <strong>24</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 24) / 64) × 100 = (40 / 64) × 100 = <strong>62.50 %</strong>
+    </div>
+
+    <p><strong>Solution (b) — Quadtree Encoding:</strong></p>
+    <ul>
+      <li><strong>Root (8 × 8):</strong> Not uniform → Split
+        <ul>
+          <li><strong>NW (R1–4, C1–4):</strong> Mixed → Split
+            <ul>
+              <li><strong>NW-NW (R1–2, C1–2):</strong> All 88 → <strong>Leaf: 88</strong></li>
+              <li><strong>NW-NE (R1–2, C3–4):</strong> Mixed (75, 34, 33, 75) → Split
+                <ul>
+                  <li>NW-NE-NW (R1, C3): 75 → <strong>Leaf: 75</strong></li>
+                  <li>NW-NE-NE (R1, C4): 34 → <strong>Leaf: 34</strong></li>
+                  <li>NW-NE-SW (R2, C3): 33 → <strong>Leaf: 33</strong></li>
+                  <li>NW-NE-SE (R2, C4): 75 → <strong>Leaf: 75</strong></li>
+                </ul>
+              </li>
+              <li><strong>NW-SW (R3–4, C1–2):</strong> Mixed (88, 88, 77, 77) → Split
+                <ul>
+                  <li>NW-SW-NW (R3, C1): 88 → <strong>Leaf: 88</strong></li>
+                  <li>NW-SW-NE (R3, C2): 88 → <strong>Leaf: 88</strong></li>
+                  <li>NW-SW-SW (R4, C1): 77 → <strong>Leaf: 77</strong></li>
+                  <li>NW-SW-SE (R4, C2): 77 → <strong>Leaf: 77</strong></li>
+                </ul>
+              </li>
+              <li><strong>NW-SE (R3–4, C3–4):</strong> Mixed (88, 34, 77, 77) → Split
+                <ul>
+                  <li>NW-SE-NW (R3, C3): 88 → <strong>Leaf: 88</strong></li>
+                  <li>NW-SE-NE (R3, C4): 34 → <strong>Leaf: 34</strong></li>
+                  <li>NW-SE-SW (R4, C3): 77 → <strong>Leaf: 77</strong></li>
+                  <li>NW-SE-SE (R4, C4): 77 → <strong>Leaf: 77</strong></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><strong>NE (R1–4, C5–8):</strong> All 9 → <strong>Leaf: 9</strong></li>
+          <li><strong>SW (R5–8, C1–4):</strong> All 56 → <strong>Leaf: 56</strong></li>
+          <li><strong>SE (R5–8, C5–8):</strong> Mixed → Split
+            <ul>
+              <li><strong>SE-NW (R5–6, C5–6):</strong> Mixed (56, 56, 33, 25) → Split
+                <ul>
+                  <li>SE-NW-NW (R5, C5): 56 → <strong>Leaf: 56</strong></li>
+                  <li>SE-NW-NE (R5, C6): 56 → <strong>Leaf: 56</strong></li>
+                  <li>SE-NW-SW (R6, C5): 33 → <strong>Leaf: 33</strong></li>
+                  <li>SE-NW-SE (R6, C6): 25 → <strong>Leaf: 25</strong></li>
+                </ul>
+              </li>
+              <li><strong>SE-NE (R5–6, C7–8):</strong> All 10 → <strong>Leaf: 10</strong></li>
+              <li><strong>SE-SW (R7–8, C5–6):</strong> All 33 → <strong>Leaf: 33</strong></li>
+              <li><strong>SE-SE (R7–8, C7–8):</strong> Mixed (33, 9, 33, 33) → Split
+                <ul>
+                  <li>SE-SE-NW (R7, C7): 33 → <strong>Leaf: 33</strong></li>
+                  <li>SE-SE-NE (R7, C8): 9 → <strong>Leaf: 9</strong></li>
+                  <li>SE-SE-SW (R8, C7): 33 → <strong>Leaf: 33</strong></li>
+                  <li>SE-SE-SE (R8, C8): 33 → <strong>Leaf: 33</strong></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <p>Total leaf nodes = <strong>25</strong></p>
+    <div class="formula">
+      % Decrease = ((64 − 25) / 64) × 100 = (39 / 64) × 100 = <strong>60.94 %</strong>
+    </div>
+
+    <p class="footer-note">End of Chapter 3 – Spatial Data Models</p>
+  </main>
+</div>
+<script src="app.js"></script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000'];
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    tb.appendChild(d);
+  });
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

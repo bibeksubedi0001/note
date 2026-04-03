@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 7 — Numericals — Water Well Design</title>
+<link rel="stylesheet" href="style.css">
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+<pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="black" stroke-width="1.2"/></pattern>
+<pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="#999"/></pattern>
+<marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0,10 3.5,0 7" fill="black"/></marker>
+<marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0,0 3.5,10 7" fill="black"/></marker>
+</defs></svg>
+
+<nav class="topnav"><a href="index.html">&larr; Index</a><span class="sep">|</span><span>Chapter 7: Water Well Design</span></nav>
+<button onclick="window.print()" class="print-btn">PRINT</button>
+
+<h1>CHAPTER 7 — NUMERICALS<br>Water Well Design (Recuperation Test)</h1>
+<p style="text-align:center">3 Problems — Open Well Specific Yield &amp; Design</p>
+
+<!-- ============ KEY FORMULAE ============ -->
+<div class="formula-box">
+<h3>KEY FORMULAE — CHAPTER 7 (RECUPERATION TEST)</h3>
+
+<p><strong>Concept:</strong> An open well is depressed (pumped down) to create a depression head, then allowed to recover. The rate of recovery indicates how fast the aquifer can supply water.</p>
+
+<p><strong>A. During recovery,</strong> the depression head decays exponentially:</p>
+<div class="equation">$$ s(t) = s_1\,e^{-Ct} $$</div>
+<p>where \(C\) is the specific yield of the open well (rate of inflow per unit area per unit depression head).</p>
+
+<p><strong>B. Specific yield from test data:</strong></p>
+<div class="equation">$$ \boxed{C = \frac{2.303}{T}\,\log_{10}\!\left(\frac{s_1}{s_2}\right)} \quad \text{[per hour or per second]} $$</div>
+<ul>
+<li>\(s_1\) = initial depression head (m)</li>
+<li>\(s_2\) = depression head after time \(T\) of recovery (m). Note: \(s_2 = s_1 - \text{rise}\)</li>
+<li>\(T\) = recovery time (hr)</li>
+</ul>
+
+<p><strong>C. Yield from any well under any depression:</strong></p>
+<div class="equation">$$ \boxed{Q = C \times A \times H} $$</div>
+<ul>
+<li>\(A = \frac{\pi}{4}D^2\) = cross-sectional area of the well</li>
+<li>\(H\) = depression head</li>
+</ul>
+
+<p><strong>D. Required well diameter for a target yield:</strong></p>
+<div class="equation">$$ \boxed{D = \sqrt{\frac{4Q}{\pi\,C\,H}}} $$</div>
+
+<table class="units">
+<tr><th>Symbol</th><th>Typical Range</th><th>SI Unit</th></tr>
+<tr><td>\(C\) (specific yield)</td><td>0.2–2.0 per hour</td><td>m&sup3;/(hr&middot;m&sup2;&middot;m)</td></tr>
+<tr><td>\(s_1\) (initial depression)</td><td>2–8 m</td><td>m</td></tr>
+<tr><td>Recovery time \(T\)</td><td>30–120 min</td><td>hours (convert!)</td></tr>
+<tr><td>\(D\) (open well diameter)</td><td>2–8 m</td><td>m</td></tr>
+<tr><td>\(Q\) (open well yield)</td><td>5–50 m&sup3;/hr</td><td>m&sup3;/hr</td></tr>
+</table>
+
+<div class="derivation">
+<h4>DERIVATION HINT — Specific Yield Formula</h4>
+<p>The recuperation test assumes that the rate of water inflow into the well is proportional to the depression head: \(dV/dt = C \cdot A \cdot s\), where \(V\) = volume of water in the well, \(A\) = cross-sectional area, and \(s\) = depression head. Since \(dV = A \cdot ds\):</p>
+<div class="equation">$$ \frac{ds}{dt} = -C \cdot s \quad \Rightarrow \quad s(t) = s_1 e^{-Ct} $$</div>
+<p>At time T: \(s_2 = s_1 e^{-CT}\). Taking natural log: \(CT = \ln(s_1/s_2)\). Converting to log<sub>10</sub>: \(C = (2.303/T)\log_{10}(s_1/s_2)\).</p>
+</div>
+
+<div class="concept-box">
+<h4>OPEN WELL vs TUBE WELL</h4>
+<ul>
+<li><strong>Open well:</strong> Large diameter (2–8 m), shallow depth (10–20 m), draws water through the well bottom and exposed sides. Yield tested by recuperation test. Yield \(Q = C \times A \times H\) depends on <strong>well area</strong>.</li>
+<li><strong>Tube well:</strong> Small diameter (10–30 cm), deep (50–300 m), draws water through screened sections along its length. Yield tested by pumping test. Much higher yield per unit area.</li>
+<li><strong>Specific yield C</strong> is a property of the aquifer-well system, not just the aquifer. It depends on the aquifer permeability and the wetted perimeter of the well.</li>
+</ul>
+</div>
+
+<div class="method-box">
+<h4>SOLUTION METHODOLOGY — Recuperation Test Problems</h4>
+<ol>
+<li>Convert time to hours (minutes &divide; 60)</li>
+<li>Compute s<sub>2</sub> = s<sub>1</sub> &minus; rise</li>
+<li>Find C using \(C = (2.303/T)\log_{10}(s_1/s_2)\)</li>
+<li>For yield: \(Q = C \times (\pi/4)D^2 \times H\)</li>
+<li>For diameter: \(D = \sqrt{4Q/(\pi CH)}\)</li>
+</ol>
+</div>
+</div>
+
+<div class="fig">
+<svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- LEFT: Well setup -->
+    <text x="200" y="18" text-anchor="middle" font-weight="bold" font-size="15">RECUPERATION TEST SETUP</text>
+    <!-- Well -->
+    <rect x="155" y="40" width="90" height="260" fill="none" stroke="black" stroke-width="2.5"/>
+    <!-- Ground -->
+    <rect x="40" y="40" width="115" height="20" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+    <rect x="245" y="40" width="115" height="20" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+    <!-- Static water level -->
+    <line x1="40" y1="100" x2="155" y2="100" stroke="black" stroke-width="2" stroke-dasharray="6,4"/>
+    <line x1="245" y1="100" x2="360" y2="100" stroke="black" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="105" y="92" text-anchor="end" font-size="13">Static WL</text>
+    <!-- Depressed level (start) -->
+    <path d="M158 220 Q180 215 200 220 Q220 225 242 220" fill="none" stroke="black" stroke-width="2"/>
+    <text x="148" y="225" text-anchor="end" font-weight="bold" font-size="13" fill="#666">Start (depressed)</text>
+    <!-- Recovered level -->
+    <path d="M158 145 Q180 140 200 145 Q220 150 242 145" fill="none" stroke="black" stroke-width="2"/>
+    <text x="148" y="150" text-anchor="end" font-weight="bold" font-size="13">After time T</text>
+    <!-- s1 dimension -->
+    <line x1="265" y1="100" x2="265" y2="220" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="270" y="148" width="40" height="20" fill="white"/><text x="290" y="163" font-weight="bold" font-size="14">s<tspan dy="3" font-size="10">1</tspan></text>
+    <!-- s2 dimension -->
+    <line x1="290" y1="100" x2="290" y2="145" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="295" y="112" width="40" height="20" fill="white"/><text x="315" y="127" font-weight="bold" font-size="14">s<tspan dy="3" font-size="10">2</tspan></text>
+    <!-- Rise -->
+    <line x1="320" y1="145" x2="320" y2="220" stroke="black" stroke-width="2.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <rect x="325" y="172" width="42" height="20" fill="white"/><text x="346" y="187" font-weight="bold" font-size="14" fill="#333">Rise</text>
+    <!-- Well bottom -->
+    <text x="200" y="310" text-anchor="middle" font-size="12">D = well diameter</text>
+    <!-- D dimension -->
+    <line x1="155" y1="325" x2="245" y2="325" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="200" y="345" text-anchor="middle" font-weight="bold" font-size="14">D</text>
+
+    <!-- RIGHT: Recovery curve -->
+    <text x="585" y="18" text-anchor="middle" font-weight="bold" font-size="15">RECOVERY CURVE</text>
+    <!-- Axes -->
+    <line x1="440" y1="40" x2="440" y2="300" stroke="black" stroke-width="2"/>
+    <line x1="440" y1="300" x2="730" y2="300" stroke="black" stroke-width="2"/>
+    <text x="585" y="330" text-anchor="middle" font-size="13">Time &rarr;</text>
+    <text x="420" y="170" text-anchor="middle" font-size="13" transform="rotate(-90,420,170)">Depression head (s)</text>
+    <!-- s1 level -->
+    <line x1="440" y1="60" x2="460" y2="60" stroke="black" stroke-width="1.5"/>
+    <text x="435" y="64" text-anchor="end" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">1</tspan></text>
+    <!-- s2 level -->
+    <line x1="440" y1="175" x2="460" y2="175" stroke="black" stroke-width="1.5"/>
+    <text x="435" y="179" text-anchor="end" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">2</tspan></text>
+    <!-- Exponential curve -->
+    <path d="M455 60 Q480 90 510 130 Q550 175 600 210 Q660 245 720 265" fill="none" stroke="black" stroke-width="3"/>
+    <!-- T marker -->
+    <line x1="600" y1="175" x2="600" y2="300" stroke="black" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="600" y="315" text-anchor="middle" font-weight="bold" font-size="13">T</text>
+    <!-- Annotation -->
+    <line x1="458" y1="60" x2="600" y2="60" stroke="black" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="600" y1="175" x2="600" y2="60" stroke="black" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="615" y="120" font-weight="bold" font-size="12">Rise</text>
+
+    <text x="585" y="365" text-anchor="middle" font-size="12" font-style="italic">s(t) = s₁ &middot; e<tspan dy="-5" font-size="10">-Ct</tspan><tspan dy="5"> (exponential decay)</tspan></text>
+</svg>
+<div class="figcap">Left: Open well recuperation test — the well is pumped down (s<sub>1</sub>) and allowed to recover (to s<sub>2</sub>) over time T. Right: The depression head decays exponentially.</div>
+</div>
+
+<div class="ctrl-bar">
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=true)">Expand All</button>
+    <button onclick="document.querySelectorAll('details.problem').forEach(d=>d.open=false)">Collapse All</button>
+</div>
+
+<!-- ═══════════════════ PROBLEM 17 ═══════════════════ -->
+<details class="problem" open>
+<summary>
+    <span>Problem 17: Recuperation Test — Specific Yield &amp; Well Yield</span>
+    <span class="pill pill-yr">2078 Chaitra</span>
+    <span class="pill pill-mk">Q7 — 6 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> In Dhangadi, a recuperation test was conducted on an open well. The water level was depressed by 4 m and rose 2.2 m in 90 minutes. Calculate specific yield. Also determine yield from a 5 m diameter well under 2.5 m depression.</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Initial depression, \(s_1\)</td><td>4 m</td></tr>
+<tr><td>Rise in 90 min</td><td>2.2 m &rArr; \(s_2 = 4 - 2.2 = 1.8\) m</td></tr>
+<tr><td>Recovery time, \(T\)</td><td>90 min = 1.5 hr</td></tr>
+<tr><td>Well diameter (for yield)</td><td>5 m</td></tr>
+<tr><td>Depression head (for yield)</td><td>2.5 m</td></tr>
+</table>
+</div>
+
+<h4>SOLUTION</h4>
+
+<div class="warning"><strong>Convert time!</strong> Recovery time = 90 min = 1.5 hr. Also compute \(s_2 = s_1 - \text{rise} = 4 - 2.2 = 1.8\) m.</div>
+
+<p><span class="step">Part (a) — Specific yield C.</span></p>
+<p>Apply the recuperation formula with T = 1.5 hr, s<sub>1</sub> = 4 m, s<sub>2</sub> = 1.8 m:</p>
+<div class="equation">$$ C = \frac{2.303}{T}\,\log_{10}\!\left(\frac{s_1}{s_2}\right) = \frac{2.303}{1.5}\,\log_{10}\!\left(\frac{4}{1.8}\right) $$</div>
+<p>Ratio: \(s_1/s_2 = 4/1.8 = 2.222\)</p>
+<p>Logarithm: \(\log_{10}(2.222) = 0.3468\)</p>
+<p>Product: \(1.535 \times 0.3468 = 0.532\)</p>
+<div class="answer">\( C = 0.532 \text{ per hour (m}^3\text{/hr per m}^2\text{ per m of depression)} \)</div>
+
+<p><strong>Interpretation:</strong> C = 0.532/hr means the aquifer can supply 0.532 m&sup3; of water per hour for every 1 m&sup2; of well cross-section per 1 m of depression head. This is a moderate-to-good aquifer for an open well in the Dhangadi region (Terai alluvium).</p>
+
+<div class="fig">
+<svg width="780" height="200" viewBox="0 0 780 200" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="14">RECOVERY DIAGRAM — Problem 17 (Dhangadi)</text>
+    <!-- Axes -->
+    <line x1="80" y1="30" x2="80" y2="170" stroke="black" stroke-width="2"/>
+    <line x1="80" y1="170" x2="680" y2="170" stroke="black" stroke-width="2"/>
+    <text x="380" y="192" text-anchor="middle" font-size="13">Time (min)</text>
+    <text x="40" y="100" text-anchor="middle" font-size="12" transform="rotate(-90,40,100)">Depression (m)</text>
+    <!-- s1 horizontal -->
+    <line x1="80" y1="40" x2="120" y2="40" stroke="black" stroke-width="2"/>
+    <text x="70" y="44" text-anchor="end" font-weight="bold" font-size="13">4.0</text>
+    <!-- s2 horizontal -->
+    <line x1="80" y1="108" x2="120" y2="108" stroke="black" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="70" y="112" text-anchor="end" font-weight="bold" font-size="13">1.8</text>
+    <!-- T = 90 min -->
+    <line x1="560" y1="170" x2="560" y2="108" stroke="black" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="560" y="185" text-anchor="middle" font-size="12">90 min</text>
+    <!-- Exponential decay curve -->
+    <path d="M120 40 Q200 55 300 80 Q420 108 560 108" fill="none" stroke="black" stroke-width="3"/>
+    <!-- Rise annotation -->
+    <line x1="600" y1="40" x2="600" y2="108" stroke="black" stroke-width="2.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+    <text x="640" y="78" font-weight="bold" font-size="14">Rise = 2.2 m</text>
+    <!-- s_2 annotation -->
+    <circle cx="560" cy="108" r="5" fill="black"/>
+    <text x="575" y="120" font-weight="bold" font-size="12">s<tspan dy="3" font-size="9">2</tspan><tspan dy="-3"> = 1.8 m</tspan></text>
+</svg>
+<div class="figcap">Depression head decays exponentially from 4.0 m to 1.8 m in 90 minutes during the recuperation test.</div>
+</div>
+
+<p><span class="step">Part (b) — Yield from a 5 m diameter well under 2.5 m depression.</span></p>
+<p>Well cross-sectional area:</p>
+<div class="equation">$$ A = \frac{\pi}{4}(5)^2 = \frac{\pi \times 25}{4} = 19.635 \text{ m}^2 $$</div>
+<p>Yield:</p>
+<div class="equation">$$ Q = C \times A \times H = 0.532 \times 19.635 \times 2.5 $$</div>
+<div class="answer">\( Q = 26.1 \text{ m}^3/\text{hr} \approx 7.26 \text{ L/s} \)</div>
+
+<div class="insight"><strong>Physical insight:</strong> The specific yield of 0.532/hr means the aquifer can replenish the well at about half the well volume per hour per metre of depression. This is a moderate-to-good aquifer for an open well. The Dhangadi region (Terai) has alluvial deposits with reasonable permeability. Note that yield depends linearly on both well area and depression head — doubling either doubles the yield.</div>
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 18 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 18: Recuperation Test — Yield &amp; Required Diameter</span>
+    <span class="pill pill-yr">2073 Bhadra</span>
+    <span class="pill pill-mk">Q8(b) — 2+2+3 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Question:</strong> During a recuperation test, water level depressed by 3 m rose 1.75 m in 75 minutes. (i) Specific yield? (ii) Yield from 5 m diameter well at 2.5 m depression? (iii) Required diameter for 12 L/s at 2 m depression?</p>
+
+<div class="given"><h4>GIVEN DATA</h4>
+<table class="dt">
+<tr><td>Initial depression, \(s_1\)</td><td>3 m</td></tr>
+<tr><td>Rise in 75 min</td><td>1.75 m &rArr; \(s_2 = 3 - 1.75 = 1.25\) m</td></tr>
+<tr><td>Recovery time, \(T\)</td><td>75 min = 1.25 hr</td></tr>
+</table>
+</div>
+
+<h4>SOLUTION</h4>
+
+<div class="warning"><strong>Convert time!</strong> 75 min = 75/60 = 1.25 hr. And \(s_2 = 3 - 1.75 = 1.25\) m.</div>
+
+<p><span class="step">Part (i) — Specific yield.</span></p>
+<div class="equation">$$ C = \frac{2.303}{1.25}\,\log_{10}\!\left(\frac{3}{1.25}\right) = 1.842 \times \log_{10}(2.4) $$</div>
+<p>\(\log_{10}(2.4) = 0.3802\)</p>
+<div class="equation">$$ C = 1.842 \times 0.3802 $$</div>
+<div class="answer">\( C = 0.700 \text{ per hour} \)</div>
+<p><strong>Interpretation:</strong> This C = 0.700/hr is higher than Problem 17&rsquo;s 0.532/hr, indicating a more permeable aquifer that can replenish faster.</p>
+
+<p><span class="step">Part (ii) — Yield from 5 m diameter well at H = 2.5 m.</span></p>
+<p>Area: \(A = (\pi/4)(5)^2 = 19.635\) m&sup2;</p>
+<div class="equation">$$ Q = 0.700 \times 19.635 \times 2.5 = 0.700 \times 49.09 $$</div>
+<div class="answer">\( Q = 34.4 \text{ m}^3/\text{hr} \approx 9.54 \text{ L/s} \)</div>
+
+<p><span class="step">Part (iii) — Required diameter for Q = 12 L/s = 43.2 m&sup3;/hr at H = 2 m.</span></p>
+<p>First convert target yield: \(Q = 12 \times 3.6 = 43.2\) m&sup3;/hr</p>
+<p>Rearranging \(Q = C \times (\pi/4)D^2 \times H\) for D:</p>
+<div class="equation">$$ D^2 = \frac{4Q}{\pi \cdot C \cdot H} = \frac{4 \times 43.2}{\pi \times 0.700 \times 2} = \frac{172.8}{4.398} = 39.29 \text{ m}^2 $$</div>
+<div class="answer">\( D = \sqrt{39.29} = 6.27 \text{ m} \approx 6.3 \text{ m} \)</div>
+
+<div class="insight"><strong>Physical insight:</strong> Achieving 12 L/s from an open well requires a large diameter (6.3 m) because open wells depend on the cross-sectional area for intake. In contrast, a tube well with a screen can achieve the same yield with a 20–30 cm diameter because it draws water through a much larger contact surface along the depth.</div>
+
+<div class="fig">
+<svg width="780" height="150" viewBox="0 0 780 150" style="font-family:'Times New Roman',serif;font-size:14px">
+    <!-- Comparison bars -->
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="14">COMPARISON: Open Well vs Tube Well for Same Yield</text>
+    <!-- Open well -->
+    <circle cx="160" cy="85" r="55" fill="none" stroke="black" stroke-width="2.5"/>
+    <text x="160" y="90" text-anchor="middle" font-weight="bold" font-size="13">D = 6.3 m</text>
+    <text x="160" y="145" text-anchor="middle" font-size="12">Open Well (~12 L/s)</text>
+    <!-- Tube well -->
+    <circle cx="560" cy="85" r="6" fill="#999" stroke="black" stroke-width="2.5"/>
+    <text x="560" y="90" text-anchor="start" font-weight="bold" font-size="13"> D = 0.25 m</text>
+    <text x="560" y="145" text-anchor="middle" font-size="12">Tube Well (~12 L/s)</text>
+    <!-- Arrow -->
+    <line x1="330" y1="85" x2="430" y2="85" stroke="black" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="380" y="78" text-anchor="middle" font-size="12">Same Q</text>
+</svg>
+<div class="figcap">Open wells require large diameters because intake area = well cross-section. Tube wells draw from the entire screened length.</div>
+</div>
+
+</div></details>
+
+<!-- ═══════════════════ PROBLEM 19 ═══════════════════ -->
+<details class="problem">
+<summary>
+    <span>Problem 19: Recuperation Test (Identical to Problem 18)</span>
+    <span class="pill pill-yr">2071 Bhadra</span>
+    <span class="pill pill-mk">Q10 — 3+3+4 marks</span>
+</summary>
+<div class="body">
+
+<p><strong>Note:</strong> This problem has <em>identical data</em> to Problem 18 (s<sub>1</sub> = 3 m, rise = 1.75 m, time = 75 min). The answers are the same:</p>
+
+<div class="answer">
+(a) \(C = 0.700\) per hour<br>
+(b) \(Q = 34.4\) m&sup3;/hr = 9.54 L/s (for D = 5 m, H = 2.5 m)<br>
+(c) \(D = 6.27\) m (for Q = 12 L/s, H = 2 m)
+</div>
+
+<div class="fig">
+<svg width="780" height="200" viewBox="0 0 780 200" style="font-family:'Times New Roman',serif;font-size:14px">
+    <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="14">EXAM FREQUENCY — Recuperation Test Problem</text>
+    <!-- Timeline -->
+    <line x1="120" y1="70" x2="660" y2="70" stroke="black" stroke-width="2"/>
+    <circle cx="200" cy="70" r="22" fill="#c8e6c9" stroke="black" stroke-width="3"/>
+    <text x="200" y="75" text-anchor="middle" font-weight="bold" font-size="12">2071</text>
+    <text x="200" y="108" text-anchor="middle" font-size="11" font-weight="bold">Q10, 10 marks</text>
+    <circle cx="360" cy="70" r="22" fill="#fff9c4" stroke="black" stroke-width="2"/>
+    <text x="360" y="75" text-anchor="middle" font-weight="bold" font-size="12">2072</text>
+    <text x="360" y="108" text-anchor="middle" font-size="11">Not asked</text>
+    <circle cx="500" cy="70" r="22" fill="#c8e6c9" stroke="black" stroke-width="3"/>
+    <text x="500" y="75" text-anchor="middle" font-weight="bold" font-size="12">2073</text>
+    <text x="500" y="108" text-anchor="middle" font-size="11" font-weight="bold">Q8b, 7 marks</text>
+    <circle cx="600" cy="70" r="22" fill="#c8e6c9" stroke="black" stroke-width="3"/>
+    <text x="600" y="75" text-anchor="middle" font-weight="bold" font-size="12">2078</text>
+    <text x="600" y="108" text-anchor="middle" font-size="11" font-weight="bold">Q7, 6 marks</text>
+    <text x="390" y="145" text-anchor="middle" font-weight="bold" font-size="14" fill="#1b5e20">3 out of 4 years — MUST PREPARE</text>
+    <text x="390" y="170" text-anchor="middle" font-size="13" font-style="italic">2071 &amp; 2073 have identical data. 2078 has different data but same method.</text>
+</svg>
+</div>
+
+<p><strong>This problem appeared in 2 exam years (2071, 2073) with identical data, and a similar problem in 2078.</strong> It is a high-priority problem for exam preparation.</p>
+
+<div class="insight"><strong>Exam tip:</strong> Always draw a neat labelled sketch of the open well showing s<sub>1</sub>, s<sub>2</sub>, the static water level, and the recovery. Write the formula clearly before substitution. <strong>Convert minutes to hours</strong> (students often forget this). Show units at every step. Include the exponential decay diagram for full marks.</div>
+</div></details>
+
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

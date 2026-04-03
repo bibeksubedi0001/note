@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Groundwater Engineering — Past Questions by Chapter</title>
+  <style>
+    :root { --base-size: 12pt; }
+    *,*::before,*::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: var(--base-size);
+      color: black;
+      background: white;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+
+    h1 {
+      font-family: inherit;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      border-bottom: 2px solid black;
+      padding-bottom: .5rem;
+      margin: 0 0 .5rem;
+      line-height: 1.3;
+    }
+
+    h2 {
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      border-bottom: 1px solid black;
+      padding-bottom: .4rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    p { margin: 0; }
+
+    .subtitle {
+      text-align: center;
+      max-width: 72ch;
+      margin: 0 auto 1.5rem;
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+      padding: .6rem 1.2rem;
+      border: 1px solid black;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.4rem;
+    }
+
+    .stat span {
+      font-size: .9rem;
+    }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+      padding: 12px 14px;
+      border: 1px solid black;
+    }
+
+    .toolbar label {
+      font-weight: bold;
+      font-size: .95rem;
+    }
+
+    .toolbar input,
+    .toolbar select {
+      min-height: 36px;
+      border: 1px solid black;
+      padding: 0 10px;
+      font: inherit;
+      background: white;
+    }
+
+    .toolbar input { flex: 1 1 220px; }
+    .toolbar select { flex: 0 1 180px; }
+
+    .chapter-pages {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    .chapter-page-link {
+      display: block;
+      padding: 12px 14px;
+      border: 1px solid black;
+      text-decoration: none;
+      color: inherit;
+      transition: background 120ms;
+    }
+
+    .chapter-page-link:hover {
+      background: #f0f0f0;
+    }
+
+    .chapter-page-link strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .chapter-page-link span {
+      font-style: italic;
+      font-size: .95rem;
+    }
+
+    /* Chapter nav */
+    .chapter-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+
+    .chapter-link {
+      display: block;
+      padding: 10px 12px;
+      border: 1px solid black;
+      text-decoration: none;
+      color: inherit;
+      transition: background 120ms;
+    }
+
+    .chapter-link:hover { background: #f0f0f0; }
+    .chapter-link strong { display: block; margin-bottom: 2px; }
+    .chapter-link span { font-style: italic; font-size: .95rem; }
+
+    /* Chapter sections */
+    .chapter-section {
+      margin-bottom: 2rem;
+      padding: 1.2rem;
+      border: 1px solid black;
+    }
+
+    .chapter-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid black;
+      padding-bottom: .8rem;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-head h2 { border: none; margin: 0; padding: 0; }
+
+    .chapter-desc {
+      margin: 4px 0 0;
+      max-width: 70ch;
+      font-style: italic;
+      font-size: .95rem;
+    }
+
+    .chapter-count {
+      padding: 3px 10px;
+      border: 1px solid black;
+      font-weight: bold;
+      font-size: .85rem;
+      white-space: nowrap;
+    }
+
+    /* Question cards */
+    .question-list { display: grid; gap: 12px; }
+
+    .question-card {
+      padding: 12px 14px;
+      border: 1px solid #888;
+    }
+
+    .question-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      padding: 2px 8px;
+      border: 1px solid black;
+      font-size: .82rem;
+    }
+
+    .pill.primary { font-weight: bold; background: #eee; }
+
+    .question-card > p {
+      line-height: 1.65;
+      text-align: justify;
+    }
+
+    /* Data blocks */
+    .data-block {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid black;
+    }
+
+    .block-title {
+      margin: 0 0 6px;
+      font-weight: bold;
+      font-size: .85rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .data-block pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font: .92rem/1.5 'Consolas','Courier New',monospace;
+      color: black;
+    }
+
+    /* Figure containers */
+    .figure-container {
+      text-align: center;
+      margin: 12px 0 0;
+      padding: 1rem;
+      border: 1px solid black;
+      overflow-x: auto;
+    }
+
+    .figure-container svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .figure-container table {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+
+    .figure-container th,
+    .figure-container td {
+      border: 1px solid black;
+      padding: 4px 14px;
+      text-align: center;
+      font-size: .95rem;
+    }
+
+    .figure-container th {
+      font-weight: bold;
+      background: #f5f5f5;
+    }
+
+    .figcaption {
+      font-style: italic;
+      margin-top: 8px;
+      text-align: center;
+      font-size: .92rem;
+    }
+
+    /* Footer */
+    .footnote {
+      margin-top: 2rem;
+      padding: 12px;
+      border: 1px dashed black;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .hidden { display: none; }
+
+    /* Print button */
+    .print-btn {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      border: 2px solid black;
+      background: white;
+      color: black;
+      padding: .5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Times New Roman', serif;
+      font-size: var(--base-size);
+      z-index: 100;
+    }
+
+    .print-btn:hover { background: black; color: white; }
+
+    @media print {
+      body { padding: 0; max-width: 100%; }
+      .print-btn, .toolbar, .chapter-nav, .chapter-pages, header { display: none; }
+      .figure-container, .question-card, .chapter-section { page-break-inside: avoid; }
+      h2 { page-break-after: avoid; }
+    }
+
+    @media (max-width: 700px) {
+      body { padding: 1rem; }
+      .meta { flex-direction: column; align-items: center; gap: 8px; }
+      h1 { font-size: 1.1rem; }
+    }
+  </style>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE v3 ═══ -->
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<!-- Shared SVG pattern definitions -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <pattern id="hatch" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="0" y2="8" stroke="black" stroke-width="0.7"/>
+      </pattern>
+      <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse">
+        <circle cx="4" cy="4" r="1.2" fill="#555"/>
+        <circle cx="11" cy="11" r="1.2" fill="#555"/>
+      </pattern>
+      <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="10" x2="7" y2="0" stroke="black" stroke-width="0.7"/>
+        <line x1="7" y1="10" x2="14" y2="0" stroke="black" stroke-width="0.7"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <button onclick="window.print()" class="print-btn">PRINT</button>
+
+  <main>
+    <header>
+      <p style="text-align:center; font-style:italic; margin-bottom:.8rem">Groundwater Engineering</p>
+      <h1>Past Questions Clustered by Chapter</h1>
+      <p class="subtitle">
+        Questions from five exam papers reorganized into nine syllabus chapters.
+        Numerical data is surfaced inside the cards and all diagrams are redrawn as scalable vector figures for clarity.
+      </p>
+      <div class="meta">
+        <div class="stat"><strong>5</strong><span>Exam papers</span></div>
+        <div class="stat"><strong>9</strong><span>Chapters</span></div>
+        <div class="stat"><strong>64</strong><span>Questions</span></div>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="Filters">
+      <label for="search">Search:</label>
+      <input id="search" type="search" placeholder="Topic, method, place, or keyword">
+      <label for="yearFilter">Year:</label>
+      <select id="yearFilter">
+        <option value="all">All years</option>
+        <option value="2078 Chaitra">2078 Chaitra</option>
+        <option value="2073 Bhadra">2073 Bhadra</option>
+        <option value="2072 Ashwin">2072 Ashwin</option>
+        <option value="2072 Magh">2072 Magh</option>
+        <option value="2071 Bhadra">2071 Bhadra</option>
+      </select>
+    </section>
+
+    <section class="chapter-pages" aria-label="Standalone chapter pages">
+      <a class="chapter-page-link" href="chapter1_groundwater.html"><strong>Standalone Chapter 1 Page</strong><span>Textbook-style notes and past questions for occurrence of groundwater.</span></a>
+      <a class="chapter-page-link" href="chapter2_groundwater_motion.html"><strong>Standalone Chapter 2 Page</strong><span>Textbook-style notes, graphs, and past questions for groundwater motion fundamentals.</span></a>
+      <a class="chapter-page-link" href="chapter3_flow_theory.html"><strong>Standalone Chapter 3 Page</strong><span>Textbook-style notes, SVG diagrams, and past questions for flow theory and flow net analysis.</span></a>
+    </section>
+
+    <nav class="chapter-nav" aria-label="Chapter quick links">
+      <a class="chapter-link" href="#chapter-1"><strong>Chapter 1</strong><span>Occurrence of Groundwater and its Importance</span></a>
+      <a class="chapter-link" href="#chapter-2"><strong>Chapter 2</strong><span>Fundamentals of Groundwater Motion</span></a>
+      <a class="chapter-link" href="#chapter-3"><strong>Chapter 3</strong><span>Potential Flow Theory and Flow Net Analysis</span></a>
+      <a class="chapter-link" href="#chapter-4"><strong>Chapter 4</strong><span>Well Hydraulics</span></a>
+      <a class="chapter-link" href="#chapter-5"><strong>Chapter 5</strong><span>Pumping Test and Aquifer Properties</span></a>
+      <a class="chapter-link" href="#chapter-6"><strong>Chapter 6</strong><span>Groundwater Exploration</span></a>
+      <a class="chapter-link" href="#chapter-7"><strong>Chapter 7</strong><span>Water Well Design</span></a>
+      <a class="chapter-link" href="#chapter-8"><strong>Chapter 8</strong><span>Pumps for Groundwater Lifting</span></a>
+      <a class="chapter-link" href="#chapter-9"><strong>Chapter 9</strong><span>Groundwater Resources of Nepal</span></a>
+    </nav>
+
+    <div id="chapters"></div>
+
+    <section class="footnote">
+      Source: gw_past.pdf — five exam papers (2078 Chaitra, 2073 Bhadra, 2072 Ashwin, 2072 Magh, 2071 Bhadra).
+      Chapter assignment follows the published syllabus. All figures have been redrawn as SVG for print-quality clarity.
+    </section>
+  </main>
+
+  <script>
+    /* ── Inline SVG Figures ─────────────────────────────────────── */
+
+    const SVG_CONTOUR = `<svg width="480" height="270" viewBox="0 0 480 270" style="font-family:'Times New Roman',Times,serif">
+  <line x1="200" y1="35" x2="65" y2="170" stroke="black" stroke-width="1.5"/>
+  <line x1="200" y1="35" x2="390" y2="235" stroke="black" stroke-width="1.5"/>
+  <line x1="65" y1="170" x2="390" y2="235" stroke="black" stroke-width="1.5"/>
+  <circle cx="200" cy="35" r="8" fill="white" stroke="black" stroke-width="1.5"/>
+  <circle cx="200" cy="35" r="2.5" fill="black"/>
+  <text x="216" y="33" font-size="14" font-weight="bold">70 m</text>
+  <circle cx="65" cy="170" r="8" fill="white" stroke="black" stroke-width="1.5"/>
+  <circle cx="65" cy="170" r="2.5" fill="black"/>
+  <text x="30" y="200" font-size="14" font-weight="bold">65 m</text>
+  <circle cx="390" cy="235" r="8" fill="white" stroke="black" stroke-width="1.5"/>
+  <circle cx="390" cy="235" r="2.5" fill="black"/>
+  <text x="406" y="243" font-size="14" font-weight="bold">60 m</text>
+  <text x="340" y="50" font-size="12">Water table elevation</text>
+  <text x="340" y="66" font-size="12">at test well</text>
+</svg>`;
+
+    const SVG_CONFINED_ASHWIN = `<svg width="620" height="300" viewBox="0 0 620 300" style="font-family:'Times New Roman',Times,serif">
+  <!-- Water body left -->
+  <path d="M 15 68 Q 30 62 45 68 Q 60 74 75 68 Q 90 62 100 66" fill="none" stroke="black" stroke-width="1.2"/>
+  <polygon points="52,58 57,48 62,58" fill="none" stroke="black" stroke-width="1"/>
+  <text x="30" y="88" font-size="11" font-style="italic">(water)</text>
+  <line x1="35" y1="120" x2="70" y2="120" stroke="black" stroke-width="1"/>
+  <polygon points="65,117 72,120 65,123" fill="black"/>
+  <line x1="35" y1="148" x2="70" y2="148" stroke="black" stroke-width="1"/>
+  <polygon points="65,145 72,148 65,151" fill="black"/>
+  <!-- Left boundary -->
+  <line x1="100" y1="45" x2="100" y2="260" stroke="black" stroke-width="2"/>
+  <!-- 800 m dimension -->
+  <line x1="110" y1="32" x2="500" y2="32" stroke="black" stroke-width="1"/>
+  <polygon points="110,29 103,32 110,35" fill="black"/>
+  <polygon points="500,29 507,32 500,35" fill="black"/>
+  <line x1="110" y1="27" x2="110" y2="37" stroke="black" stroke-width="1"/>
+  <line x1="500" y1="27" x2="500" y2="37" stroke="black" stroke-width="1"/>
+  <text x="305" y="28" text-anchor="middle" font-size="13" font-weight="bold">800 m</text>
+  <!-- Impervious top layer (dome) -->
+  <path d="M 100 66 L 100 100 Q 305 55 510 100 L 510 66 Z" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+  <text x="305" y="85" text-anchor="middle" font-size="11" font-style="italic">impervious</text>
+  <!-- Pervious aquifer body -->
+  <rect x="100" y="100" width="410" height="100" fill="url(#dots)" stroke="none"/>
+  <path d="M 100 100 L 510 100" stroke="black" stroke-width="0" stroke-dasharray="none"/>
+  <line x1="100" y1="200" x2="510" y2="200" stroke="black" stroke-width="1"/>
+  <text x="305" y="160" text-anchor="middle" font-size="13">Pervious</text>
+  <!-- Bottom impervious -->
+  <rect x="60" y="200" width="500" height="55" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+  <text x="305" y="232" text-anchor="middle" font-size="11" font-style="italic">(impervious)</text>
+  <!-- Right boundary -->
+  <line x1="510" y1="45" x2="510" y2="255" stroke="black" stroke-width="2"/>
+  <!-- Right water surface -->
+  <path d="M 520 130 Q 540 124 555 130 Q 570 136 585 130" fill="none" stroke="black" stroke-width="1.2"/>
+  <polygon points="545,122 550,112 555,122" fill="none" stroke="black" stroke-width="1"/>
+  <!-- 10 m dimension (left) -->
+  <line x1="82" y1="66" x2="82" y2="200" stroke="black" stroke-width="1"/>
+  <polygon points="79,66 82,59 85,66" fill="black"/>
+  <polygon points="79,200 82,207 85,200" fill="black"/>
+  <text x="60" y="138" text-anchor="end" font-size="13" font-weight="bold">10 m</text>
+  <!-- 8 m dimension (left aquifer) -->
+  <line x1="108" y1="100" x2="108" y2="200" stroke="black" stroke-width="1"/>
+  <polygon points="105,100 108,93 111,100" fill="black"/>
+  <polygon points="105,200 108,207 111,200" fill="black"/>
+  <text x="125" y="155" font-size="13" font-weight="bold">8 m</text>
+  <!-- 6 m dimension (right) -->
+  <line x1="528" y1="130" x2="528" y2="200" stroke="black" stroke-width="1"/>
+  <polygon points="525,130 528,123 531,130" fill="black"/>
+  <polygon points="525,200 528,207 531,200" fill="black"/>
+  <text x="545" y="170" font-size="13" font-weight="bold">6 m</text>
+  <!-- 8 m dimension (right aquifer) -->
+  <line x1="528" y1="100" x2="528" y2="130" stroke="black" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="545" y="118" font-size="13" font-weight="bold">8 m</text>
+</svg>`;
+
+    const SVG_CONFINED_MAGH = `<svg width="620" height="310" viewBox="0 0 620 310" style="font-family:'Times New Roman',Times,serif">
+  <!-- Water body left -->
+  <path d="M 15 60 Q 30 54 45 60 Q 60 66 75 60 Q 90 54 100 58" fill="none" stroke="black" stroke-width="1.2"/>
+  <polygon points="52,50 57,40 62,50" fill="none" stroke="black" stroke-width="1"/>
+  <!-- Left boundary -->
+  <line x1="100" y1="40" x2="100" y2="270" stroke="black" stroke-width="2"/>
+  <!-- 950 m dimension -->
+  <line x1="110" y1="28" x2="505" y2="28" stroke="black" stroke-width="1"/>
+  <polygon points="110,25 103,28 110,31" fill="black"/>
+  <polygon points="505,25 512,28 505,31" fill="black"/>
+  <line x1="110" y1="23" x2="110" y2="33" stroke="black" stroke-width="1"/>
+  <line x1="505" y1="23" x2="505" y2="33" stroke="black" stroke-width="1"/>
+  <text x="308" y="24" text-anchor="middle" font-size="13" font-weight="bold">950 m</text>
+  <!-- Impervious top layer -->
+  <path d="M 100 58 L 100 100 Q 308 60 515 100 L 515 58 Z" fill="url(#hatch)" stroke="black" stroke-width="1.5"/>
+  <text x="340" y="82" font-size="11" font-style="italic">impervious</text>
+  <!-- Pervious aquifer body -->
+  <rect x="100" y="100" width="415" height="110" fill="url(#dots)" stroke="none"/>
+  <line x1="100" y1="210" x2="515" y2="210" stroke="black" stroke-width="1"/>
+  <text x="308" y="165" text-anchor="middle" font-size="13">Pervious</text>
+  <!-- Rock bottom -->
+  <rect x="60" y="210" width="510" height="55" fill="url(#hatch)" stroke="black" stroke-width="1"/>
+  <text x="180" y="242" font-size="12" font-style="italic">Rock</text>
+  <!-- Right boundary -->
+  <line x1="515" y1="40" x2="515" y2="265" stroke="black" stroke-width="2"/>
+  <!-- Right water surface -->
+  <path d="M 525 118 Q 545 112 560 118 Q 575 124 590 118" fill="none" stroke="black" stroke-width="1.2"/>
+  <polygon points="550,110 555,100 560,110" fill="none" stroke="black" stroke-width="1"/>
+  <!-- 12 m dimension (left, water surface to base) -->
+  <line x1="78" y1="58" x2="78" y2="210" stroke="black" stroke-width="1"/>
+  <polygon points="75,58 78,51 81,58" fill="black"/>
+  <polygon points="75,210 78,217 81,210" fill="black"/>
+  <text x="56" y="138" text-anchor="end" font-size="13" font-weight="bold">12 m</text>
+  <!-- 7 m dimension (left aquifer thickness) -->
+  <line x1="108" y1="100" x2="108" y2="210" stroke="black" stroke-width="1"/>
+  <polygon points="105,100 108,93 111,100" fill="black"/>
+  <polygon points="105,210 108,217 111,210" fill="black"/>
+  <text x="126" y="160" font-size="13" font-weight="bold">7 m</text>
+  <!-- 9 m dimension (right total) -->
+  <line x1="533" y1="58" x2="533" y2="210" stroke="black" stroke-width="1"/>
+  <polygon points="530,58 533,51 536,58" fill="black"/>
+  <polygon points="530,210 533,217 536,210" fill="black"/>
+  <text x="555" y="138" font-size="13" font-weight="bold">9 m</text>
+  <!-- 5 m dimension (right aquifer) -->
+  <line x1="548" y1="100" x2="548" y2="210" stroke="black" stroke-width="1"/>
+  <polygon points="545,100 548,93 551,100" fill="black"/>
+  <polygon points="545,210 548,217 551,210" fill="black"/>
+  <text x="568" y="160" font-size="13" font-weight="bold">5 m</text>
+</svg>`;
+
+    const SVG_CANALS = `<svg width="580" height="310" viewBox="0 0 580 310" style="font-family:'Times New Roman',Times,serif">
+  <!-- Rainfall arrows -->
+  <line x1="140" y1="10" x2="140" y2="45" stroke="black" stroke-width="1.2"/>
+  <polygon points="137,40 140,48 143,40" fill="black"/>
+  <line x1="220" y1="10" x2="220" y2="45" stroke="black" stroke-width="1.2"/>
+  <polygon points="217,40 220,48 223,40" fill="black"/>
+  <line x1="300" y1="10" x2="300" y2="45" stroke="black" stroke-width="1.2"/>
+  <polygon points="297,40 300,48 303,40" fill="black"/>
+  <line x1="380" y1="10" x2="380" y2="45" stroke="black" stroke-width="1.2"/>
+  <polygon points="377,40 380,48 383,40" fill="black"/>
+  <line x1="460" y1="10" x2="460" y2="45" stroke="black" stroke-width="1.2"/>
+  <polygon points="457,40 460,48 463,40" fill="black"/>
+  <text x="300" y="8" text-anchor="middle" font-size="13" font-weight="bold">p = 12 mm/hr</text>
+  <!-- Ground surface label -->
+  <text x="530" y="52" font-size="12">Ground</text>
+  <!-- Ground surface line -->
+  <line x1="70" y1="55" x2="530" y2="55" stroke="black" stroke-width="1.5"/>
+  <!-- Left canal walls -->
+  <line x1="70" y1="55" x2="70" y2="248" stroke="black" stroke-width="2"/>
+  <line x1="120" y1="55" x2="120" y2="248" stroke="black" stroke-width="2"/>
+  <!-- Left canal water surface -->
+  <path d="M 72 70 Q 82 66 92 70 Q 102 74 112 70" fill="none" stroke="black" stroke-width="1"/>
+  <polygon points="86,62 90,54 94,62" fill="none" stroke="black" stroke-width="1"/>
+  <!-- Right canal walls -->
+  <line x1="480" y1="55" x2="480" y2="248" stroke="black" stroke-width="2"/>
+  <line x1="530" y1="55" x2="530" y2="248" stroke="black" stroke-width="2"/>
+  <!-- Right canal water surface -->
+  <path d="M 482 100 Q 492 96 502 100 Q 512 104 522 100" fill="none" stroke="black" stroke-width="1"/>
+  <polygon points="496,92 500,84 504,92" fill="none" stroke="black" stroke-width="1"/>
+  <!-- Phreatic surface curve (from left canal water level to right canal water level) -->
+  <path d="M 120 70 C 220 72, 350 85, 480 100" fill="none" stroke="black" stroke-width="1.8"/>
+  <!-- Unconfined aquifer area -->
+  <text x="300" y="140" text-anchor="middle" font-size="14" font-weight="bold">Unconfined</text>
+  <text x="300" y="158" text-anchor="middle" font-size="14" font-weight="bold">Aquifer</text>
+  <!-- h label on phreatic surface -->
+  <text x="310" y="90" font-size="14" font-style="italic">h</text>
+  <!-- 10 m dimension (left canal depth) -->
+  <line x1="50" y1="70" x2="50" y2="248" stroke="black" stroke-width="1"/>
+  <polygon points="47,70 50,63 53,70" fill="black"/>
+  <polygon points="47,248 50,255 53,248" fill="black"/>
+  <text x="35" y="162" text-anchor="end" font-size="13" font-weight="bold">10 m</text>
+  <!-- 8 m dimension (right canal depth) -->
+  <line x1="548" y1="100" x2="548" y2="248" stroke="black" stroke-width="1"/>
+  <polygon points="545,100 548,93 551,100" fill="black"/>
+  <polygon points="545,248 548,255 551,248" fill="black"/>
+  <text x="565" y="178" font-size="13" font-weight="bold">8 m</text>
+  <!-- Impervious bottom -->
+  <rect x="50" y="248" width="510" height="28" fill="url(#ground)" stroke="black" stroke-width="1.5"/>
+</svg>`;
+
+    const TABLE_TIME_DRAWDOWN = `<table>
+  <tr><th>t (days)</th><td>0.001</td><td>0.005</td><td>0.01</td><td>0.05</td><td>0.1</td></tr>
+  <tr><th>Drawdown (m)</th><td>0.083</td><td>0.196</td><td>0.249</td><td>0.376</td><td>0.431</td></tr>
+  <tr><th>t (days)</th><td>0.5</td><td>1</td><td>5</td><td>10</td><td></td></tr>
+  <tr><th>Drawdown (m)</th><td>0.559</td><td>0.614</td><td>0.742</td><td>0.797</td><td></td></tr>
+</table>`;
+
+    const TABLE_DIST_DRAWDOWN = `<table>
+  <tr><th>r (m)</th><td>7</td><td>30</td><td>60</td><td>100</td><td>160</td><td>200</td></tr>
+  <tr><th>s (m)</th><td>1.3</td><td>0.95</td><td>0.71</td><td>0.535</td><td>0.36</td><td>0.29</td></tr>
+</table>`;
+
+    /* ── Chapter Data ───────────────────────────────────────────── */
+
+    const chapters = [
+      {
+        id: 1,
+        title: "Occurrence of Groundwater and its Importance",
+        description: "Hydrological cycle, origin and age of groundwater, springs, subsurface zones, aquifer basics, and the role of groundwater relative to surface water.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q1(a)", marks: "4", text: "Explain briefly the hydrological cycle, focusing on components of subsurface movement of water." },
+          { year: "2078 Chaitra", label: "Q1(b)", marks: "4+2", text: "Write about the major soil zones according to the presence of water and list the types of springs." },
+          { year: "2073 Bhadra", label: "Q1(a)", marks: "4", text: "State the advantages of groundwater in comparison to surface water." },
+          { year: "2073 Bhadra", label: "Q1(b)", marks: "4", text: "With the help of a neat sketch, briefly discuss various subsurface zones." },
+          { year: "2072 Magh", label: "Q1(a)", marks: "6", text: "Define springs, list out the types of springs, and explain each briefly." },
+          { year: "2072 Magh", label: "Q1(b)", marks: "4", text: "Explain the origination of groundwater and how hydrological components affect groundwater." },
+          { year: "2071 Bhadra", label: "Q1", marks: "2+3+3", text: "What is groundwater engineering? What is the importance of groundwater in the context of Nepal? Write the advantages and disadvantages of groundwater." },
+          { year: "2071 Bhadra", label: "Q5", marks: "4", text: "What are water-bearing materials? Explain briefly." }
+        ]
+      },
+      {
+        id: 2,
+        title: "Fundamentals of Groundwater Motion",
+        description: "Continuum approach, representative elementary volume, Darcy\u2019s law, hydraulic conductivity, permeability, transmissivity, anisotropy, and Darcy validity.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q2(a)", marks: "6", text: "Define Representative Elementary Volume and continuum approach of analysis. Explain the importance, validity, and limitations of Darcy\u2019s law in groundwater motion." },
+          { year: "2078 Chaitra", label: "Q2(b)", marks: "6", text: "For a pumping well in a confined aquifer, determine the valid domain around the well for which Darcy\u2019s law applies using Reynolds number and kinematic viscosity data.", numerical: true, data: "Aquifer thickness = 18 m\nPumping rate = 0.3 m\u00b3/s\nAverage grain diameter = 1 mm\nReynolds limit = 8\nKinematic viscosity = 1 centistoke" },
+          { year: "2073 Bhadra", label: "Q2(a)", marks: "4+2", text: "Explain the continuum and Representative Elementary Volume approach in groundwater flow analysis. Define permeability and transmissibility." },
+          { year: "2073 Bhadra", label: "Q2(b)", marks: "8", text: "A fully penetrating well is pumped at a constant rate from a confined aquifer. Determine the domain around the well for which Darcy\u2019s law is applicable.", numerical: true, data: "Pumping rate = 1000 m\u00b3/hr\nAquifer thickness = 28 m\nAverage grain diameter = 1 mm\nReynolds limit = 6\nKinematic viscosity = 1 centistoke" },
+          { year: "2072 Ashwin", label: "Q1", marks: "4", text: "Define specific storage, specific yield, transmissibility, and anisotropy of an aquifer." },
+          { year: "2072 Ashwin", label: "Q2", marks: "8", text: "Starting from the general expression of Darcy\u2019s law for groundwater flow, derive the three-dimensional form of groundwater flow." },
+          { year: "2072 Magh", label: "Q2", marks: "6", text: "What is Darcy\u2019s law for groundwater flow? Derive the one-dimensional form and explain its validity." },
+          { year: "2071 Bhadra", label: "Q2", marks: "4", text: "What do you understand by Representative Elementary Volume? Explain." },
+          { year: "2071 Bhadra", label: "Q6", marks: "4+4", text: "For a homogeneous isotropic confined aquifer with given porosity, permeability, piezometric heads, grain size, and viscosity, state whether Darcy\u2019s law is applicable and determine the average flow velocity in pores.", numerical: true, data: "Aquifer thickness = 25 m\nEffective porosity = 20%\nPermeability = 15 m/day\nObservation well spacing = 1100 m\nPiezometric heads = 5.5 m and 3 m\nAverage grain diameter = 1 mm\nKinematic viscosity = 0.01 cm\u00b2/s" }
+        ]
+      },
+      {
+        id: 3,
+        title: "Potential Groundwater Flow Theory and Flow Net Analysis",
+        description: "Water table contouring, flow nets, seepage under unconfined and confined conditions, phreatic surface equations, and steady groundwater flow analysis.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q3(a)", marks: "3+3+4", text: "Define flow net with a neat sketch. State applications of flow net in geotechnical engineering and derive the expression for seepage discharge from a flow net." },
+          { year: "2078 Chaitra", label: "Q3(b)", marks: "8", text: "Two irrigation canals are separated by a land strip underlain by an impervious layer. Determine seepage discharge into both canals, and obtain the phreatic surface equation and water table divide.", numerical: true, data: "Land-strip width = 1.57 km\nRainfall = 25 mm/hr\nCanal water depths = 12 m and 7 m\nPermeability = 12 m/day\nVertical boundaries and full infiltration assumed" },
+          { year: "2073 Bhadra", label: "Q3(a)", marks: "3+4", text: "State the uses of water table contour. Prepare a water table contour map and show the direction of groundwater flow from four observation wells.", numerical: true, data: "Water table elevations at rectangle vertices = 51 m, 56 m, 76 m, 66 m\nContour interval = 5 m" },
+          { year: "2073 Bhadra", label: "Q3(b)", marks: "7", text: "Two rivers are separated by a homogeneous unconfined aquifer. Compute seepage flow per unit river length and obtain the equation of the phreatic line.", numerical: true, data: "Aquifer length = 5 km\nRiver-side depths = 20 m and 11 m\nPermeability = 18 m/day" },
+          { year: "2072 Ashwin", label: "Q4", marks: "6+4", text: "Explain how water table contour maps are prepared, state their uses, and prepare a groundwater contour map with flow direction from the given figure.", numerical: true, figureMarkup: SVG_CONTOUR, figureCaption: "Figure: Triangle of three test wells with water-table elevations (2072 Ashwin)." },
+          { year: "2072 Ashwin", label: "Q5", marks: "8", text: "Determine the flow in the confined aquifer shown in the figure.", numerical: true, figureMarkup: SVG_CONFINED_ASHWIN, figureCaption: "Figure: Confined-aquifer cross-section (2072 Ashwin).", data: "Given in figure\nHydraulic conductivity K = 0.4 m/day" },
+          { year: "2072 Magh", label: "Q5(a)", marks: "4", text: "Explain how a water table contour map is prepared." },
+          { year: "2072 Magh", label: "Q7", marks: "8", text: "Determine the flow in the confined aquifer shown in the figure.", numerical: true, figureMarkup: SVG_CONFINED_MAGH, figureCaption: "Figure: Confined-aquifer cross-section with 950 m span (2072 Magh).", data: "Given in figure\nLength = 950 m\nHydraulic conductivity K = 0.56 m/day" },
+          { year: "2071 Bhadra", label: "Q3", marks: "6", text: "Derive an expression for seepage discharge from a flow net for an isotropic aquifer." },
+          { year: "2071 Bhadra", label: "Q4", marks: "3+3+3", text: "Rain falls on a strip of land lying between two parallel canals over an impervious stratum. Compute discharge into both canals, determine the phreatic surface equation, water table divide, and seepage to the lower canal when rainfall is absent.", numerical: true, figureMarkup: SVG_CANALS, figureCaption: "Figure: Unconfined aquifer between two canals with rainfall (2071 Bhadra).", data: "Rainfall = 12 mm/hr\nStrip width = 1200 m\nCanal depths = 10 m and 8 m\nPermeability = 10 m/day\nVertical boundaries and full infiltration assumed" }
+        ]
+      },
+      {
+        id: 4,
+        title: "Well Hydraulics",
+        description: "Steady and unsteady radial flow to wells, radius of influence, cone of depression, specific capacity, and discharge from confined and unconfined wells.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q4(a)", marks: "6", text: "Define cone of depression, radius of influence, well yield, and specific capacity of a well. Write down the assumptions used for the governing equation." },
+          { year: "2078 Chaitra", label: "Q4(b)", marks: "6", text: "A well penetrates an artesian aquifer. Determine the maximum yield for a given drawdown and the percentage change in discharge if the well diameter is reduced.", numerical: true, data: "Well diameter = 30 cm\nAquifer thickness = 23 m\nDrawdown = 3.5 m\nHydraulic conductivity K = 2.8 \u00d7 10\u207b\u2074 m/s\nRadius of influence = 450 m\nModified well diameter = 20 cm" },
+          { year: "2073 Bhadra", label: "Q4(a)", marks: "7", text: "Derive an expression for steady radial flow into a well in a confined aquifer with a neat sketch." },
+          { year: "2073 Bhadra", label: "Q4(b)", marks: "4", text: "A fully penetrating well in an unconfined aquifer is pumped under steady conditions. Compute the steady-state discharge.", numerical: true, data: "Well radius = 0.5 m\nAquifer thickness = 50 m\nPermeability K = 30 m/day\nWater level in well = 40 m above bottom\nRadius with negligible effect = 500 m" },
+          { year: "2072 Magh", label: "Q4", marks: "6", text: "Define cone of depression, radius of influence, and area of influence with a neat sketch in well hydraulics." },
+          { year: "2072 Magh", label: "Q5(b)", marks: "8", text: "Derive the equation for steady radial flow in an unconfined aquifer. Symbols carry their usual meaning." }
+        ]
+      },
+      {
+        id: 5,
+        title: "Pumping Test and Estimation of Aquifer Properties",
+        description: "Purpose and types of pumping tests, Thiem, Theis, Cooper-Jacob, time-drawdown, distance-drawdown, transmissivity, storage coefficient, and related aquifer estimation problems.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q5(a)", marks: "6", text: "Write the step-by-step procedure to determine transmissivity by Thiem\u2019s method with the necessary mathematical expression." },
+          { year: "2078 Chaitra", label: "Q5(b)", marks: "6", text: "Using the given drawdown data from an observation well in a confined aquifer, calculate transmissivity and storage coefficient by the Cooper-Jacob method.", numerical: true, data: "Observation well distance = 100 m\nPumping rate = 1000 m\u00b3/day\nTime (days): 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10\nDrawdown (m): 0.083, 0.196, 0.249, 0.376, 0.431, 0.559, 0.614, 0.742, 0.797" },
+          { year: "2073 Bhadra", label: "Q5(a)", marks: "2", text: "Why is the pumping test carried out in groundwater studies?" },
+          { year: "2073 Bhadra", label: "Q5(b)", marks: "8", text: "Using the given drawdown data and pumping rate, determine transmissivity and storage coefficient by the Cooper-Jacob method.", numerical: true, data: "Observation well distance = 100 m\nPumping rate = 1000 m\u00b3/day\nTime (days): 0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10\nDrawdown (m): 0.083, 0.196, 0.249, 0.376, 0.431, 0.559, 0.614, 0.742, 0.797" },
+          { year: "2072 Ashwin", label: "Q6", marks: "8", text: "Using the observation well drawdown data, determine transmissivity and storage coefficient by the Cooper-Jacob method.", numerical: true, figureMarkup: TABLE_TIME_DRAWDOWN, figureCaption: "Table: Time-drawdown data for Cooper-Jacob analysis (2072 Ashwin).", data: "Observation well distance = 100 m\nPumping rate = 1000 m\u00b3/day" },
+          { year: "2072 Ashwin", label: "Q11", marks: "6", text: "Explain the Theis solution for determination of storage coefficient and transmissibility of an aquifer." },
+          { year: "2072 Magh", label: "Q6", marks: "8", text: "Explain the types of pumping test used in the field to determine soil permeability." },
+          { year: "2072 Magh", label: "Q7", marks: "8", text: "Explain the Cooper and Jacob method for determination of storage coefficient and transmissivity of an aquifer using time-drawdown data." },
+          { year: "2071 Bhadra", label: "Q8", marks: "10", text: "For a pumping well in a confined aquifer, use multiple observation well drawdown data to calculate radius of influence and transmissivity. Semi-log graph is provided.", numerical: true, figureMarkup: TABLE_DIST_DRAWDOWN, figureCaption: "Table: Distance-drawdown data (2071 Bhadra).", data: "Steady discharge = 0.025 m\u00b3/s" }
+        ]
+      },
+      {
+        id: 6,
+        title: "Overview of Groundwater Exploration",
+        description: "Objectives of exploration, surface investigation methods, water witching, electrical resistivity, seismic refraction, and geophysical methods.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q9", marks: "4", text: "What are the geophysical methods for groundwater exploration? Write in detail about any one of them." },
+          { year: "2073 Bhadra", label: "Q7", marks: "2+3", text: "Discuss briefly the purpose of groundwater exploration. Explain the electrical resistivity method of geophysical exploration with necessary sketches." },
+          { year: "2072 Ashwin", label: "Q7", marks: "2+3+1", text: "What is the main objective of groundwater exploration? List different surface investigation methods used in groundwater exploration and explain water witching." },
+          { year: "2072 Magh", label: "Q8", marks: "6", text: "What are the objectives of groundwater exploration? Explain the seismic refraction method of groundwater exploration." },
+          { year: "2071 Bhadra", label: "Q7", marks: "4+4", text: "What is groundwater exploration? What are its objectives? Write about methods of groundwater exploration." }
+        ]
+      },
+      {
+        id: 7,
+        title: "Water Well Design",
+        description: "Open wells, tube wells, recuperation tests, well yield, and practical design-oriented questions tied to groundwater abstraction structures.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q7", marks: "6", text: "For an irrigation project, a recuperation test was conducted on an open well. Determine the specific yield of the open well and the yield from a 5 m diameter well under the given depression head.", numerical: true, data: "Initial depression = 4 m\nWater level rise = 2.2 m\nRecovery time = 90 minutes\nWell diameter = 5 m\nDepression head for yield = 2.5 m" },
+          { year: "2073 Bhadra", label: "Q8(a)", marks: "3", text: "Differentiate between open well and tube well." },
+          { year: "2073 Bhadra", label: "Q8(b)", marks: "2+2+3", text: "From a recuperation test on an open well, determine specific yield, yield from a 5 m diameter well, and required diameter to obtain a target discharge.", numerical: true, data: "Initial depression = 3 m\nWater level rise = 1.75 m\nRecovery time = 75 minutes\nWell diameter = 5 m\nDepression head = 2.5 m\nTarget discharge = 12 lit/s at 2 m depression" },
+          { year: "2072 Ashwin", label: "Q10", marks: "4+2", text: "What do you mean by a tube well? Explain different types of tube well with figure." },
+          { year: "2071 Bhadra", label: "Q10", marks: "3+3+4", text: "During a recuperation test on an open well, determine specific yield, yield from a 5 m diameter well, and required diameter for a target discharge.", numerical: true, data: "Initial depression = 3 m\nWater level rise = 1.75 m\nRecovery time = 75 minutes\nWell diameter = 5 m\nDepression head = 2.5 m\nTarget discharge = 12 lit/s at 2 m depression" }
+        ]
+      },
+      {
+        id: 8,
+        title: "Pumps for Groundwater Lifting",
+        description: "Types of pumps, centrifugal pumps, pump selection criteria, and suitability of different pump sets for groundwater lifting.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q6", marks: "4", text: "Explain the factors to be considered in the selection of pump sets for groundwater pumping." },
+          { year: "2073 Bhadra", label: "Q9", marks: "4+2", text: "Describe briefly any four common groundwater pumps. What factors should be considered while selecting a groundwater pump?" },
+          { year: "2072 Ashwin", label: "Q9", marks: "4+2", text: "Explain the working principle, advantages, and limitations of the centrifugal pump used for groundwater." },
+          { year: "2072 Magh", label: "Q9", marks: "4", text: "Explain the working principle of the centrifugal pump used for lifting groundwater." },
+          { year: "2071 Bhadra", label: "Q9", marks: "4", text: "What are the types of pumps used for lifting water?" }
+        ]
+      },
+      {
+        id: 9,
+        title: "Groundwater Resources of Nepal",
+        description: "Kathmandu Valley, Terai aquifers, development possibilities, regional groundwater exploitation, and Nepal-focused resource questions.",
+        questions: [
+          { year: "2078 Chaitra", label: "Q8", marks: "6", text: "Discuss the overall condition of groundwater exploitation in urban areas with reference to Butwal and suggest mitigation measures." },
+          { year: "2073 Bhadra", label: "Q10", marks: "4", text: "Discuss the aquifer system of Kathmandu Valley." },
+          { year: "2072 Ashwin", label: "Q3", marks: "8", text: "For a confined aquifer in Pokhara, estimate annual groundwater storage from piezometric fluctuation and determine how many wells can be drilled for the given yield and pumping duration.", numerical: true, data: "Aquifer thickness = 30 m\nArea = 800 km\u00b2\nPiezometric surface fluctuation = 19 m to 9 m above aquifer top\nStorage coefficient = 0.0008\nAverage well yield = 30 m\u00b3/hr\nPumping duration = 200 days/year" },
+          { year: "2072 Ashwin", label: "Q8", marks: "6", text: "Discuss the aquifer system of Kathmandu Valley of Nepal." },
+          { year: "2072 Magh", label: "Q3", marks: "8", text: "For a confined aquifer in Janakpur, estimate annual groundwater storage and determine the number of wells that can be drilled under the given pumping assumptions.", numerical: true, data: "Aquifer thickness = 20 m\nArea = 850 km\u00b2\nGroundwater table fluctuation = 15 m to 10 m above aquifer top\nStorage coefficient = 0.0009\nAverage well yield = 30 m\u00b3/hr\nPumping duration = 210 days/year" },
+          { year: "2072 Magh", label: "Q10", marks: "6", text: "Discuss the groundwater development possibilities of the Terai belt." },
+          { year: "2071 Bhadra", label: "Q11", marks: "6", text: "Discuss, with the help of schematic zones, the availability and possibilities of groundwater resources in Kathmandu Valley." }
+        ]
+      }
+    ];
+
+    /* ── Rendering ──────────────────────────────────────────────── */
+
+    const chaptersRoot = document.getElementById("chapters");
+    const searchInput = document.getElementById("search");
+    const yearFilter = document.getElementById("yearFilter");
+
+    function createQuestionCard(question) {
+      const article = document.createElement("article");
+      article.className = "question-card";
+      article.dataset.year = question.year;
+      article.dataset.search = `${question.year} ${question.label} ${question.text} ${question.data || ""} ${question.figureCaption || ""}`.toLowerCase();
+
+      /* Pill badges */
+      const meta = document.createElement("div");
+      meta.className = "question-meta";
+
+      const yearPill = document.createElement("span");
+      yearPill.className = "pill primary";
+      yearPill.textContent = question.year;
+
+      const labelPill = document.createElement("span");
+      labelPill.className = "pill";
+      labelPill.textContent = question.label;
+
+      meta.append(yearPill, labelPill);
+
+      if (question.marks) {
+        const marksPill = document.createElement("span");
+        marksPill.className = "pill";
+        marksPill.style.fontWeight = "bold";
+        marksPill.textContent = "[" + question.marks + "]";
+        meta.append(marksPill);
+      }
+
+      if (question.numerical) {
+        const p = document.createElement("span");
+        p.className = "pill";
+        p.textContent = "Numerical";
+        meta.appendChild(p);
+      }
+
+      if (question.figureMarkup) {
+        const p = document.createElement("span");
+        p.className = "pill";
+        p.textContent = "Figure attached";
+        meta.appendChild(p);
+      }
+
+      /* Question text */
+      const text = document.createElement("p");
+      text.textContent = question.text;
+
+      article.append(meta, text);
+
+      /* Given data block */
+      if (question.data) {
+        const block = document.createElement("div");
+        block.className = "data-block";
+        const title = document.createElement("div");
+        title.className = "block-title";
+        title.textContent = "Given Data";
+        const pre = document.createElement("pre");
+        pre.textContent = question.data;
+        block.append(title, pre);
+        article.appendChild(block);
+      }
+
+      /* Inline SVG / HTML table figure */
+      if (question.figureMarkup) {
+        const container = document.createElement("div");
+        container.className = "figure-container";
+        container.innerHTML = question.figureMarkup;
+        if (question.figureCaption) {
+          const cap = document.createElement("div");
+          cap.className = "figcaption";
+          cap.textContent = question.figureCaption;
+          container.appendChild(cap);
+        }
+        article.appendChild(container);
+      }
+
+      return article;
+    }
+
+    function render() {
+      chaptersRoot.innerHTML = "";
+
+      chapters.forEach(function (chapter) {
+        const section = document.createElement("section");
+        section.className = "chapter-section";
+        section.id = "chapter-" + chapter.id;
+
+        const head = document.createElement("div");
+        head.className = "chapter-head";
+
+        const headingBlock = document.createElement("div");
+        const title = document.createElement("h2");
+        title.textContent = "Chapter " + chapter.id + ": " + chapter.title;
+        const desc = document.createElement("p");
+        desc.className = "chapter-desc";
+        desc.textContent = chapter.description;
+        headingBlock.append(title, desc);
+
+        const count = document.createElement("div");
+        count.className = "chapter-count";
+        count.textContent = chapter.questions.length + " questions";
+
+        head.append(headingBlock, count);
+
+        const list = document.createElement("div");
+        list.className = "question-list";
+        chapter.questions.forEach(function (q) {
+          list.appendChild(createQuestionCard(q));
+        });
+
+        section.append(head, list);
+        chaptersRoot.appendChild(section);
+      });
+
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      const year = yearFilter.value;
+
+      document.querySelectorAll(".chapter-section").forEach(function (section) {
+        const cards = Array.from(section.querySelectorAll(".question-card"));
+        let visibleCount = 0;
+
+        cards.forEach(function (card) {
+          const matchesYear = year === "all" || card.dataset.year === year;
+          const matchesKeyword = !keyword || card.dataset.search.includes(keyword);
+          const visible = matchesYear && matchesKeyword;
+          card.classList.toggle("hidden", !visible);
+          if (visible) visibleCount++;
+        });
+
+        section.classList.toggle("hidden", visibleCount === 0);
+        const badge = section.querySelector(".chapter-count");
+        badge.textContent = visibleCount + " question" + (visibleCount === 1 ? "" : "s");
+      });
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+    yearFilter.addEventListener("change", applyFilters);
+
+    render();
+  </script>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+
+
+
+
+
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline style="background:..." and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../../common.js"></script>
+</body>
+</html>

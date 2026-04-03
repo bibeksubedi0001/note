@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: Solution of Linear Equations</title>
+
+    <!-- MathJax / KaTeX -->
+    <!-- polyfill removed for speed -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+
+    <style>
+        :root {
+            --base-size: 12pt;
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        p,
+        span,
+        div,
+        li,
+        table,
+        td,
+        th {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: var(--base-size);
+            color: black;
+            background-color: white;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid black;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid black;
+        }
+
+        h3 {
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h4 {
+            font-weight: bold;
+            font-style: italic;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 1rem;
+        }
+
+        ul,
+        ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        li {
+            text-align: justify;
+            margin-bottom: 0.5rem;
+        }
+
+        .equation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .exam-note {
+            border: 1px solid black;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .exam-note h4 {
+            margin-top: 0;
+            border-bottom: 1px dashed black;
+            padding-bottom: 0.25rem;
+        }
+
+        .callout {
+            border-left: 3px solid black;
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+
+        .figure-container {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid black;
+        }
+
+        .figcaption {
+            font-style: italic;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        table.info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table.info-table th,
+        table.info-table td {
+            border: 1px solid black;
+            padding: 6px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table.info-table th {
+            font-weight: bold;
+            background: white;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            border: 2px solid black;
+            background-color: white;
+            color: black;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: var(--base-size);
+        }
+
+        .print-btn:hover {
+            background-color: black;
+            color: white;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .figure-container,
+            .exam-note {
+                page-break-inside: avoid;
+            }
+
+            h2,
+            h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+
+<style id="dark-mode-styles">
+/* ── Toggle button ── */
+.dm-toggle{position:fixed;top:16px;right:16px;z-index:99999;width:44px;height:44px;
+  border-radius:50%;border:1.5px solid #d4cfc5;background:#fdfbf7;color:#2c2c2c;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s cubic-bezier(.4,0,.2,1);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dm-toggle:hover{transform:rotate(30deg) scale(1.1);background:#1a3c5e;color:#fff;border-color:#1a3c5e}
+[data-theme="dark"] .dm-toggle{border-color:#3a3d44;background:#1a1d23;color:#e0ddd5}
+[data-theme="dark"] .dm-toggle:hover{background:#5ea3e0;color:#fff;border-color:#5ea3e0}
+
+/* ════════════════════ CORE ════════════════════ */
+[data-theme="dark"]{color-scheme:dark}
+
+/* CSS variable remap */
+[data-theme="dark"]{
+  --ioe-blue:#5ea3e0;--ioe-orange:#e87055;--white:#1a1d23;
+  --accent:#5ea3e0;--accent-light:#1e2a3a;--accent-2:#e87055;--accent-2-lt:#2a1e1a;
+  --paper:#1a1d23;--paper-edge:#22262e;--ink:#e0ddd5;--muted:#9a9a9a;
+  --line:#3a3d44;--soft:#24272e;--gold:#d4a017;--green:#5bb87a;--green-lt:#1a2a1e;
+  --border:#3a3d44}
+
+/* ═══ CATCH-ALL: force all text light ═══
+   This single rule ensures NO text stays dark on dark bg.
+   Specific accent colors are added back below. */
+[data-theme="dark"] body{background:#141720!important;color:#d8d5cd!important}
+[data-theme="dark"] body div,
+[data-theme="dark"] body p,
+[data-theme="dark"] body span,
+[data-theme="dark"] body li,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body label,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body blockquote,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body small,
+[data-theme="dark"] body em,
+[data-theme="dark"] body i,
+[data-theme="dark"] body summary,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body details,
+[data-theme="dark"] body mark,
+[data-theme="dark"] body address,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body output{color:#d0cdc5!important}
+
+/* Headings – slightly brighter */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6{color:#e8e5dd!important}
+
+/* Bold */
+[data-theme="dark"] strong,
+[data-theme="dark"] b{color:#e8e5dd!important}
+
+/* Links – blue accent */
+[data-theme="dark"] a{color:#6db3f0!important}
+[data-theme="dark"] a:hover{color:#90c8ff!important}
+
+/* ════════════════════ BORDERS ════════════════════ */
+/* Scope: only direct HTML elements, NOT svg internals */
+[data-theme="dark"] div,
+[data-theme="dark"] p,
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] aside,
+[data-theme="dark"] nav,
+[data-theme="dark"] header,
+[data-theme="dark"] footer,
+[data-theme="dark"] main,
+[data-theme="dark"] table,
+[data-theme="dark"] tr,
+[data-theme="dark"] td,
+[data-theme="dark"] th,
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea,
+[data-theme="dark"] button,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] hr,
+[data-theme="dark"] ul,
+[data-theme="dark"] ol,
+[data-theme="dark"] li,
+[data-theme="dark"] blockquote,
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] figure,
+[data-theme="dark"] figcaption{border-color:#333740!important}
+
+/* ════════════════════ BACKGROUNDS ════════════════════ */
+/* Tailwind light tints */
+[data-theme="dark"] .bg-white{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-slate-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-50{background-color:#1e2028!important}
+[data-theme="dark"] .bg-blue-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-sky-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-indigo-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-emerald-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-green-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-amber-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-yellow-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-red-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-rose-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-orange-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-teal-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-cyan-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-purple-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-pink-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-stone-100{background-color:#1e2028!important}
+[data-theme="dark"] .bg-gray-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-200{background-color:#282b33!important}
+[data-theme="dark"] .bg-gray-300{background-color:#282b33!important}
+[data-theme="dark"] .bg-slate-300{background-color:#282b33!important}
+
+/* Tailwind dark text → light */
+[data-theme="dark"] .text-gray-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-900{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-800{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-slate-700{color:#e0ddd5!important}
+[data-theme="dark"] .text-black{color:#e0ddd5!important}
+[data-theme="dark"] .text-gray-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-600{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-slate-500{color:#a0a0a0!important}
+[data-theme="dark"] .text-gray-400{color:#888!important}
+[data-theme="dark"] .text-slate-400{color:#888!important}
+[data-theme="dark"] .text-white{color:#e0ddd5!important}
+
+/* ════════════════════ CONTAINERS ════════════════════ */
+[data-theme="dark"] section,
+[data-theme="dark"] article,
+[data-theme="dark"] main,
+[data-theme="dark"] .page,
+[data-theme="dark"] .content{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="container"]{background-color:#1a1d23!important}
+[data-theme="dark"] div[class*="print-container"]{background-color:#1a1d23!important}
+
+/* ════════════════════ TABLES ════════════════════ */
+[data-theme="dark"] table{background:#1a1d23!important}
+[data-theme="dark"] th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] tr:nth-child(even) td{background:#1e222a!important}
+[data-theme="dark"] tr:nth-child(odd) td{background:#1a1d23!important}
+[data-theme="dark"] tr:hover td{background:#252a34!important}
+[data-theme="dark"] table.dt th{background:#2a3550!important}
+[data-theme="dark"] table.units th{background:#2a3550!important}
+[data-theme="dark"] table.sum th{background:#2a3550!important}
+[data-theme="dark"] .matrix-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .summary-table th{background:#2a3550!important;color:#e0ddd5!important}
+[data-theme="dark"] .comp-table th{background:#2a3550!important;color:#e0ddd5!important}
+
+/* ════════════════════ CODE ════════════════════ */
+[data-theme="dark"] pre{background:#1e222a!important;color:#c8e8a0!important}
+[data-theme="dark"] code{background:#1e222a!important;color:#c8e8a0!important}
+
+/* ════════════════════ FORM ELEMENTS ════════════════════ */
+[data-theme="dark"] input{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] select{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] textarea{background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] button:not(.dm-toggle){background-color:#22262e!important;color:#d8d5cd!important}
+[data-theme="dark"] input[type=range]{background:transparent!important}
+
+/* ════════════════════ NAVIGATION ════════════════════ */
+[data-theme="dark"] nav{background-color:#181b22!important}
+[data-theme="dark"] .nav-item{background-color:#181b22!important;color:#d0cdc5!important}
+[data-theme="dark"] .nav-item:hover{background-color:#252a34!important}
+[data-theme="dark"] .nav-item.active{background-color:#1e2a3a!important;color:#6db3f0!important}
+[data-theme="dark"] .sidebar{background-color:#181b22!important}
+[data-theme="dark"] aside{background-color:#181b22!important}
+[data-theme="dark"] .nav-section-title{color:#888!important}
+[data-theme="dark"] .topnav a{color:#6db3f0!important}
+
+/* ════════════════════ TOPBAR / HEADER ════════════════════ */
+[data-theme="dark"] .topbar{background-color:#0d0f13!important;color:#e0ddd5!important}
+[data-theme="dark"] .topbar a{color:#e0ddd5!important}
+[data-theme="dark"] header[class]{background-color:#111318!important}
+[data-theme="dark"] .ch-header{background:#111318!important;color:#e0ddd5!important}
+
+/* ════════════════════ CALLOUT BOXES ════════════════════ */
+[data-theme="dark"] .eq-block{background:#1e222a!important}
+[data-theme="dark"] .note{background:#1e222a!important}
+[data-theme="dark"] .def-box{background:#1e222a!important}
+[data-theme="dark"] .step-box{background:#1e222a!important}
+[data-theme="dark"] .result-box{background:#1e222a!important}
+[data-theme="dark"] .example{background:#191c22!important}
+[data-theme="dark"] .ex-q{background:#1e222a!important}
+[data-theme="dark"] .toc-card{background:#1e222a!important}
+[data-theme="dark"] .exam-note{background:#1e222a!important}
+[data-theme="dark"] .given{background:#1e222a!important}
+[data-theme="dark"] .answer{background:#1e222a!important;color:#e0ddd5!important}
+[data-theme="dark"] .formula-box{background:#1e2a3a!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .formula-box h3{color:#6db3f0!important}
+[data-theme="dark"] .concept-box{background:#2a2518!important;border-color:#6a5a20!important}
+[data-theme="dark"] .concept-box h4{color:#e8a040!important}
+[data-theme="dark"] .derivation{background:#1a2a1e!important;border-color:#2d5a36!important}
+[data-theme="dark"] .derivation h4{color:#5bb87a!important}
+[data-theme="dark"] .warning{background:#2a1a1e!important;border-color:#6a2a2a!important}
+[data-theme="dark"] .warning strong{color:#e87055!important}
+[data-theme="dark"] .method-box{background:#221a2a!important;border-color:#5a2a7a!important}
+[data-theme="dark"] .method-box h4{color:#b080d0!important}
+[data-theme="dark"] .insight{background:#1a1e2a!important;border-color:#3a4a6a!important}
+[data-theme="dark"] .soln-label{background:#5ea3e0!important;color:#111!important}
+[data-theme="dark"] .example .ex-title{border-color:#3a3d44!important}
+
+/* Accordion */
+[data-theme="dark"] details.problem{border-color:#3a3d44!important}
+[data-theme="dark"] details.problem>summary{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] details.problem[open]>summary{background:#282b33!important}
+
+/* Pills */
+[data-theme="dark"] .pill{border-color:#3a3d44!important}
+[data-theme="dark"] .pill-ch{background:#1e2a3a!important}
+[data-theme="dark"] .pill-yr{background:#2a2518!important}
+[data-theme="dark"] .pill-mk{background:#1a2a1e!important}
+
+/* TOC / Card grid */
+[data-theme="dark"] .toc-grid a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .toc-grid a:hover{background:#252a34!important}
+[data-theme="dark"] .card{background:#1a1d23!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card h3{color:#6db3f0!important}
+[data-theme="dark"] .card a{color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .card a:hover{background:#3a5a8a!important;color:#fff!important}
+
+/* Ch nav */
+[data-theme="dark"] .ch-nav a{background:#1a1d23!important;color:#6db3f0!important;border-color:#3a3d44!important}
+[data-theme="dark"] .ch-nav a:hover{background:#252a34!important}
+
+/* ════════════════════ FIGURES ════════════════════ */
+[data-theme="dark"] .fig{background:#1e222a!important;border-color:#3a3d44!important}
+[data-theme="dark"] .svg-wrap{background:#1e222a!important}
+[data-theme="dark"] svg text{fill:#d0cdc5}
+
+/* ════════════════════ FOOTER ════════════════════ */
+[data-theme="dark"] .footer{background:#0d0f13!important;color:#888!important}
+[data-theme="dark"] footer{background:#0d0f13!important;color:#888!important}
+
+/* ════════════════════ IOE SLIDES ════════════════════ */
+[data-theme="dark"] .ioe-slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] .slide{background:#1a1d23!important;color:#d8d5cd!important}
+[data-theme="dark"] #slider-container{background:#141720!important}
+[data-theme="dark"] .placeholder-box{background:#1e222a!important;color:#888!important}
+
+/* ════════════════════ GLASS PANELS ════════════════════ */
+[data-theme="dark"] .glass-panel{background:rgba(26,29,35,.75)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .glass-nav{background:rgba(26,29,35,.85)!important;border-color:#3a3d44!important}
+[data-theme="dark"] .slider-card{background:rgba(26,29,35,.6)!important}
+[data-theme="dark"] .slider-card:hover{background:rgba(30,34,42,.9)!important}
+[data-theme="dark"] .kpi-card{background:rgba(26,29,35,.8)!important}
+
+/* ════════════════════ MISC ════════════════════ */
+[data-theme="dark"] .dw-b{background:#1e222a!important}
+[data-theme="dark"] .dw-tb{background:#1a1d23!important}
+[data-theme="dark"] .ctrl-bar button{background:#22262e!important;color:#6db3f0!important;border-color:#3a5a8a!important}
+[data-theme="dark"] .print-btn{background:#1a1d23!important;color:#e0ddd5!important;border-color:#3a3d44!important}
+[data-theme="dark"] .btt{background:#22262e!important;color:#e0ddd5!important}
+[data-theme="dark"] .btt:hover{background:#3a3d44!important}
+[data-theme="dark"] canvas{background:#1e222a!important}
+[data-theme="dark"] hr{border-color:#333740!important;background:#333740!important}
+
+/* ════════════════════ SHADOWS ════════════════════ */
+[data-theme="dark"] [class*="shadow"]{
+  box-shadow:0 4px 20px rgba(0,0,0,.3)!important}
+
+/* ════════════════════ SCROLLBAR ════════════════════ */
+[data-theme="dark"] ::-webkit-scrollbar-thumb{background:#3a3d44}
+[data-theme="dark"] ::-webkit-scrollbar-track{background:#141720}
+
+/* ════════════════════ PRINT ════════════════════ */
+@media print{
+  .dm-toggle{display:none!important}
+  [data-theme="dark"] body{background:#fff!important;color:#000!important}}
+
+/* ════════════════════ TRANSITIONS ════════════════════ */
+body,div,p,a,li,th,td,h1,h2,h3,h4,h5,h6,nav,section,main,header,footer,
+input,select,textarea,button{
+  transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+</style>
+
+</head>
+
+<body>
+<button class="dm-toggle" id="dmToggle" aria-label="Toggle dark mode">&#9790;</button>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<main>
+
+        <header>
+            <p style="text-align: center; font-style: italic; margin-bottom: 1rem">Structural Engineering Dynamics</p>
+            <h1>CHAPTER 2: SOLUTION OF LINEAR EQUATIONS</h1>
+        </header>
+
+        <!-- 2.2 Solution of System of Linear Equations -->
+        <section id="sec-2-2">
+            <h2>2.2 SOLUTION OF SYSTEM OF LINEAR EQUATIONS</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Explain the solution methods of solving a system of linear equations with examples. [8]
+                        <em>(2079 Jestha, Q7)</em></li>
+                    <li>Explain the different solution techniques of linear equations. [3-6] <em>(2075 Bhadra, 2074
+                            Magh, 2072 Ashwin, 2071 Magh)</em></li>
+                    <li>What are the direct methods and iterative methods of solving linear equations? [2] <em>(2078
+                            Kartik, Q2)</em></li>
+                    <li>Briefly explain about the different iterative methods used for the solution for given set of
+                        equations. [3] <em>(2078 Chaitra, Q2a)</em></li>
+                </ol>
+            </div>
+
+            <p>
+                In computational engineering (such as Finite Element Analysis), the physical problem ultimately reduces
+                to solving a large system of simultaneous algebraic linear equations of the form:
+            </p>
+
+            <div class="equation">
+                $$ [A]\{x\} = \{b\} $$
+            </div>
+
+            <p>
+                Where \([A]\) is the known square coefficient matrix (e.g., stiffness matrix), \(\{b\}\) is the known
+                vector of constants (e.g., applied forces), and \(\{x\}\) is the unknown vector to be solved (e.g.,
+                nodal displacements). The solution techniques for these equations are broadly classified into two
+                categories: <strong>Direct Methods</strong> and <strong>Iterative Methods</strong>.
+            </p>
+
+            <h3>1. Direct Methods</h3>
+            <p>
+                Direct methods attempt to solve the system of equations by a finite sequence of standard algebraic
+                operations. In the absence of mathematical round-off errors, a direct method will yield the exact
+                analytical solution.
+            </p>
+            <ul>
+                <li><strong>Gauss Elimination:</strong> Reduces the matrix \([A]\) to an upper triangular matrix \([U]\)
+                    using forward elimination, followed by backward substitution to find \(\{x\}\).</li>
+                <li><strong>LU Decomposition:</strong> Factors the matrix \([A]\) into the product of a lower triangular
+                    matrix \([L]\) and an upper triangular matrix \([U]\) such that \([A] = [L][U]\). It is highly
+                    efficient when solving for multiple different load vectors \(\{b\}\).</li>
+                <li><strong>Cholesky Factorization:</strong> A specialized decomposition \([A] = [L][L]^T\) used
+                    exclusively when \([A]\) is symmetric and positive-definite (common in structural stiffness
+                    matrices).</li>
+            </ul>
+
+            <div class="callout">
+                <strong>Example of Gauss Elimination concept:</strong><br>
+                Given \( 2x + y = 5 \) and \( 4x + 3y = 11 \).<br>
+                Multiply the first equation by 2 and subtract from the second to eliminate \(x\), yielding \( 1y = 1 \).
+                Back-substituting \( y=1 \) into the first equation yields \( x=2 \).
+            </div>
+
+            <h3>2. Iterative Methods</h3>
+            <p>
+                Iterative methods start with an initial "guess" for the solution vector \(\{x\}^{(0)}\) and successively
+                refine this guess through a looped algorithm until the solution converges within an acceptable tolerance
+                margin (\( \epsilon \)).
+            </p>
+            <ul>
+                <li><strong>Jacobi Method:</strong> Solves each equation for one specific variable assuming all other
+                    variables take their values from the <em>previous</em> iteration step.</li>
+                <li><strong>Gauss-Seidel Method:</strong> Similar to Jacobi, but uses the most recently updated values
+                    of variables immediately within the <em>current</em> iteration step, typically leading to faster
+                    convergence.</li>
+                <li><strong>Relaxation Methods:</strong> Introduces an extrapolation factor (like Successive
+                    Over-Relaxation, SOR) to artificially accelerate the convergence rate of the Gauss-Seidel method.
+                </li>
+            </ul>
+
+            <div class="figure-container">
+                <svg width="600" height="250" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="250" y="20" width="100" height="40" fill="white" stroke="black" stroke-width="2" />
+                    <text x="300" y="45" text-anchor="middle" font-weight="bold">[A]{x} = {b}</text>
+
+                    <!-- Branches -->
+                    <line x1="300" y1="60" x2="300" y2="80" stroke="black" stroke-width="2" />
+                    <line x1="150" y1="80" x2="450" y2="80" stroke="black" stroke-width="2" />
+
+                    <!-- Direct Method -->
+                    <line x1="150" y1="80" x2="150" y2="100" stroke="black" stroke-width="2" />
+                    <polygon points="150,105 145,95 155,95" fill="black" />
+                    <rect x="70" y="105" width="160" height="40" fill="white" stroke="black" stroke-width="2" />
+                    <text x="150" y="130" text-anchor="middle" font-weight="bold">Direct Methods</text>
+
+                    <text x="150" y="165" text-anchor="middle">- Finite, fixed steps</text>
+                    <text x="150" y="185" text-anchor="middle">- Yields "exact" result</text>
+                    <text x="150" y="205" text-anchor="middle">- High memory usage</text>
+                    <text x="150" y="225" text-anchor="middle">(e.g., Gauss, LU, Cholesky)</text>
+
+                    <!-- Iterative Method -->
+                    <line x1="450" y1="80" x2="450" y2="100" stroke="black" stroke-width="2" />
+                    <polygon points="450,105 445,95 455,95" fill="black" />
+                    <rect x="370" y="105" width="160" height="40" fill="white" stroke="black" stroke-width="2" />
+                    <text x="450" y="130" text-anchor="middle" font-weight="bold">Iterative Methods</text>
+
+                    <text x="450" y="165" text-anchor="middle">- Infinite looping steps</text>
+                    <text x="450" y="185" text-anchor="middle">- Yields approximate result</text>
+                    <text x="450" y="205" text-anchor="middle">- Low memory usage</text>
+                    <text x="450" y="225" text-anchor="middle">(e.g., Jacobi, Gauss-Seidel)</text>
+                </svg>
+                <div class="figcaption">Figure 2.1: Comparison between Direct and Iterative solution approaches.</div>
+            </div>
+        </section>
+
+        <!-- 2.3 Data Storage and Memory Optimization -->
+        <section id="sec-2-3">
+            <h2>2.3 DATA STORAGE AND MEMORY OPTIMIZATION</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>What do you mean by sparse matrix, banded matrix, and memory optimization? [3-5] <em>(2079
+                            Shrawan, 2076 Bhadra, 2074 Magh, 2073 Bhadra)</em></li>
+                    <li>Explain with suitable example how banded matrix and skyline storage scheme helps in memory
+                        optimization. [3-4] <em>(2079 Chaitra, Q6b; 2077 Chaitra, Q2a; 2072 Magh)</em></li>
+                </ol>
+            </div>
+
+            <h3>Sparse and Banded Matrices</h3>
+            <p>
+                In structural engineering, the resulting global stiffness matrix \([K]\) for a large structure typically
+                contains thousands of rows and columns.
+            </p>
+            <ul>
+                <li><strong>Sparse Matrix:</strong> A matrix populated primarily with zeros. Since each node in a
+                    structure is only connected to a few adjacent nodes, the vast majority of entries in the stiffness
+                    matrix are zero.</li>
+                <li><strong>Banded Matrix:</strong> A sparse matrix where all non-zero elements are concentrated within
+                    a narrow diagonal band around the main diagonal. The width of this non-zero band is dictated by the
+                    node numbering sequence of the mesh.</li>
+            </ul>
+
+            <h3>Memory Optimization Techniques</h3>
+            <p>
+                Standard computer storage of an \(n \times n\) matrix requires allocating memory for \(n^2\) elements.
+                For a 10,000-degree-of-freedom system, this requires storing 100,000,000 numbers, which overwhelms RAM,
+                even though 95% of those numbers are just zero. Memory optimization strategies aim to store
+                <em>only</em> the non-zero elements.
+            </p>
+
+            <h4>1. Banded Matrix Storage</h4>
+            <p>
+                Instead of storing the full \(n \times n\) square, we only store a rectangular array of dimension \(n
+                \times m_B\), where \(m_B\) is the <em>half-bandwidth</em>. All zeroes outside this diagonal band are
+                completely ignored by the computer's memory.
+            </p>
+
+            <h4>2. Skyline Storage Scheme (Variable Bandwidth)</h4>
+            <p>
+                Even within the diagonal band, there may be many zeros. The skyline storage scheme improves upon banded
+                storage. If there are zeroes at the top of a column, operations and storage are only required for the
+                elements starting from the <em>first non-zero value</em> down to the main diagonal.
+            </p>
+            <p>
+                The jagged boundary separating the top zeroes from the first non-zero element in each column is visually
+                termed the <strong>skyline</strong>. Only the numerical values "below the skyline" are stored in a
+                continuous 1D vector array, dramatically minimizing memory consumption.
+            </p>
+
+            <div class="figure-container">
+                <svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Matrix Border -->
+                    <rect x="50" y="20" width="260" height="260" fill="white" stroke="black" stroke-width="2" />
+
+                    <!-- Main Diagonal -->
+                    <line x1="50" y1="20" x2="310" y2="280" stroke="black" stroke-width="1" stroke-dasharray="4,4" />
+
+                    <!-- Skyline Boundary Path -->
+                    <path
+                        d="M 50 20 L 70 20 L 70 40 L 110 40 L 110 60 L 140 60 L 140 100 L 180 100 L 180 130 L 210 130 L 210 160 L 250 160 L 250 200 L 280 200 L 280 240 L 310 240 L 310 280 Z"
+                        fill="none" stroke="black" stroke-width="3" />
+
+                    <!-- Banded Region Fill -->
+                    <path
+                        d="M 50 20 L 70 20 L 70 40 L 110 40 L 110 60 L 140 60 L 140 100 L 180 100 L 180 130 L 210 130 L 210 160 L 250 160 L 250 200 L 280 200 L 280 240 L 310 240 L 310 280 L 50 280 Z"
+                        fill="black" opacity="0.1" />
+
+                    <!-- Text Labels -->
+                    <text x="200" y="60" font-weight="bold">Zero Elements</text>
+                    <text x="200" y="80" font-style="italic">(Not stored in memory)</text>
+
+                    <text x="130" y="220" font-weight="bold">Stored Elements</text>
+                    <text x="130" y="240" font-style="italic">(Below the Skyline)</text>
+
+                    <!-- Skyline Pointer -->
+                    <line x1="280" y1="120" x2="220" y2="150" stroke="black" stroke-width="2" />
+                    <polygon points="220,150 228,145 225,152" fill="black" />
+                    <text x="285" y="115" font-weight="bold">The "Skyline"</text>
+                </svg>
+                <div class="figcaption">Figure 2.2: Visualization of the Skyline Storage Scheme in a Symmetric Matrix.
+                </div>
+            </div>
+        </section>
+
+        <!-- 2.4 Conjugate Gradient Method -->
+        <section id="sec-2-4">
+            <h2>2.4 CONJUGATE GRADIENT METHOD</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Write down the algorithm for Conjugate Gradient Method (for solving a system of linear
+                        equations). [3-5] <em>(2080 Chaitra, 2079 Chaitra, 2079 Shrawan, 2073 Bhadra, 2072 Ashwin, 2071
+                            Bhadra)</em></li>
+                    <li>Write down the algorithm for Conjugate Gradient method and its limitations. [3+2] <em>(2077
+                            Chaitra, Q2b)</em></li>
+                    <li>Why conjugate gradient method is used in computation over Gaussian methods? [4] <em>(2070
+                            Bhadra, Q4a)</em></li>
+                </ol>
+            </div>
+
+            <p>
+                The <strong>Conjugate Gradient Method (CGM)</strong> is an advanced mathematical algorithm for the
+                numerical solution of particular systems of linear equations, specifically those whose matrix is
+                symmetric and positive-definite. It is an iterative method that finds the exact solution of an \(n
+                \times n\) matrix in at most \(n\) steps, but is typically stopped much earlier when a desired tolerance
+                is reached.
+            </p>
+
+            <h3>Algorithm for Conjugate Gradient Method</h3>
+            <p>
+                To solve the system \( [A]\{x\} = \{b\} \):
+            </p>
+            <ol>
+                <li><strong>Initialization:</strong>
+                    <ul>
+                        <li>Choose an initial guess vector \( \{x\}_{0} \) (often just a vector of zeros).</li>
+                        <li>Compute the initial residual vector: \( \{r\}_{0} = \{b\} - [A]\{x\}_{0} \).</li>
+                        <li>Set the initial search direction vector equal to the residual: \( \{d\}_{0} = \{r\}_{0} \).
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Iterative Loop:</strong> For \( k = 0, 1, 2, \dots \) until convergence:
+                    <ol style="list-style-type: lower-alpha">
+                        <li>Compute the optimal step size \( \alpha_k \) along the search direction:
+                            <div class="equation">
+                                $$ \alpha_k = \frac{\{r\}_k^T \{r\}_k}{\{d\}_k^T [A] \{d\}_k} $$
+                            </div>
+                        </li>
+                        <li>Update the solution vector:
+                            <div class="equation">
+                                $$ \{x\}_{k+1} = \{x\}_k + \alpha_k \{d\}_k $$
+                            </div>
+                        </li>
+                        <li>Update the residual vector:
+                            <div class="equation">
+                                $$ \{r\}_{k+1} = \{r\}_k - \alpha_k [A] \{d\}_k $$
+                            </div>
+                        </li>
+                        <li><strong>Convergence Check:</strong> If the magnitude of the residual \( ||\{r\}_{k+1}|| \)
+                            is less than a specified tolerance \( \epsilon \), exit the loop.</li>
+                        <li>Compute the improvement factor \( \beta_k \) to find the new conjugate direction:
+                            <div class="equation">
+                                $$ \beta_k = \frac{\{r\}_{k+1}^T \{r\}_{k+1}}{\{r\}_k^T \{r\}_k} $$
+                            </div>
+                        </li>
+                        <li>Update the search direction vector (ensuring it is \(A\)-conjugate to previous directions):
+                            <div class="equation">
+                                $$ \{d\}_{k+1} = \{r\}_{k+1} + \beta_k \{d\}_k $$
+                            </div>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+
+            <div class="figure-container">
+                <svg width="400" height="250" viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Contour ellipses -->
+                    <ellipse cx="200" cy="125" rx="180" ry="100" fill="none" stroke="black" stroke-width="1" />
+                    <ellipse cx="200" cy="125" rx="120" ry="66" fill="none" stroke="black" stroke-width="1" />
+                    <ellipse cx="200" cy="125" rx="60" ry="33" fill="none" stroke="black" stroke-width="1" />
+
+                    <!-- Center Point -->
+                    <circle cx="200" cy="125" r="4" fill="black" />
+                    <text x="210" y="130" font-weight="bold">x (Exact Solution)</text>
+
+                    <!-- Path of Conjugate Gradient -->
+                    <path d="M 40 180 L 150 160 L 190 120 L 200 125" fill="none" stroke="black" stroke-width="2" />
+
+                    <!-- Nodes along the path -->
+                    <circle cx="40" cy="180" r="4" fill="black" />
+                    <circle cx="150" cy="160" r="4" fill="black" />
+                    <circle cx="190" cy="120" r="4" fill="black" />
+
+                    <!-- Labels -->
+                    <text x="25" y="195" font-style="italic">x_0</text>
+                    <text x="155" y="175" font-style="italic">x_1</text>
+                    <text x="165" y="115" font-style="italic">x_2</text>
+                </svg>
+                <div class="figcaption">Figure 2.3: Conjugate Gradient optimization path towards the exact solution
+                    minimum.</div>
+            </div>
+
+            <h3>Why use Conjugate Gradient over Gaussian Methods?</h3>
+            <p>
+                Gaussian elimination (a direct method) requires \(O(n^3)\) mathematical operations and structurally
+                alters the matrix \([A]\) via row operations, a phenomenon known as "fill-in." This fill-in completely
+                destroys the sparse nature of the matrix, requiring massive amounts of computer memory.
+            </p>
+            <p>
+                The Conjugate Gradient Method is vastly superior for massive, sparse systems because:
+            </p>
+            <ul>
+                <li><strong>No Fill-in:</strong> It relies solely on matrix-vector multiplications (\([A]\{d\}\)). The
+                    matrix \([A]\) is never altered, completely preserving its sparsity and minimizing memory
+                    requirements.</li>
+                <li><strong>Early Stopping:</strong> Being iterative, the algorithm can be halted as soon as the error
+                    (residual) falls below a practical engineering tolerance, providing a fast approximate solution
+                    without completing all \(n\) steps.</li>
+            </ul>
+
+            <h3>Limitations of the Conjugate Gradient Method</h3>
+            <ul>
+                <li><strong>Matrix Dependency:</strong> The matrix \([A]\) must strictly be symmetric and
+                    positive-definite. It fails on non-symmetric matrices.</li>
+                <li><strong>Conditioning:</strong> The rate of convergence is highly sensitive to the condition number
+                    of the matrix. Ill-conditioned matrices suffer from round-off errors and converge very slowly unless
+                    a "Preconditioned" Conjugate Gradient (PCG) method is utilized.</li>
+            </ul>
+        </section>
+
+        <!-- 2.5 Fourier Transform -->
+        <section id="sec-2-5">
+            <h2>2.5 FOURIER TRANSFORM</h2>
+
+            <div class="exam-note">
+                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
+                <ol>
+                    <li>Describe briefly about the Discrete Fourier Transform (DFT) and Fast Fourier Transform (FFT).
+                        [4] <em>(2074 Bhadra, Q6)</em></li>
+                    <li>Write an algorithm and a program (C/Fortran/Matlab) for fast Fourier transform. With a suitable
+                        example explain what parameters can be identified with the help of time domain and frequency
+                        domain. [12] <em>(2070 Magh, Q2)</em></li>
+                </ol>
+            </div>
+
+            <h3>Time Domain vs. Frequency Domain</h3>
+            <p>
+                In civil engineering dynamics (like earthquake engineering or wind vibrations), structural responses are
+                recorded via sensors.
+            </p>
+            <ul>
+                <li><strong>Time Domain:</strong> Represents how the signal's amplitude changes over time. An earthquake
+                    accelerogram is a time-domain signal. <em>Parameters identified:</em> Peak Ground Acceleration
+                    (PGA), duration of strong motion, and arrival time of waves.</li>
+                <li><strong>Frequency Domain:</strong> Represents the signal broken down into its constituent
+                    sine/cosine waves at different frequencies. <em>Parameters identified:</em> The predominant
+                    frequency of the earthquake, the natural resonant frequencies of the building, and the amplitude
+                    (energy) associated with each harmonic.</li>
+            </ul>
+
+            <div class="figure-container">
+                <svg width="600" height="200" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Time Domain Graph -->
+                    <line x1="50" y1="100" x2="250" y2="100" stroke="black" stroke-width="1" />
+                    <line x1="50" y1="20" x2="50" y2="180" stroke="black" stroke-width="1" />
+                    <path d="M 50 100 Q 75 20, 100 100 T 150 100 T 200 100 T 250 100" fill="none" stroke="black"
+                        stroke-width="2" />
+                    <text x="120" y="195" font-weight="bold">Time Domain</text>
+                    <text x="240" y="115" font-style="italic">t</text>
+
+                    <!-- Arrow -->
+                    <line x1="270" y1="100" x2="330" y2="100" stroke="black" stroke-width="2" />
+                    <polygon points="330,95 340,100 330,105" fill="black" />
+                    <text x="300" y="90" text-anchor="middle" font-weight="bold">FFT</text>
+
+                    <!-- Frequency Domain Graph -->
+                    <line x1="350" y1="150" x2="550" y2="150" stroke="black" stroke-width="1" />
+                    <line x1="350" y1="20" x2="350" y2="150" stroke="black" stroke-width="1" />
+
+                    <!-- Spikes -->
+                    <line x1="400" y1="150" x2="400" y2="50" stroke="black" stroke-width="3" />
+                    <circle cx="400" cy="50" r="3" fill="black" />
+
+                    <line x1="480" y1="150" x2="480" y2="100" stroke="black" stroke-width="3" />
+                    <circle cx="480" cy="100" r="3" fill="black" />
+
+                    <text x="420" y="195" font-weight="bold">Frequency Domain</text>
+                    <text x="540" y="165" font-style="italic">f</text>
+                </svg>
+                <div class="figcaption">Figure 2.4: Transformation from Time Domain (raw signal) to Frequency Domain
+                    (spectra).</div>
+            </div>
+
+            <h3>Discrete Fourier Transform (DFT) and Fast Fourier Transform (FFT)</h3>
+            <p>
+                The <strong>Discrete Fourier Transform (DFT)</strong> is the mathematical algorithm used to convert a
+                finite sequence of equally-spaced discrete time-domain samples into a same-length sequence of
+                frequency-domain complex numbers. The formula is:
+            </p>
+            <div class="equation">
+                $$ X_k = \sum_{n=0}^{N-1} x_n \cdot e^{-i 2\pi k n / N} $$
+            </div>
+            <p>
+                Computing the DFT directly takes \(O(N^2)\) operations, which is prohibitively slow for long sensor data
+                files.
+            </p>
+            <p>
+                The <strong>Fast Fourier Transform (FFT)</strong>, commonly implementing the Cooley-Tukey algorithm, is
+                a highly optimized computational technique that computes the exact same result as the DFT but factorizes
+                the matrix mathematically to reduce the computation time to \(O(N \log N)\). This makes real-time
+                digital signal processing possible.
+            </p>
+
+            <h3>MATLAB Program for Fast Fourier Transform</h3>
+            <p>
+                Below is a standard algorithm implemented via a MATLAB script to perform an FFT on a given time-domain
+                signal and plot the frequency spectrum.
+            </p>
+
+            <div class="code-block">
+                % MATLAB Script for Fast Fourier Transform (FFT)
+
+                % 1. Define Time Specifications
+                Fs = 100; % Sampling frequency (Hz)
+                dt = 1/Fs; % Sampling period (seconds)
+                L = 1000; % Length of signal (number of samples)
+                t = (0:L-1)*dt; % Time vector
+
+                % 2. Generate a Sample Signal (e.g., combination of 15 Hz and 40 Hz waves)
+                x = 0.7*sin(2*pi*15*t) + 1.2*sin(2*pi*40*t);
+
+                % 3. Execute the Fast Fourier Transform algorithm
+                Y = fft(x);
+
+                % 4. Compute the Two-Sided and Single-Sided Spectrum
+                P2 = abs(Y/L); % Two-sided spectrum magnitude
+                P1 = P2(1:L/2+1); % Single-sided spectrum
+                P1(2:end-1) = 2*P1(2:end-1); % Double the amplitude (except for DC)
+
+                % 5. Define Frequency Domain Vector
+                f = Fs*(0:(L/2))/L;
+
+                % 6. Plotting the results
+                plot(f, P1)
+                title('Single-Sided Amplitude Spectrum of x(t)')
+                xlabel('Frequency (f) in Hz')
+                ylabel('Amplitude |P1(f)|')
+            </div>
+
+        </section>
+
+    </main>
+
+<!-- Draw/Annotate toggle -->
+<script>
+/* Draw Anywhere – session-only, zero persistence */
+(function () {
+  'use strict';
+  var on = false, drawing = false, erasing = false;
+  var COLORS = [
+    '#e63946',  /* red */
+    '#1a365d',  /* navy */
+    '#2d6a4f',  /* forest green */
+    '#e67e22',  /* orange */
+    '#7c3aed',  /* violet */
+    '#000000',  /* black */
+    '#ffffff',  /* white */
+    '#f0f0f0',  /* light gray */
+    '#0ea5e9',  /* sky blue */
+    '#ec4899',  /* hot pink */
+    '#f59e0b',  /* amber gold */
+    '#06b6d4',  /* cyan */
+    '#ff6b6b',  /* coral */
+    '#a855f7',  /* purple glow */
+    '#22d3ee',  /* electric teal */
+    '#facc15',  /* yellow */
+    '#fef9c3',  /* pale yellow */
+    'gold',     /* golden shimmer */
+    '#c0c0c0'   /* silver */
+  ];
+  var SHIMMER = { 'gold': true, '#c0c0c0': true };
+  var color = COLORS[0], penW = 3;
+  var strokes = [];  // finished: [{c,w,er,p:[x,y,x,y,...]}]
+  var pts = [];      // current stroke points (flat: x,y,x,y,...)
+  var drawn = 0;     // how many points already rendered
+  var raf = 0;
+
+  /* --- CSS --- */
+  var st = document.createElement('style');
+  st.textContent =
+    '.dw-btn{position:fixed;bottom:70px;right:24px;z-index:10010;width:46px;height:46px;border-radius:50%;border:none;background:#1a365d;color:#fff;font-size:21px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;transition:background .15s,transform .15s}.dw-btn:hover{transform:scale(1.08)}.dw-btn.on{background:#c9a84c;color:#1a365d}' +
+    '.dw-tb{position:fixed;bottom:124px;right:24px;z-index:10010;background:#fff;border-radius:10px;padding:8px;box-shadow:0 4px 14px rgba(0,0,0,.22);display:none;flex-direction:column;gap:5px;align-items:center;font:12px/1 sans-serif;pointer-events:auto}.dw-tb.show{display:flex}' +
+    '.dw-colors{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}' +
+    '.dw-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.12s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}.dw-dot:hover,.dw-dot.on{border-color:#222;transform:scale(1.12)}.dw-dot[data-shimmer]{background:linear-gradient(135deg,#d4a017,#f5d060,#fffbe0,#f5d060,#d4a017)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}.dw-dot[data-silver]{background:linear-gradient(135deg,#8e8e8e,#d0d0d0,#f5f5f5,#d0d0d0,#8e8e8e)!important;background-size:300% 300%;animation:shimmer 2.5s ease infinite}@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
+    '.dw-b{background:#f0f0f0;border:1px solid #ccc;border-radius:5px;padding:3px 8px;cursor:pointer;text-align:center;width:100%}.dw-b:hover{background:#e0e0e0}.dw-b.on{background:#1a365d;color:#fff;border-color:#1a365d}' +
+    '.dw-cv{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;touch-action:none}.dw-cv.on{pointer-events:auto;cursor:crosshair}';
+  document.head.appendChild(st);
+
+  /* --- fixed viewport canvas (small and fast) --- */
+  var cv = document.createElement('canvas');
+  cv.className = 'dw-cv';
+  document.body.appendChild(cv);
+
+  // allow mouse wheel to scroll through the canvas
+  cv.addEventListener('wheel', function (e) {
+    window.scrollBy(0, e.deltaY);
+    paint();
+  }, { passive: true });
+  var cx = cv.getContext('2d');
+
+  function sized() {
+    var dpr = window.devicePixelRatio || 1;
+    var w = window.innerWidth, h = window.innerHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    paint();
+  }
+  sized();
+  window.addEventListener('resize', sized);
+
+  /* --- full repaint (scroll-aware): only on scroll/resize/undo --- */
+  function paint() {
+    var sx = window.scrollX, sy = window.scrollY;
+    cx.clearRect(0, 0, cv.width, cv.height);
+    for (var s = 0; s < strokes.length; s++) {
+      var sk = strokes[s], p = sk.p;
+      if (p.length < 4) continue;
+      cx.globalCompositeOperation = sk.er ? 'destination-out' : 'source-over';
+      cx.strokeStyle = sk.c;
+      cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
+      cx.lineCap = 'round';
+      cx.lineJoin = 'round';
+      cx.beginPath();
+      cx.moveTo(p[0] - sx, p[1] - sy);
+      for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
+      cx.stroke();
+    }
+  }
+  window.addEventListener('scroll', paint);
+
+  /* --- UI --- */
+  var btn = document.createElement('button');
+  btn.className = 'dw-btn'; btn.title = 'Draw'; btn.innerHTML = '&#9998;';
+  document.body.appendChild(btn);
+
+  var tb = document.createElement('div'); tb.className = 'dw-tb';
+  var cGrid = document.createElement('div'); cGrid.className = 'dw-colors';
+  COLORS.forEach(function (c) {
+    var d = document.createElement('div');
+    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.style.background = c;
+    d.onclick = function () {
+      color = c; erasing = false; erBtn.classList.remove('on');
+      tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
+      d.classList.add('on');
+    };
+    cGrid.appendChild(d);
+  });
+  tb.appendChild(cGrid);
+  var lbl = document.createElement('label'); lbl.textContent = 'Size'; lbl.style.cssText = 'color:#666;margin-top:2px';
+  tb.appendChild(lbl);
+  var sl = document.createElement('input');
+  sl.type = 'range'; sl.min = '1'; sl.max = '12'; sl.value = String(penW); sl.style.width = '76px';
+  sl.oninput = function () { penW = +sl.value; };
+  tb.appendChild(sl);
+
+  var erBtn = document.createElement('button'); erBtn.className = 'dw-b'; erBtn.textContent = 'Eraser';
+  erBtn.onclick = function () { erasing = !erasing; erBtn.classList.toggle('on', erasing); if (erasing) tb.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); }); };
+  tb.appendChild(erBtn);
+
+  var unBtn = document.createElement('button'); unBtn.className = 'dw-b'; unBtn.textContent = 'Undo';
+  unBtn.onclick = function () { if (strokes.length) { strokes.pop(); paint(); } };
+  tb.appendChild(unBtn);
+
+  var clBtn = document.createElement('button'); clBtn.className = 'dw-b'; clBtn.textContent = 'Clear';
+  clBtn.onclick = function () { strokes.length = 0; paint(); };
+  tb.appendChild(clBtn);
+
+  document.body.appendChild(tb);
+
+  // stop toolbar clicks from reaching canvas
+  ['pointerdown','pointerup','pointermove'].forEach(function (ev) {
+    tb.addEventListener(ev, function (e) { e.stopPropagation(); });
+    btn.addEventListener(ev, function (e) { e.stopPropagation(); });
+  });
+
+  btn.onclick = function () {
+    on = !on;
+    btn.classList.toggle('on', on);
+    tb.classList.toggle('show', on);
+    cv.classList.toggle('on', on);
+  };
+
+  /* --- rAF render loop: draws only NEW points, never redraws old ones --- */
+  function tick() {
+    if (!drawing) { raf = 0; return; }
+    var n = pts.length;
+    if (drawn < n) {
+      var sx = window.scrollX, sy = window.scrollY;
+      // continue the existing path from last drawn point
+      if (drawn === 0) {
+        cx.beginPath();
+        cx.moveTo(pts[0] - sx, pts[1] - sy);
+        drawn = 2;
+      }
+      for (var i = drawn; i < n; i += 2) {
+        cx.lineTo(pts[i] - sx, pts[i + 1] - sy);
+      }
+      cx.stroke();
+      // continue the SAME path (no beginPath) — keeps it connected
+      drawn = n;
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  /* --- pointer handlers --- */
+  cv.addEventListener('pointerdown', function (e) {
+    if (!on || e.button !== 0 || e.target !== cv) return;
+    e.preventDefault();
+    cv.setPointerCapture(e.pointerId);
+    drawing = true;
+    // store document coords
+    var dx = e.clientX + window.scrollX, dy = e.clientY + window.scrollY;
+    pts = [dx, dy];
+    drawn = 0;
+    // set style once for whole stroke
+    cx.globalCompositeOperation = erasing ? 'destination-out' : 'source-over';
+    cx.strokeStyle = color;
+    cx.lineWidth = erasing ? penW * 4 : penW;
+    cx.lineCap = 'round';
+    cx.lineJoin = 'round';
+    // start rAF loop
+    if (!raf) raf = requestAnimationFrame(tick);
+  });
+
+  cv.addEventListener('pointermove', function (e) {
+    if (!drawing) return;
+    // just push coords — rAF will render them
+    pts.push(e.clientX + window.scrollX, e.clientY + window.scrollY);
+  });
+
+  function stop() {
+    if (!drawing) return;
+    drawing = false;
+    if (pts.length >= 4) {
+      strokes.push({ c: color, w: penW, er: erasing, p: pts.slice() });
+    }
+    pts = []; drawn = 0;
+    // full repaint to clean up
+    paint();
+  }
+  cv.addEventListener('pointerup', stop);
+  cv.addEventListener('pointercancel', stop);
+})();
+
+</script>
+
+<!-- ═══ DARK MODE JS v3 ═══ -->
+<script>
+(function(){
+  var t=document.getElementById('dmToggle'),h=document.documentElement,
+      s=localStorage.getItem('theme');
+  if(s)h.setAttribute('data-theme',s);
+  function updateIcon(){
+    if(t)t.textContent=h.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  }
+  updateIcon();
+  if(t){
+    t.addEventListener('click',function(){
+      var n=h.getAttribute('data-theme')==='dark'?'light':'dark';
+      h.setAttribute('data-theme',n);
+      localStorage.setItem('theme',n);
+      updateIcon();
+      fixInline(n==='dark');
+    });
+  }
+  /* Fix inline and style="color:..." */
+  function fixInline(dark){
+    var els=document.querySelectorAll('[style]');
+    for(var i=0;i<els.length;i++){
+      var el=els[i];
+      /* Skip SVG internals */
+      if(el.namespaceURI&&el.namespaceURI.indexOf('svg')!==-1)continue;
+      if(el.closest&&el.closest('svg'))continue;
+      var st=el.style;
+      if(dark){
+        /* Background */
+        if(st.backgroundColor&&!el.getAttribute('data-dm-bg')){
+          el.setAttribute('data-dm-bg',st.backgroundColor);
+          if(lum(st.backgroundColor)>160)st.backgroundColor='#1e222a';
+        }
+        if(st.background&&!el.getAttribute('data-dm-bgf')){
+          el.setAttribute('data-dm-bgf',st.background);
+          if(lum(st.background)>160)st.background='#1e222a';
+        }
+        /* Text color */
+        if(st.color&&!el.getAttribute('data-dm-fg')){
+          el.setAttribute('data-dm-fg',st.color);
+          if(lum(st.color)<100)st.color='#d0cdc5';
+        }
+      }else{
+        if(el.getAttribute('data-dm-bg')){st.backgroundColor=el.getAttribute('data-dm-bg');el.removeAttribute('data-dm-bg');}
+        if(el.getAttribute('data-dm-bgf')){st.background=el.getAttribute('data-dm-bgf');el.removeAttribute('data-dm-bgf');}
+        if(el.getAttribute('data-dm-fg')){st.color=el.getAttribute('data-dm-fg');el.removeAttribute('data-dm-fg');}
+      }
+    }
+  }
+  /* Parse color string → luminance (0-255). Returns -1 if unparseable. */
+  function lum(c){
+    if(!c)return -1;
+    c=c.trim().toLowerCase();
+    if(c==='white'||c==='#fff'||c==='#ffffff')return 255;
+    if(c==='black'||c==='#000'||c==='#000000')return 0;
+    var m=c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if(m)return(+m[1]+ +m[2]+ +m[3])/3;
+    var hx=c.match(/^#([0-9a-f]{3,8})$/);
+    if(hx){var x=hx[1];if(x.length===3)x=x[0]+x[0]+x[1]+x[1]+x[2]+x[2];
+      return(parseInt(x.substr(0,2),16)+parseInt(x.substr(2,2),16)+parseInt(x.substr(4,2),16))/3;}
+    return -1;
+  }
+  /* Apply on load if dark */
+  if(h.getAttribute('data-theme')==='dark'){
+    if(document.readyState==='loading')
+      document.addEventListener('DOMContentLoaded',function(){fixInline(true);});
+    else fixInline(true);
+  }
+})();
+</script>
+
+<script src="../common.js"></script>
+</body>
+
+</html>
