@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 3 – Flow Theory &amp; Numericals &mdash; GWE Summary Note</title>
+<link rel="stylesheet" href="style.css">
+<style id="dark-mode-styles"></style>
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+</head>
+<body>
+
+<script src="../../common.js"></script>
+
+<h1>Chapter 3 – Flow Theory &amp; Numericals</h1>
+<p style="text-align:center;color:var(--accent2);font-size:0.9rem;">GWE Handwritten Notes &mdash; Summary Note (3/7)</p>
+
+<div class="nav-links"><a href="chapter2.html">&larr; Previous</a><a href="chapter4.html">Next &rarr;</a></div>
+
+<div class="page-block">
+    <h3>Page 21</h3>
+    <img src="images/page_21.png" alt="Page 21" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p style="text-align:right;"><em>Date: 2081/09/12</em><br>Page |</p>
+
+<h2><u>Flow Net on anisotropic aquifer:</u></h2>
+
+<p>Water table contour map &rarr; draw contour lines &rarr; show flow direction.</p>
+
+<p>Assume \( ds \approx dx \) (Dupuit assumption &mdash; flow is essentially horizontal, vertical velocity is negligible).</p>
+
+<hr>
+
+<h3><u>Flow in unconfined aquifer</u></h3>
+
+<div class="diagram-description">
+<p><strong>Diagram:</strong> Cross-section of steady-state 1-D flow in a homogeneous, isotropic <em>unconfined</em> aquifer (Dupuit parabola).</p>
+<ul>
+    <li>Impervious base at bottom.</li>
+    <li>Left boundary: water height \( h_1 \) (higher head).</li>
+    <li>Right boundary: water height \( h_2 \) (lower head), \( h_1 > h_2 \).</li>
+    <li>Parabolic water table connecting \( h_1 \) to \( h_2 \).</li>
+    <li>Horizontal distance \( L \); at distance \( x \) from left: saturated thickness \( h \).</li>
+    <li>Discharge per unit width: \( q \).</li>
+</ul>
+</div>
+
+<!-- SVG: Dupuit Flow in Unconfined Aquifer (B&W) -->
+<figure style="text-align:center;margin:1.5em auto;">
+<svg viewBox="0 0 520 260" style="max-width:520px;width:100%;font-family:inherit;" aria-label="Dupuit flow unconfined aquifer">
+  <!-- Impervious base -->
+  <rect x="40" y="210" width="440" height="30" fill="var(--fg,#888)" opacity="0.15"/>
+  <pattern id="base-hatch3" patternUnits="userSpaceOnUse" width="8" height="8"><path d="M0,8 L8,0" stroke="var(--fg,#666)" stroke-width="0.7"/></pattern>
+  <rect x="40" y="210" width="440" height="30" fill="url(#base-hatch3)"/>
+  <text x="260" y="232" text-anchor="middle" font-size="10" font-weight="600" fill="var(--fg,#333)">Impervious Base</text>
+  <!-- Left boundary h1 -->
+  <rect x="40" y="60" width="10" height="150" fill="var(--fg,#666)" opacity="0.2"/>
+  <line x1="40" y1="60" x2="50" y2="60" stroke="var(--fg,#333)" stroke-width="2"/>
+  <text x="30" y="135" text-anchor="end" font-size="12" font-weight="600" fill="var(--fg,#333)">h₁</text>
+  <!-- Right boundary h2 -->
+  <rect x="470" y="120" width="10" height="90" fill="var(--fg,#666)" opacity="0.2"/>
+  <line x1="470" y1="120" x2="480" y2="120" stroke="var(--fg,#333)" stroke-width="2"/>
+  <text x="495" y="165" font-size="12" font-weight="600" fill="var(--fg,#333)">h₂</text>
+  <!-- Parabolic water table (Dupuit) -->
+  <path d="M50,60 Q200,75 320,100 Q420,115 470,120" fill="none" stroke="var(--fg,#333)" stroke-width="2.5"/>
+  <!-- Saturated zone fill -->
+  <path d="M50,60 Q200,75 320,100 Q420,115 470,120 L470,210 L50,210 Z" fill="var(--fg,#555)" opacity="0.08"/>
+  <!-- Flow arrow -->
+  <path d="M120,150 L400,160" fill="none" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <polygon points="395,157 408,160 395,163" fill="var(--fg,#333)"/>
+  <text x="260" y="148" text-anchor="middle" font-size="11" font-weight="600" fill="var(--fg,#333)">q → (discharge/unit width)</text>
+  <!-- Distance labels -->
+  <line x1="50" y1="250" x2="470" y2="250" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="260" y="248" text-anchor="middle" font-size="11" fill="var(--fg,#333)">L</text>
+  <!-- x distance -->
+  <line x1="50" y1="245" x2="250" y2="245" stroke="var(--fg,#555)" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="150" y="243" text-anchor="middle" font-size="10" fill="var(--fg,#555)">x</text>
+  <!-- h at x -->
+  <line x1="250" y1="88" x2="250" y2="210" stroke="var(--fg,#555)" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="258" y="155" font-size="11" fill="var(--fg,#555)">h</text>
+  <!-- Water table label -->
+  <text x="180" y="50" font-size="10" font-weight="600" fill="var(--fg,#333)">Water Table (parabolic)</text>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Dupuit flow through unconfined aquifer — parabolic water table profile</figcaption>
+</figure>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 22</h3>
+    <img src="images/page_22.png" alt="Page 22" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h2><u>Formula Required</u></h2>
+<p><strong>(Horizontal flow)</strong></p>
+
+<p><strong>1.</strong> <u>Continuity equation:</u></p>
+<div class="formula-box">\[ \frac{\partial u}{\partial x} + \frac{\partial v}{\partial z} = 0 \]</div>
+
+<p><strong>2.</strong> <u>Laplace equation:</u></p>
+<div class="formula-box">\[ K_x \frac{\partial^2 h}{\partial x^2} + K_z \frac{\partial^2 h}{\partial z^2} = 0 \]</div>
+<p>When \( K_x = K_z = K \): \( \frac{\partial^2 h}{\partial x^2} + \frac{\partial^2 h}{\partial z^2} = 0 \)</p>
+
+<p><strong>3.</strong> <u>Seepage discharge from flow net:</u></p>
+<div class="formula-box">\[ q = K H \frac{N_f}{N_d} \]</div>
+
+<p><strong>4.</strong> <u>Equivalent Permeability:</u></p>
+<div class="formula-box">\[ K_{eq} = \sqrt{K_x \cdot K_z} \]</div>
+
+<p><strong>5.</strong> <u>Unconfined flow (Dupuit):</u></p>
+<div class="formula-box">\[ q = \frac{K(h_1^2 - h_2^2)}{2L} \]</div>
+
+<p><strong>6.</strong> <u>Phreatic line:</u></p>
+<div class="formula-box">\[ h = \left[ h_1^2 - (h_1^2 - h_2^2)\frac{x}{L} \right]^{1/2} \]</div>
+<p><u>With rainfall P:</u></p>
+<div class="formula-box">\[ h = \left[ h_1^2 - (h_1^2 - h_2^2)\frac{x}{L} + \frac{P}{K}\, x(L - x) \right]^{1/2} \]</div>
+
+<p><strong>7.</strong> <u>Confined flow:</u></p>
+<div class="formula-box">\[ q = -K b \frac{dh}{dx} = \frac{K b (h_1 - h_2)}{L} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 23</h3>
+    <img src="images/page_23.png" alt="Page 23" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><u>Phreatic line (confined):</u> \( h^2 = h_1^2 - (h_1^2 - h_2^2) \frac{x}{L} \)</p>
+
+<p><u>Variable thickness aquifer:</u></p>
+<div class="formula-box">\[ b \frac{\partial^2 h}{\partial x^2} + b' \frac{\partial h}{\partial x} = 0 \]</div>
+
+<hr>
+
+<h3>Numerical &ndash; Flow Net Analysis</h3>
+
+<p><strong>Q.</strong> From flow net analysis of well pumping at 180,000 lpm: N<sub>f</sub> = 40, &Delta;h = 8 m, b = 25 m. Compute T and K.</p>
+
+<p><strong>Given:</strong></p>
+<ul>
+<li>Q = 180,000 l/min</li>
+<li>N<sub>f</sub> = 40 (number of flow tubes)</li>
+<li>&Delta;h = 8 m (head loss per potential drop)</li>
+<li>b = 25 m (aquifer thickness)</li>
+</ul>
+
+<p><strong>Solution:</strong></p>
+<p>Step 1 &mdash; Convert Q to m&sup3;/day:</p>
+<div class="formula-box">\[ Q = 180{,}000 \;\text{l/min} \times \frac{10^{-3}\;\text{m}^3}{\text{l}} \times 60 \times 24 = 259{,}200\;\text{m}^3\text{/day} \]</div>
+
+<p>Step 2 &mdash; Apply flow net relation \( Q = T \times N_f \times \Delta h \) to find T:</p>
+<div class="formula-box">\[ T = \frac{Q}{N_f \times \Delta h} = \frac{259{,}200}{40 \times 8} = \boxed{810 \;\text{m}^2\text{/day}} \]</div>
+
+<p>Step 3 &mdash; Compute K from transmissivity:</p>
+<div class="formula-box">\[ K = \frac{T}{b} = \frac{810}{25} = \boxed{32.4 \;\text{m/day}} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 24</h3>
+    <img src="images/page_24.png" alt="Page 24" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h3>Numerical &ndash; Unconfined Flow Between Two Rivers</h3>
+
+<p><strong>Q.</strong> Two rivers 5 km apart. K = 18 m/day, h<sub>1</sub> = 20 m, h<sub>2</sub> = 11 m. Seepage &amp; phreatic line?</p>
+
+<!-- B&W SVG: Unconfined flow between two rivers -->
+<figure style="text-align:center;margin:1em auto;">
+<svg viewBox="0 0 480 200" style="max-width:480px;width:100%;font-family:inherit;" aria-label="Unconfined flow between two rivers">
+  <!-- Impervious base -->
+  <rect x="30" y="160" width="420" height="20" fill="var(--fg,#888)" opacity="0.15" stroke="var(--fg,#333)" stroke-width="0.5"/>
+  <pattern id="riv-hatch" patternUnits="userSpaceOnUse" width="8" height="8"><path d="M0,8 L8,0" stroke="var(--fg,#666)" stroke-width="0.6"/></pattern>
+  <rect x="30" y="160" width="420" height="20" fill="url(#riv-hatch)"/>
+  <text x="240" y="175" text-anchor="middle" font-size="8" fill="var(--fg,#555)">Impervious Base</text>
+  <!-- River 1 (left) -->
+  <rect x="30" y="60" width="20" height="100" fill="var(--fg,#555)" opacity="0.08" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="40" y="55" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">River 1</text>
+  <text x="22" y="110" text-anchor="end" font-size="10" font-weight="600" fill="var(--fg,#333)">h₁=20</text>
+  <!-- River 2 (right) -->
+  <rect x="430" y="100" width="20" height="60" fill="var(--fg,#555)" opacity="0.08" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="440" y="95" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">River 2</text>
+  <text x="460" y="130" font-size="10" font-weight="600" fill="var(--fg,#333)">h₂=11</text>
+  <!-- Parabolic water table -->
+  <path d="M50,60 Q180,72 300,88 Q400,98 430,100" fill="none" stroke="var(--fg,#333)" stroke-width="2"/>
+  <!-- Saturated zone -->
+  <path d="M50,60 Q180,72 300,88 Q400,98 430,100 L430,160 L50,160 Z" fill="var(--fg,#555)" opacity="0.06"/>
+  <!-- Flow arrow -->
+  <line x1="140" y1="130" x2="350" y2="135" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <polygon points="345,132 358,135 345,138" fill="var(--fg,#333)"/>
+  <text x="245" y="125" text-anchor="middle" font-size="9" fill="var(--fg,#555)">q →</text>
+  <!-- L label -->
+  <line x1="50" y1="190" x2="430" y2="190" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="240" y="200" text-anchor="middle" font-size="10" fill="var(--fg,#333)">L = 5000 m</text>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Steady Dupuit flow between two rivers</figcaption>
+</figure>
+
+<p><strong>Given:</strong> L = 5000 m, K = 18 m/day, h<sub>1</sub> = 20 m, h<sub>2</sub> = 11 m</p>
+
+<p><strong>Solution:</strong></p>
+
+<p>Step 1 &mdash; Apply Dupuit formula for seepage per unit width:</p>
+<div class="formula-box">\[ q = \frac{K(h_1^2 - h_2^2)}{2L} = \frac{18 \times (20^2 - 11^2)}{2 \times 5000} \]</div>
+
+<p>Step 2 &mdash; Compute h<sub>1</sub>&sup2; &minus; h<sub>2</sub>&sup2;:</p>
+<p>= 400 &minus; 121 = 279</p>
+
+<p>Step 3 &mdash; Evaluate:</p>
+<div class="formula-box">\[ q = \frac{18 \times 279}{10{,}000} = \boxed{0.502 \;\text{m}^2\text{/day/m}} \]</div>
+
+<p>Step 4 &mdash; Phreatic line equation. Using \( h^2 = h_1^2 - (h_1^2 - h_2^2)\frac{x}{L} \):</p>
+<div class="formula-box">\[ h = \sqrt{400 - \frac{279}{5000}\, x} = \sqrt{400 - 0.0558\, x} \]</div>
+
+<p>Step 5 &mdash; Tabulate:</p>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><th>\( x \) (m)</th><td>0</td><td>500</td><td>1000</td><td>1500</td><td>2000</td><td>5000</td></tr>
+<tr><th>\( h \) (m)</th><td>20</td><td>19.29</td><td>18.55</td><td>17.79</td><td>16.99</td><td>11</td></tr>
+</table>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 25</h3>
+    <img src="images/page_25.png" alt="Page 25" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p style="text-align:right;"><em>Date: 09/04</em><br>Page |</p>
+
+<h3>Numerical &ndash; Horizontal Gallery (Unconfined Aquifer)</h3>
+
+<p><strong>Q.</strong> Gallery 200 m long on impervious stratum. h<sub>2</sub> = 8 m at 400 m, h<sub>1</sub> = 3 m at gallery face. K = 45 m/day. Find inflow and phreatic surface.</p>
+
+<!-- B&W SVG: Horizontal Gallery -->
+<figure style="text-align:center;margin:1em auto;">
+<svg viewBox="0 0 440 180" style="max-width:440px;width:100%;font-family:inherit;" aria-label="Horizontal gallery cross-section">
+  <!-- Impervious base -->
+  <rect x="30" y="140" width="380" height="15" fill="var(--fg,#888)" opacity="0.15" stroke="var(--fg,#333)" stroke-width="0.5"/>
+  <!-- Gallery (centre) -->
+  <rect x="200" y="110" width="20" height="30" fill="var(--fg,#555)" opacity="0.15" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <text x="210" y="108" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">Gallery</text>
+  <text x="210" y="165" text-anchor="middle" font-size="8" fill="var(--fg,#555)">h₁ = 3 m</text>
+  <!-- Left water table -->
+  <path d="M30,60 Q100,68 200,110" fill="none" stroke="var(--fg,#333)" stroke-width="2"/>
+  <path d="M30,60 Q100,68 200,110 L200,140 L30,140 Z" fill="var(--fg,#555)" opacity="0.06"/>
+  <!-- Right water table -->
+  <path d="M220,110 Q320,68 410,60" fill="none" stroke="var(--fg,#333)" stroke-width="2"/>
+  <path d="M220,110 Q320,68 410,60 L410,140 L220,140 Z" fill="var(--fg,#555)" opacity="0.06"/>
+  <!-- h2 labels -->
+  <text x="25" y="55" font-size="9" font-weight="600" fill="var(--fg,#333)">h₂=8m</text>
+  <text x="395" y="55" font-size="9" font-weight="600" fill="var(--fg,#333)">h₂=8m</text>
+  <!-- L labels -->
+  <line x1="30" y1="152" x2="200" y2="152" stroke="var(--fg,#333)" stroke-width="0.8"/>
+  <text x="115" y="150" text-anchor="middle" font-size="8" fill="var(--fg,#555)">L = 400 m</text>
+  <!-- Flow arrows -->
+  <line x1="80" y1="100" x2="180" y2="110" stroke="var(--fg,#333)" stroke-width="1"/>
+  <polygon points="175,107 185,110 175,113" fill="var(--fg,#333)"/>
+  <line x1="340" y1="100" x2="240" y2="110" stroke="var(--fg,#333)" stroke-width="1"/>
+  <polygon points="245,107 235,110 245,113" fill="var(--fg,#333)"/>
+  <text x="80" y="93" font-size="8" fill="var(--fg,#555)">q →</text>
+  <text x="340" y="93" font-size="8" fill="var(--fg,#555)">← q</text>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Gallery drawing water from both sides</figcaption>
+</figure>
+
+<p><strong>Given:</strong> L<sub>gallery</sub> = 200 m, L = 400 m, h<sub>1</sub> = 3 m, h<sub>2</sub> = 8 m, K = 45 m/day</p>
+
+<p><strong>Solution:</strong></p>
+<p>Step 1 &mdash; Seepage per unit width from one side (Dupuit):</p>
+<div class="formula-box">\[ q = \frac{K(h_2^2 - h_1^2)}{2L} = \frac{45(64 - 9)}{800} = \frac{45 \times 55}{800} = 3.094\;\text{m}^2/\text{day/m} \]</div>
+
+<p>Step 2 &mdash; Total inflow (both sides, gallery length = 200 m):</p>
+<div class="formula-box">\[ Q = q \times L_{\text{gallery}} \times 2 = 3.094 \times 200 \times 2 = \boxed{1237.5\;\text{m}^3\text{/day}} \]</div>
+
+<p>Step 3 &mdash; Phreatic surface equation (taking x from gallery face):</p>
+<div class="formula-box">\[ h = \sqrt{h_1^2 + (h_2^2 - h_1^2)\frac{x}{L}} = \sqrt{9 + 0.1375\, x} \]</div>
+<p><em>Check:</em> x=0: h=3 &check; ; x=400: h=&radic;64=8 &check;</p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 26</h3>
+    <img src="images/page_26.png" alt="Page 26" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h3>Numerical &ndash; Rainfall Between Parallel Canals</h3>
+
+<p><strong>Q.</strong> Strip 1200 m wide, P = 12 mm/hr (100% infiltration), h<sub>1</sub> = 10 m, h<sub>2</sub> = 8 m, K = 10 m/day. Find discharge, phreatic surface, water divide, seepage without rainfall.</p>
+
+<!-- B&W SVG: Rainfall between parallel canals -->
+<figure style="text-align:center;margin:1em auto;">
+<svg viewBox="0 0 460 210" style="max-width:460px;width:100%;font-family:inherit;" aria-label="Rainfall recharge between parallel canals">
+  <!-- Rain arrows -->
+  <g stroke="var(--fg,#555)" stroke-width="0.8" fill="var(--fg,#555)">
+    <line x1="100" y1="5" x2="100" y2="20"/><polygon points="97,18 100,24 103,18"/>
+    <line x1="160" y1="5" x2="160" y2="20"/><polygon points="157,18 160,24 163,18"/>
+    <line x1="220" y1="5" x2="220" y2="20"/><polygon points="217,18 220,24 223,18"/>
+    <line x1="280" y1="5" x2="280" y2="20"/><polygon points="277,18 280,24 283,18"/>
+    <line x1="340" y1="5" x2="340" y2="20"/><polygon points="337,18 340,24 343,18"/>
+  </g>
+  <text x="230" y="12" text-anchor="middle" font-size="8" fill="var(--fg,#555)">P = 12 mm/hr</text>
+  <!-- Ground surface -->
+  <line x1="30" y1="30" x2="430" y2="30" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <!-- Canal 1 -->
+  <rect x="30" y="50" width="20" height="80" fill="var(--fg,#555)" opacity="0.08" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="40" y="45" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">Canal 1</text>
+  <text x="22" y="90" text-anchor="end" font-size="9" fill="var(--fg,#333)">h₁=10</text>
+  <!-- Canal 2 -->
+  <rect x="410" y="60" width="20" height="70" fill="var(--fg,#555)" opacity="0.08" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="420" y="55" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">Canal 2</text>
+  <text x="440" y="95" font-size="9" fill="var(--fg,#333)">h₂=8</text>
+  <!-- Impervious base -->
+  <rect x="30" y="140" width="400" height="15" fill="var(--fg,#888)" opacity="0.15" stroke="var(--fg,#333)" stroke-width="0.5"/>
+  <!-- Mound-shaped WT with rain -->
+  <path d="M50,50 Q160,35 270,38 Q360,42 410,60" fill="none" stroke="var(--fg,#333)" stroke-width="2"/>
+  <path d="M50,50 Q160,35 270,38 Q360,42 410,60 L410,140 L50,140 Z" fill="var(--fg,#555)" opacity="0.06"/>
+  <!-- Water divide -->
+  <line x1="260" y1="30" x2="260" y2="140" stroke="var(--fg,#333)" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="260" y="155" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">Water Divide (x ≈ 599 m)</text>
+  <!-- Flow arrows -->
+  <line x1="150" y1="100" x2="70" y2="80" stroke="var(--fg,#333)" stroke-width="1"/>
+  <polygon points="75,78 65,78 72,84" fill="var(--fg,#333)"/>
+  <line x1="320" y1="100" x2="395" y2="80" stroke="var(--fg,#333)" stroke-width="1"/>
+  <polygon points="390,78 400,78 393,84" fill="var(--fg,#333)"/>
+  <text x="120" y="96" font-size="8" fill="var(--fg,#555)">← q₁</text>
+  <text x="340" y="96" font-size="8" fill="var(--fg,#555)">q₂ →</text>
+  <!-- L -->
+  <line x1="50" y1="175" x2="410" y2="175" stroke="var(--fg,#333)" stroke-width="0.8"/>
+  <text x="230" y="185" text-anchor="middle" font-size="9" fill="var(--fg,#333)">L = 1200 m</text>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Rainfall recharging unconfined aquifer between two canals — mounded water table with divide</figcaption>
+</figure>
+
+<p><strong>Solution:</strong></p>
+
+<p><u>Derivation:</u> \( q = -\frac{K}{2} \frac{dh^2}{dx} \), continuity with recharge: \( \frac{dq}{dx} = P \)</p>
+<div class="formula-box">\[ \frac{d^2 h^2}{dx^2} = -\frac{2P}{K} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 27</h3>
+    <img src="images/page_27.png" alt="Page 27" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><em>(Continuation &ndash; Rainfall Between Parallel Canals)</em></p>
+
+<p>Integrating twice:</p>
+<div class="formula-box">\[ h^2 = -\frac{P}{K}\,x^2 + C_1 x + C_2 \]</div>
+
+<p><u>Boundary Conditions:</u></p>
+<p>x = 0, h = 10: C<sub>2</sub> = 100</p>
+<p>x = 1200, h = 8:</p>
+<p>P/K = (12 &times; 24)/(10 &times; 1000) = 0.0288</p>
+<p>64 = &minus;0.0288 &times; 1,440,000 + 1200 C<sub>1</sub> + 100</p>
+<p>C<sub>1</sub> = 41,436/1200 = 34.53</p>
+
+<p><u>At x = 0 (canal 1):</u></p>
+<div class="formula-box">\[ q_1 = -\frac{K}{2} \times C_1 = -\frac{10}{172{,}800} \times 34.53 = \boxed{-1.998 \times 10^{-3} \text{ m}^3\text{/s/m}} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 28</h3>
+    <img src="images/page_28.png" alt="Page 28" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><u>At x = 1200 (canal 2):</u></p>
+<div class="formula-box">\[ q_2 = -\frac{K}{2}(-\frac{2P}{K} \times 1200 + C_1) = -\frac{10}{172{,}800}(-69.12 + 34.53) = \boxed{2.002 \times 10^{-3} \text{ m}^3\text{/s/m}} \]</div>
+
+<p><u>Phreatic surface:</u></p>
+<div class="formula-box">\[ h = \sqrt{100 + 34.53x - 0.0288x^2} \]</div>
+
+<p><u>Water table divide</u> (dh&sup2;/dx = 0):</p>
+<div class="formula-box">\[ x = \frac{34.53}{0.0576} = \boxed{599.48 \text{ m from canal 1}} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 29</h3>
+    <img src="images/page_29.png" alt="Page 29" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><u>Without Rainfall (P = 0):</u></p>
+<div class="formula-box">\[ q_0 = \frac{K(h_1^2 - h_2^2)}{2L} = \frac{10 \times 36}{86{,}400 \times 2400} = \boxed{1.736 \times 10^{-6} \text{ m}^3\text{/s/m}} \]</div>
+<p><em>Note: Discharge without rainfall is about 1000&times; smaller, showing the dominant effect of recharge.</em></p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 30</h3>
+    <img src="images/page_30.png" alt="Page 30" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><em>Date: 09/14</em></p>
+
+<h3><u>Numerical &ndash; Two Parallel Galleries (Unconfined with Rainfall)</u></h3>
+
+<p><strong>Q.</strong> Galleries 1000 m apart, h<sub>1</sub> = 12 m, h<sub>2</sub> = 9 m, K = 12 m/day, P = 75% of 20 mm/hr = 15 mm/hr. Find discharge, phreatic surface, water divide.</p>
+
+<div class="diagram-description">
+<strong>Diagram:</strong> Two galleries at x=0 (h<sub>1</sub>=12m) and x=1000m (h<sub>2</sub>=9m), impervious stratum below, rain from above.
+</div>
+
+<p><strong>Solution:</strong></p>
+<div class="formula-box">\[ \frac{d^2(h^2)}{dx^2} = -\frac{2P}{K} \]</div>
+<p>Integrating: \( h^2 = -\frac{P}{K}x^2 + C_1 x + C_2 \)</p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 31</h3>
+    <img src="images/page_31.png" alt="Page 31" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><u>Boundary Conditions:</u></p>
+<p>x = 0, h = 12: C<sub>2</sub> = 144</p>
+<p>x = 1000, h = 9:</p>
+<p>P/K = (15 &times; 24)/(12 &times; 1000) = 0.03</p>
+<p>81 = &minus;0.03 &times; 10<sup>6</sup> + 1000 C<sub>1</sub> + 144</p>
+<p>C<sub>1</sub> = 29,937/1000 = 29.937</p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 32</h3>
+    <img src="images/page_32.png" alt="Page 32" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><u>Discharge:</u></p>
+<p>At x = 0:</p>
+<div class="formula-box">\[ q_1 = -\frac{12}{172{,}800} \times 29.937 = \boxed{-2.079 \times 10^{-3} \text{ m}^3\text{/s/m}} \]</div>
+
+<p>At x = 1000:</p>
+<div class="formula-box">\[ q_2 = -\frac{12}{172{,}800}(-60 + 29.937) = \boxed{2.088 \times 10^{-3} \text{ m}^3\text{/s/m}} \]</div>
+
+<p><em>Check: |q<sub>1</sub>| + |q<sub>2</sub>| = P &times; L &check;</em></p>
+
+<p><u>Phreatic surface:</u></p>
+<div class="formula-box">\[ h = \sqrt{144 + 29.937x - 0.03x^2} \]</div>
+
+<p><u>Water table divide:</u></p>
+<div class="formula-box">\[ x = \frac{29.937}{0.06} = \boxed{498.95 \text{ m from gallery 1}} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="nav-links"><a href="chapter2.html">&larr; Previous</a><a href="chapter4.html">Next &rarr;</a></div>
+
+<script>
+document.querySelectorAll('.page-img').forEach(img => {
+    img.addEventListener('click', () => img.classList.toggle('expanded'));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 6 &amp; 7 – GW Exploration, Well Design &amp; Numericals &mdash; GWE Summary Note</title>
+<link rel="stylesheet" href="style.css">
+<style id="dark-mode-styles"></style>
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+</head>
+<body>
+
+<script src="../../common.js"></script>
+
+<h1>Chapter 6 &amp; 7 – GW Exploration, Well Design &amp; Numericals</h1>
+<p style="text-align:center;color:var(--accent2);font-size:0.9rem;">GWE Handwritten Notes &mdash; Summary Note (6/7)</p>
+
+<div class="nav-links"><a href="chapter5.html">&larr; Previous</a><a href="chapter7.html">Next &rarr;</a></div>
+
+<div class="page-block">
+    <h3>Page 59</h3>
+    <img src="images/page_59.png" alt="Page 59" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p style="text-align:right;"><em>10/27</em></p>
+
+<h2><u>Chapter 6</u> &ndash; Overview of Groundwater Exploration</h2>
+<h2><u>Chapter 7</u> &ndash; Water Well Design</h2>
+<p><strong><u>Imp:</u></strong> Component of well</p>
+
+<!-- SVG: Components of a Water Well (B&W) -->
+<figure style="text-align:center;margin:1.2em auto;">
+<svg viewBox="0 0 360 380" style="max-width:360px;width:100%;font-family:inherit;" aria-label="Water well components">
+  <!-- Ground -->
+  <rect x="0" y="50" width="360" height="12" fill="var(--fg,#888)" opacity="0.1"/>
+  <text x="320" y="46" text-anchor="end" font-size="10" fill="var(--fg,#333)">Ground Surface</text>
+  <!-- Casing -->
+  <rect x="150" y="20" width="60" height="320" fill="none" stroke="var(--fg,#555)" stroke-width="2" rx="3"/>
+  <text x="270" y="35" font-size="10" fill="var(--fg,#333)">&#x2190; Casing</text>
+  <line x1="210" y1="32" x2="265" y2="32" stroke="var(--fg,#333)" stroke-width="0.7"/>
+  <!-- Pump housing -->
+  <rect x="158" y="20" width="44" height="30" fill="var(--fg,#888)" opacity="0.2" rx="2"/>
+  <text x="180" y="40" text-anchor="middle" font-size="8" fill="var(--fg,#333)">Pump</text>
+  <!-- Grout seal -->
+  <rect x="130" y="50" width="20" height="60" fill="var(--fg,#888)" opacity="0.2"/>
+  <rect x="210" y="50" width="20" height="60" fill="var(--fg,#888)" opacity="0.2"/>
+  <text x="60" y="84" font-size="9" fill="var(--fg,#555)">Grout Seal &#x2192;</text>
+  <line x1="110" y1="82" x2="128" y2="82" stroke="var(--fg,#555)" stroke-width="0.7"/>
+  <!-- Static water level -->
+  <line x1="100" y1="120" x2="260" y2="120" stroke="var(--fg,#333)" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="280" y="124" font-size="9" fill="var(--fg,#333)">SWL</text>
+  <!-- Aquifer zone -->
+  <rect x="80" y="180" width="200" height="120" fill="var(--fg,#555)" opacity="0.06" rx="4"/>
+  <text x="60" y="240" text-anchor="end" font-size="10" font-weight="600" fill="var(--fg,#333)">Aquifer</text>
+  <!-- Screen section -->
+  <rect x="152" y="190" width="56" height="100" fill="none" stroke="var(--fg,#333)" stroke-width="2" stroke-dasharray="4,2" rx="2"/>
+  <text x="280" y="240" font-size="10" fill="var(--fg,#333)">&#x2190; Screen</text>
+  <line x1="210" y1="238" x2="275" y2="238" stroke="var(--fg,#333)" stroke-width="0.7"/>
+  <!-- Gravel pack -->
+  <rect x="135" y="180" width="17" height="120" fill="var(--fg,#555)" opacity="0.1"/>
+  <rect x="208" y="180" width="17" height="120" fill="var(--fg,#555)" opacity="0.1"/>
+  <text x="280" y="200" font-size="9" fill="var(--fg,#555)">&#x2190; Gravel Pack</text>
+  <line x1="225" y1="198" x2="275" y2="198" stroke="var(--fg,#555)" stroke-width="0.7"/>
+  <!-- Water flow arrows -->
+  <g stroke="var(--fg,#333)" stroke-width="1" fill="var(--fg,#333)" opacity="0.5">
+    <line x1="110" y1="220" x2="135" y2="220"/><polygon points="132,217 140,220 132,223"/>
+    <line x1="110" y1="250" x2="135" y2="250"/><polygon points="132,247 140,250 132,253"/>
+    <line x1="250" y1="230" x2="225" y2="230"/><polygon points="228,227 220,230 228,233"/>
+    <line x1="250" y1="260" x2="225" y2="260"/><polygon points="228,257 220,260 228,263"/>
+  </g>
+  <!-- Sump / sediment trap -->
+  <rect x="152" y="295" width="56" height="25" fill="var(--fg,#888)" opacity="0.15" rx="2"/>
+  <text x="280" y="310" font-size="9" fill="var(--fg,#555)">&#x2190; Sump</text>
+  <line x1="210" y1="308" x2="275" y2="308" stroke="var(--fg,#555)" stroke-width="0.7"/>
+  <!-- Bottom cap -->
+  <rect x="150" y="335" width="60" height="5" fill="var(--fg,#555)" rx="2"/>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Components of a typical water well</figcaption>
+</figure>
+
+<h3><u>Formulae</u></h3>
+
+<p><strong>&#9312; Specific yield of well (recuperation test):</strong></p>
+<div class="formula-box">\[ C = S_y = \frac{1}{T}\ln\left(\frac{h_1}{h_2}\right) \]</div>
+
+<p><strong>&#9313; Safe Yield:</strong></p>
+<div class="formula-box">\[ Q = C \cdot A \cdot H \]</div>
+
+<p><strong>&#9314; Diameter of well:</strong></p>
+<div class="formula-box">\[ d = \sqrt{\frac{4A}{\pi}} \]</div>
+
+<p><strong>Dupuit formula:</strong></p>
+<div class="formula-box">\[ Q = 2.72\,K\,L \times \frac{S_w}{\log_{10}(R/r_w)} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 60</h3>
+    <img src="images/page_60.png" alt="Page 60" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><strong>&#9315; Collectors or radial wells:</strong></p>
+<p>radius (r) = 0.8 &times; length of each lateral</p>
+<div class="formula-box">\[ Q = p\,\pi\,D\,L\,V_e\,n \]</div>
+<p>where p = % open area, D = diameter, L = length, V<sub>e</sub> = entrance velocity, n = no. of laterals</p>
+
+<p><strong>&#9316; Infiltration Galleries:</strong></p>
+<div class="formula-box">\[ S = \frac{Q}{2T}\;p(u) \quad;\quad u^2 = \frac{r^2 S}{4Tt} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 61</h3>
+    <img src="images/page_61.png" alt="Page 61" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><em>Date: 10/28</em></p>
+
+<h3><u>Numerical 1 &ndash; Recuperation Test (Open Well)</u></h3>
+<p><strong>Q.</strong> Water depressed 3m, rose 1.75m in 75 min. a) S<sub>y</sub>? b) Yield from 5m dia. well, H=2.5m? c) Diameter for Q=12 l/s, H=2m?</p>
+
+<!-- B&W SVG: Recuperation test concept -->
+<figure style="text-align:center;margin:1em auto;">
+<svg viewBox="0 0 380 180" style="max-width:380px;width:100%;font-family:inherit;" aria-label="Recuperation test concept">
+  <!-- Well walls -->
+  <rect x="120" y="10" width="70" height="160" fill="none" stroke="var(--fg,#333)" stroke-width="1.5" rx="3"/>
+  <!-- Static water level -->
+  <line x1="60" y1="50" x2="320" y2="50" stroke="var(--fg,#333)" stroke-width="1" stroke-dasharray="6,3"/>
+  <text x="325" y="53" font-size="8" fill="var(--fg,#555)">SWL</text>
+  <!-- Depressed level h1 -->
+  <line x1="125" y1="110" x2="185" y2="110" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <text x="200" y="113" font-size="9" fill="var(--fg,#333)">h₁ = 3 m (initial)</text>
+  <!-- Recovered level h2 -->
+  <line x1="125" y1="75" x2="185" y2="75" stroke="var(--fg,#555)" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="200" y="78" font-size="9" fill="var(--fg,#555)">h₂ = 1.25 m (after T)</text>
+  <!-- Recovery arrow -->
+  <line x1="155" y1="108" x2="155" y2="77" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <polygon points="152,80 155,72 158,80" fill="var(--fg,#333)"/>
+  <text x="105" y="92" text-anchor="end" font-size="9" font-weight="600" fill="var(--fg,#333)">rise = 1.75 m</text>
+  <!-- h1 brace -->
+  <line x1="115" y1="50" x2="115" y2="110" stroke="var(--fg,#333)" stroke-width="0.8"/>
+  <text x="108" y="80" text-anchor="end" font-size="9" fill="var(--fg,#333)">h₁</text>
+  <!-- h2 brace -->
+  <line x1="110" y1="50" x2="110" y2="75" stroke="var(--fg,#555)" stroke-width="0.8"/>
+  <text x="103" y="65" text-anchor="end" font-size="8" fill="var(--fg,#555)">h₂</text>
+  <!-- Time label -->
+  <text x="155" y="145" text-anchor="middle" font-size="9" fill="var(--fg,#333)">T = 75 min</text>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Recuperation test — water level recovery in open well</figcaption>
+</figure>
+
+<p><strong>Solution:</strong></p>
+<p>Step 1 &mdash; Identify h<sub>1</sub> and h<sub>2</sub> (depths below SWL):</p>
+<ul>
+<li>h<sub>1</sub> = 3 m (initial depression below SWL)</li>
+<li>Water rose 1.75 m &rarr; h<sub>2</sub> = 3 &minus; 1.75 = 1.25 m</li>
+</ul>
+<p>T = 75 min = 75/60 = 1.25 hr</p>
+
+<p><strong>a) Specific yield of well:</strong></p>
+<div class="formula-box">\[ C = S_y = \frac{1}{T}\ln\left(\frac{h_1}{h_2}\right) = \frac{1}{1.25}\ln\left(\frac{3}{1.25}\right) = 0.8 \times 0.8755 = \boxed{0.7\;\text{per hr}} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 62</h3>
+    <img src="images/page_62.png" alt="Page 62" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><strong>b) Yield from well (d=5 m, H=2.5 m):</strong></p>
+<p>Step 2 &mdash; Apply yield formula Q = C &middot; A &middot; H:</p>
+<ul>
+<li>Cross-sectional area A = &pi;d&sup2;/4 = &pi;&times;5&sup2;/4 = 19.635 m&sup2;</li>
+<li>Depression head H = 2.5 m (working head under pumping)</li>
+</ul>
+<div class="formula-box">\[ Q = C \cdot A \cdot H = 0.7 \times 19.635 \times 2.5 = \boxed{34.36 \text{ m}^3\text{/hr}} \]</div>
+
+<p><strong>c) Diameter for Q=12 l/s, H=2 m:</strong></p>
+<p>Step 3 &mdash; Rearrange for area then diameter:</p>
+<ul>
+<li>Q = 12 l/s = 12&times;3600/1000 = 43.2 m&sup3;/hr</li>
+<li>A = Q/(C&times;H) = 43.2/(0.7&times;2) = 30.86 m&sup2;</li>
+</ul>
+<div class="formula-box">\[ d = \sqrt{\frac{4A}{\pi}} = \sqrt{\frac{4 \times 30.86}{\pi}} = \boxed{6.27 \text{ m}} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 63</h3>
+    <img src="images/page_63.png" alt="Page 63" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h3>Numerical 2 &ndash; Tubewell Design</h3>
+<p><strong>Q.</strong> Q=1300 lpm, confined 12m thick at 25m BGL, SWL=10m, S<sub>w</sub>=4m. D<sub>10</sub>=0.46mm, D<sub>30</sub>=0.77mm, D<sub>50</sub>=1.08mm, D<sub>60</sub>=1.19mm. K=0.1cm/s. Find diameter, strainer length, slot size, gravel pack.</p>
+
+<p><strong>Solution:</strong></p>
+<p>Step 1 &mdash; Convert units and establish design parameters:</p>
+<ul>
+<li>Q = 1300 lpm = 1300/(60&times;1000) = 0.0217 m&sup3;/s</li>
+<li>Entrance velocity V<sub>e</sub> = 3 cm/s = 0.03 m/s (recommended for confined)</li>
+<li>Percent open area P = 15% (strainer open area fraction)</li>
+<li>K = 0.1 cm/s = 0.001 m/s</li>
+</ul>
+
+<p>Step 2 &mdash; From strainer intake formula Q = P&middot;&pi;&middot;D&middot;L&middot;V<sub>e</sub> :</p>
+<div class="formula-box">\[ Q = P\,\pi\,D\,L\,V_e \quad\Rightarrow\quad 0.0217 = 0.15 \times \pi \times D \times L \times 0.03 \]</div>
+<p>&rArr; D&middot;L = 1.535 &rArr; L = 1.535/D &hellip;(1)</p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 64</h3>
+    <img src="images/page_64.png" alt="Page 64" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p>Step 3 &mdash; From Dupuit&rsquo;s formula (R=300 m assumed):</p>
+<div class="formula-box">\[ Q = \frac{2.72\,K\,L\,S_w}{\log_{10}\!\left(\frac{R}{r_w}\right)} \quad\Rightarrow\quad 0.0217 = \frac{2.72 \times 0.001 \times L \times 4}{\log_{10}(300/(D/2))} \]</div>
+
+<p>Step 4 &mdash; Substitute L = 1.535/D from Eq.(1) and solve simultaneously:</p>
+<ul>
+<li>Trial &amp; error or graphical: intersection gives</li>
+</ul>
+<div class="formula-box">\[ D = \boxed{0.225 \text{ m}} \quad;\quad L = 1.535/0.225 \approx \boxed{7 \text{ m}} \]</div>
+
+<p>Step 5 &mdash; Check if natural gravel pack or artificial needed:</p>
+<div class="formula-box">\[ C_u = \frac{D_{60}}{D_{10}} = \frac{1.19}{0.46} = 2.6 < 3 \quad\Rightarrow\quad \text{Uniform aquifer} \Rightarrow \text{artificial gravel pack needed} \]</div>
+<p><em>Rule: If C<sub>u</sub> &lt; 3, aquifer is too uniform &mdash; needs artificial gravel pack to prevent sand entry.</em></p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 65</h3>
+    <img src="images/page_65.png" alt="Page 65" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p>Step 6 &mdash; Design the gravel pack:</p>
+<ul>
+<li>Pack-aquifer ratio = 5: D<sub>50</sub>(gravel) = 5 &times; D<sub>50</sub>(aquifer) = 5 &times; 1.08 = 5.4 mm</li>
+<li>C<sub>u</sub> of gravel pack &le; 2.5: D<sub>10</sub>(pack) = 5.4/2.5 = 2.16 mm</li>
+<li>Slot size = D<sub>10</sub>(pack) = <strong>2.16 mm</strong></li>
+</ul>
+
+<hr>
+
+<h3>Numerical 3 &ndash; Radial Collector Well</h3>
+<p><strong>Q.</strong> Q=18,000 m&sup3;/day, effective radius=70m, lateral dia.=20cm, 15% open area, 40% clogging, V<sub>e</sub>=6mm/s. No. of laterals?</p>
+
+<!-- B&W SVG: Radial collector well plan view -->
+<figure style="text-align:center;margin:1em auto;">
+<svg viewBox="0 0 300 240" style="max-width:300px;width:100%;font-family:inherit;" aria-label="Radial collector well plan view">
+  <!-- Effective radius circle -->
+  <circle cx="150" cy="120" r="90" fill="none" stroke="var(--fg,#888)" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="245" y="118" font-size="7" fill="var(--fg,#888)">R=70m</text>
+  <!-- Central caisson -->
+  <circle cx="150" cy="120" r="14" fill="var(--fg,#333)" fill-opacity="0.1" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <text x="150" y="124" text-anchor="middle" font-size="6" fill="var(--fg,#333)">Caisson</text>
+  <!-- Laterals (showing ~8 evenly spaced) -->
+  <line x1="164" y1="120" x2="240" y2="120" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="160" y1="108" x2="217" y2="52" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="150" y1="106" x2="150" y2="30" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="140" y1="108" x2="83" y2="52" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="136" y1="120" x2="60" y2="120" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="140" y1="132" x2="83" y2="188" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="150" y1="134" x2="150" y2="210" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="160" y1="132" x2="217" y2="188" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <!-- Lateral label -->
+  <text x="245" y="132" font-size="7" fill="var(--fg,#555)">Lateral</text>
+  <text x="245" y="142" font-size="7" fill="var(--fg,#555)">d=20cm</text>
+  <!-- Radius line -->
+  <line x1="150" y1="120" x2="240" y2="120" stroke="var(--fg,#888)" stroke-width="0.5" stroke-dasharray="2,2"/>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Radial collector well — plan view with laterals</figcaption>
+</figure>
+
+<p><strong>Solution:</strong></p>
+<p>Step 1 &mdash; Convert given data:</p>
+<ul>
+<li>Q = 18,000 m&sup3;/day = 18000/86400 = 0.208 m&sup3;/s</li>
+<li>V<sub>e</sub> = 6 mm/s = 0.006 m/s</li>
+<li>Lateral diameter D = 20 cm = 0.2 m</li>
+</ul>
+
+<p>Step 2 &mdash; Find effective screen length (intake from inner 80% only):</p>
+<p>L<sub>s</sub> = R<sub>eff</sub> / 0.8 = 70/0.8 = 87.5 m per lateral</p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 66</h3>
+    <img src="images/page_66.png" alt="Page 66" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p>Step 3 &mdash; Compute number of laterals (accounting for 40% clogging):</p>
+<div class="formula-box">\[ n = \frac{Q}{P \times (1-\text{clogging}) \times \pi D \times L_s \times V_e} = \frac{0.208}{0.15 \times 0.60 \times \pi \times 0.2 \times 87.5 \times 0.006} \approx \boxed{11 \text{ laterals}} \]</div>
+<p><em>Note: The factor (1&minus;0.40) = 0.60 accounts for 40% clogging of the strainer open area.</em></p>
+
+<hr>
+
+<h2>Chapter 8 &ndash; Pumps for Groundwater Lifting</h2>
+<p><em>(Important for exam)</em></p>
+
+<h4><u>Types of Pumps (5):</u></h4>
+<ol>
+<li>Plunger pump (hand pump)</li>
+<li>Jet pump</li>
+<li>Centrifugal pump</li>
+<li>Submersible pump</li>
+<li>Air lift pump</li>
+</ol>
+
+<h4><u>Factors Affecting Selection (6):</u></h4>
+<ol>
+<li>Finished internal dia. &amp; total depth of well</li>
+<li>Yield from well, desired pumping rate, hours of pumping per day</li>
+<li>Lowest pumping water level</li>
+<li>Total head on pump</li>
+<li>Power required</li>
+<li>Quality of water</li>
+</ol>
+
+    </div>
+    </details>
+</div>
+
+<div class="nav-links"><a href="chapter5.html">&larr; Previous</a><a href="chapter7.html">Next &rarr;</a></div>
+
+<script>
+document.querySelectorAll('.page-img').forEach(img => {
+    img.addEventListener('click', () => img.classList.toggle('expanded'));
+});
+</script>
+</body>
+</html>

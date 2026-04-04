@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 5 – Pumping Test &amp; Aquifer Parameter Estimation &mdash; GWE Summary Note</title>
+<link rel="stylesheet" href="style.css">
+<style id="dark-mode-styles"></style>
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+</head>
+<body>
+
+<script src="../../common.js"></script>
+
+<h1>Chapter 5 – Pumping Test &amp; Aquifer Parameter Estimation</h1>
+<p style="text-align:center;color:var(--accent2);font-size:0.9rem;">GWE Handwritten Notes &mdash; Summary Note (5/7)</p>
+
+<div class="nav-links"><a href="chapter4.html">&larr; Previous</a><a href="chapter6.html">Next &rarr;</a></div>
+
+<div class="page-block">
+    <h3>Page 49</h3>
+    <img src="images/page_49.png" alt="Page 49" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h2>Chapter 5 &ndash; Pumping Test Methods</h2>
+
+<!-- SVG: Pumping Test Setup (B&W) -->
+<figure style="text-align:center;margin:1.2em auto;">
+<svg viewBox="0 0 520 280" style="max-width:520px;width:100%;font-family:inherit;" aria-label="Pumping test setup diagram">
+  <!-- Ground surface -->
+  <rect x="0" y="50" width="520" height="10" fill="var(--fg,#888)" opacity="0.1"/>
+  <text x="260" y="45" text-anchor="middle" font-size="11" fill="var(--fg,#333)">Ground Surface</text>
+  <!-- Upper confining layer -->
+  <rect x="0" y="60" width="520" height="15" fill="var(--fg,#888)" opacity="0.15"/>
+  <!-- Aquifer -->
+  <rect x="0" y="75" width="520" height="120" fill="var(--fg,#555)" opacity="0.06"/>
+  <text x="40" y="140" font-size="11" font-weight="600" fill="var(--fg,#333)">Confined Aquifer</text>
+  <!-- Lower confining layer -->
+  <rect x="0" y="195" width="520" height="15" fill="var(--fg,#888)" opacity="0.15"/>
+  <!-- Pre-pumping piezometric surface -->
+  <line x1="0" y1="25" x2="520" y2="25" stroke="var(--fg,#555)" stroke-width="1.5" stroke-dasharray="6,4"/>
+  <text x="420" y="20" font-size="9" fill="var(--fg,#555)">Original Piezometric Surface</text>
+  <!-- Pumping well -->
+  <rect x="255" y="10" width="10" height="200" fill="var(--fg,#555)" opacity="0.2" rx="2"/>
+  <text x="260" y="8" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--fg,#333)">Pumping Well</text>
+  <!-- Pump symbol -->
+  <text x="260" y="22" text-anchor="middle" font-size="12" fill="var(--fg,#333)">&#x2B06; Q</text>
+  <!-- Cone of depression -->
+  <path d="M30,25 Q130,28 200,35 Q240,42 255,55" fill="none" stroke="var(--fg,#333)" stroke-width="2"/>
+  <path d="M265,55 Q280,42 320,35 Q390,28 490,25" fill="none" stroke="var(--fg,#333)" stroke-width="2"/>
+  <text x="380" y="50" font-size="10" font-weight="600" fill="var(--fg,#333)">Cone of Depression</text>
+  <!-- Observation well 1 -->
+  <rect x="145" y="10" width="6" height="200" fill="var(--fg,#666)" opacity="0.25" rx="1"/>
+  <text x="148" y="8" text-anchor="middle" font-size="9" fill="var(--fg,#333)">OW&#x2081;</text>
+  <!-- Drawdown in OW1 -->
+  <line x1="140" y1="25" x2="140" y2="32" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="125" y="31" text-anchor="end" font-size="9" fill="var(--fg,#333)">s&#x2081;</text>
+  <!-- Observation well 2 -->
+  <rect x="365" y="10" width="6" height="200" fill="var(--fg,#666)" opacity="0.25" rx="1"/>
+  <text x="368" y="8" text-anchor="middle" font-size="9" fill="var(--fg,#333)">OW&#x2082;</text>
+  <!-- r labels -->
+  <line x1="260" y1="225" x2="148" y2="225" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="204" y="240" text-anchor="middle" font-size="10" fill="var(--fg,#333)">r&#x2081;</text>
+  <line x1="260" y1="250" x2="368" y2="250" stroke="var(--fg,#333)" stroke-width="1"/>
+  <text x="314" y="265" text-anchor="middle" font-size="10" fill="var(--fg,#333)">r&#x2082;</text>
+  <!-- b label -->
+  <line x1="510" y1="75" x2="510" y2="195" stroke="var(--fg,#555)" stroke-width="1"/>
+  <text x="516" y="140" font-size="10" fill="var(--fg,#555)">b</text>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Pumping test setup showing cone of depression in a confined aquifer</figcaption>
+</figure>
+
+<h3><u>a) Theis Method (Distance-Drawdown)</u></h3>
+<p><em>Confined aquifer</em></p>
+
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Plot r vs s in <strong>semi-log graph</strong> (r &rarr; log, s &rarr; linear)</li>
+<li>Draw <strong>best fit straight line</strong></li>
+<li>Extend to <strong>s = 0</strong> &rarr; Radius of Influence (R<sub>0</sub>)</li>
+<li>Take <strong>1 log cycle</strong>: &Delta;s = s<sub>1</sub> &minus; s<sub>2</sub></li>
+<li><strong>T:</strong>
+<div class="formula-box">\( T = \frac{2.303\,Q}{2\pi\,\Delta s} = \frac{Q}{2.72\,\Delta s} \)</div>
+</li>
+</ol>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 50</h3>
+    <img src="images/page_50.png" alt="Page 50" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h3><u>b) Cooper and Jacob Method (Time-Drawdown)</u></h3>
+
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Plot t vs s in <strong>semi-log graph</strong> (t &rarr; log, s &rarr; linear)</li>
+<li>Draw <strong>best fit straight line</strong></li>
+<li>Extend to <strong>s = 0</strong> &rarr; find t<sub>0</sub></li>
+<li>Take 1 log cycle: &Delta;s = s<sub>2</sub> &minus; s<sub>1</sub></li>
+</ol>
+
+<div class="formula-box">\( T = \frac{2.303\,Q}{4\pi\,\Delta s} \)</div>
+<div class="formula-box">\( S_y = \frac{2.246\,T\,t_0}{r^2} \)</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 51</h3>
+    <img src="images/page_51.png" alt="Page 51" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h3><u>Unconfined Aquifer Correction</u></h3>
+<p>If s&sup2;/(2H) &gt; 0.003, correction required:</p>
+<div class="formula-box">\( s' = s - \frac{s^2}{2H} \)</div>
+
+<p>Then use corrected s&prime; in same semi-log method:</p>
+<div class="formula-box">\( T = \frac{2.303\,Q}{4\pi\,\Delta s'} \)</div>
+<div class="formula-box">\( S_y = \frac{2.246\,T\,t_0}{R^2} \)</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 52</h3>
+    <img src="images/page_52.png" alt="Page 52" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h2>Chapter 5 &ndash; Pumping Test Numericals</h2>
+
+<h3>Numerical 1 &ndash; Distance-Drawdown (Confined)</h3>
+<p><strong>Q.</strong> Q = 0.025 m&sup3;/s, confined aquifer:</p>
+
+<table>
+<tr><th>r (m)</th><td>7</td><td>30</td><td>60</td><td>100</td><td>160</td><td>200</td></tr>
+<tr><th>s (m)</th><td>1.3</td><td>0.95</td><td>0.71</td><td>0.535</td><td>0.36</td><td>0.29</td></tr>
+</table>
+
+<!-- B&W SVG: Semi-log Distance-Drawdown graph -->
+<figure style="text-align:center;margin:1em auto;">
+<svg viewBox="0 0 420 220" style="max-width:420px;width:100%;font-family:inherit;" aria-label="Semi-log distance-drawdown graph">
+  <!-- Axes -->
+  <line x1="60" y1="190" x2="400" y2="190" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <line x1="60" y1="190" x2="60" y2="20" stroke="var(--fg,#333)" stroke-width="1.5"/>
+  <!-- X-axis labels (log scale) -->
+  <text x="60" y="205" text-anchor="middle" font-size="8" fill="var(--fg,#333)">1</text>
+  <text x="145" y="205" text-anchor="middle" font-size="8" fill="var(--fg,#333)">10</text>
+  <text x="230" y="205" text-anchor="middle" font-size="8" fill="var(--fg,#333)">100</text>
+  <text x="315" y="205" text-anchor="middle" font-size="8" fill="var(--fg,#333)">1000</text>
+  <text x="230" y="218" text-anchor="middle" font-size="9" fill="var(--fg,#333)">r (m) → log scale</text>
+  <!-- Y-axis labels -->
+  <text x="50" y="193" text-anchor="end" font-size="8" fill="var(--fg,#333)">0</text>
+  <text x="50" y="143" text-anchor="end" font-size="8" fill="var(--fg,#333)">0.5</text>
+  <text x="50" y="93" text-anchor="end" font-size="8" fill="var(--fg,#333)">1.0</text>
+  <text x="50" y="43" text-anchor="end" font-size="8" fill="var(--fg,#333)">1.5</text>
+  <text x="20" y="110" text-anchor="middle" font-size="9" fill="var(--fg,#333)" transform="rotate(-90,20,110)">s (m)</text>
+  <!-- Grid lines -->
+  <g stroke="var(--fg,#888)" stroke-width="0.3" opacity="0.5">
+    <line x1="145" y1="190" x2="145" y2="20"/><line x1="230" y1="190" x2="230" y2="20"/>
+    <line x1="315" y1="190" x2="315" y2="20"/>
+    <line x1="60" y1="140" x2="400" y2="140"/><line x1="60" y1="90" x2="400" y2="90"/>
+    <line x1="60" y1="40" x2="400" y2="40"/>
+  </g>
+  <!-- Best fit line -->
+  <line x1="100" y1="58" x2="350" y2="190" stroke="var(--fg,#333)" stroke-width="2"/>
+  <!-- Data points -->
+  <g fill="var(--fg,#333)">
+    <circle cx="132" cy="60" r="3"/><text x="132" y="55" text-anchor="middle" font-size="7" fill="var(--fg,#555)">7</text>
+    <circle cx="176" cy="95" r="3"/><text x="176" y="90" text-anchor="middle" font-size="7" fill="var(--fg,#555)">30</text>
+    <circle cx="201" cy="119" r="3"/><text x="201" y="114" text-anchor="middle" font-size="7" fill="var(--fg,#555)">60</text>
+    <circle cx="230" cy="137" r="3"/><text x="230" y="132" text-anchor="middle" font-size="7" fill="var(--fg,#555)">100</text>
+    <circle cx="257" cy="154" r="3"/><text x="257" y="149" text-anchor="middle" font-size="7" fill="var(--fg,#555)">160</text>
+    <circle cx="270" cy="161" r="3"/><text x="270" y="156" text-anchor="middle" font-size="7" fill="var(--fg,#555)">200</text>
+  </g>
+  <!-- R0 label -->
+  <text x="350" y="187" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">R₀≈460</text>
+  <!-- Delta s annotation -->
+  <line x1="145" y1="80" x2="145" y2="160" stroke="var(--fg,#333)" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="230" y1="80" x2="230" y2="160" stroke="var(--fg,#333)" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="188" y="130" text-anchor="middle" font-size="8" font-weight="600" fill="var(--fg,#333)">Δs = 0.80</text>
+</svg>
+<figcaption style="font-size:0.85rem;color:var(--fg2,#666);margin-top:0.3em;">Fig: Semi-log r vs s plot — distance-drawdown method</figcaption>
+</figure>
+
+<p><strong>Solution:</strong></p>
+<p>Step 1 &mdash; Plot r (log scale) vs s (linear) on semi-log paper.</p>
+<p>Step 2 &mdash; Draw best-fit straight line. Extend to s=0 to get R<sub>0</sub> &asymp; 460 m.</p>
+<p>Step 3 &mdash; Read &Delta;s for 1 log cycle (r=10 to r=100): &Delta;s = 1.33 &minus; 0.530 = 0.800 m</p>
+<p>Step 4 &mdash; Compute T:</p>
+<div class="formula-box">\[ T = \frac{Q}{2.72\,\Delta s} = \frac{0.025}{2.72 \times 0.800} = \boxed{0.0115\;\text{m}^2\text{/s}} \]</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 53</h3>
+    <img src="images/page_53.png" alt="Page 53" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<div class="diagram-description">
+<p><strong>[Semi-log graph paper &mdash; Q1 Distance-Drawdown Plot]</strong></p>
+<ul>
+<li>x-axis (log): r (m), 4 cycles 1&ndash;1000</li>
+<li>y-axis (linear): s (m), 0&ndash;1.5</li>
+<li>6 data points plotted, best-fit line</li>
+<li>Extrapolated to s=0 at r &asymp; 460m</li>
+<li>1 log cycle: r=10 (s=1.33) to r=100 (s=0.53), &Delta;s=0.80</li>
+</ul>
+</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 54</h3>
+    <img src="images/page_54.png" alt="Page 54" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h3>Numerical 2 &ndash; Time-Drawdown (Cooper-Jacob, Confined)</h3>
+<p><strong>Q.</strong> r = 100 m, Q = 1000 m&sup3;/day:</p>
+
+<table>
+<tr><th>t (days)</th><td>0.001</td><td>0.005</td><td>0.01</td><td>0.05</td><td>0.1</td><td>0.5</td><td>1</td><td>5</td><td>10</td></tr>
+<tr><th>s (m)</th><td>0.083</td><td>0.196</td><td>0.249</td><td>0.346</td><td>0.431</td><td>0.539</td><td>0.614</td><td>0.742</td><td>0.797</td></tr>
+</table>
+
+<p><strong>Solution:</strong></p>
+<p>Step 1 &mdash; Plot t (log scale) vs s (linear) on semi-log paper.</p>
+<p>Step 2 &mdash; Draw best-fit straight line through the data points.</p>
+<p>Step 3 &mdash; Extend line to s=0 to find t<sub>0</sub> = 0.00045 days.</p>
+<p>Step 4 &mdash; Read &Delta;s per log cycle: &Delta;s = 0.43 &minus; 0.24 = 0.19 m</p>
+
+<p>Step 5 &mdash; Compute T:</p>
+<div class="formula-box">\[ T = \frac{2.303 \times Q}{4\pi \times \Delta s} = \frac{2.303 \times 1000}{4\pi \times 0.19} = \frac{2303}{2.388} = \boxed{964.6\;\text{m}^2\text{/day}} \]</div>
+
+<p>Step 6 &mdash; Compute S:</p>
+<div class="formula-box">\[ S = \frac{2.246\,T\,t_0}{r^2} = \frac{2.246 \times 964.6 \times 0.00045}{100^2} = \frac{0.975}{10000} = \boxed{9.75 \times 10^{-5}} \]</div>
+<p><em>Check: S in range 10<sup>&minus;5</sup> to 10<sup>&minus;3</sup> for confined aquifer. &check;</em></p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 55</h3>
+    <img src="images/page_55.png" alt="Page 55" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<div class="diagram-description">
+<p><strong>[Semi-log graph paper &mdash; Q2 Time-Drawdown Plot]</strong></p>
+<ul>
+<li>x-axis (log): t (days), 4 cycles</li>
+<li>y-axis (linear): s (m), 0&ndash;0.8</li>
+<li>Best-fit line extrapolated to s=0 at t<sub>0</sub> &asymp; 0.00045 days</li>
+<li>&Delta;s per log cycle &asymp; 0.19 m</li>
+</ul>
+</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 56</h3>
+    <img src="images/page_56.png" alt="Page 56" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<h3>Numerical 3 &ndash; Unconfined, Distance-Drawdown (with correction)</h3>
+<p><strong>Q.</strong> Q = 4000 m&sup3;/day, H = 45 m. Observation wells:</p>
+
+<table>
+<tr><th>r (m)</th><td>15</td><td>20</td><td>40</td><td>60</td><td>80</td><td>100</td><td>150</td></tr>
+<tr><th>s (m)</th><td>1.8</td><td>1.5</td><td>1.0</td><td>0.8</td><td>0.5</td><td>0.3</td><td>0.1</td></tr>
+<tr><th>s&prime; (m)</th><td>1.764</td><td>1.475</td><td>0.989</td><td>0.793</td><td>0.497</td><td>0.299</td><td>0.0999</td></tr>
+</table>
+
+<p>Step 1 &mdash; Apply Jacob correction: s&prime; = s &minus; s&sup2;/(2H), where H = 45 m</p>
+<p>Sample calculation for r=15: s&prime; = 1.8 &minus; 1.8&sup2;/(2&times;45) = 1.8 &minus; 3.24/90 = 1.8 &minus; 0.036 = 1.764</p>
+
+<p><em>Correction is small here because s/H &lt; 5%, but becomes significant for larger drawdowns.</em></p>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 57</h3>
+    <img src="images/page_57.png" alt="Page 57" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<p><strong>From graph (s&prime; vs r, semi-log):</strong></p>
+<p>Step 2 &mdash; Plot corrected s&prime; vs r on semi-log paper.</p>
+<p>Step 3 &mdash; Read R<sub>0</sub> = 210 m (where line meets s&prime;=0), &Delta;s&prime; = 0.64 m per log cycle.</p>
+
+<p>Step 4 &mdash; Compute T:</p>
+<div class="formula-box">\[ T = \frac{2.303 \times Q}{2\pi \times \Delta s'} = \frac{2.303 \times 4000}{2\pi \times 0.64} = \frac{9212}{4.021} = \boxed{2290.6\;\text{m}^2\text{/day}} \]</div>
+
+<p>Step 5 &mdash; Compute K:</p>
+<p>K = T/H = 2290.6/45 = <strong>50.9 m/day</strong></p>
+
+<p>Step 6 &mdash; S<sub>y</sub> (requires t<sub>0</sub> from time data):</p>
+<div class="formula-box">\( S_y = \frac{2.25\,T\,t_0}{r_0^2} \)</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="page-block">
+    <h3>Page 58</h3>
+    <img src="images/page_58.png" alt="Page 58" class="page-img" loading="lazy">
+    <details open>
+    <summary>Transcription</summary>
+    <div class="transcription">
+
+<div class="diagram-description">
+<p><strong>[Semi-log graph paper &mdash; Q3 Corrected Drawdown Plot]</strong></p>
+<ul>
+<li>x-axis (log): r (m), 4 cycles 1&ndash;10000</li>
+<li>y-axis (linear): s&prime; (m), 0&ndash;2.0</li>
+<li>7 data points, best-fit line</li>
+<li>Extrapolated to s&prime;=0 at r<sub>0</sub> &asymp; 210 m</li>
+<li>&Delta;s&prime; per log cycle &asymp; 0.64 m</li>
+</ul>
+</div>
+
+    </div>
+    </details>
+</div>
+
+<div class="nav-links"><a href="chapter4.html">&larr; Previous</a><a href="chapter6.html">Next &rarr;</a></div>
+
+<script>
+document.querySelectorAll('.page-img').forEach(img => {
+    img.addEventListener('click', () => img.classList.toggle('expanded'));
+});
+</script>
+</body>
+</html>

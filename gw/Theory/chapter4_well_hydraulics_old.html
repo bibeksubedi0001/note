@@ -560,7 +560,9 @@ input,select,textarea,button{
                 <li><a href="#sec-4-5">Derivation: Steady radial flow to a well in a confined aquifer (Thiem equation)</a></li>
                 <li><a href="#sec-4-6">Derivation: Steady radial flow to a well in an unconfined aquifer (Dupuit equation)</a></li>
                 <li><a href="#sec-4-7">Unsteady (transient) radial flow — Theis equation (overview)</a></li>
-                <li><a href="#sec-4-8">Past question bank for Chapter 4</a></li>
+                <li><a href="#sec-4-8">Partially penetrating wells</a></li>
+                <li><a href="#sec-4-9">Multiple well systems and interference</a></li>
+                <li><a href="#sec-4-10">Past question bank for Chapter 4</a></li>
                 <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
             </ol>
         </section>
@@ -782,6 +784,10 @@ input,select,textarea,button{
                 <li>In <strong>unconfined aquifers</strong>, the cone represents the actual lowering of the water table, reducing the saturated thickness near the well.</li>
             </ul>
 
+            <div class="callout">
+                <strong>TYPICAL EXTENT:</strong> In <strong>unconfined aquifers</strong>, the cone usually extends <strong>less than 100 m</strong> but may reach several hundred metres. In <strong>confined aquifers</strong>, the cone may extend <strong>hundreds to thousands of metres</strong> because drawdown represents pressure-head reduction rather than physical water-table lowering.
+            </div>
+
             <h3>Radius of Influence (R)</h3>
             <p>
                 The radius of influence is the maximum distance from the pumping well at which measurable drawdown occurs. Beyond this distance, the aquifer is essentially undisturbed. It depends on:
@@ -853,14 +859,17 @@ input,select,textarea,button{
             <p>The derivation of steady-state radial flow equations (Thiem / Dupuit) relies on the following assumptions:</p>
 
             <ol>
+                <li>The aquifer is underlain by an <strong>impermeable (confining) layer</strong>.</li>
+                <li>Geological formations are <strong>horizontal</strong> and of <strong>infinite lateral extent</strong> (no boundary effects).</li>
+                <li>The <strong>potentiometric surface is horizontal</strong> before pumping begins (steady initial conditions).</li>
+                <li>All changes in hydraulic head are caused <strong>only by the pumping well</strong>.</li>
                 <li>The aquifer is <strong>homogeneous and isotropic</strong> with uniform hydraulic conductivity \(K\).</li>
-                <li>The aquifer has <strong>infinite areal extent</strong> (no boundary effects).</li>
-                <li>The well <strong>fully penetrates the aquifer</strong> and receives water from the entire aquifer thickness.</li>
-                <li>Flow toward the well is <strong>radially symmetric</strong> (horizontal, two-dimensional in plan).</li>
-                <li>The aquifer is bounded below by an <strong>impermeable (confining) layer</strong>.</li>
-                <li><strong>Steady-state conditions</strong> prevail — the drawdown does not change with time, meaning recharge equals discharge.</li>
+                <li>Groundwater flow is <strong>radial</strong> toward the well.</li>
+                <li>Groundwater flow is <strong>horizontal</strong> (two-dimensional in plan).</li>
                 <li>Flow obeys <strong>Darcy's law</strong> (laminar flow conditions).</li>
-                <li>The well diameter is <strong>infinitesimally small</strong> (or well storage is negligible).</li>
+                <li>Groundwater has <strong>constant density and viscosity</strong>.</li>
+                <li>Pumping and observation wells are <strong>fully penetrating</strong> — they receive water from the entire aquifer thickness.</li>
+                <li>The pumping well has <strong>negligible diameter</strong> (well storage is negligible) and is <strong>100% efficient</strong> (no well losses).</li>
                 <li>For unconfined aquifers: the <strong>Dupuit assumptions</strong> apply — flow is horizontal and the hydraulic gradient equals the slope of the water table.</li>
             </ol>
 
@@ -995,6 +1004,11 @@ input,select,textarea,button{
             </div>
 
             <h3>Derivation</h3>
+
+            <div class="mini-note">
+                <h4>STEADY STATE → STORAGE IGNORED</h4>
+                <p>Under steady-state conditions, water levels are constant and no new water is released from storage. Therefore, the <strong>storage coefficient (S) does not appear</strong> in steady-state equations — only transmissivity (T) and hydraulic conductivity (K) matter.</p>
+            </div>
 
             <p>
                 Consider a fully penetrating well of radius \(r_w\) pumping at a constant rate \(Q\) from a confined aquifer of thickness \(b\) and hydraulic conductivity \(K\). At steady state, the flow toward the well is purely radial and horizontal.
@@ -1304,6 +1318,8 @@ input,select,textarea,button{
                 $$ \frac{\partial^2 h}{\partial r^2} + \frac{1}{r}\frac{\partial h}{\partial r} = \frac{S}{T}\frac{\partial h}{\partial t} $$
             </div>
 
+            <p>This equation is <strong>analogous to the heat conduction (diffusion) equation</strong>, showing that groundwater flow under transient conditions behaves as a diffusion process. Theis exploited this analogy to develop his solution.</p>
+
             <h3>Theis Solution</h3>
             <p>Theis expressed the drawdown at distance \(r\) and time \(t\) as:</p>
 
@@ -1363,6 +1379,45 @@ input,select,textarea,button{
 
             <p>This is the basis for the <strong>Cooper–Jacob straight-line method</strong> used in pumping test analysis (covered in detail in Chapter 5).</p>
 
+            <h3>Theis Type-Curve Method</h3>
+            <p>The Theis method uses graphical curve-matching to determine aquifer parameters:</p>
+            <ol>
+                <li>Plot \(W(u)\) versus \(u\) on log–log paper — this is the <strong>type curve</strong>.</li>
+                <li>Plot observed drawdown \(s\) versus \(r^2/t\) (or \(t\)) on a separate log–log sheet of the same scale.</li>
+                <li>Superimpose the field data on the type curve and shift (keeping axes parallel) until the curves match.</li>
+                <li>Select a <strong>match point</strong> and read off \(s\), \(W(u)\), \(r^2/t\), and \(u\).</li>
+                <li>Calculate \(T\) from \(T = \dfrac{Q \cdot W(u)}{4\pi s}\) and \(S\) from \(S = \dfrac{4Tu}{r^2/t}\).</li>
+            </ol>
+
+            <h3>Cooper–Jacob Straight-Line Method</h3>
+            <p>For small \(u\) (i.e., small \(r\) and/or large \(t\)), drawdown varies linearly with the logarithm of time:</p>
+            <ul>
+                <li>Plot \(s\) versus \(\log t\) on semi-log paper — the data form a straight line at later times.</li>
+                <li>The <strong>slope</strong> \(\Delta s\) (drawdown per log cycle of time) gives transmissivity: \(T = \dfrac{2.303\,Q}{4\pi\,\Delta s}\).</li>
+                <li>The <strong>time intercept</strong> \(t_0\) (where the straight line meets \(s = 0\)) gives storativity: \(S = \dfrac{2.25\,T\,t_0}{r^2}\).</li>
+            </ul>
+
+            <h3>Chow Method</h3>
+            <p>An alternative graphical method that avoids type-curve fitting:</p>
+            <ol>
+                <li>Plot \(s\) versus \(\log t\) on semi-log paper (same as Cooper–Jacob).</li>
+                <li>Select any point on the fitted curve.</li>
+                <li>Draw a tangent to the curve at that point.</li>
+                <li>Measure \(\Delta s\) — the drawdown difference per log cycle along the tangent.</li>
+                <li>Compute \(F(u) = s / \Delta s\) at the selected point.</li>
+                <li>Use a standard chart of \(F(u)\) versus \(W(u)\) and \(u\) to read off \(W(u)\) and \(u\).</li>
+                <li>Calculate \(T\) and \(S\) using the Theis equations.</li>
+            </ol>
+
+            <h3>Recovery Test</h3>
+            <p>After pumping stops, water levels in the well and aquifer <strong>rise</strong> (recover). The remaining drawdown is called the <strong>residual drawdown</strong> (\(s'\)).</p>
+            <ul>
+                <li>Plot \(s'\) versus \(\log(t/t')\) on semi-log paper, where \(t\) is total time since pumping started and \(t'\) is time since pumping stopped.</li>
+                <li>At late recovery times, the data plot as a straight line.</li>
+                <li>Transmissivity \(T\) is obtained from the slope of this line: \(T = \dfrac{2.303\,Q}{4\pi\,\Delta s'}\).</li>
+                <li><strong>Storage coefficient \(S\) cannot be determined</strong> from the recovery test.</li>
+            </ul>
+
             <div class="mini-note">
                 <h4>EXAM NOTE</h4>
                 <p>The Theis equation and Cooper–Jacob method are more commonly examined in Chapter 5 (Pumping Tests). In Chapter 4, the focus is primarily on <strong>steady-state equations</strong> (Thiem for confined, Dupuit for unconfined).</p>
@@ -1370,10 +1425,146 @@ input,select,textarea,button{
         </section>
 
         <!-- ============================================================ -->
-        <!-- 4.8 PAST QUESTION BANK -->
+        <!-- 4.8 PARTIALLY PENETRATING WELLS -->
         <!-- ============================================================ -->
         <section id="sec-4-8">
-            <h2>4.8 PAST QUESTION BANK FOR CHAPTER 4</h2>
+            <h2>4.8 PARTIALLY PENETRATING WELLS</h2>
+
+            <div class="callout">
+                <strong>DEFINITION:</strong> A <strong>partially penetrating well</strong> is one whose length of water entry (screen length) is less than the full thickness of the aquifer it penetrates. Many artesian wells and wells with partial screens fall into this category.
+            </div>
+
+            <h3>Effect on Flow and Drawdown</h3>
+            <p>
+                In a partially penetrating well, there is a <strong>vertical convergence of streamlines</strong> near the well. The average flow-line length into a partially penetrating well exceeds that into a fully penetrating well, causing greater resistance to flow. This results in:
+            </p>
+            <ul>
+                <li>If the discharge is the same (\(Q_p = Q\)), then the drawdown in the partially penetrating well is <strong>greater</strong>: \(s_p > s\).</li>
+                <li>If the drawdown is the same (\(s_p = s\)), then the discharge from the partially penetrating well is <strong>less</strong>: \(Q_p < Q\).</li>
+            </ul>
+            <p>
+                The effect of partial penetration on the flow pattern and drawdown is <strong>negligible beyond a radial distance</strong> of about \(0.5b\) to \(2b\) (where \(b\) is the saturated thickness), depending on the degree of penetration.
+            </p>
+
+            <h3>Wein Hsiung Li (1954) Empirical Formula</h3>
+            <p>Based on electric analog model tests, Wein Hsiung Li proposed empirical formulae for drawdown and discharge ratios in a partially penetrating well. Let \(\alpha = L/b\) be the <strong>penetration ratio</strong> (screen length \(L\) / aquifer thickness \(b\)):</p>
+
+            <div class="equation">
+                $$ \frac{s_{wp}}{s_w} = \frac{1}{\alpha} \left[1 + 7\sqrt{\frac{r_w}{2b}} \cos\left(\frac{\pi\alpha}{2}\right)\right] $$
+            </div>
+            <div class="equation">
+                $$ \frac{Q_p}{Q} = \frac{\alpha}{1 + 7\sqrt{\frac{r_w}{2b}} \cos\left(\frac{\pi\alpha}{2}\right)} $$
+            </div>
+            <p>where \(r_w\) = well radius, \(R\) = radius of influence, and these formulae are applicable for \(\alpha > 0.1\).</p>
+
+            <h3>Worked Example</h3>
+            <div class="callout">
+                <strong>Q)</strong> A 40 cm diameter well penetrates an aquifer of 30 m thickness and the length of the screened portion is 10 m. The well yields 2000 litres per minute with a drawdown of 3 m. If the screen length is increased to 20 m, determine: (a) the drawdown in the well, and (b) the percentage increase in specific capacity of the well.
+            </div>
+            <p><strong>Solution:</strong></p>
+            <p>Given: \(d = 0.40\) m, \(r_w = 0.20\) m, \(b = 30\) m, \(Q = 2000\) lpm, \(s_{w1} = 3\) m.</p>
+            <p>Penetration ratios: \(\alpha_1 = 10/30 = 1/3\), \(\alpha_2 = 20/30 = 2/3\).</p>
+            <p>For same \(Q\), using the drawdown ratio formula:</p>
+            <div class="equation">
+                $$ \frac{s_{w2}}{s_{w1}} = \frac{\alpha_1}{\alpha_2} \times \frac{1 + 7\sqrt{\frac{r_w}{2b}} \cos\left(\frac{\pi\alpha_2}{2}\right)}{1 + 7\sqrt{\frac{r_w}{2b}} \cos\left(\frac{\pi\alpha_1}{2}\right)} $$
+            </div>
+            <p>Computing: \(\sqrt{r_w / 2b} = \sqrt{0.20/60} = 0.0577\)</p>
+            <p>\(s_{w2} \approx 1.92\) m</p>
+            <p><strong>(a)</strong> Drawdown with 20 m screen = <strong>1.92 m</strong>.</p>
+            <p><strong>(b)</strong> Specific capacities:</p>
+            <ul>
+                <li>\(S_{c1} = Q/s_{w1} = 2000/3 = 666.7\) lpm/m</li>
+                <li>\(S_{c2} = Q/s_{w2} = 2000/1.92 = 1041.7\) lpm/m</li>
+                <li>Percentage increase = \(\dfrac{1041.7 - 666.7}{666.7} \times 100 = \textbf{56.3\%}\)</li>
+            </ul>
+
+            <h3>Partially Penetrating Well in a Confined Aquifer</h3>
+            <p>The drawdown in a partially penetrating well in a confined aquifer is:</p>
+            <div class="equation">
+                $$ s_{wp} = s_w + \Delta s_w $$
+            </div>
+            <p>where \(\Delta s_w\) is the additional drawdown due to convergence of flow lines caused by partial penetration.</p>
+
+            <h3>Partially Penetrating Well in an Unconfined Aquifer</h3>
+            <p>For a fully penetrating well in an unconfined aquifer under steady state:</p>
+            <div class="equation">
+                $$ Q = \frac{\pi K(H^2 - h_w^2)}{\ln(R/r_w)} $$
+            </div>
+            <p>For a partially penetrating well (usually bottom-half to one-third of the aquifer screened), the penetration ratio is \(\alpha = l/h_w\), where \(l\) is the screen length and \(h_w = H - s_w\). The discharge is reduced by the partial penetration factor.</p>
+
+            <h3>Worked Example (Unconfined)</h3>
+            <div class="callout">
+                <strong>Q)</strong> A 30 cm well fully penetrates a homogeneous aquifer having a permeability of 40 m/day. The saturated thickness is 15 m. What is the drawdown when pumped at 1000 lpm? What will be the drawdown if only the bottom half of the aquifer is screened? Assume \(R = 300\) m.
+            </div>
+            <p><strong>Solution:</strong></p>
+            <p>Given: \(d = 0.30\) m, \(r_w = 0.15\) m, \(K = 40\) m/day, \(H = 15\) m, \(Q = 1000\) lpm = 1440 m³/day, \(R = 300\) m.</p>
+            <p>For the fully penetrating well: \(Q = \dfrac{\pi K(H^2 - h_w^2)}{\ln(R/r_w)}\)</p>
+            <div class="equation">
+                $$ 1440 = \frac{\pi \times 40 \times (15^2 - h_w^2)}{\ln(300/0.15)} $$
+            </div>
+            <p>Solving: \(h_w \approx 14.12\) m, so \(s_w \approx 0.88\) m for the fully penetrating well.</p>
+            <p>For the bottom-half screened well (\(\alpha = 0.5\)), the partial penetration factor increases the drawdown. Using the empirical equations, the drawdown will be greater than 0.88 m due to the convergence effects.</p>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.9 MULTIPLE WELL SYSTEMS AND INTERFERENCE -->
+        <!-- ============================================================ -->
+        <section id="sec-4-9">
+            <h2>4.9 MULTIPLE WELL SYSTEMS AND INTERFERENCE</h2>
+
+            <div class="callout">
+                <strong>DEFINITION:</strong> When several wells pump from the same aquifer, their individual cones of depression may <strong>overlap</strong>, creating <strong>well interference</strong>. The combined drawdown at any point is the sum of drawdowns from all pumping wells.
+            </div>
+
+            <h3>Well Interference</h3>
+            <p>
+                When the cones of depression of two or more wells overlap, the groundwater table of both wells combines to form a new composite drawdown surface. This phenomenon is called <strong>well interference</strong>.
+            </p>
+
+            <h3>Effects of Well Interference</h3>
+            <ul>
+                <li>The total groundwater output is <strong>less than the sum</strong> of the discharge capacities of the individual wells operating alone.</li>
+                <li>The <strong>efficiency of each well decreases</strong>.</li>
+                <li>The <strong>drawdown is increased</strong>, resulting in a higher pumping lift.</li>
+                <li>The <strong>pumping cost increases</strong> due to decreased efficiency and increased pumping lift.</li>
+            </ul>
+
+            <h3>Principle of Superposition (Confined Aquifers)</h3>
+            <p>
+                In confined aquifer systems, the <strong>principle of superposition</strong> applies because the governing Laplace equation (steady state) is linear. The total drawdown at any point is the algebraic sum of the drawdowns produced by each well independently:
+            </p>
+            <div class="equation">
+                $$ s_{total} = s_1 + s_2 + s_3 + \cdots = \sum_{i=1}^{n} s_i $$
+            </div>
+            <p>This principle is used to determine composite drawdowns in well fields, essential for designing efficient water supply systems.</p>
+
+            <h3>Correction for Unconfined Aquifers</h3>
+            <p>
+                For <strong>unconfined aquifers</strong>, the linear superposition principle is <strong>not directly applicable</strong> because significant drawdown reduces the saturated thickness and thus the aquifer transmissivity. A correction procedure is required:
+            </p>
+            <ol>
+                <li>First, calculate the theoretical confined drawdown for each well using superposition.</li>
+                <li>Then apply a correction using the initial saturated thickness \(H\):</li>
+            </ol>
+            <div class="equation">
+                $$ s_{unconfined} = s_{confined} - \frac{s_{confined}^2}{2H} $$
+            </div>
+
+            <h3>Uses and Well Configurations</h3>
+            <p>Multiple well systems are used for:</p>
+            <ul>
+                <li><strong>Water supply</strong>: wells spaced to minimise interference and reduce drawdown.</li>
+                <li><strong>Subsurface drainage</strong> and <strong>dewatering for excavation/mining</strong>: wells placed closely to maximise interference and lower the water table.</li>
+                <li><strong>Seawater intrusion management</strong> in coastal aquifers.</li>
+            </ul>
+            <p>Common configurations include <strong>linear</strong>, <strong>triangular</strong>, and <strong>square</strong> arrangements, analysed for their discharge characteristics under steady-state conditions.</p>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- 4.10 PAST QUESTION BANK -->
+        <!-- ============================================================ -->
+        <section id="sec-4-10">
+            <h2>4.10 PAST QUESTION BANK FOR CHAPTER 4</h2>
 
             <h3>A. Theory Questions</h3>
 
@@ -1431,7 +1622,7 @@ input,select,textarea,button{
                     <pre>Well diameter D = 30 cm
 Aquifer thickness b = 23 m
 Drawdown s_w = 3.5 m
-Hydraulic conductivity K = 2.8 &times; 10&sup1;&sup4; m/s
+Hydraulic conductivity K = 2.8 &times; 10<sup>&minus;4</sup> m/s
 Radius of influence R = 450 m
 Modified well diameter D' = 20 cm</pre>
                 </div>
@@ -1470,7 +1661,7 @@ Radius of influence R = 500 m</pre>
                 <tr>
                     <td>Assumptions for well flow equations</td>
                     <td>2078</td>
-                    <td>List all 9 assumptions; distinguish Dupuit assumptions for unconfined</td>
+                    <td>List all 12 assumptions; distinguish Dupuit assumptions for unconfined</td>
                 </tr>
                 <tr>
                     <td>Derivation: Thiem equation (confined)</td>
@@ -1547,6 +1738,30 @@ Radius of influence R = 500 m</pre>
                     <td>\( s \approx \dfrac{2.303\, Q}{4\pi T} \log_{10}\!\left(\dfrac{2.25\, Tt}{r^2 S}\right) \) for \(u < 0.01\)</td>
                 </tr>
                 <tr>
+                    <td>Cooper–Jacob: \(T\) from slope</td>
+                    <td>\( T = \dfrac{2.303\, Q}{4\pi\, \Delta s} \), where \(\Delta s\) = drawdown per log cycle</td>
+                </tr>
+                <tr>
+                    <td>Cooper–Jacob: \(S\) from intercept</td>
+                    <td>\( S = \dfrac{2.25\, T\, t_0}{r^2} \), where \(t_0\) = time at \(s = 0\)</td>
+                </tr>
+                <tr>
+                    <td>Recovery test</td>
+                    <td>Plot \(s'\) vs \(\log(t/t')\); \( T = \dfrac{2.303\, Q}{4\pi\, \Delta s'} \); \(S\) cannot be found</td>
+                </tr>
+                <tr>
+                    <td>Partial penetration: drawdown ratio</td>
+                    <td>\( s_{wp}/s_w = (1/\alpha)\left[1 + 7\sqrt{r_w/2b}\,\cos(\pi\alpha/2)\right] \), \(\alpha = L/b\)</td>
+                </tr>
+                <tr>
+                    <td>Well interference (confined)</td>
+                    <td>\( s_{total} = \sum s_i \) — superposition of individual drawdowns</td>
+                </tr>
+                <tr>
+                    <td>Unconfined correction</td>
+                    <td>\( s_{unconf} = s_{conf} - s_{conf}^2/(2H) \)</td>
+                </tr>
+                <tr>
                     <td>Dupuit assumptions</td>
                     <td>Horizontal flow lines, gradient = water-table slope, uniform velocity over depth</td>
                 </tr>
@@ -1557,10 +1772,12 @@ Radius of influence R = 500 m</pre>
                 <ol>
                     <li>Be able to <strong>sketch and label</strong> the cone of depression for both confined and unconfined wells, marking \(s_w\), \(R\), \(r_w\), \(b\) (or \(H\)), \(h_w\).</li>
                     <li>Know all <strong>definitions</strong>: cone of depression, radius of influence, area of influence, specific capacity, well yield.</li>
-                    <li>List all <strong>9 assumptions</strong> for steady-state well equations; highlight the Dupuit assumptions for unconfined aquifers.</li>
+                    <li>List all <strong>12 assumptions</strong> for steady-state well equations; highlight the Dupuit assumptions for unconfined aquifers.</li>
                     <li><strong>Derive from first principles</strong> both the Thiem (confined) and Dupuit (unconfined) equations — start from Darcy's law + continuity on a cylindrical surface.</li>
                     <li>For numericals, remember: confined uses \(s_w\), unconfined uses \((H^2 - h_w^2)\). Always check units and convert diameters to radii.</li>
                     <li>Understand the <strong>logarithmic insensitivity</strong> of discharge to well diameter — a common exam insight question.</li>
+                    <li>Know the effect of <strong>partial penetration</strong>: same Q → greater drawdown; same drawdown → less discharge.</li>
+                    <li>For <strong>multiple wells</strong>: superposition works directly in confined aquifers; apply unconfined correction \(s - s^2/2H\) when needed.</li>
                 </ol>
             </div>
         </section>

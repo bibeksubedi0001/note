@@ -381,6 +381,7 @@ input,select,textarea,button{
                 <li><a href="#sec-3-5">Steady 1-D flow in an unconfined aquifer (Dupuit theory)</a></li>
                 <li><a href="#sec-3-6">Unconfined aquifer between two water bodies with recharge</a></li>
                 <li><a href="#sec-3-7">Steady flow in a confined aquifer of constant and variable thickness</a></li>
+                <li><a href="#sec-3-7b">Flow into horizontal galleries</a></li>
                 <li><a href="#sec-3-8">Past question bank for Chapter 3</a></li>
                 <li><a href="#sec-3-9">Worked numerical solutions</a></li>
                 <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
@@ -402,11 +403,22 @@ input,select,textarea,button{
             </div>
             <h3>Key Terminology</h3>
             <ul>
-                <li><strong>Stream line (flow line):</strong> A line that is everywhere tangent to the velocity vector. Water particles move along stream lines. No flow crosses a stream line.</li>
-                <li><strong>Equipotential line:</strong> A line connecting points of equal hydraulic head. If a piezometer is installed at any point along an equipotential line, the water would rise to the same elevation.</li>
+                <li><strong>Stream line (flow line):</strong> A line that is everywhere tangent to the velocity vector. Water particles move along stream lines. No flow crosses a stream line (Fetter, 2001).</li>
+                <li><strong>Equipotential line:</strong> A line connecting points of equal hydraulic head. If a piezometer is installed at any point along an equipotential line, the water would rise to the same elevation. A line along which the velocity potential function \(\phi\) is constant (Todd &amp; Mays, 2005).</li>
+                <li><strong>Stream function (\(\Psi\)):</strong> A scalar function whose contour lines define stream lines. In a 2-D isotropic aquifer, streamlines are curves where \(\Psi\) is constant. The distance between two streamlines represents a constant discharge.</li>
+                <li><strong>Velocity potential (\(\phi\)):</strong> Defined such that the velocity components are given by \(u = -\partial\phi/\partial x\), \(v = -\partial\phi/\partial y\). For groundwater flow, \(\phi = Kh\) (Raghunath, 2006).</li>
                 <li><strong>Flow channel:</strong> The zone between two adjacent stream lines through which a constant fraction of the total flow passes.</li>
                 <li><strong>Potential drop:</strong> The difference in head between two successive equipotential lines.</li>
             </ul>
+
+            <h3>Orthogonality of Stream Lines and Equipotential Lines</h3>
+            <p>In an isotropic medium, stream lines and equipotential lines always intersect at right angles (90&deg;). This can be proven mathematically (Bear, 1972):</p>
+            <p>For a streamline, \(\Psi(x, y) = \text{constant}\), so \(d\Psi = 0\):</p>
+            <div class="equation">$$ d\Psi = \frac{\partial\Psi}{\partial x}\,dx + \frac{\partial\Psi}{\partial y}\,dy = 0 \implies \left(\frac{dy}{dx}\right)_\Psi = -\frac{\partial\Psi/\partial x}{\partial\Psi/\partial y} $$</div>
+            <p>For an equipotential line, \(\phi(x, y) = \text{constant}\), so \(d\phi = 0\):</p>
+            <div class="equation">$$ d\phi = \frac{\partial\phi}{\partial x}\,dx + \frac{\partial\phi}{\partial y}\,dy = 0 \implies \left(\frac{dy}{dx}\right)_\phi = -\frac{\partial\phi/\partial x}{\partial\phi/\partial y} $$</div>
+            <p>The product of the two slopes equals \(-1\), confirming perpendicularity:</p>
+            <div class="equation">$$ \boxed{\text{Slope of equipotential line} \times \text{Slope of stream function} = -1} $$</div>
 
             <div class="figure-container">
                 <svg width="780" height="440" viewBox="0 0 780 440" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif;font-size:14px;">
@@ -482,6 +494,17 @@ input,select,textarea,button{
                 <li>Assessment of <strong>exit gradient</strong> at the downstream toe to check piping safety.</li>
                 <li>Computation of <strong>pore-water pressure distribution</strong> for slope stability analysis.</li>
                 <li>Analysis of <strong>dewatering</strong> and well-field problems.</li>
+                <li>Determination of <strong>head at any point</strong>: \(\Delta h = H/N_d\) gives the head drop between two consecutive equipotential lines, so head at any point can be computed (Todd &amp; Mays, 2005).</li>
+            </ol>
+
+            <h3>Construction of a Flow Net</h3>
+            <p>Flow nets are constructed by trial-and-error sketching following these steps (Cedergren, 1989; Das, 2013):</p>
+            <ol>
+                <li><strong>Identify boundary conditions:</strong> Impervious boundaries are stream lines. Constant-head boundaries (e.g., reservoir surface) are equipotential lines. Note the starting directions of flow and equipotential lines at boundaries.</li>
+                <li><strong>Draw trial flow lines</strong> (or equipotential lines) consistent with the boundary conditions.</li>
+                <li><strong>Sketch the other family</strong> of lines ensuring they intersect the first set at 90&deg;.</li>
+                <li><strong>Adjust to form curvilinear squares:</strong> The shapes formed by the intersection should approximate squares — the mean width should be nearly equal to the mean length.</li>
+                <li><strong>Iterate:</strong> Erase and redraw lines until all figures are approximately square. Subdivide as desired for detail and accuracy.</li>
             </ol>
         </section>
 
@@ -588,6 +611,16 @@ input,select,textarea,button{
                 </div>
             </div>
 
+            <div class="example-box">
+                <p><strong>Example (Neyveli Lignite Project — Raghunath, 2006, Ex. 4.15):</strong> A flow net is drawn for flow through a confined aquifer at the Neyveli Lignite mines. The flow net has 30 flow channels and the head drop is 6 m spread over 30 equipotential drops. The aquifer thickness is 30 m. Calculate the transmissivity and hydraulic conductivity.</p>
+                <p><strong>Solution:</strong></p>
+                <p>For a plan-view flow net in a confined aquifer of thickness \(b\), the total seepage is:</p>
+                <div class="equation">$$ Q = T \cdot \Delta H \cdot \frac{N_f}{N_d} = T \times 6 \times \frac{30}{30} = 6T $$</div>
+                <p>Given \(Q = 7200\) m&sup3;/day per unit width (from field data):</p>
+                <div class="equation">$$ T = \frac{Q}{6} = \frac{7200}{6} = 1200 \text{ m}^2/\text{day} $$</div>
+                <div class="equation">$$ K = \frac{T}{b} = \frac{1200}{30} = 40 \text{ m/day} $$</div>
+            </div>
+
             <table class="info-table">
                 <tr><th>Symbol</th><th>Meaning</th></tr>
                 <tr><td>\(Q\)</td><td>Total seepage discharge per unit width of structure (m&sup3;/s per m)</td></tr>
@@ -612,6 +645,20 @@ input,select,textarea,button{
             <div class="callout">
                 <strong>DEFINITION:</strong> A <strong>water table contour map</strong> is a plan view showing lines of equal water-table elevation. It is the groundwater equivalent of a topographic contour map.
             </div>
+
+            <h3>Piezometric Head</h3>
+            <p>The <strong>piezometric head</strong> (or hydraulic head) at a specific point is defined as the sum of the elevation head and pressure head (Freeze &amp; Cherry, 1979):</p>
+            <div class="equation">$$ h = z + \frac{P}{\gamma} $$</div>
+            <p>where \(z\) = elevation head above datum, \(P\) = pore water pressure, and \(\gamma\) = unit weight of water. It is measured using piezometers (observation wells) penetrating the aquifer and is the driving potential for groundwater movement.</p>
+
+            <h3>Hydraulic Gradient</h3>
+            <p>The <strong>hydraulic gradient</strong> is the change in hydraulic head per unit distance in the direction of maximum decrease in head (Fetter, 2001):</p>
+            <div class="equation">$$ i = \frac{dh}{dl} $$</div>
+            <p>It is directly proportional to the Darcy velocity \(v = -Ki\). Steeper gradients imply faster flow velocities.</p>
+
+            <h3>Water Table</h3>
+            <p>The <strong>water table</strong> is the surface in an unconfined aquifer where pore water pressure equals atmospheric pressure (Freeze &amp; Cherry, 1979). It marks the upper boundary of the saturated zone. The water table elevation is influenced by topography, recharge rates, extraction (pumping), and seasonal variations.</p>
+
             <h3>How a Water Table Contour Map Is Prepared</h3>
             <ol>
                 <li><strong>Install observation wells</strong> (piezometers) at multiple locations across the study area.</li>
@@ -735,6 +782,24 @@ input,select,textarea,button{
                 </svg>
                 <div class="figcaption">Figure 3.5: Three-well method for finding groundwater flow direction from a triangular network of piezometers.</div>
             </div>
+
+            <h3>Three-Well Triangulation Procedure (Todd &amp; Mays, 2005)</h3>
+            <p>Given three observation wells, the flow direction and hydraulic gradient can be determined using the following steps:</p>
+            <ol>
+                <li><strong>Step 1:</strong> Identify the well with the <em>intermediate</em> water level.</li>
+                <li><strong>Step 2:</strong> Along the straight line between the wells with the highest and lowest head, locate the point with the same head as the intermediate well (by linear interpolation).</li>
+                <li><strong>Step 3:</strong> Draw a straight line between the intermediate well and the point identified in Step 2. This is a segment of the <strong>equipotential line</strong> along which the head equals the intermediate value.</li>
+                <li><strong>Step 4:</strong> Draw a line perpendicular to the equipotential line passing through the well with the lowest head. This perpendicular indicates the <strong>direction of groundwater flow</strong>. The hydraulic gradient is the slope of this perpendicular line.</li>
+            </ol>
+
+            <h3>Analysis of Water Table Maps (Raghunath, 2006)</h3>
+            <p>If the flow rates across successive water table contours between two limiting flow lines are known, the following deductions can be made:</p>
+            <ul>
+                <li><strong>Transmissivity:</strong> From Darcy's law, \(q = T \cdot i \cdot w\), where \(i = \Delta h / l\) (head difference over distance between contours) and \(w\) = width between limiting flow lines (scaled from map). By computing \(q\) at different sections, the spatial distribution of \(T\) can be estimated.</li>
+                <li><strong>Storage coefficient:</strong> If there is no leakage, \(q_2 - q_1 = S \cdot \Delta h_t \cdot A_s\), where \(\Delta h_t\) = average rate of water level change, and \(A_s\) = area between the two limiting flow lines and successive contours.</li>
+                <li><strong>Vertical leakage:</strong> If vertical leakage occurs through an aquitard, \(P \cdot A_s = (q_2 - q_1) + S \cdot \Delta h_t \cdot A_s\), where \(P\) = rate of vertical leakage per unit area.</li>
+            </ul>
+            <p>Such water table contour maps with flow lines provide useful data for locating new wells, identifying the most favourable permeability zones, and understanding regional groundwater movement patterns. Portions with wide contour spacing (flat gradients) indicate higher permeabilities (Raghunath, 2006).</p>
         </section>
 
         <!-- ======== 3.4 LAPLACE ======== -->
@@ -743,6 +808,13 @@ input,select,textarea,button{
             <div class="callout">
                 <strong>OBJECTIVE:</strong> The governing PDE for steady-state groundwater flow in a homogeneous isotropic aquifer is the Laplace equation, providing the theoretical foundation for flow-net analysis.
             </div>
+
+            <h3>Potential Flow Theory</h3>
+            <p>Potential flow theory assumes that the fluid is incompressible, the flow is irrotational, and the medium is homogeneous and isotropic. In groundwater hydrology, water flows because of differences in hydraulic head. Darcy's law relates velocity to hydraulic head:</p>
+            <div class="equation">$$ \vec{v} = -K\nabla h $$</div>
+            <p>Since velocity is the gradient of a scalar potential (head), groundwater flow is a <em>potential flow</em>. From potential flow theory: equipotential lines are lines of constant head, flow lines represent the direction of groundwater flow, and they intersect at right angles (90&deg;).</p>
+
+            <h3>Derivation via Conservation of Mass and Darcy's Law</h3>
             <p>Under steady-state conditions, inflow equals outflow (no storage change). Using Darcy's law and conservation of mass:</p>
             <div class="equation">$$ \frac{\partial q_x}{\partial x} + \frac{\partial q_y}{\partial y} + \frac{\partial q_z}{\partial z} = 0 $$</div>
             <p>Substituting Darcy's law \(q_i = -K_i \frac{\partial h}{\partial x_i}\):</p>
@@ -785,6 +857,38 @@ input,select,textarea,button{
             </div>
             <h3>Anisotropic Media</h3>
             <p>When \(K_x \neq K_z\), a coordinate transformation \(x' = x\sqrt{K_z/K_x}\) converts the anisotropic medium into an equivalent isotropic one. The effective conductivity is \(K_e = \sqrt{K_x K_z}\).</p>
+
+            <h3>Alternative Derivation via Velocity Potential (Raghunath, 2006)</h3>
+            <p>A velocity potential \(\phi\) is a scalar function such that the velocity components are given by:</p>
+            <div class="equation">$$ u = -\frac{\partial\phi}{\partial x}, \quad v = -\frac{\partial\phi}{\partial y}, \quad w = -\frac{\partial\phi}{\partial z} $$</div>
+            <p>From Darcy's law, \(V = -K\,dh/ds\), and comparing with \(V = -d\phi/ds\):</p>
+            <div class="equation">$$ \phi = Kh + C $$</div>
+            <p>where \(C\) is a constant (usually taken as zero). Since groundwater is incompressible, the continuity equation for steady flow gives:</p>
+            <div class="equation">$$ \frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} + \frac{\partial w}{\partial z} = 0 $$</div>
+            <p>Substituting the velocity potential:</p>
+            <div class="equation">$$ \frac{\partial^2\phi}{\partial x^2} + \frac{\partial^2\phi}{\partial y^2} + \frac{\partial^2\phi}{\partial z^2} = 0 \qquad (\nabla^2\phi = 0) $$</div>
+            <p>Since \(\phi = Kh\) for a homogeneous isotropic medium, this directly gives \(\nabla^2 h = 0\), the Laplace equation.</p>
+
+            <h3>Anisotropic Laplace Equation</h3>
+            <p>For an anisotropic formation with principal permeabilities \(K_x\), \(K_y\), and \(K_z\), the steady-state flow equation becomes (Raghunath, 2006):</p>
+            <div class="equation">$$ K_x\frac{\partial^2 h}{\partial x^2} + K_y\frac{\partial^2 h}{\partial y^2} + K_z\frac{\partial^2 h}{\partial z^2} = 0 $$</div>
+            <p>Using the coordinate transformation \(X = x/\sqrt{K_x}\), \(Y = y/\sqrt{K_y}\), \(Z = z/\sqrt{K_z}\), this reduces to:</p>
+            <div class="equation">$$ \frac{\partial^2 h}{\partial X^2} + \frac{\partial^2 h}{\partial Y^2} + \frac{\partial^2 h}{\partial Z^2} = 0 $$</div>
+            <p>Thus, the Laplace equation is satisfied in the transformed domain, and a flow net can be constructed.</p>
+
+            <h3>Assumptions and Boundary Conditions</h3>
+            <ul>
+                <li><strong>Steady state:</strong> No change in head over time.</li>
+                <li><strong>Homogeneous:</strong> Hydraulic conductivity \(K\) is independent of position.</li>
+                <li><strong>Isotropic:</strong> \(K\) is the same in all directions (\(K_x = K_y = K_z\)).</li>
+                <li><strong>Incompressible:</strong> Fluid and matrix density are constant.</li>
+                <li><strong>Conservative:</strong> No internal sources or sinks (no recharge/pumping).</li>
+            </ul>
+            <p><strong>Boundary conditions</strong> are essential to solve the PDE (Wang &amp; Anderson, 1982):</p>
+            <ul>
+                <li><strong>Dirichlet (first-type):</strong> Constant head (e.g., a lake or river).</li>
+                <li><strong>Neumann (second-type):</strong> Constant flux (e.g., an impervious rock layer where flux = 0).</li>
+            </ul>
         </section>
 
         <!-- ======== 3.5 DUPUIT ======== -->
@@ -855,6 +959,23 @@ input,select,textarea,button{
             <div class="equation">$$ Q = \frac{K}{2L}(h_1^2 - h_2^2) \qquad \text{(Dupuit equation)} $$</div>
             <p>The water-table profile (phreatic surface equation) is:</p>
             <div class="equation">$$ h^2 = h_1^2 - \frac{h_1^2 - h_2^2}{L}\,x $$</div>
+            <p>This indicates that for a given discharge, the water table is <strong>parabolic</strong> in form (Dupuit parabola).</p>
+
+            <h3>Limitations of the Dupuit Equation and the Seepage Face</h3>
+            <p>There is a difference between the water level calculated using the Dupuit equation and the actual water level. In reality, the actual water table sits <strong>higher</strong> than what the Dupuit equation predicts. This departure is most noticeable near the well or discharge boundary. The reasons are:</p>
+            <ul>
+                <li><strong>Vertical flow component:</strong> The Dupuit equation assumes water flows only horizontally. In reality, near a well or discharge boundary, water also moves downward, requiring a greater saturated thickness to convey the same discharge.</li>
+                <li><strong>Slope error:</strong> The assumption that \(dh/ds \approx dh/dx\) breaks down near wells where the water table slope is steep.</li>
+                <li><strong>Seepage face:</strong> The water table cannot connect directly to the water surface inside the well. It curves and meets the well wall tangentially, forming a <em>seepage face</em> — a zone where water emerges from the aquifer above the well water level.</li>
+            </ul>
+            <p><strong>Despite these errors</strong> in predicting the water table shape, the Dupuit equation remains <strong>accurate for calculating the total flow rate (q)</strong> and the aquifer's hydraulic conductivity (K) (Raghunath, 2006).</p>
+
+            <h3>Vertical Velocity Component</h3>
+            <p>From the 2-D continuity equation \(\partial u/\partial x + \partial w/\partial z = 0\) and the Dupuit velocity \(u = q/h\), the vertical velocity component can be derived. Since the horizontal velocity varies with \(x\) (through the changing \(h\)), this creates a vertical component by continuity:</p>
+            <div class="equation">$$ \frac{\partial u}{\partial x} = -\frac{q}{h^2}\frac{dh}{dx} = \frac{q^2}{Kh^3} $$</div>
+            <p>The vertical velocity \(w\) increases linearly with elevation \(z\) (zero at the impervious base, maximum at the water table):</p>
+            <div class="equation">$$ w = -\frac{q^2}{Kh^3} \cdot z $$</div>
+            <p>This shows that the vertical velocity is zero at the base and increases upward, being greatest at the water table.</p>
         </section>
 
         <!-- ======== 3.6 WITH RECHARGE ======== -->
@@ -946,8 +1067,8 @@ input,select,textarea,button{
             <h3>Phreatic Surface Equation</h3>
             <div class="equation">$$ h^2 = h_1^2 - \frac{h_1^2 - h_2^2}{L}\,x + \frac{p}{K}\,x(L - x) $$</div>
             <h3>Seepage to Each Canal (per unit length)</h3>
-            <div class="equation">$$ q_1 = \frac{K(h_1^2 - h_2^2)}{2L} + \frac{pL}{2} \qquad \text{(into the deeper canal, at } x=0\text{)} $$</div>
-            <div class="equation">$$ q_2 = \frac{pL}{2} - \frac{K(h_1^2 - h_2^2)}{2L} \qquad \text{(into the shallower canal, at } x=L\text{)} $$</div>
+            <div class="equation">$$ q_1 = \frac{pL}{2} - \frac{K(h_1^2 - h_2^2)}{2L} \qquad \text{(into the deeper canal, at } x=0\text{)} $$</div>
+            <div class="equation">$$ q_2 = \frac{pL}{2} + \frac{K(h_1^2 - h_2^2)}{2L} \qquad \text{(into the shallower canal, at } x=L\text{)} $$</div>
             <p>Verify: \(q_1 + q_2 = pL\) (total recharge on the strip).</p>
             <h3>Location of the Water Table Divide</h3>
             <div class="equation">$$ d = \frac{L}{2} - \frac{K(h_1^2 - h_2^2)}{2pL} $$</div>
@@ -1087,6 +1208,31 @@ input,select,textarea,button{
             </div>
         </section>
 
+        <!-- ======== 3.7b HORIZONTAL GALLERIES ======== -->
+        <section id="sec-3-7b">
+            <h2>3.7b FLOW INTO HORIZONTAL GALLERIES</h2>
+            <p>A <strong>horizontal gallery</strong> (or infiltration gallery) is a horizontal conduit laid beneath the water table to collect groundwater by gravity flow. The analysis is analogous to the Dupuit case for unconfined flow between two boundaries.</p>
+
+            <h3>Discharge Equation</h3>
+            <p>Consider a horizontal gallery of length \(l\) (perpendicular to flow) receiving flow from both sides. The water table stands at height \(H\) at a distance \(L\) from the gallery, and the water level in the gallery is \(h_1\). Applying the Dupuit assumptions, the discharge per unit length from one side is:</p>
+            <div class="equation">$$ q = \frac{K}{2L}(H^2 - h_1^2) $$</div>
+            <p>The total discharge collected from both sides over gallery length \(l\) is:</p>
+            <div class="equation">$$ Q = 2ql = \frac{Kl}{L}(H^2 - h_1^2) $$</div>
+
+            <h3>Phreatic Surface Profile</h3>
+            <p>The water table (depression curve) between the undisturbed level and the gallery follows a parabolic profile:</p>
+            <div class="equation">$$ h^2 = h_1^2 + \frac{H^2 - h_1^2}{L}\,x $$</div>
+            <p>where \(x\) is measured from the gallery towards the undisturbed water table.</p>
+
+            <h3>Worked Example</h3>
+            <div class="example-box">
+                <p><strong>Problem:</strong> A horizontal gallery of length \(l\) taps an unconfined aquifer with \(K = 60\) m/day. The undisturbed saturated thickness is \(H = 7\) m at a distance \(L = 400\) m from the gallery where the water depth is \(h_1 = 2\) m. Find the discharge per unit length from one side.</p>
+                <p><strong>Solution:</strong></p>
+                <div class="equation">$$ q = \frac{K}{2L}(H^2 - h_1^2) = \frac{60}{2 \times 400}(7^2 - 2^2) = \frac{60}{800}(49 - 4) = 0.075 \times 45 $$</div>
+                <div class="equation">$$ q = 3.375 \text{ m}^3/\text{day per metre length} $$</div>
+            </div>
+        </section>
+
         <!-- ======== 3.8 QUESTION BANK ======== -->
         <section id="sec-3-8">
             <h2>3.8 PAST QUESTION BANK FOR CHAPTER 3</h2>
@@ -1134,14 +1280,14 @@ h₁ = 10 m, h₂ = 8 m,  K = 10 m/day</pre></div></div>
                 <div class="equation">$$ p = 25 \text{ mm/hr} = 25 \times \frac{24}{1000} = 0.6 \text{ m/day} $$</div>
 
                 <p><strong>Step 2: Seepage into the deeper canal (left, at x = 0)</strong></p>
-                <div class="equation">$$ q_1 = \frac{K(h_1^2 - h_2^2)}{2L} + \frac{pL}{2} $$</div>
-                <div class="equation">$$ q_1 = \frac{12(144 - 49)}{2 \times 1570} + \frac{0.6 \times 1570}{2} = \frac{12 \times 95}{3140} + \frac{942}{2} $$</div>
-                <div class="equation">$$ \boxed{q_1 = 0.363 + 471.0 = 471.36 \text{ m}^2/\text{day per m of canal}} $$</div>
+                <div class="equation">$$ q_1 = \frac{pL}{2} - \frac{K(h_1^2 - h_2^2)}{2L} $$</div>
+                <div class="equation">$$ q_1 = \frac{0.6 \times 1570}{2} - \frac{12(144 - 49)}{2 \times 1570} = \frac{942}{2} - \frac{12 \times 95}{3140} $$</div>
+                <div class="equation">$$ \boxed{q_1 = 471.0 - 0.363 = 470.64 \text{ m}^2/\text{day per m of canal}} $$</div>
 
                 <p><strong>Step 3: Seepage into the shallower canal (right, at x = L)</strong></p>
-                <div class="equation">$$ q_2 = \frac{pL}{2} - \frac{K(h_1^2 - h_2^2)}{2L} = 471.0 - 0.363 $$</div>
-                <div class="equation">$$ \boxed{q_2 = 470.64 \text{ m}^2/\text{day per m of canal}} $$</div>
-                <p><strong>Check:</strong> \(q_1 + q_2 = 471.36 + 470.64 = 942.0 = pL = 0.6 \times 1570\). &check;</p>
+                <div class="equation">$$ q_2 = \frac{pL}{2} + \frac{K(h_1^2 - h_2^2)}{2L} = 471.0 + 0.363 $$</div>
+                <div class="equation">$$ \boxed{q_2 = 471.36 \text{ m}^2/\text{day per m of canal}} $$</div>
+                <p><strong>Check:</strong> \(q_1 + q_2 = 470.64 + 471.36 = 942.0 = pL = 0.6 \times 1570\). &check;</p>
 
                 <p><strong>Step 4: Phreatic surface equation</strong></p>
                 <div class="equation">$$ h^2 = h_1^2 - \frac{h_1^2 - h_2^2}{L}\,x + \frac{p}{K}\,x(L - x) $$</div>
@@ -1213,14 +1359,14 @@ h₁ = 10 m, h₂ = 8 m,  K = 10 m/day</pre></div></div>
                 <div class="equation">$$ p = 12 \text{ mm/hr} = \frac{12 \times 24}{1000} = 0.288 \text{ m/day} $$</div>
 
                 <p><strong>Step 2: Seepage into the deeper canal (q<sub>1</sub>)</strong></p>
-                <div class="equation">$$ q_1 = \frac{K(h_1^2 - h_2^2)}{2L} + \frac{pL}{2} = \frac{10(100 - 64)}{2 \times 1200} + \frac{0.288 \times 1200}{2} $$</div>
-                <div class="equation">$$ q_1 = \frac{360}{2400} + \frac{345.6}{2} = 0.15 + 172.8 $$</div>
-                <div class="equation">$$ \boxed{q_1 = 172.95 \text{ m}^2/\text{day}} $$</div>
+                <div class="equation">$$ q_1 = \frac{pL}{2} - \frac{K(h_1^2 - h_2^2)}{2L} = \frac{0.288 \times 1200}{2} - \frac{10(100 - 64)}{2 \times 1200} $$</div>
+                <div class="equation">$$ q_1 = \frac{345.6}{2} - \frac{360}{2400} = 172.8 - 0.15 $$</div>
+                <div class="equation">$$ \boxed{q_1 = 172.65 \text{ m}^2/\text{day}} $$</div>
 
                 <p><strong>Step 3: Seepage into the shallower canal (q<sub>2</sub>)</strong></p>
-                <div class="equation">$$ q_2 = \frac{pL}{2} - \frac{K(h_1^2 - h_2^2)}{2L} = 172.8 - 0.15 $$</div>
-                <div class="equation">$$ \boxed{q_2 = 172.65 \text{ m}^2/\text{day}} $$</div>
-                <p><strong>Check:</strong> \(q_1 + q_2 = 172.95 + 172.65 = 345.6 = pL = 0.288 \times 1200\). &check;</p>
+                <div class="equation">$$ q_2 = \frac{pL}{2} + \frac{K(h_1^2 - h_2^2)}{2L} = 172.8 + 0.15 $$</div>
+                <div class="equation">$$ \boxed{q_2 = 172.95 \text{ m}^2/\text{day}} $$</div>
+                <p><strong>Check:</strong> \(q_1 + q_2 = 172.65 + 172.95 = 345.6 = pL = 0.288 \times 1200\). &check;</p>
 
                 <p><strong>Step 4: Phreatic surface equation</strong></p>
                 <div class="equation">$$ h^2 = 100 - \frac{36}{1200}\,x + \frac{0.288}{10}\,x(1200 - x) $$</div>
@@ -1277,8 +1423,8 @@ h₁ = 10 m, h₂ = 8 m,  K = 10 m/day</pre></div></div>
                 <tr><td>Dupuit equation (no recharge)</td><td>\( Q = \frac{K}{2L}(h_1^2 - h_2^2) \)</td></tr>
                 <tr><td>Phreatic surface (no recharge)</td><td>\( h^2 = h_1^2 - \frac{h_1^2 - h_2^2}{L}\,x \)</td></tr>
                 <tr><td>Phreatic surface (with recharge \(p\))</td><td>\( h^2 = h_1^2 - \frac{h_1^2 - h_2^2}{L}\,x + \frac{p}{K}\,x(L-x) \)</td></tr>
-                <tr><td>Seepage to left canal</td><td>\( q_1 = \frac{K(h_1^2-h_2^2)}{2L} + \frac{pL}{2} \)</td></tr>
-                <tr><td>Seepage to right canal</td><td>\( q_2 = \frac{pL}{2} - \frac{K(h_1^2-h_2^2)}{2L} \)</td></tr>
+                <tr><td>Seepage to left canal</td><td>\( q_1 = \frac{pL}{2} - \frac{K(h_1^2-h_2^2)}{2L} \)</td></tr>
+                <tr><td>Seepage to right canal</td><td>\( q_2 = \frac{pL}{2} + \frac{K(h_1^2-h_2^2)}{2L} \)</td></tr>
                 <tr><td>Water table divide</td><td>\( d = \frac{L}{2} - \frac{K(h_1^2-h_2^2)}{2pL} \)</td></tr>
                 <tr><td>Confined flow (constant thickness)</td><td>\( Q = Kb\frac{h_1-h_2}{L} = T\frac{h_1-h_2}{L} \)</td></tr>
                 <tr><td>Confined flow (variable thickness)</td><td>\( Q = K\frac{(h_1-h_2)(b_2-b_1)}{L\ln(b_2/b_1)} \)</td></tr>

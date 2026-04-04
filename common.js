@@ -219,7 +219,7 @@
       },
       'gw/Theory': {
         index: '../index.html',
-        label: 'Groundwater Theory',
+        label: 'Groundwater Engineering',
         chapters: [
           { f: 'chapter1_groundwater_old.html',       t: 'Ch 1: Introduction' },
           { f: 'chapter2_groundwater_motion_old.html', t: 'Ch 2: Groundwater Motion' },
@@ -244,6 +244,19 @@
           { f: 'chapter5.html', t: 'Ch 5' },
           { f: 'chapter7.html', t: 'Ch 7' },
           { f: 'chapter9.html', t: 'Ch 9' }
+        ]
+      },
+      'gw/Summary_Note': {
+        index: 'index.html',
+        label: 'GW Summary Notes',
+        chapters: [
+          { f: 'chapter1.html', t: 'Ch 1: Occurrence of Groundwater' },
+          { f: 'chapter2.html', t: 'Ch 1–2: Numericals (Properties & Darcy)' },
+          { f: 'chapter3.html', t: 'Ch 3: Flow Theory & Numericals' },
+          { f: 'chapter4.html', t: 'Ch 4: Well Hydraulics' },
+          { f: 'chapter5.html', t: 'Ch 5: Pumping Test' },
+          { f: 'chapter6.html', t: 'Ch 6–7: Exploration & Well Design' },
+          { f: 'chapter7.html', t: 'Ch 8–9: Pumps & GW in Nepal' }
         ]
       },
       'Structure': {

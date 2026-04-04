@@ -298,11 +298,14 @@ input,select,textarea,button{
             <p>Surface investigation methods are preliminary techniques used before undertaking expensive subsurface exploration. These methods provide initial information about the likely occurrence of groundwater.</p>
 
             <h3>6.3.1 Geological Survey</h3>
-            <p>A geological survey involves the study of surface geological features to infer subsurface conditions. The key aspects include:</p>
+            <p>A geological survey involves the study of surface geological features to infer subsurface conditions. The major activities under geological methods include:</p>
             <ul>
-                <li><strong>Lithological mapping:</strong> Identification of rock types, their distribution, and water-bearing potential. Sandstone, limestone, and fractured basalt are good aquifer materials; clay and shale are aquitards.</li>
-                <li><strong>Structural mapping:</strong> Study of folds, faults, joints, and fractures. Faults may act as conduits or barriers to groundwater flow. Fracture zones in hard-rock terrain often indicate productive well sites.</li>
-                <li><strong>Geomorphological study:</strong> Study of landforms such as alluvial fans, flood plains, buried channels, and paleochannels that may indicate potential groundwater storage.</li>
+                <li><strong>Lithological study (Study of rocks):</strong> Identification of rock types, their distribution, and water-bearing potential. Sand, gravel, limestone &rarr; store water well; clay, hard rock &rarr; store little water. Search for porous and permeable rock.</li>
+                <li><strong>Structural study:</strong> Study of folds, faults, joints, and fractures. Cracks, joints and faults allow water to move and collect. More cracks &rarr; more groundwater chance. Fracture zones in hard-rock terrain often indicate productive well sites.</li>
+                <li><strong>Study of weathering:</strong> Weathered zones contain more groundwater. A thick weathered layer indicates better water yield.</li>
+                <li><strong>Landform study (Geomorphology):</strong> Study of landforms such as alluvial fans, flood plains, river plains, valleys, buried channels, and paleochannels. River plains &amp; valleys &rarr; good groundwater; hills &amp; mountains &rarr; poor groundwater.</li>
+                <li><strong>Hydrogeological study:</strong> Estimates water table depth and groundwater movement direction. Water flows from recharge areas (where rain enters) to discharge areas (rivers, springs). Creates maps showing zones with high, medium, and low chances of finding water.</li>
+                <li><strong>Geological mapping:</strong> Prepare maps showing rock types, structure, weathered zones, landforms, and water features. Helps in identifying suitable sites for wells or boreholes and planning groundwater development.</li>
             </ul>
 
             <h3>6.3.2 Hydrogeological Survey</h3>
@@ -512,13 +515,21 @@ input,select,textarea,button{
             </div>
 
             <h3>6.6.1 Principle</h3>
-            <p>The electrical resistivity method is based on the principle that different earth materials have different electrical resistivities. An electric current is introduced into the ground through two current electrodes, and the resulting potential difference is measured between two potential electrodes. From the measured current (I) and potential difference (&Delta;V), the <strong>apparent resistivity</strong> (&rho;<sub>a</sub>) of the subsurface is calculated.</p>
+            <p>The electrical resistivity method exploits the contrast between the insulating rock matrix and the conductive pore electrolytes. Different earth materials have different electrical resistivities. An electric current (I) is introduced into the ground through two current electrodes, and the resulting potential difference (&Delta;V) is measured between two potential electrodes.</p>
+
+            <h4>The 4-Electrode Concept</h4>
+            <p>A simple 2-electrode setup would measure <strong>contact resistance</strong> at the electrode&ndash;soil interface (which is very high), not the earth&rsquo;s true resistivity. The solution is to use <strong>four</strong> electrodes with separate circuits &mdash; an <em>outer pair</em> (C<sub>1</sub>, C<sub>2</sub>) to inject current and an <em>inner pair</em> (P<sub>1</sub>, P<sub>2</sub>) to measure voltage. Since no current flows through the potential circuit, contact resistance errors are eliminated (Telford et al., 1990).</p>
+            <p>When current I is injected into a homogeneous half-space, it flows radially outward in hemispherical shells. The potential at distance r from a single electrode is:</p>
+            <div class="equation">
+                \[ V = \frac{I \rho}{2\pi r} \]
+            </div>
+            <p>In practice the subsurface is heterogeneous. What the instrument records is an <strong>apparent resistivity</strong> (&rho;<sub>a</sub>) &mdash; a volumetric weighted average of electrical properties over the region sampled:</p>
 
             <div class="equation">
                 \[ \rho_a = K \cdot \frac{\Delta V}{I} \]
             </div>
 
-            <p>where \( K \) is the <strong>geometric factor</strong> that depends on the electrode arrangement (spacing and configuration).</p>
+            <p>where \( K \) is the <strong>geometric factor</strong> that depends only on the electrode arrangement (spacing and configuration).</p>
 
             <h3>6.6.2 Typical Resistivity Values</h3>
             <table class="info-table">
@@ -584,7 +595,7 @@ input,select,textarea,button{
             </div>
 
             <h4>(b) Schlumberger Array</h4>
-            <p>The current electrodes (A, B) are placed much farther apart than the potential electrodes (M, N). The distance AB/2 = L and MN/2 = l, where L &gt;&gt; l.</p>
+            <p>The current electrodes (A, B) are placed much farther apart than the potential electrodes (M, N). The distance AB/2 = L and MN/2 = l, where L &ge; 5l.</p>
             <div class="equation">
                 \[ K = \pi \cdot \frac{L^2 - l^2}{2l} \approx \frac{\pi L^2}{2l} \quad \text{(when } L \gg l\text{)} \]
             </div>
@@ -670,13 +681,31 @@ input,select,textarea,button{
             </div>
 
             <h3>6.6.5 Interpretation of Resistivity Data</h3>
-            <p>For VES data, the apparent resistivity curve is compared with theoretical master curves (or computer-generated models) for layered earth. The interpretation yields:</p>
+            <p>For VES data, the apparent resistivity (&rho;<sub>a</sub>) vs. electrode spacing (AB/2) is plotted on <strong>log-log paper</strong>. The curve shape is compared with theoretical master curves (or computer-generated models) for a layered earth. The interpretation yields:</p>
             <ul>
                 <li>Number of subsurface layers</li>
                 <li>True resistivity of each layer</li>
                 <li>Thickness of each layer</li>
                 <li>Depth to aquifer and aquifer thickness</li>
             </ul>
+
+            <h4>Standard Curve Types (3-Layer Earth)</h4>
+            <p>For a three-layer earth model, the VES curve shape defines the vertical succession of resistivity:</p>
+            <table class="info-table">
+                <tr><th>Curve Type</th><th>Resistivity Relation</th><th>Shape</th><th>Geological Example</th></tr>
+                <tr><td><strong>H-type</strong></td><td>\(\rho_1 > \rho_2 < \rho_3\)</td><td>Bowl (U-shaped)</td><td>Dry soil / <em>water-bearing sand</em> / bedrock</td></tr>
+                <tr><td><strong>K-type</strong></td><td>\(\rho_1 < \rho_2 > \rho_3\)</td><td>Bell (inverted U)</td><td>Clay / hard rock / clay</td></tr>
+                <tr><td><strong>A-type</strong></td><td>\(\rho_1 < \rho_2 < \rho_3\)</td><td>Ascending</td><td>Clay / sand / rock</td></tr>
+                <tr><td><strong>Q-type</strong></td><td>\(\rho_1 > \rho_2 > \rho_3\)</td><td>Descending</td><td>Dry sand / clay / saline water</td></tr>
+            </table>
+            <p>In alluvial environments (Terai, Kathmandu Valley), an aquifer typically appears as a <strong>conductive layer sandwiched between resistive layers</strong> (H-type curve &mdash; the &ldquo;Sandwich Model&rdquo;). Key resistivity guidelines:</p>
+            <table class="info-table">
+                <tr><th>Material</th><th>Resistivity Range</th></tr>
+                <tr><td>Clay / Shale</td><td>&lt; 10 &Omega;&middot;m</td></tr>
+                <tr><td><strong>Fresh-water sand (aquifer)</strong></td><td><strong>20 &ndash; 100 &Omega;&middot;m</strong></td></tr>
+                <tr><td>Dry gravel / rock</td><td>&gt; 300 &Omega;&middot;m</td></tr>
+                <tr><td>Saline water</td><td>&lt; 10 &Omega;&middot;m</td></tr>
+            </table>
 
             <h3>6.6.6 Advantages and Limitations</h3>
             <div class="grid-two">
@@ -881,6 +910,20 @@ input,select,textarea,button{
                 <li>\( V_2 \) = velocity of Layer 2</li>
             </ul>
 
+            <h4>Three-Layer Earth Model</h4>
+            <p>For a three-layer case (e.g., topsoil / weathered rock / sound bedrock with \(V_3 > V_2 > V_1\)):</p>
+            <p><strong>Depth to Interface 1</strong> (between topsoil and weathered rock):</p>
+            <div class="equation">
+                \[ z_1 = \frac{t_{i1} V_1 V_2}{2\sqrt{V_2^2 - V_1^2}} \]
+            </div>
+            <p><strong>Depth to Interface 2</strong> (time-stripping method &mdash; subtract travel time through first layer):</p>
+            <div class="equation">
+                \[ z_2 = \frac{1}{2} \left[ t_{i2} - \frac{2z_1 \sqrt{V_3^2 - V_1^2}}{V_3 V_1} \right] \frac{V_3 V_2}{\sqrt{V_3^2 - V_2^2}} \]
+            </div>
+
+            <h4>Application: Locating the Water Table</h4>
+            <p>Seismic refraction is effective for locating the water table because P-wave velocity increases significantly in saturated soil compared to dry soil. Unsaturated topsoil has \(V_1 = 300\text{&ndash;}800\) m/s, while saturated soil has \(V_2 \approx 1400\text{&ndash;}1600\) m/s. If the refracted wave gives \(V_2 \approx 1500\) m/s, the interface corresponds to the <strong>water table</strong>.</p>
+
             <h3>6.7.6 Advantages and Limitations</h3>
             <div class="grid-two">
                 <div class="mini-note">
@@ -896,11 +939,58 @@ input,select,textarea,button{
                     <strong>Limitations:</strong>
                     <ul>
                         <li>Requires V<sub>2</sub> &gt; V<sub>1</sub> (velocity must increase with depth)</li>
-                        <li>Cannot detect thin layers (hidden layer problem)</li>
-                        <li>Blind zone if a low-velocity layer exists beneath a high-velocity layer</li>
-                        <li>Not effective beyond ~30&ndash;50 m depth for routine surveys</li>
+                        <li><strong>Velocity inversion (Hidden layer):</strong> If a slow layer (V<sub>low</sub>) is sandwiched between fast layers, seismic rays bend downward through it, making the layer undetectable. Depth is <em>overestimated</em>.</li>
+                        <li><strong>Blind zone:</strong> Thin layers with small velocity contrast may not produce distinct first arrivals on the T-X graph. Depth is <em>underestimated</em>.</li>
+                        <li><strong>Geometric constraint:</strong> Survey line must be 3&ndash;5 times the target depth (\(L \approx 5z\)); confined urban spaces limit investigation depth.</li>
                         <li>Sensitive to surface noise (traffic, machinery)</li>
                     </ul>
+                </div>
+            </div>
+
+            <h3>6.7.7 Comparison: Electrical Resistivity vs. Seismic Refraction</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Feature</th>
+                    <th>Electrical Resistivity</th>
+                    <th>Seismic Refraction</th>
+                </tr>
+                <tr>
+                    <td>Physical property</td>
+                    <td>Resistivity (&rho;)</td>
+                    <td>Elastic wave velocity (V)</td>
+                </tr>
+                <tr>
+                    <td>Governing law</td>
+                    <td>Ohm&rsquo;s Law: \(V = IR\)</td>
+                    <td>Snell&rsquo;s Law: \(\sin i / \sin r = V_1/V_2\)</td>
+                </tr>
+                <tr>
+                    <td>Main application</td>
+                    <td>Water quality (saline vs. fresh), aquifer depth &amp; thickness, clay vs. sand</td>
+                    <td>Depth to bedrock, foundation engineering, mapping faults/fractures</td>
+                </tr>
+                <tr>
+                    <td>Necessary condition</td>
+                    <td>Conductivity contrast between layers</td>
+                    <td>Velocity must increase with depth (\(V_1 < V_2\))</td>
+                </tr>
+                <tr>
+                    <td>Primary limitation</td>
+                    <td>Affected by buried pipes, fences, power lines (cultural noise)</td>
+                    <td>Cannot detect soft layers below hard layers (velocity inversion)</td>
+                </tr>
+                <tr>
+                    <td>Cost &amp; complexity</td>
+                    <td>Low to medium</td>
+                    <td>Medium to high</td>
+                </tr>
+            </table>
+            <div class="grid-two">
+                <div class="mini-note">
+                    <strong>Choose Resistivity when:</strong> the goal is to find <em>water</em> directly &mdash; especially distinguishing fresh from saline, or clay (aquitard) from sand (aquifer).
+                </div>
+                <div class="mini-note">
+                    <strong>Choose Seismic when:</strong> the goal is to map <em>structure</em> &mdash; depth to hard bedrock, or fracture zones in hard-rock terrain.
                 </div>
             </div>
         </section>
@@ -961,11 +1051,22 @@ input,select,textarea,button{
             <h3>Scientific Assessment</h3>
             <p>Water witching has <strong>no scientific basis</strong>. Controlled scientific studies have consistently shown that the success rate of water diviners is no better than random chance. The observed movement of the rod is attributed to the <strong>ideomotor effect</strong> &mdash; involuntary, subconscious muscle movements by the person holding the device.</p>
 
-            <p>Despite its lack of scientific validity, water witching continues to be practiced in rural areas, particularly in developing countries, because:</p>
+            <h3>Advantages (Why It Persists)</h3>
             <ul>
-                <li>In many alluvial areas, groundwater is prevalent at shallow depths, so any random well location is likely to find water</li>
-                <li>There is a deep cultural tradition associated with the practice</li>
-                <li>Professional geophysical surveys may not be affordable or accessible</li>
+                <li><strong>Low cost:</strong> Requires only simple materials (forked sticks, metal rods)</li>
+                <li><strong>Ease of use:</strong> Simple to learn and apply; no technical training needed</li>
+                <li><strong>Speed:</strong> Does not require extensive setup time</li>
+                <li>In many alluvial areas, groundwater is prevalent at shallow depths, so any random well location is likely to find water &mdash; reinforcing perceived &ldquo;success&rdquo;</li>
+                <li>Deep cultural tradition in rural and suburban areas</li>
+            </ul>
+
+            <h3>Drawbacks</h3>
+            <ul>
+                <li>Lack of scientific evidence; results no better than random chance</li>
+                <li>Unreliable and imprecise results</li>
+                <li>Risk of costly drilling errors</li>
+                <li>Cannot discriminate water type, depth, or yield</li>
+                <li>Professional geophysical surveys are always more reliable</li>
             </ul>
 
             <div class="callout">
@@ -1102,7 +1203,7 @@ input,select,textarea,button{
                     </tr>
                     <tr>
                         <td>Schlumberger array K</td>
-                        <td>\( K \approx \frac{\pi L^2}{2l} \) (when L &gt;&gt; l)</td>
+                        <td>\( K \approx \frac{\pi L^2}{2l} \) (when L &ge; 5l)</td>
                         <td>L = half current-electrode spacing, l = half potential-electrode spacing</td>
                     </tr>
                     <tr>

@@ -3,123 +3,197 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Groundwater Engineering &mdash; Study Guide</title>
+  <title>Groundwater Engineering — Study Notes</title>
   <link rel="stylesheet" href="../index-style.css">
+  <style>
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 2rem 0;
+    }
+    .section-card {
+      display: block;
+      text-decoration: none;
+      color: var(--fg);
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--card-shadow);
+      transition: all 0.35s var(--ease);
+      position: relative;
+      overflow: hidden;
+    }
+    .section-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.35s var(--ease);
+      border-radius: var(--radius);
+    }
+    .section-card:nth-child(1)::before { background: var(--gradient-1); }
+    .section-card:nth-child(2)::before { background: var(--gradient-3); }
+    .section-card:nth-child(3)::before { background: var(--gradient-4); }
+    .section-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-hover);
+    }
+    .section-card:hover::before { opacity: 0.06; }
+    .section-card h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .section-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .section-card .count {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .section-card .icon-area {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .chapter-list {
+      margin: 2rem 0;
+    }
+    .chapter-list h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--fg);
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--border);
+    }
+    .chapter-list ul {
+      list-style: none;
+      padding: 0;
+    }
+    .chapter-list li {
+      margin-bottom: 6px;
+    }
+    .chapter-list a {
+      display: block;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      color: var(--fg);
+      font-size: 0.9rem;
+      transition: all 0.2s var(--ease);
+      border: 1px solid transparent;
+    }
+    .chapter-list a:hover {
+      background: var(--accent-soft);
+      border-color: var(--accent-glow);
+      color: var(--accent);
+      transform: translateX(4px);
+    }
+    .chapter-list a span {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+  </style>
 </head>
 <body>
 
 <div class="container">
-  <a href="../index.html" class="back-link">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    All Subjects
-  </a>
-
-  <header class="page-header">
-    <h1>Groundwater Engineering</h1>
-    <p class="subtitle">Theory chapters and solved numerical problems</p>
+  <header class="page-header" style="padding-top:64px">
+    <p class="subtitle" style="margin-bottom:6px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--accent)">Groundwater Engineering</p>
+    <h1>Study Notes</h1>
+    <p class="subtitle">Theory, solved numericals, summary notes &amp; exam preparation</p>
     <div class="stats">
-      <div><span>9</span> Theory</div>
-      <div><span>6</span> Numericals</div>
+      <div><span>3</span> Sections</div>
+      <div><span>9</span> Theory Chapters</div>
+      <div><span>6</span> Numerical Sets</div>
+      <div><span>7</span> Summary Notes</div>
     </div>
   </header>
 
-  <div class="section-label">Theory</div>
-  <ul class="chapter-list">
-    <li><a href="Theory/chapter1_groundwater_old.html" class="chapter-item">
-      <span class="ch-num">01</span>
-      <span class="ch-title">Occurrence of Groundwater and its Importance</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter2_groundwater_motion_old.html" class="chapter-item">
-      <span class="ch-num">02</span>
-      <span class="ch-title">Fundamentals of Groundwater Motion</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter3_flow_theory_old.html" class="chapter-item">
-      <span class="ch-num">03</span>
-      <span class="ch-title">Potential Groundwater Flow Theory and Flow Net Analysis</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter4_well_hydraulics_old.html" class="chapter-item">
-      <span class="ch-num">04</span>
-      <span class="ch-title">Well Hydraulics</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter5_pumping_test.html" class="chapter-item">
-      <span class="ch-num">05</span>
-      <span class="ch-title">Pumping Test and Estimation of Aquifer Properties</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter6_groundwater_exploration.html" class="chapter-item">
-      <span class="ch-num">06</span>
-      <span class="ch-title">Groundwater Exploration</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter7_water_well_design.html" class="chapter-item">
-      <span class="ch-num">07</span>
-      <span class="ch-title">Water Well Design</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter8_pumps.html" class="chapter-item">
-      <span class="ch-num">08</span>
-      <span class="ch-title">Pumps for Groundwater Lifting</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/chapter9_groundwater_nepal.html" class="chapter-item">
-      <span class="ch-num">09</span>
-      <span class="ch-title">Groundwater Resources of Nepal</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/groundwater_questions_by_chapter.html" class="chapter-item">
-      <span class="ch-num">--</span>
-      <span class="ch-title">Past Questions by Chapter</span>
-      <span class="ch-badge">Reference</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-  </ul>
+  <!-- Section Cards -->
+  <div class="section-grid">
 
-  <div class="section-label">Solved Numericals</div>
-  <ul class="chapter-list">
-    <li><a href="Numerical/chapter2.html" class="chapter-item">
-      <span class="ch-num">02</span>
-      <span class="ch-title">Numericals &mdash; Groundwater Motion</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Numerical/chapter3.html" class="chapter-item">
-      <span class="ch-num">03</span>
-      <span class="ch-title">Numericals &mdash; Potential Flow Theory</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Numerical/chapter4.html" class="chapter-item">
-      <span class="ch-num">04</span>
-      <span class="ch-title">Numericals &mdash; Well Hydraulics</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Numerical/chapter5.html" class="chapter-item">
-      <span class="ch-num">05</span>
-      <span class="ch-title">Numericals &mdash; Pumping Test &amp; Aquifer Properties</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Numerical/chapter7.html" class="chapter-item">
-      <span class="ch-num">07</span>
-      <span class="ch-title">Numericals &mdash; Water Well Design</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Numerical/chapter9.html" class="chapter-item">
-      <span class="ch-num">09</span>
-      <span class="ch-title">Numericals &mdash; Groundwater Resources of Nepal</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-    <li><a href="Theory/numericals_solved.html" class="chapter-item">
-      <span class="ch-num">--</span>
-      <span class="ch-title">All Solved Numerical Problems (Combined)</span>
-      <span class="ch-badge">Reference</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </a></li>
-  </ul>
+    <a href="Theory/chapter1_groundwater.html" class="section-card">
+      <span class="icon-area">📘</span>
+      <h2>Theory Notes</h2>
+      <p>Complete theory covering occurrence, motion, flow theory, well hydraulics, pumping tests, exploration, well design, pumps, and groundwater in Nepal.</p>
+      <span class="count">9 Chapters + Questions + Solved Numericals</span>
+    </a>
+
+    <a href="Numerical/index.html" class="section-card">
+      <span class="icon-area">🔢</span>
+      <h2>Solved Numericals</h2>
+      <p>Chapter-wise solved numerical problems with step-by-step solutions for properties, Darcy's law, flow theory, well hydraulics, and more.</p>
+      <span class="count">6 Chapter Sets</span>
+    </a>
+
+    <a href="Summary_Note/index.html" class="section-card">
+      <span class="icon-area">📝</span>
+      <h2>Summary Notes</h2>
+      <p>Handwritten summary notes (68 pages) with digitized transcriptions, key formulae, SVG diagrams, and quick-reference material for exam prep.</p>
+      <span class="count">7 Chapters &middot; 68 Pages</span>
+    </a>
+
+  </div>
+
+  <!-- Quick Links -->
+  <div class="chapter-list">
+    <h3>📘 Theory Chapters</h3>
+    <ul>
+      <li><a href="Theory/chapter1_groundwater.html">Chapter 1 &mdash; Occurrence of Groundwater <span>(Introduction)</span></a></li>
+      <li><a href="Theory/chapter2_groundwater_motion.html">Chapter 2 &mdash; Groundwater Motion <span>(Darcy's Law, Hydraulic Conductivity)</span></a></li>
+      <li><a href="Theory/chapter3_flow_theory.html">Chapter 3 &mdash; Flow Theory <span>(Laplace, Dupuit, Flow Nets)</span></a></li>
+      <li><a href="Theory/chapter4_well_hydraulics_old.html">Chapter 4 &mdash; Well Hydraulics <span>(Thiem, Theis, Steady/Unsteady Flow)</span></a></li>
+      <li><a href="Theory/chapter5_pumping_test.html">Chapter 5 &mdash; Pumping Test <span>(Cooper–Jacob, Recovery, Step Drawdown)</span></a></li>
+      <li><a href="Theory/chapter6_groundwater_exploration.html">Chapter 6 &mdash; Groundwater Exploration <span>(Geophysical Methods)</span></a></li>
+      <li><a href="Theory/chapter7_water_well_design.html">Chapter 7 &mdash; Water Well Design <span>(Components, Screen, Gravel Pack)</span></a></li>
+      <li><a href="Theory/chapter8_pumps.html">Chapter 8 &mdash; Pumps <span>(Types, Selection, Installation)</span></a></li>
+      <li><a href="Theory/chapter9_groundwater_nepal.html">Chapter 9 &mdash; Groundwater in Nepal <span>(Resources, Challenges)</span></a></li>
+      <li><a href="Theory/groundwater_questions_by_chapter.html">Questions by Chapter <span>(Exam Practice)</span></a></li>
+      <li><a href="Theory/numericals_solved.html">Solved Numericals <span>(All Chapters)</span></a></li>
+    </ul>
+  </div>
+
+  <div class="chapter-list">
+    <h3>🔢 Numerical Problem Sets</h3>
+    <ul>
+      <li><a href="Numerical/chapter2.html">Chapter 2 &mdash; Properties &amp; Darcy's Law Numericals</a></li>
+      <li><a href="Numerical/chapter3.html">Chapter 3 &mdash; Flow Theory Numericals</a></li>
+      <li><a href="Numerical/chapter4.html">Chapter 4 &mdash; Well Hydraulics Numericals</a></li>
+      <li><a href="Numerical/chapter5.html">Chapter 5 &mdash; Pumping Test Numericals</a></li>
+      <li><a href="Numerical/chapter7.html">Chapter 7 &mdash; Well Design Numericals</a></li>
+      <li><a href="Numerical/chapter9.html">Chapter 9 &mdash; Groundwater in Nepal Numericals</a></li>
+    </ul>
+  </div>
+
+  <div class="chapter-list">
+    <h3>📝 Summary Notes (Handwritten + Transcriptions)</h3>
+    <ul>
+      <li><a href="Summary_Note/chapter1.html">Chapter 1 &mdash; Occurrence of Groundwater (Theory) <span>Pages 1–9</span></a></li>
+      <li><a href="Summary_Note/chapter2.html">Ch 1 &amp; 2 &mdash; Numericals (Properties, Darcy's Law) <span>Pages 10–20</span></a></li>
+      <li><a href="Summary_Note/chapter3.html">Chapter 3 &mdash; Flow Theory &amp; Numericals <span>Pages 21–32</span></a></li>
+      <li><a href="Summary_Note/chapter4.html">Chapter 4 &mdash; Well Hydraulics (Formulae &amp; Numericals) <span>Pages 33–48</span></a></li>
+      <li><a href="Summary_Note/chapter5.html">Chapter 5 &mdash; Pumping Test &amp; Aquifer Parameters <span>Pages 49–58</span></a></li>
+      <li><a href="Summary_Note/chapter6.html">Ch 6 &amp; 7 &mdash; GW Exploration, Well Design &amp; Numericals <span>Pages 59–66</span></a></li>
+      <li><a href="Summary_Note/chapter7.html">Ch 8 &amp; 9 &mdash; Pumps, GW in Nepal &amp; Exam Paper <span>Pages 67–68</span></a></li>
+    </ul>
+  </div>
 
   <footer class="page-footer">
-    <p>Groundwater Engineering &mdash; Final Year 2026</p>
+    <p><a href="../index.html" style="text-decoration:none;color:var(--accent);">&larr; Back to All Subjects</a></p>
   </footer>
 </div>
 
