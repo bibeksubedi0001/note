@@ -358,7 +358,8 @@
   if (document.querySelector('.dw-btn') || document.querySelector('.dw-cv')) return;
 
   var on = false, drawing = false, erasing = false;
-  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000000','#ffffff','#f0f8ff','#0ea5e9','#ec4899','#14b8a6','#d97706','#dc2626','#059669','#4f46e5','#f43f5e','#84cc16'];
+  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000000','#ffffff','#f0f8ff','#0ea5e9','#ec4899','#14b8a6','#d97706','#dc2626','#059669','#4f46e5','#f43f5e','#84cc16','#c0c0c0','#fffffe','#fff8dc','#b9f2ff','#ffd700'];
+  var GLOW_COLORS = {'#b9f2ff':true,'#ffd700':true};
   var color = COLORS[0], penW = 3;
   var strokes = [];
   var pts = [];
@@ -386,6 +387,10 @@
     '.dw-palette{display:flex;flex-wrap:wrap;gap:4px;width:92px;justify-content:center}'+
     '.dw-dot{width:16px;height:16px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:.2s cubic-bezier(.34,1.56,.64,1)}' +
     '.dw-dot:hover,.dw-dot.on{border-color:var(--accent,#6366f1);transform:scale(1.2);box-shadow:0 2px 8px rgba(0,0,0,.15)}' +
+    '.dw-dot.glow-diamond{animation:glowDiamond 1.6s ease-in-out infinite alternate;box-shadow:0 0 6px 2px rgba(185,242,255,.7)}' +
+    '.dw-dot.glow-golden{animation:glowGolden 1.6s ease-in-out infinite alternate;box-shadow:0 0 6px 2px rgba(255,215,0,.7)}' +
+    '@keyframes glowDiamond{0%{box-shadow:0 0 4px 1px rgba(185,242,255,.5)}100%{box-shadow:0 0 12px 4px rgba(185,242,255,.9)}}' +
+    '@keyframes glowGolden{0%{box-shadow:0 0 4px 1px rgba(255,215,0,.5)}100%{box-shadow:0 0 12px 4px rgba(255,215,0,.9)}}' +
     '.dw-b{background:rgba(0,0,0,.04);border:1px solid rgba(0,0,0,.08);border-radius:8px;padding:5px 10px;cursor:pointer;text-align:center;width:100%;' +
     'font-weight:500;transition:all .15s}' +
     '.dw-b:hover{background:rgba(99,102,241,.08);border-color:rgba(99,102,241,.2);color:#6366f1}' +
@@ -424,10 +429,12 @@
       cx.strokeStyle = sk.c;
       cx.lineWidth = sk.er ? sk.w * 4 : sk.w;
       cx.lineCap = 'round'; cx.lineJoin = 'round';
+      if (!sk.er && GLOW_COLORS[sk.c]) { cx.shadowColor = sk.c; cx.shadowBlur = 10; } else { cx.shadowColor = 'transparent'; cx.shadowBlur = 0; }
       cx.beginPath();
       cx.moveTo(p[0] - sx, p[1] - sy);
       for (var i = 2; i < p.length; i += 2) cx.lineTo(p[i] - sx, p[i + 1] - sy);
       cx.stroke();
+      cx.shadowColor = 'transparent'; cx.shadowBlur = 0;
     }
   }
   window.addEventListener('scroll', paint);
@@ -441,8 +448,9 @@
   pal.className = 'dw-palette';
   COLORS.forEach(function (c) {
     var d = document.createElement('div');
-    d.className = 'dw-dot' + (c === color ? ' on' : '');
+    d.className = 'dw-dot' + (c === color ? ' on' : '') + (c === '#b9f2ff' ? ' glow-diamond' : '') + (c === '#ffd700' ? ' glow-golden' : '');
     d.style.background = c;
+    if (c === '#fffffe') d.style.border = '2px solid #ccc';
     d.onclick = function () {
       color = c; erasing = false; erBtn.classList.remove('on');
       pal.querySelectorAll('.dw-dot').forEach(function (x) { x.classList.remove('on'); });
@@ -508,6 +516,7 @@
     cx.strokeStyle = color;
     cx.lineWidth = erasing ? penW * 4 : penW;
     cx.lineCap = 'round'; cx.lineJoin = 'round';
+    if (!erasing && GLOW_COLORS[color]) { cx.shadowColor = color; cx.shadowBlur = 10; } else { cx.shadowColor = 'transparent'; cx.shadowBlur = 0; }
     if (!raf) raf = requestAnimationFrame(tick);
   });
 
