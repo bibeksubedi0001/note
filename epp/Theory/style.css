@@ -69,8 +69,107 @@
   color: var(--ink);
   border-color: var(--line);
 }
-[data-theme="dark"] svg text {
+/* ── Dark Mode SVG Overrides ── */
+
+/* Text: default (no fill attr or black) → light */
+[data-theme="dark"] svg text:not([fill]) {
   fill: var(--ink);
+}
+/* Colored text → brighter variants */
+[data-theme="dark"] svg text[fill="#4f46e5"] { fill: #a5b4fc; }
+[data-theme="dark"] svg text[fill="#16a34a"] { fill: #4ade80; }
+[data-theme="dark"] svg text[fill="#dc2626"] { fill: #fca5a5; }
+[data-theme="dark"] svg text[fill="#d97706"] { fill: #fcd34d; }
+[data-theme="dark"] svg text[fill="#a855f7"] { fill: #d8b4fe; }
+[data-theme="dark"] svg text[fill="#6b7280"] { fill: #d1d5db; }
+[data-theme="dark"] svg text[fill="#666"]    { fill: #9ca3af; }
+[data-theme="dark"] svg text[fill="#888"]    { fill: #d1d5db; }
+/* White text stays white */
+
+/* Light background fills → dark translucent */
+[data-theme="dark"] svg rect[fill="#eef2ff"],
+[data-theme="dark"] svg circle[fill="#eef2ff"] {
+  fill: rgba(129,140,248,.14);
+}
+[data-theme="dark"] svg rect[fill="#f0fdf4"],
+[data-theme="dark"] svg circle[fill="#f0fdf4"] {
+  fill: rgba(74,222,128,.12);
+}
+[data-theme="dark"] svg rect[fill="#fef2f2"],
+[data-theme="dark"] svg circle[fill="#fef2f2"] {
+  fill: rgba(248,113,113,.10);
+}
+[data-theme="dark"] svg rect[fill="#fffbeb"],
+[data-theme="dark"] svg circle[fill="#fffbeb"] {
+  fill: rgba(251,191,36,.10);
+}
+[data-theme="dark"] svg rect[fill="#fdf4ff"],
+[data-theme="dark"] svg circle[fill="#fdf4ff"] {
+  fill: rgba(192,132,252,.10);
+}
+[data-theme="dark"] svg rect[fill="#f8f9fa"],
+[data-theme="dark"] svg circle[fill="#f8f9fa"] {
+  fill: rgba(156,163,175,.10);
+}
+
+/* Strokes → brighter in dark mode */
+[data-theme="dark"] svg rect[stroke="#4f46e5"],
+[data-theme="dark"] svg ellipse[stroke="#4f46e5"],
+[data-theme="dark"] svg circle[stroke="#4f46e5"],
+[data-theme="dark"] svg line[stroke="#4f46e5"],
+[data-theme="dark"] svg path[stroke="#4f46e5"] {
+  stroke: #818cf8;
+}
+[data-theme="dark"] svg rect[stroke="#16a34a"],
+[data-theme="dark"] svg circle[stroke="#16a34a"],
+[data-theme="dark"] svg line[stroke="#16a34a"] {
+  stroke: #4ade80;
+}
+[data-theme="dark"] svg rect[stroke="#dc2626"],
+[data-theme="dark"] svg circle[stroke="#dc2626"] {
+  stroke: #f87171;
+}
+[data-theme="dark"] svg rect[stroke="#d97706"],
+[data-theme="dark"] svg path[stroke="#d97706"] {
+  stroke: #fbbf24;
+}
+[data-theme="dark"] svg rect[stroke="#a855f7"] {
+  stroke: #c084fc;
+}
+[data-theme="dark"] svg rect[stroke="#6b7280"] {
+  stroke: #9ca3af;
+}
+
+/* Solid accent fills → brighter */
+[data-theme="dark"] svg rect[fill="#4f46e5"],
+[data-theme="dark"] svg ellipse[fill="#4f46e5"],
+[data-theme="dark"] svg circle[fill="#4f46e5"] {
+  fill: #6366f1;
+}
+[data-theme="dark"] svg rect[fill="#16a34a"],
+[data-theme="dark"] svg circle[fill="#16a34a"] {
+  fill: #22c55e;
+}
+[data-theme="dark"] svg rect[fill="#dc2626"],
+[data-theme="dark"] svg circle[fill="#dc2626"] {
+  fill: #ef4444;
+}
+[data-theme="dark"] svg rect[fill="#d97706"] {
+  fill: #f59e0b;
+}
+[data-theme="dark"] svg rect[fill="#9ca3af"] {
+  fill: #6b7280;
+}
+
+/* Marker / arrow fills */
+[data-theme="dark"] svg polygon[fill="#4f46e5"] { fill: #818cf8; }
+[data-theme="dark"] svg polygon[fill="#16a34a"] { fill: #4ade80; }
+
+/* Grid & axis lines */
+[data-theme="dark"] svg line[stroke="#e5e7eb"] { stroke: #374151; }
+[data-theme="dark"] svg line[stroke="#666"]    { stroke: #4b5563; }
+[data-theme="dark"] svg circle[stroke="#4f46e5"][stroke-dasharray] {
+  stroke: #818cf8;
 }
 
 /* ── Reset ── */
@@ -774,11 +873,13 @@ em, i { font-style: italic; }
   display: block;
   margin: 0 auto;
 }
+/* SVG text font sizes – compact */
 .svg-wrap svg text, .figure-container svg text {
-  font-size: 14px;
+  font-size: 9pt;
 }
 .svg-wrap svg text[font-weight="bold"], .figure-container svg text[font-weight="bold"] {
-  font-size: 18px;
+  font-size: 10pt;
+  font-weight: bold;
 }
 [data-theme="dark"] .svg-wrap {
   background: var(--soft);
