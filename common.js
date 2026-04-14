@@ -25,18 +25,35 @@
       '@keyframes cm-grad-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}' +
       '[data-theme="dark"] .cm-scroll-progress{background:linear-gradient(90deg,#818cf8,#a78bfa,#c084fc,#e879f9);background-size:300% 100%;' +
       'animation:cm-grad-shift 3s ease infinite}' +
-      '@media print{.cm-scroll-progress{display:none!important}}';
+      /* scroll percentage badge */
+      '.cm-scroll-pct{position:fixed;top:10px;left:16px;z-index:99999;' +
+      'font:600 12px/1 system-ui,sans-serif;padding:4px 10px;border-radius:12px;' +
+      'background:rgba(30,30,30,.75);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);' +
+      'opacity:0;transition:opacity .3s ease;pointer-events:none;letter-spacing:.3px}' +
+      '.cm-scroll-pct.visible{opacity:1}' +
+      '[data-theme="dark"] .cm-scroll-pct{background:rgba(255,255,255,.15);color:#e5e7eb}' +
+      '@media print{.cm-scroll-progress,.cm-scroll-pct{display:none!important}}';
     document.head.appendChild(progCSS);
 
     var progBar = document.createElement('div');
     progBar.className = 'cm-scroll-progress';
     document.body.appendChild(progBar);
 
+    var pctBadge = document.createElement('div');
+    pctBadge.className = 'cm-scroll-pct';
+    pctBadge.textContent = '0%';
+    document.body.appendChild(pctBadge);
+
+    var hideTimer = null;
     function updateProgress() {
       var scrollTop = window.scrollY || document.documentElement.scrollTop;
       var docHeight = document.documentElement.scrollHeight - window.innerHeight;
       var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       progBar.style.width = pct + '%';
+      pctBadge.textContent = Math.round(pct) + '%';
+      pctBadge.classList.add('visible');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(function () { pctBadge.classList.remove('visible'); }, 1500);
     }
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
