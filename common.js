@@ -102,8 +102,11 @@
       '[data-theme="dark"] body details,[data-theme="dark"] body a,' +
       '[data-theme="dark"] body strong,[data-theme="dark"] body b{' +
       'color:#d8d5cd!important;background-color:transparent!important}' +
-      '[data-theme="dark"] h1,[data-theme="dark"] h2,[data-theme="dark"] h3,' +
-      '[data-theme="dark"] h4,[data-theme="dark"] h5,[data-theme="dark"] h6{' +
+      '[data-theme="dark"] h1,[data-theme="dark"] h4,[data-theme="dark"] h5,[data-theme="dark"] h6{' +
+      'color:#e8e5dd!important;background-color:transparent!important}' +
+      '[data-theme="dark"] main h2,[data-theme="dark"] main h3{' +
+      'color:#e8805a!important;font-style:italic!important;background-color:transparent!important}' +
+      '[data-theme="dark"] h2:not(main h2),[data-theme="dark"] h3:not(main h3){' +
       'color:#e8e5dd!important;background-color:transparent!important}' +
       '[data-theme="dark"] table{background:#1a1a22!important;border-color:#2a2a35!important}' +
       '[data-theme="dark"] th{background:#1f1f2a!important;color:#e0ddd5!important}' +
