@@ -6,6 +6,77 @@
   'use strict';
 
   /* ═══════════════════════════════════════════════
+     -1. OFFLINE SUPPORT (Service Worker + Manifest)
+         Registers /sw.js so every visited page is cached
+         and remains available offline on future loads.
+     ═══════════════════════════════════════════════ */
+  (function registerSW() {
+    if (!('serviceWorker' in navigator)) return;
+    // Only run on http(s) origins — skip file:// previews.
+    if (location.protocol !== 'http:' && location.protocol !== 'https:') return;
+
+    // Inject <link rel="manifest"> once, using a site-root absolute URL.
+    try {
+      if (!document.querySelector('link[rel="manifest"]')) {
+        var mfst = document.createElement('link');
+        mfst.rel = 'manifest';
+        mfst.href = '/manifest.webmanifest';
+        document.head.appendChild(mfst);
+      }
+      if (!document.querySelector('meta[name="theme-color"]')) {
+        var tc = document.createElement('meta');
+        tc.name = 'theme-color';
+        tc.content = '#6366f1';
+        document.head.appendChild(tc);
+      }
+    } catch (e) { /* ignore */ }
+
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(function (reg) {
+          // Check for updates in the background.
+          if (reg.update) { try { reg.update(); } catch (e) {} }
+        })
+        .catch(function () { /* offline or unsupported — no-op */ });
+    });
+
+    // Tiny "offline" pill that appears when the network drops.
+    var pillCSS = document.createElement('style');
+    pillCSS.textContent =
+      '.cm-offline-pill{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(20px);' +
+      'z-index:99999;font:600 12px/1 system-ui,sans-serif;padding:6px 12px;border-radius:999px;' +
+      'background:#111827;color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);opacity:0;' +
+      'transition:opacity .25s ease,transform .25s ease;pointer-events:none}' +
+      '.cm-offline-pill.visible{opacity:1;transform:translateX(-50%) translateY(0)}' +
+      '[data-theme="dark"] .cm-offline-pill{background:#e5e7eb;color:#111827}' +
+      '@media print{.cm-offline-pill{display:none!important}}';
+    document.head.appendChild(pillCSS);
+
+    function ensurePill() {
+      var p = document.querySelector('.cm-offline-pill');
+      if (!p) {
+        p = document.createElement('div');
+        p.className = 'cm-offline-pill';
+        p.textContent = 'Offline — serving saved copy';
+        (document.body || document.documentElement).appendChild(p);
+      }
+      return p;
+    }
+    function showOffline() { ensurePill().classList.add('visible'); }
+    function hideOffline() {
+      var p = document.querySelector('.cm-offline-pill');
+      if (p) p.classList.remove('visible');
+    }
+    window.addEventListener('offline', showOffline);
+    window.addEventListener('online', hideOffline);
+    if (!navigator.onLine) {
+      // Defer until DOM is ready so body exists.
+      if (document.body) showOffline();
+      else document.addEventListener('DOMContentLoaded', showOffline);
+    }
+  })();
+
+  /* ═══════════════════════════════════════════════
      0. MATHJAX INLINE FIX + SCROLL PROGRESS BAR
      ═══════════════════════════════════════════════ */
   /* Fix MathJax inline math rendering as block */
