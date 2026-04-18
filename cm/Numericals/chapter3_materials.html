@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3 – Material Planning (Solved Numericals)</title>
+  <link rel="stylesheet" href="../../TES/style.css">
+  <style>
+    .sol-box{margin:1.2rem 0 2rem;padding:1rem 1.2rem;background:#f0fdf4;border:1px solid #22c55e44;border-radius:8px}
+    [data-theme="dark"] .sol-box{background:#14261a;border-color:#22c55e33}
+    .sol-box h4{color:#166534;margin:0 0 .5rem;font-size:.95rem}
+    [data-theme="dark"] .sol-box h4{color:#86efac}
+    .step{margin:.8rem 0;padding:.6rem .8rem;background:#fff;border-left:3px solid #3b82f6;border-radius:0 6px 6px 0}
+    [data-theme="dark"] .step{background:#1e293b;border-color:#60a5fa}
+    .step-title{font-weight:700;color:#1e40af;font-size:.88rem;margin-bottom:.3rem}
+    [data-theme="dark"] .step-title{color:#93c5fd}
+    .formula{background:#fef3c7;padding:.4rem .8rem;border-radius:6px;font-family:monospace;font-size:.85rem;margin:.3rem 0;display:inline-block}
+    [data-theme="dark"] .formula{background:#422d08;color:#fde68a}
+    .result{background:#dcfce7;padding:.5rem .8rem;border-radius:6px;font-weight:700;color:#166534;margin:.5rem 0}
+    [data-theme="dark"] .result{background:#14532d;color:#86efac}
+    .crash-table{font-size:.82rem;width:100%;border-collapse:collapse;margin:.5rem 0}
+    .crash-table th,.crash-table td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+    .crash-table th{background:var(--accent-light);font-weight:700;font-size:.8rem}
+    .crash-table .highlight{background:#fef08a}
+    [data-theme="dark"] .crash-table .highlight{background:#854d0e}
+    .year-tag{display:inline-block;background:#8b2500;color:#fff;font-size:.7rem;padding:1px 7px;border-radius:10px;margin-left:4px;vertical-align:middle;font-weight:600}
+    .q-box{margin:2rem 0;padding:1rem 1.2rem;background:#eff6ff;border:1px solid #3b82f644;border-radius:10px}
+    [data-theme="dark"] .q-box{background:#1e293b;border-color:#3b82f633}
+    .q-box .q-title{font-weight:700;color:#1e40af;font-size:.95rem;margin-bottom:.5rem}
+    [data-theme="dark"] .q-box .q-title{color:#93c5fd}
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to CM Numericals</a>
+    <div class="eyebrow">Chapter 3 &mdash; Solved Numericals</div>
+    <h1>Material Planning &mdash; ABC &amp; EOQ</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">5 Solved Problems</span>
+      <span class="meta-badge exam">2070&ndash;2079</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ TECHNIQUE: EOQ ═══ -->
+    <h2 id="technique-eoq">EOQ Technique Summary</h2>
+    <div class="sol-box">
+      <h4>Economic Order Quantity (EOQ) Formulas</h4>
+      <div class="step">
+        <div class="step-title">EOQ Formula</div>
+        <p><span class="formula">EOQ = &radic;(2 &times; D &times; C<sub>o</sub>) / (C<sub>i</sub> &times; P)</span></p>
+        <p>Where: D = Annual demand, C<sub>o</sub> = Ordering cost per order, C<sub>i</sub> = Carrying cost rate (fraction), P = Unit price</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Related Formulas</div>
+        <p><span class="formula">Number of Orders = D / EOQ</span></p>
+        <p><span class="formula">Cycle Time = EOQ / d</span> (d = daily consumption = D / working days)</p>
+        <p><span class="formula">Reorder Level (ROL) = (Lead Time &times; d) + Safety Stock</span></p>
+        <p><span class="formula">Max Stock = EOQ + Safety Stock</span></p>
+        <p><span class="formula">Min Stock = Safety Stock</span></p>
+        <p><span class="formula">Average Stock = EOQ/2 + Safety Stock</span></p>
+        <p><span class="formula">GiT (Goods in Transit) = Lead Time &times; d</span></p>
+        <p><span class="formula">Total Inventory Cost = (D/EOQ)&times;C<sub>o</sub> + (EOQ/2)&times;C<sub>i</sub>&times;P</span></p>
+      </div>
+    </div>
+
+    <!-- ═══ TECHNIQUE: ABC ═══ -->
+    <h2 id="technique-abc">ABC Classification Technique</h2>
+    <div class="sol-box">
+      <h4>ABC Analysis Procedure</h4>
+      <div class="step">
+        <div class="step-title">Steps</div>
+        <ol>
+          <li>Calculate <strong>Annual Usage Value</strong> = Quantity &times; Rate per unit for each material</li>
+          <li>Rank materials in <strong>descending order</strong> of usage value</li>
+          <li>Calculate <strong>cumulative percentage</strong> of total value</li>
+          <li>Classify:
+            <ul>
+              <li><strong>A:</strong> Top 70&ndash;80% of value (usually ~10&ndash;20% of items) &mdash; High control</li>
+              <li><strong>B:</strong> Next 15&ndash;20% of value (~20&ndash;30% of items) &mdash; Medium control</li>
+              <li><strong>C:</strong> Remaining 5&ndash;10% of value (~50&ndash;70% of items) &mdash; Low control</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 1: ABC Classification 2077 Chaitra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q1">Q1. ABC Classification <span class="year-tag">2077 Chaitra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Classify the materials in A, B and C classes. What are the significances? [4+2 marks]</div>
+      <table class="crash-table">
+        <tr><th>Materials</th><th>Quantity</th><th>Unit</th><th>Rate per unit (Rs.)</th></tr>
+        <tr><td>Steel re-bar</td><td>15</td><td>ton</td><td>1,10,000</td></tr>
+        <tr><td>Cement</td><td>600</td><td>bag</td><td>750</td></tr>
+        <tr><td>Tiles</td><td>1,500</td><td>sqft</td><td>350</td></tr>
+        <tr><td>Brick</td><td>9,000</td><td>no</td><td>12</td></tr>
+        <tr><td>Marbles</td><td>450</td><td>sqft</td><td>250</td></tr>
+        <tr><td>Aggregate</td><td>50</td><td>cum</td><td>1,400</td></tr>
+        <tr><td>Sand</td><td>25</td><td>cum</td><td>1,200</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Calculate Annual Usage Value</div>
+        <table class="crash-table">
+          <tr><th>Material</th><th>Qty</th><th>Rate</th><th>Usage Value (Rs.)</th></tr>
+          <tr><td>Steel re-bar</td><td>15</td><td>1,10,000</td><td><strong>16,50,000</strong></td></tr>
+          <tr><td>Cement</td><td>600</td><td>750</td><td><strong>4,50,000</strong></td></tr>
+          <tr><td>Tiles</td><td>1,500</td><td>350</td><td><strong>5,25,000</strong></td></tr>
+          <tr><td>Brick</td><td>9,000</td><td>12</td><td><strong>1,08,000</strong></td></tr>
+          <tr><td>Marbles</td><td>450</td><td>250</td><td><strong>1,12,500</strong></td></tr>
+          <tr><td>Aggregate</td><td>50</td><td>1,400</td><td><strong>70,000</strong></td></tr>
+          <tr><td>Sand</td><td>25</td><td>1,200</td><td><strong>30,000</strong></td></tr>
+        </table>
+        <p><strong>Total Usage Value = Rs.29,45,500</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Rank &amp; Classify</div>
+        <table class="crash-table">
+          <tr><th>Rank</th><th>Material</th><th>Usage Value</th><th>% of Total</th><th>Cumulative %</th><th>Class</th></tr>
+          <tr class="highlight"><td>1</td><td>Steel re-bar</td><td>16,50,000</td><td>56.02%</td><td>56.02%</td><td><strong>A</strong></td></tr>
+          <tr class="highlight"><td>2</td><td>Tiles</td><td>5,25,000</td><td>17.83%</td><td>73.85%</td><td><strong>A</strong></td></tr>
+          <tr><td>3</td><td>Cement</td><td>4,50,000</td><td>15.28%</td><td>89.13%</td><td><strong>B</strong></td></tr>
+          <tr><td>4</td><td>Marbles</td><td>1,12,500</td><td>3.82%</td><td>92.95%</td><td><strong>B</strong></td></tr>
+          <tr><td>5</td><td>Brick</td><td>1,08,000</td><td>3.67%</td><td>96.61%</td><td><strong>C</strong></td></tr>
+          <tr><td>6</td><td>Aggregate</td><td>70,000</td><td>2.38%</td><td>98.99%</td><td><strong>C</strong></td></tr>
+          <tr><td>7</td><td>Sand</td><td>30,000</td><td>1.02%</td><td>100%</td><td><strong>C</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="result">
+        <strong>Classification:</strong><br>
+        &#9733; Class A (73.85% value, 2 items): Steel re-bar, Tiles<br>
+        &#9733; Class B (19.10% value, 2 items): Cement, Marbles<br>
+        &#9733; Class C (7.06% value, 3 items): Brick, Aggregate, Sand
+      </div>
+
+      <div class="step">
+        <div class="step-title">Significance of ABC Classification</div>
+        <ul>
+          <li><strong>Class A:</strong> Tight control, accurate records, frequent review, careful purchasing</li>
+          <li><strong>Class B:</strong> Moderate control, periodic review</li>
+          <li><strong>Class C:</strong> Simple control, bulk ordering, less attention needed</li>
+          <li>Helps focus resources on high-value items for maximum cost savings</li>
+          <li>Reduces inventory carrying costs and prevents stockouts of critical items</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 2: EOQ 2079 Jestha -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q2">Q2. EOQ &amp; Inventory <span class="year-tag">2079 Jestha</span></h2>
+    <div class="q-box">
+      <div class="q-title">Annual cement = 6000 bags, lead time = 5 days, carrying cost = 15%, working days = 200/year, ordering cost = Rs.25,000/order, safety stock = 190 bags. Find EOQ, GiT, ROL. [6 marks]</div>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Given</div>
+        <p>D = 6,000 bags/year, LT = 5 days, C<sub>i</sub> = 15% = 0.15, Working days = 200, C<sub>o</sub> = Rs.25,000</p>
+        <p>Safety Stock (SS) = 190 bags</p>
+        <p><em>Note: Unit price P is not given directly. For cement, we can assume a reasonable rate. However, EOQ formula without P uses: EOQ = &radic;(2DC<sub>o</sub>/C<sub>h</sub>) where C<sub>h</sub> = carrying cost per unit per year = C<sub>i</sub> &times; P.</em></p>
+        <p><em>Since P isn't given, we use the carrying cost per unit per year. Assuming cement rate &asymp; Rs.750/bag (common rate):</em></p>
+        <p>C<sub>h</sub> = 0.15 &times; 750 = Rs.112.5/bag/year</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">EOQ Calculation</div>
+        <p><span class="formula">EOQ = &radic;(2 &times; 6000 &times; 25000 / 112.5)</span></p>
+        <p><span class="formula">EOQ = &radic;(300,000,000 / 112.5) = &radic;2,666,667</span></p>
+        <p><span class="formula">EOQ &asymp; 1,633 bags</span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Daily Consumption</div>
+        <p><span class="formula">d = D / Working days = 6000 / 200 = 30 bags/day</span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Goods in Transit (GiT)</div>
+        <p><span class="formula">GiT = Lead Time &times; d = 5 &times; 30 = 150 bags</span></p>
+        <p><strong>Yes, there are goods in transit = 150 bags</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Reorder Level (ROL)</div>
+        <p><span class="formula">ROL = (LT &times; d) + SS = (5 &times; 30) + 190 = 150 + 190 = 340 bags</span></p>
+      </div>
+
+      <div class="result">
+        &#9733; EOQ &asymp; 1,633 bags<br>
+        &#9733; GiT = 150 bags (Yes, goods in transit exist)<br>
+        &#9733; Re-order Level = 340 bags
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 3: EOQ 2078 Kartik -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q3">Q3. EOQ &amp; Stock Levels <span class="year-tag">2078 Kartik</span></h2>
+    <div class="q-box">
+      <div class="q-title">Calculate EOQ, Maximum Stock level, minimum, average stock level, ROP/ROL, and total inventory cost. Annual cement = 20,000 bags, C<sub>o</sub> = Rs.10,000, C<sub>i</sub> = 5%, P = Rs.900/bag, safety stock = 10 days, lead time = 5 days. [6 marks]</div>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Given</div>
+        <p>D = 20,000 bags/year, C<sub>o</sub> = Rs.10,000, C<sub>i</sub> = 5% = 0.05, P = Rs.900/bag, LT = 5 days</p>
+        <p>Assuming 365 working days/year: d = 20,000/365 = 54.79 bags/day</p>
+        <p>Safety Stock = 10 days &times; 54.79 = <strong>548 bags</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">EOQ</div>
+        <p><span class="formula">C<sub>h</sub> = C<sub>i</sub> &times; P = 0.05 &times; 900 = Rs.45/bag/year</span></p>
+        <p><span class="formula">EOQ = &radic;(2 &times; 20,000 &times; 10,000 / 45)</span></p>
+        <p><span class="formula">EOQ = &radic;(400,000,000 / 45) = &radic;8,888,889</span></p>
+        <p><span class="formula">EOQ &asymp; 2,981 bags</span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Stock Levels</div>
+        <p><span class="formula">Maximum Stock Level = EOQ + SS = 2,981 + 548 = <strong>3,529 bags</strong></span></p>
+        <p><span class="formula">Minimum Stock Level = SS = <strong>548 bags</strong></span></p>
+        <p><span class="formula">Average Stock Level = EOQ/2 + SS = 1,490.5 + 548 = <strong>2,039 bags</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Reorder Point (ROP/ROL)</div>
+        <p><span class="formula">ROL = (LT &times; d) + SS = (5 &times; 54.79) + 548 = 274 + 548 = <strong>822 bags</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Total Inventory Cost</div>
+        <p><span class="formula">Ordering Cost = (D/EOQ) &times; C<sub>o</sub> = (20,000/2,981) &times; 10,000 = 6.71 &times; 10,000 = Rs.67,100</span></p>
+        <p><span class="formula">Carrying Cost = (EOQ/2) &times; C<sub>h</sub> = (2,981/2) &times; 45 = 1,490.5 &times; 45 = Rs.67,073</span></p>
+        <p><span class="formula">Total Inventory Cost = 67,100 + 67,073 = <strong>Rs.1,34,173</strong></span></p>
+        <p><em>(Note: At EOQ, ordering cost &asymp; carrying cost, which verifies our EOQ calculation.)</em></p>
+      </div>
+
+      <div class="result">
+        &#9733; EOQ &asymp; 2,981 bags<br>
+        &#9733; Max Stock = 3,529 bags | Min Stock = 548 bags | Avg Stock = 2,039 bags<br>
+        &#9733; ROL = 822 bags<br>
+        &#9733; Total Inventory Cost = Rs.1,34,173
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 4: EOQ 2071 Bhadra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q4">Q4. EOQ &amp; Reorder Point <span class="year-tag">2071 Bhadra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Calculate EOQ and reorder point. Rebar = 1000 tonnes, C<sub>o</sub> = Rs.10,000, C<sub>i</sub> = 15%, P = Rs.90,000/tonne, SS = 50 tonnes, LT = 4 days, consumption = 50 tonnes/day. [Part of 6 marks]</div>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Given</div>
+        <p>D = 1,000 tonnes, C<sub>o</sub> = Rs.10,000, C<sub>i</sub> = 15% = 0.15, P = Rs.90,000/tonne</p>
+        <p>SS = 50 tonnes, LT = 4 days, d = 50 tonnes/day</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">EOQ</div>
+        <p><span class="formula">C<sub>h</sub> = C<sub>i</sub> &times; P = 0.15 &times; 90,000 = Rs.13,500/tonne/year</span></p>
+        <p><span class="formula">EOQ = &radic;(2 &times; 1,000 &times; 10,000 / 13,500)</span></p>
+        <p><span class="formula">EOQ = &radic;(20,000,000 / 13,500) = &radic;1,481.48</span></p>
+        <p><span class="formula">EOQ &asymp; 38.49 &asymp; <strong>39 tonnes</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Reorder Point</div>
+        <p><span class="formula">ROL = (LT &times; d) + SS = (4 &times; 50) + 50 = 200 + 50 = <strong>250 tonnes</strong></span></p>
+      </div>
+
+      <div class="result">
+        &#9733; EOQ &asymp; 39 tonnes<br>
+        &#9733; Reorder Point = 250 tonnes
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 5: EOQ 2070 Magh -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q5">Q5. Simple EOQ <span class="year-tag">2070 Magh</span></h2>
+    <div class="q-box">
+      <div class="q-title">Calculate EOQ of Cement. Total Quantity = 12,000 bags, C<sub>i</sub> = 15%, C<sub>o</sub> = Rs.10,000, P = Rs.750/bag. [3 marks]</div>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Given</div>
+        <p>D = 12,000 bags, C<sub>i</sub> = 15% = 0.15, C<sub>o</sub> = Rs.10,000, P = Rs.750/bag</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">EOQ Calculation</div>
+        <p><span class="formula">C<sub>h</sub> = C<sub>i</sub> &times; P = 0.15 &times; 750 = Rs.112.5/bag/year</span></p>
+        <p><span class="formula">EOQ = &radic;(2 &times; D &times; C<sub>o</sub> / C<sub>h</sub>)</span></p>
+        <p><span class="formula">EOQ = &radic;(2 &times; 12,000 &times; 10,000 / 112.5)</span></p>
+        <p><span class="formula">EOQ = &radic;(240,000,000 / 112.5) = &radic;2,133,333</span></p>
+        <p><span class="formula">EOQ &asymp; <strong>1,461 bags</strong></span></p>
+      </div>
+
+      <div class="result">
+        &#9733; EOQ &asymp; 1,461 bags
+      </div>
+    </div>
+
+  </main>
+  <footer style="text-align:center;padding:2rem 0;color:var(--muted);font-size:.85rem">
+    Construction Management &mdash; Material Planning Solved Numericals &mdash; Final Year 2026
+  </footer>
+</div>
+
+<script>
+var bar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+});
+(function(){
+  var html = document.documentElement, btn = document.getElementById('themeToggle');
+  var t = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', t);
+  btn.textContent = t === 'dark' ? '\u2600' : '\u263E';
+  btn.onclick = function(){
+    t = t === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    btn.textContent = t === 'dark' ? '\u2600' : '\u263E';
+  };
+})();
+(function(){
+  var b = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function(){ b.classList.toggle('visible', window.scrollY > 400); });
+  b.onclick = function(){ window.scrollTo({top:0,behavior:'smooth'}); };
+})();
+</script>
+</body>
+</html>

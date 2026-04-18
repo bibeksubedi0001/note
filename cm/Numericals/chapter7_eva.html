@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7 – Earned Value Analysis (Solved Numericals)</title>
+  <link rel="stylesheet" href="../../TES/style.css">
+  <style>
+    .sol-box{margin:1.2rem 0 2rem;padding:1rem 1.2rem;background:#f0fdf4;border:1px solid #22c55e44;border-radius:8px}
+    [data-theme="dark"] .sol-box{background:#14261a;border-color:#22c55e33}
+    .sol-box h4{color:#166534;margin:0 0 .5rem;font-size:.95rem}
+    [data-theme="dark"] .sol-box h4{color:#86efac}
+    .step{margin:.8rem 0;padding:.6rem .8rem;background:#fff;border-left:3px solid #3b82f6;border-radius:0 6px 6px 0}
+    [data-theme="dark"] .step{background:#1e293b;border-color:#60a5fa}
+    .step-title{font-weight:700;color:#1e40af;font-size:.88rem;margin-bottom:.3rem}
+    [data-theme="dark"] .step-title{color:#93c5fd}
+    .formula{background:#fef3c7;padding:.4rem .8rem;border-radius:6px;font-family:monospace;font-size:.85rem;margin:.3rem 0;display:inline-block}
+    [data-theme="dark"] .formula{background:#422d08;color:#fde68a}
+    .result{background:#dcfce7;padding:.5rem .8rem;border-radius:6px;font-weight:700;color:#166534;margin:.5rem 0}
+    [data-theme="dark"] .result{background:#14532d;color:#86efac}
+    .crash-table{font-size:.82rem;width:100%;border-collapse:collapse;margin:.5rem 0}
+    .crash-table th,.crash-table td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+    .crash-table th{background:var(--accent-light);font-weight:700;font-size:.8rem}
+    .crash-table .highlight{background:#fef08a}
+    [data-theme="dark"] .crash-table .highlight{background:#854d0e}
+    .year-tag{display:inline-block;background:#8b2500;color:#fff;font-size:.7rem;padding:1px 7px;border-radius:10px;margin-left:4px;vertical-align:middle;font-weight:600}
+    .q-box{margin:2rem 0;padding:1rem 1.2rem;background:#eff6ff;border:1px solid #3b82f644;border-radius:10px}
+    [data-theme="dark"] .q-box{background:#1e293b;border-color:#3b82f633}
+    .q-box .q-title{font-weight:700;color:#1e40af;font-size:.95rem;margin-bottom:.5rem}
+    [data-theme="dark"] .q-box .q-title{color:#93c5fd}
+    .status-over{color:#dc2626;font-weight:700}
+    .status-under{color:#16a34a;font-weight:700}
+    [data-theme="dark"] .status-over{color:#f87171}
+    [data-theme="dark"] .status-under{color:#4ade80}
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to CM Numericals</a>
+    <div class="eyebrow">Chapter 7 &mdash; Solved Numericals</div>
+    <h1>Earned Value Analysis (EVA)</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">4 Solved Problems</span>
+      <span class="meta-badge exam">2070&ndash;2078</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ TECHNIQUE ═══ -->
+    <h2 id="technique">EVA Technique Summary</h2>
+    <div class="sol-box">
+      <h4>Key EVA Metrics &amp; Formulas</h4>
+      <div class="step">
+        <div class="step-title">Three Fundamental Values</div>
+        <table class="crash-table">
+          <tr><th>Metric</th><th>Full Name</th><th>Meaning</th></tr>
+          <tr><td>BCWS (PV)</td><td>Budgeted Cost of Work Scheduled (Planned Value)</td><td>Budget for work <em>planned</em> to be done</td></tr>
+          <tr><td>BCWP (EV)</td><td>Budgeted Cost of Work Performed (Earned Value)</td><td>Budget for work <em>actually done</em></td></tr>
+          <tr><td>ACWP (AC)</td><td>Actual Cost of Work Performed (Actual Cost)</td><td>Money <em>actually spent</em></td></tr>
+        </table>
+      </div>
+      <div class="step">
+        <div class="step-title">Variance Analysis</div>
+        <p><span class="formula">Cost Variance (CV) = EV &minus; AC</span> &mdash; Positive = Under budget</p>
+        <p><span class="formula">Schedule Variance (SV) = EV &minus; PV</span> &mdash; Positive = Ahead of schedule</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Performance Indices</div>
+        <p><span class="formula">CPI = EV / AC</span> &mdash; &gt;1 = Under budget, &lt;1 = Over budget</p>
+        <p><span class="formula">SPI = EV / PV</span> &mdash; &gt;1 = Ahead, &lt;1 = Behind schedule</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Forecasting</div>
+        <p><span class="formula">EAC = BAC / CPI</span> &mdash; Estimate at Completion</p>
+        <p><span class="formula">ETC = EAC &minus; AC</span> &mdash; Estimate to Complete</p>
+        <p><span class="formula">TCPI = (BAC &minus; EV) / (BAC &minus; AC)</span> &mdash; To-Complete Performance Index</p>
+        <p>BAC = Budget at Completion (total project budget)</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 1: 2078 Kartik -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q1">Q1. EVA with Bar Chart <span class="year-tag">2078 Kartik</span></h2>
+    <div class="q-box">
+      <div class="q-title">Six activities with budget costs and a bar chart schedule. At end of day 5, evaluate project status using EVA. [6 marks]</div>
+      <p><strong>Budget &amp; Schedule:</strong></p>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Budget (Rs.)</th><th>Duration (days)</th><th>Scheduled Period</th></tr>
+        <tr><td>A</td><td>5,000</td><td>3</td><td>Day 1&ndash;3</td></tr>
+        <tr><td>B</td><td>10,000</td><td>5</td><td>Day 1&ndash;5</td></tr>
+        <tr><td>C</td><td>15,000</td><td>5</td><td>Day 3&ndash;7</td></tr>
+        <tr><td>D</td><td>7,000</td><td>5</td><td>Day 4&ndash;8</td></tr>
+        <tr><td>E</td><td>6,000</td><td>5</td><td>Day 5&ndash;9</td></tr>
+        <tr><td>F</td><td>2,000</td><td>3</td><td>Day 8&ndash;10</td></tr>
+      </table>
+      <p><strong>Status at end of Day 5:</strong></p>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>% Complete</th><th>Actual Expenditure (Rs.)</th></tr>
+        <tr><td>A</td><td>100%</td><td>5,000</td></tr>
+        <tr><td>B</td><td>80%</td><td>9,000</td></tr>
+        <tr><td>C</td><td>60%</td><td>8,000</td></tr>
+        <tr><td>D</td><td>0%</td><td>0</td></tr>
+        <tr><td>E</td><td>30%</td><td>3,500</td></tr>
+        <tr><td>F</td><td>0%</td><td>0</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Calculate BCWS (Planned Value) at Day 5</div>
+        <p>What % of each activity was <em>scheduled</em> to be done by Day 5?</p>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Budget</th><th>Scheduled % by Day 5</th><th>BCWS</th></tr>
+          <tr><td>A</td><td>5,000</td><td>100% (Day 1&ndash;3, all done)</td><td>5,000</td></tr>
+          <tr><td>B</td><td>10,000</td><td>100% (Day 1&ndash;5, all done)</td><td>10,000</td></tr>
+          <tr><td>C</td><td>15,000</td><td>60% (3 of 5 days: Day 3,4,5)</td><td>9,000</td></tr>
+          <tr><td>D</td><td>7,000</td><td>40% (2 of 5 days: Day 4,5)</td><td>2,800</td></tr>
+          <tr><td>E</td><td>6,000</td><td>20% (1 of 5 days: Day 5)</td><td>1,200</td></tr>
+          <tr><td>F</td><td>2,000</td><td>0% (starts Day 8)</td><td>0</td></tr>
+          <tr class="highlight"><td colspan="3"><strong>Total BCWS (PV)</strong></td><td><strong>28,000</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Calculate BCWP (Earned Value) at Day 5</div>
+        <p>Budget &times; actual % completed:</p>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Budget</th><th>% Complete</th><th>BCWP</th></tr>
+          <tr><td>A</td><td>5,000</td><td>100%</td><td>5,000</td></tr>
+          <tr><td>B</td><td>10,000</td><td>80%</td><td>8,000</td></tr>
+          <tr><td>C</td><td>15,000</td><td>60%</td><td>9,000</td></tr>
+          <tr><td>D</td><td>7,000</td><td>0%</td><td>0</td></tr>
+          <tr><td>E</td><td>6,000</td><td>30%</td><td>1,800</td></tr>
+          <tr><td>F</td><td>2,000</td><td>0%</td><td>0</td></tr>
+          <tr class="highlight"><td colspan="3"><strong>Total BCWP (EV)</strong></td><td><strong>23,800</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Calculate ACWP (Actual Cost)</div>
+        <p><span class="formula">ACWP = 5,000 + 9,000 + 8,000 + 0 + 3,500 + 0 = <strong>25,500</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 4: Variance Analysis</div>
+        <p><span class="formula">CV = EV &minus; AC = 23,800 &minus; 25,500 = <strong class="status-over">&minus;1,700</strong></span> &rarr; Over budget!</p>
+        <p><span class="formula">SV = EV &minus; PV = 23,800 &minus; 28,000 = <strong class="status-over">&minus;4,200</strong></span> &rarr; Behind schedule!</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 5: Performance Indices</div>
+        <p><span class="formula">CPI = EV/AC = 23,800/25,500 = <strong class="status-over">0.933</strong></span> &rarr; &lt;1, Over budget</p>
+        <p><span class="formula">SPI = EV/PV = 23,800/28,000 = <strong class="status-over">0.850</strong></span> &rarr; &lt;1, Behind schedule</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 6: Forecasting</div>
+        <p>BAC = Total Budget = 5,000+10,000+15,000+7,000+6,000+2,000 = <strong>Rs.45,000</strong></p>
+        <p><span class="formula">EAC = BAC/CPI = 45,000/0.933 = <strong>Rs.48,231</strong></span></p>
+        <p><span class="formula">ETC = EAC &minus; AC = 48,231 &minus; 25,500 = <strong>Rs.22,731</strong></span></p>
+      </div>
+
+      <div class="result">
+        &#9733; The project is <span class="status-over">OVER BUDGET</span> by Rs.1,700 (CV = &minus;1,700)<br>
+        &#9733; The project is <span class="status-over">BEHIND SCHEDULE</span> by Rs.4,200 worth of work (SV = &minus;4,200)<br>
+        &#9733; CPI = 0.933, SPI = 0.850<br>
+        &#9733; Estimated Cost at Completion = Rs.48,231 (vs budget of Rs.45,000)
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 2: 2077 Chaitra / 2074 Magh -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q2">Q2. Road Construction EVA <span class="year-tag">2077 Chaitra</span> <span class="year-tag">2074 Magh</span></h2>
+    <div class="q-box">
+      <div class="q-title">Sinoma Company signed to construct 8.7 km road in 1.5 years at Rs.1.5 million per km. After 6 months, 2.3 km completed with Rs.4.6 million spent. Analyze using EVM. [6 marks]</div>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Given</div>
+        <p>Total Length = 8.7 km, Total Duration = 1.5 years = 18 months</p>
+        <p>Rate = Rs.1.5 million/km</p>
+        <p>BAC = 8.7 &times; 1.5 = <strong>Rs.13.05 million</strong></p>
+        <p>At 6 months: Work done = 2.3 km, Actual cost = Rs.4.6 million</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 1: Calculate PV (BCWS)</div>
+        <p>Planned work in 6 months = (6/18) &times; 8.7 = 2.9 km</p>
+        <p><span class="formula">PV = 2.9 &times; 1.5 = <strong>Rs.4.35 million</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Calculate EV (BCWP)</div>
+        <p><span class="formula">EV = 2.3 &times; 1.5 = <strong>Rs.3.45 million</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: AC (ACWP)</div>
+        <p><span class="formula">AC = Rs.4.6 million</span> (given)</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 4: Variance Analysis</div>
+        <p><span class="formula">CV = EV &minus; AC = 3.45 &minus; 4.6 = <strong class="status-over">&minus;1.15 million</strong></span> &rarr; Over budget</p>
+        <p><span class="formula">SV = EV &minus; PV = 3.45 &minus; 4.35 = <strong class="status-over">&minus;0.90 million</strong></span> &rarr; Behind schedule</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 5: Performance Indices</div>
+        <p><span class="formula">CPI = EV/AC = 3.45/4.6 = <strong class="status-over">0.75</strong></span></p>
+        <p><span class="formula">SPI = EV/PV = 3.45/4.35 = <strong class="status-over">0.793</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 6: Forecasting</div>
+        <p><span class="formula">EAC = BAC/CPI = 13.05/0.75 = <strong>Rs.17.4 million</strong></span></p>
+        <p><span class="formula">ETC = EAC &minus; AC = 17.4 &minus; 4.6 = <strong>Rs.12.8 million</strong></span></p>
+        <p><span class="formula">Estimated time at completion = Duration/SPI = 18/0.793 = <strong>22.7 months</strong></span></p>
+      </div>
+
+      <div class="result">
+        &#9733; Project is <span class="status-over">Over Budget</span> by Rs.1.15M and <span class="status-over">Behind Schedule</span> by 0.6 km<br>
+        &#9733; CPI = 0.75, SPI = 0.793<br>
+        &#9733; Estimated total cost = Rs.17.4 million (original: Rs.13.05M &mdash; 33% overrun)<br>
+        &#9733; Estimated completion = 22.7 months (original: 18 months &mdash; 4.7 months delay)
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 3: 2070 Magh -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q3">Q3. EVA with Bar Chart <span class="year-tag">2070 Magh</span></h2>
+    <div class="q-box">
+      <div class="q-title">Four activities with bar chart. Find BCWS, BCWP, ACWP, SV, CV, SPI, CPI at end of Day 5. [6 marks]</div>
+      <p><strong>Budget &amp; Schedule:</strong></p>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Budget (Rs.)</th><th>Duration (days)</th><th>Scheduled Period</th></tr>
+        <tr><td>A</td><td>6,000</td><td>4</td><td>Day 1&ndash;4</td></tr>
+        <tr><td>B</td><td>15,000</td><td>6</td><td>Day 2&ndash;7</td></tr>
+        <tr><td>C</td><td>10,000</td><td>5</td><td>Day 4&ndash;8</td></tr>
+        <tr><td>D</td><td>4,000</td><td>4</td><td>Day 7&ndash;10</td></tr>
+      </table>
+      <p><strong>Status at end of Day 5:</strong></p>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>% Complete</th><th>Actual Expenditure (Rs.)</th></tr>
+        <tr><td>A</td><td>100%</td><td>7,000</td></tr>
+        <tr><td>B</td><td>55%</td><td>7,500</td></tr>
+        <tr><td>C</td><td>40%</td><td>3,600</td></tr>
+        <tr><td>D</td><td>0%</td><td>0</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: BCWS (PV) at Day 5</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Budget</th><th>Scheduled % by Day 5</th><th>BCWS</th></tr>
+          <tr><td>A</td><td>6,000</td><td>100% (4 of 4 days done)</td><td>6,000</td></tr>
+          <tr><td>B</td><td>15,000</td><td>66.67% (4 of 6 days: Day 2,3,4,5)</td><td>10,000</td></tr>
+          <tr><td>C</td><td>10,000</td><td>40% (2 of 5 days: Day 4,5)</td><td>4,000</td></tr>
+          <tr><td>D</td><td>4,000</td><td>0% (starts Day 7)</td><td>0</td></tr>
+          <tr class="highlight"><td colspan="3"><strong>Total BCWS (PV)</strong></td><td><strong>20,000</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: BCWP (EV) at Day 5</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Budget</th><th>% Complete</th><th>BCWP</th></tr>
+          <tr><td>A</td><td>6,000</td><td>100%</td><td>6,000</td></tr>
+          <tr><td>B</td><td>15,000</td><td>55%</td><td>8,250</td></tr>
+          <tr><td>C</td><td>10,000</td><td>40%</td><td>4,000</td></tr>
+          <tr><td>D</td><td>4,000</td><td>0%</td><td>0</td></tr>
+          <tr class="highlight"><td colspan="3"><strong>Total BCWP (EV)</strong></td><td><strong>18,250</strong></td></tr>
+        </table>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: ACWP</div>
+        <p><span class="formula">ACWP = 7,000 + 7,500 + 3,600 + 0 = <strong>18,100</strong></span></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 4: Variances &amp; Indices</div>
+        <p><span class="formula">SV = EV &minus; PV = 18,250 &minus; 20,000 = <strong class="status-over">&minus;1,750</strong></span> (Behind schedule)</p>
+        <p><span class="formula">CV = EV &minus; AC = 18,250 &minus; 18,100 = <strong class="status-under">+150</strong></span> (Slightly under budget)</p>
+        <p><span class="formula">SPI = EV/PV = 18,250/20,000 = <strong class="status-over">0.913</strong></span></p>
+        <p><span class="formula">CPI = EV/AC = 18,250/18,100 = <strong class="status-under">1.008</strong></span></p>
+      </div>
+
+      <div class="result">
+        &#9733; BCWS = Rs.20,000 | BCWP = Rs.18,250 | ACWP = Rs.18,100<br>
+        &#9733; SV = &minus;Rs.1,750 (Behind schedule) | CV = +Rs.150 (Under budget)<br>
+        &#9733; SPI = 0.913 | CPI = 1.008<br>
+        &#9733; Project is <span class="status-over">behind schedule</span> but <span class="status-under">on budget</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 4: 2074 Magh (repeated Q2) -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q4">Q4. Road Construction EVA (Repeated) <span class="year-tag">2074 Magh</span></h2>
+    <div class="q-box">
+      <div class="q-title">This is the same problem as Q2 (Sinoma/Chino Company road construction). See Q2 above for the complete solution.</div>
+    </div>
+    <div class="sol-box">
+      <h4>Key Results (Same as Q2)</h4>
+      <div class="result">
+        &#9733; BAC = Rs.13.05M | PV = Rs.4.35M | EV = Rs.3.45M | AC = Rs.4.6M<br>
+        &#9733; CV = &minus;1.15M | SV = &minus;0.90M<br>
+        &#9733; CPI = 0.75 | SPI = 0.793<br>
+        &#9733; EAC = Rs.17.4M | Estimated time = 22.7 months
+      </div>
+    </div>
+
+  </main>
+  <footer style="text-align:center;padding:2rem 0;color:var(--muted);font-size:.85rem">
+    Construction Management &mdash; Earned Value Analysis Solved Numericals &mdash; Final Year 2026
+  </footer>
+</div>
+
+<script>
+var bar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+});
+(function(){
+  var html = document.documentElement, btn = document.getElementById('themeToggle');
+  var t = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', t);
+  btn.textContent = t === 'dark' ? '\u2600' : '\u263E';
+  btn.onclick = function(){
+    t = t === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    btn.textContent = t === 'dark' ? '\u2600' : '\u263E';
+  };
+})();
+(function(){
+  var b = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function(){ b.classList.toggle('visible', window.scrollY > 400); });
+  b.onclick = function(){ window.scrollTo({top:0,behavior:'smooth'}); };
+})();
+</script>
+</body>
+</html>

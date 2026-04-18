@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CM &mdash; Solved Numerical Problems</title>
+  <link rel="stylesheet" href="../../index-style.css">
+  <style>
+    /* ── Card grid for numerical chapters ── */
+    .num-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:6px 0 0}
+    .num-card{
+      display:flex;flex-direction:column;gap:10px;padding:24px 26px;
+      background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      border:1px solid var(--glass-border);border-radius:var(--radius);
+      text-decoration:none;color:var(--fg);position:relative;overflow:hidden;
+      transition:all .35s var(--ease);
+      animation:fadeInUp .6s var(--ease) both;
+    }
+    .num-card:nth-child(1){animation-delay:.1s}
+    .num-card:nth-child(2){animation-delay:.16s}
+    .num-card:nth-child(3){animation-delay:.22s}
+    .num-card:nth-child(4){animation-delay:.28s}
+    .num-card:nth-child(5){animation-delay:.34s}
+
+    .num-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;
+      border-radius:var(--radius) var(--radius) 0 0;opacity:0;transition:opacity .35s var(--ease);
+    }
+    .num-card:nth-child(1)::before{background:var(--gradient-1)}
+    .num-card:nth-child(2)::before{background:var(--gradient-4)}
+    .num-card:nth-child(3)::before{background:var(--gradient-5)}
+    .num-card:nth-child(4)::before{background:var(--gradient-3)}
+    .num-card:nth-child(5)::before{background:var(--gradient-2)}
+
+    .num-card:hover{border-color:var(--accent-glow);box-shadow:var(--card-hover);transform:translateY(-4px)}
+    .num-card:hover::before{opacity:1}
+
+    .num-card-top{display:flex;align-items:center;gap:14px}
+    .num-icon{
+      flex-shrink:0;width:46px;height:46px;display:flex;align-items:center;justify-content:center;
+      border-radius:12px;transition:all .3s var(--spring);
+    }
+    .num-card:hover .num-icon{transform:scale(1.1) rotate(-3deg)}
+    .num-icon svg{width:24px;height:24px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+    .num-card:nth-child(1) .num-icon{background:linear-gradient(135deg,rgba(102,126,234,.15),rgba(118,75,162,.15))}
+    .num-card:nth-child(1) .num-icon svg{stroke:#667eea}
+    .num-card:nth-child(2) .num-icon{background:linear-gradient(135deg,rgba(67,233,123,.15),rgba(56,249,215,.15))}
+    .num-card:nth-child(2) .num-icon svg{stroke:#43e97b}
+    .num-card:nth-child(3) .num-icon{background:linear-gradient(135deg,rgba(250,112,154,.15),rgba(254,225,64,.15))}
+    .num-card:nth-child(3) .num-icon svg{stroke:#f5576c}
+    .num-card:nth-child(4) .num-icon{background:linear-gradient(135deg,rgba(79,172,254,.15),rgba(0,242,254,.15))}
+    .num-card:nth-child(4) .num-icon svg{stroke:#4facfe}
+    .num-card:nth-child(5) .num-icon{background:linear-gradient(135deg,rgba(240,147,251,.15),rgba(245,87,108,.15))}
+    .num-card:nth-child(5) .num-icon svg{stroke:#f093fb}
+
+    .num-card-head{flex:1}
+    .num-card-head .ch-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+    .num-card-head h2{font-size:16.5px;font-weight:700;line-height:1.3;margin:0}
+    .num-desc{font-size:13px;color:var(--muted);line-height:1.55}
+    .num-card-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto}
+    .num-tag{
+      font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+      color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:6px;white-space:nowrap;
+    }
+    .num-count{
+      font-size:11px;font-weight:700;color:var(--fg);background:var(--bg-subtle);
+      padding:4px 10px;border-radius:6px;margin-left:auto;
+    }
+
+    /* ── Quick-ref table ── */
+    .ref-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;animation:fadeInUp .6s var(--ease) .45s both}
+    .ref-table th{text-align:left;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--border)}
+    .ref-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--fg)}
+    .ref-table tr:hover td{background:var(--accent-soft)}
+    .ref-table .yr{color:var(--accent);font-weight:600;font-size:12px}
+
+    @media(max-width:600px){
+      .num-grid{grid-template-columns:1fr;gap:14px}
+      .num-card{padding:18px 20px}
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="../../index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    All Subjects
+  </a>
+
+  <header class="page-header">
+    <p class="subtitle" style="margin-bottom:6px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--accent)">Construction Management</p>
+    <h1>Solved Numericals</h1>
+    <p class="subtitle">Every past exam numerical (2069&ndash;2081 BS) solved step-by-step with formulas and explanations</p>
+    <div class="stats">
+      <div><span>5</span> Topics</div>
+      <div><span>41</span> Problems</div>
+      <div><span>12+</span> Exam Years</div>
+      <div><span>100%</span> Past Coverage</div>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="chapterSearch" placeholder="Search topics, methods, keywords..." autocomplete="off">
+  </div>
+
+  <div class="section-label">Chapters</div>
+
+  <div class="num-grid" id="cardGrid">
+
+    <!-- Ch 2: TCTO -->
+    <a href="chapter2_tcto.html" class="num-card" data-search="time cost trade off crashing optimum duration minimum cost CPM network critical path indirect direct">
+      <div class="num-card-top">
+        <div class="num-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="num-card-head">
+          <div class="ch-label">Chapter 02</div>
+          <h2>Time-Cost Trade Off</h2>
+        </div>
+      </div>
+      <p class="num-desc">CPM network crashing, optimum project duration, direct vs indirect cost analysis, cost slopes &amp; compression sequences.</p>
+      <div class="num-card-footer">
+        <span class="num-tag">TCTO</span>
+        <span class="num-tag">CPM</span>
+        <span class="num-tag">Crashing</span>
+        <span class="num-count">13 Problems</span>
+      </div>
+    </a>
+
+    <!-- Ch 3: Materials -->
+    <a href="chapter3_materials.html" class="num-card" data-search="ABC classification EOQ economic order quantity inventory reorder safety stock material planning procurement">
+      <div class="num-card-top">
+        <div class="num-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <div class="num-card-head">
+          <div class="ch-label">Chapter 03</div>
+          <h2>Material Planning &mdash; ABC &amp; EOQ</h2>
+        </div>
+      </div>
+      <p class="num-desc">ABC inventory classification, Economic Order Quantity, reorder levels, safety stock calculations and optimal procurement.</p>
+      <div class="num-card-footer">
+        <span class="num-tag">ABC</span>
+        <span class="num-tag">EOQ</span>
+        <span class="num-tag">Inventory</span>
+        <span class="num-count">5 Problems</span>
+      </div>
+    </a>
+
+    <!-- Ch 5: Contract -->
+    <a href="chapter5_contract.html" class="num-card" data-search="performance guarantee bid security contract PPR tender procurement public rules">
+      <div class="num-card-top">
+        <div class="num-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="num-card-head">
+          <div class="ch-label">Chapter 05</div>
+          <h2>Contract Management</h2>
+        </div>
+      </div>
+      <p class="num-desc">Performance guarantee &amp; bid security calculations under Public Procurement Rules (PPR).</p>
+      <div class="num-card-footer">
+        <span class="num-tag">PPR</span>
+        <span class="num-tag">Guarantee</span>
+        <span class="num-count">1 Problem</span>
+      </div>
+    </a>
+
+    <!-- Ch 7: EVA -->
+    <a href="chapter7_eva.html" class="num-card" data-search="earned value analysis EVA BCWS BCWP ACWP CPI SPI performance control variance index">
+      <div class="num-card-top">
+        <div class="num-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+        </div>
+        <div class="num-card-head">
+          <div class="ch-label">Chapter 07</div>
+          <h2>Earned Value Analysis</h2>
+        </div>
+      </div>
+      <p class="num-desc">BCWS, BCWP, ACWP computations, CPI/SPI performance indices, cost &amp; schedule variance, EAC forecasting.</p>
+      <div class="num-card-footer">
+        <span class="num-tag">EVA</span>
+        <span class="num-tag">CPI / SPI</span>
+        <span class="num-tag">Variance</span>
+        <span class="num-count">4 Problems</span>
+      </div>
+    </a>
+
+    <!-- Ch 13: Valuation -->
+    <a href="chapter13_valuation.html" class="num-card" data-search="valuation capitalized value sinking fund depreciation plinth area rent yield cinema hall building property mortgage development YP">
+      <div class="num-card-top">
+        <div class="num-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-5 7 5v14"/><path d="M9 21v-6h6v6"/></svg>
+        </div>
+        <div class="num-card-head">
+          <div class="ch-label">Chapter 13</div>
+          <h2>Valuation &amp; Sinking Fund</h2>
+        </div>
+      </div>
+      <p class="num-desc">Capitalized value, plinth area, development &amp; mortgage methods, Year&rsquo;s Purchase, sinking fund, cinema hall &amp; showroom valuation.</p>
+      <div class="num-card-footer">
+        <span class="num-tag">YP</span>
+        <span class="num-tag">Plinth</span>
+        <span class="num-tag">Mortgage</span>
+        <span class="num-tag">SF</span>
+        <span class="num-count">18 Problems</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Quick reference table -->
+  <div class="section-label">Problem Distribution by Year</div>
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>Chapter</th>
+        <th>Exam Years</th>
+        <th style="text-align:right">Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ch 02 &mdash; TCTO</td>
+        <td class="yr">2069&ndash;2081</td>
+        <td style="text-align:right"><strong>13</strong></td>
+      </tr>
+      <tr>
+        <td>Ch 03 &mdash; ABC &amp; EOQ</td>
+        <td class="yr">2070&ndash;2081</td>
+        <td style="text-align:right"><strong>5</strong></td>
+      </tr>
+      <tr>
+        <td>Ch 05 &mdash; Contract</td>
+        <td class="yr">2079</td>
+        <td style="text-align:right"><strong>1</strong></td>
+      </tr>
+      <tr>
+        <td>Ch 07 &mdash; EVA</td>
+        <td class="yr">2073&ndash;2080</td>
+        <td style="text-align:right"><strong>4</strong></td>
+      </tr>
+      <tr>
+        <td>Ch 13 &mdash; Valuation</td>
+        <td class="yr">2070&ndash;2081</td>
+        <td style="text-align:right"><strong>18</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer class="page-footer">
+    <p>Construction Management &mdash; Solved Numericals &middot; Final Year 2026</p>
+  </footer>
+</div>
+
+<script>
+var search = document.getElementById('chapterSearch');
+var cards = document.querySelectorAll('.num-card');
+search.addEventListener('input', function(){
+  var q = this.value.toLowerCase();
+  cards.forEach(function(card){
+    var text = (card.textContent + ' ' + (card.dataset.search||'')).toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+});
+</script>
+<script src="../../common.js"></script>
+</body>
+</html>

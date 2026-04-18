@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 2 – Time-Cost Trade Off (Solved Numericals)</title>
+  <link rel="stylesheet" href="../../TES/style.css">
+  <style>
+    .sol-box{margin:1.2rem 0 2rem;padding:1rem 1.2rem;background:#f0fdf4;border:1px solid #22c55e44;border-radius:8px}
+    [data-theme="dark"] .sol-box{background:#14261a;border-color:#22c55e33}
+    .sol-box h4{color:#166534;margin:0 0 .5rem;font-size:.95rem}
+    [data-theme="dark"] .sol-box h4{color:#86efac}
+    .step{margin:.8rem 0;padding:.6rem .8rem;background:#fff;border-left:3px solid #3b82f6;border-radius:0 6px 6px 0}
+    [data-theme="dark"] .step{background:#1e293b;border-color:#60a5fa}
+    .step-title{font-weight:700;color:#1e40af;font-size:.88rem;margin-bottom:.3rem}
+    [data-theme="dark"] .step-title{color:#93c5fd}
+    .formula{background:#fef3c7;padding:.4rem .8rem;border-radius:6px;font-family:monospace;font-size:.85rem;margin:.3rem 0;display:inline-block}
+    [data-theme="dark"] .formula{background:#422d08;color:#fde68a}
+    .result{background:#dcfce7;padding:.5rem .8rem;border-radius:6px;font-weight:700;color:#166534;margin:.5rem 0}
+    [data-theme="dark"] .result{background:#14532d;color:#86efac}
+    .crash-table{font-size:.82rem;width:100%;border-collapse:collapse;margin:.5rem 0}
+    .crash-table th,.crash-table td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+    .crash-table th{background:var(--accent-light);font-weight:700;font-size:.8rem}
+    .crash-table .highlight{background:#fef08a}
+    [data-theme="dark"] .crash-table .highlight{background:#854d0e}
+    .year-tag{display:inline-block;background:#8b2500;color:#fff;font-size:.7rem;padding:1px 7px;border-radius:10px;margin-left:4px;vertical-align:middle;font-weight:600}
+    .q-box{margin:2rem 0;padding:1rem 1.2rem;background:#eff6ff;border:1px solid #3b82f644;border-radius:10px}
+    [data-theme="dark"] .q-box{background:#1e293b;border-color:#3b82f633}
+    .q-box .q-title{font-weight:700;color:#1e40af;font-size:.95rem;margin-bottom:.5rem}
+    [data-theme="dark"] .q-box .q-title{color:#93c5fd}
+    .iteration{margin:.8rem 0;padding:.6rem .8rem;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px}
+    [data-theme="dark"] .iteration{background:#1e293b;border-color:#334155}
+    .iteration-title{font-weight:700;color:#7c3aed;font-size:.88rem;margin-bottom:.3rem}
+    [data-theme="dark"] .iteration-title{color:#c4b5fd}
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to CM Numericals</a>
+    <div class="eyebrow">Chapter 2 &mdash; Solved Numericals</div>
+    <h1>Time-Cost Trade Off</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">13 Solved Problems</span>
+      <span class="meta-badge exam">2069&ndash;2081</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ TECHNIQUE SUMMARY ═══ -->
+    <h2 id="technique">TCTO Technique Summary</h2>
+    <div class="sol-box">
+      <h4>Standard Procedure for Time-Cost Trade Off</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Draw the Network &amp; Find Critical Path</div>
+        <p>Using predecessors/successors, draw the activity-on-node (AON) network. Perform forward pass (ES, EF) and backward pass (LS, LF) to find the critical path (activities with zero total float).</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Step 2: Calculate Cost Slope for Each Activity</div>
+        <p><span class="formula">Cost Slope = (Crash Cost &minus; Normal Cost) / (Normal Duration &minus; Crash Duration)</span></p>
+        <p>This gives the additional direct cost per unit time saved by crashing.</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Step 3: Identify Crashing Candidates</div>
+        <p>Only activities on the <strong>critical path</strong> can reduce project duration. Select the critical activity with the <strong>lowest cost slope</strong>.</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Step 4: Crash &amp; Check Feasibility</div>
+        <p>Crash by 1 unit at a time. After each crash: recalculate project duration, check for new critical paths. If multiple critical paths exist, crash activities on <em>all</em> critical paths simultaneously.</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Step 5: Calculate Total Cost at Each Stage</div>
+        <p><span class="formula">Total Cost = Total Direct Cost + Total Indirect Cost</span></p>
+        <p><span class="formula">Total Indirect Cost = Indirect Cost/unit &times; Project Duration</span></p>
+        <p>Continue crashing as long as <strong>cost slope &lt; indirect cost per unit time</strong>.</p>
+      </div>
+      <div class="step">
+        <div class="step-title">Step 6: Identify Optimum Duration</div>
+        <p><strong>Optimum Duration:</strong> Duration at which Total Cost is minimum.<br>
+        <strong>Minimum Duration:</strong> Duration when all critical activities are fully crashed.</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 1: 2081 Shrawan -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q1">Q1. TCTO Analysis <span class="year-tag">2081 Shrawan</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find optimum project duration and minimum project cost using TCTO analysis. Indirect cost = Rs.300/day. [8 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Successor</th><th>Normal Time (Days)</th><th>Crash Time</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>A</td><td>C</td><td>5</td><td>4</td><td>1000</td><td>1200</td></tr>
+        <tr><td>B</td><td>D, E</td><td>7</td><td>5</td><td>2100</td><td>2300</td></tr>
+        <tr><td>C</td><td>F</td><td>3</td><td>2</td><td>1500</td><td>1800</td></tr>
+        <tr><td>D</td><td>F</td><td>2</td><td>2</td><td>1300</td><td>1300</td></tr>
+        <tr><td>E</td><td>G</td><td>6</td><td>4</td><td>1200</td><td>1400</td></tr>
+        <tr><td>F</td><td>&mdash;</td><td>5</td><td>4</td><td>2000</td><td>2500</td></tr>
+        <tr><td>G</td><td>&mdash;</td><td>3</td><td>2</td><td>1500</td><td>1700</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Convert to Predecessor &amp; Draw Network</div>
+        <p>From successors: A&rarr;C, B&rarr;D,E, C&rarr;F, D&rarr;F, E&rarr;G</p>
+        <p>Predecessors: A(&mdash;), B(&mdash;), C(A), D(B), E(B), F(C,D), G(E)</p>
+        <p><strong>Paths through the network:</strong></p>
+        <ul>
+          <li>Path 1: A &rarr; C &rarr; F = 5 + 3 + 5 = <strong>13 days</strong></li>
+          <li>Path 2: B &rarr; D &rarr; F = 7 + 2 + 5 = <strong>14 days</strong></li>
+          <li>Path 3: B &rarr; E &rarr; G = 7 + 6 + 3 = <strong>16 days &#9733; Critical Path</strong></li>
+        </ul>
+        <p><strong>Normal Project Duration = 16 days</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Calculate Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash (days)</th><th>Cost Slope (Rs./day)</th><th>Can Crash?</th></tr>
+          <tr><td>A</td><td>1</td><td>(1200&minus;1000)/(5&minus;4) = <strong>200</strong></td><td>Yes</td></tr>
+          <tr><td>B</td><td>2</td><td>(2300&minus;2100)/(7&minus;5) = <strong>100</strong></td><td>Yes</td></tr>
+          <tr><td>C</td><td>1</td><td>(1800&minus;1500)/(3&minus;2) = <strong>300</strong></td><td>Yes</td></tr>
+          <tr><td>D</td><td>0</td><td>&mdash;</td><td>No (already at crash)</td></tr>
+          <tr><td>E</td><td>2</td><td>(1400&minus;1200)/(6&minus;4) = <strong>100</strong></td><td>Yes</td></tr>
+          <tr><td>F</td><td>1</td><td>(2500&minus;2000)/(5&minus;4) = <strong>500</strong></td><td>Yes</td></tr>
+          <tr><td>G</td><td>1</td><td>(1700&minus;1500)/(3&minus;2) = <strong>200</strong></td><td>Yes</td></tr>
+        </table>
+        <p>Total Normal Direct Cost = 1000+2100+1500+1300+1200+2000+1500 = <strong>Rs.10,600</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Iterative Crashing</div>
+        <p>Indirect cost = Rs.300/day. Only crash critical path activities with cost slope &lt; 300.</p>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal Schedule (Duration = 16 days)</div>
+          <p>Direct Cost = Rs.10,600 | Indirect Cost = 16 &times; 300 = Rs.4,800 | <strong>Total = Rs.15,400</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 1: Crash B by 1 day (Cost Slope = 100 &lt; 300)</div>
+          <p>Critical path B&rarr;E&rarr;G: B is cheapest to crash (slope 100). Also E has slope 100.</p>
+          <p>Crash B by 1 day. B becomes 6 days.</p>
+          <p>Paths: A-C-F = 13, B-D-F = 6+2+5 = 13, B-E-G = 6+6+3 = <strong>15 days</strong></p>
+          <p>Direct Cost = 10,600 + 100 = Rs.10,700 | Indirect = 15 &times; 300 = Rs.4,500 | <strong>Total = Rs.15,200</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 2: Crash B by 1 more day (Cost Slope = 100 &lt; 300)</div>
+          <p>B becomes 5 days (fully crashed).</p>
+          <p>Paths: A-C-F = 13, B-D-F = 5+2+5 = 12, B-E-G = 5+6+3 = <strong>14 days</strong></p>
+          <p>Direct Cost = 10,700 + 100 = Rs.10,800 | Indirect = 14 &times; 300 = Rs.4,200 | <strong>Total = Rs.15,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 3: Crash E by 1 day (Cost Slope = 100 &lt; 300)</div>
+          <p>B fully crashed. Next cheapest on CP (B-E-G): E (slope 100).</p>
+          <p>E becomes 5 days.</p>
+          <p>Paths: A-C-F = 13, B-D-F = 12, B-E-G = 5+5+3 = <strong>13 days</strong></p>
+          <p>All three paths = 13 days. <strong>Three critical paths now!</strong></p>
+          <p>Direct Cost = 10,800 + 100 = Rs.10,900 | Indirect = 13 &times; 300 = Rs.3,900 | <strong>Total = Rs.14,800</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 4: Must crash all critical paths simultaneously</div>
+          <p>Three critical paths: A-C-F, B-D-F, B-E-G</p>
+          <p>Options to reduce all by 1 day:</p>
+          <ul>
+            <li>Crash F (common to paths 1&amp;2) + E or G (for path 3): F(500) + E(100) = 600 &gt; 300 &#10008;</li>
+            <li>Crash F(500) + G(200) = 700 &gt; 300 &#10008;</li>
+            <li>Crash A(200) on path 1 + D(can't crash) &mdash; not possible for path 2</li>
+          </ul>
+          <p>All combinations exceed indirect cost of 300. <strong>Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimum Project Duration = 13 days<br>
+        &#9733; Minimum Project Cost = Rs.14,800
+      </div>
+
+      <table class="crash-table">
+        <tr><th>Duration (days)</th><th>Direct Cost (Rs.)</th><th>Indirect Cost (Rs.)</th><th>Total Cost (Rs.)</th><th>Remark</th></tr>
+        <tr><td>16</td><td>10,600</td><td>4,800</td><td>15,400</td><td>Normal</td></tr>
+        <tr><td>15</td><td>10,700</td><td>4,500</td><td>15,200</td><td>Crash B by 1</td></tr>
+        <tr><td>14</td><td>10,800</td><td>4,200</td><td>15,000</td><td>Crash B by 1</td></tr>
+        <tr class="highlight"><td>13</td><td>10,900</td><td>3,900</td><td><strong>14,800</strong></td><td>Crash E by 1 &#9733; Optimum</td></tr>
+      </table>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 2: 2080 Chaitra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q2">Q2. TCTO Analysis <span class="year-tag">2080 Chaitra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find optimum project duration, minimum project duration and their corresponding project completion cost. Time-dependent variable cost = Rs.210/month. All costs in Million NPR, durations in months. [8 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal Duration</th><th>Crash Duration</th><th>Normal Cost (Rs.M)</th><th>Crash Cost (Rs.M)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>12</td><td>8</td><td>600</td><td>1080</td></tr>
+        <tr><td>B</td><td>&mdash;</td><td>11</td><td>9</td><td>1500</td><td>1580</td></tr>
+        <tr><td>C</td><td>A, B</td><td>12</td><td>9</td><td>1000</td><td>1030</td></tr>
+        <tr><td>D</td><td>A, B</td><td>14</td><td>10</td><td>500</td><td>900</td></tr>
+        <tr><td>E</td><td>A</td><td>9</td><td>9</td><td>1500</td><td>1500</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Network &amp; Critical Path</div>
+        <p><strong>Paths:</strong></p>
+        <ul>
+          <li>Path 1: A &rarr; C = 12 + 12 = 24 months</li>
+          <li>Path 2: A &rarr; D = 12 + 14 = <strong>26 months &#9733;</strong></li>
+          <li>Path 3: A &rarr; E = 12 + 9 = 21 months</li>
+          <li>Path 4: B &rarr; C = 11 + 12 = 23 months</li>
+          <li>Path 5: B &rarr; D = 11 + 14 = <strong>25 months</strong></li>
+        </ul>
+        <p><strong>Critical Path: A &rarr; D = 26 months</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Cost Slope (Rs.M/month)</th></tr>
+          <tr><td>A</td><td>4</td><td>(1080&minus;600)/(12&minus;8) = <strong>120</strong></td></tr>
+          <tr><td>B</td><td>2</td><td>(1580&minus;1500)/(11&minus;9) = <strong>40</strong></td></tr>
+          <tr><td>C</td><td>3</td><td>(1030&minus;1000)/(12&minus;9) = <strong>10</strong></td></tr>
+          <tr><td>D</td><td>4</td><td>(900&minus;500)/(14&minus;10) = <strong>100</strong></td></tr>
+          <tr><td>E</td><td>0</td><td>&mdash; (Cannot crash)</td></tr>
+        </table>
+        <p>Normal Direct Cost = 600+1500+1000+500+1500 = <strong>Rs.5,100M</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Iterative Crashing (Indirect = 210M/month)</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (26 months)</div>
+          <p>DC = 5,100M | IC = 26 &times; 210 = 5,460M | <strong>TC = 10,560M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 1: Crash D by 1 (Slope 100 &lt; 210)</div>
+          <p>CP: A-D. Cheapest on CP: D (100). D = 13 months.</p>
+          <p>A-D = 12+13 = 25, B-D = 11+13 = 24, A-C = 24, B-C = 23, A-E = 21</p>
+          <p>CP: A-D = 25 months</p>
+          <p>DC = 5,100+100 = 5,200M | IC = 25 &times; 210 = 5,250M | <strong>TC = 10,450M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 2: Crash D by 1 more (Slope 100 &lt; 210)</div>
+          <p>D = 12 months.</p>
+          <p>A-D = 12+12 = 24 = A-C = 24. Both paths become critical!</p>
+          <p>B-D = 11+12 = 23, B-C = 23, A-E = 21</p>
+          <p>CPs: A-D = A-C = 24 months</p>
+          <p>DC = 5,200+100 = 5,300M | IC = 24 &times; 210 = 5,040M | <strong>TC = 10,340M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 3: Two CPs (A-D, A-C). Must reduce both.</div>
+          <p>Common activity: A (slope 120). Crashing A reduces both paths.</p>
+          <p>120 &lt; 210, so crash A by 1. A = 11 months.</p>
+          <p>A-D = 11+12 = 23, A-C = 11+12 = 23, B-D = 11+12 = 23, B-C = 11+12 = 23, A-E = 20</p>
+          <p>CPs: A-D = A-C = B-D = B-C = <strong>23 months</strong></p>
+          <p>DC = 5,300+120 = 5,420M | IC = 23 &times; 210 = 4,830M | <strong>TC = 10,250M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 4: Four CPs. Must reduce all.</div>
+          <p>Common to A-paths: A. Common to B-paths: B. Must crash A + B together, or crash C&amp;D together.</p>
+          <p>Option 1: Crash A(120) + B(40) = 160 &lt; 210 &#10004;</p>
+          <p>Option 2: Crash C(10) + D(100) = 110 &lt; 210 &#10004; (cheaper!)</p>
+          <p>Use Option 2: C = 11, D = 11.</p>
+          <p>A-D = 11+11 = 22, A-C = 11+11 = 22, B-D = 11+11 = 22, B-C = 11+11 = 22</p>
+          <p>CP = 22 months</p>
+          <p>DC = 5,420+110 = 5,530M | IC = 22 &times; 210 = 4,620M | <strong>TC = 10,150M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 5: Crash C+D again (110 &lt; 210)</div>
+          <p>C = 10, D = 10.</p>
+          <p>A-D = 11+10 = 21, A-C = 11+10 = 21, B-D = 11+10 = 21, B-C = 11+10 = 21, A-E = 20</p>
+          <p>CP = 21 months</p>
+          <p>DC = 5,530+110 = 5,640M | IC = 21 &times; 210 = 4,410M | <strong>TC = 10,050M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 6: Crash C+D again (110 &lt; 210)</div>
+          <p>C = 9 (fully crashed), D = 9.</p>
+          <p>A-D = 11+9 = 20, A-C = 11+9 = 20, B-D = 11+9 = 20, B-C = 11+9 = 20, A-E = 20</p>
+          <p>CP = 20 months. A-E also becomes critical!</p>
+          <p>DC = 5,640+110 = 5,750M | IC = 20 &times; 210 = 4,200M | <strong>TC = 9,950M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 7: Five CPs now. C fully crashed.</div>
+          <p>Must crash D(100) for B-D, A-D paths + A(120) for A-E path. Total = 100+120 = 220 &gt; 210. &#10008;</p>
+          <p>Try: B(40) for B-paths + A(120) for A-paths including A-E. But D still on CP.</p>
+          <p>Actually: Crash A(120) reduces A-D, A-C, A-E. But B-D, B-C need B or D.</p>
+          <p>Crash A(120) + D(100) = 220 &gt; 210 &#10008;</p>
+          <p>Crash A(120) + B(40) = 160 &lt; 210 but this only helps if D also crashes (B-D still = 20).</p>
+          <p>After crashing A &amp; B: A=10, B=10. A-D=10+9=19, A-C=10+9=19, B-D=10+9=19, B-C=10+9=19, A-E=10+9=19. All = 19.</p>
+          <p>Wait, D was already crashed to 9. Combined cost = 120+40 = 160 &lt; 210 &#10004;</p>
+          <p>DC = 5,750+160 = 5,910M | IC = 19 &times; 210 = 3,990M | <strong>TC = 9,900M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 8: Continue crashing A+B</div>
+          <p>A=9, B=9 (B fully crashed).</p>
+          <p>A-D=9+9=18, B-D=9+9=18, A-C=9+9=18, B-C=9+9=18, A-E=9+9=18</p>
+          <p>DC = 5,910+160 = 6,070M | IC = 18 &times; 210 = 3,780M | <strong>TC = 9,850M</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iteration 9: B fully crashed. A still has 1 day.</div>
+          <p>Crash A(120) helps A-paths but B-paths need D. D has 1 crash day left.</p>
+          <p>Crash A(120) + D(100) = 220 &gt; 210 &#10008;</p>
+          <p><strong>Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimum Duration = 18 months | Minimum Cost = Rs.9,850M<br>
+        &#9733; Minimum Possible Duration = 18 months (further crashing not economical)
+      </div>
+
+      <table class="crash-table">
+        <tr><th>Duration</th><th>Direct Cost (M)</th><th>Indirect Cost (M)</th><th>Total Cost (M)</th><th>Crashed</th></tr>
+        <tr><td>26</td><td>5,100</td><td>5,460</td><td>10,560</td><td>Normal</td></tr>
+        <tr><td>25</td><td>5,200</td><td>5,250</td><td>10,450</td><td>D</td></tr>
+        <tr><td>24</td><td>5,300</td><td>5,040</td><td>10,340</td><td>D</td></tr>
+        <tr><td>23</td><td>5,420</td><td>4,830</td><td>10,250</td><td>A</td></tr>
+        <tr><td>22</td><td>5,530</td><td>4,620</td><td>10,150</td><td>C+D</td></tr>
+        <tr><td>21</td><td>5,640</td><td>4,410</td><td>10,050</td><td>C+D</td></tr>
+        <tr><td>20</td><td>5,750</td><td>4,200</td><td>9,950</td><td>C+D</td></tr>
+        <tr><td>19</td><td>5,910</td><td>3,990</td><td>9,900</td><td>A+B</td></tr>
+        <tr class="highlight"><td>18</td><td>6,070</td><td>3,780</td><td><strong>9,850</strong></td><td>A+B &#9733;</td></tr>
+      </table>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 3: 2079 Chaitra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q3">Q3. TCTO Analysis <span class="year-tag">2079 Chaitra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find the optimal crashed result. Indirect cost = Rs.450/week. [8 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>7</td><td>4</td><td>1800</td><td>2150</td></tr>
+        <tr><td>B</td><td>&mdash;</td><td>9</td><td>7</td><td>3500</td><td>3850</td></tr>
+        <tr><td>C</td><td>B</td><td>5</td><td>4</td><td>2500</td><td>2675</td></tr>
+        <tr><td>D</td><td>A</td><td>8</td><td>5</td><td>4000</td><td>4275</td></tr>
+        <tr><td>E</td><td>C</td><td>9</td><td>8</td><td>3000</td><td>3375</td></tr>
+        <tr><td>F</td><td>B</td><td>11</td><td>11</td><td>3000</td><td>&mdash;</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Paths &amp; Critical Path</div>
+        <ul>
+          <li>Path 1: A &rarr; D = 7 + 8 = 15 weeks</li>
+          <li>Path 2: B &rarr; C &rarr; E = 9 + 5 + 9 = <strong>23 weeks &#9733; CP</strong></li>
+          <li>Path 3: B &rarr; F = 9 + 11 = 20 weeks</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Cost Slope (Rs./week)</th></tr>
+          <tr><td>A</td><td>3</td><td>(2150&minus;1800)/3 = <strong>116.67</strong></td></tr>
+          <tr><td>B</td><td>2</td><td>(3850&minus;3500)/2 = <strong>175</strong></td></tr>
+          <tr><td>C</td><td>1</td><td>(2675&minus;2500)/1 = <strong>175</strong></td></tr>
+          <tr><td>D</td><td>3</td><td>(4275&minus;4000)/3 = <strong>91.67</strong></td></tr>
+          <tr><td>E</td><td>1</td><td>(3375&minus;3000)/1 = <strong>375</strong></td></tr>
+          <tr><td>F</td><td>0</td><td>&mdash;</td></tr>
+        </table>
+        <p>Normal DC = 1800+3500+2500+4000+3000+3000 = <strong>Rs.17,800</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (23 weeks)</div>
+          <p>DC = 17,800 | IC = 23 &times; 450 = 10,350 | <strong>TC = 28,150</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: Crash B by 1 (slope 175 &lt; 450, cheapest on CP)</div>
+          <p>B=8. B-C-E = 8+5+9 = 22, B-F = 8+11 = 19, A-D = 15</p>
+          <p>DC = 17,800+175 = 17,975 | IC = 22 &times; 450 = 9,900 | <strong>TC = 27,875</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: Crash C by 1 (slope 175 &lt; 450) or B by 1 (175)</div>
+          <p>Crash C by 1 (both same cost, C has less remaining). C = 4.</p>
+          <p>B-C-E = 8+4+9 = 21, B-F = 19, A-D = 15</p>
+          <p>DC = 17,975+175 = 18,150 | IC = 21 &times; 450 = 9,450 | <strong>TC = 27,600</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash B by 1 more (slope 175 &lt; 450). C fully crashed.</div>
+          <p>B = 7 (fully crashed).</p>
+          <p>B-C-E = 7+4+9 = 20, B-F = 7+11 = 18, A-D = 15</p>
+          <p>DC = 18,150+175 = 18,325 | IC = 20 &times; 450 = 9,000 | <strong>TC = 27,325</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: Only E left on CP (slope 375 &lt; 450)</div>
+          <p>Crash E by 1. E = 8 (fully crashed).</p>
+          <p>B-C-E = 7+4+8 = 19, B-F = 18, A-D = 15</p>
+          <p>DC = 18,325+375 = 18,700 | IC = 19 &times; 450 = 8,550 | <strong>TC = 27,250</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 5: All activities on CP (B-C-E) fully crashed.</div>
+          <p><strong>No more crashing possible on critical path. Stop.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimal Crashed Duration = 19 weeks<br>
+        &#9733; Minimum Project Cost = Rs.27,250
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 4: 2079 Shrawan -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q4">Q4. TCTO Analysis <span class="year-tag">2079 Shrawan</span></h2>
+    <div class="q-box">
+      <div class="q-title">Calculate minimum cost and minimum duration schedule. Indirect cost = Rs.2000/day. [8 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (days)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>5</td><td>2</td><td>5000</td><td>6200</td></tr>
+        <tr><td>B</td><td>A</td><td>4</td><td>3</td><td>6000</td><td>7000</td></tr>
+        <tr><td>C</td><td>A</td><td>3</td><td>2</td><td>5000</td><td>6500</td></tr>
+        <tr><td>D</td><td>A</td><td>6</td><td>4</td><td>4000</td><td>4400</td></tr>
+        <tr><td>E</td><td>B</td><td>5</td><td>3</td><td>15000</td><td>18000</td></tr>
+        <tr><td>F</td><td>D</td><td>4</td><td>2</td><td>3000</td><td>4800</td></tr>
+        <tr><td>G</td><td>C, E, F</td><td>6</td><td>3</td><td>8000</td><td>10400</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Paths &amp; Critical Path</div>
+        <ul>
+          <li>Path 1: A&rarr;B&rarr;E&rarr;G = 5+4+5+6 = <strong>20 days &#9733; CP</strong></li>
+          <li>Path 2: A&rarr;D&rarr;F&rarr;G = 5+6+4+6 = <strong>21 days &#9733; CP (Longest!)</strong></li>
+          <li>Path 3: A&rarr;C&rarr;G = 5+3+6 = 14 days</li>
+        </ul>
+        <p><strong>Critical Path: A-D-F-G = 21 days</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Cost Slope</th></tr>
+          <tr><td>A</td><td>3</td><td>(6200&minus;5000)/3 = <strong>400</strong></td></tr>
+          <tr><td>B</td><td>1</td><td>(7000&minus;6000)/1 = <strong>1000</strong></td></tr>
+          <tr><td>C</td><td>1</td><td>(6500&minus;5000)/1 = <strong>1500</strong></td></tr>
+          <tr><td>D</td><td>2</td><td>(4400&minus;4000)/2 = <strong>200</strong></td></tr>
+          <tr><td>E</td><td>2</td><td>(18000&minus;15000)/2 = <strong>1500</strong></td></tr>
+          <tr><td>F</td><td>2</td><td>(4800&minus;3000)/2 = <strong>900</strong></td></tr>
+          <tr><td>G</td><td>3</td><td>(10400&minus;8000)/3 = <strong>800</strong></td></tr>
+        </table>
+        <p>Normal DC = 5000+6000+5000+4000+15000+3000+8000 = <strong>Rs.46,000</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing (IC = 2000/day)</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (21 days)</div>
+          <p>DC = 46,000 | IC = 42,000 | <strong>TC = 88,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: CP = A-D-F-G. Cheapest: D (200 &lt; 2000)</div>
+          <p>Crash D by 1. D=5. A-D-F-G = 5+5+4+6 = 20, A-B-E-G = 20. Two CPs!</p>
+          <p>DC = 46,200 | IC = 40,000 | <strong>TC = 86,200</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: Two CPs. Common: A, G. Crash A (400) or G (800)</div>
+          <p>Crash A by 1 (400 &lt; 2000). A=4.</p>
+          <p>A-D-F-G = 4+5+4+6 = 19, A-B-E-G = 4+4+5+6 = 19, A-C-G = 4+3+6 = 13</p>
+          <p>DC = 46,600 | IC = 38,000 | <strong>TC = 84,600</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash A by 1 more (400 &lt; 2000)</div>
+          <p>A=3. All A-paths: 18, 18, 12</p>
+          <p>DC = 47,000 | IC = 36,000 | <strong>TC = 83,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: Crash A by 1 more (400 &lt; 2000)</div>
+          <p>A=2 (fully crashed). All A-paths: 17, 17, 11</p>
+          <p>DC = 47,400 | IC = 34,000 | <strong>TC = 81,400</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 5: A fully crashed. Two CPs (A-D-F-G, A-B-E-G).</div>
+          <p>Options: D(200)+B(1000)=1200, D(200)+E(1500)=1700, F(900)+B(1000)=1900, G(800)=800</p>
+          <p>Cheapest: Crash G by 1 (800 &lt; 2000, common to both CPs).</p>
+          <p>G=5. Paths: 16, 16, 10</p>
+          <p>DC = 48,200 | IC = 32,000 | <strong>TC = 80,200</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 6: Crash G by 1 more (800 &lt; 2000)</div>
+          <p>G=4. Paths: 15, 15, 9</p>
+          <p>DC = 49,000 | IC = 30,000 | <strong>TC = 79,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 7: Crash G by 1 more (800 &lt; 2000)</div>
+          <p>G=3 (fully crashed). Paths: 14, 14, 8</p>
+          <p>DC = 49,800 | IC = 28,000 | <strong>TC = 77,800</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 8: G fully crashed. D+B or D+E or F+B etc.</div>
+          <p>D(200)+B(1000) = 1200 &lt; 2000 &#10004;</p>
+          <p>Crash D by 1, B by 1. D=4(fully crashed), B=3(fully crashed).</p>
+          <p>A-D-F-G = 2+4+4+3 = 13, A-B-E-G = 2+3+5+3 = 13</p>
+          <p>DC = 49,800+1200 = 51,000 | IC = 26,000 | <strong>TC = 77,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 9: D, B fully crashed. Only F(900) or E(1500) remain.</div>
+          <p>F(900)+E(1500) = 2400 &gt; 2000 &#10008;</p>
+          <p><strong>Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimum Duration = 13 days | Minimum Cost = Rs.77,000<br>
+        &#9733; Minimum Duration = 13 days
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 5: 2079 Jestha -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q5">Q5. TCTO Analysis <span class="year-tag">2079 Jestha</span></h2>
+    <div class="q-box">
+      <div class="q-title">Perform TCTO for 5 activities. Draw the time-cost trade-off chart. Time-dependent cost = Rs.1.6 thousand/week. [8 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.000)</th><th>Crash Cost (Rs.000)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>26</td><td>18</td><td>4</td><td>20</td></tr>
+        <tr><td>B</td><td>&mdash;</td><td>28</td><td>22</td><td>5</td><td>20</td></tr>
+        <tr><td>C</td><td>A</td><td>10</td><td>5</td><td>6</td><td>11</td></tr>
+        <tr><td>D</td><td>A</td><td>4</td><td>2</td><td>8</td><td>11</td></tr>
+        <tr><td>E</td><td>B, D</td><td>12</td><td>6</td><td>3</td><td>14</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Paths</div>
+        <ul>
+          <li>Path 1: A &rarr; C = 26+10 = 36 weeks</li>
+          <li>Path 2: A &rarr; D &rarr; E = 26+4+12 = <strong>42 weeks &#9733; CP</strong></li>
+          <li>Path 3: B &rarr; E = 28+12 = <strong>40 weeks</strong></li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes (Rs.000/week)</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Slope (Rs.000/wk)</th></tr>
+          <tr><td>A</td><td>8</td><td>(20&minus;4)/8 = <strong>2</strong></td></tr>
+          <tr><td>B</td><td>6</td><td>(20&minus;5)/6 = <strong>2.5</strong></td></tr>
+          <tr><td>C</td><td>5</td><td>(11&minus;6)/5 = <strong>1</strong></td></tr>
+          <tr><td>D</td><td>2</td><td>(11&minus;8)/2 = <strong>1.5</strong></td></tr>
+          <tr><td>E</td><td>6</td><td>(14&minus;3)/6 = <strong>1.833</strong></td></tr>
+        </table>
+        <p>Normal DC = 4+5+6+8+3 = <strong>Rs.26,000</strong> | IC = Rs.1.6 thousand/week</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing (IC = 1.6 thousand/week)</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (42 weeks)</div>
+          <p>DC = 26 | IC = 42&times;1.6 = 67.2 | <strong>TC = 93.2 thousand</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: CP = A-D-E. Crash D (1.5 &lt; 1.6)</div>
+          <p>D=3. A-D-E=26+3+12=41, B-E=40, A-C=36</p>
+          <p>DC=27.5 | IC=65.6 | <strong>TC=93.1</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: Crash D by 1 more (1.5 &lt; 1.6)</div>
+          <p>D=2 (fully crashed). A-D-E=26+2+12=40, B-E=40, A-C=36. Two CPs!</p>
+          <p>DC=29 | IC=64 | <strong>TC=93</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Two CPs: A-D-E &amp; B-E. Common: E (1.833). Or A(2)+B(2.5)</div>
+          <p>Crash E by 1 (1.833, common to both CPs). 1.833 &gt; 1.6 &#10008;</p>
+          <p>Wait: cost slope 1.833 &gt; indirect cost 1.6. Not economical!</p>
+          <p><strong>Stop crashing for optimum cost.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimum Duration = 40 weeks | Minimum Cost = Rs.93,000<br>
+        &#9733; For minimum duration: Continue crashing even if not economical.<br>
+        Crash E by 6 (to 6): A-D-E=26+2+6=34, B-E=28+6=34, A-C=36. CP shifts to A-C!<br>
+        Then crash A: multiple paths. Minimum possible = 18+2+6=26 or 22+6=28 &rarr; 28 weeks (limited by B).
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 6: 2078 Chaitra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q6">Q6. TCTO Analysis <span class="year-tag">2078 Chaitra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find optimal crashed project completion time and corresponding minimum cost. Indirect cost = Rs.2500/week. [7 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>P</td><td>&mdash;</td><td>7</td><td>4</td><td>2500</td><td>2200</td></tr>
+        <tr><td>Q</td><td>&mdash;</td><td>9</td><td>7</td><td>4500</td><td>4200</td></tr>
+        <tr><td>R</td><td>P</td><td>5</td><td>4</td><td>3500</td><td>3000</td></tr>
+        <tr><td>S</td><td>P</td><td>8</td><td>7</td><td>5500</td><td>5100</td></tr>
+        <tr><td>T</td><td>Q</td><td>9</td><td>8</td><td>3000</td><td>2500</td></tr>
+        <tr><td>U</td><td>Q</td><td>12</td><td>12</td><td>5500</td><td>&mdash;</td></tr>
+        <tr><td>V</td><td>S, T</td><td>4</td><td>2</td><td>1500</td><td>1800</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <p><em>Note: This problem has unusual costs where crash cost &lt; normal cost for some activities (P, Q, R, S, T). These have <strong>negative cost slopes</strong>, meaning crashing actually <strong>saves money</strong>. We should crash these first!</em></p>
+
+      <div class="step">
+        <div class="step-title">Step 1: Paths</div>
+        <ul>
+          <li>P&rarr;R = 7+5 = 12</li>
+          <li>P&rarr;S&rarr;V = 7+8+4 = <strong>19</strong></li>
+          <li>Q&rarr;T&rarr;V = 9+9+4 = <strong>22 &#9733; CP</strong></li>
+          <li>Q&rarr;U = 9+12 = <strong>21</strong></li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Cost Slope</th><th>Note</th></tr>
+          <tr><td>P</td><td>3</td><td>(2200&minus;2500)/3 = <strong>&minus;100</strong></td><td>Saves money!</td></tr>
+          <tr><td>Q</td><td>2</td><td>(4200&minus;4500)/2 = <strong>&minus;150</strong></td><td>Saves money!</td></tr>
+          <tr><td>R</td><td>1</td><td>(3000&minus;3500)/1 = <strong>&minus;500</strong></td><td>Saves money!</td></tr>
+          <tr><td>S</td><td>1</td><td>(5100&minus;5500)/1 = <strong>&minus;400</strong></td><td>Saves money!</td></tr>
+          <tr><td>T</td><td>1</td><td>(2500&minus;3000)/1 = <strong>&minus;500</strong></td><td>Saves money!</td></tr>
+          <tr><td>U</td><td>0</td><td>&mdash;</td><td></td></tr>
+          <tr><td>V</td><td>2</td><td>(1800&minus;1500)/2 = <strong>150</strong></td><td></td></tr>
+        </table>
+        <p>Normal DC = 2500+4500+3500+5500+3000+5500+1500 = <strong>Rs.26,000</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing</div>
+        <p>Since most slopes are negative, crashing saves both direct and indirect costs!</p>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (22 weeks)</div>
+          <p>DC=26,000 | IC=22&times;2500=55,000 | <strong>TC=81,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: CP=Q-T-V. Crash T (&minus;500). T=8.</div>
+          <p>Q-T-V=9+8+4=21=Q-U. Two CPs!</p>
+          <p>DC=26,000&minus;500=25,500 | IC=21&times;2500=52,500 | <strong>TC=78,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: CPs: Q-T-V, Q-U. Common: Q (&minus;150). Crash Q by 1.</div>
+          <p>Q=8. Q-T-V=8+8+4=20, Q-U=8+12=20. P-S-V=19. CP=20</p>
+          <p>DC=25,500&minus;150=25,350 | IC=20&times;2500=50,000 | <strong>TC=75,350</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash Q by 1 more (&minus;150)</div>
+          <p>Q=7 (fully crashed). Q-T-V=7+8+4=19=P-S-V. Q-U=7+12=19. Three CPs!</p>
+          <p>DC=25,200 | IC=19&times;2500=47,500 | <strong>TC=72,700</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: CPs: Q-T-V, Q-U, P-S-V. Q fully crashed.</div>
+          <p>Must reduce all 3 paths. V(150) is common to Q-T-V &amp; P-S-V but not Q-U.</p>
+          <p>For Q-U: U can't crash. <strong>Cannot reduce Q-U any further.</strong></p>
+          <p><strong>Stop crashing.</strong></p>
+        </div>
+
+        <p>But we can still crash activities with negative slopes on non-critical paths to save direct cost:</p>
+        <p>Crash P(&minus;100&times;3), R(&minus;500&times;1), S(&minus;400&times;1) = saves 300+500+400 = Rs.1,200</p>
+        <p>These don't change project duration (non-CP activities).</p>
+        <p>Final DC = 25,200 &minus; 1,200 = 24,000</p>
+      </div>
+
+      <div class="result">
+        &#9733; Optimal Duration = 19 weeks<br>
+        &#9733; Minimum Cost = 24,000 + 47,500 = Rs.71,500
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 7: 2078 Kartik -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q7">Q7. TCTO Analysis <span class="year-tag">2078 Kartik</span></h2>
+    <div class="q-box">
+      <div class="q-title">Calculate minimum cost, optimum duration. Also find minimum time to complete. Indirect cost = Rs.225/day. [8 marks]</div>
+      <table class="crash-table">
+        <tr><th>S.N.</th><th>Activity</th><th>Predecessor</th><th>Normal (days)</th><th>Crash</th><th>Normal Cost</th><th>Crash Cost</th></tr>
+        <tr><td>1</td><td>A</td><td>&mdash;</td><td>6</td><td>4</td><td>1400</td><td>1900</td></tr>
+        <tr><td>2</td><td>B</td><td>&mdash;</td><td>8</td><td>5</td><td>2000</td><td>2800</td></tr>
+        <tr><td>3</td><td>C</td><td>A</td><td>4</td><td>2</td><td>1100</td><td>1500</td></tr>
+        <tr><td>4</td><td>D</td><td>A</td><td>3</td><td>2</td><td>800</td><td>1400</td></tr>
+        <tr><td>5</td><td>E</td><td>B, C</td><td>6</td><td>3</td><td>900</td><td>1600</td></tr>
+        <tr><td>6</td><td>F</td><td>D</td><td>10</td><td>6</td><td>2500</td><td>3500</td></tr>
+        <tr><td>7</td><td>G</td><td>E</td><td>3</td><td>2</td><td>500</td><td>800</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Paths</div>
+        <ul>
+          <li>A&rarr;C&rarr;E&rarr;G = 6+4+6+3 = <strong>19 days &#9733; CP</strong></li>
+          <li>A&rarr;D&rarr;F = 6+3+10 = <strong>19 days &#9733; CP</strong></li>
+          <li>B&rarr;E&rarr;G = 8+6+3 = 17 days</li>
+        </ul>
+        <p><strong>Two critical paths from the start!</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Cost Slope (Rs./day)</th></tr>
+          <tr><td>A</td><td>2</td><td>(1900&minus;1400)/2 = <strong>250</strong></td></tr>
+          <tr><td>B</td><td>3</td><td>(2800&minus;2000)/3 = <strong>266.67</strong></td></tr>
+          <tr><td>C</td><td>2</td><td>(1500&minus;1100)/2 = <strong>200</strong></td></tr>
+          <tr><td>D</td><td>1</td><td>(1400&minus;800)/1 = <strong>600</strong></td></tr>
+          <tr><td>E</td><td>3</td><td>(1600&minus;900)/3 = <strong>233.33</strong></td></tr>
+          <tr><td>F</td><td>4</td><td>(3500&minus;2500)/4 = <strong>250</strong></td></tr>
+          <tr><td>G</td><td>1</td><td>(800&minus;500)/1 = <strong>300</strong></td></tr>
+        </table>
+        <p>Normal DC = 1400+2000+1100+800+900+2500+500 = <strong>Rs.9,200</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing (IC = 225/day)</div>
+        <p>Two CPs: A-C-E-G &amp; A-D-F. Common activity: A (250).</p>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (19 days)</div>
+          <p>DC=9,200 | IC=19&times;225=4,275 | <strong>TC=13,475</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: Options to crash both CPs:</div>
+          <p>A(250) common &mdash; reduces both. 250 &gt; 225 &#10008;</p>
+          <p>C(200)+F(250)=450 &gt; 225 &#10008;</p>
+          <p>E(233.33)+F(250)=483 &gt; 225 &#10008;</p>
+          <p><strong>All options exceed IC of 225/day. Cannot crash economically!</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimum Duration = 19 days (Normal schedule itself is optimum)<br>
+        &#9733; Minimum Cost = Rs.13,475<br>
+        &#9733; Minimum Possible Duration: Crash A(2)+C(2)+E(3)+G(1) &amp; D(1)+F(4):<br>
+        Path 1: (6-2)+(4-2)+(6-3)+(3-1) = 4+2+3+2 = 11 days<br>
+        Path 2: (6-2)+(3-1)+(10-4) = 4+2+6 = 12 days<br>
+        Path 3: (8-3)+(6-3)+(3-1) = 5+3+2 = 10 days<br>
+        <strong>Minimum Duration = 12 days</strong>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 8: 2076 Bhadra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q8">Q8. TCTO Analysis <span class="year-tag">2076 Bhadra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find optimal crashed project completion time and corresponding minimum cost. Indirect cost = Rs.2000/week. [16 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>8</td><td>5</td><td>2000</td><td>2300</td></tr>
+        <tr><td>B</td><td>&mdash;</td><td>10</td><td>8</td><td>4000</td><td>4300</td></tr>
+        <tr><td>C</td><td>A</td><td>6</td><td>5</td><td>3000</td><td>3125</td></tr>
+        <tr><td>D</td><td>A</td><td>9</td><td>6</td><td>5000</td><td>5225</td></tr>
+        <tr><td>E</td><td>B</td><td>10</td><td>9</td><td>2500</td><td>2700</td></tr>
+        <tr><td>F</td><td>B</td><td>13</td><td>13</td><td>5000</td><td>&mdash;</td></tr>
+        <tr><td>G</td><td>D, E</td><td>5</td><td>3</td><td>1000</td><td>1700</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Paths</div>
+        <ul>
+          <li>A&rarr;C = 8+6 = 14</li>
+          <li>A&rarr;D&rarr;G = 8+9+5 = <strong>22</strong></li>
+          <li>B&rarr;E&rarr;G = 10+10+5 = <strong>25 &#9733; CP</strong></li>
+          <li>B&rarr;F = 10+13 = <strong>23</strong></li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Slope (Rs./week)</th></tr>
+          <tr><td>A</td><td>3</td><td>300/3 = <strong>100</strong></td></tr>
+          <tr><td>B</td><td>2</td><td>300/2 = <strong>150</strong></td></tr>
+          <tr><td>C</td><td>1</td><td>125/1 = <strong>125</strong></td></tr>
+          <tr><td>D</td><td>3</td><td>225/3 = <strong>75</strong></td></tr>
+          <tr><td>E</td><td>1</td><td>200/1 = <strong>200</strong></td></tr>
+          <tr><td>F</td><td>0</td><td>&mdash;</td></tr>
+          <tr><td>G</td><td>2</td><td>700/2 = <strong>350</strong></td></tr>
+        </table>
+        <p>Normal DC = 2000+4000+3000+5000+2500+5000+1000 = <strong>Rs.22,500</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing (IC = 2000/week)</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (25 weeks)</div>
+          <p>DC=22,500 | IC=50,000 | <strong>TC=72,500</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: CP=B-E-G. Crash B (150, cheapest)</div>
+          <p>B=9. B-E-G=9+10+5=24, B-F=9+13=22, A-D-G=22</p>
+          <p>DC=22,650 | IC=48,000 | <strong>TC=70,650</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: Crash B by 1 more (150)</div>
+          <p>B=8 (fully crashed). B-E-G=23, B-F=21, A-D-G=22</p>
+          <p>DC=22,800 | IC=46,000 | <strong>TC=68,800</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash E (200, only crashable on CP)</div>
+          <p>E=9 (fully crashed). B-E-G=8+9+5=22=A-D-G. B-F=21. Two CPs!</p>
+          <p>DC=23,000 | IC=44,000 | <strong>TC=67,000</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: Two CPs: B-E-G, A-D-G. Common: G (350)</div>
+          <p>Or: D(75) for A-D-G + any for B-E-G (B&amp;E crashed). Only G left for B-E-G.</p>
+          <p>Crash G by 1 (350, common). G=4. Both paths = 21.</p>
+          <p>DC=23,350 | IC=42,000 | <strong>TC=65,350</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 5: Crash G by 1 more (350)</div>
+          <p>G=3 (fully crashed). Both paths=20. B-F=21 becomes CP too!</p>
+          <p>Wait: B-E-G=8+9+3=20, A-D-G=8+9+3=20, B-F=8+13=21. CP=B-F=21!</p>
+          <p>DC=23,700 | IC=42,000 | <strong>TC=65,700</strong></p>
+          <p>Hmm, this is worse. Let me recalculate.</p>
+          <p>Actually B-F=8+13=21 was already there. When G=4: B-E-G=21, A-D-G=21, B-F=21. Three CPs at 21!</p>
+          <p>DC=23,350 | IC=42,000 | <strong>TC=65,350</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 5 (revised): Three CPs at 21. G(350) common to 2 of 3.</div>
+          <p>F cannot crash. B fully crashed. For B-F: no option to crash.</p>
+          <p><strong>Cannot reduce B-F. Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimal Duration = 21 weeks<br>
+        &#9733; Minimum Cost = Rs.65,350
+      </div>
+
+      <table class="crash-table">
+        <tr><th>Duration</th><th>DC</th><th>IC</th><th>TC</th><th>Crashed</th></tr>
+        <tr><td>25</td><td>22,500</td><td>50,000</td><td>72,500</td><td>Normal</td></tr>
+        <tr><td>24</td><td>22,650</td><td>48,000</td><td>70,650</td><td>B</td></tr>
+        <tr><td>23</td><td>22,800</td><td>46,000</td><td>68,800</td><td>B</td></tr>
+        <tr><td>22</td><td>23,000</td><td>44,000</td><td>67,000</td><td>E</td></tr>
+        <tr class="highlight"><td>21</td><td>23,350</td><td>42,000</td><td><strong>65,350</strong></td><td>G &#9733;</td></tr>
+      </table>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 9: 2075 Bhadra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q9">Q9. TCTO Analysis <span class="year-tag">2075 Bhadra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find the lowest cost schedule. Indirect cost = Rs.400/week. [7 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>8</td><td>5</td><td>2000</td><td>2200</td></tr>
+        <tr><td>B</td><td>&mdash;</td><td>10</td><td>8</td><td>3800</td><td>4000</td></tr>
+        <tr><td>C</td><td>B</td><td>6</td><td>5</td><td>2700</td><td>2600</td></tr>
+        <tr><td>D</td><td>A</td><td>9</td><td>6</td><td>4100</td><td>4300</td></tr>
+        <tr><td>E</td><td>C</td><td>10</td><td>9</td><td>3100</td><td>3350</td></tr>
+        <tr><td>F</td><td>B</td><td>12</td><td>12</td><td>3100</td><td>3100</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Paths</div>
+        <ul>
+          <li>A&rarr;D = 8+9 = 17</li>
+          <li>B&rarr;C&rarr;E = 10+6+10 = <strong>26 &#9733; CP</strong></li>
+          <li>B&rarr;F = 10+12 = <strong>22</strong></li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Slope</th></tr>
+          <tr><td>A</td><td>3</td><td>200/3 = <strong>66.67</strong></td></tr>
+          <tr><td>B</td><td>2</td><td>200/2 = <strong>100</strong></td></tr>
+          <tr><td>C</td><td>1</td><td>(2600&minus;2700)/1 = <strong>&minus;100</strong></td></tr>
+          <tr><td>D</td><td>3</td><td>200/3 = <strong>66.67</strong></td></tr>
+          <tr><td>E</td><td>1</td><td>250/1 = <strong>250</strong></td></tr>
+          <tr><td>F</td><td>0</td><td>&mdash;</td></tr>
+        </table>
+        <p>Normal DC = 2000+3800+2700+4100+3100+3100 = <strong>Rs.18,800</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing (IC = 400/week)</div>
+        <p>C has negative slope (&minus;100) &mdash; saves money when crashed!</p>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (26 weeks)</div>
+          <p>DC=18,800 | IC=10,400 | <strong>TC=29,200</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: CP=B-C-E. Crash C (&minus;100, saves money!)</div>
+          <p>C=5. B-C-E=10+5+10=25, B-F=22, A-D=17</p>
+          <p>DC=18,800&minus;100=18,700 | IC=25&times;400=10,000 | <strong>TC=28,700</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: C fully crashed. Next cheapest on CP: B (100 &lt; 400)</div>
+          <p>B=9. B-C-E=9+5+10=24, B-F=9+12=21</p>
+          <p>DC=18,800 | IC=9,600 | <strong>TC=28,400</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash B by 1 more (100 &lt; 400)</div>
+          <p>B=8 (fully crashed). B-C-E=23, B-F=20</p>
+          <p>DC=18,900 | IC=9,200 | <strong>TC=28,100</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: B,C fully crashed. Only E (250 &lt; 400) on CP</div>
+          <p>Crash E by 1. E=9 (fully crashed). B-C-E=8+5+9=22=B-F. Two CPs!</p>
+          <p>DC=19,150 | IC=8,800 | <strong>TC=27,950</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 5: All CP activities crashed. F cannot crash.</div>
+          <p><strong>Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Lowest Cost Schedule Duration = 22 weeks<br>
+        &#9733; Minimum Cost = Rs.27,950
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 10: 2073 Bhadra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q10">Q10. TCTO Analysis <span class="year-tag">2073 Bhadra</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find optimal crashed result. Indirect cost = Rs.300/week. [6 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>7</td><td>4</td><td>1800</td><td>2100</td></tr>
+        <tr><td>B</td><td>&mdash;</td><td>9</td><td>7</td><td>3500</td><td>3800</td></tr>
+        <tr><td>C</td><td>B</td><td>5</td><td>4</td><td>2500</td><td>2625</td></tr>
+        <tr><td>D</td><td>A</td><td>8</td><td>5</td><td>4000</td><td>4225</td></tr>
+        <tr><td>E</td><td>C</td><td>9</td><td>8</td><td>3000</td><td>3325</td></tr>
+        <tr><td>F</td><td>B</td><td>11</td><td>11</td><td>3000</td><td>&mdash;</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Paths</div>
+        <ul>
+          <li>A&rarr;D = 7+8 = 15</li>
+          <li>B&rarr;C&rarr;E = 9+5+9 = <strong>23 &#9733; CP</strong></li>
+          <li>B&rarr;F = 9+11 = 20</li>
+        </ul>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Cost Slopes</div>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max</th><th>Slope</th></tr>
+          <tr><td>A</td><td>3</td><td>300/3=<strong>100</strong></td></tr>
+          <tr><td>B</td><td>2</td><td>300/2=<strong>150</strong></td></tr>
+          <tr><td>C</td><td>1</td><td>125/1=<strong>125</strong></td></tr>
+          <tr><td>D</td><td>3</td><td>225/3=<strong>75</strong></td></tr>
+          <tr><td>E</td><td>1</td><td>325/1=<strong>325</strong></td></tr>
+          <tr><td>F</td><td>0</td><td>&mdash;</td></tr>
+        </table>
+        <p>Normal DC = 1800+3500+2500+4000+3000+3000 = <strong>Rs.17,800</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 3: Crashing (IC = 300/week)</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (23 weeks): TC = 17,800 + 6,900 = 24,700</div>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: Crash C (125 &lt; 300). C=4.</div>
+          <p>B-C-E=9+4+9=22. DC=17,925 | IC=6,600 | <strong>TC=24,525</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: C fully crashed. Crash B (150 &lt; 300). B=8.</div>
+          <p>B-C-E=8+4+9=21, B-F=8+11=19. DC=17,925+150=18,075 | IC=6,300 | <strong>TC=24,375</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash B by 1 more. B=7 (fully crashed).</div>
+          <p>B-C-E=7+4+9=20, B-F=7+11=18. DC=18,225 | IC=6,000 | <strong>TC=24,225</strong></p>
+        </div>
+
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: B,C crashed. Only E left (325 &gt; 300). &#10008;</div>
+          <p><strong>Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimal Duration = 20 weeks<br>
+        &#9733; Minimum Cost = Rs.24,225
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 11: 2073 Magh -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q11">Q11. TCTO Analysis <span class="year-tag">2073 Magh</span></h2>
+    <div class="q-box">
+      <div class="q-title">Find optimal crashed project completion time and corresponding minimum cost. Indirect cost = Rs.3000/week. [6 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>8</td><td>5</td><td>2000</td><td>2300</td></tr>
+        <tr><td>B</td><td>&mdash;</td><td>10</td><td>8</td><td>4000</td><td>4300</td></tr>
+        <tr><td>C</td><td>A</td><td>6</td><td>5</td><td>3000</td><td>3125</td></tr>
+        <tr><td>D</td><td>A</td><td>9</td><td>6</td><td>5000</td><td>5225</td></tr>
+        <tr><td>E</td><td>B</td><td>10</td><td>9</td><td>2500</td><td>2700</td></tr>
+        <tr><td>F</td><td>B</td><td>13</td><td>13</td><td>5000</td><td>&mdash;</td></tr>
+        <tr><td>G</td><td>D, E</td><td>5</td><td>3</td><td>1000</td><td>1700</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <p><em>Same network as Q8 (2076 Bhadra) but with IC = Rs.3000/week instead of Rs.2000/week.</em></p>
+      <div class="step">
+        <div class="step-title">Step 1: Paths (same as Q8)</div>
+        <ul>
+          <li>A&rarr;C = 14 | A&rarr;D&rarr;G = 22 | B&rarr;E&rarr;G = <strong>25 &#9733; CP</strong> | B&rarr;F = 23</li>
+        </ul>
+        <p>Cost slopes same as Q8: A(100), B(150), C(125), D(75), E(200), G(350). Normal DC = 22,500.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Crashing (IC = 3000/week &mdash; very high!)</div>
+        <p>All cost slopes are well below 3000, so all crashes are economical.</p>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (25): TC = 22,500 + 75,000 = 97,500</div>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Crash B by 2 (150&times;2=300): 23 weeks. B-E-G=23, B-F=21, A-D-G=22</div>
+          <p>DC=22,800 | IC=69,000 | <strong>TC=91,800</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Crash E by 1 (200): 22 weeks. B-E-G=22=A-D-G. Two CPs.</div>
+          <p>DC=23,000 | IC=66,000 | <strong>TC=89,000</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Crash G by 1 (350, common): 21 weeks. B-F=21 also CP.</div>
+          <p>DC=23,350 | IC=63,000 | <strong>TC=86,350</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Three CPs at 21. F can't crash. B-F blocks further reduction.</div>
+          <p><strong>Stop.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimal Duration = 21 weeks<br>
+        &#9733; Minimum Cost = Rs.86,350
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 12: 2070 Magh -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q12">Q12. TCTO Analysis <span class="year-tag">2070 Magh</span></h2>
+    <div class="q-box">
+      <div class="q-title">Calculate Minimum Cost and Minimum Duration Schedule. Indirect cost = Rs.1000/day. [6 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Predecessor</th><th>Normal (days)</th><th>Crash</th><th>Normal Cost</th><th>Crash Cost</th></tr>
+        <tr><td>A</td><td>&mdash;</td><td>5</td><td>2</td><td>5000</td><td>6200</td></tr>
+        <tr><td>B</td><td>A</td><td>4</td><td>3</td><td>6000</td><td>7000</td></tr>
+        <tr><td>C</td><td>A</td><td>3</td><td>2</td><td>5000</td><td>6500</td></tr>
+        <tr><td>D</td><td>A</td><td>6</td><td>4</td><td>4000</td><td>4400</td></tr>
+        <tr><td>E</td><td>B</td><td>5</td><td>3</td><td>15000</td><td>18000</td></tr>
+        <tr><td>F</td><td>D</td><td>4</td><td>2</td><td>3000</td><td>4800</td></tr>
+        <tr><td>G</td><td>C, E, F</td><td>6</td><td>3</td><td>8000</td><td>10400</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <p><em>Same data as Q4 (2079 Shrawan) with IC = Rs.1000/day instead of Rs.2000/day.</em></p>
+      <div class="step">
+        <div class="step-title">Paths (same as Q4)</div>
+        <ul>
+          <li>A-B-E-G = 20 | A-D-F-G = <strong>21 &#9733; CP</strong> | A-C-G = 14</li>
+        </ul>
+        <p>Cost slopes: A(400), B(1000), C(1500), D(200), E(1500), F(900), G(800). DC=46,000.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Crashing (IC = 1000/day)</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (21): TC = 46,000 + 21,000 = 67,000</div>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: CP=A-D-F-G. Crash D (200 &lt; 1000). D=5.</div>
+          <p>A-D-F-G=20=A-B-E-G. Two CPs. DC=46,200 | IC=20,000 | <strong>TC=66,200</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: Common: A(400), G(800). Crash A (400 &lt; 1000).</div>
+          <p>A=4. Both CPs=19. DC=46,600 | IC=19,000 | <strong>TC=65,600</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash A by 1 (400). A=3. CPs=18.</div>
+          <p>DC=47,000 | IC=18,000 | <strong>TC=65,000</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: Crash A by 1 (400). A=2 (fully crashed). CPs=17.</div>
+          <p>DC=47,400 | IC=17,000 | <strong>TC=64,400</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 5: Crash G (800 &lt; 1000). G=5. CPs=16.</div>
+          <p>DC=48,200 | IC=16,000 | <strong>TC=64,200</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 6: Crash G by 1 (800). G=4. CPs=15.</div>
+          <p>DC=49,000 | IC=15,000 | <strong>TC=64,000</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 7: Crash G by 1 (800). G=3 (fully). CPs=14.</div>
+          <p>DC=49,800 | IC=14,000 | <strong>TC=63,800</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 8: D(200)+B(1000)=1200 &gt; 1000. F(900)+E(1500)=2400 &gt; 1000.</div>
+          <p>D(200)+E(1500)=1700 &gt; 1000. F(900)+B(1000)=1900 &gt; 1000.</p>
+          <p><strong>Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Optimum Duration = 14 days | Minimum Cost = Rs.63,800
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PROBLEM 13: 2069 Bhadra -->
+    <!-- ═══════════════════════════════════════════ -->
+    <h2 id="q13">Q13. TCTO &mdash; Critical Path Only <span class="year-tag">2069 Bhadra (Old)</span></h2>
+    <div class="q-box">
+      <div class="q-title">Activities on critical path only. Indirect cost = Rs.30/day. Crashing: 1 day each for 1-2, 2-3, 5-6 and 3 days for 3-5. Find lowest cost schedule assuming no fresh critical path develops. [8 marks]</div>
+      <table class="crash-table">
+        <tr><th>Activity</th><th>Normal Duration</th><th>Normal Cost (Rs.)</th><th>Crash Duration</th><th>Crash Cost (Rs.)</th></tr>
+        <tr><td>1-2</td><td>2 days</td><td>50</td><td>1 day</td><td>75</td></tr>
+        <tr><td>2-3</td><td>4 days</td><td>160</td><td>3 days</td><td>225</td></tr>
+        <tr><td>3-5</td><td>9 days</td><td>270</td><td>6 days</td><td>350</td></tr>
+        <tr><td>5-6</td><td>5 days</td><td>100</td><td>4 days</td><td>250</td></tr>
+      </table>
+    </div>
+
+    <div class="sol-box">
+      <h4>Solution</h4>
+      <div class="step">
+        <div class="step-title">Step 1: Normal Duration &amp; Cost Slopes</div>
+        <p>Critical Path (series): 1-2-3-5-6 = 2+4+9+5 = <strong>20 days</strong></p>
+        <table class="crash-table">
+          <tr><th>Activity</th><th>Max Crash</th><th>Cost Slope (Rs./day)</th></tr>
+          <tr><td>1-2</td><td>1</td><td>(75&minus;50)/1 = <strong>25</strong></td></tr>
+          <tr><td>2-3</td><td>1</td><td>(225&minus;160)/1 = <strong>65</strong></td></tr>
+          <tr><td>3-5</td><td>3</td><td>(350&minus;270)/3 = <strong>26.67</strong></td></tr>
+          <tr><td>5-6</td><td>1</td><td>(250&minus;100)/1 = <strong>150</strong></td></tr>
+        </table>
+        <p>Normal DC = 50+160+270+100 = <strong>Rs.580</strong></p>
+      </div>
+
+      <div class="step">
+        <div class="step-title">Step 2: Crashing (IC = 30/day)</div>
+
+        <div class="iteration">
+          <div class="iteration-title">Normal (20 days): TC = 580 + 600 = 1,180</div>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 1: Crash 1-2 by 1 day (slope 25 &lt; 30, cheapest)</div>
+          <p>Duration=19. DC=580+25=605 | IC=570 | <strong>TC=1,175</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 2: Crash 3-5 by 1 day (slope 26.67 &lt; 30)</div>
+          <p>Duration=18. DC=605+26.67=631.67 | IC=540 | <strong>TC=1,171.67</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 3: Crash 3-5 by 1 more (26.67 &lt; 30)</div>
+          <p>Duration=17. DC=658.33 | IC=510 | <strong>TC=1,168.33</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 4: Crash 3-5 by 1 more (26.67 &lt; 30)</div>
+          <p>3-5 fully crashed. Duration=16. DC=685 | IC=480 | <strong>TC=1,165</strong></p>
+        </div>
+        <div class="iteration">
+          <div class="iteration-title">Iter 5: Next cheapest: 2-3 (65 &gt; 30) &#10008;, 5-6 (150 &gt; 30) &#10008;</div>
+          <p><strong>Stop crashing.</strong></p>
+        </div>
+      </div>
+
+      <div class="result">
+        &#9733; Lowest Cost Schedule = 16 days<br>
+        &#9733; Minimum Cost = Rs.1,165
+      </div>
+    </div>
+
+  </main>
+  <footer style="text-align:center;padding:2rem 0;color:var(--muted);font-size:.85rem">
+    Construction Management &mdash; Time-Cost Trade Off Solved Numericals &mdash; Final Year 2026
+  </footer>
+</div>
+
+<script>
+var bar = document.getElementById('scrollProgress');
+window.addEventListener('scroll', function(){
+  var h = document.documentElement;
+  bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+});
+(function(){
+  var html = document.documentElement, btn = document.getElementById('themeToggle');
+  var t = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', t);
+  btn.textContent = t === 'dark' ? '\u2600' : '\u263E';
+  btn.onclick = function(){
+    t = t === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    btn.textContent = t === 'dark' ? '\u2600' : '\u263E';
+  };
+})();
+(function(){
+  var b = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function(){ b.classList.toggle('visible', window.scrollY > 400); });
+  b.onclick = function(){ window.scrollTo({top:0,behavior:'smooth'}); };
+})();
+</script>
+</body>
+</html>
