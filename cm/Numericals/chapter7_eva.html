@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chapter 7 – Earned Value Analysis (Solved Numericals)</title>
   <link rel="stylesheet" href="../../TES/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
   <style>
     .sol-box{margin:1.2rem 0 2rem;padding:1rem 1.2rem;background:#f0fdf4;border:1px solid #22c55e44;border-radius:8px}
     [data-theme="dark"] .sol-box{background:#14261a;border-color:#22c55e33}
@@ -14,8 +18,6 @@
     [data-theme="dark"] .step{background:#1e293b;border-color:#60a5fa}
     .step-title{font-weight:700;color:#1e40af;font-size:.88rem;margin-bottom:.3rem}
     [data-theme="dark"] .step-title{color:#93c5fd}
-    .formula{background:#fef3c7;padding:.4rem .8rem;border-radius:6px;font-family:monospace;font-size:.85rem;margin:.3rem 0;display:inline-block}
-    [data-theme="dark"] .formula{background:#422d08;color:#fde68a}
     .result{background:#dcfce7;padding:.5rem .8rem;border-radius:6px;font-weight:700;color:#166534;margin:.5rem 0}
     [data-theme="dark"] .result{background:#14532d;color:#86efac}
     .crash-table{font-size:.82rem;width:100%;border-collapse:collapse;margin:.5rem 0}
@@ -66,19 +68,19 @@
       </div>
       <div class="step">
         <div class="step-title">Variance Analysis</div>
-        <p><span class="formula">Cost Variance (CV) = EV &minus; AC</span> &mdash; Positive = Under budget</p>
-        <p><span class="formula">Schedule Variance (SV) = EV &minus; PV</span> &mdash; Positive = Ahead of schedule</p>
+        <p>$$\text{CV (Cost Variance)} = \text{EV} - \text{AC}$$ <small>Positive = Under budget</small></p>
+        <p>$$\text{SV (Schedule Variance)} = \text{EV} - \text{PV}$$ <small>Positive = Ahead of schedule</small></p>
       </div>
       <div class="step">
         <div class="step-title">Performance Indices</div>
-        <p><span class="formula">CPI = EV / AC</span> &mdash; &gt;1 = Under budget, &lt;1 = Over budget</p>
-        <p><span class="formula">SPI = EV / PV</span> &mdash; &gt;1 = Ahead, &lt;1 = Behind schedule</p>
+        <p>$$\text{CPI} = \frac{\text{EV}}{\text{AC}}$$ <small>&gt;1 = Under budget, &lt;1 = Over budget</small></p>
+        <p>$$\text{SPI} = \frac{\text{EV}}{\text{PV}}$$ <small>&gt;1 = Ahead, &lt;1 = Behind schedule</small></p>
       </div>
       <div class="step">
         <div class="step-title">Forecasting</div>
-        <p><span class="formula">EAC = BAC / CPI</span> &mdash; Estimate at Completion</p>
-        <p><span class="formula">ETC = EAC &minus; AC</span> &mdash; Estimate to Complete</p>
-        <p><span class="formula">TCPI = (BAC &minus; EV) / (BAC &minus; AC)</span> &mdash; To-Complete Performance Index</p>
+        <p>$$\text{EAC} = \frac{\text{BAC}}{\text{CPI}}$$ <small>Estimate at Completion</small></p>
+        <p>$$\text{ETC} = \text{EAC} - \text{AC}$$ <small>Estimate to Complete</small></p>
+        <p>$$\text{TCPI} = \frac{\text{BAC} - \text{EV}}{\text{BAC} - \text{AC}}$$ <small>To-Complete Performance Index</small></p>
         <p>BAC = Budget at Completion (total project budget)</p>
       </div>
     </div>
@@ -88,7 +90,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q1">Q1. EVA with Bar Chart <span class="year-tag">2078 Kartik</span></h2>
     <div class="q-box">
-      <div class="q-title">Six activities with budget costs and a bar chart schedule. At end of day 5, evaluate project status using EVA. [6 marks]</div>
+      <div class="q-title">Perform EVA and comment on the performance for the given project. The progress was monitored and recorded at the end of 5th day. [7 marks]</div>
       <p><strong>Budget &amp; Schedule:</strong></p>
       <table class="crash-table">
         <tr><th>Activity</th><th>Budget (Rs.)</th><th>Duration (days)</th><th>Scheduled Period</th></tr>
@@ -145,26 +147,26 @@
 
       <div class="step">
         <div class="step-title">Step 3: Calculate ACWP (Actual Cost)</div>
-        <p><span class="formula">ACWP = 5,000 + 9,000 + 8,000 + 0 + 3,500 + 0 = <strong>25,500</strong></span></p>
+        <p>$$\text{ACWP} = 5{,}000 + 9{,}000 + 8{,}000 + 0 + 3{,}500 + 0 = \textbf{25,500}$$</p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 4: Variance Analysis</div>
-        <p><span class="formula">CV = EV &minus; AC = 23,800 &minus; 25,500 = <strong class="status-over">&minus;1,700</strong></span> &rarr; Over budget!</p>
-        <p><span class="formula">SV = EV &minus; PV = 23,800 &minus; 28,000 = <strong class="status-over">&minus;4,200</strong></span> &rarr; Behind schedule!</p>
+        <p>$$\text{CV} = \text{EV} - \text{AC} = 23{,}800 - 25{,}500 = \textcolor{red}{-1{,}700}$$ <small>&rarr; Over budget!</small></p>
+        <p>$$\text{SV} = \text{EV} - \text{PV} = 23{,}800 - 28{,}000 = \textcolor{red}{-4{,}200}$$ <small>&rarr; Behind schedule!</small></p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 5: Performance Indices</div>
-        <p><span class="formula">CPI = EV/AC = 23,800/25,500 = <strong class="status-over">0.933</strong></span> &rarr; &lt;1, Over budget</p>
-        <p><span class="formula">SPI = EV/PV = 23,800/28,000 = <strong class="status-over">0.850</strong></span> &rarr; &lt;1, Behind schedule</p>
+        <p>$$\text{CPI} = \frac{\text{EV}}{\text{AC}} = \frac{23{,}800}{25{,}500} = \textcolor{red}{0.933}$$ <small>&rarr; &lt;1, Over budget</small></p>
+        <p>$$\text{SPI} = \frac{\text{EV}}{\text{PV}} = \frac{23{,}800}{28{,}000} = \textcolor{red}{0.850}$$ <small>&rarr; &lt;1, Behind schedule</small></p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 6: Forecasting</div>
         <p>BAC = Total Budget = 5,000+10,000+15,000+7,000+6,000+2,000 = <strong>Rs.45,000</strong></p>
-        <p><span class="formula">EAC = BAC/CPI = 45,000/0.933 = <strong>Rs.48,231</strong></span></p>
-        <p><span class="formula">ETC = EAC &minus; AC = 48,231 &minus; 25,500 = <strong>Rs.22,731</strong></span></p>
+        <p>$$\text{EAC} = \frac{\text{BAC}}{\text{CPI}} = \frac{45{,}000}{0.933} = \textbf{Rs.48,231}$$</p>
+        <p>$$\text{ETC} = \text{EAC} - \text{AC} = 48{,}231 - 25{,}500 = \textbf{Rs.22,731}$$</p>
       </div>
 
       <div class="result">
@@ -180,7 +182,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q2">Q2. Road Construction EVA <span class="year-tag">2077 Chaitra</span> <span class="year-tag">2074 Magh</span></h2>
     <div class="q-box">
-      <div class="q-title">Sinoma Company signed to construct 8.7 km road in 1.5 years at Rs.1.5 million per km. After 6 months, 2.3 km completed with Rs.4.6 million spent. Analyze using EVM. [6 marks]</div>
+      <div class="q-title">Sinoma company of China has planned to prepare a Subgrade for Koteshwor to Kalanki road section of 8.7 km length of ring road to be accomplished within 1.5 years at a cost of 1.5 million per kilometer. The data were taken after 6 months of commencement of the work, the work found to be 2.3 km completed by expending 4.6 million rupees. Perform EVA and draw your conclusion regarding the Chinese performance in Nepalese domain by calculating each component of EVA. [6 marks]</div>
     </div>
 
     <div class="sol-box">
@@ -196,36 +198,36 @@
       <div class="step">
         <div class="step-title">Step 1: Calculate PV (BCWS)</div>
         <p>Planned work in 6 months = (6/18) &times; 8.7 = 2.9 km</p>
-        <p><span class="formula">PV = 2.9 &times; 1.5 = <strong>Rs.4.35 million</strong></span></p>
+        <p>$$\text{PV} = 2.9 \times 1.5 = \textbf{Rs.4.35 million}$$</p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 2: Calculate EV (BCWP)</div>
-        <p><span class="formula">EV = 2.3 &times; 1.5 = <strong>Rs.3.45 million</strong></span></p>
+        <p>$$\text{EV} = 2.3 \times 1.5 = \textbf{Rs.3.45 million}$$</p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 3: AC (ACWP)</div>
-        <p><span class="formula">AC = Rs.4.6 million</span> (given)</p>
+        <p>$\text{AC} = \text{Rs.}4.6 \text{ million}$ (given)</p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 4: Variance Analysis</div>
-        <p><span class="formula">CV = EV &minus; AC = 3.45 &minus; 4.6 = <strong class="status-over">&minus;1.15 million</strong></span> &rarr; Over budget</p>
-        <p><span class="formula">SV = EV &minus; PV = 3.45 &minus; 4.35 = <strong class="status-over">&minus;0.90 million</strong></span> &rarr; Behind schedule</p>
+        <p>$$\text{CV} = \text{EV} - \text{AC} = 3.45 - 4.6 = \textcolor{red}{-1.15 \text{ million}}$$ <small>&rarr; Over budget</small></p>
+        <p>$$\text{SV} = \text{EV} - \text{PV} = 3.45 - 4.35 = \textcolor{red}{-0.90 \text{ million}}$$ <small>&rarr; Behind schedule</small></p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 5: Performance Indices</div>
-        <p><span class="formula">CPI = EV/AC = 3.45/4.6 = <strong class="status-over">0.75</strong></span></p>
-        <p><span class="formula">SPI = EV/PV = 3.45/4.35 = <strong class="status-over">0.793</strong></span></p>
+        <p>$$\text{CPI} = \frac{\text{EV}}{\text{AC}} = \frac{3.45}{4.6} = \textcolor{red}{0.75}$$</p>
+        <p>$$\text{SPI} = \frac{\text{EV}}{\text{PV}} = \frac{3.45}{4.35} = \textcolor{red}{0.793}$$</p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 6: Forecasting</div>
-        <p><span class="formula">EAC = BAC/CPI = 13.05/0.75 = <strong>Rs.17.4 million</strong></span></p>
-        <p><span class="formula">ETC = EAC &minus; AC = 17.4 &minus; 4.6 = <strong>Rs.12.8 million</strong></span></p>
-        <p><span class="formula">Estimated time at completion = Duration/SPI = 18/0.793 = <strong>22.7 months</strong></span></p>
+        <p>$$\text{EAC} = \frac{\text{BAC}}{\text{CPI}} = \frac{13.05}{0.75} = \textbf{Rs.17.4 million}$$</p>
+        <p>$$\text{ETC} = \text{EAC} - \text{AC} = 17.4 - 4.6 = \textbf{Rs.12.8 million}$$</p>
+        <p>$$\text{Estimated time} = \frac{\text{Duration}}{\text{SPI}} = \frac{18}{0.793} = \textbf{22.7 months}$$</p>
       </div>
 
       <div class="result">
@@ -241,7 +243,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q3">Q3. EVA with Bar Chart <span class="year-tag">2070 Magh</span></h2>
     <div class="q-box">
-      <div class="q-title">Four activities with bar chart. Find BCWS, BCWP, ACWP, SV, CV, SPI, CPI at end of Day 5. [6 marks]</div>
+      <div class="q-title">Perform earned value analysis of a project with five activities as given below. Progress was evaluated at the end of 5th day. [6 marks]</div>
       <p><strong>Budget &amp; Schedule:</strong></p>
       <table class="crash-table">
         <tr><th>Activity</th><th>Budget (Rs.)</th><th>Duration (days)</th><th>Scheduled Period</th></tr>
@@ -288,15 +290,15 @@
 
       <div class="step">
         <div class="step-title">Step 3: ACWP</div>
-        <p><span class="formula">ACWP = 7,000 + 7,500 + 3,600 + 0 = <strong>18,100</strong></span></p>
+        <p>$$\text{ACWP} = 7{,}000 + 7{,}500 + 3{,}600 + 0 = \textbf{18,100}$$</p>
       </div>
 
       <div class="step">
         <div class="step-title">Step 4: Variances &amp; Indices</div>
-        <p><span class="formula">SV = EV &minus; PV = 18,250 &minus; 20,000 = <strong class="status-over">&minus;1,750</strong></span> (Behind schedule)</p>
-        <p><span class="formula">CV = EV &minus; AC = 18,250 &minus; 18,100 = <strong class="status-under">+150</strong></span> (Slightly under budget)</p>
-        <p><span class="formula">SPI = EV/PV = 18,250/20,000 = <strong class="status-over">0.913</strong></span></p>
-        <p><span class="formula">CPI = EV/AC = 18,250/18,100 = <strong class="status-under">1.008</strong></span></p>
+        <p>$$\text{SV} = \text{EV} - \text{PV} = 18{,}250 - 20{,}000 = \textcolor{red}{-1{,}750}$$ <small>(Behind schedule)</small></p>
+        <p>$$\text{CV} = \text{EV} - \text{AC} = 18{,}250 - 18{,}100 = \textcolor{green}{+150}$$ <small>(Slightly under budget)</small></p>
+        <p>$$\text{SPI} = \frac{\text{EV}}{\text{PV}} = \frac{18{,}250}{20{,}000} = \textcolor{red}{0.913}$$</p>
+        <p>$$\text{CPI} = \frac{\text{EV}}{\text{AC}} = \frac{18{,}250}{18{,}100} = \textcolor{green}{1.008}$$</p>
       </div>
 
       <div class="result">
@@ -312,7 +314,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q4">Q4. Road Construction EVA (Repeated) <span class="year-tag">2074 Magh</span></h2>
     <div class="q-box">
-      <div class="q-title">This is the same problem as Q2 (Sinoma/Chino Company road construction). See Q2 above for the complete solution.</div>
+      <div class="q-title">Chino company of China has planned to prepare a Subgrade for Koteshwor to Kalanki road of 8.7km length to be accomplished within 1.5 years at cost of Rs 1.5 million per kilometer. The data were taken after 6 month of the commencement of the work, the work found to be of only 2.3km completed by expanding 4.6 million rupees. Perform EVA and draw your conclusion regarding the Chinese performance in Nepalese domain by calculating each component of EV. [5 marks]</div>
     </div>
     <div class="sol-box">
       <h4>Key Results (Same as Q2)</h4>

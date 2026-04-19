@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chapter 2 – Time-Cost Trade Off (Solved Numericals)</title>
   <link rel="stylesheet" href="../../TES/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
   <style>
     .sol-box{margin:1.2rem 0 2rem;padding:1rem 1.2rem;background:#f0fdf4;border:1px solid #22c55e44;border-radius:8px}
     [data-theme="dark"] .sol-box{background:#14261a;border-color:#22c55e33}
@@ -14,8 +18,6 @@
     [data-theme="dark"] .step{background:#1e293b;border-color:#60a5fa}
     .step-title{font-weight:700;color:#1e40af;font-size:.88rem;margin-bottom:.3rem}
     [data-theme="dark"] .step-title{color:#93c5fd}
-    .formula{background:#fef3c7;padding:.4rem .8rem;border-radius:6px;font-family:monospace;font-size:.85rem;margin:.3rem 0;display:inline-block}
-    [data-theme="dark"] .formula{background:#422d08;color:#fde68a}
     .result{background:#dcfce7;padding:.5rem .8rem;border-radius:6px;font-weight:700;color:#166534;margin:.5rem 0}
     [data-theme="dark"] .result{background:#14532d;color:#86efac}
     .crash-table{font-size:.82rem;width:100%;border-collapse:collapse;margin:.5rem 0}
@@ -61,7 +63,7 @@
       </div>
       <div class="step">
         <div class="step-title">Step 2: Calculate Cost Slope for Each Activity</div>
-        <p><span class="formula">Cost Slope = (Crash Cost &minus; Normal Cost) / (Normal Duration &minus; Crash Duration)</span></p>
+        <p>$$\text{Cost Slope} = \frac{\text{Crash Cost} - \text{Normal Cost}}{\text{Normal Duration} - \text{Crash Duration}}$$</p>
         <p>This gives the additional direct cost per unit time saved by crashing.</p>
       </div>
       <div class="step">
@@ -74,8 +76,8 @@
       </div>
       <div class="step">
         <div class="step-title">Step 5: Calculate Total Cost at Each Stage</div>
-        <p><span class="formula">Total Cost = Total Direct Cost + Total Indirect Cost</span></p>
-        <p><span class="formula">Total Indirect Cost = Indirect Cost/unit &times; Project Duration</span></p>
+        <p>$$\text{Total Cost} = \text{Total Direct Cost} + \text{Total Indirect Cost}$$</p>
+        <p>$$\text{Total Indirect Cost} = \text{Indirect Cost/unit} \times \text{Project Duration}$$</p>
         <p>Continue crashing as long as <strong>cost slope &lt; indirect cost per unit time</strong>.</p>
       </div>
       <div class="step">
@@ -90,7 +92,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q1">Q1. TCTO Analysis <span class="year-tag">2081 Shrawan</span></h2>
     <div class="q-box">
-      <div class="q-title">Find optimum project duration and minimum project cost using TCTO analysis. Indirect cost = Rs.300/day. [8 marks]</div>
+      <div class="q-title">Find out optimum project duration and minimum project cost using time cost trade off analysis. The indirect cost of the project is Rs.300/day. [8 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Successor</th><th>Normal Time (Days)</th><th>Crash Time</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>A</td><td>C</td><td>5</td><td>4</td><td>1000</td><td>1200</td></tr>
@@ -198,7 +200,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q2">Q2. TCTO Analysis <span class="year-tag">2080 Chaitra</span></h2>
     <div class="q-box">
-      <div class="q-title">Find optimum project duration, minimum project duration and their corresponding project completion cost. Time-dependent variable cost = Rs.210/month. All costs in Million NPR, durations in months. [8 marks]</div>
+      <div class="q-title">Find the optimum project duration, minimum project duration and their corresponding project completion cost based on the given information. Consider all the rupees in Million NPR and durations in months. Time-dependent variable cost is Rs 210 per unit duration. [8 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal Duration</th><th>Crash Duration</th><th>Normal Cost (Rs.M)</th><th>Crash Cost (Rs.M)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>12</td><td>8</td><td>600</td><td>1080</td></tr>
@@ -349,7 +351,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q3">Q3. TCTO Analysis <span class="year-tag">2079 Chaitra</span></h2>
     <div class="q-box">
-      <div class="q-title">Find the optimal crashed result. Indirect cost = Rs.450/week. [8 marks]</div>
+      <div class="q-title">The details of project are shown below. If the indirect cost per week is Rs 450, find the optimal crashed result of the project network. [8 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>7</td><td>4</td><td>1800</td><td>2150</td></tr>
@@ -438,7 +440,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q4">Q4. TCTO Analysis <span class="year-tag">2079 Shrawan</span></h2>
     <div class="q-box">
-      <div class="q-title">Calculate minimum cost and minimum duration schedule. Indirect cost = Rs.2000/day. [8 marks]</div>
+      <div class="q-title">From the given data in table below, calculate minimum cost and minimum duration schedule using time cost trade off analysis. Indirect cost is Rs.2000/day. [8 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (days)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>5</td><td>2</td><td>5000</td><td>6200</td></tr>
@@ -557,7 +559,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q5">Q5. TCTO Analysis <span class="year-tag">2079 Jestha</span></h2>
     <div class="q-box">
-      <div class="q-title">Perform TCTO for 5 activities. Draw the time-cost trade-off chart. Time-dependent cost = Rs.1.6 thousand/week. [8 marks]</div>
+      <div class="q-title">Perform time-cost trade-off based on given information regarding a project comprising five different activities. Also, draw the time-cost trade-off chart. Take time dependent cost per week of Rs 1.6 thousand. [8 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.000)</th><th>Crash Cost (Rs.000)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>26</td><td>18</td><td>4</td><td>20</td></tr>
@@ -633,7 +635,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q6">Q6. TCTO Analysis <span class="year-tag">2078 Chaitra</span></h2>
     <div class="q-box">
-      <div class="q-title">Find optimal crashed project completion time and corresponding minimum cost. Indirect cost = Rs.2500/week. [7 marks]</div>
+      <div class="q-title">Consider the data of a project as shown in table below. If the indirect cost per week is Rs. 2500, find the optimal crashed project completion time and corresponding minimum cost. [7 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>P</td><td>&mdash;</td><td>7</td><td>4</td><td>2500</td><td>2200</td></tr>
@@ -726,7 +728,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q7">Q7. TCTO Analysis <span class="year-tag">2078 Kartik</span></h2>
     <div class="q-box">
-      <div class="q-title">Calculate minimum cost, optimum duration. Also find minimum time to complete. Indirect cost = Rs.225/day. [8 marks]</div>
+      <div class="q-title">Calculate the minimum cost, optimum duration using time cost trade off analysis for the following project schedule consisting of seven activities. Also find the possible minimum time to complete the project. Indirect cost of the project is Rs.225 per day. [8 marks]</div>
       <table class="crash-table">
         <tr><th>S.N.</th><th>Activity</th><th>Predecessor</th><th>Normal (days)</th><th>Crash</th><th>Normal Cost</th><th>Crash Cost</th></tr>
         <tr><td>1</td><td>A</td><td>&mdash;</td><td>6</td><td>4</td><td>1400</td><td>1900</td></tr>
@@ -800,7 +802,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q8">Q8. TCTO Analysis <span class="year-tag">2076 Bhadra</span></h2>
     <div class="q-box">
-      <div class="q-title">Find optimal crashed project completion time and corresponding minimum cost. Indirect cost = Rs.2000/week. [16 marks]</div>
+      <div class="q-title">Consider the data of a project as shown in table below. If the indirect cost per week is Rs. 2000, find the optimal crashed project completion time and corresponding minimum cost. [16 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>8</td><td>5</td><td>2000</td><td>2300</td></tr>
@@ -910,7 +912,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q9">Q9. TCTO Analysis <span class="year-tag">2075 Bhadra</span></h2>
     <div class="q-box">
-      <div class="q-title">Find the lowest cost schedule. Indirect cost = Rs.400/week. [7 marks]</div>
+      <div class="q-title">The details of a project are shown below. If the indirect cost per week is Rs. 400, find the lowest cost schedule of the project. [7 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>8</td><td>5</td><td>2000</td><td>2200</td></tr>
@@ -997,7 +999,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q10">Q10. TCTO Analysis <span class="year-tag">2073 Bhadra</span></h2>
     <div class="q-box">
-      <div class="q-title">Find optimal crashed result. Indirect cost = Rs.300/week. [6 marks]</div>
+      <div class="q-title">The details of a project are shown below. If the indirect cost per week is Rs. 300, find the optimal crashed result of the project network. [6 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>7</td><td>4</td><td>1800</td><td>2100</td></tr>
@@ -1073,7 +1075,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q11">Q11. TCTO Analysis <span class="year-tag">2073 Magh</span></h2>
     <div class="q-box">
-      <div class="q-title">Find optimal crashed project completion time and corresponding minimum cost. Indirect cost = Rs.3000/week. [6 marks]</div>
+      <div class="q-title">Consider the data of a project as shown in table below. If the indirect cost per week is Rs. 3000, find the optimal crashed project completion time and corresponding minimum cost. [6 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (weeks)</th><th>Crash</th><th>Normal Cost (Rs.)</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>8</td><td>5</td><td>2000</td><td>2300</td></tr>
@@ -1133,7 +1135,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q12">Q12. TCTO Analysis <span class="year-tag">2070 Magh</span></h2>
     <div class="q-box">
-      <div class="q-title">Calculate Minimum Cost and Minimum Duration Schedule. Indirect cost = Rs.1000/day. [6 marks]</div>
+      <div class="q-title">Calculate Minimum Cost and Minimum Duration Schedule using time cost trade-off analysis of the project with given detail. Indirect cost is Rs. 1000 per day. [6 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Predecessor</th><th>Normal (days)</th><th>Crash</th><th>Normal Cost</th><th>Crash Cost</th></tr>
         <tr><td>A</td><td>&mdash;</td><td>5</td><td>2</td><td>5000</td><td>6200</td></tr>
@@ -1208,7 +1210,7 @@
     <!-- ═══════════════════════════════════════════ -->
     <h2 id="q13">Q13. TCTO &mdash; Critical Path Only <span class="year-tag">2069 Bhadra (Old)</span></h2>
     <div class="q-box">
-      <div class="q-title">Activities on critical path only. Indirect cost = Rs.30/day. Crashing: 1 day each for 1-2, 2-3, 5-6 and 3 days for 3-5. Find lowest cost schedule assuming no fresh critical path develops. [8 marks]</div>
+      <div class="q-title">For the activities lying on the critical path of a network, the normal duration and the crash duration along with their respective direct cost are given in the table. The overhead indirect cost is Rs 30/- per day. Crashing is possible for 1 day for each of the activities 1-2, 2-3, and 5-6 and 3 days for activity 3-5. Find the lowest cost schedule by crashing step by step assuming no fresh critical path is developed on crashing a project. [8 marks]</div>
       <table class="crash-table">
         <tr><th>Activity</th><th>Normal Duration</th><th>Normal Cost (Rs.)</th><th>Crash Duration</th><th>Crash Cost (Rs.)</th></tr>
         <tr><td>1-2</td><td>2 days</td><td>50</td><td>1 day</td><td>75</td></tr>
