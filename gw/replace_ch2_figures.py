@@ -1,264 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 2 &ndash; Fundamentals of Groundwater Motion</title>
-  <link rel="stylesheet" href="../../TES/style.css">
-  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <style>
-    /* GW-specific additions for content compatibility */
-    .equation { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; overflow-x: auto; }
-    .figure-container { text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); overflow-x: auto; background: var(--soft); }
-    .figcaption { font-style: italic; margin-top: 0.5rem; text-align: center; color: var(--muted); }
-    .info-table, .question-table, .formula-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    .info-table th, .info-table td, .question-table th, .question-table td,
-    .formula-table th, .formula-table td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
-    .info-table th, .question-table th, .formula-table th { font-weight: bold; background: var(--soft); }
-    .toc { border: 1px solid var(--line); padding: 1.2rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--soft); }
-    .toc ol { margin-bottom: 0; } .toc a { text-decoration: none; color: var(--accent); }
-    .toc a:hover { text-decoration: underline; }
-    .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-    .mini-note { border: 1px solid var(--line); padding: 0.85rem; margin: 1rem 0; border-radius: var(--radius); background: var(--soft); }
-    .solution-box { border: 2px solid var(--accent); padding: 1.2rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--accent-light); }
-    .solution-box h4 { font-weight: bold; margin-top: 0; border-bottom: 1px dashed var(--line); padding-bottom: 0.25rem; }
-    .study-note { border: 1px solid var(--green); padding: 1rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--green-lt); }
-    .study-note h4 { margin-top: 0; border-bottom: 1px dashed var(--line); padding-bottom: 0.25rem; }
-    .question-card { border: 1px solid var(--line); padding: 1rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--soft); }
-    .question-card h4 { margin-top: 0; border-bottom: 1px dashed var(--line); padding-bottom: 0.25rem; }
-    .question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
-    .pill { display: inline-block; border: 1px solid var(--line); padding: 2px 8px; font-size: 0.85em; border-radius: 4px; background: var(--soft); }
-    .data-block { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--soft); }
-    .data-block pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.92rem; line-height: 1.45; }
-    .example-box { border: 1px solid var(--accent); padding: 1.2rem; margin: 1.5rem 0; border-radius: var(--radius); background: var(--accent-light); }
-    @media (max-width: 760px) { .grid-two { grid-template-columns: 1fr; } }
+#!/usr/bin/env python3
+"""Replace all 21 figures in GW_THE/chapter2.html with improved SVGs."""
+import re
 
-    /* — Dark mode SVG support — */
-    :root {
-      --svg-fg: #111111;
-      --svg-bg-fill: #ffffff;
-      --svg-bg-soft: #eeeeee;
-      --svg-bg-light: #f5f5f5;
-      --svg-mid: #888888;
-      --svg-dim: #777777;
-      --svg-faint: #999999;
-      --svg-wave: #4a90d9;
-      --svg-accent: #2563eb;
-      --svg-accent-2: #dc2626;
-      --svg-accent-3: #16a34a;
-      --svg-label-bg: rgba(255,255,255,0.92);
-    }
-    [data-theme="dark"] {
-      --svg-fg: #e0ddd5;
-      --svg-bg-fill: #1e222a;
-      --svg-bg-soft: #252a36;
-      --svg-bg-light: #2a2d33;
-      --svg-mid: #8a8a8a;
-      --svg-dim: #9a9a9a;
-      --svg-faint: #7a7a7a;
-      --svg-wave: #5ea3e0;
-      --svg-accent: #60a5fa;
-      --svg-accent-2: #f87171;
-      --svg-accent-3: #4ade80;
-      --svg-label-bg: rgba(30,34,42,0.92);
-    }
-    /* Force SVG text to follow theme */
-    .figure-container svg text { fill: var(--svg-fg); }
-    .figure-container svg line,
-    .figure-container svg path,
-    .figure-container svg rect,
-    .figure-container svg circle,
-    .figure-container svg polygon,
-    .figure-container svg polyline,
-    .figure-container svg ellipse { stroke: var(--svg-fg); }
-    /* Font for all content */
-    body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
-      font-family: 'Times New Roman', Times, serif;
-    }
+FILE = r"GW_THE/chapter2.html"
 
-    /* — Additional dark mode SVG semantic colors — */
-    :root {
-      --svg-struct: #dddddd;
-      --svg-struct-2: #cccccc;
-      --svg-struct-3: #e0e0e0;
-      --svg-water: #d4e8ff;
-      --svg-water-2: #4fc3f7;
-      --svg-water-3: #3498db;
-      --svg-water-4: #2980b9;
-      --svg-water-5: #5dade2;
-      --svg-water-dk: #1a5276;
-      --svg-gold: #c9a84c;
-      --svg-earth: #8B7355;
-      --svg-orange: #ffb74d;
-      --svg-sand: #fff3cd;
-      --svg-red: #c0392b;
-      --svg-muted: #555555;
-    }
-    :root {
-      --svg-blue-lt: #d6eaf8;
-      --svg-blue-md: #aed6f1;
-      --svg-blue-accent: #2471a3;
-      --svg-blue-dk2: #1f618d;
-      --svg-blue-mid: #2e86c1;
-      --svg-green-lt: #d5f5e3;
-      --svg-green-md: #a9dfbf;
-      --svg-green-accent: #27ae60;
-      --svg-yellow-lt: #fef9e7;
-      --svg-yellow-md: #fad7a0;
-      --svg-orange-accent: #e67e22;
-      --svg-red-lt: #fadbd8;
-      --svg-red-md: #f5b7b1;
-      --svg-red-accent: #e74c3c;
-      --svg-purple-lt: #f5eef8;
-      --svg-purple-accent: #8e44ad;
-    }
-    [data-theme="dark"] {
-      --svg-blue-lt: #1a3050;
-      --svg-blue-md: #1e4a70;
-      --svg-blue-accent: #5ea3e0;
-      --svg-blue-dk2: #4a90d0;
-      --svg-blue-mid: #4a9ad8;
-      --svg-green-lt: #1a2a1e;
-      --svg-green-md: #1e3a25;
-      --svg-green-accent: #4ade80;
-      --svg-yellow-lt: #2a2518;
-      --svg-yellow-md: #5a4a20;
-      --svg-orange-accent: #f59e0b;
-      --svg-red-lt: #2a1a1e;
-      --svg-red-md: #3a2025;
-      --svg-red-accent: #f87171;
-      --svg-purple-lt: #251a30;
-      --svg-purple-accent: #c084fc;
-    }
-    :root {
-      --svg-slate: #2c3e50;
-      --svg-gray-md: #bbbbbb;
-      --svg-gray-cool: #aab7b8;
-      --svg-gray-lt: #d5dbdb;
-      --svg-sky: #85c1e9;
-      --svg-purple-lt2: #e8daef;
-    }
-    [data-theme="dark"] {
-      --svg-slate: #a0b0c0;
-      --svg-gray-md: #4a4d55;
-      --svg-gray-cool: #4a5055;
-      --svg-gray-lt: #353840;
-      --svg-sky: #4a90c8;
-      --svg-purple-lt2: #2a1e38;
-    }
+with open(FILE, "r", encoding="utf-8") as f:
+    html = f.read()
 
-    [data-theme="dark"] {
-      --svg-struct: #3a3d44;
-      --svg-struct-2: #33363d;
-      --svg-struct-3: #2e3138;
-      --svg-water: #1a3050;
-      --svg-water-2: #2a6090;
-      --svg-water-3: #2980b9;
-      --svg-water-4: #2471a3;
-      --svg-water-5: #4a90c8;
-      --svg-water-dk: #5ea3e0;
-      --svg-gold: #d4a017;
-      --svg-earth: #9a8060;
-      --svg-orange: #e69530;
-      --svg-sand: #2a2518;
-      --svg-red: #e74c3c;
-      --svg-muted: #999999;
-    }
-  </style>
-</head>
-<body>
-<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
-  <defs>
-    <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="var(--svg-fg, black)" stroke-width="1.2"/></pattern>
-    <pattern id="hatch-light" width="12" height="12" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="12" stroke="var(--svg-mid, #888)" stroke-width="0.8"/></pattern>
-    <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="var(--svg-dim, #777)"/><circle cx="9" cy="9" r="2" fill="var(--svg-dim, #777)"/></pattern>
-    <pattern id="dots-coarse" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="var(--svg-dim, #777)"/><circle cx="9" cy="9" r="2" fill="var(--svg-dim, #777)"/></pattern>
-    <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="var(--svg-faint, #999)"/></pattern>
-    <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse"><line x1="0" y1="10" x2="7" y2="0" stroke="var(--svg-fg, black)" stroke-width="0.8"/><line x1="7" y1="10" x2="14" y2="0" stroke="var(--svg-fg, black)" stroke-width="0.8"/></pattern>
-    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="var(--svg-fg, black)"/></marker>
-    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="var(--svg-fg, black)"/></marker>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="var(--svg-fg, black)"/></marker>
-    <marker id="arrow-rev" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="var(--svg-fg, black)"/></marker>
-  </defs>
-</svg>
-<div class="scroll-progress" id="scrollProgress"></div>
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
-<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+# Build mapping: figcaption substring → new figure-container HTML
+# We locate each <div class="figure-container"> ... </div> block by its figcaption text
 
-<div class="page">
-  <header>
-    <a href="../index.html" class="back-link">&larr; GW Home</a>
-    <div class="eyebrow">Chapter 2</div>
-    <h1>Fundamentals of Groundwater Motion <span style="font-weight:400;font-size:.55em">[8 Hours]</span></h1>
-    <div class="chapter-meta">
-      <span class="meta-badge topic">GW Motion & Darcy's Law</span>
-      <span class="meta-badge exam">~12+ Past Questions</span>
-    </div>
-  </header>
-  <main>
+REPLACEMENTS = {}
 
-    <!-- ═══ IMPORTANT TOPICS & MARKS DISTRIBUTION ═══ -->
-    <div class="exam-note" style="border-width: 2px; margin-bottom: 2rem;">
-        <h4 style="border-bottom: 2px solid var(--line); padding-bottom: 0.4rem; text-align: center; font-style: normal; font-size: 1.05em;">MOST IMPORTANT TOPICS &amp; MARKS DISTRIBUTION</h4>
-        <p style="margin-bottom: 0.5rem;"><strong>High-Yield Topics (by exam frequency):</strong></p>
-        <ol>
-            <li><strong>Darcy&rsquo;s Law</strong> &mdash; derivation, validity, and limitations &mdash; Asked 5/5 exams [4&ndash;6 marks]</li>
-            <li><strong>REV and continuum approach</strong> &mdash; Asked 4/5 exams [4&ndash;6 marks]</li>
-            <li><strong>Hydraulic conductivity, permeability, transmissivity</strong> &mdash; definitions and relations &mdash; Asked 3/5 exams [2&ndash;4 marks]</li>
-            <li><strong>Numericals</strong>: K from lab data, Darcy velocity, seepage velocity &mdash; Asked 4/5 exams [6&ndash;8 marks]</li>
-            <li><strong>Aquifer heterogeneity and anisotropy</strong> &mdash; Asked 2/5 exams [4 marks]</li>
-        </ol>
-        <p style="margin-bottom: 0.5rem;"><strong>Marks Each Time Asked:</strong></p>
-        <table class="info-table">
-            <tr><th>Exam</th><th>Questions</th><th>Total</th></tr>
-            <tr><td>2078 Chaitra</td><td>Q2a [6], Q2b [6 num]</td><td><strong>12</strong></td></tr>
-            <tr><td>2073 Bhadra</td><td>Q2a [4+2], Q2b [8 num]</td><td><strong>14</strong></td></tr>
-            <tr><td>2072 Ashwin</td><td>Q1 [4], Q2 [8]</td><td><strong>12</strong></td></tr>
-            <tr><td>2072 Magh</td><td>Q2 [6]</td><td><strong>6</strong></td></tr>
-            <tr><td>2071 Bhadra</td><td>Q2 [4], Q6 [4+4 num]</td><td><strong>12</strong></td></tr>
-        </table>
-    </div>
-
-<section class="toc">
-            <h4>CHAPTER ROADMAP</h4>
-            <ol>
-                <li><a href="#sec-2-1">Continuum approach and Representative Elementary Volume (REV)</a></li>
-                <li><a href="#sec-2-2">Darcy's experiment and one-dimensional groundwater flow</a></li>
-                <li><a href="#sec-2-3">Three-dimensional Darcy law and velocity concepts</a></li>
-                <li><a href="#sec-2-4">Validity of Darcy's law and non-Darcian flow</a></li>
-                <li><a href="#sec-2-5">Hydraulic conductivity, permeability, and transmissivity</a></li>
-                <li><a href="#sec-2-6">Aquifer heterogeneity and anisotropy</a></li>
-                <li><a href="#sec-2-7">Past question bank for Chapter 2</a></li>
-                <li><a href="#sec-2-8">Worked numerical solutions</a></li>
-                <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
-            </ol>
-        </section>
-
-        <section id="sec-2-1">
-            <h2>2.1 CONTINUUM APPROACH AND REPRESENTATIVE ELEMENTARY VOLUME</h2>
-
-            <div class="exam-note">
-                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
-                <ol>
-                    <li>Define Representative Elementary Volume and continuum approach of analysis. Explain the importance, validity, and limitations of Darcy's law in groundwater motion. [6] <em>(2078 Chaitra, Q2a)</em></li>
-                    <li>Explain the continuum and Representative Elementary Volume approach in groundwater flow analysis. Define permeability and transmissibility. [4+2] <em>(2073 Bhadra, Q2a)</em></li>
-                    <li>What do you understand by Representative Elementary Volume? Explain. [4] <em>(2071 Bhadra, Q2)</em></li>
-                </ol>
-            </div>
-
-            <div class="callout">
-                <strong>CORE IDEA:</strong> Groundwater actually moves through an intricate network of pores and fractures, but engineering analysis becomes possible only when the porous medium is treated as a continuum whose averaged properties can represent the microscopic void system.
-            </div>
-
-            <p>
-                At pore scale, water flow is highly irregular. Every grain, pore throat, and constriction changes the local direction and magnitude of velocity. If groundwater were analyzed pore by pore, the governing geometry would become too complex for routine engineering use. The <strong>continuum approach</strong> solves this difficulty by replacing the actual porous mass with an equivalent continuous material having averaged properties such as porosity, hydraulic conductivity, and storage.
-            </p>
-
-            <p>
-                The averaging is performed over a volume that is large compared with individual pores but still small compared with the total aquifer dimensions. This critical averaging scale is called the <strong>Representative Elementary Volume (REV)</strong>. Inside the REV, the measured property stops fluctuating erratically and begins to stabilize around a meaningful average value.
-            </p>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.1 ────────────────────────
+REPLACEMENTS["Figure 2.1:"] = '''<div class="figure-container">
                 <svg width="760" height="280" viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <!-- Panel 1: Pore Scale -->
                     <rect x="15" y="40" width="210" height="170" rx="10" fill="var(--svg-bg-soft)" stroke="var(--svg-fg)" stroke-width="2"/>
@@ -314,9 +69,10 @@
                     <text x="380" y="259" text-anchor="middle" font-size="11" font-style="italic" fill="var(--svg-fg)">Pore complexity &#x2192; REV averaging &#x2192; Continuum PDEs</text>
                 </svg>
                 <div class="figcaption">Figure 2.1: Groundwater modeling moves from pore-scale complexity to REV-based averaging and finally to a continuum description.</div>
-            </div>
+            </div>'''
 
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.2 ────────────────────────
+REPLACEMENTS["Figure 2.2:"] = '''<div class="figure-container">
                 <svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="340" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">REV Threshold — Property Stabilization</text>
                     <!-- Axes -->
@@ -341,16 +97,10 @@
                     <text x="636" y="142" font-size="9" fill="var(--svg-green-accent)">n&#x0304;</text>
                 </svg>
                 <div class="figcaption">Figure 2.2: The REV is reached when the averaged property becomes practically stable with increasing sample size.</div>
-            </div>
+            </div>'''
 
-            <h3>Why the Continuum Approach Is Important</h3>
-            <ol>
-                <li>It permits the use of differential equations for groundwater flow.</li>
-                <li>It allows the definition of field-scale properties such as hydraulic conductivity and storativity.</li>
-                <li>It links laboratory observations and pumping-test results to aquifer-scale predictions.</li>
-                <li>It justifies the use of Darcy's law as a macroscopic law even though pore-scale velocities vary strongly.</li>
-            </ol>
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.1b ────────────────────────
+REPLACEMENTS["Figure 2.1b:"] = '''<div class="figure-container">
                 <svg width="700" height="260" viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="350" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Microscopic vs Macroscopic (Continuum) View</text>
                     <!-- LEFT: Microscopic -->
@@ -387,17 +137,10 @@
                     <text x="350" y="251" text-anchor="middle" font-size="11" font-style="italic" fill="var(--svg-fg)">REV transforms complex pore geometry &#x2192; tractable continuum equations</text>
                 </svg>
                 <div class="figcaption">Figure 2.1b: The continuum approach replaces complex pore-scale flow with averaged properties (K, n) defined at every point.</div>
-            </div>
+            </div>'''
 
-
-            <h3>Limitations of the REV/Continuum Assumption</h3>
-            <ul>
-                <li>It becomes weak in highly fractured rock where the flow is controlled by a few discrete fractures.</li>
-                <li>It may fail near cavities, karst conduits, or very coarse gravel where pore-scale effects are dominant.</li>
-                <li>It is scale-dependent: a volume acceptable as REV in one formation may be too small or too large in another.</li>
-                <li>It does not eliminate heterogeneity; it only smooths the material enough to define local averages.</li>
-            </ul>
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.2b ────────────────────────
+REPLACEMENTS["Figure 2.2b:"] = '''<div class="figure-container">
                 <svg width="700" height="250" viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="350" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Where the REV Assumption Breaks Down</text>
                     <!-- Case 1: Fractured Rock -->
@@ -431,26 +174,10 @@
                     <text x="350" y="232" text-anchor="middle" font-size="11" font-style="italic" fill="var(--svg-fg)">In these cases, discrete-fracture or pipe-network models are needed</text>
                 </svg>
                 <div class="figcaption">Figure 2.2b: The REV/continuum approach fails in fractured rock, karst systems, and when the sample volume is smaller than the REV.</div>
-            </div>
+            </div>'''
 
-        </section>
-
-        <section id="sec-2-2">
-            <h2>2.2 DARCY'S EXPERIMENT AND ONE-DIMENSIONAL GROUNDWATER FLOW</h2>
-
-            <div class="exam-note">
-                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
-                <ol>
-                    <li>What is Darcy's law for groundwater flow? Derive the one-dimensional form and explain its validity. [6] <em>(2072 Magh, Q2)</em></li>
-                    <li>Starting from the general expression of Darcy's law for groundwater flow, derive the three-dimensional form of groundwater flow. [6] <em>(2072 Ashwin, Q2)</em></li>
-                </ol>
-            </div>
-
-            <p>
-                In 1856, Henry Darcy performed controlled sand-column experiments and observed that the discharge through a porous medium is directly proportional to the cross-sectional area and to the head loss, and inversely proportional to the flow length. This gave the empirical law that forms the basis of groundwater hydraulics.
-            </p>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.3 ────────────────────────
+REPLACEMENTS["Figure 2.3:"] = '''<div class="figure-container">
                 <svg width="720" height="340" viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="360" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Darcy&#x2019;s Sand Column Experiment (1856)</text>
                     <!-- Sand column body -->
@@ -493,13 +220,10 @@
                     <text x="360" y="296" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--svg-fg)">Q = KA(h&#x2081; &#x2212; h&#x2082;)/L</text>
                 </svg>
                 <div class="figcaption">Figure 2.3: Darcy&#x2019;s original experiment with a saturated sand column and piezometric head measurements.</div>
-            </div>
+            </div>'''
 
-            <div class="callout">
-                <strong>DARCY'S LAW:</strong> The discharge rate through a saturated porous medium is proportional to the hydraulic gradient and the cross-sectional area normal to flow.
-            </div>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.3d ────────────────────────
+REPLACEMENTS["Figure 2.3d:"] = '''<div class="figure-container">
                 <svg width="620" height="260" viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="310" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Darcy&#x2019;s Key Experimental Findings</text>
                     <!-- Q vs i graph -->
@@ -530,46 +254,10 @@
                     <text x="472" y="50" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">Q &#x221D; A (linear)</text>
                 </svg>
                 <div class="figcaption">Figure 2.3d: Darcy&#x2019;s experimental findings &#x2014; discharge is linearly proportional to both hydraulic gradient and cross-sectional area.</div>
-            </div>
+            </div>'''
 
-            <div class="equation">
-                $$ Q = K A \frac{h_1 - h_2}{L} = K A i $$
-            </div>
-
-            <p>
-                In sign-conscious form, groundwater moves from high head to low head. Therefore, if the positive coordinate axis is taken in the flow direction, Darcy's law is written as:
-            </p>
-
-            <div class="equation">
-                $$ q = \frac{Q}{A} = -K \frac{dh}{dl} $$
-            </div>
-
-            <p>
-                where <strong>q</strong> is the Darcy flux or specific discharge, <strong>K</strong> is hydraulic conductivity, and <strong>dh/dl</strong> is the hydraulic gradient. The negative sign indicates that head decreases in the direction of flow.
-            </p>
-
-            <div class="grid-two">
-                <div class="mini-note">
-                    <h4>DARCY FLUX</h4>
-                    <p>
-                        Darcy flux is the discharge per total cross-sectional area of the porous medium. It does not represent the actual average velocity inside pores because part of the area is occupied by solids.
-                    </p>
-                    <div class="equation">
-                        $$ q = \frac{Q}{A} $$
-                    </div>
-                </div>
-                <div class="mini-note">
-                    <h4>SEEPAGE VELOCITY</h4>
-                    <p>
-                        Actual average velocity through pore spaces is greater than Darcy flux and is found by dividing by effective porosity.
-                    </p>
-                    <div class="equation">
-                        $$ v_s = \frac{q}{n_e} = \frac{K i}{n_e} $$
-                    </div>
-                </div>
-            </div>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.3b ────────────────────────
+REPLACEMENTS["Figure 2.3b:"] = '''<div class="figure-container">
                 <svg width="650" height="260" viewBox="0 0 650 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="325" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Darcy Flux (q) vs Seepage Velocity (v&#x209B;)</text>
                     <!-- LEFT: Darcy Flux -->
@@ -600,42 +288,10 @@
                     <text x="325" y="247" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--svg-fg)">v&#x209B; = q/n &gt; q  (since n &lt; 1, actual velocity is higher)</text>
                 </svg>
                 <div class="figcaption">Figure 2.3b: Darcy flux (q) is computed over the total cross-section; the actual seepage velocity through pores is q/n, always larger since n &lt; 1.</div>
-            </div>
+            </div>'''
 
-            <table class="formula-table">
-                <tr>
-                    <th>Symbol</th>
-                    <th>Meaning</th>
-                    <th>Typical unit</th>
-                </tr>
-                <tr>
-                    <td>Q</td>
-                    <td>Total discharge</td>
-                    <td>m<sup>3</sup>/s or m<sup>3</sup>/day</td>
-                </tr>
-                <tr>
-                    <td>A</td>
-                    <td>Area normal to flow</td>
-                    <td>m<sup>2</sup></td>
-                </tr>
-                <tr>
-                    <td>i</td>
-                    <td>Hydraulic gradient, \((h_1-h_2)/L\)</td>
-                    <td>Dimensionless</td>
-                </tr>
-                <tr>
-                    <td>K</td>
-                    <td>Hydraulic conductivity</td>
-                    <td>m/s or m/day</td>
-                </tr>
-                <tr>
-                    <td>q</td>
-                    <td>Darcy flux or specific discharge</td>
-                    <td>m/s</td>
-                </tr>
-            </table>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.3c ────────────────────────
+REPLACEMENTS["Figure 2.3c:"] = '''<div class="figure-container">
                 <svg width="600" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="300" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Darcy&#x2019;s Law &#x2014; Sign Convention</text>
                     <!-- Aquifer strip -->
@@ -664,38 +320,10 @@
                     <text x="300" y="212" text-anchor="middle" font-size="10" fill="var(--svg-muted)">Negative sign ensures q is positive in direction of decreasing head</text>
                 </svg>
                 <div class="figcaption">Figure 2.3c: Darcy&#x2019;s law sign convention &#x2014; the negative sign ensures flow is in the direction of decreasing hydraulic head.</div>
-            </div>
+            </div>'''
 
-        </section>
-
-        <section id="sec-2-3">
-            <h2>2.3 THREE-DIMENSIONAL DARCY LAW AND HEAD GRADIENTS</h2>
-
-            <div class="exam-note">
-                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
-                <ol>
-                    <li>Starting from the general expression of Darcy's law for groundwater flow, derive the three-dimensional form of groundwater flow. [6] <em>(2072 Ashwin, Q2)</em></li>
-                    <li>What is Darcy's law for groundwater flow? Derive the one-dimensional form and explain its validity. [6] <em>(2072 Magh, Q2)</em></li>
-                </ol>
-            </div>
-
-            <p>
-                Natural groundwater flow is three-dimensional. If the hydraulic conductivity differs with direction, Darcy's law must be applied separately along the principal axes. For orthogonal directions x, y, and z, the discharge components are:
-            </p>
-
-            <div class="equation">
-                $$ q_x = -K_x \frac{\partial h}{\partial x}, \qquad q_y = -K_y \frac{\partial h}{\partial y}, \qquad q_z = -K_z \frac{\partial h}{\partial z} $$
-            </div>
-
-            <p>
-                In isotropic media, \(K_x = K_y = K_z = K\), and the vector form becomes:
-            </p>
-
-            <div class="equation">
-                $$ \vec{q} = -K \nabla h $$
-            </div>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.4 ────────────────────────
+REPLACEMENTS["Figure 2.4:"] = '''<div class="figure-container">
                 <svg width="700" height="340" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="350" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">3D Differential Control Volume</text>
                     <!-- 3D box (isometric) -->
@@ -729,9 +357,10 @@
                     <text x="350" y="334" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">q&#x20D7; = &#x2212;K&#x2207;h</text>
                 </svg>
                 <div class="figcaption">Figure 2.4: Differential control volume showing directional head gradients and the vector nature of Darcy flow.</div>
-            </div>
+            </div>'''
 
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.5 ────────────────────────
+REPLACEMENTS["Figure 2.5:"] = '''<div class="figure-container">
                 <svg width="700" height="280" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="350" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Hydraulic Head Components</text>
                     <!-- Datum -->
@@ -772,15 +401,10 @@
                     <text x="350" y="266" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--svg-fg)">h = z + p/&#x3B3;  (GW flows from larger h to smaller h)</text>
                 </svg>
                 <div class="figcaption">Figure 2.5: Hydraulic head is the sum of elevation head and pressure head, and head difference is the driving force for groundwater motion.</div>
-            </div>
+            </div>'''
 
-            <h3>Engineering Interpretation</h3>
-            <ul>
-                <li>A positive head gradient does not imply positive flow in the same coordinate direction because the negative sign in Darcy's law reverses the direction.</li>
-                <li>In layered deposits, the directional conductivities differ; therefore, the full three-dimensional form should be retained.</li>
-                <li>The equation is macroscopic: it predicts averaged discharge over a representative porous block, not the local velocity in each individual pore.</li>
-            </ul>
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.5b ────────────────────────
+REPLACEMENTS["Figure 2.5b:"] = '''<div class="figure-container">
                 <svg width="580" height="320" viewBox="0 0 580 320" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="290" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Piezometer &#x2014; Measuring Hydraulic Head at Point P</text>
                     <!-- Datum -->
@@ -820,36 +444,10 @@
                     <text x="290" y="308" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--svg-fg)">h = z + &#x3C8; = z + p/(&#x3C1;g)</text>
                 </svg>
                 <div class="figcaption">Figure 2.5b: Hydraulic head at point P is the sum of elevation head (z) and pressure head (&#x3C8; = p/&#x3C1;g) &#x2014; measured by the water level in a piezometer.</div>
-            </div>
+            </div>'''
 
-        </section>
-
-        <section id="sec-2-4">
-            <h2>2.4 VALIDITY OF DARCY'S LAW AND NON-DARCIAN FLOW</h2>
-
-            <div class="exam-note">
-                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
-                <ol>
-                    <li>Explain the importance, validity, and limitations of Darcy's law in groundwater motion. [Part of 6] <em>(2078 Chaitra, Q2a)</em></li>
-                    <li>For a fully penetrating well in a confined aquifer, determine the valid domain around the well for which Darcy's law applies. [6] <em>(2078 Chaitra, Q2b)</em></li>
-                    <li>A fully penetrating well is pumped at a constant rate from a confined aquifer. Determine the domain around the well for which Darcy's law is applicable. [8] <em>(2073 Bhadra, Q2b)</em></li>
-                    <li>For a homogeneous isotropic confined aquifer, state whether Darcy's law is applicable and determine the average flow velocity in pores. [8] <em>(2071 Bhadra, Q6)</em></li>
-                </ol>
-            </div>
-
-            <p>
-                Darcy's law is valid when flow through pores remains essentially laminar and viscous resistance dominates inertial effects. In groundwater engineering, this condition is commonly checked by a Reynolds number defined with mean grain diameter and either Darcy flux or seepage velocity, depending on the adopted convention.
-            </p>
-
-            <div class="equation">
-                $$ Re = \frac{q d_m}{\nu} \quad \text{or} \quad Re = \frac{v_s d_m}{\nu} $$
-            </div>
-
-            <p>
-                where \(d_m\) is average grain diameter and \(\nu\) is kinematic viscosity. Many groundwater exam problems state the limiting Reynolds number directly, so the accepted procedure is to use the form implied in class notes and solve for the region where \(Re \leq Re_{cr}\).
-            </p>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.6 ────────────────────────
+REPLACEMENTS["Figure 2.6:"] = '''<div class="figure-container">
                 <svg width="680" height="300" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="340" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Darcy vs Non-Darcian Flow Regimes</text>
                     <!-- Axes -->
@@ -872,9 +470,10 @@
                     <text x="395" y="70" text-anchor="start" font-size="9" fill="var(--svg-muted)">Re &#x2248; 1&#x2013;10</text>
                 </svg>
                 <div class="figcaption">Figure 2.6: Darcy&#x2019;s law is linear only over the laminar-flow range; at high gradients inertial effects cause nonlinear behavior.</div>
-            </div>
+            </div>'''
 
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.7 ────────────────────────
+REPLACEMENTS["Figure 2.7:"] = '''<div class="figure-container">
                 <svg width="680" height="320" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="340" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Darcy Validity Domain Around a Pumping Well</text>
                     <!-- Well -->
@@ -904,35 +503,10 @@
                     <text x="340" y="305" text-anchor="middle" font-size="11" fill="var(--svg-fg)">r&#x2098;&#x1D62;&#x2099; = Qd&#x2098; / (2&#x3C0;b&#x3BD;Re&#x1D9C;&#x1D63;) &#x2014; Darcy valid for r &#x2265; r&#x2098;&#x1D62;&#x2099;</text>
                 </svg>
                 <div class="figcaption">Figure 2.7: The radial velocity is highest near the well, so the Darcy-valid domain usually starts outside a minimum radius.</div>
-            </div>
+            </div>'''
 
-            <div class="study-note">
-                <h4>STANDARD EXAM PROCEDURE FOR WELL-DOMAIN PROBLEMS</h4>
-                <ol>
-                    <li>Write radial Darcy flux for a fully penetrating confined aquifer: \( q_r = \frac{Q}{2 \pi r b} \).</li>
-                    <li>Use the Reynolds-number criterion prescribed in the problem.</li>
-                    <li>Set \( Re = Re_{cr} \) to obtain the boundary of validity.</li>
-                    <li>Solve for \( r = r_{min} \). Darcy flow is accepted for \( r \geq r_{min} \).</li>
-                </ol>
-                <div class="equation">
-                    $$ Re = \frac{q_r d_m}{\nu} = \frac{Q d_m}{2 \pi r b \nu} $$
-                </div>
-                <div class="equation">
-                    $$ r_{min} = \frac{Q d_m}{2 \pi b \nu Re_{cr}} $$
-                </div>
-                <p>
-                    If class notes define Reynolds number with seepage velocity instead of Darcy flux, divide by effective porosity accordingly. The problem statement or the instructor's convention should control the final substitution.
-                </p>
-            </div>
-
-            <h3>Examples of Non-Darcian Flow in the Subsurface</h3>
-            <ul>
-                <li>Very coarse gravel packs near high-capacity wells.</li>
-                <li>Flow through large fractures and karst conduits.</li>
-                <li>Turbulent entrance losses in well screens and gravel envelopes.</li>
-                <li>Rapid infiltration through macropores, root channels, and fissured soils.</li>
-            </ul>
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.6b ────────────────────────
+REPLACEMENTS["Figure 2.6b:"] = '''<div class="figure-container">
                 <svg width="680" height="260" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="340" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Darcy&#x2019;s Law Validity &#x2014; Reynolds Number Regimes</text>
                     <!-- Axes -->
@@ -964,30 +538,10 @@
                     <text x="505" y="100" text-anchor="middle" font-size="8" fill="var(--svg-muted)">Karst, coarse gravel, near-well</text>
                 </svg>
                 <div class="figcaption">Figure 2.6b: Darcy&#x2019;s law is valid only for laminar flow (Re &lt; 1&#x2013;10). At higher Reynolds numbers, flow becomes non-linear and turbulent.</div>
-            </div>
+            </div>'''
 
-        </section>
-
-        <section id="sec-2-5">
-            <h2>2.5 HYDRAULIC CONDUCTIVITY, PERMEABILITY, AND TRANSMISSIVITY</h2>
-
-            <div class="exam-note">
-                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
-                <ol>
-                    <li>Explain the continuum and REV approach in groundwater flow analysis. Define permeability and transmissibility. [4+2] <em>(2073 Bhadra, Q2a)</em></li>
-                    <li>Define specific storage, specific yield, transmissibility, and anisotropy of an aquifer. [4] <em>(2072 Ashwin, Q1)</em></li>
-                </ol>
-            </div>
-
-            <div class="callout">
-                <strong>IMPORTANT DISTINCTION:</strong> Permeability is a property of the porous medium alone, whereas hydraulic conductivity depends both on the medium and on the fluid flowing through it.
-            </div>
-
-            <h3>Hydraulic Conductivity, K</h3>
-            <p>
-                Hydraulic conductivity is the discharge that occurs through a unit area of aquifer under unit hydraulic gradient. It measures how easily a particular fluid can move through the porous formation. It depends on pore-size distribution, connectivity, and also on fluid density and viscosity.
-            </p>
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.5c ────────────────────────
+REPLACEMENTS["Figure 2.5c:"] = '''<div class="figure-container">
                 <svg width="440" height="370" viewBox="0 0 440 370" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="220" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Constant-Head Permeameter</text>
                     <!-- Main tank -->
@@ -1024,14 +578,10 @@
                     <text x="220" y="358" text-anchor="middle" font-size="13" font-weight="bold" fill="var(--svg-fg)">K = QL / (A&#x394;h)</text>
                 </svg>
                 <div class="figcaption">Figure 2.5c: Constant-head permeameter &#x2014; water flows through the soil sample under constant head difference. K is calculated from measured Q.</div>
-            </div>
+            </div>'''
 
-
-            <h3>Intrinsic Permeability, k</h3>
-            <p>
-                Intrinsic permeability is a medium property independent of the fluid. It reflects the internal geometry of pores and is often expressed in m<sup>2</sup> or in Darcy units in petroleum engineering.
-            </p>
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.5d ────────────────────────
+REPLACEMENTS["Figure 2.5d:"] = '''<div class="figure-container">
                 <svg width="460" height="370" viewBox="0 0 460 370" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="230" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Falling-Head Permeameter</text>
                     <!-- Standpipe -->
@@ -1065,27 +615,10 @@
                     <text x="230" y="361" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--svg-fg)">K = (aL)/(At) &#xB7; ln(h&#x2081;/h&#x2082;)</text>
                 </svg>
                 <div class="figcaption">Figure 2.5d: Falling-head permeameter &#x2014; used for fine-grained soils. Head drops from h&#x2081; to h&#x2082; over time t.</div>
-            </div>
+            </div>'''
 
-
-            <div class="equation">
-                $$ K = \frac{k \rho g}{\mu} = \frac{k g}{\nu} $$
-            </div>
-
-            <p>
-                where \(\rho\) is fluid density, \(g\) is gravitational acceleration, \(\mu\) is dynamic viscosity, and \(\nu\) is kinematic viscosity.
-            </p>
-
-            <h3>Transmissivity, T</h3>
-            <p>
-                Transmissivity is the integrated transmitting capacity of the full saturated thickness of an aquifer. It is especially useful in pumping-test and well-hydraulics calculations.
-            </p>
-
-            <div class="equation">
-                $$ T = K b $$
-            </div>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.8 ────────────────────────
+REPLACEMENTS["Figure 2.8:"] = '''<div class="figure-container">
                 <svg width="700" height="370" viewBox="0 0 700 370" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="350" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Hydraulic Conductivity Range by Material Type</text>
                     <!-- Axes -->
@@ -1119,47 +652,10 @@
                     <text x="595" y="66" text-anchor="middle" font-size="9" fill="var(--svg-accent)">Very high</text>
                 </svg>
                 <div class="figcaption">Figure 2.8: Typical hydraulic-conductivity range increases strongly as grain size and pore connectivity increase.</div>
-            </div>
+            </div>'''
 
-            <table class="info-table">
-                <tr>
-                    <th>Material</th>
-                    <th>Typical K (m/s)</th>
-                    <th>Groundwater implication</th>
-                </tr>
-                <tr>
-                    <td>Clay</td>
-                    <td>10<sup>-11</sup> to 10<sup>-9</sup></td>
-                    <td>Acts as confining layer or aquiclude in practice</td>
-                </tr>
-                <tr>
-                    <td>Silt</td>
-                    <td>10<sup>-9</sup> to 10<sup>-6</sup></td>
-                    <td>Slow drainage and leakage-dominated flow</td>
-                </tr>
-                <tr>
-                    <td>Fine sand</td>
-                    <td>10<sup>-6</sup> to 10<sup>-4</sup></td>
-                    <td>Moderate aquifer behavior</td>
-                </tr>
-                <tr>
-                    <td>Coarse sand</td>
-                    <td>10<sup>-4</sup> to 10<sup>-3</sup></td>
-                    <td>Productive shallow aquifer material</td>
-                </tr>
-                <tr>
-                    <td>Gravel</td>
-                    <td>10<sup>-3</sup> to 10<sup>-1</sup></td>
-                    <td>Excellent water-bearing formation, though non-Darcy effects may appear near wells</td>
-                </tr>
-                <tr>
-                    <td>Fractured rock</td>
-                    <td>Highly variable</td>
-                    <td>Controlled by fracture frequency and connectivity rather than matrix pores</td>
-                </tr>
-            </table>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.9 ────────────────────────
+REPLACEMENTS["Figure 2.9:"] = '''<div class="figure-container">
                 <svg width="720" height="250" viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="360" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">k &#x2192; K &#x2192; T: Conceptual Distinction</text>
                     <!-- Box 1: k -->
@@ -1200,53 +696,10 @@
                     <text x="360" y="229" text-anchor="middle" font-size="11" fill="var(--svg-fg)">k = medium only &#x2192; K = medium + fluid &#x2192; T = K &#xD7; saturated thickness</text>
                 </svg>
                 <div class="figcaption">Figure 2.9: Conceptual distinction between intrinsic permeability, hydraulic conductivity, and transmissivity.</div>
-            </div>
-        </section>
+            </div>'''
 
-        <section id="sec-2-6">
-            <h2>2.6 AQUIFER HETEROGENEITY AND ANISOTROPY</h2>
-
-            <div class="exam-note">
-                <h4>PAST EXAM QUESTIONS ADDRESSED IN THIS SECTION:</h4>
-                <ol>
-                    <li>Define specific storage, specific yield, transmissibility, and anisotropy of an aquifer. [4] <em>(2072 Ashwin, Q1)</em></li>
-                    <li>Explain the continuum and REV approach in groundwater flow analysis. Define permeability and transmissibility. [Part of Q2a] <em>(2073 Bhadra)</em></li>
-                </ol>
-            </div>
-
-            <p>
-                A groundwater formation is <strong>homogeneous</strong> if the hydraulic properties remain the same from place to place. It is <strong>heterogeneous</strong> if the properties vary spatially. A formation is <strong>isotropic</strong> if conductivity is the same in all directions at a point, and <strong>anisotropic</strong> if conductivity depends on direction.
-            </p>
-
-            <table class="info-table">
-                <tr>
-                    <th>Condition</th>
-                    <th>Meaning</th>
-                    <th>Groundwater example</th>
-                </tr>
-                <tr>
-                    <td>Homogeneous</td>
-                    <td>Same K value everywhere in the region considered</td>
-                    <td>Uniform clean sand deposit</td>
-                </tr>
-                <tr>
-                    <td>Heterogeneous</td>
-                    <td>K changes from point to point</td>
-                    <td>Alternating sand and silt lenses</td>
-                </tr>
-                <tr>
-                    <td>Isotropic</td>
-                    <td>K is same in all directions at one point</td>
-                    <td>Randomly packed granular medium</td>
-                </tr>
-                <tr>
-                    <td>Anisotropic</td>
-                    <td>K differs with direction at one point</td>
-                    <td>Layered alluvium where \(K_h &gt; K_v\)</td>
-                </tr>
-            </table>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.10 ────────────────────────
+REPLACEMENTS["Figure 2.10:"] = '''<div class="figure-container">
                 <svg width="720" height="310" viewBox="0 0 720 310" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="360" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Anisotropy in Layered Deposits</text>
                     <!-- LEFT: Layered deposit -->
@@ -1288,20 +741,10 @@
                     <text x="360" y="295" text-anchor="middle" font-size="10" fill="var(--svg-muted)">Horizontal flow favors most permeable layer; vertical limited by least permeable</text>
                 </svg>
                 <div class="figcaption">Figure 2.10: Anisotropy commonly develops in layered deposits because horizontal flow encounters less resistance than vertical flow across bedding.</div>
-            </div>
+            </div>'''
 
-            <p>
-                In many alluvial aquifers, the horizontal conductivity exceeds the vertical conductivity because sedimentary bedding creates easier pathways parallel to layering. This anisotropy strongly influences recharge, leakage, and pumping-test interpretation.
-            </p>
-
-            <div class="mini-note">
-                <h4>EXAM LANGUAGE TO REMEMBER</h4>
-                <p>
-                    Heterogeneity refers to variation <strong>from point to point</strong>, whereas anisotropy refers to variation <strong>with direction at the same point</strong>. These two ideas are independent and can occur together.
-                </p>
-            </div>
-
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.10b ────────────────────────
+REPLACEMENTS["Figure 2.10b:"] = '''<div class="figure-container">
                 <svg width="680" height="320" viewBox="0 0 680 320" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="340" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">Equivalent K for Layered Systems</text>
                     <!-- LEFT: Parallel flow -->
@@ -1334,9 +777,10 @@
                     <text x="340" y="300" text-anchor="middle" font-size="10" fill="var(--svg-muted)">Anisotropy ratio K&#x2095;/K&#x1D65; = 2 to 100+ in sedimentary deposits</text>
                 </svg>
                 <div class="figcaption">Figure 2.10b: Equivalent hydraulic conductivity &#x2014; arithmetic mean for parallel flow, harmonic mean for perpendicular flow. K_h is always &#x2265; K_v.</div>
-            </div>
+            </div>'''
 
-            <div class="figure-container">
+# ──────────────────────── FIGURE 2.10c ────────────────────────
+REPLACEMENTS["Figure 2.10c:"] = '''<div class="figure-container">
                 <svg width="580" height="260" viewBox="0 0 580 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
                     <text x="290" y="22" text-anchor="middle" font-weight="bold" font-size="14" fill="var(--svg-fg)">3D Generalization of Darcy&#x2019;s Law &#x2014; K Tensor</text>
                     <text x="150" y="55" text-anchor="middle" font-size="12" fill="var(--svg-fg)">Anisotropic medium:</text>
@@ -1370,286 +814,45 @@
                     <text x="290" y="242" text-anchor="middle" font-size="11" font-style="italic" fill="var(--svg-fg)">Most groundwater problems assume K&#x2093;&#x2093; &#x2260; K&#x1D6A;&#x1D6A; (2D anisotropy) with K&#x2093;&#x2099; = 0</text>
                 </svg>
                 <div class="figcaption">Figure 2.10c: In fully anisotropic media, Darcy&#x2019;s law requires a 3&#xD7;3 conductivity tensor. For isotropic media it reduces to a scalar K.</div>
-            </div>
+            </div>'''
 
-        </section>
 
-        <section id="sec-2-7">
-            <h2>2.7 PAST QUESTION BANK FOR CHAPTER 2</h2>
+# ─────────── Now perform all replacements ───────────
+def replace_figure(html_content, figcaption_key, new_html):
+    """Replace the <div class="figure-container">..figcaption_key..</div> block."""
+    # Find the figcaption
+    idx = html_content.find(figcaption_key)
+    if idx == -1:
+        print(f"  WARNING: '{figcaption_key}' not found!")
+        return html_content
+    
+    # Find the closing </div> of figcaption, then closing </div> of figure-container
+    end_figcaption = html_content.find('</div>', idx)
+    end_container = html_content.find('</div>', end_figcaption + 6)
+    if end_container == -1:
+        # Sometimes the </div> for figcaption IS the container close
+        end_container = end_figcaption
+    end_pos = end_container + len('</div>')
+    
+    # Find the start: search backward for <div class="figure-container">
+    search_start = html_content.rfind('<div class="figure-container">', 0, idx)
+    if search_start == -1:
+        print(f"  WARNING: Could not find figure-container start for '{figcaption_key}'!")
+        return html_content
+    
+    old_block = html_content[search_start:end_pos]
+    print(f"  Replacing '{figcaption_key}' ({len(old_block)} chars)")
+    return html_content[:search_start] + new_html + html_content[end_pos:]
 
-            <p>
-                The following list consolidates the chapter 2 past questions into theory and numerical categories. This is intended as a revision sheet that can be read independently from the detailed discussion above.
-            </p>
 
-            <h3>A. Theory and Definition Questions</h3>
+count = 0
+for key, new_html in REPLACEMENTS.items():
+    old_len = len(html)
+    html = replace_figure(html, key, new_html)
+    if len(html) != old_len:
+        count += 1
 
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2078 Chaitra</span>
-                    <span class="pill">Q2(a)</span>
-                    <span class="pill">Theory</span>
-                </div>
-                <p>Define Representative Elementary Volume and continuum approach of analysis. Explain the importance, validity, and limitations of Darcy's law in groundwater motion.</p>
-            </div>
+with open(FILE, "w", encoding="utf-8") as f:
+    f.write(html)
 
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2073 Bhadra</span>
-                    <span class="pill">Q2(a)</span>
-                    <span class="pill">Theory</span>
-                </div>
-                <p>Explain the continuum and Representative Elementary Volume approach in groundwater flow analysis. Define permeability and transmissibility.</p>
-            </div>
-
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2072 Ashwin</span>
-                    <span class="pill">Q1</span>
-                    <span class="pill">Definition</span>
-                </div>
-                <p>Define specific storage, specific yield, transmissibility, and anisotropy of an aquifer.</p>
-            </div>
-
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2072 Ashwin</span>
-                    <span class="pill">Q2</span>
-                    <span class="pill">Derivation</span>
-                </div>
-                <p>Starting from the general expression of Darcy's law for groundwater flow, derive the three-dimensional form of groundwater flow.</p>
-            </div>
-
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2072 Magh</span>
-                    <span class="pill">Q2</span>
-                    <span class="pill">Derivation</span>
-                </div>
-                <p>What is Darcy's law for groundwater flow? Derive the one-dimensional form and explain its validity.</p>
-            </div>
-
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2071 Bhadra</span>
-                    <span class="pill">Q2</span>
-                    <span class="pill">Theory</span>
-                </div>
-                <p>What do you understand by Representative Elementary Volume? Explain.</p>
-            </div>
-
-            <h3>B. Numerical and Applied Questions</h3>
-
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2078 Chaitra</span>
-                    <span class="pill">Q2(b)</span>
-                    <span class="pill">Numerical</span>
-                </div>
-                <p>For a pumping well in a confined aquifer, determine the valid domain around the well for which Darcy's law applies using Reynolds number and kinematic viscosity data.</p>
-                <div class="data-block">
-                    <pre>Aquifer thickness = 18 m
-Pumping rate = 0.3 m^3/s
-Average grain diameter = 1 mm
-Reynolds limit = 8
-Kinematic viscosity = 1 centistoke</pre>
-                </div>
-            </div>
-
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2073 Bhadra</span>
-                    <span class="pill">Q2(b)</span>
-                    <span class="pill">Numerical</span>
-                </div>
-                <p>A fully penetrating well is pumped at a constant rate from a confined aquifer. Determine the domain around the well for which Darcy's law is applicable.</p>
-                <div class="data-block">
-                    <pre>Pumping rate = 1000 m^3/hr
-Aquifer thickness = 28 m
-Average grain diameter = 1 mm
-Reynolds limit = 6
-Kinematic viscosity = 1 centistoke</pre>
-                </div>
-            </div>
-
-            <div class="question-card">
-                <div class="question-meta">
-                    <span class="pill">2071 Bhadra</span>
-                    <span class="pill">Q6</span>
-                    <span class="pill">Numerical</span>
-                </div>
-                <p>For a homogeneous isotropic confined aquifer with given porosity, permeability, piezometric heads, grain size, and viscosity, state whether Darcy's law is applicable and determine the average flow velocity in pores.</p>
-                <div class="data-block">
-                    <pre>Aquifer thickness = 25 m
-Effective porosity = 20%
-Permeability = 15 m/day
-Observation well spacing = 1100 m
-Piezometric heads = 5.5 m and 3 m
-Average grain diameter = 1 mm
-Kinematic viscosity = 0.01 cm^2/s</pre>
-                </div>
-            </div>
-
-            <h3>C. Quick Revision Matrix</h3>
-
-            <table class="question-table">
-                <tr>
-                    <th>Theme</th>
-                    <th>Years asked</th>
-                    <th>What to prepare</th>
-                </tr>
-                <tr>
-                    <td>REV and continuum</td>
-                    <td>2078, 2073, 2071</td>
-                    <td>Definition, necessity, and practical meaning in porous-media flow</td>
-                </tr>
-                <tr>
-                    <td>Darcy law derivation</td>
-                    <td>2072 Ashwin, 2072 Magh</td>
-                    <td>1D and 3D forms, sign convention, and assumptions</td>
-                </tr>
-                <tr>
-                    <td>Darcy validity</td>
-                    <td>2078, 2073, 2071</td>
-                    <td>Reynolds number, laminar range, radial-flow domain around a well</td>
-                </tr>
-                <tr>
-                    <td>Hydraulic properties</td>
-                    <td>2073, 2072</td>
-                    <td>K, k, T, anisotropy, and unit conversions</td>
-                </tr>
-            </table>
-        </section>
-
-        
-        <!-- ======== 2.8 WORKED SOLUTIONS ======== -->
-        <section id="sec-2-8">
-            <h2>2.8 WORKED NUMERICAL SOLUTIONS</h2>
-
-            <div class="solution-box">
-                <h4>SOLUTION 1: 2078 Chaitra Q2(b) — Darcy Validity Domain</h4>
-                <p><strong>Given:</strong> \(Q = 0.3\) m&sup3;/s, \(b = 18\) m, \(d_m = 1\) mm = \(0.001\) m, \(Re_{cr} = 8\), \(\nu = 1\) centistoke = \(1 \times 10^{-6}\) m&sup2;/s.</p>
-                <p><strong>Required:</strong> Minimum radius \(r_{min}\) from the well beyond which Darcy's law is valid.</p>
-                <p><strong>Step 1:</strong> For a fully penetrating well in a confined aquifer, the Darcy flux at radial distance \(r\) is:</p>
-                <div class="equation">$$ q_r = \frac{Q}{2\pi r b} $$</div>
-                <p><strong>Step 2:</strong> Reynolds number defined using Darcy flux:</p>
-                <div class="equation">$$ Re = \frac{q_r \cdot d_m}{\nu} = \frac{Q \cdot d_m}{2\pi \cdot r \cdot b \cdot \nu} $$</div>
-                <p><strong>Step 3:</strong> At the boundary of Darcy validity, \(Re = Re_{cr}\). Solve for \(r_{min}\):</p>
-                <div class="equation">$$ r_{min} = \frac{Q \cdot d_m}{2\pi \cdot b \cdot \nu \cdot Re_{cr}} $$</div>
-                <p><strong>Step 4:</strong> Substitute values:</p>
-                <div class="equation">$$ r_{min} = \frac{0.3 \times 0.001}{2\pi \times 18 \times 1 \times 10^{-6} \times 8} $$</div>
-                <div class="equation">$$ r_{min} = \frac{3 \times 10^{-4}}{2\pi \times 144 \times 10^{-6}} = \frac{3 \times 10^{-4}}{9.0478 \times 10^{-4}} $$</div>
-                <div class="equation">$$ \boxed{r_{min} = 0.332 \text{ m} \approx 0.33 \text{ m}} $$</div>
-                <p><strong>Conclusion:</strong> Darcy's law is valid for \(r \geq 0.33\) m from the well centre. Within 0.33 m, flow velocities are too high and non-Darcian effects dominate.</p>
-            </div>
-
-            <div class="solution-box">
-                <h4>SOLUTION 2: 2073 Bhadra Q2(b) — Darcy Validity Domain</h4>
-                <p><strong>Given:</strong> \(Q = 1000\) m&sup3;/hr, \(b = 28\) m, \(d_m = 1\) mm = \(0.001\) m, \(Re_{cr} = 6\), \(\nu = 1\) centistoke = \(1 \times 10^{-6}\) m&sup2;/s.</p>
-                <p><strong>Step 1:</strong> Convert units: \(Q = \frac{1000}{3600} = 0.2778\) m&sup3;/s.</p>
-                <p><strong>Step 2:</strong> Apply the formula:</p>
-                <div class="equation">$$ r_{min} = \frac{Q \cdot d_m}{2\pi \cdot b \cdot \nu \cdot Re_{cr}} = \frac{0.2778 \times 0.001}{2\pi \times 28 \times 10^{-6} \times 6} $$</div>
-                <div class="equation">$$ r_{min} = \frac{2.778 \times 10^{-4}}{2\pi \times 168 \times 10^{-6}} = \frac{2.778 \times 10^{-4}}{1.0556 \times 10^{-3}} $$</div>
-                <div class="equation">$$ \boxed{r_{min} = 0.263 \text{ m} \approx 0.26 \text{ m}} $$</div>
-                <p><strong>Conclusion:</strong> Darcy's law is applicable for \(r \geq 0.26\) m from the pumping well.</p>
-            </div>
-
-            <div class="solution-box">
-                <h4>SOLUTION 3: 2071 Bhadra Q6 — Darcy Applicability and Pore Velocity</h4>
-                <p><strong>Given:</strong> \(b = 25\) m, \(n_e = 0.20\), \(K = 15\) m/day, \(L = 1100\) m, \(h_1 = 5.5\) m, \(h_2 = 3.0\) m, \(d_m = 1\) mm = \(0.001\) m, \(\nu = 0.01\) cm&sup2;/s = \(1 \times 10^{-6}\) m&sup2;/s.</p>
-                <p><strong>Step 1: Hydraulic gradient</strong></p>
-                <div class="equation">$$ i = \frac{h_1 - h_2}{L} = \frac{5.5 - 3.0}{1100} = \frac{2.5}{1100} = 2.273 \times 10^{-3} $$</div>
-                <p><strong>Step 2: Darcy flux (specific discharge)</strong></p>
-                <div class="equation">$$ q = K \cdot i = 15 \times 2.273 \times 10^{-3} = 0.0341 \text{ m/day} $$</div>
-                <p>Convert to m/s: \(q = \frac{0.0341}{86400} = 3.945 \times 10^{-7}\) m/s.</p>
-                <p><strong>Step 3: Check Darcy validity (Reynolds number)</strong></p>
-                <div class="equation">$$ Re = \frac{q \cdot d_m}{\nu} = \frac{3.945 \times 10^{-7} \times 0.001}{1 \times 10^{-6}} = \frac{3.945 \times 10^{-10}}{10^{-6}} $$</div>
-                <div class="equation">$$ \boxed{Re = 3.95 \times 10^{-4} \ll 1} $$</div>
-                <p><strong>Conclusion:</strong> Since \(Re \approx 0.0004\), which is far below any commonly accepted limit (1–10), <strong>Darcy's law is fully applicable</strong>.</p>
-                <p><strong>Step 4: Average pore velocity (seepage velocity)</strong></p>
-                <div class="equation">$$ v_s = \frac{q}{n_e} = \frac{0.0341}{0.20} $$</div>
-                <div class="equation">$$ \boxed{v_s = 0.170 \text{ m/day} = 1.973 \times 10^{-6} \text{ m/s}} $$</div>
-                <p>The actual groundwater velocity in the pores is about 5 times the Darcy flux, and the flow is deeply in the laminar regime.</p>
-            </div>
-        </section>
-
-        <section id="sec-summary">
-            <h2>CHAPTER SUMMARY AND EXAM FORMULA SHEET</h2>
-
-            <table class="formula-table">
-                <tr>
-                    <th>Concept</th>
-                    <th>Key relation / statement</th>
-                </tr>
-                <tr>
-                    <td>Continuum assumption</td>
-                    <td>Porous medium is treated as continuous once a representative elementary volume is identified.</td>
-                </tr>
-                <tr>
-                    <td>Darcy law</td>
-                    <td>\( Q = KAi \), or \( q = -K \frac{dh}{dl} \)</td>
-                </tr>
-                <tr>
-                    <td>Seepage velocity</td>
-                    <td>\( v_s = q / n_e \)</td>
-                </tr>
-                <tr>
-                    <td>3D Darcy law</td>
-                    <td>\( q_x = -K_x \frac{\partial h}{\partial x}, q_y = -K_y \frac{\partial h}{\partial y}, q_z = -K_z \frac{\partial h}{\partial z} \)</td>
-                </tr>
-                <tr>
-                    <td>Vector form</td>
-                    <td>\( \vec{q} = -K \nabla h \) for isotropic media</td>
-                </tr>
-                <tr>
-                    <td>Hydraulic head</td>
-                    <td>\( h = z + p/\gamma \)</td>
-                </tr>
-                <tr>
-                    <td>Intrinsic permeability relation</td>
-                    <td>\( K = k \rho g / \mu = k g / \nu \)</td>
-                </tr>
-                <tr>
-                    <td>Transmissivity</td>
-                    <td>\( T = K b \)</td>
-                </tr>
-                <tr>
-                    <td>Darcy validity test</td>
-                    <td>\( Re = q d_m / \nu \) or \( Re = v_s d_m / \nu \), with the adopted class convention</td>
-                </tr>
-                <tr>
-                    <td>Radial confined-flow criterion</td>
-                    <td>\( q_r = Q / (2 \pi r b) \), so \( r_{min} = Q d_m / (2 \pi b \nu Re_{cr}) \) when Reynolds number is defined using Darcy flux</td>
-                </tr>
-                <tr>
-                    <td>Anisotropy</td>
-                    <td>Directional conductivity varies at a point, commonly \(K_h &gt; K_v\) in layered alluvium</td>
-                </tr>
-            </table>
-
-            <div class="study-note">
-                <h4>LAST-MINUTE EXAM FOCUS</h4>
-                <ol>
-                    <li>Memorize the physical meaning of REV, not just its wording.</li>
-                    <li>Be able to derive 1D and 3D Darcy equations with sign convention.</li>
-                    <li>Keep the distinction between Darcy flux and seepage velocity clear.</li>
-                    <li>Practice Reynolds-number based validity problems for radial well flow.</li>
-                    <li>Do not mix up hydraulic conductivity, intrinsic permeability, and transmissivity.</li>
-                </ol>
-            </div>
-        </section>
-    <nav class="chapter-nav">
-      <a href="chapter1.html">
-        <span class="nav-label">&larr; Previous</span>
-        <span class="nav-title">Ch 1: Occurrence of GW</span>
-      </a>
-      <a href="chapter3.html" class="nav-next">
-        <span class="nav-label">Next &rarr;</span>
-        <span class="nav-title">Ch 3: Flow Theory</span>
-      </a>
-    </nav>
-  </main>
-</div>
-
-<script src="../../common.js"></script>
-</body>
-</html>
+print(f"\nDone! Replaced {count}/{len(REPLACEMENTS)} figures.")
