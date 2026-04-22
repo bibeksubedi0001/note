@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7 &ndash; Water Well Design and Construction</title>
+  <link rel="stylesheet" href="../../TES/style.css">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    /* GW-specific additions for content compatibility */
+    .equation { display: flex; justify-content: center; align-items: center; margin: 1.5rem 0; overflow-x: auto; }
+    .figure-container { text-align: center; margin: 2rem 0; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); overflow-x: auto; background: var(--soft); }
+    .figcaption { font-style: italic; margin-top: 0.5rem; text-align: center; color: var(--muted); }
+    .info-table, .question-table, .formula-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .info-table th, .info-table td, .question-table th, .question-table td,
+    .formula-table th, .formula-table td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+    .info-table th, .question-table th, .formula-table th { font-weight: bold; background: var(--soft); }
+    .toc { border: 1px solid var(--line); padding: 1.2rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--soft); }
+    .toc ol { margin-bottom: 0; } .toc a { text-decoration: none; color: var(--accent); }
+    .toc a:hover { text-decoration: underline; }
+    .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .mini-note { border: 1px solid var(--line); padding: 0.85rem; margin: 1rem 0; border-radius: var(--radius); background: var(--soft); }
+    .solution-box { border: 2px solid var(--accent); padding: 1.2rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--accent-light); }
+    .solution-box h4 { font-weight: bold; margin-top: 0; border-bottom: 1px dashed var(--line); padding-bottom: 0.25rem; }
+    .study-note { border: 1px solid var(--green); padding: 1rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--green-lt); }
+    .study-note h4 { margin-top: 0; border-bottom: 1px dashed var(--line); padding-bottom: 0.25rem; }
+    .question-card { border: 1px solid var(--line); padding: 1rem; margin-bottom: 1.5rem; border-radius: var(--radius); background: var(--soft); }
+    .question-card h4 { margin-top: 0; border-bottom: 1px dashed var(--line); padding-bottom: 0.25rem; }
+    .question-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .pill { display: inline-block; border: 1px solid var(--line); padding: 2px 8px; font-size: 0.85em; border-radius: 4px; background: var(--soft); }
+    .data-block { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--soft); }
+    .data-block pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.92rem; line-height: 1.45; }
+    .example-box { border: 1px solid var(--accent); padding: 1.2rem; margin: 1.5rem 0; border-radius: var(--radius); background: var(--accent-light); }
+    @media (max-width: 760px) { .grid-two { grid-template-columns: 1fr; } }
+
+    /* — Dark mode SVG support — */
+    :root {
+      --svg-fg: #111111;
+      --svg-bg-fill: #ffffff;
+      --svg-bg-soft: #eeeeee;
+      --svg-bg-light: #f5f5f5;
+      --svg-mid: #888888;
+      --svg-dim: #777777;
+      --svg-faint: #999999;
+      --svg-wave: #4a90d9;
+      --svg-accent: #2563eb;
+      --svg-accent-2: #dc2626;
+      --svg-accent-3: #16a34a;
+      --svg-label-bg: rgba(255,255,255,0.92);
+    }
+    [data-theme="dark"] {
+      --svg-fg: #e0ddd5;
+      --svg-bg-fill: #1e222a;
+      --svg-bg-soft: #252a36;
+      --svg-bg-light: #2a2d33;
+      --svg-mid: #8a8a8a;
+      --svg-dim: #9a9a9a;
+      --svg-faint: #7a7a7a;
+      --svg-wave: #5ea3e0;
+      --svg-accent: #60a5fa;
+      --svg-accent-2: #f87171;
+      --svg-accent-3: #4ade80;
+      --svg-label-bg: rgba(30,34,42,0.92);
+    }
+    /* Force SVG text to follow theme */
+    .figure-container svg text { fill: var(--svg-fg); }
+    .figure-container svg line,
+    .figure-container svg path,
+    .figure-container svg rect,
+    .figure-container svg circle,
+    .figure-container svg polygon,
+    .figure-container svg polyline,
+    .figure-container svg ellipse { stroke: var(--svg-fg); }
+    /* Font for all content */
+    body, h1, h2, h3, h4, h5, p, span, div, li, table, td, th, a, small {
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    /* — Additional dark mode SVG semantic colors — */
+    :root {
+      --svg-struct: #dddddd;
+      --svg-struct-2: #cccccc;
+      --svg-struct-3: #e0e0e0;
+      --svg-water: #d4e8ff;
+      --svg-water-2: #4fc3f7;
+      --svg-water-3: #3498db;
+      --svg-water-4: #2980b9;
+      --svg-water-5: #5dade2;
+      --svg-water-dk: #1a5276;
+      --svg-gold: #c9a84c;
+      --svg-earth: #8B7355;
+      --svg-orange: #ffb74d;
+      --svg-sand: #fff3cd;
+      --svg-red: #c0392b;
+      --svg-muted: #555555;
+    }
+    /* — Phase 3: Semantic accent colors for dark mode — */
+    :root {
+      --svg-blue-lt: #d6eaf8;
+      --svg-blue-md: #aed6f1;
+      --svg-blue-accent: #2471a3;
+      --svg-blue-dk2: #1f618d;
+      --svg-blue-mid: #2e86c1;
+      --svg-green-lt: #d5f5e3;
+      --svg-green-md: #a9dfbf;
+      --svg-green-accent: #27ae60;
+      --svg-yellow-lt: #fef9e7;
+      --svg-yellow-md: #fad7a0;
+      --svg-orange-accent: #e67e22;
+      --svg-red-lt: #fadbd8;
+      --svg-red-md: #f5b7b1;
+      --svg-red-accent: #e74c3c;
+      --svg-purple-lt: #f5eef8;
+      --svg-purple-accent: #8e44ad;
+    }
+    [data-theme="dark"] {
+      --svg-blue-lt: #1a3050;
+      --svg-blue-md: #1e4a70;
+      --svg-blue-accent: #5ea3e0;
+      --svg-blue-dk2: #4a90d0;
+      --svg-blue-mid: #4a9ad8;
+      --svg-green-lt: #1a2a1e;
+      --svg-green-md: #1e3a25;
+      --svg-green-accent: #4ade80;
+      --svg-yellow-lt: #2a2518;
+      --svg-yellow-md: #5a4a20;
+      --svg-orange-accent: #f59e0b;
+      --svg-red-lt: #2a1a1e;
+      --svg-red-md: #3a2025;
+      --svg-red-accent: #f87171;
+      --svg-purple-lt: #251a30;
+      --svg-purple-accent: #c084fc;
+    }
+    /* — Phase 4: Final remaining accent colors — */
+    :root {
+      --svg-slate: #2c3e50;
+      --svg-gray-md: #bbbbbb;
+      --svg-gray-cool: #aab7b8;
+      --svg-gray-lt: #d5dbdb;
+      --svg-sky: #85c1e9;
+      --svg-purple-lt2: #e8daef;
+    }
+    [data-theme="dark"] {
+      --svg-slate: #a0b0c0;
+      --svg-gray-md: #4a4d55;
+      --svg-gray-cool: #4a5055;
+      --svg-gray-lt: #353840;
+      --svg-sky: #4a90c8;
+      --svg-purple-lt2: #2a1e38;
+    }
+
+
+    [data-theme="dark"] {
+      --svg-struct: #3a3d44;
+      --svg-struct-2: #33363d;
+      --svg-struct-3: #2e3138;
+      --svg-water: #1a3050;
+      --svg-water-2: #2a6090;
+      --svg-water-3: #2980b9;
+      --svg-water-4: #2471a3;
+      --svg-water-5: #4a90c8;
+      --svg-water-dk: #5ea3e0;
+      --svg-gold: #d4a017;
+      --svg-earth: #9a8060;
+      --svg-orange: #e69530;
+      --svg-sand: #2a2518;
+      --svg-red: #e74c3c;
+      --svg-muted: #999999;
+    }
+  </style>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="var(--svg-fg, black)" stroke-width="1.2"/></pattern>
+    <pattern id="hatch-light" width="12" height="12" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="12" stroke="var(--svg-mid, #888)" stroke-width="0.8"/></pattern>
+    <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="var(--svg-dim, #777)"/><circle cx="9" cy="9" r="2" fill="var(--svg-dim, #777)"/></pattern>
+    <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="var(--svg-faint, #999)"/></pattern>
+    <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse"><line x1="0" y1="10" x2="7" y2="0" stroke="var(--svg-fg, black)" stroke-width="0.8"/><line x1="7" y1="10" x2="14" y2="0" stroke="var(--svg-fg, black)" stroke-width="0.8"/></pattern>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="var(--svg-fg, black)"/></marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="var(--svg-fg, black)"/></marker>
+  </defs>
+</svg>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; GW Home</a>
+    <div class="eyebrow">Chapter 7</div>
+    <h1>Water Well Design and Construction <span style="font-weight:400;font-size:.55em">[6 Hours]</span></h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">Well Design</span>
+      <span class="meta-badge exam">~15+ Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+
+
+    <section class="toc">
+        <h4>CHAPTER ROADMAP</h4>
+        <ol>
+            <li><a href="#sec-7-1">Introduction &mdash; types of water wells</a></li>
+            <li><a href="#sec-7-2">Open wells</a></li>
+            <li><a href="#sec-7-3">Tube wells</a></li>
+            <li><a href="#sec-7-4">Comparison of open wells and tube wells</a></li>
+            <li><a href="#sec-7-5">Recuperation test on open wells</a></li>
+            <li><a href="#sec-7-6">Yield of open wells</a></li>
+            <li><a href="#sec-7-7">Design of tube wells</a></li>
+            <li><a href="#sec-7-8">Well screens</a></li>
+            <li><a href="#sec-7-9">Gravel pack</a></li>
+            <li><a href="#sec-7-10">Well development and maintenance</a></li>
+            <li><a href="#sec-7-11">Infiltration galleries</a></li>
+            <li><a href="#sec-7-12">Radial collector wells (Ranney wells)</a></li>
+            <li><a href="#sec-7-13">Past question bank for Chapter 7</a></li>
+            <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
+        </ol>
+    </section>
+
+    <!-- ======== 7.1 INTRODUCTION ======== -->
+    <section id="sec-7-1">
+        <h2>7.1 INTRODUCTION &mdash; TYPES OF WATER WELLS</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+            <p><strong>2073 Bhadra Q8(a) [3]:</strong> Differentiate between open well and tube well.</p>
+            <p><strong>2072 Ashwin Q10 [4+2]:</strong> What do you mean by a tube well? Explain different types of tube well with figure.</p>
+        </div>
+
+        <p>A <strong>water well</strong> is a structure created by digging, drilling, or driving into the ground to access groundwater from aquifers. Wells are the primary means of extracting groundwater for domestic, agricultural, and industrial use. The design and type of well depends on the geological conditions, depth to water table, required yield, and available resources.</p>
+
+        <p>Wells can be broadly classified as:</p>
+        <ol>
+            <li><strong>Open wells</strong> (dug wells) &mdash; large diameter, shallow depth</li>
+            <li><strong>Tube wells</strong> (drilled wells) &mdash; small diameter, greater depth</li>
+            <li><strong>Driven wells</strong> &mdash; small diameter pipes driven into soft formations</li>
+            <li><strong>Bored wells</strong> &mdash; constructed using hand or power augers</li>
+            <li><strong>Jetted wells</strong> &mdash; constructed by jetting water to wash away soil</li>
+        </ol>
+
+        <p>For the IOE syllabus, the focus is on <strong>open wells</strong> and <strong>tube wells</strong>, which are the two most important types.</p>
+
+        <div class="figure-container">
+            <svg viewBox="0 0 700 300" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="14">Classification of Water Wells</text>
+
+                <rect x="235" y="35" width="230" height="30" rx="4" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="350" y="55" text-anchor="middle" font-weight="bold" font-size="12">WATER WELLS</text>
+
+                <!-- Lines -->
+                <line x1="200" y1="65" x2="200" y2="90" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <line x1="500" y1="65" x2="500" y2="90" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <line x1="200" y1="65" x2="500" y2="65" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+
+                <!-- Open Wells -->
+                <rect x="100" y="90" width="200" height="28" rx="4" fill="var(--svg-bg-light, #f5f5f5)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="200" y="109" text-anchor="middle" font-weight="bold" font-size="11">OPEN WELLS (DUG WELLS)</text>
+                <line x1="200" y1="118" x2="200" y2="138" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="60" y="138" width="280" height="130" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="0.8" stroke-dasharray="4,3"/>
+                <text x="80" y="158" font-size="11">&bull; Diameter: 1&ndash;10 m</text>
+                <text x="80" y="176" font-size="11">&bull; Depth: 5&ndash;20 m</text>
+                <text x="80" y="194" font-size="11">&bull; Lined or unlined</text>
+                <text x="80" y="212" font-size="11">&bull; Yield: 3&ndash;6 L/s</text>
+                <text x="80" y="230" font-size="11">&bull; Tested by: Recuperation test</text>
+                <text x="80" y="248" font-size="11">&bull; Yield depends on well area</text>
+
+                <!-- Tube Wells -->
+                <rect x="400" y="90" width="200" height="28" rx="4" fill="var(--svg-bg-light, #f5f5f5)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="500" y="109" text-anchor="middle" font-weight="bold" font-size="11">TUBE WELLS (DRILLED WELLS)</text>
+                <line x1="500" y1="118" x2="500" y2="138" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="370" y="138" width="280" height="130" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="0.8" stroke-dasharray="4,3"/>
+                <text x="390" y="158" font-size="11">&bull; Diameter: 100&ndash;600 mm</text>
+                <text x="390" y="176" font-size="11">&bull; Depth: up to 500+ m</text>
+                <text x="390" y="194" font-size="11">&bull; Cased with screen section</text>
+                <text x="390" y="212" font-size="11">&bull; Yield: up to 200 L/s</text>
+                <text x="390" y="230" font-size="11">&bull; Tested by: Pumping test</text>
+                <text x="390" y="248" font-size="11">&bull; Yield depends on screen length</text>
+
+                <text x="350" y="290" text-anchor="middle" font-size="11" font-style="italic">Both types asked frequently in IOE exams (theory + numerical)</text>
+            </svg>
+            <div class="figcaption">Figure 7.1: Classification of water wells &mdash; open wells vs. tube wells.</div>
+        </div>
+    </section>
+
+    <!-- ======== 7.2 OPEN WELLS ======== -->
+    <section id="sec-7-2">
+        <h2>7.2 OPEN WELLS (DUG WELLS)</h2>
+
+        <p>Open wells (also called <strong>dug wells</strong>) are the oldest and simplest type of groundwater structures. They are excavated by manual digging or mechanical means to a depth below the water table.</p>
+
+        <h3>7.2.1 Description and Construction</h3>
+        <ul>
+            <li><strong>Diameter:</strong> Typically 2 to 8 m</li>
+            <li><strong>Depth:</strong> Usually 5 to 20 m (limited to shallow aquifers)</li>
+            <li><strong>Shape:</strong> Circular (most common), rectangular, or square</li>
+            <li><strong>Lining:</strong> Brick masonry, stone masonry, concrete rings, or RCC lining (to prevent collapse)</li>
+            <li><strong>Water entry:</strong> Through the bottom and/or through porous lining on the sides</li>
+        </ul>
+
+        <h3>7.2.2 Types of Open Wells</h3>
+        <h4>(a) Unlined Open Wells (Kutcha Wells)</h4>
+        <p>Temporary wells without any lining. Water enters from all sides and the bottom. Used in areas with stable soil (clay or stiff formations). Prone to collapse in loose sandy soils.</p>
+
+        <h4>(b) Lined Open Wells (Pucca Wells)</h4>
+        <p>Permanent wells with masonry or concrete lining. The lining provides structural support and prevents contamination from surface water. They may have:</p>
+        <ul>
+            <li><strong>Pervious lining:</strong> Dry brick or stone masonry without mortar in the water-bearing zone, allowing water to enter through the sides</li>
+            <li><strong>Impervious lining:</strong> Cement-mortared masonry in the upper portion to prevent entry of contaminated surface water</li>
+        </ul>
+
+        <h4>(c) Dug-cum-Bore Well</h4>
+        <p>An open well with one or more bores (small-diameter pipes) drilled at the bottom, extending into deeper aquifer zones. This increases the yield significantly by tapping deeper water-bearing formations. It combines the storage advantage of an open well with the deeper access of a tube well.</p>
+
+        <div class="figure-container">
+            <svg viewBox="0 0 700 440" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Cross-Section of a Lined Open Well</text>
+
+                <!-- Ground surface -->
+                <rect x="30" y="60" width="175" height="18" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="495" y="60" width="175" height="18" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="680" y="72" font-size="10">Ground surface</text>
+
+                <!-- Parapet wall -->
+                <rect x="190" y="40" width="20" height="38" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <rect x="490" y="40" width="20" height="38" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="350" y="38" text-anchor="middle" font-size="10">Parapet wall</text>
+
+                <!-- Platform -->
+                <rect x="140" y="60" width="420" height="16" fill="var(--svg-struct-3, #e0e0e0)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="350" y="72" text-anchor="middle" font-size="9">Concrete platform</text>
+
+                <!-- Well walls - impervious upper -->
+                <rect x="205" y="76" width="20" height="140" fill="var(--svg-struct-2, #ccc)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <rect x="475" y="76" width="20" height="140" fill="var(--svg-struct-2, #ccc)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+
+                <!-- Label: impervious -->
+                <line x1="225" y1="130" x2="260" y2="110" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="265" y="108" font-size="10">Impervious lining</text>
+                <text x="265" y="120" font-size="10">(cement mortar)</text>
+
+                <!-- Static water level -->
+                <line x1="30" y1="200" x2="205" y2="200" stroke="var(--svg-fg, #111)" stroke-width="1.5" stroke-dasharray="8,4"/>
+                <line x1="495" y1="200" x2="670" y2="200" stroke="var(--svg-fg, #111)" stroke-width="1.5" stroke-dasharray="8,4"/>
+                <text x="30" y="195" font-size="10">Static water level</text>
+
+                <!-- Water in well -->
+                <rect x="225" y="200" width="250" height="160" fill="var(--svg-water, #d4e8ff)" stroke="none"/>
+
+                <!-- Well walls - pervious lower -->
+                <rect x="205" y="216" width="20" height="160" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5" stroke-dasharray="4,4"/>
+                <rect x="475" y="216" width="20" height="160" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+                <!-- Label: pervious -->
+                <line x1="475" y1="300" x2="530" y2="280" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="535" y="278" font-size="10">Pervious lining</text>
+                <text x="535" y="290" font-size="10">(dry masonry)</text>
+
+                <!-- Water entry arrows -->
+                <line x1="180" y1="260" x2="205" y2="260" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="180" y1="300" x2="205" y2="300" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="180" y1="340" x2="205" y2="340" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="520" y1="260" x2="495" y2="260" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="520" y1="300" x2="495" y2="300" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="520" y1="340" x2="495" y2="340" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <text x="150" y="264" font-size="9">Water</text>
+                <text x="150" y="274" font-size="9">entry</text>
+
+                <!-- Bottom entry -->
+                <line x1="300" y1="400" x2="300" y2="376" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="350" y1="400" x2="350" y2="376" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="400" y1="400" x2="400" y2="376" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+
+                <!-- Well bottom -->
+                <line x1="205" y1="376" x2="495" y2="376" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+
+                <!-- Diameter -->
+                <line x1="225" y1="420" x2="475" y2="420" stroke="var(--svg-fg, #111)" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="350" y="436" text-anchor="middle" font-weight="bold" font-size="12">D (1&ndash;10 m)</text>
+
+                <!-- Depth -->
+                <line x1="540" y1="78" x2="540" y2="376" stroke="var(--svg-fg, #111)" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="560" y="230" font-weight="bold" font-size="12">Depth</text>
+                <text x="560" y="246" font-size="11">(5&ndash;20 m)</text>
+            </svg>
+            <div class="figcaption">Figure 7.2: Cross-section of a lined open well showing impervious upper lining, pervious lower lining for water entry, and water entry through the bottom.</div>
+        </div>
+
+        <h3>7.2.3 Advantages and Limitations of Open Wells</h3>
+        <div class="grid-two">
+            <div class="mini-note">
+                <strong>Advantages:</strong>
+                <ul>
+                    <li>Simple construction &mdash; can be built with local labour</li>
+                    <li>Low construction cost for shallow aquifers</li>
+                    <li>Provides storage within the well itself</li>
+                    <li>Easy to clean and maintain</li>
+                    <li>Suitable for hand-operated lifting devices</li>
+                </ul>
+            </div>
+            <div class="mini-note">
+                <strong>Limitations:</strong>
+                <ul>
+                    <li>Limited to shallow aquifers (&lt; 20 m)</li>
+                    <li>Low yield compared to tube wells</li>
+                    <li>Susceptible to contamination from surface</li>
+                    <li>Affected by seasonal water table fluctuations</li>
+                    <li>Large land area required for construction</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== 7.3 TUBE WELLS ======== -->
+    <section id="sec-7-3">
+        <h2>7.3 TUBE WELLS (DRILLED WELLS)</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTIONS ADDRESSED:</h4>
+            <p><strong>2072 Ashwin Q10 [4+2]:</strong> What do you mean by a tube well? Explain different types of tube well with figure.</p>
+        </div>
+
+        <p>A <strong>tube well</strong> is a well constructed by drilling or boring a hole into the ground and installing a casing pipe with a screen section that allows water to enter from the aquifer. Tube wells can reach much greater depths than open wells and are the primary method of groundwater extraction for large-scale water supply and irrigation.</p>
+
+        <h3>7.3.1 Components of a Tube Well</h3>
+        <ul>
+            <li><strong>Casing pipe:</strong> Steel or PVC pipe that lines the borehole and prevents collapse. It is impervious in the non-aquifer zones.</li>
+            <li><strong>Well screen:</strong> Slotted or perforated section of the casing placed opposite the aquifer to allow water entry while excluding sand particles.</li>
+            <li><strong>Gravel pack:</strong> Graded gravel placed around the screen to improve hydraulic efficiency and filter fine particles.</li>
+            <li><strong>Sanitary seal:</strong> Cement grout placed around the upper casing to prevent surface contamination.</li>
+            <li><strong>Pump housing:</strong> Section above the screen that houses the pump intake.</li>
+        </ul>
+
+        <h3>7.3.2 Types of Tube Wells</h3>
+
+        <h4>(a) Strainer Tube Well</h4>
+        <p>Used in alluvial formations (sand and gravel). A strainer (well screen) is placed in the aquifer zone to filter out sand while allowing water to enter. This is the most common type in the Terai region of Nepal.</p>
+
+        <h4>(b) Cavity Tube Well</h4>
+        <p>Used in areas where a thin layer of sand aquifer is confined between two clay layers. No screen is used. Instead, a cavity is created at the bottom by pumping out sand along with water, forming a natural cavity in the sand layer. Suitable for shallow confined aquifers with moderate yield.</p>
+
+        <h4>(c) Slotted Tube Well</h4>
+        <p>Similar to strainer type but uses factory-cut slots in the casing pipe instead of a wire-wound screen. Less efficient but cheaper than strainer type.</p>
+
+        <div class="figure-container">
+            <svg viewBox="0 0 700 500" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Components of a Tube Well</text>
+
+                <!-- Ground surface -->
+                <rect x="50" y="60" width="220" height="16" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="430" y="60" width="220" height="16" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+
+                <!-- Pump at top -->
+                <rect x="310" y="30" width="80" height="30" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="350" y="50" text-anchor="middle" font-size="10">Pump</text>
+                <line x1="395" y1="45" x2="450" y2="45" stroke="var(--svg-fg, #111)" stroke-width="1.5" marker-end="url(#arr)"/>
+                <text x="460" y="50" font-size="10">Discharge</text>
+
+                <!-- Sanitary seal -->
+                <rect x="260" y="76" width="180" height="40" fill="var(--svg-struct-3, #e0e0e0)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="350" y="100" text-anchor="middle" font-size="10">Sanitary seal (cement grout)</text>
+
+                <!-- Casing - upper impervious zone -->
+                <rect x="310" y="116" width="10" height="120" fill="var(--svg-faint, #999)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="380" y="116" width="10" height="120" fill="var(--svg-faint, #999)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <line x1="410" y1="170" x2="460" y2="150" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="465" y="148" font-size="10">Casing pipe</text>
+                <text x="465" y="160" font-size="10">(impervious)</text>
+
+                <!-- Clay layer 1 -->
+                <rect x="50" y="76" width="260" height="60" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                <rect x="390" y="76" width="260" height="60" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                <text x="130" y="110" font-size="10">Clay</text>
+
+                <!-- Aquifer zone background -->
+                <rect x="50" y="236" width="260" height="140" fill="var(--svg-sand, #fff3cd)" stroke="none" opacity="0.4"/>
+                <rect x="390" y="236" width="260" height="140" fill="var(--svg-sand, #fff3cd)" stroke="none" opacity="0.4"/>
+                <text x="100" y="310" font-size="11" font-weight="bold">AQUIFER</text>
+                <text x="100" y="325" font-size="10">(sand/gravel)</text>
+
+                <!-- Gravel pack -->
+                <rect x="280" y="246" width="30" height="120" fill="url(#dots)" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <rect x="390" y="246" width="30" height="120" fill="url(#dots)" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <line x1="420" y1="290" x2="470" y2="270" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="475" y="268" font-size="10">Gravel pack</text>
+
+                <!-- Screen section -->
+                <rect x="310" y="246" width="10" height="120" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1" stroke-dasharray="3,3"/>
+                <rect x="380" y="246" width="10" height="120" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="480" y1="310" x2="395" y2="310" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="485" y="308" font-size="10">Well screen</text>
+                <text x="485" y="320" font-size="10">(slotted/perforated)</text>
+
+                <!-- Water entry arrows -->
+                <line x1="260" y1="280" x2="280" y2="280" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="260" y1="310" x2="280" y2="310" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="260" y1="340" x2="280" y2="340" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="440" y1="280" x2="420" y2="280" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="440" y1="310" x2="420" y2="310" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="440" y1="340" x2="420" y2="340" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+
+                <!-- Bottom cap / bail plug -->
+                <rect x="310" y="366" width="80" height="10" fill="var(--svg-faint, #999)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="350" y="394" text-anchor="middle" font-size="10">Bail plug / bottom cap</text>
+
+                <!-- Clay layer 2 below -->
+                <rect x="50" y="376" width="260" height="50" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                <rect x="390" y="376" width="260" height="50" fill="url(#dots-fine)" stroke="none" opacity="0.3"/>
+                <text x="130" y="405" font-size="10">Clay / Bedrock</text>
+
+                <!-- Diameter label -->
+                <line x1="310" y1="450" x2="390" y2="450" stroke="var(--svg-fg, #111)" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="350" y="470" text-anchor="middle" font-size="10">D (100&ndash;600 mm)</text>
+
+                <!-- Total depth -->
+                <line x1="640" y1="76" x2="640" y2="376" stroke="var(--svg-fg, #111)" stroke-width="1" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="650" y="230" font-weight="bold" font-size="11">Total</text>
+                <text x="650" y="245" font-size="10">depth</text>
+            </svg>
+            <div class="figcaption">Figure 7.3: Components of a typical tube well showing casing, screen, gravel pack, and sanitary seal.</div>
+        </div>
+
+        <h3>7.3.3 Advantages and Limitations of Tube Wells</h3>
+        <div class="grid-two">
+            <div class="mini-note">
+                <strong>Advantages:</strong>
+                <ul>
+                    <li>Can reach deep aquifers (&gt; 300 m)</li>
+                    <li>High yield (up to hundreds of m&sup3;/hr)</li>
+                    <li>Small footprint (land area)</li>
+                    <li>Less susceptible to surface contamination</li>
+                    <li>Can be designed for multiple aquifer zones</li>
+                </ul>
+            </div>
+            <div class="mini-note">
+                <strong>Limitations:</strong>
+                <ul>
+                    <li>High construction cost (drilling + casing)</li>
+                    <li>Requires specialized equipment and expertise</li>
+                    <li>Dependent on electricity for pumping</li>
+                    <li>Difficult to clean and rehabilitate</li>
+                    <li>Screen clogging can reduce yield over time</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== 7.4 COMPARISON ======== -->
+    <section id="sec-7-4">
+        <h2>7.4 COMPARISON OF OPEN WELLS AND TUBE WELLS</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+            <p><strong>2073 Bhadra Q8(a) [3]:</strong> Differentiate between open well and tube well.</p>
+        </div>
+
+        <table class="info-table">
+            <tr>
+                <th>Feature</th>
+                <th>Open Well</th>
+                <th>Tube Well</th>
+            </tr>
+            <tr>
+                <td>Diameter</td>
+                <td>1&ndash;10 m (large)</td>
+                <td>100&ndash;600 mm (small)</td>
+            </tr>
+            <tr>
+                <td>Depth</td>
+                <td>5&ndash;20 m (shallow)</td>
+                <td>Up to 500+ m (deep)</td>
+            </tr>
+            <tr>
+                <td>Construction</td>
+                <td>Manual digging + masonry lining</td>
+                <td>Rotary/percussion drilling + casing</td>
+            </tr>
+            <tr>
+                <td>Water entry</td>
+                <td>Through bottom and pervious sides</td>
+                <td>Through well screen along depth</td>
+            </tr>
+            <tr>
+                <td>Yield</td>
+                <td>3&ndash;6 L/s (low to moderate)</td>
+                <td>Up to 200 L/s (moderate to high)</td>
+            </tr>
+            <tr>
+                <td>Yield depends on</td>
+                <td>Cross-sectional area (A = &pi;D&sup2;/4)</td>
+                <td>Screen length and aquifer properties</td>
+            </tr>
+            <tr>
+                <td>Yield test</td>
+                <td>Recuperation test</td>
+                <td>Pumping test</td>
+            </tr>
+            <tr>
+                <td>Aquifer type</td>
+                <td>Unconfined, shallow</td>
+                <td>Confined or unconfined, any depth</td>
+            </tr>
+            <tr>
+                <td>Cost</td>
+                <td>Low (local materials and labour)</td>
+                <td>High (drilling rig, casing, pump)</td>
+            </tr>
+            <tr>
+                <td>Contamination risk</td>
+                <td>High (open to surface)</td>
+                <td>Low (sealed at surface)</td>
+            </tr>
+            <tr>
+                <td>Yield formula</td>
+                <td>\( Q = C \times A \times H \)</td>
+                <td>Theis / Cooper-Jacob equations</td>
+            </tr>
+        </table>
+
+        <div class="mini-note">
+            <strong>Exam Tip:</strong> When asked to differentiate, present as a table with at least 6&ndash;8 features. Include water entry mechanism, yield test method, and yield formula for each.
+        </div>
+    </section>
+
+    <!-- ======== 7.5 RECUPERATION TEST ======== -->
+    <section id="sec-7-5">
+        <h2>7.5 RECUPERATION TEST ON OPEN WELLS</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTIONS ADDRESSED (NUMERICAL):</h4>
+            <p><strong>2078 Chaitra Q7 [6]:</strong> Recuperation test: s<sub>1</sub> = 4 m, rise = 2.2 m, T = 90 min. Find specific yield. Yield from 5 m well at 2.5 m depression.</p>
+            <p><strong>2073 Bhadra Q8(b) [2+2+3]:</strong> s<sub>1</sub> = 3 m, rise = 1.75 m, T = 75 min. Find C, Q (D=5m, H=2.5m), and D for Q=12 L/s at H=2m.</p>
+            <p><strong>2071 Bhadra Q10 [3+3+4]:</strong> Identical to 2073 Bhadra Q8(b).</p>
+        </div>
+
+        <h3>7.5.1 Purpose and Procedure</h3>
+        <p>The <strong>recuperation test</strong> (or recovery test for open wells) is conducted to determine the <strong>specific yield</strong> of an open well. The specific yield (C) is a measure of the aquifer&rsquo;s capacity to supply water to the well per unit area per unit depression head.</p>
+
+        <p><strong>Procedure:</strong></p>
+        <ol>
+            <li>Note the <strong>static water level</strong> (SWL) in the well before pumping</li>
+            <li>Pump (or bail) water out of the well to <strong>depress the water level</strong> below SWL by a known amount (s<sub>1</sub>)</li>
+            <li>Stop pumping and allow the well to <strong>recuperate</strong> (recover)</li>
+            <li>After a measured time period (T), note the new water level. The <strong>rise</strong> in water level gives s<sub>2</sub> = s<sub>1</sub> &minus; rise</li>
+            <li>Use the formula to calculate specific yield C</li>
+        </ol>
+
+        <h3>7.5.2 Theory and Derivation</h3>
+        <p>The recuperation test is based on the assumption that the rate of water inflow into the well is proportional to the depression head:</p>
+        <div class="equation">
+            \[ \frac{dV}{dt} = C \cdot A \cdot s \]
+        </div>
+        <p>where V = volume of water in the well, A = cross-sectional area, s = depression head at time t, and C = specific yield.</p>
+
+        <p>Since \( dV = A \cdot ds \) (increase in volume = area &times; rise in water level), and noting that as the well recovers, the depression head <em>decreases</em>:</p>
+        <div class="equation">
+            \[ A \cdot \frac{ds}{dt} = -C \cdot A \cdot s \]
+        </div>
+        <div class="equation">
+            \[ \frac{ds}{s} = -C \, dt \]
+        </div>
+
+        <p>Integrating from t = 0 (when s = s<sub>1</sub>) to t = T (when s = s<sub>2</sub>):</p>
+        <div class="equation">
+            \[ \int_{s_1}^{s_2} \frac{ds}{s} = -C \int_0^T dt \]
+        </div>
+        <div class="equation">
+            \[ \ln\left(\frac{s_2}{s_1}\right) = -CT \]
+        </div>
+        <div class="equation">
+            \[ CT = \ln\left(\frac{s_1}{s_2}\right) = 2.303 \log_{10}\left(\frac{s_1}{s_2}\right) \]
+        </div>
+
+        <p>Therefore, the <strong>specific yield</strong> is:</p>
+        <div class="equation">
+            \[ \boxed{C = \frac{2.303}{T} \log_{10}\left(\frac{s_1}{s_2}\right)} \]
+        </div>
+
+        <p>where:</p>
+        <ul>
+            <li>\( s_1 \) = initial depression head (m)</li>
+            <li>\( s_2 = s_1 - \text{rise} \) = depression head after time T (m)</li>
+            <li>\( T \) = recovery time (in hours &mdash; <strong>must convert from minutes!</strong>)</li>
+            <li>\( C \) = specific yield (per hour)</li>
+        </ul>
+
+        <div class="figure-container">
+            <svg viewBox="0 0 700 320" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Recuperation Test &mdash; Concept Diagram</text>
+
+                <!-- Well -->
+                <rect x="180" y="50" width="100" height="230" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+
+                <!-- Ground -->
+                <rect x="50" y="50" width="130" height="16" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="280" y="50" width="130" height="16" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+
+                <!-- Static water level -->
+                <line x1="50" y1="110" x2="180" y2="110" stroke="var(--svg-fg, #111)" stroke-width="1.5" stroke-dasharray="6,4"/>
+                <line x1="280" y1="110" x2="410" y2="110" stroke="var(--svg-fg, #111)" stroke-width="1.5" stroke-dasharray="6,4"/>
+                <text x="50" y="105" font-size="10" font-weight="bold">SWL</text>
+
+                <!-- Depressed level -->
+                <path d="M183,230 Q210,225 230,230 Q250,235 277,230" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="165" y="235" text-anchor="end" font-size="10">t = 0</text>
+
+                <!-- Recovered level -->
+                <path d="M183,170 Q210,165 230,170 Q250,175 277,170" fill="none" stroke="var(--svg-water-3, #3498db)" stroke-width="1.5"/>
+                <text x="165" y="175" text-anchor="end" font-size="10" fill="var(--svg-water-3, #3498db)">t = T</text>
+
+                <!-- s1 -->
+                <line x1="300" y1="110" x2="300" y2="230" stroke="var(--svg-fg, #111)" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="315" y="175" font-weight="bold" font-size="12">s<tspan baseline-shift="sub" font-size="9">1</tspan></text>
+
+                <!-- s2 -->
+                <line x1="330" y1="110" x2="330" y2="170" stroke="var(--svg-water-3, #3498db)" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="345" y="145" font-weight="bold" font-size="12" fill="var(--svg-water-3, #3498db)">s<tspan baseline-shift="sub" font-size="9">2</tspan></text>
+
+                <!-- Rise -->
+                <line x1="360" y1="170" x2="360" y2="230" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="375" y="205" font-weight="bold" font-size="12">Rise</text>
+
+                <!-- Recovery formula -->
+                <text x="490" y="100" font-size="11">s<tspan baseline-shift="sub" font-size="9">2</tspan> = s<tspan baseline-shift="sub" font-size="9">1</tspan> &minus; rise</text>
+
+                <rect x="440" y="115" width="240" height="60" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="560" y="140" text-anchor="middle" font-weight="bold" font-size="12">C = (2.303/T) &times;</text>
+                <text x="560" y="163" text-anchor="middle" font-weight="bold" font-size="12">log<tspan baseline-shift="sub" font-size="9">10</tspan>(s<tspan baseline-shift="sub" font-size="9">1</tspan>/s<tspan baseline-shift="sub" font-size="9">2</tspan>)</text>
+
+                <!-- Yield formula -->
+                <rect x="440" y="190" width="240" height="35" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="560" y="213" text-anchor="middle" font-weight="bold" font-size="12">Q = C &times; A &times; H</text>
+
+                <!-- Notes -->
+                <text x="560" y="248" text-anchor="middle" font-size="10">where A = (&pi;/4)D&sup2;</text>
+                <text x="560" y="263" text-anchor="middle" font-size="10">H = operating depression head</text>
+
+                <!-- Key warnings -->
+                <rect x="440" y="275" width="240" height="30" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1" stroke-dasharray="4,3"/>
+                <text x="560" y="295" text-anchor="middle" font-size="10" font-weight="bold">Convert T from minutes to hours!</text>
+            </svg>
+            <div class="figcaption">Figure 7.4: Recuperation test concept &mdash; well is depressed by s<sub>1</sub> and recovers to s<sub>2</sub> after time T.</div>
+        </div>
+
+        <div class="mini-note">
+            <strong>Critical Exam Warning:</strong> The most common mistake is forgetting to convert time from minutes to hours. Always check: T must be in <strong>hours</strong> when using the standard formula.
+        </div>
+    </section>
+
+    <!-- ======== 7.6 YIELD OF OPEN WELLS ======== -->
+    <section id="sec-7-6">
+        <h2>7.6 YIELD OF OPEN WELLS</h2>
+
+        <p>Once the specific yield (C) is determined from the recuperation test, the <strong>yield</strong> (discharge) of any open well in the same aquifer can be estimated using:</p>
+
+        <div class="equation">
+            \[ \boxed{Q = C \times A \times H} \]
+        </div>
+
+        <p>where:</p>
+        <ul>
+            <li>\( Q \) = yield of the well (m&sup3;/hr)</li>
+            <li>\( C \) = specific yield from recuperation test (per hour)</li>
+            <li>\( A = \frac{\pi}{4} D^2 \) = cross-sectional area of the well (m&sup2;)</li>
+            <li>\( H \) = operating depression head (m) &mdash; the depression head under which the well is to operate</li>
+        </ul>
+
+        <h3>7.6.1 Design of Well Diameter for Target Yield</h3>
+        <p>If a target discharge Q is required, the required well diameter can be found by rearranging the yield formula:</p>
+        <div class="equation">
+            \[ Q = C \times \frac{\pi}{4} D^2 \times H \]
+        </div>
+        <div class="equation">
+            \[ \boxed{D = \sqrt{\frac{4Q}{\pi \cdot C \cdot H}}} \]
+        </div>
+
+        <div class="callout">
+            <strong>Important relationship:</strong> The yield of an open well is directly proportional to (a) the specific yield C, (b) the cross-sectional area A (i.e., D&sup2;), and (c) the depression head H. Doubling the diameter quadruples the yield.
+        </div>
+
+        <h3>7.6.2 Critical Depression Head</h3>
+        <p>There is a maximum depression head beyond which the well yield does not increase linearly. This is called the <strong>critical depression head</strong> (H<sub>c</sub>). If the well is depressed beyond H<sub>c</sub>, the surrounding material may collapse, turbulent flow conditions may develop, and the actual yield will be less than the theoretical value. The working depression head should always be kept below H<sub>c</sub>.</p>
+
+        <p>In practice, the working depression head is usually kept at about <strong>one-third of the total depth of water</strong> in the well.</p>
+
+        <table class="info-table">
+            <tr>
+                <th>Soil Type</th>
+                <th>Typical C Value (per hour)</th>
+                <th>Classification</th>
+            </tr>
+            <tr>
+                <td>Mota (coarse sand/gravel)</td>
+                <td>1.0 &ndash; 2.0</td>
+                <td>Good aquifer</td>
+            </tr>
+            <tr>
+                <td>Sandy soil</td>
+                <td>0.5 &ndash; 1.0</td>
+                <td>Moderate aquifer</td>
+            </tr>
+            <tr>
+                <td>Fine sand</td>
+                <td>0.25 &ndash; 0.5</td>
+                <td>Fair aquifer</td>
+            </tr>
+            <tr>
+                <td>Clayey sand</td>
+                <td>&lt; 0.25</td>
+                <td>Poor aquifer</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- ======== 7.7 DESIGN OF TUBE WELLS ======== -->
+    <section id="sec-7-7">
+        <h2>7.7 DESIGN OF TUBE WELLS</h2>
+
+        <p>The design of a tube well involves the following considerations:</p>
+
+        <h3>7.7.1 Design Parameters</h3>
+
+        <h4>Total Well Depth</h4>
+        <p>The total depth of a tube well is determined by:</p>
+        <div class="equation">
+            \[ H_{\text{total}} = \text{SWL} + \Delta s + d_p + C \]
+        </div>
+        <p>where:</p>
+        <ul>
+            <li>SWL = Static Water Level (depth from ground to undisturbed water level)</li>
+            <li>\(\Delta s\) = Drawdown during pumping</li>
+            <li>\(d_p\) = Pump submergence requirement (typically 2&ndash;3 m below pumping water level)</li>
+            <li>\(C\) = Seasonal fluctuation margin (3&ndash;5 m safety factor)</li>
+        </ul>
+
+        <h4>Well Diameter</h4>
+        <p>The casing diameter must accommodate the pump bowl assembly with approximately 5 cm clearance. Note: doubling the diameter does <strong>not</strong> double the yield (only ~10&ndash;15% increase). Diameter is chosen primarily for the pump, not to increase yield.</p>
+        <table class="info-table">
+            <tr><th>Expected Yield (m&sup3;/hr)</th><th>Casing Diameter</th></tr>
+            <tr><td>Up to 50</td><td>150 mm (6&Prime;)</td></tr>
+            <tr><td>50 &ndash; 100</td><td>200 mm (8&Prime;)</td></tr>
+            <tr><td>100 &ndash; 200</td><td>250 mm (10&Prime;)</td></tr>
+            <tr><td>200 &ndash; 300</td><td>300 mm (12&Prime;)</td></tr>
+        </table>
+
+        <h4>Entrance Velocity</h4>
+        <p>As water approaches the screen slots, flow converges and velocity increases. Standard practice (Walton, 1962) limits the entrance velocity to:</p>
+        <div class="equation">
+            \[ V_e = \frac{Q}{A_o} \leq 3 \text{ cm/s} \quad (0.03 \text{ m/s}) \]
+        </div>
+        <p>where \(A_o\) = total area of screen openings. Exceeding 3 cm/s causes:</p>
+        <ul>
+            <li><strong>Sand pumping:</strong> High velocity drags sand particles into the well, abrading pump impellers</li>
+            <li><strong>Incrustation:</strong> Pressure drops near the screen cause mineral precipitation (CaCO<sub>3</sub>), clogging slots</li>
+            <li><strong>Corrosion:</strong> High velocity accelerates electrochemical corrosion of metal screens</li>
+        </ul>
+
+        <h4>Other Parameters</h4>
+        <ul>
+            <li><strong>Screen length:</strong> The length of screen placed in the aquifer zone</li>
+            <li><strong>Screen slot size:</strong> Selected to retain aquifer material (or gravel pack). Typically sized to retain 40&ndash;60% of the formation material.</li>
+            <li><strong>Screen placement rule:</strong> Screen the bottom <strong>70&ndash;80%</strong> of a confined aquifer, or the bottom <strong>30&ndash;40%</strong> of an unconfined aquifer</li>
+        </ul>
+
+        <h3>7.7.2 Screen Length Design Rules</h3>
+        <table class="info-table">
+            <tr>
+                <th>Aquifer Type</th>
+                <th>Recommended Screen Length</th>
+                <th>Reason</th>
+            </tr>
+            <tr>
+                <td>Confined aquifer</td>
+                <td>70&ndash;80% of aquifer thickness</td>
+                <td>Maximize yield; water enters from full thickness</td>
+            </tr>
+            <tr>
+                <td>Unconfined aquifer</td>
+                <td>Bottom 30&ndash;40% of saturated thickness</td>
+                <td>Screen placed in lower part to maintain submergence during drawdown</td>
+            </tr>
+            <tr>
+                <td>Multiple aquifer layers</td>
+                <td>Screen opposite each productive zone</td>
+                <td>Blank casing opposite non-aquifer zones</td>
+            </tr>
+        </table>
+
+        <h3>7.7.3 Open Area of Screen</h3>
+        <p>The total open area of the screen must be sufficient to limit the entrance velocity. The open area is calculated as:</p>
+        <div class="equation">
+            \[ A_s = \pi \cdot d \cdot L_s \cdot p \]
+        </div>
+        <p>where d = screen diameter, L<sub>s</sub> = screen length, and p = percent open area of the screen (typically 5&ndash;20%).</p>
+
+        <p>The entrance velocity is:</p>
+        <div class="equation">
+            \[ v_e = \frac{Q}{A_s} \leq 0.03 \text{ m/s} \]
+        </div>
+    </section>
+
+    <!-- ======== 7.8 WELL SCREENS ======== -->
+    <section id="sec-7-8">
+        <h2>7.8 WELL SCREENS</h2>
+
+        <p>The well screen is the most critical component of a tube well. It serves two functions: (a) allow water to enter the well freely, and (b) prevent sand and aquifer material from entering. It must also provide structural support against the radial collapse pressure of the formation.</p>
+
+        <h3>7.8.1 Types of Well Screens</h3>
+
+        <h4>(a) Continuous Slot Screen (Johnson Screen)</h4>
+        <p>Made by winding a specially shaped triangular wire around a series of longitudinal rods, creating a continuous V-shaped slot. The V-shape creates a jetting effect for backwashing and prevents clogging by allowing particles to pass through without wedging.</p>
+        <ul>
+            <li><strong>Open area:</strong> 30&ndash;50% (highest of all screen types)</li>
+            <li><strong>Advantages:</strong> Maximum open area, non-clogging V-slots, excellent hydraulics (low friction)</li>
+            <li><strong>Disadvantage:</strong> Expensive</li>
+        </ul>
+        <div class="figure-container">
+            <img src="../chapter7/continuous-slot.jpg" alt="Continuous slot (Johnson) screen" style="max-width:400px;width:100%;">
+            <div class="figcaption">Figure 7.5a: Continuous slot (Johnson) well screen &mdash; V-shaped wire wound around longitudinal rods.</div>
+        </div>
+
+        <h4>(b) Bridge Slot Screen</h4>
+        <p>Slots are punched in a bridge shape on flat sheet metal, then rolled into a tube. Common in spiral-welded pipes.</p>
+        <ul>
+            <li><strong>Open area:</strong> 10&ndash;18%</li>
+            <li><strong>Strength:</strong> High vertical strength</li>
+            <li><strong>Cost:</strong> Moderate</li>
+        </ul>
+        <div class="figure-container">
+            <img src="../chapter7/bridge-slot.jpg" alt="Bridge slot screen" style="max-width:400px;width:100%;">
+            <div class="figcaption">Figure 7.5b: Bridge slot screen &mdash; pressed slots on sheet metal rolled into a tube.</div>
+        </div>
+
+        <h4>(c) Slotted Pipe Screen</h4>
+        <p>Machine-cut or torch-cut slots in standard mild steel or PVC casing pipe. Rough edges cause high friction losses.</p>
+        <ul>
+            <li><strong>Open area:</strong> 4&ndash;8% (lowest)</li>
+            <li><strong>Hydraulics:</strong> Poor (high head loss)</li>
+            <li><strong>Cost:</strong> Lowest</li>
+        </ul>
+        <div class="figure-container">
+            <img src="../chapter7/slot.jpg" alt="Slotted pipe screen" style="max-width:400px;width:100%;">
+            <div class="figcaption">Figure 7.5c: Slotted pipe screen &mdash; simple cuts in a standard blind pipe.</div>
+        </div>
+
+        <h4>(d) Perforated Pipe with Mesh</h4>
+        <p>Holes drilled in the casing wrapped with brass or stainless steel wire mesh. Moderate cost and efficiency.</p>
+
+        <div class="callout">
+            <strong>Key principle:</strong> Higher open area = Lower entrance velocity = Less drawdown = Lower pumping cost.
+        </div>
+
+        <h3>Screen Material Comparison</h3>
+        <table class="info-table">
+            <tr><th>Material</th><th>Pros</th><th>Cons</th></tr>
+            <tr><td>Mild Steel (MS)</td><td>High strength, cheap</td><td>Corrodes fast (10&ndash;15 years)</td></tr>
+            <tr><td>Stainless Steel (SS)</td><td>Corrosion-proof, strong</td><td>Very expensive</td></tr>
+            <tr><td>PVC</td><td>Inert, cheap, lightweight</td><td>Low collapse strength</td></tr>
+        </table>
+
+        <h3>7.8.2 Screen Slot Size Selection</h3>
+        <p>The slot size is determined from grain-size analysis (sieve analysis) of the aquifer material. There are two strategies based on the uniformity coefficient \(C_u = D_{60}/D_{10}\):</p>
+
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>Strategy 1: Natural Development</h4>
+                <p><strong>When:</strong> \(C_u > 3\) (well-graded aquifer)</p>
+                <p>Allow the finer 40&ndash;50% of formation particles to be pumped out during the development phase. The remaining coarser particles form a natural highly permeable zone around the screen.</p>
+                <p><strong>Slot size = D<sub>40</sub> to D<sub>50</sub></strong> of the aquifer material.</p>
+                <p>If water is corrosive, use D<sub>40</sub> (conservative).</p>
+            </div>
+            <div class="mini-note">
+                <h4>Strategy 2: Artificial Gravel Pack</h4>
+                <p><strong>When:</strong> \(C_u \leq 3\) (uniform aquifer)</p>
+                <p>Screen retains the gravel pack; gravel pack retains the aquifer. Screen does not contact the aquifer directly.</p>
+                <p><strong>Slot size = D<sub>90</sub></strong> of the <em>gravel pack</em> material (retains 90% of pack).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== 7.9 GRAVEL PACK ======== -->
+    <section id="sec-7-9">
+        <h2>7.9 GRAVEL PACK</h2>
+
+        <p>A <strong>gravel pack</strong> (also called filter pack or artificial gravel pack) is a selected gradation of clean gravel placed between the well screen and the aquifer material.</p>
+
+        <h3>7.9.1 When is a Gravel Pack Required?</h3>
+        <p>The decision is based on the <strong>uniformity coefficient</strong> of the aquifer material:</p>
+        <div class="equation">
+            \[ C_u = \frac{D_{60}}{D_{10}} \]
+        </div>
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>C<sub>u</sub> &le; 3 &rarr; Gravel Pack REQUIRED</h4>
+                <p>Uniform aquifer &mdash; all particles are similar in size. Natural development cannot create a coarse filter zone because no fines exist to be removed.</p>
+            </div>
+            <div class="mini-note">
+                <h4>C<sub>u</sub> &gt; 3 &rarr; Gravel Pack NOT Required</h4>
+                <p>Well-graded aquifer &mdash; wide range of particle sizes. Pumping out the fines during development leaves a natural gravel envelope around the screen.</p>
+                <p><strong>Exception:</strong> Even if C<sub>u</sub> &gt; 3, a gravel pack is still required if D<sub>10</sub> &lt; 0.25 mm (very fine sand), because natural development cannot effectively remove particles this fine.</p>
+            </div>
+        </div>
+
+        <h3>7.9.2 Functions of Gravel Pack</h3>
+        <ul>
+            <li>Acts as a filter to prevent fine aquifer material from entering the well</li>
+            <li>Increases the effective diameter of the well, reducing entrance velocity</li>
+            <li>Provides a zone of high permeability around the screen, improving well efficiency</li>
+            <li>Supports the borehole wall and prevents collapse</li>
+        </ul>
+
+        <div class="figure-container">
+            <img src="../chapter7/pack.jpg" alt="Gravel pack around well screen" style="max-width:450px;width:100%;">
+            <div class="figcaption">Figure 7.6: Gravel pack placed between the well screen and aquifer material.</div>
+        </div>
+
+        <h3>7.9.3 Gravel Pack Design (PAR Method)</h3>
+        <p>The <strong>Pack-to-Aquifer Ratio (PAR)</strong> method is the standard design procedure:</p>
+        <ol>
+            <li><strong>Step 1:</strong> Obtain grain-size distribution of the aquifer. Find D<sub>50</sub> (aquifer).</li>
+            <li><strong>Step 2:</strong> Calculate pack D<sub>50</sub> = <strong>4 to 5</strong> &times; Aquifer D<sub>50</sub> (ratios &gt; 5 allow sand invasion)</li>
+            <li><strong>Step 3:</strong> Pack C<sub>u</sub> should be &le; <strong>2.5</strong> (uniform gravel preferred; well-graded pack causes segregation during placement)</li>
+            <li><strong>Step 4:</strong> Screen slot size = D<sub>90</sub> of the gravel pack (retains 90% of pack material)</li>
+        </ol>
+
+        <h4>Pack Thickness</h4>
+        <p>Typically <strong>75&ndash;200 mm</strong> (3&ndash;8 inches). Thicker packs are harder to develop properly.</p>
+
+        <h3>7.9.4 Gravel Pack Placement</h3>
+        <ul>
+            <li><strong>Tremie pipe method (preferred):</strong> A small-diameter pipe (Tremie pipe) is lowered into the annular space between the screen and borehole wall. Gravel is poured through this pipe from the surface so it is placed directly at the target depth, ensuring uniform distribution and avoiding bridging.</li>
+            <li><strong>Surface pouring:</strong> Gravel is simply dumped from the surface into the annular space. Simpler but risks uneven distribution and bridging in deep wells.</li>
+        </ul>
+
+        <div class="mini-note">
+            <strong>Key Design Rule:</strong> D<sub>50</sub>(pack) / D<sub>50</sub>(aquifer) = 4 to 5. Pack C<sub>u</sub> &le; 2.5. Screen slot = D<sub>90</sub> of pack.
+        </div>
+    </section>
+
+    <!-- ======== 7.10 WELL DEVELOPMENT ======== -->
+    <section id="sec-7-10">
+        <h2>7.10 WELL DEVELOPMENT AND MAINTENANCE</h2>
+
+        <h3>7.10.1 Well Development</h3>
+        <p><strong>Well development</strong> is the process of removing fines from the aquifer near the well screen and rearranging the formation material to increase the permeability of the zone around the well. It is done immediately after well construction.</p>
+
+        <p>Methods of well development include:</p>
+        <ul>
+            <li><strong>Overpumping:</strong> Pumping the well at a rate higher than the design capacity to pull out fine particles</li>
+            <li><strong>Surging:</strong> Using a surge block (plunger) to create alternating inflow and outflow, loosening and removing fines</li>
+            <li><strong>Backwashing:</strong> Forcing water back into the formation through the screen to dislodge fines, then pumping out</li>
+            <li><strong>Jetting:</strong> High-pressure water jets directed at the screen to remove encrustation and fines</li>
+            <li><strong>Air-lift development:</strong> Using compressed air to alternately lift water and allow it to surge back, creating vigorous flow reversals</li>
+            <li><strong>Chemical treatment:</strong> Using acids (HCl) or polyphosphates to dissolve encrustation or disperse clay</li>
+        </ul>
+
+        <h3>7.10.2 Well Maintenance</h3>
+        <p>Over time, well yield may decline due to:</p>
+        <ul>
+            <li><strong>Incrustation:</strong> Deposition of calcium carbonate, iron compounds, or manganese on the screen slots</li>
+            <li><strong>Biofouling:</strong> Growth of iron bacteria that produce slime deposits</li>
+            <li><strong>Sand clogging:</strong> Fine particles blocking screen slots and gravel pack pores</li>
+            <li><strong>Corrosion:</strong> Deterioration of metal screens in aggressive water</li>
+        </ul>
+
+        <p>Regular monitoring of well performance (yield vs. drawdown) allows early detection of problems. Rehabilitation methods include periodic jetting, acid treatment, and redevelopment by surging.</p>
+    </section>
+
+    <!-- ======== 7.11 INFILTRATION GALLERIES ======== -->
+    <section id="sec-7-11">
+        <h2>7.11 INFILTRATION GALLERIES</h2>
+
+        <p>An <strong>infiltration gallery</strong> is a horizontal conduit (tunnel, perforated pipe, or open channel) laid in a permeable water-bearing formation, typically near a river or lake, for collecting shallow groundwater over a long length. They are also called <strong>horizontal wells</strong>.</p>
+
+        <h3>Construction</h3>
+        <ul>
+            <li>A trench is excavated to a depth of <strong>3&ndash;6 m</strong> below ground level (usually to reach the water table)</li>
+            <li>Perforated or slotted pipes are laid horizontally in the trench along the length of the permeable zone</li>
+            <li>Gravel is packed around the pipes as a filter envelope</li>
+            <li>The trench is backfilled with the excavated material</li>
+            <li>Water flows by gravity into a <strong>sump well (jack well)</strong> at one end, from where it is pumped</li>
+        </ul>
+
+        <div class="figure-container">
+            <img src="../chapter7/gallery.png" alt="Infiltration gallery cross-section" style="max-width:500px;width:100%;">
+            <div class="figcaption">Figure 7.7: Cross-section of an infiltration gallery showing perforated pipes laid in a gravel-packed trench near a riverbed.</div>
+        </div>
+
+        <h3>Yield of an Infiltration Gallery</h3>
+        <p>For an unconfined aquifer with the gallery drawing from both sides (Dupuit&rsquo;s formula):</p>
+        <div class="equation">
+            \[ Q = \frac{K \cdot L \left(H^2 - h^2\right)}{2R} \]
+        </div>
+        <p>where:</p>
+        <ul>
+            <li>\\(K\\) = hydraulic conductivity of the aquifer (m/s)</li>
+            <li>\\(L\\) = length of the gallery (m)</li>
+            <li>\\(H\\) = saturated thickness at the recharge boundary (m)</li>
+            <li>\\(h\\) = depth of water above the gallery pipe (m)</li>
+            <li>\\(R\\) = radius of influence (m)</li>
+        </ul>
+
+        <h3>Advantages and Limitations</h3>
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>Advantages</h4>
+                <ul>
+                    <li>Collects water from a large area &rarr; high yield</li>
+                    <li>Low drawdown &rarr; minimises sand entry</li>
+                    <li>Natural filtration &rarr; good quality water</li>
+                    <li>Simple pumping (gravity flow to sump)</li>
+                </ul>
+            </div>
+            <div class="mini-note">
+                <h4>Limitations</h4>
+                <ul>
+                    <li>Only feasible in shallow, permeable deposits</li>
+                    <li>Requires a nearby recharge source (river/lake)</li>
+                    <li>Expensive to construct and maintain</li>
+                    <li>Vulnerable to flood damage</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== 7.12 RADIAL COLLECTOR WELLS ======== -->
+    <section id="sec-7-12">
+        <h2>7.12 RADIAL COLLECTOR WELLS (RANNEY WELLS)</h2>
+
+        <p>A <strong>radial collector well</strong> (also called a <strong>Ranney well</strong>, after its inventor Leo Ranney, 1930s) is a large-capacity water collection system consisting of a central reinforced concrete caisson from which horizontal well screens (laterals) are driven radially into the aquifer.</p>
+
+        <h3>Construction and Components</h3>
+        <ul>
+            <li><strong>Central caisson:</strong> A reinforced concrete cylinder, <strong>3&ndash;5 m diameter</strong>, sunk into the aquifer by excavation from inside (similar to open caisson technique)</li>
+            <li><strong>Horizontal laterals:</strong> Perforated steel pipes (typically 200&ndash;300 mm diameter, <strong>30&ndash;50 m length</strong>) driven radially outward into the aquifer through pre-formed ports in the caisson wall</li>
+            <li><strong>Number of laterals:</strong> 4 to 12, arranged at different levels to tap multiple aquifer zones</li>
+            <li><strong>Pumping:</strong> A high-capacity submersible or turbine pump installed in the caisson lifts water to the surface</li>
+        </ul>
+
+        <div class="figure-container">
+            <img src="../chapter7/radial.png" alt="Radial collector (Ranney) well" style="max-width:500px;width:100%;">
+            <div class="figcaption">Figure 7.8: Schematic of a radial collector (Ranney) well showing the central caisson and horizontal laterals driven into the aquifer.</div>
+        </div>
+
+        <h3>Performance</h3>
+        <ul>
+            <li><strong>Yield:</strong> Very high &mdash; typically <strong>500 to 2,000 L/s</strong> (equivalent to 10&ndash;50 individual tube wells)</li>
+            <li><strong>Drawdown:</strong> Low compared to vertical wells because of the large intake area provided by the horizontal laterals</li>
+            <li><strong>Water quality:</strong> Excellent &mdash; the long flow path through the aquifer provides natural filtration</li>
+        </ul>
+
+        <h3>Advantages and Limitations</h3>
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>Advantages</h4>
+                <ul>
+                    <li>Extremely high yield from a single installation</li>
+                    <li>Low drawdown and small cone of depression</li>
+                    <li>Good quality water (natural aquifer filtration)</li>
+                    <li>One pump station replaces many tube wells</li>
+                    <li>Suitable for riverbank filtration</li>
+                </ul>
+            </div>
+            <div class="mini-note">
+                <h4>Limitations</h4>
+                <ul>
+                    <li>Very high initial construction cost</li>
+                    <li>Requires skilled construction (caisson sinking + lateral jacking)</li>
+                    <li>Only suitable for unconsolidated, permeable aquifers</li>
+                    <li>Maintenance of laterals is difficult</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== 7.13 PAST QUESTION BANK ======== -->
+    <section id="sec-7-13">
+        <h2>7.13 PAST QUESTION BANK FOR CHAPTER 7</h2>
+
+        <div class="question-card">
+            <div class="question-meta">
+                <span class="pill">2078 Chaitra</span>
+                <span class="pill">Q7</span>
+                <span class="pill">6 marks</span>
+                <span class="pill">NUMERICAL</span>
+            </div>
+            <p>For an irrigation project, a recuperation test was conducted on an open well. Determine the specific yield of the open well and the yield from a 5 m diameter well under the given depression head.</p>
+            <div class="data-block">
+                <p><strong>Given:</strong> Initial depression = 4 m, Water level rise = 2.2 m, Recovery time = 90 minutes, Well diameter = 5 m, Depression head for yield = 2.5 m</p>
+            </div>
+            <div class="study-note">
+                <h4>ANSWER GUIDE:</h4>
+                <p>s<sub>2</sub> = 4 &minus; 2.2 = 1.8 m. T = 90/60 = 1.5 hr.</p>
+                <p>\( C = \frac{2.303}{1.5} \log_{10}(4/1.8) = 1.535 \times 0.3468 = 0.532 \text{ /hr} \)</p>
+                <p>\( Q = 0.532 \times (\pi/4)(5)^2 \times 2.5 = 0.532 \times 19.635 \times 2.5 = 26.1 \text{ m}^3/\text{hr} \)</p>
+                <p>See <a href="numerical/chapter7.html">Solved Numerical (Problem 17)</a> for full solution with diagrams.</p>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-meta">
+                <span class="pill">2073 Bhadra</span>
+                <span class="pill">Q8(a)</span>
+                <span class="pill">3 marks</span>
+            </div>
+            <p>Differentiate between open well and tube well.</p>
+            <div class="study-note">
+                <h4>ANSWER GUIDE:</h4>
+                <p>Draw a comparison table with 6&ndash;8 features: diameter, depth, construction, water entry, yield, yield test, cost, contamination risk. See Section 7.4.</p>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-meta">
+                <span class="pill">2073 Bhadra</span>
+                <span class="pill">Q8(b)</span>
+                <span class="pill">2+2+3 marks</span>
+                <span class="pill">NUMERICAL</span>
+            </div>
+            <p>From a recuperation test on an open well, determine specific yield, yield from a 5 m diameter well, and required diameter to obtain a target discharge.</p>
+            <div class="data-block">
+                <p><strong>Given:</strong> s<sub>1</sub> = 3 m, rise = 1.75 m, T = 75 min, D = 5 m, H = 2.5 m, Target Q = 12 L/s at H = 2 m</p>
+            </div>
+            <div class="study-note">
+                <h4>ANSWER GUIDE:</h4>
+                <p>(i) C = 0.700/hr. (ii) Q = 34.4 m&sup3;/hr = 9.54 L/s. (iii) D = 6.27 m.</p>
+                <p>See <a href="numerical/chapter7.html">Solved Numerical (Problem 18)</a> for full solution.</p>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-meta">
+                <span class="pill">2072 Ashwin</span>
+                <span class="pill">Q10</span>
+                <span class="pill">4+2 marks</span>
+            </div>
+            <p>What do you mean by a tube well? Explain different types of tube well with figure.</p>
+            <div class="study-note">
+                <h4>ANSWER GUIDE:</h4>
+                <p><strong>Part 1 (4 marks):</strong> Definition of tube well + diagram showing components (casing, screen, gravel pack, sanitary seal). See Section 7.3 and Figure 7.3.</p>
+                <p><strong>Part 2 (2 marks):</strong> Types: strainer, cavity, slotted. Brief description of each. See Section 7.3.2.</p>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-meta">
+                <span class="pill">2071 Bhadra</span>
+                <span class="pill">Q10</span>
+                <span class="pill">3+3+4 marks</span>
+                <span class="pill">NUMERICAL</span>
+            </div>
+            <p>During a recuperation test on an open well, determine specific yield, yield from a 5 m diameter well, and required diameter for a target discharge.</p>
+            <div class="data-block">
+                <p><strong>Given:</strong> Same data as 2073 Bhadra Q8(b): s<sub>1</sub> = 3 m, rise = 1.75 m, T = 75 min</p>
+            </div>
+            <div class="study-note">
+                <h4>ANSWER GUIDE:</h4>
+                <p>Identical to 2073 Bhadra Q8(b). C = 0.700/hr, Q = 34.4 m&sup3;/hr, D = 6.27 m.</p>
+                <p>See <a href="numerical/chapter7.html">Solved Numerical (Problem 19)</a>.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== SUMMARY ======== -->
+    <section id="sec-summary">
+        <h2>CHAPTER SUMMARY AND EXAM FORMULA SHEET</h2>
+
+        <div class="study-note">
+            <h4>EXAM FORMULA SHEET &mdash; CHAPTER 7</h4>
+            <table class="formula-table">
+                <tr>
+                    <th>Item</th>
+                    <th>Formula / Key Fact</th>
+                    <th>Context</th>
+                </tr>
+                <tr>
+                    <td>Specific yield (recuperation test)</td>
+                    <td>\( C = \frac{2.303}{T} \log_{10}\!\left(\frac{s_1}{s_2}\right) \)</td>
+                    <td>T in hours; s<sub>2</sub> = s<sub>1</sub> &minus; rise</td>
+                </tr>
+                <tr>
+                    <td>Depression decay</td>
+                    <td>\( s(t) = s_1 \, e^{-Ct} \)</td>
+                    <td>Exponential recovery of depression head</td>
+                </tr>
+                <tr>
+                    <td>Open well yield</td>
+                    <td>\( Q = C \times A \times H \)</td>
+                    <td>A = (&pi;/4)D&sup2;; H = depression head</td>
+                </tr>
+                <tr>
+                    <td>Required well diameter</td>
+                    <td>\( D = \sqrt{\frac{4Q}{\pi C H}} \)</td>
+                    <td>Rearranging yield formula for D</td>
+                </tr>
+                <tr>
+                    <td>Gravel pack ratio</td>
+                    <td>D<sub>50</sub>(pack) / D<sub>50</sub>(aquifer) = 4 to 5</td>
+                    <td>Design criterion for artificial filter</td>
+                </tr>
+                <tr>
+                    <td>Screen entrance velocity</td>
+                    <td>\( v_e = Q / A_s \leq 0.03 \) m/s</td>
+                    <td>A<sub>s</sub> = &pi; d L<sub>s</sub> p (open area)</td>
+                </tr>
+                <tr>
+                    <td>Screen length (confined)</td>
+                    <td>70&ndash;80% of aquifer thickness</td>
+                    <td>Maximize yield from full thickness</td>
+                </tr>
+                <tr>
+                    <td>Screen length (unconfined)</td>
+                    <td>Bottom 30&ndash;40% of saturated depth</td>
+                    <td>Maintain screen submergence during pumping</td>
+                </tr>
+                <tr>
+                    <td>Total well depth</td>
+                    <td>\( H = \text{SWL} + \Delta s + d_p + C \)</td>
+                    <td>SWL + drawdown + pump submergence + seasonal margin</td>
+                </tr>
+                <tr>
+                    <td>Slot size (natural dev.)</td>
+                    <td>D<sub>40</sub>&ndash;D<sub>50</sub> of aquifer (C<sub>u</sub>&gt;3)</td>
+                    <td>Allow fines to pump out during development</td>
+                </tr>
+                <tr>
+                    <td>Slot size (gravel pack)</td>
+                    <td>D<sub>90</sub> of gravel pack (C<sub>u</sub>&le;3)</td>
+                    <td>Screen retains pack; pack retains aquifer</td>
+                </tr>
+                <tr>
+                    <td>Infiltration gallery yield</td>
+                    <td>\( Q = \frac{KL(H^2-h^2)}{2R} \)</td>
+                    <td>Dupuit formula for horizontal collector</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="study-note">
+            <h4>KEY TAKEAWAYS FOR EXAM</h4>
+            <ol>
+                <li><strong>Open wells vs tube wells:</strong> Most asked comparison question. Know at least 8 differences including yield formula for each.</li>
+                <li><strong>Recuperation test:</strong> Appeared in 3 out of 4 exam years (2071, 2073, 2078). Always convert minutes to hours. Know the derivation.</li>
+                <li><strong>Three formulas to memorize:</strong> C (specific yield), Q (yield), and D (required diameter). They are all derived from the same exponential decay model.</li>
+                <li><strong>Tube well types:</strong> Know strainer, cavity, and slotted types with brief descriptions.</li>
+                <li><strong>Tube well components:</strong> Casing, screen, gravel pack, sanitary seal, bail plug. Draw labelled cross-section.</li>
+                <li><strong>Gravel pack rule:</strong> D<sub>50</sub>(pack) / D<sub>50</sub>(aquifer) = 4 to 5; uniform gravel preferred (ratio &gt; 5 allows sand invasion).</li>
+                <li><strong>Screen entrance velocity:</strong> Must be &le; 3 cm/s to prevent incrustation and sand entry.</li>
+                <li><strong>Gravel pack decision:</strong> C<sub>u</sub> &le; 3 &rarr; pack required (uniform aquifer); C<sub>u</sub> &gt; 3 &rarr; not required (well-graded).</li>
+                <li><strong>Slot size:</strong> Natural development (C<sub>u</sub>&gt;3) uses D<sub>40</sub>&ndash;D<sub>50</sub>; Gravel pack (C<sub>u</sub>&le;3) uses D<sub>90</sub> of pack.</li>
+                <li><strong>Infiltration gallery:</strong> Horizontal well near riverbed. Q = KL(H&sup2;&minus;h&sup2;)/(2R).</li>
+                <li><strong>Ranney well:</strong> Central caisson + horizontal laterals. Yield 500&ndash;2000 L/s.</li>
+            </ol>
+        </div>
+
+        <div class="figure-container">
+            <svg viewBox="0 0 700 220" style="max-width:700px;width:100%;font-family:'Times New Roman',serif">
+                <text x="350" y="20" text-anchor="middle" font-weight="bold" font-size="13">Exam Strategy: Chapter 7 Decision Flowchart</text>
+
+                <rect x="240" y="35" width="220" height="30" rx="4" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="350" y="55" text-anchor="middle" font-weight="bold" font-size="11">CHAPTER 7 QUESTION</text>
+
+                <!-- Branches -->
+                <line x1="140" y1="65" x2="140" y2="90" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <line x1="350" y1="65" x2="350" y2="90" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <line x1="570" y1="65" x2="570" y2="90" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <line x1="140" y1="65" x2="570" y2="65" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+
+                <!-- Differentiate -->
+                <rect x="40" y="90" width="200" height="28" rx="3" fill="var(--svg-bg-light, #f5f5f5)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="140" y="109" text-anchor="middle" font-size="11">&ldquo;Differentiate wells?&rdquo;</text>
+                <line x1="140" y1="118" x2="140" y2="135" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="40" y="135" width="200" height="40" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="140" y="153" text-anchor="middle" font-size="10">Table: 8+ features</text>
+                <text x="140" y="168" text-anchor="middle" font-size="10">(Sec 7.4, Table)</text>
+
+                <!-- Recuperation numerical -->
+                <rect x="255" y="90" width="200" height="28" rx="3" fill="var(--svg-bg-light, #f5f5f5)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="355" y="109" text-anchor="middle" font-size="11">&ldquo;Recuperation test?&rdquo;</text>
+                <line x1="355" y1="118" x2="355" y2="135" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="255" y="135" width="200" height="55" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="355" y="152" text-anchor="middle" font-size="10">1. Convert T to hours</text>
+                <text x="355" y="167" text-anchor="middle" font-size="10">2. Find C, then Q, then D</text>
+                <text x="355" y="182" text-anchor="middle" font-size="10">(Sec 7.5&ndash;7.6)</text>
+
+                <!-- Tube well types -->
+                <rect x="475" y="90" width="200" height="28" rx="3" fill="var(--svg-bg-light, #f5f5f5)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="575" y="109" text-anchor="middle" font-size="11">&ldquo;Tube well types?&rdquo;</text>
+                <line x1="575" y1="118" x2="575" y2="135" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <rect x="475" y="135" width="200" height="40" rx="3" fill="none" stroke="var(--svg-fg, #111)" stroke-width="0.8"/>
+                <text x="575" y="153" text-anchor="middle" font-size="10">Strainer, Cavity, Slotted</text>
+                <text x="575" y="168" text-anchor="middle" font-size="10">+ component diagram (Sec 7.3)</text>
+
+                <text x="350" y="215" text-anchor="middle" font-size="11" font-style="italic">Recuperation numerical = 6&ndash;10 marks. Very high-frequency topic.</text>
+            </svg>
+            <div class="figcaption">Figure 7.9: Exam strategy for answering Chapter 7 questions.</div>
+        </div>
+    </section>
+    <nav class="chapter-nav">
+      <a href="chapter6.html">
+        <span class="nav-label">&larr; Previous</span>
+        <span class="nav-title">Ch 6: GW Exploration</span>
+      </a>
+      <a href="chapter8.html" class="nav-next">
+        <span class="nav-label">Next &rarr;</span>
+        <span class="nav-title">Ch 8: Pumps</span>
+      </a>
+    </nav>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>
