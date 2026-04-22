@@ -731,27 +731,44 @@
             <div class="figure-container">
 
                 <svg width="500" height="340" viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
-                    <text x="250" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Three-Well Triangulation — Finding Flow Direction</text>
-                    <polygon points="100,280 400,250 250,80" fill="var(--svg-bg-soft)" stroke="var(--svg-fg)" stroke-width="2"/>
-                    <circle cx="100" cy="280" r="8" fill="var(--svg-accent)" stroke="var(--svg-fg)" stroke-width="1.5"/>
-                    <text x="60" y="285" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">A</text>
-                    <text x="60" y="300" text-anchor="middle" font-size="10" fill="var(--svg-accent)">h = 48 m</text>
-                    <circle cx="400" cy="250" r="8" fill="var(--svg-green-accent)" stroke="var(--svg-fg)" stroke-width="1.5"/>
-                    <text x="440" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">B</text>
-                    <text x="445" y="270" text-anchor="middle" font-size="10" fill="var(--svg-green-accent)">h = 42 m</text>
-                    <circle cx="250" cy="80" r="8" fill="var(--svg-red-accent)" stroke="var(--svg-fg)" stroke-width="1.5"/>
-                    <text x="290" y="78" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">C</text>
-                    <text x="295" y="95" text-anchor="middle" font-size="10" fill="var(--svg-red-accent)">h = 36 m</text>
-                    <circle cx="327" cy="166" r="5" fill="var(--svg-orange-accent)"/>
-                    <text x="360" y="160" font-size="10" fill="var(--svg-orange-accent)">D (h=42m)</text>
-                    <text x="360" y="175" font-size="9" fill="var(--svg-muted)">interpolated</text>
-                    <line x1="327" y1="168" x2="400" y2="252" stroke="var(--svg-green-accent)" stroke-width="2" stroke-dasharray="6,3"/>
-                    <text x="380" y="210" font-size="9" fill="var(--svg-green-accent)">Equipotential</text>
-                    <text x="380" y="222" font-size="9" fill="var(--svg-green-accent)">h = 42 m</text>
-                    <line x1="100" y1="280" x2="340" y2="200" stroke="var(--svg-accent)" stroke-width="2.5" marker-end="url(#arr)"/>
-                    <text x="200" y="230" font-size="10" font-weight="bold" fill="var(--svg-accent)">Flow direction</text>
-                    <text x="200" y="245" font-size="9" fill="var(--svg-accent)">⊥ to equipotential</text>
-                    <text x="250" y="325" text-anchor="middle" font-size="10" fill="var(--svg-fg)">Step: Interpolate equal-head point D on AC, draw BD (equipotential), flow ⊥ from A</text>
+                    <text x="250" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Three-Well Triangulation &#8212; Finding Flow Direction</text>
+                    <!-- Triangle sides -->
+                    <line x1="100" y1="100" x2="400" y2="100" stroke="var(--svg-dim)" stroke-width="1.5"/>
+                    <line x1="400" y1="100" x2="250" y2="300" stroke="var(--svg-dim)" stroke-width="1.5"/>
+                    <line x1="250" y1="300" x2="100" y2="100" stroke="var(--svg-dim)" stroke-width="1.5"/>
+                    <!-- Wells -->
+                    <circle cx="100" cy="100" r="8" fill="var(--svg-accent)" stroke="var(--svg-fg)" stroke-width="1.5"/>
+                    <text x="58" y="90" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">A</text>
+                    <text x="58" y="108" text-anchor="middle" font-size="10" fill="var(--svg-accent)">h = 48 m</text>
+                    <circle cx="400" cy="100" r="8" fill="var(--svg-green-accent)" stroke="var(--svg-fg)" stroke-width="1.5"/>
+                    <text x="442" y="90" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">B</text>
+                    <text x="445" y="108" text-anchor="middle" font-size="10" fill="var(--svg-green-accent)">h = 42 m</text>
+                    <circle cx="250" cy="300" r="8" fill="var(--svg-red-accent)" stroke="var(--svg-fg)" stroke-width="1.5"/>
+                    <text x="250" y="325" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--svg-fg)">C</text>
+                    <text x="250" y="340" text-anchor="middle" font-size="10" fill="var(--svg-red-accent)">h = 36 m</text>
+                    <!-- Step 1: Interpolated point D on side AC where h=42 -->
+                    <!-- A(100,100) h=48 to C(250,300) h=36. h=42 is 50% from A to C → D = (175, 200) -->
+                    <circle cx="175" cy="200" r="6" fill="var(--svg-orange-accent)"/>
+                    <text x="130" y="195" font-size="10" font-weight="bold" fill="var(--svg-orange-accent)">D</text>
+                    <text x="118" y="210" font-size="9" fill="var(--svg-orange-accent)">h = 42 m</text>
+                    <text x="118" y="223" font-size="8" fill="var(--svg-muted)">(interpolated)</text>
+                    <!-- Step 2: Equipotential line B–D (both h=42m) -->
+                    <!-- B(400,100) to D(175,200) -->
+                    <line x1="175" y1="200" x2="400" y2="100" stroke="var(--svg-green-accent)" stroke-width="2.5" stroke-dasharray="8,4"/>
+                    <text x="320" y="138" font-size="10" font-weight="bold" fill="var(--svg-green-accent)">Equipotential</text>
+                    <text x="320" y="152" font-size="9" fill="var(--svg-green-accent)">h = 42 m</text>
+                    <!-- Step 3: Flow direction ⊥ to BD, from high h toward low h -->
+                    <!-- BD direction vector: (225, -100). Perpendicular (pointing toward C/low h): (100, 225), normalised ≈ (0.407, 0.914) -->
+                    <!-- Start from midpoint of BD ≈ (288, 150), go perpendicular toward low head -->
+                    <!-- Right-angle marker at intersection -->
+                    <rect x="285" y="150" width="10" height="10" fill="none" stroke="var(--svg-accent)" stroke-width="1.5" transform="rotate(24, 288, 150)"/>
+                    <line x1="288" y1="150" x2="329" y2="242" stroke="var(--svg-accent)" stroke-width="3" marker-end="url(#arr)"/>
+                    <text x="348" y="210" font-size="11" font-weight="bold" fill="var(--svg-accent)">Flow</text>
+                    <text x="348" y="224" font-size="10" fill="var(--svg-accent)">direction</text>
+                    <text x="348" y="238" font-size="9" fill="var(--svg-muted)">&#x22A5; to equipotential</text>
+                    <!-- Gradient label -->
+                    <rect x="50" y="40" width="400" height="22" rx="4" fill="var(--svg-bg-soft)" stroke="var(--svg-dim)" stroke-width="1"/>
+                    <text x="250" y="56" text-anchor="middle" font-size="9" fill="var(--svg-fg)">&#x2460; Find mid-head well (B, 42 m) &#x2461; Interpolate D on AC at h=42 &#x2462; BD = equipotential &#x2463; Flow &#x22A5; BD</text>
                 </svg>
                 <div class="figcaption">Figure 3.3b: Three-well triangulation — interpolate an equal-head point, draw the equipotential, and find the flow direction perpendicular to it.</div>
             </div>
