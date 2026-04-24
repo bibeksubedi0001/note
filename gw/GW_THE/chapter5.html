@@ -261,6 +261,11 @@
             <li><strong>Design production wells</strong> — determine sustainable pumping rate, well spacing, and predict long-term drawdown.</li>
         </ol>
 
+        <h3>Specific Capacity</h3>
+        <p>A quick field measure of well productivity is the <strong>specific capacity</strong>, defined as the discharge per unit drawdown:</p>
+        <div class="equation">$$ \text{Specific Capacity} = \frac{Q}{s_w} \quad [\text{m}^3/\text{day/m} \;\text{or}\; \text{L/min/m}] $$</div>
+        <p>Higher specific capacity indicates a more productive well-aquifer system. It decreases with time (as drawdown increases) and with increasing Q (due to well losses).</p>
+
         <div class="figure-container">
             <svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
                 <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="16">PUMPING TEST FIELD ARRANGEMENT</text>
@@ -427,9 +432,14 @@
         <p>The pumping rate is increased in <strong>steps</strong> (e.g., Q, 2Q, 3Q), each maintained until drawdown stabilizes. Determines:</p>
         <ul>
             <li><strong>Well efficiency</strong> — ratio of theoretical to actual drawdown</li>
-            <li><strong>Well loss coefficient (C)</strong> in the equation \(s_w = BQ + CQ^2\), where BQ is the aquifer (Darcian) loss and CQ&sup2; is the well (non-Darcian) loss</li>
+            <li><strong>Well loss coefficient (C)</strong> — determines the magnitude of turbulent well losses</li>
             <li><strong>Optimum pumping rate</strong> for the well</li>
         </ul>
+        <p>The total drawdown in the pumping well consists of <strong>aquifer loss</strong> (laminar, Darcian) and <strong>well loss</strong> (turbulent, non-Darcian):</p>
+        <div class="equation">$$ \boxed{s_w = BQ + CQ^2} $$</div>
+        <p>where B = aquifer loss coefficient (depends on T, S, r, t), and C = well loss coefficient (depends on well construction). The <strong>well efficiency</strong> is:</p>
+        <div class="equation">$$ \boxed{\eta = \frac{BQ}{BQ + CQ^2} \times 100\%} $$</div>
+        <p>A well efficiency &gt; 70% is considered acceptable. Low efficiency indicates excessive well losses due to poor screen design, clogging, or insufficient development.</p>
 
         <h3>C. Recovery Test</h3>
         <p>After the pump is shut off, the water level <strong>recovers</strong> (rises) toward its original position. Substituting &ldquo;residual drawdown&rdquo; into the Theis/Cooper-Jacob equations yields T independently. This is a valuable check on T obtained during the pumping phase.</p>
@@ -639,7 +649,8 @@
             </div>
             <div class="mini-note">
                 <h4>Storage Coefficient (S)</h4>
-                <p><strong>Confined:</strong> S = 10<sup>&minus;5</sup> to 10<sup>&minus;3</sup> (elastic storage only). <strong>Unconfined:</strong> S = S<sub>y</sub> = 0.01 to 0.30 (gravity drainage). Small S means the cone of depression expands rapidly.</p>
+                <div class="equation">$$ S = S_s \cdot b $$</div>
+                <p>where \(S_s\) = specific storage (1/m) and b = aquifer thickness. For <strong>confined</strong> aquifers: S = 10<sup>&minus;5</sup> to 10<sup>&minus;3</sup> (elastic storage only — compression of aquifer skeleton and expansion of water). For <strong>unconfined</strong> aquifers: S &asymp; S<sub>y</sub> = 0.01 to 0.30 (gravity drainage dominates). Small S means the cone of depression expands rapidly.</p>
             </div>
         </div>
     </section>
@@ -825,6 +836,17 @@
             <div class="equation">$$ T = \frac{2.303\,Q}{2\pi\,\Delta s} $$</div>
             <p>The line extended to s = 0 gives the <strong>radius of influence</strong> R<sub>0</sub>.</p>
         </div>
+
+        <h3>Thiem&rsquo;s Equation for Unconfined Aquifer</h3>
+        <p>For an <strong>unconfined aquifer</strong> (where the saturated thickness varies with drawdown), the Dupuit-Thiem equation uses head h instead of drawdown:</p>
+        <div class="equation">$$ \boxed{Q = \frac{\pi K (h_2^2 - h_1^2)}{\ln(r_2/r_1)}} $$</div>
+        <p>where \(h_1\) and \(h_2\) are the saturated thicknesses at distances \(r_1\) and \(r_2\) from the well. For the case with one observation well and the well itself (radius \(r_w\), head \(h_w\)) to the radius of influence \(R\) (head \(H\) = original saturated thickness):</p>
+        <div class="equation">$$ Q = \frac{\pi K (H^2 - h_w^2)}{\ln(R/r_w)} $$</div>
+
+        <h3>Jacob Correction for Unconfined Aquifer</h3>
+        <p>When applying confined-aquifer equations (Theis, Cooper-Jacob) to unconfined aquifers, Jacob&rsquo;s correction adjusts the observed drawdown \(s\) to an equivalent confined drawdown \(s_c\):</p>
+        <div class="equation">$$ \boxed{s_c = s - \frac{s^2}{2b}} $$</div>
+        <p>where b is the initial saturated thickness. Use \(s_c\) in place of s in all confined-aquifer formulas. This correction is significant when s &gt; 0.25b.</p>
 
         <h3>Limitations of Thiem&rsquo;s Method</h3>
         <ul>
@@ -1278,12 +1300,22 @@
             <div class="figcaption">Figure 5.9: Method of images. Left: barrier boundary uses an image pumping well (+Q). Right: recharge boundary uses an image recharge well (&minus;Q).</div>
         </div>
 
+        <h3>Drawdown with Image Wells</h3>
+        <p>Using superposition, the total drawdown at any point is the algebraic sum of drawdowns from the real and image wells. If the real well is at distance \(r\) and the image well at distance \(r_i\) from the observation point:</p>
+        <p><strong>Impermeable (barrier) boundary</strong> — image well pumps at +Q:</p>
+        <div class="equation">$$ \boxed{s = \frac{Q}{4\pi T}\left[W(u_r) + W(u_i)\right]} $$</div>
+        <p><strong>Recharge boundary</strong> — image well recharges at &minus;Q:</p>
+        <div class="equation">$$ \boxed{s = \frac{Q}{4\pi T}\left[W(u_r) - W(u_i)\right]} $$</div>
+        <p>where \(u_r = r^2S/(4Tt)\) and \(u_i = r_i^2 S/(4Tt)\). At the boundary itself (barrier), the no-flow condition is automatically satisfied.</p>
+
         <h3>Detecting Boundaries from Pumping Test Data</h3>
         <ul>
             <li>On a Cooper-Jacob time-drawdown plot, a <strong>barrier</strong> causes the late-time data to steepen (upward break in the line, slope doubles).</li>
             <li>A <strong>recharge boundary</strong> causes the data to flatten below the original line (downward break, slope approaches zero).</li>
-            <li>Distance to the boundary can be estimated from the time at which the break occurs using \(r_i = \sqrt{4Tt_b/S}\), where t<sub>b</sub> is the break time.</li>
+            <li>Distance to the boundary can be estimated from the time at which the break occurs:</li>
         </ul>
+        <div class="equation">$$ \boxed{r_i = \sqrt{\frac{4Tt_b}{S}}} $$</div>
+        <p>where \(t_b\) is the time at which the break in the semi-log line occurs, and \(r_i\) is the distance from the pumping well to the image well (= twice the distance to the boundary).</p>
             <div class="figure-container">
 
                 <svg width="600" height="250" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
