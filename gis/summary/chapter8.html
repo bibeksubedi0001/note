@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 8: Surface Model</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch8);--ch-color-lt:var(--ch8-lt);--ch-color-dk:var(--ch8-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter8.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 8 &mdash; Summary</div>
+    <h1>Surface Model</h1>
+    <span class="ch-number-bg">08</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">3 Teaching Hours</span>
+      <span class="meta-badge exam">6 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">10+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~40</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">6</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-medium">Medium</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> DEM / DTM / DSM</h2>
+    <ul>
+      <li><strong>DEM (Digital Elevation Model):</strong> Grid of elevation values representing bare earth.</li>
+      <li><strong>DTM (Digital Terrain Model):</strong> DEM plus additional terrain features (breaklines, ridges, rivers).</li>
+      <li><strong>DSM (Digital Surface Model):</strong> Includes everything on the surface &mdash; buildings, trees, terrain.</li>
+    </ul>
+
+    <h2><span class="section-num">2</span> DEM Data Sources</h2>
+    <ul>
+      <li>Topographic surveys and contour digitisation.</li>
+      <li>GPS ground surveys and total station.</li>
+      <li>LiDAR (Light Detection and Ranging).</li>
+      <li>SRTM (90 m resolution), ASTER GDEM (30 m).</li>
+      <li>Photogrammetry from stereo aerial photographs or satellite imagery.</li>
+      <li>InSAR (Interferometric Synthetic Aperture Radar).</li>
+    </ul>
+
+    <h2><span class="section-num">3</span> DEM Structures</h2>
+    <ul>
+      <li><strong>Grid (raster):</strong> Regular matrix. Simple, efficient for computation.</li>
+      <li><strong>TIN:</strong> Irregular triangles. Variable resolution &mdash; dense in complex terrain.</li>
+      <li><strong>Contour lines:</strong> Lines of equal elevation. Traditional representation.</li>
+    </ul>
+
+    <h2><span class="section-num">4</span> Creating DEM in Raster GIS</h2>
+    <ol>
+      <li>Collect source data (contour lines, spot heights, GPS, LiDAR).</li>
+      <li>Input data into GIS (digitise or import).</li>
+      <li>Apply interpolation (IDW, Kriging, or Spline).</li>
+      <li>Convert to raster grid (choose cell size).</li>
+      <li>Validate against known control points.</li>
+    </ol>
+
+    <h2><span class="section-num">5</span> Slope and Aspect from DEM</h2>
+    <div class="formula">
+      slope = arctan(&radic;((&part;z/&part;x)&sup2; + (&part;z/&part;y)&sup2;))
+    </div>
+    <p><strong>Slope:</strong> Rate of elevation change from 3&times;3 window. Output in degrees (0&ndash;90) or percent.</p>
+    <p><strong>Aspect:</strong> Compass direction of steepest descent. 0&ndash;360 (N=0, E=90, S=180, W=270). Flat = &minus;1.</p>
+
+    <h2><span class="section-num">6</span> Applications of DEM</h2>
+    <ul>
+      <li>Watershed delineation, flow direction, stream network.</li>
+      <li>Slope/aspect analysis for engineering and agriculture.</li>
+      <li>Visibility analysis: viewshed, line of sight.</li>
+      <li>Volume calculation: cut-fill for construction.</li>
+      <li>3D visualisation and contour generation.</li>
+    </ul>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What is DTM? List structures and applications. <em>(2071 Magh, 6 marks)</em></span></div><div class="qa-answer">
+      <p>Define DTM. Three structures: Grid, TIN, Contour. Applications: watershed, slope for construction, viewshed for towers.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">How is DEM created in Raster GIS? <em>(2072 Ashwin, 5 marks)</em></span></div><div class="qa-answer">
+      <p>Five steps: data collection, data input, interpolation, rasterisation, validation. Name specific interpolation methods.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Data sources of DEM and its applications. <em>(2075 Bhadra)</em></span></div><div class="qa-answer">
+      <p>Sources: surveys, contours, GPS, LiDAR, SRTM, ASTER, photogrammetry, InSAR. Applications: hydrology, engineering, military, telecom.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain slope and aspect functions with illustration. <em>(2076, 5 marks)</em></span></div><div class="qa-answer">
+      <p>Draw 3&times;3 grid with sample elevations. Show partial derivatives. Compute slope and aspect. Include aspect compass diagram.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter7.html">&larr; Chapter 7</a>
+      <a href="chapter9.html">Chapter 9 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 8 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

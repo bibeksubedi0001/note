@@ -135,20 +135,40 @@
 [data-theme="dark"] .page::before {
   background: linear-gradient(180deg, #333 0%, #555 100%);
 }
+[data-theme="dark"] header {
+  background: linear-gradient(180deg, rgba(255,255,255,.03) 0%, transparent 100%);
+}
+[data-theme="dark"] header::after {
+  border-top-color: var(--line);
+}
 [data-theme="dark"] th {
-  background: #2a2d33;
+  background: var(--accent);
+  color: #fff;
 }
 [data-theme="dark"] table {
   background: var(--paper);
+}
+[data-theme="dark"] tbody tr:nth-child(even) {
+  background: var(--paper-edge);
+}
+[data-theme="dark"] tbody tr:hover {
+  background: var(--accent-light);
+}
+[data-theme="dark"] td {
+  border-color: var(--line);
 }
 [data-theme="dark"] .figure {
   background: var(--paper-edge);
   border-color: var(--line);
 }
+[data-theme="dark"] .figure::before {
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: .5;
+}
 [data-theme="dark"] .figure svg {
   background: none;
 }
-/* Dark-mode SVG overrides: white text, visible lines & arrows */
+/* Dark-mode SVG overrides: visible text, lines & arrows */
 [data-theme="dark"] .figure svg text {
   fill: #e2e8f0 !important;
 }
@@ -163,28 +183,128 @@
 [data-theme="dark"] .figure svg rect,
 [data-theme="dark"] .figure svg circle,
 [data-theme="dark"] .figure svg ellipse {
-  filter: brightness(0.4) saturate(0.7);
+  filter: brightness(0.65) saturate(0.85);
+}
+[data-theme="dark"] .figure figcaption {
+  color: #94a3b8;
+  border-top-color: var(--line);
 }
 [data-theme="dark"] ::selection {
-  background: rgba(0,0,0,.12);
+  background: rgba(94,163,224,.25);
+  color: #fff;
 }
 [data-theme="dark"] main h2,
 [data-theme="dark"] main h3 {
-  color: #e8805a;
-  font-style: italic;
+  color: #e8a060;
+}
+[data-theme="dark"] h2::after {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 40%, transparent 100%);
+}
+[data-theme="dark"] h3 {
+  border-left-color: var(--gold);
+}
+[data-theme="dark"] h4 {
+  color: var(--accent-2);
 }
 [data-theme="dark"] .meta-badge.exam {
-  background: #ffffff;
-  color: #000000;
-  border: 1px solid #cccccc;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--line);
+}
+[data-theme="dark"] .meta-badge.topic {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--line);
 }
 [data-theme="dark"] .exam-ref {
-  background: #ffffff;
-  color: #000000;
+  background: var(--accent-light);
+  color: var(--accent);
 }
 [data-theme="dark"] .exam-ref:hover {
-  background: #e0e0e0;
-  color: #000000;
+  background: var(--accent);
+  color: #fff;
+}
+/* Dark callouts, formula boxes, exam boxes */
+[data-theme="dark"] .callout {
+  background: var(--accent-light);
+  border-left-color: var(--accent);
+}
+[data-theme="dark"] .exam-box {
+  background: var(--accent-2-lt);
+  border-left-color: var(--accent-2);
+}
+[data-theme="dark"] .formula {
+  background: var(--soft);
+  border-left-color: var(--gold);
+}
+[data-theme="dark"] blockquote {
+  background: var(--soft);
+  border-left-color: var(--gold);
+  color: #b0afa8;
+}
+/* Dark mode links */
+[data-theme="dark"] a {
+  color: var(--accent);
+}
+[data-theme="dark"] a:hover {
+  border-bottom-color: var(--accent);
+}
+/* Dark mode back-link & nav */
+[data-theme="dark"] .back-link {
+  background: var(--soft);
+  border-color: var(--line);
+  color: var(--accent);
+}
+[data-theme="dark"] .back-link:hover {
+  background: var(--accent);
+  color: #fff;
+}
+[data-theme="dark"] .chapter-nav a {
+  background: var(--soft);
+  border-color: var(--line);
+  color: var(--accent);
+}
+[data-theme="dark"] .chapter-nav a:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+/* Dark mode footer */
+[data-theme="dark"] .footer-note {
+  color: #888;
+}
+[data-theme="dark"] .footer-note::before {
+  color: var(--line);
+  background: var(--paper);
+}
+[data-theme="dark"] .footer-note::after {
+  background: var(--line);
+}
+/* Dark mode TOC */
+[data-theme="dark"] nav.toc {
+  background: var(--paper-edge);
+  border-color: var(--line);
+}
+/* Dark strong/bold text visibility */
+[data-theme="dark"] strong,
+[data-theme="dark"] b {
+  color: #f0ece4;
+}
+/* Dark scrollbar */
+[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background: #444;
+}
+[data-theme="dark"]::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+/* Dark mode stat cards */
+[data-theme="dark"] .stat-card {
+  background: var(--paper-edge);
+  border-color: var(--line);
+}
+/* Dark drop cap */
+[data-theme="dark"] .drop-cap::first-letter {
+  color: var(--accent);
 }
 
 /* ---- Smooth Theme Transition ---- */
@@ -722,6 +842,86 @@ tbody tr:hover {
   font-size: 12.5pt;
   line-height: 1.55;
 }
+
+/* ---- Importance & Marks Distribution Section ---- */
+.chapter-importance-section .importance-summary {
+  font-size: var(--fs-body);
+  margin: 8px 0 18px;
+  color: var(--ink);
+}
+.marks-dist-table {
+  font-size: 10pt;
+}
+.marks-dist-table th,
+.marks-dist-table td {
+  text-align: center;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+.marks-dist-table td:first-child {
+  text-align: left;
+}
+.marks-dist-table thead th {
+  background: var(--accent);
+  color: white;
+  font-size: 9.5pt;
+}
+.marks-dist-table tbody td {
+  font-weight: 600;
+  font-size: 10.5pt;
+}
+.marks-dist-table .dim-cell {
+  color: #999;
+  font-weight: 400;
+}
+.marks-dist-table .ns-cell {
+  color: #b07020;
+  font-weight: 400;
+  font-style: italic;
+}
+[data-theme="dark"] .marks-dist-table .dim-cell {
+  color: #666;
+}
+[data-theme="dark"] .marks-dist-table .ns-cell {
+  color: #c89040;
+}
+
+.freq-topics-table {
+  font-size: 10.5pt;
+}
+.freq-topics-table th:first-child,
+.freq-topics-table td:first-child {
+  width: 45%;
+  text-align: left;
+}
+.freq-topics-table th:nth-child(2),
+.freq-topics-table td:nth-child(2) {
+  width: 90px;
+  text-align: center;
+  font-weight: 700;
+}
+.freq-topics-table th:nth-child(3),
+.freq-topics-table td:nth-child(3) {
+  width: 35%;
+}
+.freq-bar {
+  height: 14px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+  border-radius: 7px;
+  min-width: 8px;
+  transition: width 0.4s ease;
+}
+
+[data-theme="dark"] .marks-dist-table thead th {
+  background: var(--accent);
+}
+[data-theme="dark"] .freq-bar {
+  opacity: 0.85;
+}
+[data-theme="dark"] .chapter-importance-section .importance-summary {
+  color: var(--ink);
+}
+
 .syllabus-topics {
   padding-left: 22px;
   margin: 10px 0;
@@ -1146,7 +1346,8 @@ h2 ~ h2 {
 }
 
 /* ============================================================
-   Enhanced exam-ref tags
+/* ============================================================
+   Enhanced exam-ref tags (legacy - kept for compatibility)
    ============================================================ */
 .exam-ref {
   display: inline-block;
@@ -1167,6 +1368,78 @@ h2 ~ h2 {
 .exam-ref:hover {
   background: #5ba8cc;
   color: #000000;
+}
+
+/* ============================================================
+   Exam-note boxes (past questions per section)
+   ============================================================ */
+.exam-note {
+  border: 1px solid var(--line);
+  border-left: 3.5pt solid var(--gold);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 18px 22px;
+  margin: 18px 0 28px;
+  background: var(--soft);
+  break-inside: avoid;
+  transition: border-color .3s var(--ease);
+}
+.exam-note h4 {
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--line);
+  color: var(--gold);
+  font-family: 'Times New Roman', Times, serif;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.exam-note ol {
+  padding-left: 22px;
+  margin: 0;
+}
+.exam-note li {
+  margin-bottom: 6px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+.exam-note li em {
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+[data-theme="dark"] .exam-note {
+  border-color: var(--line);
+  border-left-color: var(--gold);
+  background: var(--paper-edge);
+}
+[data-theme="dark"] .exam-note h4 {
+  color: var(--gold);
+  border-bottom-color: var(--line);
+}
+[data-theme="dark"] .exam-note li {
+  color: var(--ink);
+}
+[data-theme="dark"] .exam-note li em {
+  color: #b0afa8;
+}
+
+/* --- Bare exam-code items (no question text, only code ref) --- */
+.exam-note li:only-child > em:only-child,
+.exam-note p > em:only-child {
+  display: inline-block;
+  padding: 2px 10px;
+  background: var(--accent-light);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  font-size: var(--fs-small);
+  color: var(--accent);
+  font-style: italic;
+}
+[data-theme="dark"] .exam-note li:only-child > em:only-child,
+[data-theme="dark"] .exam-note p > em:only-child {
+  background: var(--soft);
+  border-color: var(--line);
+  color: #b0afa8;
 }
 
 /* ============================================================

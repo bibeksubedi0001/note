@@ -4,118 +4,225 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GIS &amp; Remote Sensing &mdash; Study Guide</title>
-  <link rel="stylesheet" href="../index-style.css">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f8f9fb;--surface:#fff;--surface-2:#f1f3f6;--ink:#1a1a2e;--muted:#6b7280;
+      --border:#e5e7eb;--accent:#4f46e5;--accent-light:#eef2ff;--accent-text:#4338ca;
+      --radius:12px;--radius-sm:8px;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.1);
+      --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+      --num-accent:#0ea5e9;--num-light:#f0f9ff;
+      --sum-accent:#8b5cf6;--sum-light:#f5f3ff;
+      --exam-accent:#f59e0b;--exam-light:#fffbeb;
+    }
+    [data-theme="dark"]{
+      --bg:#0f1117;--surface:#1a1b26;--surface-2:#21222e;--ink:#e5e7eb;--muted:#9ca3af;
+      --border:#2d2f3d;--accent:#818cf8;--accent-light:#1e1b4b;--accent-text:#a5b4fc;
+      --num-accent:#38bdf8;--num-light:#0c1929;
+      --sum-accent:#a78bfa;--sum-light:#1a1530;
+      --exam-accent:#fbbf24;--exam-light:#1a1708;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.15);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.3);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh}
+    .container{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 12px;border-radius:var(--radius-sm);transition:all .2s;border:1px solid transparent}
+    .back-link:hover{color:var(--accent);background:var(--accent-light);border-color:var(--border)}
+    .back-link svg{width:16px;height:16px}
+    .page-header{text-align:center;padding:40px 0 32px}
+    .page-header h1{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+    .page-header .subtitle{color:var(--muted);font-size:.95rem;max-width:500px;margin:0 auto 20px}
+    .stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+    .stats div{text-align:center}
+    .stats span{display:block;font-size:1.4rem;font-weight:800;color:var(--accent)}
+    .stats small{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+    .theme-toggle{position:fixed;top:16px;right:16px;z-index:100;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow-sm)}
+    .theme-toggle:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .search-wrap{margin:0 auto 32px;max-width:480px}
+    .search-input{width:100%;padding:10px 16px 10px 40px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--ink);font-size:.9rem;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+    .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+    .section-label{display:flex;align-items:center;gap:10px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:36px 0 14px;padding:0 4px}
+    .section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+    .section-label .section-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+    .section-label .icon-theory{background:var(--accent-light);color:var(--accent)}
+    .section-label .icon-summary{background:var(--sum-light);color:var(--sum-accent)}
+    .section-label .icon-exam{background:var(--exam-light);color:var(--exam-accent)}
+    .section-label .icon-num{background:var(--num-light);color:var(--num-accent)}
+    .chapter-list{list-style:none;display:flex;flex-direction:column;gap:0}
+    .chapter-list li{border-bottom:1px solid var(--border)}
+    .chapter-list li:first-child{border-top:1px solid var(--border)}
+    .chapter-item{display:flex;align-items:center;gap:14px;padding:14px 8px;text-decoration:none;color:var(--ink);transition:all .15s}
+    .chapter-item:hover{padding-left:14px;background:var(--accent-light)}
+    .ch-num{font-size:.82rem;font-weight:800;color:var(--accent-text);width:28px;text-align:center;flex-shrink:0}
+    .ch-title{flex:1;font-weight:600;font-size:.92rem;line-height:1.35}
+    .ch-info{display:flex;flex-direction:column}
+    .ch-desc{font-size:.78rem;color:var(--muted);line-height:1.4;margin-top:2px}
+    .ch-badge{font-size:.72rem;font-weight:700;color:var(--muted);flex-shrink:0}
+    .badge-theory{color:var(--accent-text)}
+    .badge-summary{color:var(--sum-accent)}
+    .badge-exam{color:var(--exam-accent)}
+    .badge-num{color:var(--num-accent)}
+    .ch-arrow{display:none}
+    .num-list{list-style:none;display:flex;flex-direction:column;gap:0}
+    .num-list li{border-bottom:1px solid var(--border)}
+    .num-list li:first-child{border-top:1px solid var(--border)}
+    .num-item{display:flex;align-items:center;gap:14px;padding:14px 8px;text-decoration:none;color:var(--ink);transition:all .15s}
+    .num-item:hover{padding-left:14px;background:var(--num-light)}
+    .num-item .ch-num{color:var(--num-accent)}
+    .num-item .ch-badge{color:var(--num-accent)}
+    .info-row{display:flex;align-items:center;gap:12px;padding:10px 8px;font-size:.85rem;color:var(--muted)}
+    .info-row .info-icon{font-size:1rem;flex-shrink:0}
+    .page-footer{text-align:center;margin-top:48px;padding:20px 0;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem}
+    @media(max-width:600px){
+      .container{padding:16px 14px 40px}
+      .page-header h1{font-size:1.5rem}
+      .stats{gap:16px}
+      .chapter-item,.num-item{padding:10px 6px;gap:10px}
+    }
+  </style>
 </head>
 <body>
-
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
 <div class="container">
   <a href="../index.html" class="back-link">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
     All Subjects
   </a>
-
   <header class="page-header">
     <h1>GIS &amp; Remote Sensing</h1>
     <p class="subtitle">Geographic Information Systems, spatial analysis, GPS, and remote sensing</p>
     <div class="stats">
-      <div><span>12</span> Chapters</div>
-      <div><span>50+</span> Exam Questions</div>
-      <div><span>100+</span> Diagrams</div>
+      <div><span>12</span><small>Chapters</small></div>
+      <div><span>28</span><small>Numericals</small></div>
+      <div><span>50+</span><small>Exam Q&amp;As</small></div>
     </div>
   </header>
-
   <div class="search-wrap">
-    <input type="text" class="search-input" id="chapterSearch" placeholder="Search chapters..." autocomplete="off">
+    <input type="text" class="search-input" id="globalSearch" placeholder="Search chapters, numericals, summaries..." autocomplete="off">
   </div>
-
-  <div class="section-label">Chapters</div>
-  <ul class="chapter-list" id="chapterList">
-    <li><a href="chapter1.html" class="chapter-item" data-search="introduction overview gis software components spatial">
+  <div class="section-label"><span class="section-icon icon-theory">&#9670;</span> Theory Chapters</div>
+  <ul class="chapter-list" id="theoryList">
+    <li><a href="theory/chapter1.html" class="chapter-item" data-search="introduction overview gis software components spatial">
       <span class="ch-num">01</span>
-      <span class="ch-title">Introduction &amp; Overview of GIS</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Introduction &amp; Overview of GIS</span><span class="ch-desc">Components, four Ms, GIS vs CAD/DBMS</span></div>
     </a></li>
-    <li><a href="chapter2.html" class="chapter-item" data-search="gis maps datums projections utm scale">
+    <li><a href="theory/chapter2.html" class="chapter-item" data-search="gis maps datums projections utm scale rms">
       <span class="ch-num">02</span>
-      <span class="ch-title">GIS and Maps</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">GIS and Maps</span><span class="ch-desc">Projections, datums, UTM, scale, RMS error</span></div>
     </a></li>
-    <li><a href="chapter3.html" class="chapter-item" data-search="spatial data models raster vector topology tin">
+    <li><a href="theory/chapter3.html" class="chapter-item" data-search="spatial data models raster vector topology tin compression">
       <span class="ch-num">03</span>
-      <span class="ch-title">Spatial Data Models</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Spatial Data Models</span><span class="ch-desc">Raster, vector, topology, TIN, compression</span></div>
     </a></li>
-    <li><a href="chapter4.html" class="chapter-item" data-search="data sources digitizing scanning gps metadata">
+    <li><a href="theory/chapter4.html" class="chapter-item" data-search="data sources digitizing scanning gps metadata quality">
       <span class="ch-num">04</span>
-      <span class="ch-title">Data Sources</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Data Sources</span><span class="ch-desc">Digitizing, scanning, metadata, quality</span></div>
     </a></li>
-    <li><a href="chapter5.html" class="chapter-item" data-search="database concepts relational dbms sql normalization">
+    <li><a href="theory/chapter5.html" class="chapter-item" data-search="database concepts relational dbms sql normalization">
       <span class="ch-num">05</span>
-      <span class="ch-title">Database Concepts</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Database Concepts</span><span class="ch-desc">RDBMS, SQL, normalization, joins</span></div>
     </a></li>
-    <li><a href="chapter6.html" class="chapter-item" data-search="vector analysis buffer overlay clip intersect union">
+    <li><a href="theory/chapter6.html" class="chapter-item" data-search="vector analysis buffer overlay clip intersect union geoprocessing">
       <span class="ch-num">06</span>
-      <span class="ch-title">Vector Analysis</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Vector Analysis</span><span class="ch-desc">Buffer, overlay, clip, intersect, union</span></div>
     </a></li>
-    <li><a href="chapter7.html" class="chapter-item" data-search="spatial analysis interpolation idw spline raster">
+    <li><a href="theory/chapter7.html" class="chapter-item" data-search="spatial analysis interpolation idw spline kriging raster ndvi">
       <span class="ch-num">07</span>
-      <span class="ch-title">Spatial Analysis</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Spatial Analysis</span><span class="ch-desc">IDW, Kriging, splines, weighted overlay, NDVI</span></div>
     </a></li>
-    <li><a href="chapter8.html" class="chapter-item" data-search="surface model dem tin dtm slope aspect">
+    <li><a href="theory/chapter8.html" class="chapter-item" data-search="surface model dem tin dtm slope aspect contour">
       <span class="ch-num">08</span>
-      <span class="ch-title">Surface Model</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Surface Model</span><span class="ch-desc">DEM, DTM, DSM, slope, aspect, contour</span></div>
     </a></li>
-    <li><a href="chapter9.html" class="chapter-item" data-search="river network generation watershed hydrological">
+    <li><a href="theory/chapter9.html" class="chapter-item" data-search="river network generation watershed hydrological flow direction accumulation">
       <span class="ch-num">09</span>
-      <span class="ch-title">River Network Generation</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">River Network Generation</span><span class="ch-desc">Sink, D8 flow, accumulation, watershed</span></div>
     </a></li>
-    <li><a href="chapter10.html" class="chapter-item" data-search="global positioning system gps satellite dgps gnss">
+    <li><a href="theory/chapter10.html" class="chapter-item" data-search="global positioning system gps satellite dgps rtk gnss trilateration">
       <span class="ch-num">10</span>
-      <span class="ch-title">Global Positioning System (GPS)</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Global Positioning System (GPS)</span><span class="ch-desc">Trilateration, DGPS, RTK, error sources</span></div>
     </a></li>
-    <li><a href="chapter11.html" class="chapter-item" data-search="introduction remote sensing electromagnetic spectrum">
+    <li><a href="theory/chapter11.html" class="chapter-item" data-search="introduction remote sensing electromagnetic spectrum spectral resolution landsat">
       <span class="ch-num">11</span>
-      <span class="ch-title">Introduction to Remote Sensing</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Introduction to Remote Sensing</span><span class="ch-desc">EM spectrum, spectral signatures, Landsat</span></div>
     </a></li>
-    <li><a href="chapter12.html" class="chapter-item" data-search="making maps cartography design layout">
+    <li><a href="theory/chapter12.html" class="chapter-item" data-search="making maps cartography design layout visual variables choropleth">
       <span class="ch-num">12</span>
-      <span class="ch-title">Making Maps</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="ch-info"><span class="ch-title">Making Maps</span><span class="ch-desc">Visual variables, map types, cartographic design</span></div>
     </a></li>
   </ul>
-
-  <div class="section-label">Exam Questions</div>
-  <ul class="chapter-list">
-    <li><a href="exam-answers.html" class="chapter-item">
-      <span class="ch-num">--</span>
-      <span class="ch-title">Internal Assessment &mdash; All Questions Solved</span>
-      <span class="ch-badge">Exam</span>
-      <svg class="ch-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  <div class="section-label"><span class="section-icon icon-num">&#931;</span> Solved Numericals</div>
+  <div class="info-row"><span class="info-icon">&#931;</span> Step-by-step solutions with formulas &mdash; <a href="numericals/index.html" style="color:var(--num-accent);font-weight:600">View All</a></div>
+  <ul class="num-list" id="numList">
+    <li><a href="numericals/ch2.html" class="num-item" data-search="rms error distance transformation chapter 2 numericals">
+      <span class="ch-num">02</span>
+      <div class="ch-info"><span class="ch-title">RMS Error &amp; Distance</span><span class="ch-desc">Allowable RMS, lat-lon distance, UTM</span></div>
+      <span class="ch-badge">8 Qs</span>
+    </a></li>
+    <li><a href="numericals/ch3.html" class="num-item" data-search="rle run length quadtree block chain encoding raster chapter 3 numericals">
+      <span class="ch-num">03</span>
+      <div class="ch-info"><span class="ch-title">RLE &amp; Quadtree</span><span class="ch-desc">Run-length, quadtree, block encoding</span></div>
+      <span class="ch-badge">7 Qs</span>
+    </a></li>
+    <li><a href="numericals/ch7.html" class="num-item" data-search="idw interpolation suitability weighted overlay chapter 7 numericals">
+      <span class="ch-num">07</span>
+      <div class="ch-info"><span class="ch-title">IDW &amp; Suitability</span><span class="ch-desc">Inverse distance weighted, rice suitability</span></div>
+      <span class="ch-badge">2 Qs</span>
+    </a></li>
+    <li><a href="numericals/ch9.html" class="num-item" data-search="dem hydrology sink flow direction accumulation watershed river chapter 9 numericals">
+      <span class="ch-num">09</span>
+      <div class="ch-info"><span class="ch-title">DEM Hydrology</span><span class="ch-desc">Sink fill, flow direction, watershed</span></div>
+      <span class="ch-badge">11 Qs</span>
     </a></li>
   </ul>
-
+  <div class="section-label"><span class="section-icon icon-summary">&#9733;</span> Exam Summaries</div>
+  <ul class="chapter-list" id="sumList">
+    <li><a href="summary/index.html" class="chapter-item" data-search="summary exam revision quick review all chapters">
+      <span class="ch-num" style="color:var(--sum-accent)">&#9733;</span>
+      <div class="ch-info"><span class="ch-title">Exam Summary Guide</span><span class="ch-desc">All 12 chapters distilled &mdash; priority ranking, key Q&amp;As, quick revision</span></div>
+      <span class="ch-badge badge-summary">12 Ch</span>
+    </a></li>
+  </ul>
+  <div class="section-label"><span class="section-icon icon-exam">&#9998;</span> Exam Practice</div>
+  <ul class="chapter-list" id="examList">
+    <li><a href="exam-answers.html" class="chapter-item" data-search="internal assessment exam questions answers solved">
+      <span class="ch-num" style="color:var(--exam-accent)">IA</span>
+      <div class="ch-info"><span class="ch-title">Internal Assessment &mdash; All Questions Solved</span><span class="ch-desc">Complete solutions for internal exam questions</span></div>
+      <span class="ch-badge badge-exam">Exam</span>
+    </a></li>
+    <li><a href="exam-numericals.html" class="chapter-item" data-search="all exam numericals solved verified combined">
+      <span class="ch-num" style="color:var(--exam-accent)">&#931;</span>
+      <div class="ch-info"><span class="ch-title">All Exam Numericals &mdash; Combined</span><span class="ch-desc">Every numerical from all chapters in one page</span></div>
+      <span class="ch-badge badge-exam">28 Qs</span>
+    </a></li>
+  </ul>
   <footer class="page-footer">
     <p>GIS &amp; Remote Sensing &mdash; Final Year 2026</p>
   </footer>
 </div>
-
 <script>
-var search = document.getElementById('chapterSearch');
-var items = document.querySelectorAll('#chapterList li');
-search.addEventListener('input', function() {
-  var q = search.value.toLowerCase();
-  items.forEach(function(li) {
-    var a = li.querySelector('.chapter-item');
-    var text = ((a.dataset.search || '') + ' ' + a.textContent).toLowerCase();
-    li.style.display = text.indexOf(q) !== -1 ? '' : 'none';
+(function(){
+  var t=document.getElementById('themeToggle'),root=document.documentElement;
+  var saved=localStorage.getItem('theme');
+  if(saved)root.setAttribute('data-theme',saved);
+  else if(matchMedia('(prefers-color-scheme:dark)').matches)root.setAttribute('data-theme','dark');
+  t.textContent=root.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  t.addEventListener('click',function(){
+    var d=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',d);localStorage.setItem('theme',d);
+    t.textContent=d==='dark'?'\u2600':'\u263E';
+  });
+})();
+var search=document.getElementById('globalSearch');
+search.addEventListener('input',function(){
+  var q=search.value.toLowerCase();
+  document.querySelectorAll('.chapter-item,.num-item').forEach(function(el){
+    var text=((el.dataset.search||'')+' '+el.textContent).toLowerCase();
+    var li=el.closest('li')||el;
+    li.style.display=text.indexOf(q)!==-1?'':'none';
   });
 });
 </script>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 3: Spatial Data Models</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch3);--ch-color-lt:var(--ch3-lt);--ch-color-dk:var(--ch3-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter3.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 3 &mdash; Summary</div>
+    <h1>Spatial Data Models</h1>
+    <span class="ch-number-bg">03</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">6 Teaching Hours</span>
+      <span class="meta-badge exam">10 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">20+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~100</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">7</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-high">High</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> Levels of Measurement</h2>
+    <ul>
+      <li><strong>Nominal:</strong> Categories with no order (land use: forest, water, urban).</li>
+      <li><strong>Ordinal:</strong> Ranked categories (road class: highway &gt; secondary &gt; track).</li>
+      <li><strong>Interval:</strong> Equal intervals, no true zero (temperature in &deg;C).</li>
+      <li><strong>Ratio:</strong> Equal intervals + true zero (elevation, population, area).</li>
+    </ul>
+
+    <h2><span class="section-num">2</span> Vector vs Raster Data Models</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Vector</th><th>Raster</th></tr></thead>
+        <tbody>
+          <tr><td>Structure</td><td>Points, lines, polygons</td><td>Grid of cells (pixels)</td></tr>
+          <tr><td>Storage</td><td>Compact for sparse data</td><td>Large (every cell stored)</td></tr>
+          <tr><td>Topology</td><td>Supported</td><td>Not inherent</td></tr>
+          <tr><td>Best for</td><td>Discrete features (roads, parcels)</td><td>Continuous phenomena (elevation, temperature)</td></tr>
+          <tr><td>Overlay analysis</td><td>Complex (intersection)</td><td>Simple (cell-by-cell)</td></tr>
+          <tr><td>Accuracy</td><td>High (coordinate-based)</td><td>Depends on cell size</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2><span class="section-num">3</span> Raster Compression Techniques</h2>
+    <ul>
+      <li><strong>Run-Length Encoding (RLE):</strong> Store (value, count) pairs. Efficient for simple rasters with long runs of same value.</li>
+      <li><strong>Quadtree:</strong> Recursively divide raster into quadrants until each is homogeneous. Good for mixed-complexity data.</li>
+      <li><strong>Block Coding:</strong> Group identical adjacent cells into rectangular blocks.</li>
+      <li><strong>Chain Coding:</strong> Encode boundaries as direction codes (Freeman chain code).</li>
+    </ul>
+
+    <h2><span class="section-num">4</span> Vector Labelling and Feature Types</h2>
+    <ul>
+      <li><strong>Point:</strong> Single coordinate pair. Examples: well, GPS station, school.</li>
+      <li><strong>Line (arc):</strong> Ordered set of coordinates. Examples: road, river, contour.</li>
+      <li><strong>Polygon:</strong> Closed area. Examples: district, lake, land parcel.</li>
+      <li>Labels link features to attribute tables via unique IDs.</li>
+    </ul>
+
+    <h2><span class="section-num">5</span> Topology</h2>
+    <div class="key-concept">
+      <strong>Topology</strong> = spatial relationships between features. Three key rules: <strong>Connectivity</strong> (arcs connect at nodes), <strong>Area definition</strong> (arcs form closed polygons), <strong>Contiguity</strong> (polygons share boundaries).
+    </div>
+    <p>Topological data model: Node &rarr; Arc &rarr; Polygon. Left/right polygon tables. Enables adjacency/containment queries without coordinate computation.</p>
+
+    <h2><span class="section-num">6</span> TIN (Triangulated Irregular Network)</h2>
+    <ul>
+      <li>Vector-based surface model using irregular triangles (Delaunay triangulation).</li>
+      <li>Dense triangles in complex terrain, sparse in flat areas.</li>
+      <li>Efficient for surface representation; used for slope, aspect, volume calculations.</li>
+    </ul>
+
+    <h2><span class="section-num">7</span> BSQ, BIL, BIP (Raster Storage Formats)</h2>
+    <ul>
+      <li><strong>BSQ (Band Sequential):</strong> All pixels of band 1, then band 2, etc. Best for single-band access.</li>
+      <li><strong>BIL (Band Interleaved by Line):</strong> Line 1 of all bands, then line 2, etc. Best for spatial access.</li>
+      <li><strong>BIP (Band Interleaved by Pixel):</strong> All bands of pixel 1, then pixel 2, etc. Best for spectral access.</li>
+    </ul>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Compare vector and raster data models. <em>(2071&ndash;2082, 4&ndash;8 marks)</em></span></div><div class="qa-answer">
+      <p>Use comparison table with 6+ aspects. Draw simple diagrams of each. Mention advantages/disadvantages.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain raster compression techniques with examples. <em>(2074, 2076, 2079)</em></span></div><div class="qa-answer">
+      <p>RLE: show a grid and its encoded form. Quadtree: show recursive subdivision. Block coding and chain coding briefly.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain levels of measurement with GIS examples. <em>(2072, 2075, 2078)</em></span></div><div class="qa-answer">
+      <p>Nominal, ordinal, interval, ratio. Give one GIS example per level. Explain which statistical operations apply to each.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What is topology? Explain its importance in GIS. <em>(2073, 2076, 2080)</em></span></div><div class="qa-answer">
+      <p>Connectivity, area definition, contiguity. Node-arc-polygon model. Enables spatial queries: adjacency, containment, network routing.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What is TIN? How is it constructed and used? <em>(2074, 2081)</em></span></div><div class="qa-answer">
+      <p>Delaunay triangulation from sample points. Variable resolution. Used for surface analysis: slope, aspect, volume, visibility.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain BSQ, BIL, BIP raster storage formats. <em>(2075, 2079)</em></span></div><div class="qa-answer">
+      <p>Draw memory layout diagrams for each. BSQ = band access. BIL = spatial access. BIP = spectral access.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter2.html">&larr; Chapter 2</a>
+      <a href="chapter4.html">Chapter 4 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 3 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

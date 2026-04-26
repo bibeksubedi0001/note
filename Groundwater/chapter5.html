@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 5 &ndash; Pumping Test and Analysis</title>
+  <link rel="stylesheet" href="style.css">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="10" stroke="var(--svg-fg, black)" stroke-width="1.2"/></pattern>
+    <pattern id="hatch-light" width="12" height="12" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="12" stroke="var(--svg-mid, #888)" stroke-width="0.8"/></pattern>
+    <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="2" fill="var(--svg-dim, #777)"/><circle cx="9" cy="9" r="2" fill="var(--svg-dim, #777)"/></pattern>
+    <pattern id="dots-fine" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.2" fill="var(--svg-faint, #999)"/></pattern>
+    <pattern id="ground" width="14" height="10" patternUnits="userSpaceOnUse"><line x1="0" y1="10" x2="7" y2="0" stroke="var(--svg-fg, black)" stroke-width="0.8"/><line x1="7" y1="10" x2="14" y2="0" stroke="var(--svg-fg, black)" stroke-width="0.8"/></pattern>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="0 0, 10 3.5, 0 7" fill="var(--svg-fg, black)"/></marker>
+    <marker id="arr-r" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto" markerUnits="strokeWidth"><polygon points="10 0, 0 3.5, 10 7" fill="var(--svg-fg, black)"/></marker>
+  </defs>
+</svg>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; GW Home</a>
+    <div class="eyebrow">Chapter 5</div>
+    <h1>Pumping Test and Analysis <span style="font-weight:400;font-size:.55em">[8 Hours]</span></h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">Pumping Tests</span>
+      <span class="meta-badge exam">~15+ Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ IMPORTANT TOPICS & MARKS DISTRIBUTION ═══ -->
+    <div class="exam-note" style="border-width: 2px; margin-bottom: 2rem;">
+        <h4 style="border-bottom: 2px solid var(--line); padding-bottom: 0.4rem; text-align: center; font-style: normal; font-size: 1.05em;">MOST IMPORTANT TOPICS &amp; MARKS DISTRIBUTION</h4>
+        <p style="margin-bottom: 0.5rem;"><strong>High-Yield Topics (by exam frequency):</strong></p>
+        <ol>
+            <li><strong>Numericals</strong>: Cooper-Jacob, Theis, distance-drawdown &mdash; Asked in 2078, 2073, 2072 Ashwin, 2072 Magh, 2071 [6&ndash;10 marks]</li>
+            <li><strong>Types of pumping tests</strong> &mdash; Asked in 2072 Magh, 2073 [2&ndash;8 marks]</li>
+            <li><strong>Theis solution</strong> for T and S determination &mdash; Asked in 2072 Ashwin [6 marks]</li>
+            <li><strong>Thiem&rsquo;s equilibrium method</strong> (steady-state) for T &mdash; Asked in 2078 [6 marks]</li>
+            <li><strong>Cooper-Jacob method</strong> explanation &mdash; Asked in 2072 Magh [6 marks]</li>
+        </ol>
+        <p style="margin-bottom: 0.5rem;"><strong>Marks Each Time Asked:</strong></p>
+        <table class="info-table">
+            <tr><th>Exam</th><th>Questions</th><th>Total</th></tr>
+            <tr><td>2078 Chaitra</td><td>Q5a [6], Q5b [6 num]</td><td><strong>12</strong></td></tr>
+            <tr><td>2073 Bhadra</td><td>Q5a [2], Q5b [8 num]</td><td><strong>10</strong></td></tr>
+            <tr><td>2072 Ashwin</td><td>Q6 [8 num], Q11 [6]</td><td><strong>14</strong></td></tr>
+            <tr><td>2072 Magh</td><td>Q6 [8], Q7 [8]</td><td><strong>16</strong></td></tr>
+            <tr><td>2071 Bhadra</td><td>Q8 [10 num]</td><td><strong>10</strong></td></tr>
+        </table>
+    </div>
+
+    <section class="toc">
+        <h4>CHAPTER ROADMAP</h4>
+        <ol>
+            <li><a href="#sec-5-1">Introduction — why pumping tests?</a></li>
+            <li><a href="#sec-5-2">Types of pumping tests</a></li>
+            <li><a href="#sec-5-3">Theis equation — unsteady radial flow</a></li>
+            <li><a href="#sec-5-4">Theis type-curve method for T and S</a></li>
+            <li><a href="#sec-5-5">Thiem&rsquo;s equilibrium (steady-state) method for T</a></li>
+            <li><a href="#sec-5-6">Cooper-Jacob straight-line approximation</a></li>
+            <li><a href="#sec-5-7">Cooper-Jacob time-drawdown method</a></li>
+            <li><a href="#sec-5-8">Cooper-Jacob distance-drawdown method</a></li>
+            <li><a href="#sec-5-9">Recovery test</a></li>
+            <li><a href="#sec-5-10">Image well theory and boundary effects</a></li>
+            <li><a href="#sec-5-11">Past question bank for Chapter 5</a></li>
+            <li><a href="#sec-summary">Chapter summary and exam formula sheet</a></li>
+        </ol>
+    </section>
+
+    <!-- ======== 5.1 INTRODUCTION ======== -->
+    <section id="sec-5-1">
+        <h2>5.1 INTRODUCTION — WHY PUMPING TESTS?</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+            <ol>
+                <li>Why is the pumping test carried out in groundwater studies? [2] <em>(2073 Bhadra, Q5a)</em></li>
+            </ol>
+        </div>
+        <div class="callout">
+            <strong>CORE IDEA:</strong> A pumping test is the most reliable field method for determining aquifer hydraulic properties — transmissivity (T), storage coefficient (S), and hydraulic conductivity (K) — at realistic field scale.
+        </div>
+        <p>Laboratory tests on soil samples (e.g., constant-head or falling-head permeameter) provide values of hydraulic conductivity at a point, but they cannot capture the variability, layering, and effective connectivity of a real aquifer. A <strong>pumping test</strong> stresses the aquifer over a large volume and yields integrated (field-scale) parameters that directly govern well yield, drawdown prediction, and groundwater resource planning.</p>
+
+        <h3>Objectives of a Pumping Test</h3>
+        <ol>
+            <li><strong>Determine transmissivity (T = Kb)</strong> — the rate at which water is transmitted through a unit width of the aquifer under a unit hydraulic gradient. This controls well yield and drawdown.</li>
+            <li><strong>Determine storage coefficient (S)</strong> — the volume of water released from (or taken into) storage per unit area per unit change in head. This controls how quickly the cone of depression expands.</li>
+            <li><strong>Evaluate well performance</strong> — measure well efficiency, specific capacity, and well losses.</li>
+            <li><strong>Assess aquifer boundaries</strong> — detect impermeable barriers or recharge boundaries via deviations in the drawdown curve.</li>
+            <li><strong>Estimate radius of influence (R)</strong> — the distance beyond which pumping has negligible effect.</li>
+            <li><strong>Design production wells</strong> — determine sustainable pumping rate, well spacing, and predict long-term drawdown.</li>
+        </ol>
+
+        <h3>Specific Capacity</h3>
+        <p>A quick field measure of well productivity is the <strong>specific capacity</strong>, defined as the discharge per unit drawdown:</p>
+        <div class="equation">$$ \text{Specific Capacity} = \frac{Q}{s_w} \quad [\text{m}^3/\text{day/m} \;\text{or}\; \text{L/min/m}] $$</div>
+        <p>Higher specific capacity indicates a more productive well-aquifer system. It decreases with time (as drawdown increases) and with increasing Q (due to well losses).</p>
+
+        <div class="figure-container">
+            <svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="16">PUMPING TEST FIELD ARRANGEMENT</text>
+                <!-- Ground surface -->
+                <line x1="40" y1="70" x2="740" y2="70" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <rect x="40" y="70" width="700" height="12" fill="url(#ground)" stroke="none"/>
+                <text x="70" y="65" font-size="12">Ground surface</text>
+                <!-- Confining layers -->
+                <rect x="40" y="82" width="700" height="20" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <rect x="40" y="280" width="700" height="20" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="760" y="96" font-size="11">Confining</text>
+                <text x="760" y="294" font-size="11">Confining</text>
+                <!-- Aquifer -->
+                <rect x="40" y="102" width="700" height="178" fill="url(#dots-fine)" stroke="none"/>
+                <text x="650" y="200" font-weight="bold" font-size="13">CONFINED AQUIFER</text>
+                <!-- Pumping well -->
+                <rect x="377" y="30" width="26" height="268" fill="var(--svg-struct, #ddd)" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="390" y="195" text-anchor="middle" font-weight="bold" font-size="12" transform="rotate(-90,390,195)">PUMPING WELL</text>
+                <!-- Pump -->
+                <line x1="390" y1="30" x2="390" y2="15" stroke="var(--svg-fg, #111)" stroke-width="3" marker-end="url(#arr)"/>
+                <text x="390" y="10" text-anchor="middle" font-weight="bold" font-size="15">Q (constant)</text>
+                <!-- Original piezometric surface -->
+                <line x1="40" y1="55" x2="740" y2="55" stroke="var(--svg-fg, #111)" stroke-width="2" stroke-dasharray="8,5"/>
+                <text x="460" y="50" font-size="12">Original piezometric surface</text>
+                <!-- Cone of depression -->
+                <path d="M40 55 Q150 58 280 66 Q340 72 377 88" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <path d="M403 88 Q440 72 500 66 Q630 58 740 55" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- s_w -->
+                <line x1="365" y1="55" x2="365" y2="88" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="350" y="76" text-anchor="end" font-weight="bold" font-size="13">s<tspan dy="3" font-size="9">w</tspan></text>
+                <!-- Observation well 1 -->
+                <rect x="217" y="30" width="16" height="268" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="225" y1="66" x2="225" y2="30" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="225" y="25" text-anchor="middle" font-weight="bold" font-size="12">OW1</text>
+                <path d="M219 66 Q223 62 227 66 Q231 70 233 66" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <!-- s1 -->
+                <line x1="205" y1="55" x2="205" y2="66" stroke="var(--svg-fg, #111)" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="196" y="64" text-anchor="end" font-size="12">s<tspan dy="3" font-size="8">1</tspan></text>
+                <!-- Observation well 2 -->
+                <rect x="547" y="30" width="16" height="268" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="555" y1="62" x2="555" y2="30" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="555" y="25" text-anchor="middle" font-weight="bold" font-size="12">OW2</text>
+                <path d="M549 62 Q553 58 557 62 Q561 66 563 62" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <!-- s2 -->
+                <line x1="575" y1="55" x2="575" y2="62" stroke="var(--svg-fg, #111)" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="585" y="62" font-size="12">s<tspan dy="3" font-size="8">2</tspan></text>
+                <!-- r1, r2 -->
+                <line x1="390" y1="320" x2="225" y2="320" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="308" y="335" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="10">1</tspan></text>
+                <line x1="390" y1="345" x2="555" y2="345" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="472" y="360" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="10">2</tspan></text>
+                <!-- Cone label -->
+                <text x="160" y="78" font-style="italic" font-size="12">Cone of depression</text>
+                <line x1="220" y1="74" x2="260" y2="68" stroke="var(--svg-fg, #111)" stroke-width="1" marker-end="url(#arr)"/>
+            </svg>
+            <div class="figcaption">Figure 5.1: Typical pumping test setup in a confined aquifer — one pumping well at constant rate Q and two observation wells (OW) at distances r<sub>1</sub> and r<sub>2</sub>. Drawdowns s<sub>1</sub> and s<sub>2</sub> are measured over time.</div>
+        </div>
+
+        <h3>Test Components</h3>
+        <table class="info-table">
+            <tr><th>Component</th><th>Purpose</th></tr>
+            <tr><td>Pumping well</td><td>Stresses the aquifer by withdrawing water at constant rate Q (m&sup3;/day or m&sup3;/s)</td></tr>
+            <tr><td>Observation well(s)</td><td>Measure drawdown s(r, t) at known distances r from the pumping well</td></tr>
+            <tr><td>Flow meter</td><td>Measures and maintains constant pumping rate Q</td></tr>
+            <tr><td>Water-level recorder</td><td>Records drawdown as a function of time — manual dip-tape or automatic transducer</td></tr>
+            <tr><td>Pre-test monitoring</td><td>Baseline water levels, tidal or barometric trends, nearby well interference</td></tr>
+        </table>
+            <div class="figure-container">
+
+                <svg width="600" height="260" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="300" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Pumping Test Setup — Key Components</text>
+                    <rect x="30" y="200" width="540" height="20" fill="url(#hatch)" stroke="var(--svg-fg)" stroke-width="1.5"/>
+                    <rect x="30" y="55" width="540" height="12" fill="url(#hatch)" stroke="var(--svg-fg)" stroke-width="1"/>
+                    <rect x="30" y="67" width="540" height="133" fill="var(--svg-water)" stroke="none" fill-opacity="0.15"/>
+                    <rect x="296" y="35" width="8" height="185" fill="var(--svg-fg)"/>
+                    <text x="300" y="30" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--svg-red-accent)">Pumping Well</text>
+                    <line x1="308" y1="45" x2="340" y2="30" stroke="var(--svg-red-accent)" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <text x="345" y="30" font-size="9" fill="var(--svg-red-accent)">Q (measured)</text>
+                    <rect x="176" y="40" width="4" height="180" fill="var(--svg-green-accent)"/>
+                    <text x="178" y="230" text-anchor="middle" font-size="9" fill="var(--svg-green-accent)">OW₁ (r₁)</text>
+                    <rect x="426" y="40" width="4" height="180" fill="var(--svg-orange-accent)"/>
+                    <text x="428" y="230" text-anchor="middle" font-size="9" fill="var(--svg-orange-accent)">OW₂ (r₂)</text>
+                    <line x1="300" y1="180" x2="178" y2="180" stroke="var(--svg-green-accent)" stroke-width="1"/>
+                    <text x="240" y="175" text-anchor="middle" font-size="8" fill="var(--svg-green-accent)">r₁</text>
+                    <line x1="300" y1="190" x2="428" y2="190" stroke="var(--svg-orange-accent)" stroke-width="1"/>
+                    <text x="365" y="185" text-anchor="middle" font-size="8" fill="var(--svg-orange-accent)">r₂</text>
+                    <path d="M30,48 C130,45 250,42 296,52" fill="none" stroke="var(--svg-accent)" stroke-width="2"/>
+                    <path d="M304,52 C350,42 480,45 570,48" fill="none" stroke="var(--svg-accent)" stroke-width="2"/>
+                    <text x="500" y="42" font-size="9" fill="var(--svg-accent)">Cone of depression</text>
+                    <rect x="100" y="100" width="140" height="55" rx="5" fill="var(--svg-bg-soft)" stroke="var(--svg-fg)" stroke-width="1"/>
+                    <text x="170" y="115" text-anchor="middle" font-size="9" font-weight="bold" fill="var(--svg-fg)">Measurements</text>
+                    <text x="170" y="130" text-anchor="middle" font-size="8" fill="var(--svg-fg)">• Q = discharge rate</text>
+                    <text x="170" y="142" text-anchor="middle" font-size="8" fill="var(--svg-fg)">• s = drawdown at OWs</text>
+                    <text x="170" y="154" text-anchor="middle" font-size="8" fill="var(--svg-fg)">• t = time since pumping</text>
+                    <text x="300" y="252" text-anchor="middle" font-size="10" fill="var(--svg-fg)">Minimum 1 observation well needed; 2+ recommended for accuracy</text>
+                </svg>
+                <div class="figcaption">Figure 5.1b: Pumping test setup — a pumping well with observation wells at known distances r₁ and r₂ to measure drawdown over time.</div>
+            </div>
+
+    </section>
+
+    <!-- ======== 5.2 TYPES ======== -->
+    <section id="sec-5-2">
+        <h2>5.2 TYPES OF PUMPING TESTS</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+            <ol>
+                <li>Explain the types of pumping test used in the field to determine the permeability of soil. [8] <em>(2072 Magh, Q6)</em></li>
+            </ol>
+        </div>
+
+        <p>Pumping tests are classified according to the flow regime achieved during the test and the method of analysis used:</p>
+
+        <h3>A. Constant-Rate Pumping Test (Aquifer Test)</h3>
+        <p>The well is pumped at a <strong>constant discharge Q</strong> and drawdown is measured in one or more observation wells at increasing time intervals. This is the standard test for determining T and S. Two analysis approaches:</p>
+            <div class="figure-container">
+
+                <svg width="550" height="240" viewBox="0 0 550 240" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="275" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Constant-Rate vs Step-Drawdown Test</text>
+                    <rect x="20" y="45" width="240" height="160" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="2"/>
+                    <text x="140" y="65" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-accent)">Constant-Rate Test</text>
+                    <line x1="50" y1="80" x2="230" y2="80" stroke="var(--svg-accent)" stroke-width="0.8"/>
+                    <text x="140" y="97" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Q = constant throughout</text>
+                    <text x="140" y="115" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Duration: 24-72 hours</text>
+                    <text x="140" y="135" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Determines: T and S</text>
+                    <text x="140" y="155" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Analyses: Theis, Cooper-Jacob</text>
+                    <text x="140" y="180" text-anchor="middle" font-size="9" fill="var(--svg-muted)">May include recovery phase</text>
+                    <text x="140" y="196" text-anchor="middle" font-size="9" fill="var(--svg-muted)">(pump off, monitor s')</text>
+                    <rect x="290" y="45" width="240" height="160" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="2"/>
+                    <text x="410" y="65" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-green-accent)">Step-Drawdown Test</text>
+                    <line x1="320" y1="80" x2="500" y2="80" stroke="var(--svg-green-accent)" stroke-width="0.8"/>
+                    <text x="410" y="97" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Q increases in steps</text>
+                    <text x="410" y="115" text-anchor="middle" font-size="9" fill="var(--svg-fg)">3-5 steps, 1-2 hrs each</text>
+                    <text x="410" y="135" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Determines: B, C, well losses</text>
+                    <text x="410" y="155" text-anchor="middle" font-size="9" fill="var(--svg-fg)">s<tspan baseline-shift="sub" font-size="75%">w</tspan> = BQ + CQ&#xB2;</text>
+                    <text x="410" y="180" text-anchor="middle" font-size="9" fill="var(--svg-muted)">B = aquifer loss coefficient</text>
+                    <text x="410" y="196" text-anchor="middle" font-size="9" fill="var(--svg-muted)">C = well loss coefficient</text>
+                    <text x="275" y="228" text-anchor="middle" font-size="10" fill="var(--svg-fg)">Well efficiency = BQ/(BQ + CQ²) × 100%</text>
+                </svg>
+                <div class="figcaption">Figure 5.2b: Comparison of constant-rate test (determines T and S) versus step-drawdown test (determines well losses and efficiency).</div>
+            </div>
+
+
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>(i) Transient (Unsteady-State) Analysis</h4>
+                <p>Drawdown changes with time. Used when the test has not reached equilibrium. Yields both T and S.</p>
+                <ul>
+                    <li><strong>Theis type-curve method</strong> — matches field data to the Theis well function W(u)</li>
+                    <li><strong>Cooper-Jacob time-drawdown</strong> — semi-log straight-line method (late-time data)</li>
+                </ul>
+            </div>
+            <div class="mini-note">
+                <h4>(ii) Steady-State (Equilibrium) Analysis</h4>
+                <p>Drawdown stabilizes (does not change further with time). Yields only T (not S).</p>
+                <ul>
+                    <li><strong>Thiem&rsquo;s method</strong> — uses drawdown difference between two observation wells</li>
+                    <li><strong>Distance-drawdown method</strong> — plots s vs log(r) from multiple wells</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>B. Step-Drawdown Test</h3>
+        <p>The pumping rate is increased in <strong>steps</strong> (e.g., Q, 2Q, 3Q), each maintained until drawdown stabilizes. Determines:</p>
+        <ul>
+            <li><strong>Well efficiency</strong> — ratio of theoretical to actual drawdown</li>
+            <li><strong>Well loss coefficient (C)</strong> — determines the magnitude of turbulent well losses</li>
+            <li><strong>Optimum pumping rate</strong> for the well</li>
+        </ul>
+        <p>The total drawdown in the pumping well consists of <strong>aquifer loss</strong> (laminar, Darcian) and <strong>well loss</strong> (turbulent, non-Darcian):</p>
+        <div class="equation">$$ \boxed{s_w = BQ + CQ^2} $$</div>
+        <p>where B = aquifer loss coefficient (depends on T, S, r, t), and C = well loss coefficient (depends on well construction). The <strong>well efficiency</strong> is:</p>
+        <div class="equation">$$ \boxed{\eta = \frac{BQ}{BQ + CQ^2} \times 100\%} $$</div>
+        <p>A well efficiency &gt; 70% is considered acceptable. Low efficiency indicates excessive well losses due to poor screen design, clogging, or insufficient development.</p>
+
+        <h3>C. Recovery Test</h3>
+        <p>After the pump is shut off, the water level <strong>recovers</strong> (rises) toward its original position. Substituting &ldquo;residual drawdown&rdquo; into the Theis/Cooper-Jacob equations yields T independently. This is a valuable check on T obtained during the pumping phase.</p>
+
+        <h3>D. Slug Test (Bail Test)</h3>
+        <p>A known volume of water is <strong>instantaneously</strong> added to or removed from a well, and the subsequent recovery is monitored. No pumping is required. Used in low-permeability formations or when observation wells are not available. Yields K at the well screen, but not T or S at field scale.</p>
+
+        <div class="figure-container">
+            <svg width="780" height="300" viewBox="0 0 780 300" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">COMPARISON OF PUMPING TEST TYPES</text>
+                <!-- Axes -->
+                <line x1="60" y1="45" x2="60" y2="260" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="60" y1="260" x2="380" y2="260" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="220" y="285" text-anchor="middle" font-size="13">Time &rarr;</text>
+                <text x="30" y="155" text-anchor="middle" font-size="13" transform="rotate(-90,30,155)">Drawdown s &darr;</text>
+                <!-- Constant rate curve -->
+                <path d="M70 55 Q100 95 140 130 Q200 170 260 195 Q330 215 370 220" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <text x="280" y="240" font-weight="bold" font-size="12">(A) Constant Q</text>
+                <!-- Pump off - recovery -->
+                <path d="M370 220 Q380 200 390 170 Q400 130 410 100 Q420 80 435 65" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3" stroke-dasharray="6,4"/>
+                <text x="430" y="58" font-weight="bold" font-size="12">(C) Recovery</text>
+                <!-- Step test -->
+                <line x1="420" y1="45" x2="420" y2="260" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="420" y1="260" x2="740" y2="260" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="580" y="285" text-anchor="middle" font-size="13">Time &rarr;</text>
+                <text x="400" y="155" text-anchor="middle" font-size="13" transform="rotate(-90,400,155)">Drawdown s &darr;</text>
+                <!-- Step 1 -->
+                <path d="M430 80 Q460 115 490 120" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <line x1="490" y1="120" x2="530" y2="122" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- Step 2 -->
+                <line x1="530" y1="122" x2="530" y2="155" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <path d="M530 155 Q550 168 570 170" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <line x1="570" y1="170" x2="610" y2="172" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- Step 3 -->
+                <line x1="610" y1="172" x2="610" y2="210" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <path d="M610 210 Q630 222 660 225" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <line x1="660" y1="225" x2="720" y2="226" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- Labels -->
+                <text x="470" y="110" font-size="11">Q</text>
+                <text x="555" y="150" font-size="11">2Q</text>
+                <text x="640" y="204" font-size="11">3Q</text>
+                <text x="580" y="248" font-weight="bold" font-size="12">(B) Step-Drawdown</text>
+            </svg>
+            <div class="figcaption">Figure 5.2: Left: Constant-rate test with recovery phase. Right: Step-drawdown test with three pumping steps.</div>
+        </div>
+
+        <table class="info-table">
+            <tr><th>Test Type</th><th>Flow Condition</th><th>Parameters Obtained</th><th>Observation Wells Needed?</th></tr>
+            <tr><td>Constant-rate (transient)</td><td>Unsteady</td><td>T, S</td><td>Yes (at least 1)</td></tr>
+            <tr><td>Constant-rate (equilibrium)</td><td>Steady</td><td>T only</td><td>Yes (at least 2 preferred)</td></tr>
+            <tr><td>Step-drawdown</td><td>Quasi-steady at each step</td><td>Well losses B, C; well efficiency</td><td>No (pumping well data sufficient)</td></tr>
+            <tr><td>Recovery</td><td>Unsteady (recovery)</td><td>T (independent check)</td><td>No</td></tr>
+            <tr><td>Slug test</td><td>Unsteady (single pulse)</td><td>K (local, near well)</td><td>No</td></tr>
+        </table>
+    </section>
+
+    <!-- ======== 5.3 THEIS ======== -->
+    <section id="sec-5-3">
+        <h2>5.3 THEIS EQUATION — UNSTEADY RADIAL FLOW TO A WELL</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+            <ol>
+                <li>Explain the Theis solution for determination of storage coefficient and transmissibility of an aquifer. [6] <em>(2072 Ashwin, Q11)</em></li>
+            </ol>
+        </div>
+        <div class="callout">
+            <strong>SIGNIFICANCE:</strong> The Theis (1935) equation was the first analytical solution for transient (time-dependent) flow to a well. It allows determination of both T and S from a single pumping test — the foundation of modern aquifer test analysis.
+        </div>
+
+        <h3>Assumptions</h3>
+        <ol>
+            <li>The aquifer is <strong>confined</strong>, homogeneous, isotropic, and of uniform thickness b.</li>
+            <li>The aquifer extends <strong>infinitely</strong> in all horizontal directions (no boundaries).</li>
+            <li>The well is <strong>fully penetrating</strong> and pumps at a constant rate Q.</li>
+            <li>Flow is <strong>horizontal</strong> and radially symmetric toward the well.</li>
+            <li>Water is released from storage <strong>instantaneously</strong> with decline in head.</li>
+            <li>The well has <strong>infinitesimal diameter</strong> (no well storage effects).</li>
+            <li><strong>No recharge</strong> occurs during the test.</li>
+        </ol>
+            <div class="figure-container">
+
+                <svg width="600" height="260" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="300" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Theis Equation — Key Assumptions</text>
+                    <rect x="30" y="40" width="260" height="80" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="1.5"/>
+                    <text x="160" y="58" text-anchor="middle" font-weight="bold" font-size="10" fill="var(--svg-accent)">Aquifer Properties</text>
+                    <text x="160" y="76" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Homogeneous &amp; isotropic</text>
+                    <text x="160" y="90" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Confined, uniform thickness b</text>
+                    <text x="160" y="104" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Infinite lateral extent</text>
+                    <rect x="310" y="40" width="260" height="80" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="1.5"/>
+                    <text x="440" y="58" text-anchor="middle" font-weight="bold" font-size="10" fill="var(--svg-green-accent)">Well Conditions</text>
+                    <text x="440" y="76" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Fully penetrating well</text>
+                    <text x="440" y="90" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Infinitesimal well diameter</text>
+                    <text x="440" y="104" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Constant pumping rate Q</text>
+                    <rect x="100" y="135" width="200" height="55" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-water-3)" stroke-width="1.5"/>
+                    <text x="200" y="153" text-anchor="middle" font-weight="bold" font-size="10" fill="var(--svg-water-3)">Flow Conditions</text>
+                    <text x="200" y="170" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Transient (unsteady) flow</text>
+                    <text x="200" y="184" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Darcy's law is valid</text>
+                    <rect x="320" y="135" width="200" height="55" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-orange-accent)" stroke-width="1.5"/>
+                    <text x="420" y="153" text-anchor="middle" font-weight="bold" font-size="10" fill="var(--svg-orange-accent)">Initial/Boundary</text>
+                    <text x="420" y="170" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Initially horizontal WT/PS</text>
+                    <text x="420" y="184" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• No recharge during test</text>
+                    <text x="300" y="215" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--svg-fg)">s = Q/(4πT) × W(u),  u = r²S/(4Tt)</text>
+                    <text x="300" y="240" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Most assumptions are never perfectly met — results are approximate</text>
+                </svg>
+                <div class="figcaption">Figure 5.3b: The eight key assumptions behind the Theis equation — violations cause deviations from the theoretical type curve.</div>
+            </div>
+
+
+        <h3>Governing Equation</h3>
+        <p>Starting from the radial form of the confined flow equation (combining Darcy&rsquo;s law with continuity):</p>
+        <div class="equation">$$ \frac{\partial^2 h}{\partial r^2} + \frac{1}{r}\frac{\partial h}{\partial r} = \frac{S}{T}\frac{\partial h}{\partial t} $$</div>
+        <p>With boundary conditions: \(h(r, 0) = h_0\) (initial), \(h(\infty, t) = h_0\) (infinite boundary), and \(\lim_{r \to 0} r\,\partial h/\partial r = -Q/(2\pi T)\) (well discharge).</p>
+
+        <h3>Theis Solution</h3>
+        <p>Theis solved this by recognising an analogy with heat conduction in solids. The drawdown at distance r from the well at time t is:</p>
+        <div class="equation">$$ \boxed{s(r,t) = \frac{Q}{4\pi T}\,W(u)} $$</div>
+        <p>where \(W(u)\) is the <strong>Theis well function</strong>:</p>
+        <div class="equation">$$ W(u) = \int_u^{\infty} \frac{e^{-y}}{y}\,dy = -0.5772 - \ln u + u - \frac{u^2}{2 \cdot 2!} + \frac{u^3}{3 \cdot 3!} - \cdots $$</div>
+        <p>and the dimensionless time parameter u is:</p>
+        <div class="equation">$$ \boxed{u = \frac{r^2 S}{4Tt}} $$</div>
+
+        <div class="figure-container">
+            <svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">THEIS WELL FUNCTION W(u) vs 1/u</text>
+                <!-- Axes (log-log) -->
+                <line x1="80" y1="40" x2="80" y2="320" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="80" y1="320" x2="720" y2="320" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="400" y="350" text-anchor="middle" font-size="14">1/u &rarr; (proportional to t)</text>
+                <text x="30" y="180" text-anchor="middle" font-size="14" transform="rotate(-90,30,180)">W(u) &uarr; (proportional to s)</text>
+                <!-- Log scale labels -->
+                <text x="80" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">-1</tspan></text>
+                <text x="240" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">0</tspan></text>
+                <text x="400" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">1</tspan></text>
+                <text x="560" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">2</tspan></text>
+                <text x="720" y="340" text-anchor="middle" font-size="11">10<tspan dy="-5" font-size="8">3</tspan></text>
+                <text x="67" y="54" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">1</tspan></text>
+                <text x="67" y="124" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">0</tspan></text>
+                <text x="67" y="194" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">-1</tspan></text>
+                <text x="67" y="264" text-anchor="end" font-size="11">10<tspan dy="-5" font-size="8">-2</tspan></text>
+                <!-- Grid -->
+                <line x1="240" y1="40" x2="240" y2="320" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="400" y1="40" x2="400" y2="320" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="560" y1="40" x2="560" y2="320" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="80" y1="124" x2="720" y2="124" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="80" y1="194" x2="720" y2="194" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="80" y1="264" x2="720" y2="264" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <!-- W(u) type curve -->
+                <path d="M105 295 Q130 275 160 255 Q200 225 240 195 Q290 160 340 135 Q400 108 460 90 Q520 76 580 66 Q640 58 700 53" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3.5"/>
+                <text x="620" y="48" font-weight="bold" font-size="14">TYPE CURVE</text>
+                <text x="620" y="80" font-weight="bold" font-size="13">W(u) vs 1/u</text>
+                <!-- Match point annotation -->
+                <circle cx="400" cy="124" r="8" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="430" y="118" font-weight="bold" font-size="13">MATCH POINT</text>
+                <text x="430" y="136" font-size="12">W(u) = 1, 1/u = 10</text>
+            </svg>
+            <div class="figcaption">Figure 5.3: The Theis type curve — a plot of W(u) vs 1/u on log-log scale. Field data (s vs t) is overlain on this standard curve to find the match point.</div>
+        </div>
+
+        <h3>Tabulated Values of W(u)</h3>
+        <table class="info-table">
+            <tr><th>u</th><td>5.0</td><td>1.0</td><td>0.5</td><td>0.1</td><td>0.05</td><td>0.01</td><td>0.005</td><td>0.001</td><td>10<sup>&minus;4</sup></td><td>10<sup>&minus;5</sup></td></tr>
+            <tr><th>W(u)</th><td>0.0011</td><td>0.219</td><td>0.560</td><td>1.823</td><td>2.468</td><td>4.038</td><td>4.726</td><td>6.332</td><td>8.633</td><td>10.936</td></tr>
+        </table>
+
+        <h3>Physical Meaning of Parameters</h3>
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>Transmissivity (T)</h4>
+                <div class="equation">$$ T = K \cdot b \quad [\text{m}^2/\text{day}] $$</div>
+            <div class="figure-container">
+
+                <svg width="600" height="250" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="300" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Physical Meaning of T, S, u, and W(u)</text>
+                    <rect x="20" y="45" width="135" height="90" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="1.5"/>
+                    <text x="87" y="63" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-accent)">T (m²/s)</text>
+                    <text x="87" y="80" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Transmissivity</text>
+                    <text x="87" y="95" text-anchor="middle" font-size="8" fill="var(--svg-fg)">= Kb</text>
+                    <text x="87" y="112" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Rate of flow through</text>
+                    <text x="87" y="125" text-anchor="middle" font-size="8" fill="var(--svg-fg)">full aquifer thickness</text>
+                    <rect x="165" y="45" width="135" height="90" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="1.5"/>
+                    <text x="232" y="63" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-green-accent)">S (—)</text>
+                    <text x="232" y="80" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Storativity</text>
+                    <text x="232" y="95" text-anchor="middle" font-size="8" fill="var(--svg-fg)">= S<tspan baseline-shift="sub" font-size="75%">s</tspan> &#xD7; b</text>
+                    <text x="232" y="112" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Volume released per</text>
+                    <text x="232" y="125" text-anchor="middle" font-size="8" fill="var(--svg-fg)">unit area per unit Δh</text>
+                    <rect x="310" y="45" width="135" height="90" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-orange-accent)" stroke-width="1.5"/>
+                    <text x="377" y="63" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-orange-accent)">u (—)</text>
+                    <text x="377" y="80" text-anchor="middle" font-size="8" fill="var(--svg-fg)">= r²S/(4Tt)</text>
+                    <text x="377" y="95" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Dimensionless time</text>
+                    <text x="377" y="112" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Small u = late time</text>
+                    <text x="377" y="125" text-anchor="middle" font-size="8" fill="var(--svg-fg)">or close to well</text>
+                    <rect x="455" y="45" width="135" height="90" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-red-accent)" stroke-width="1.5"/>
+                    <text x="522" y="63" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-red-accent)">W(u)</text>
+                    <text x="522" y="80" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Well function</text>
+                    <text x="522" y="95" text-anchor="middle" font-size="8" fill="var(--svg-fg)">= −Ei(−u)</text>
+                    <text x="522" y="112" text-anchor="middle" font-size="8" fill="var(--svg-fg)">Dimensionless</text>
+                    <text x="522" y="125" text-anchor="middle" font-size="8" fill="var(--svg-fg)">drawdown factor</text>
+                    <text x="300" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--svg-fg)">s = [Q/(4πT)] × W(u)</text>
+                    <text x="300" y="190" text-anchor="middle" font-size="10" fill="var(--svg-fg)">High T → small s (easy flow) | High S → small s (more storage)</text>
+                    <text x="300" y="210" text-anchor="middle" font-size="10" fill="var(--svg-fg)">Small u → large W(u) → large s (near well or late time)</text>
+                    <text x="300" y="235" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Typical values: Confined S = 10⁻⁵ to 10⁻³; Unconfined S = 0.01 to 0.30</text>
+                </svg>
+                <div class="figcaption">Figure 5.3c: Physical meaning of the four key pumping test parameters — transmissivity, storativity, dimensionless time, and well function.</div>
+            </div>
+
+                <p>Rate of water flow through a unit width of the full aquifer thickness under unit gradient. High T = high yield. Typical: 10–10,000 m&sup2;/day.</p>
+            </div>
+            <div class="mini-note">
+                <h4>Storage Coefficient (S)</h4>
+                <div class="equation">$$ S = S_s \cdot b $$</div>
+                <p>where \(S_s\) = specific storage (1/m) and b = aquifer thickness. For <strong>confined</strong> aquifers: S = 10<sup>&minus;5</sup> to 10<sup>&minus;3</sup> (elastic storage only — compression of aquifer skeleton and expansion of water). For <strong>unconfined</strong> aquifers: S &asymp; S<sub>y</sub> = 0.01 to 0.30 (gravity drainage dominates). Small S means the cone of depression expands rapidly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======== 5.4 THEIS TYPE-CURVE METHOD ======== -->
+    <section id="sec-5-4">
+        <h2>5.4 THEIS TYPE-CURVE METHOD FOR T AND S</h2>
+        <div class="callout">
+            <strong>PURPOSE:</strong> Graphical curve-matching technique that works for all pumping times, not just late-time data. Yields both T and S.
+        </div>
+
+        <h3>Step-by-Step Procedure</h3>
+        <ol>
+            <li><strong>Prepare the type curve:</strong> Plot W(u) vs 1/u on log-log paper (standard Theis curve). This is a fixed reference curve.</li>
+            <li><strong>Plot field data:</strong> On a separate sheet of log-log paper <em>at the same scale</em>, plot drawdown s (y-axis) vs time t (x-axis) for each observation well.</li>
+            <li><strong>Overlay and match:</strong> Place the field data sheet on top of the type curve. Keep axes parallel. Slide the field data sheet until the data points align with the type curve.</li>
+            <li><strong>Pick a match point:</strong> Choose any convenient point on the overlapping sheets. Read four values:
+                <ul>
+                    <li>From the type curve sheet: \(W(u)\) and \(1/u\)</li>
+                    <li>From the field data sheet: \(s\) and \(t\)</li>
+                </ul>
+            </li>
+            <li><strong>Calculate T:</strong>
+                <div class="equation">$$ \boxed{T = \frac{Q \cdot W(u)}{4\pi\,s}} $$</div>
+            </li>
+            <li><strong>Calculate S:</strong>
+                <div class="equation">$$ \boxed{S = \frac{4Tu}{r^2} = \frac{4Tt}{r^2 \cdot (1/u)}} $$</div>
+            </li>
+        </ol>
+
+        <div class="figure-container">
+            <svg width="780" height="340" viewBox="0 0 780 340" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">THEIS TYPE-CURVE MATCHING PROCEDURE</text>
+                <!-- Type curve sheet -->
+                <rect x="40" y="40" width="320" height="240" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="200" y="60" text-anchor="middle" font-weight="bold" font-size="13">TYPE CURVE (log-log)</text>
+                <text x="200" y="78" text-anchor="middle" font-size="12">W(u) vs 1/u</text>
+                <path d="M80 250 Q120 220 170 180 Q230 140 300 100 Q340 80 350 72" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- Axes labels -->
+                <text x="200" y="270" text-anchor="middle" font-size="11">1/u &rarr;</text>
+                <text x="50" y="150" text-anchor="middle" font-size="11" transform="rotate(-90,50,150)">W(u)</text>
+                <!-- Arrow -->
+                <text x="400" y="130" text-anchor="middle" font-weight="bold" font-size="16">+</text>
+                <!-- Field data sheet -->
+                <rect x="430" y="40" width="320" height="240" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="590" y="60" text-anchor="middle" font-weight="bold" font-size="13">FIELD DATA (log-log)</text>
+                <text x="590" y="78" text-anchor="middle" font-size="12">s vs t</text>
+                <!-- Data points -->
+                <circle cx="470" cy="240" r="4" fill="var(--svg-fg, #111)"/><circle cx="490" cy="215" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="520" cy="190" r="4" fill="var(--svg-fg, #111)"/><circle cx="555" cy="170" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="590" cy="155" r="4" fill="var(--svg-fg, #111)"/><circle cx="630" cy="140" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="660" cy="128" r="4" fill="var(--svg-fg, #111)"/><circle cx="700" cy="115" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="730" cy="108" r="4" fill="var(--svg-fg, #111)"/>
+                <text x="590" y="270" text-anchor="middle" font-size="11">t &rarr;</text>
+                <text x="440" y="150" text-anchor="middle" font-size="11" transform="rotate(-90,440,150)">s</text>
+                <!-- Result -->
+                <rect x="140" y="290" width="520" height="40" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="400" y="307" text-anchor="middle" font-size="12">MATCH POINT &rarr; Read [W(u), 1/u] from type curve and [s, t] from field data</text>
+                <text x="400" y="324" text-anchor="middle" font-weight="bold" font-size="13">T = Q&middot;W(u) / (4&pi;s) &nbsp;&nbsp;&nbsp; S = 4Tu / r&sup2;</text>
+            </svg>
+            <div class="figcaption">Figure 5.4: Theis type-curve matching — overlay field data on the standard type curve, find a match point, and calculate T and S.</div>
+        </div>
+
+        <div class="study-note">
+            <h4>ADVANTAGES AND LIMITATIONS</h4>
+            <p><strong>Advantages:</strong> Works for all time periods (early and late). Uses the full Theis solution without approximation. Robust for small datasets.</p>
+            <p><strong>Limitations:</strong> Subjective curve matching (different analysts may get slightly different match points). Requires log-log paper at identical scales. May be difficult when data scatter is large.</p>
+        </div>
+    </section>
+
+    <!-- ======== 5.5 THIEM ======== -->
+    <section id="sec-5-5">
+        <h2>5.5 THIEM&rsquo;S EQUILIBRIUM (STEADY-STATE) METHOD FOR T</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+            <ol>
+                <li>Write the step-by-step procedure to determine transmissivity (T) by Thiem&rsquo;s method with the necessary mathematical expression. [6] <em>(2078 Chaitra, Q5a)</em></li>
+            </ol>
+        </div>
+        <div class="callout">
+            <strong>APPLICABILITY:</strong> Thiem&rsquo;s method applies when pumping has continued long enough that drawdown no longer changes with time (steady state). It yields T but not S.
+        </div>
+
+        <h3>Derivation</h3>
+        <p>At steady state, for radial flow in a confined aquifer, by Darcy&rsquo;s law at distance r from the well:</p>
+        <div class="equation">$$ Q = 2\pi\,r\,b\,K\,\frac{dh}{dr} = 2\pi\,T\,r\,\frac{dh}{dr} $$</div>
+        <p>Separating variables and integrating between two observation wells at distances \(r_1\) and \(r_2\) (with heads \(h_1\) and \(h_2\)):</p>
+        <div class="equation">$$ Q \int_{r_1}^{r_2} \frac{dr}{r} = 2\pi T \int_{h_1}^{h_2} dh $$</div>
+        <div class="equation">$$ Q \ln\frac{r_2}{r_1} = 2\pi T (h_2 - h_1) $$</div>
+        <p>Since drawdown \(s = h_0 - h\), we have \(h_2 - h_1 = s_1 - s_2\). Therefore:</p>
+        <div class="equation">$$ \boxed{T = \frac{Q \ln(r_2/r_1)}{2\pi(s_1 - s_2)} = \frac{2.303\,Q\,\log_{10}(r_2/r_1)}{2\pi(s_1 - s_2)}} $$</div>
+
+        <div class="figure-container">
+            <svg width="780" height="380" viewBox="0 0 780 380" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="15">THIEM&rsquo;S METHOD — STEADY-STATE RADIAL FLOW</text>
+                <!-- Confining layers -->
+                <rect x="60" y="70" width="660" height="18" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <rect x="60" y="260" width="660" height="18" fill="url(#hatch)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <!-- Aquifer -->
+                <rect x="60" y="88" width="660" height="172" fill="url(#dots-fine)" stroke="none"/>
+                <!-- Well -->
+                <rect x="377" y="38" width="26" height="258" fill="var(--svg-struct, #ddd)" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="390" y="180" text-anchor="middle" font-weight="bold" font-size="11" transform="rotate(-90,390,180)">Pumping Well</text>
+                <line x1="390" y1="38" x2="390" y2="22" stroke="var(--svg-fg, #111)" stroke-width="3" marker-end="url(#arr)"/>
+                <text x="390" y="16" text-anchor="middle" font-weight="bold" font-size="14">Q</text>
+                <!-- Original piezometric -->
+                <line x1="60" y1="52" x2="720" y2="52" stroke="var(--svg-fg, #111)" stroke-width="2" stroke-dasharray="8,5"/>
+                <text x="620" y="46" font-size="12">Piezometric surface (original)</text>
+                <!-- Steady-state cone -->
+                <path d="M60 52 Q180 55 300 62 Q350 66 377 76" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <path d="M403 76 Q430 66 480 62 Q600 55 720 52" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- OW1 -->
+                <line x1="220" y1="88" x2="220" y2="42" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <line x1="220" y1="59" x2="240" y2="59" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="220" y="36" text-anchor="middle" font-weight="bold" font-size="13">OW1</text>
+                <!-- OW2 -->
+                <line x1="560" y1="88" x2="560" y2="42" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <line x1="560" y1="54" x2="580" y2="54" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="560" y="36" text-anchor="middle" font-weight="bold" font-size="13">OW2</text>
+                <!-- s1, s2 -->
+                <line x1="195" y1="52" x2="195" y2="59" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="182" y="60" text-anchor="end" font-weight="bold" font-size="13">s<tspan dy="3" font-size="9">1</tspan></text>
+                <line x1="585" y1="52" x2="585" y2="54.5" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="598" y="58" font-weight="bold" font-size="13">s<tspan dy="3" font-size="9">2</tspan></text>
+                <!-- r1, r2 -->
+                <line x1="220" y1="300" x2="390" y2="300" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="305" y="316" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="9">1</tspan></text>
+                <line x1="390" y1="330" x2="560" y2="330" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="475" y="346" text-anchor="middle" font-weight="bold" font-size="13">r<tspan dy="3" font-size="9">2</tspan></text>
+                <!-- b -->
+                <line x1="740" y1="88" x2="740" y2="260" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="755" y="180" font-weight="bold" font-size="14">b</text>
+                <!-- Formula -->
+                <rect x="120" y="360" width="540" height="26" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="390" y="380" text-anchor="middle" font-weight="bold" font-size="13">T = Q &middot; ln(r&#x2082;/r&#x2081;) / [2&pi;(s&#x2081; &minus; s&#x2082;)]</text>
+            </svg>
+            <div class="figcaption">Figure 5.5: Thiem&rsquo;s steady-state method — drawdowns s<sub>1</sub> and s<sub>2</sub> at distances r<sub>1</sub> and r<sub>2</sub> from the pumping well, with Q = constant.</div>
+        </div>
+
+        <h3>Step-by-Step Procedure (Exam Answer for 2078 Q5a)</h3>
+        <div class="solution-box">
+            <h4>THIEM&rsquo;S METHOD — PROCEDURE TO DETERMINE T</h4>
+            <ol>
+                <li><strong>Install observation wells</strong> at two or more known distances \(r_1, r_2, \ldots\) from the pumping well in the confined aquifer.</li>
+                <li><strong>Pump at constant rate Q</strong> until drawdowns \(s_1, s_2, \ldots\) stabilize (stop changing with time). This confirms steady-state conditions.</li>
+                <li><strong>Record the steady-state drawdowns</strong> \(s_1\) at distance \(r_1\) and \(s_2\) at distance \(r_2\) (where \(r_2 > r_1\), so \(s_1 > s_2\)).</li>
+                <li><strong>Apply Thiem&rsquo;s equation:</strong>
+                    <div class="equation">$$ T = \frac{Q}{2\pi(s_1 - s_2)} \ln\!\left(\frac{r_2}{r_1}\right) $$</div>
+            <div class="figure-container">
+
+                <svg width="550" height="280" viewBox="0 0 550 280" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="275" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Theis Type-Curve Method — Step-by-Step</text>
+                    <rect x="40" y="42" width="470" height="38" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="1.5"/>
+                    <text x="55" y="58" font-weight="bold" font-size="10" fill="var(--svg-accent)">Step 1:</text>
+                    <text x="110" y="58" font-size="9" fill="var(--svg-fg)">Plot W(u) vs 1/u on log-log paper (type curve)</text>
+                    <text x="110" y="73" font-size="9" fill="var(--svg-muted)">This is a standard curve — same for all aquifers</text>
+                    <rect x="40" y="88" width="470" height="38" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="1.5"/>
+                    <text x="55" y="104" font-weight="bold" font-size="10" fill="var(--svg-green-accent)">Step 2:</text>
+                    <text x="110" y="104" font-size="9" fill="var(--svg-fg)">Plot field data: s vs r²/t on same-scale log-log paper</text>
+                    <text x="110" y="119" font-size="9" fill="var(--svg-muted)">Use same paper size and decade spacing</text>
+                    <rect x="40" y="134" width="470" height="38" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-water-3)" stroke-width="1.5"/>
+                    <text x="55" y="150" font-weight="bold" font-size="10" fill="var(--svg-water-3)">Step 3:</text>
+                    <text x="110" y="150" font-size="9" fill="var(--svg-fg)">Overlay and slide field data (keeping axes parallel) until curves match</text>
+                    <text x="110" y="165" font-size="9" fill="var(--svg-muted)">Do NOT rotate — only translate horizontally and vertically</text>
+                    <rect x="40" y="180" width="470" height="38" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-orange-accent)" stroke-width="1.5"/>
+                    <text x="55" y="196" font-weight="bold" font-size="10" fill="var(--svg-orange-accent)">Step 4:</text>
+                    <text x="110" y="196" font-size="9" fill="var(--svg-fg)">Pick any convenient match point and read: W(u), 1/u, s, r²/t</text>
+                    <text x="110" y="211" font-size="9" fill="var(--svg-muted)">Match point need NOT be on the curve itself</text>
+                    <rect x="40" y="226" width="470" height="38" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-red-accent)" stroke-width="1.5"/>
+                    <text x="55" y="242" font-weight="bold" font-size="10" fill="var(--svg-red-accent)">Step 5:</text>
+                    <text x="110" y="242" font-size="9" fill="var(--svg-fg)">Compute: T = QW(u)/(4πs)  and  S = 4Tu/(r²/t)</text>
+                    <text x="110" y="257" font-size="9" fill="var(--svg-muted)">Verify with alternative match points for consistency</text>
+                </svg>
+                <div class="figcaption">Figure 5.4b: Five-step procedure for the Theis type-curve method — from plotting through overlay matching to parameter computation.</div>
+            </div>
+
+                    Or equivalently, using log<sub>10</sub>:
+                    <div class="equation">$$ T = \frac{2.303\,Q}{2\pi(s_1 - s_2)} \log_{10}\!\left(\frac{r_2}{r_1}\right) $$</div>
+                </li>
+                <li><strong>Calculate K</strong> from \(T = Kb\), i.e., \(K = T/b\), where b is the aquifer thickness.</li>
+            </ol>
+            <p><strong>Alternative (distance-drawdown graph):</strong> If data from multiple observation wells is available, plot s vs log<sub>10</sub>(r). The data should form a straight line. From the slope (&Delta;s per log cycle of r):</p>
+            <div class="equation">$$ T = \frac{2.303\,Q}{2\pi\,\Delta s} $$</div>
+            <p>The line extended to s = 0 gives the <strong>radius of influence</strong> R<sub>0</sub>.</p>
+        </div>
+
+        <h3>Thiem&rsquo;s Equation for Unconfined Aquifer</h3>
+        <p>For an <strong>unconfined aquifer</strong> (where the saturated thickness varies with drawdown), the Dupuit-Thiem equation uses head h instead of drawdown:</p>
+        <div class="equation">$$ \boxed{Q = \frac{\pi K (h_2^2 - h_1^2)}{\ln(r_2/r_1)}} $$</div>
+        <p>where \(h_1\) and \(h_2\) are the saturated thicknesses at distances \(r_1\) and \(r_2\) from the well. For the case with one observation well and the well itself (radius \(r_w\), head \(h_w\)) to the radius of influence \(R\) (head \(H\) = original saturated thickness):</p>
+        <div class="equation">$$ Q = \frac{\pi K (H^2 - h_w^2)}{\ln(R/r_w)} $$</div>
+
+        <h3>Jacob Correction for Unconfined Aquifer</h3>
+        <p>When applying confined-aquifer equations (Theis, Cooper-Jacob) to unconfined aquifers, Jacob&rsquo;s correction adjusts the observed drawdown \(s\) to an equivalent confined drawdown \(s_c\):</p>
+        <div class="equation">$$ \boxed{s_c = s - \frac{s^2}{2b}} $$</div>
+        <p>where b is the initial saturated thickness. Use \(s_c\) in place of s in all confined-aquifer formulas. This correction is significant when s &gt; 0.25b.</p>
+
+        <h3>Limitations of Thiem&rsquo;s Method</h3>
+        <ul>
+            <li>Requires <strong>true steady state</strong> — often takes hours to days to achieve (may never be reached in practice).</li>
+            <li>Cannot determine S (storage coefficient), only T.</li>
+            <li>Requires at least <strong>two observation wells</strong> (or the pumping well data with one observation well, although this introduces well losses).</li>
+            <li>Assumes confined aquifer with no leakage, no boundaries.</li>
+        </ul>
+            <div class="figure-container">
+
+                <svg width="550" height="230" viewBox="0 0 550 230" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="275" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Thiem Method — Advantages &amp; Limitations</text>
+                    <rect x="20" y="45" width="240" height="155" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="2"/>
+                    <text x="140" y="65" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-green-accent)">Advantages</text>
+                    <text x="140" y="85" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Simple formula, easy to apply</text>
+                    <text x="140" y="102" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• T determined directly</text>
+                    <text x="140" y="119" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• No curve matching needed</text>
+                    <text x="140" y="136" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Works with 2 OWs</text>
+                    <text x="140" y="155" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Good for preliminary</text>
+                    <text x="140" y="170" text-anchor="middle" font-size="9" fill="var(--svg-muted)">estimate of T</text>
+                    <rect x="290" y="45" width="240" height="155" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-red-accent)" stroke-width="2"/>
+                    <text x="410" y="65" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-red-accent)">Limitations</text>
+                    <text x="410" y="85" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Steady-state only</text>
+                    <text x="410" y="102" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Cannot determine S</text>
+                    <text x="410" y="119" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Requires equilibrium</text>
+                    <text x="410" y="136" text-anchor="middle" font-size="9" fill="var(--svg-fg)">  (may take days in confined)</text>
+                    <text x="410" y="155" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• R must be estimated</text>
+                    <text x="410" y="172" text-anchor="middle" font-size="9" fill="var(--svg-fg)">• Needs 2+ observation wells</text>
+                    <text x="275" y="220" text-anchor="middle" font-size="10" font-style="italic" fill="var(--svg-fg)">For S determination → use transient methods (Theis, Cooper-Jacob)</text>
+                </svg>
+                <div class="figcaption">Figure 5.5b: Thiem's method — simple and direct for T, but limited to steady-state and cannot determine storativity S.</div>
+            </div>
+
+    </section>
+
+    <!-- ======== 5.6 COOPER-JACOB APPROX ======== -->
+    <section id="sec-5-6">
+        <h2>5.6 COOPER-JACOB STRAIGHT-LINE APPROXIMATION</h2>
+        <div class="exam-note">
+            <h4>PAST EXAM QUESTION ADDRESSED:</h4>
+            <ol>
+                <li>Explain the Cooper and Jacob method for determination of storage coefficient and transmissivity of an aquifer using time-drawdown data. [6] <em>(2072 Magh, Q7)</em></li>
+            </ol>
+        </div>
+        <div class="callout">
+            <strong>KEY INSIGHT:</strong> For small values of u (i.e., large time t or small distance r), the Theis well function W(u) can be approximated by a logarithmic expression, transforming the Theis curve into a <strong>straight line on semi-log paper</strong>.
+        </div>
+
+        <h3>Mathematical Basis</h3>
+        <p>Recall the series expansion of W(u):</p>
+        <div class="equation">$$ W(u) = -0.5772 - \ln u + u - \frac{u^2}{4} + \cdots $$</div>
+        <p>When \(u < 0.01\), the terms beyond \(-\ln u\) become negligible (\(u < 0.01\) contributes less than 1%), so:</p>
+        <div class="equation">$$ W(u) \approx -0.5772 - \ln u = \ln\frac{1}{u} - 0.5772 = \ln\frac{e^{-0.5772}}{u} = \ln\frac{0.5625}{u} $$</div>
+        <p>Substituting \(u = r^2S/(4Tt)\) into the Theis equation:</p>
+        <div class="equation">$$ s = \frac{Q}{4\pi T}\ln\frac{0.5625 \times 4Tt}{r^2 S} = \frac{Q}{4\pi T}\ln\frac{2.25Tt}{r^2 S} $$</div>
+        <p>Converting to log<sub>10</sub> (multiply by 2.303):</p>
+        <div class="equation">$$ \boxed{s = \frac{2.303\,Q}{4\pi\,T}\,\log_{10}\!\left(\frac{2.25\,T\,t}{r^2\,S}\right)} $$</div>
+
+        <h3>Why This Is a Straight Line</h3>
+        <p>For a fixed observation well at distance r:</p>
+            <div class="figure-container">
+
+                <svg width="550" height="220" viewBox="0 0 550 220" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="275" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Cooper-Jacob Approximation — Mathematical Basis</text>
+                    <rect x="30" y="45" width="490" height="35" rx="5" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="1"/>
+                    <text x="275" y="60" text-anchor="middle" font-size="10" fill="var(--svg-fg)">For u &lt; 0.01: W(u) ≈ −0.5772 − ln(u) = ln(1/u) − 0.5772</text>
+                    <text x="275" y="75" text-anchor="middle" font-size="9" fill="var(--svg-muted)">(Higher-order terms u − u²/4 + u³/18 − ... are negligible)</text>
+                    <line x1="275" y1="80" x2="275" y2="95" stroke="var(--svg-fg)" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <rect x="30" y="98" width="490" height="35" rx="5" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="1"/>
+                    <text x="275" y="113" text-anchor="middle" font-size="10" fill="var(--svg-fg)">s = (Q/4πT)[ln(4Tt/r²S) − 0.5772] = (2.3Q/4πT)log(2.25Tt/r²S)</text>
+                    <text x="275" y="128" text-anchor="middle" font-size="9" fill="var(--svg-muted)">This is linear in log(t) → straight line on semi-log paper</text>
+                    <line x1="275" y1="135" x2="275" y2="148" stroke="var(--svg-fg)" stroke-width="1.5" marker-end="url(#arr)"/>
+                    <rect x="80" y="150" width="190" height="50" rx="5" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="1.5"/>
+                    <text x="175" y="167" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--svg-accent)">Slope gives T</text>
+                    <text x="175" y="185" text-anchor="middle" font-size="9" fill="var(--svg-fg)">T = 2.3Q/(4πΔs)</text>
+                    <rect x="290" y="150" width="190" height="50" rx="5" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="1.5"/>
+                    <text x="385" y="167" text-anchor="middle" font-weight="bold" font-size="10" fill="var(--svg-green-accent)">Intercept gives S</text>
+                    <text x="385" y="185" text-anchor="middle" font-size="9" fill="var(--svg-fg)">S = 2.25Tt₀/r²</text>
+                    <text x="275" y="215" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Validity: u &lt; 0.01 → use only late-time data or data from wells close to pumping well</text>
+                </svg>
+                <div class="figcaption">Figure 5.6b: Mathematical derivation of the Cooper-Jacob straight-line approximation — truncating the Theis series for small u yields a linear s vs log(t) relationship.</div>
+            </div>
+
+        <div class="equation">$$ s = \frac{2.303\,Q}{4\pi T}\,\log_{10}(t) + \frac{2.303\,Q}{4\pi T}\,\log_{10}\!\left(\frac{2.25\,T}{r^2 S}\right) $$</div>
+        <p>This is of the form \(s = m \log_{10}(t) + c\), which is a <strong>straight line</strong> when s is plotted against log<sub>10</sub>(t). The slope m per log cycle equals:</p>
+        <div class="equation">$$ \Delta s \text{ (per log cycle)} = \frac{2.303\,Q}{4\pi\,T} $$</div>
+
+        <h3>Validity Condition</h3>
+        <div class="study-note">
+            <h4>COOPER-JACOB VALIDITY</h4>
+            <p>The approximation is valid when:</p>
+            <div class="equation">$$ u = \frac{r^2 S}{4Tt} < 0.01 $$</div>
+            <p>In practice, this means:</p>
+            <ul>
+                <li>For an observation well at r = 100 m with T = 1000 m&sup2;/day and S = 10<sup>&minus;4</sup>: u &lt; 0.01 when t &gt; 0.0025 day = 3.6 min. So the method is valid almost from the start!</li>
+                <li>For low-T aquifers or distant observation wells, early-time data may have u &gt; 0.01 and will deviate from the straight line.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ======== 5.7 TIME-DRAWDOWN ======== -->
+    <section id="sec-5-7">
+        <h2>5.7 COOPER-JACOB TIME-DRAWDOWN METHOD</h2>
+        <p>This is the most widely used pumping test analysis method and the most frequently examined in this course.</p>
+
+        <h3>Step-by-Step Procedure</h3>
+        <div class="solution-box">
+            <h4>PROCEDURE — COOPER-JACOB TIME-DRAWDOWN METHOD</h4>
+            <ol>
+                <li><strong>Tabulate data:</strong> Record time t and drawdown s from the observation well at distance r from the pumping well.</li>
+                <li><strong>Plot on semi-log paper:</strong> Plot s (linear y-axis, increasing downward) vs t (logarithmic x-axis). Alternatively, s on y vs log<sub>10</sub>(t) on x with both axes linear.</li>
+                <li><strong>Fit a straight line</strong> through the late-time data points (where u &lt; 0.01). Early points that deviate from the line are expected and should be ignored for fitting.</li>
+                <li><strong>Determine &Delta;s</strong> = drawdown per log cycle of time — the vertical rise of the line over one log cycle of the t-axis.</li>
+                <li><strong>Calculate T:</strong>
+                    <div class="equation">$$ \boxed{T = \frac{2.303\,Q}{4\pi\,\Delta s}} $$</div>
+                </li>
+                <li><strong>Determine t<sub>0</sub></strong> = the time at which the best-fit straight line intersects s = 0 (extrapolate back if needed).</li>
+                <li><strong>Calculate S:</strong>
+                    <div class="equation">$$ \boxed{S = \frac{2.25\,T\,t_0}{r^2}} $$</div>
+                </li>
+                <li><strong>Check validity:</strong> Compute \(u = r^2S/(4Tt)\) for the earliest data point used. It should be less than 0.01.</li>
+            </ol>
+        </div>
+
+        <div class="figure-container">
+            <svg width="780" height="420" viewBox="0 0 780 420" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">COOPER-JACOB TIME-DRAWDOWN SEMI-LOG PLOT</text>
+                <!-- Axes -->
+                <line x1="100" y1="45" x2="100" y2="350" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="100" y1="350" x2="720" y2="350" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="410" y="385" text-anchor="middle" font-size="14">t (log scale) &rarr;</text>
+                <text x="50" y="200" text-anchor="middle" font-size="14" transform="rotate(-90,50,200)">Drawdown s (m) &darr;</text>
+                <!-- Log scale labels -->
+                <text x="100" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">&minus;3</tspan></text>
+                <text x="255" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">&minus;2</tspan></text>
+                <text x="410" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">&minus;1</tspan></text>
+                <text x="565" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">0</tspan></text>
+                <text x="720" y="370" text-anchor="middle" font-size="12">10<tspan dy="-5" font-size="8">1</tspan></text>
+                <!-- s-axis labels -->
+                <text x="88" y="50" text-anchor="end" font-size="12">0</text>
+                <text x="88" y="120" text-anchor="end" font-size="12">0.2</text>
+                <text x="88" y="190" text-anchor="end" font-size="12">0.4</text>
+                <text x="88" y="260" text-anchor="end" font-size="12">0.6</text>
+                <text x="88" y="330" text-anchor="end" font-size="12">0.8</text>
+                <!-- Grid -->
+                <line x1="255" y1="45" x2="255" y2="350" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="410" y1="45" x2="410" y2="350" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="565" y1="45" x2="565" y2="350" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="100" y1="120" x2="720" y2="120" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="100" y1="190" x2="720" y2="190" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="100" y1="260" x2="720" y2="260" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <!-- Data points: typical Cooper-Jacob -->
+                <circle cx="100" cy="82" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="208" cy="122" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="255" cy="148" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="363" cy="195" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="410" cy="218" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="518" cy="268" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="565" cy="290" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="673" cy="338" r="5" fill="var(--svg-fg, #111)"/>
+                <circle cx="720" cy="348" r="5" fill="var(--svg-fg, #111)"/>
+                <!-- Best fit straight line -->
+                <line x1="108" y1="82" x2="720" y2="348" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- Δs bracket between t=0.01 and t=0.1 -->
+                <line x1="255" y1="148" x2="255" y2="218" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <line x1="245" y1="148" x2="265" y2="148" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <line x1="245" y1="218" x2="410" y2="218" stroke="var(--svg-fg, #111)" stroke-width="2" stroke-dasharray="5,3"/>
+                <rect x="265" y="168" width="80" height="24" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="305" y="184" text-anchor="middle" font-weight="bold" font-size="14">&Delta;s</text>
+                <text x="340" y="236" font-size="12" font-style="italic">1 log cycle</text>
+                <!-- t0 annotation -->
+                <circle cx="85" cy="48" r="6" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="95" y="42" font-weight="bold" font-size="13">t<tspan dy="3" font-size="9">0</tspan></text>
+                <line x1="85" y1="45" x2="85" y2="55" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="85" y="68" text-anchor="middle" font-size="11">s = 0</text>
+                <!-- Annotations -->
+                <rect x="445" y="70" width="250" height="65" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="570" y="90" text-anchor="middle" font-weight="bold" font-size="13">From &Delta;s:</text>
+                <text x="570" y="108" text-anchor="middle" font-size="12">T = 2.303Q / (4&pi;&Delta;s)</text>
+                <text x="570" y="125" text-anchor="middle" font-size="12">S = 2.25T&middot;t<tspan dy="3" font-size="8">0</tspan><tspan dy="-3"> / r&sup2;</tspan></text>
+            </svg>
+            <div class="figcaption">Figure 5.6: Cooper-Jacob time-drawdown plot. The slope (&Delta;s per log cycle) gives T; the zero-drawdown intercept t<sub>0</sub> gives S.</div>
+        </div>
+
+        <h3>Physical Interpretation</h3>
+        <ul>
+            <li><strong>&Delta;s is small</strong> &rarr; the line is flat &rarr; high T (aquifer transmits water easily, so drawdown increases slowly).</li>
+            <li><strong>&Delta;s is large</strong> &rarr; steep line &rarr; low T (aquifer resists flow, drawdown grows rapidly).</li>
+            <li><strong>t<sub>0</sub> is small</strong> &rarr; small S (little storage, cone expands quickly, intersecting s = 0 at a very early time).</li>
+            <li><strong>t<sub>0</sub> is large</strong> &rarr; large S (ample storage, takes more time for drawdown to manifest).</li>
+        </ul>
+    </section>
+
+    <!-- ======== 5.8 DISTANCE-DRAWDOWN ======== -->
+    <section id="sec-5-8">
+        <h2>5.8 COOPER-JACOB DISTANCE-DRAWDOWN METHOD</h2>
+        <p>When data from <strong>multiple observation wells at different distances</strong> is available (typically at steady or quasi-steady state), the same Cooper-Jacob logic can be applied spatially.</p>
+
+        <h3>Procedure</h3>
+        <ol>
+            <li><strong>Plot</strong> s (linear y-axis) vs r (logarithmic x-axis). Or equivalently, s vs log<sub>10</sub>(r).</li>
+            <li><strong>Fit a straight line</strong> through the data points.</li>
+            <li><strong>Read &Delta;s</strong> = drawdown change per log cycle of distance.</li>
+            <li><strong>Calculate T:</strong>
+                <div class="equation">$$ \boxed{T = \frac{2.303\,Q}{2\pi\,\Delta s}} $$</div>
+                <p>(Note: \(2\pi\) in denominator, not \(4\pi\), because this is the steady-state Thiem equation.)</p>
+            </li>
+            <li><strong>Extend the line to s = 0</strong> &rarr; the r-intercept is the <strong>radius of influence R<sub>0</sub></strong> (the distance at which the aquifer is unaffected by pumping).</li>
+        </ol>
+
+        <div class="figure-container">
+            <svg width="780" height="350" viewBox="0 0 780 350" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">DISTANCE-DRAWDOWN SEMI-LOG PLOT</text>
+                <!-- Axes: s(upward) vs log(r) -->
+                <line x1="100" y1="40" x2="100" y2="280" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="100" y1="280" x2="700" y2="280" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="400" y="310" text-anchor="middle" font-size="14">r (m) — log scale &rarr;</text>
+                <text x="55" y="165" text-anchor="middle" font-size="14" transform="rotate(-90,55,165)">Drawdown s (m) &uarr;</text>
+                <!-- r-axis labels -->
+                <text x="100" y="298" text-anchor="middle" font-size="12">1</text>
+                <text x="300" y="298" text-anchor="middle" font-size="12">10</text>
+                <text x="500" y="298" text-anchor="middle" font-size="12">100</text>
+                <text x="700" y="298" text-anchor="middle" font-size="12">1000</text>
+                <!-- s-axis labels -->
+                <text x="88" y="280" text-anchor="end" font-size="12">0</text>
+                <text x="88" y="200" text-anchor="end" font-size="12">0.5</text>
+                <text x="88" y="120" text-anchor="end" font-size="12">1.0</text>
+                <text x="88" y="44" text-anchor="end" font-size="12">1.5</text>
+                <!-- Grid -->
+                <line x1="300" y1="40" x2="300" y2="280" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="500" y1="40" x2="500" y2="280" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="100" y1="200" x2="700" y2="200" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <line x1="100" y1="120" x2="700" y2="120" stroke="var(--svg-struct, #ddd)" stroke-width="1"/>
+                <!-- Data points (s decreases with r) -->
+                <circle cx="270" cy="68" r="5" fill="var(--svg-fg, #111)"/><text x="270" y="58" text-anchor="middle" font-size="11">r=7</text>
+                <circle cx="395" cy="128" r="5" fill="var(--svg-fg, #111)"/><text x="395" y="118" text-anchor="middle" font-size="11">r=30</text>
+                <circle cx="456" cy="168" r="5" fill="var(--svg-fg, #111)"/><text x="456" y="158" text-anchor="middle" font-size="11">r=60</text>
+                <circle cx="500" cy="198" r="5" fill="var(--svg-fg, #111)"/><text x="500" y="188" text-anchor="middle" font-size="11">r=100</text>
+                <circle cx="541" cy="225" r="5" fill="var(--svg-fg, #111)"/><text x="541" y="215" text-anchor="middle" font-size="11">r=160</text>
+                <circle cx="560" cy="237" r="5" fill="var(--svg-fg, #111)"/><text x="560" y="227" text-anchor="middle" font-size="11">r=200</text>
+                <!-- Best-fit line -->
+                <line x1="222" y1="40" x2="658" y2="280" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- R0 at s = 0 -->
+                <circle cx="658" cy="280" r="7" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="665" y="270" font-weight="bold" font-size="13">R<tspan dy="3" font-size="9">0</tspan></text>
+                <!-- Δs bracket -->
+                <line x1="395" y1="128" x2="395" y2="238" stroke="var(--svg-fg, #111)" stroke-width="2" stroke-dasharray="5,3"/>
+                <line x1="395" y1="238" x2="600" y2="238" stroke="var(--svg-fg, #111)" stroke-width="2" stroke-dasharray="5,3"/>
+                <rect x="410" y="175" width="70" height="22" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="1"/>
+                <text x="445" y="191" text-anchor="middle" font-weight="bold" font-size="13">&Delta;s</text>
+                <text x="500" y="256" text-anchor="middle" font-size="11" font-style="italic">1 log cycle</text>
+                <!-- Formula -->
+                <rect x="140" y="322" width="490" height="26" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="385" y="341" text-anchor="middle" font-weight="bold" font-size="13">T = 2.303Q / (2&pi;&Delta;s) &nbsp;&nbsp;&nbsp; R&#x2080; from s = 0 intercept</text>
+            </svg>
+            <div class="figcaption">Figure 5.7: Distance-drawdown plot. The slope gives T via the Thiem formula; the zero-drawdown intercept gives the radius of influence R<sub>0</sub>.</div>
+        </div>
+
+        <h3>Time-Drawdown vs Distance-Drawdown: Key Differences</h3>
+        <table class="info-table">
+            <tr><th>Feature</th><th>Time-Drawdown (Cooper-Jacob)</th><th>Distance-Drawdown (Thiem)</th></tr>
+            <tr><td>Data source</td><td>One observation well, drawdown at multiple times</td><td>Multiple observation wells, one snapshot in time</td></tr>
+            <tr><td>Plot</td><td>s vs log(t)</td><td>s vs log(r)</td></tr>
+            <tr><td>T formula</td><td>\(T = 2.303Q/(4\pi\Delta s)\)</td><td>\(T = 2.303Q/(2\pi\Delta s)\)</td></tr>
+            <tr><td>Second parameter</td><td>S from t<sub>0</sub> intercept</td><td>R<sub>0</sub> from s = 0 intercept</td></tr>
+            <tr><td>Flow condition</td><td>Transient (time-varying)</td><td>Steady-state (or near-steady)</td></tr>
+            <tr><td>Equipment needed</td><td>1 observation well + time readings</td><td>Multiple observation wells at different r</td></tr>
+        </table>
+            <div class="figure-container">
+
+                <svg width="600" height="230" viewBox="0 0 600 230" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="300" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Time-Drawdown vs Distance-Drawdown Analysis</text>
+                    <rect x="20" y="45" width="265" height="150" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="2"/>
+                    <text x="152" y="65" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-accent)">Time-Drawdown</text>
+                    <text x="152" y="83" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Plot s vs log(t) from one OW</text>
+                    <text x="152" y="100" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Slope: Δs per log cycle of t</text>
+                    <text x="152" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--svg-accent)">T = 2.3Q/(4πΔs)</text>
+                    <text x="152" y="140" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--svg-accent)">S = 2.25Tt₀/r²</text>
+                    <text x="152" y="162" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Single well data sufficient</text>
+                    <text x="152" y="178" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Determines both T and S</text>
+                    <rect x="315" y="45" width="265" height="150" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="2"/>
+                    <text x="447" y="65" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-green-accent)">Distance-Drawdown</text>
+                    <text x="447" y="83" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Plot s vs log(r) at same time t</text>
+                    <text x="447" y="100" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Slope: Δs per log cycle of r</text>
+                    <text x="447" y="120" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--svg-green-accent)">T = 2.3Q/(2πΔs)</text>
+                    <text x="447" y="140" text-anchor="middle" font-size="10" font-weight="bold" fill="var(--svg-green-accent)">S = 2.25Tt/r₀²</text>
+                    <text x="447" y="162" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Needs 3+ observation wells</text>
+                    <text x="447" y="178" text-anchor="middle" font-size="9" fill="var(--svg-muted)">All at same time snapshot</text>
+                    <text x="300" y="215" text-anchor="middle" font-size="10" fill="var(--svg-fg)">Note: Distance formula has 2π (not 4π) because r appears as r² in u</text>
+                </svg>
+                <div class="figcaption">Figure 5.7b: Two variants of the Cooper-Jacob method — time-drawdown (single well, s vs log t) and distance-drawdown (multiple wells, s vs log r at fixed time).</div>
+            </div>
+
+    </section>
+
+    <!-- ======== 5.9 RECOVERY TEST ======== -->
+    <section id="sec-5-9">
+        <h2>5.9 RECOVERY TEST</h2>
+        <p>After the pump is stopped (at time t<sub>p</sub> since pumping started), the water level recovers. By the <strong>principle of superposition</strong>, the recovery can be modelled as continuing the original pumping AND injecting at rate Q from time t<sub>p</sub>. The residual drawdown s&rsquo; at time t&rsquo; after pump shutdown is:</p>
+        <div class="equation">$$ s' = \frac{2.303\,Q}{4\pi\,T}\,\log_{10}\!\left(\frac{t}{t'}\right) $$</div>
+        <p>where \(t = t_p + t'\) = total time since pumping started, and \(t'\) = time since pumping stopped.</p>
+
+        <h3>Procedure</h3>
+        <ol>
+            <li>Plot residual drawdown s&rsquo; (y-axis, linear) vs \(t/t'\) (x-axis, log scale).</li>
+            <li>Fit a straight line through the data.</li>
+            <li>Determine &Delta;s&rsquo; per log cycle of \(t/t'\).</li>
+            <li>Compute:
+                <div class="equation">$$ \boxed{T = \frac{2.303\,Q}{4\pi\,\Delta s'}} $$</div>
+            </li>
+        </ol>
+
+        <div class="figure-container">
+            <svg width="780" height="310" viewBox="0 0 780 310" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">RECOVERY TEST ANALYSIS</text>
+                <!-- Left: Time history -->
+                <text x="200" y="42" text-anchor="middle" font-weight="bold" font-size="13">WATER LEVEL vs TIME</text>
+                <line x1="60" y1="55" x2="60" y2="230" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="60" y1="230" x2="370" y2="230" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="215" y="255" text-anchor="middle" font-size="12">Time &rarr;</text>
+                <text x="38" y="145" text-anchor="middle" font-size="12" transform="rotate(-90,38,145)">s &darr;</text>
+                <!-- Pumping phase -->
+                <path d="M70 60 Q100 100 140 140 Q180 170 220 185 Q240 192 260 195" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- Recovery phase -->
+                <path d="M260 195 Q280 180 300 155 Q320 120 340 90 Q355 70 365 60" fill="none" stroke="var(--svg-fg, #111)" stroke-width="3" stroke-dasharray="6,4"/>
+                <!-- tp marker -->
+                <line x1="260" y1="195" x2="260" y2="230" stroke="var(--svg-fg, #111)" stroke-width="1.5" stroke-dasharray="4,3"/>
+                <text x="260" y="245" text-anchor="middle" font-weight="bold" font-size="12">t<tspan dy="3" font-size="8">p</tspan></text>
+                <text x="160" y="218" text-anchor="middle" font-size="11">Pumping</text>
+                <text x="330" y="218" text-anchor="middle" font-size="11">Recovery</text>
+                <!-- Arrow s' -->
+                <line x1="310" y1="60" x2="310" y2="155" stroke="var(--svg-fg, #111)" stroke-width="2" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="325" y="110" font-weight="bold" font-size="12">s&rsquo;</text>
+                <!-- Right: Recovery plot -->
+                <text x="580" y="42" text-anchor="middle" font-weight="bold" font-size="13">RECOVERY PLOT: s&rsquo; vs t/t&rsquo;</text>
+                <line x1="430" y1="55" x2="430" y2="230" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <line x1="430" y1="230" x2="730" y2="230" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="580" y="255" text-anchor="middle" font-size="12">t/t&rsquo; (log scale) &rarr;</text>
+                <text x="412" y="145" text-anchor="middle" font-size="12" transform="rotate(-90,412,145)">s&rsquo; (m)</text>
+                <!-- Data and line -->
+                <circle cx="470" cy="210" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="510" cy="185" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="550" cy="160" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="590" cy="135" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="640" cy="105" r="4" fill="var(--svg-fg, #111)"/>
+                <circle cx="690" cy="78" r="4" fill="var(--svg-fg, #111)"/>
+                <line x1="445" y1="225" x2="720" y2="58" stroke="var(--svg-fg, #111)" stroke-width="3"/>
+                <!-- Δs' bracket -->
+                <line x1="550" y1="160" x2="550" y2="84" stroke="var(--svg-fg, #111)" stroke-width="2" stroke-dasharray="4,3"/>
+                <text x="540" y="128" text-anchor="end" font-weight="bold" font-size="12">&Delta;s&rsquo;</text>
+                <!-- Formula -->
+                <rect x="430" y="270" width="300" height="26" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="580" y="289" text-anchor="middle" font-weight="bold" font-size="13">T = 2.303Q / (4&pi;&Delta;s&rsquo;)</text>
+            </svg>
+            <div class="figcaption">Figure 5.8: Recovery test — after the pump is stopped, residual drawdown s&rsquo; is plotted against t/t&rsquo; on semi-log paper. The slope yields T.</div>
+        </div>
+
+        <h3>Advantages of the Recovery Test</h3>
+        <ul>
+            <li><strong>Independent check</strong> on T obtained during the pumping phase.</li>
+            <li><strong>No flow meter needed</strong> during recovery (Q is known from the pumping phase).</li>
+            <li><strong>Not affected by well losses</strong> (there is no discharge during recovery, so the non-Darcian turbulence zone disappears).</li>
+            <li><strong>Simpler data collection</strong> — only one well (even the pumping well) is needed.</li>
+        </ul>
+            <div class="figure-container">
+
+                <svg width="550" height="230" viewBox="0 0 550 230" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="275" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Recovery Test — Why It Works</text>
+                    <rect x="30" y="45" width="490" height="80" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-fg)" stroke-width="1.5"/>
+                    <text x="275" y="65" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-accent)">Superposition Principle</text>
+                    <text x="275" y="85" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Recovery = original pumping well (Q, time t) + imaginary recharge well (−Q, time t')</text>
+                    <text x="275" y="102" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Residual drawdown: s' = (Q/4πT)[W(u) − W(u')]  ≈  (2.3Q/4πT)log(t/t')</text>
+                    <rect x="30" y="140" width="240" height="60" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="1.5"/>
+                    <text x="150" y="158" text-anchor="middle" font-weight="bold" font-size="10" fill="var(--svg-green-accent)">Advantages</text>
+                    <text x="150" y="175" text-anchor="middle" font-size="9" fill="var(--svg-fg)">No Q measurement during recovery</text>
+                    <text x="150" y="190" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Cross-checks pumping phase T</text>
+                    <rect x="290" y="140" width="230" height="60" rx="6" fill="var(--svg-bg-soft)" stroke="var(--svg-orange-accent)" stroke-width="1.5"/>
+                    <text x="405" y="158" text-anchor="middle" font-weight="bold" font-size="10" fill="var(--svg-orange-accent)">Key Point</text>
+                    <text x="405" y="175" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Recovery gives T only</text>
+                    <text x="405" y="190" text-anchor="middle" font-size="9" fill="var(--svg-fg)">S cannot be obtained</text>
+                    <text x="275" y="222" text-anchor="middle" font-size="10" fill="var(--svg-fg)">Plot s' vs log(t/t') → straight line → T = 2.3Q/(4πΔs')</text>
+                </svg>
+                <div class="figcaption">Figure 5.8b: Recovery test uses superposition to derive T from residual drawdown — independent of Q measurement errors during pumping.</div>
+            </div>
+
+    </section>
+
+    <!-- ======== 5.10 IMAGE WELLS ======== -->
+    <section id="sec-5-10">
+        <h2>5.10 IMAGE WELL THEORY AND BOUNDARY EFFECTS</h2>
+        <p>Real aquifers are not infinite — they encounter boundaries such as impermeable barriers (faults, clay layers) and recharge boundaries (rivers, lakes). The <strong>method of images</strong> handles these by placing imaginary wells symmetrically across the boundary:</p>
+
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>Impermeable Boundary (Barrier)</h4>
+                <p>An <strong>image pumping well</strong> (same sign, +Q) is placed at the mirror position across the barrier. This doubles the drawdown near the boundary.</p>
+                <p><em>Effect:</em> The drawdown curve steepens — a second straight line with <strong>double the slope</strong> (&Delta;s doubles) appears on the Cooper-Jacob plot.</p>
+            </div>
+            <div class="mini-note">
+                <h4>Recharge Boundary (River)</h4>
+                <p>An <strong>image recharge well</strong> (opposite sign, &minus;Q) is placed at the mirror position across the river. This reduces the drawdown.</p>
+                <p><em>Effect:</em> The drawdown curve flattens and eventually stabilizes (reaches steady state even without true equilibrium) — the Cooper-Jacob line flattens to zero slope.</p>
+            </div>
+        </div>
+
+        <div class="figure-container">
+            <svg width="780" height="320" viewBox="0 0 780 320" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="18" text-anchor="middle" font-weight="bold" font-size="15">IMAGE WELL THEORY</text>
+                <!-- LEFT: Barrier boundary -->
+                <text x="195" y="45" text-anchor="middle" font-weight="bold" font-size="13">IMPERMEABLE BARRIER</text>
+                <!-- Barrier line -->
+                <line x1="195" y1="60" x2="195" y2="260" stroke="var(--svg-fg, #111)" stroke-width="4"/>
+                <rect x="195" y="60" width="15" height="200" fill="url(#hatch)" stroke="none"/>
+                <text x="215" y="80" font-size="11">Barrier</text>
+                <!-- Real well -->
+                <circle cx="120" cy="160" r="12" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="120" y="165" text-anchor="middle" font-weight="bold" font-size="12">+Q</text>
+                <text x="120" y="195" text-anchor="middle" font-size="11">Real well</text>
+                <!-- Image well -->
+                <circle cx="270" cy="160" r="12" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5" stroke-dasharray="5,3"/>
+                <text x="270" y="165" text-anchor="middle" font-weight="bold" font-size="12">+Q</text>
+                <text x="270" y="195" text-anchor="middle" font-size="11" font-style="italic">Image well</text>
+                <!-- d dimension -->
+                <line x1="120" y1="220" x2="195" y2="220" stroke="var(--svg-fg, #111)" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="158" y="238" text-anchor="middle" font-size="11">d</text>
+                <line x1="195" y1="220" x2="270" y2="220" stroke="var(--svg-fg, #111)" stroke-width="1.5" marker-start="url(#arr-r)" marker-end="url(#arr)"/>
+                <text x="233" y="238" text-anchor="middle" font-size="11">d</text>
+                <text x="195" y="280" text-anchor="middle" font-size="12">Drawdown <strong>increases</strong></text>
+                <text x="195" y="296" text-anchor="middle" font-size="12">(slope doubles on CJ plot)</text>
+
+                <!-- RIGHT: Recharge boundary -->
+                <text x="585" y="45" text-anchor="middle" font-weight="bold" font-size="13">RECHARGE BOUNDARY (RIVER)</text>
+                <!-- River -->
+                <rect x="582" y="60" width="6" height="200" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <path d="M583 70 Q585 66 587 70 Q589 74 583 80 Q585 76 587 80" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <path d="M583 110 Q585 106 587 110 Q589 114 583 120 Q585 116 587 120" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <path d="M583 150 Q585 146 587 150 Q589 154 583 160 Q585 156 587 160" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <path d="M583 190 Q585 186 587 190 Q589 194 583 200 Q585 196 587 200" fill="none" stroke="var(--svg-fg, #111)" stroke-width="1.5"/>
+                <text x="600" y="80" font-size="11">River</text>
+                <!-- Real well -->
+                <circle cx="510" cy="160" r="12" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="2.5"/>
+                <text x="510" y="165" text-anchor="middle" font-weight="bold" font-size="12">+Q</text>
+                <text x="510" y="195" text-anchor="middle" font-size="11">Real well</text>
+                <!-- Image recharge well -->
+                <circle cx="660" cy="160" r="12" fill="none" stroke="var(--svg-fg, #111)" stroke-width="2.5" stroke-dasharray="5,3"/>
+                <text x="660" y="165" text-anchor="middle" font-weight="bold" font-size="12">&minus;Q</text>
+                <text x="660" y="195" text-anchor="middle" font-size="11" font-style="italic">Image well</text>
+                <text x="585" y="280" text-anchor="middle" font-size="12">Drawdown <strong>decreases</strong></text>
+                <text x="585" y="296" text-anchor="middle" font-size="12">(slope flattens to 0 on CJ plot)</text>
+            </svg>
+            <div class="figcaption">Figure 5.9: Method of images. Left: barrier boundary uses an image pumping well (+Q). Right: recharge boundary uses an image recharge well (&minus;Q).</div>
+        </div>
+
+        <h3>Drawdown with Image Wells</h3>
+        <p>Using superposition, the total drawdown at any point is the algebraic sum of drawdowns from the real and image wells. If the real well is at distance \(r\) and the image well at distance \(r_i\) from the observation point:</p>
+        <p><strong>Impermeable (barrier) boundary</strong> — image well pumps at +Q:</p>
+        <div class="equation">$$ \boxed{s = \frac{Q}{4\pi T}\left[W(u_r) + W(u_i)\right]} $$</div>
+        <p><strong>Recharge boundary</strong> — image well recharges at &minus;Q:</p>
+        <div class="equation">$$ \boxed{s = \frac{Q}{4\pi T}\left[W(u_r) - W(u_i)\right]} $$</div>
+        <p>where \(u_r = r^2S/(4Tt)\) and \(u_i = r_i^2 S/(4Tt)\). At the boundary itself (barrier), the no-flow condition is automatically satisfied.</p>
+
+        <h3>Detecting Boundaries from Pumping Test Data</h3>
+        <ul>
+            <li>On a Cooper-Jacob time-drawdown plot, a <strong>barrier</strong> causes the late-time data to steepen (upward break in the line, slope doubles).</li>
+            <li>A <strong>recharge boundary</strong> causes the data to flatten below the original line (downward break, slope approaches zero).</li>
+            <li>Distance to the boundary can be estimated from the time at which the break occurs:</li>
+        </ul>
+        <div class="equation">$$ \boxed{r_i = \sqrt{\frac{4Tt_b}{S}}} $$</div>
+        <p>where \(t_b\) is the time at which the break in the semi-log line occurs, and \(r_i\) is the distance from the pumping well to the image well (= twice the distance to the boundary).</p>
+            <div class="figure-container">
+
+                <svg width="600" height="250" viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg" style="font-family:'Times New Roman',Times,serif">
+                    <text x="300" y="22" text-anchor="middle" font-weight="bold" font-size="13" fill="var(--svg-fg)">Boundary Detection from Pumping Test Data</text>
+                    <rect x="20" y="40" width="270" height="175" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-accent)" stroke-width="2"/>
+                    <text x="155" y="60" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-accent)">Barrier (No-Flow) Boundary</text>
+                    <line x1="40" y1="130" x2="270" y2="130" stroke="var(--svg-fg)" stroke-width="1"/>
+                    <line x1="40" y1="130" x2="40" y2="70" stroke="var(--svg-fg)" stroke-width="1"/>
+                    <text x="155" y="125" text-anchor="middle" font-size="8" fill="var(--svg-muted)">log(t)</text>
+                    <text x="35" y="100" text-anchor="middle" font-size="8" fill="var(--svg-muted)" transform="rotate(-90 35 100)">s</text>
+                    <line x1="50" y1="125" x2="160" y2="102" stroke="var(--svg-green-accent)" stroke-width="2"/>
+                    <line x1="160" y1="102" x2="260" y2="75" stroke="var(--svg-red-accent)" stroke-width="2.5"/>
+                    <text x="110" y="98" font-size="8" fill="var(--svg-green-accent)">slope = m</text>
+                    <text x="225" y="72" font-size="8" fill="var(--svg-red-accent)">slope = 2m</text>
+                    <text x="155" y="152" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Slope doubles → drawdown</text>
+                    <text x="155" y="166" text-anchor="middle" font-size="9" fill="var(--svg-fg)">increases faster</text>
+                    <text x="155" y="185" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Image well: +Q (pumping)</text>
+                    <text x="155" y="200" text-anchor="middle" font-size="9" fill="var(--svg-muted)">at mirror distance</text>
+                    <rect x="310" y="40" width="270" height="175" rx="8" fill="var(--svg-bg-soft)" stroke="var(--svg-green-accent)" stroke-width="2"/>
+                    <text x="445" y="60" text-anchor="middle" font-weight="bold" font-size="11" fill="var(--svg-green-accent)">Recharge Boundary</text>
+                    <line x1="330" y1="130" x2="560" y2="130" stroke="var(--svg-fg)" stroke-width="1"/>
+                    <line x1="330" y1="130" x2="330" y2="70" stroke="var(--svg-fg)" stroke-width="1"/>
+                    <text x="445" y="125" text-anchor="middle" font-size="8" fill="var(--svg-muted)">log(t)</text>
+                    <text x="325" y="100" text-anchor="middle" font-size="8" fill="var(--svg-muted)" transform="rotate(-90 325 100)">s</text>
+                    <line x1="340" y1="125" x2="440" y2="105" stroke="var(--svg-accent)" stroke-width="2"/>
+                    <line x1="440" y1="105" x2="550" y2="103" stroke="var(--svg-water-3)" stroke-width="2.5"/>
+                    <text x="390" y="100" font-size="8" fill="var(--svg-accent)">slope = m</text>
+                    <text x="500" y="98" font-size="8" fill="var(--svg-water-3)">slope → 0</text>
+                    <text x="445" y="152" text-anchor="middle" font-size="9" fill="var(--svg-fg)">Slope flattens → drawdown</text>
+                    <text x="445" y="166" text-anchor="middle" font-size="9" fill="var(--svg-fg)">stabilizes (recharge)</text>
+                    <text x="445" y="185" text-anchor="middle" font-size="9" fill="var(--svg-muted)">Image well: −Q (recharge)</text>
+                    <text x="445" y="200" text-anchor="middle" font-size="9" fill="var(--svg-muted)">at mirror distance</text>
+                    <text x="300" y="240" text-anchor="middle" font-size="10" fill="var(--svg-fg)">A break in the semi-log straight line signals a boundary — slope change reveals boundary type</text>
+                </svg>
+                <div class="figcaption">Figure 5.9b: Boundary detection — a barrier boundary doubles the semi-log slope, while a recharge boundary causes the slope to flatten to zero.</div>
+            </div>
+
+    </section>
+
+    <!-- ======== 5.11 QUESTION BANK ======== -->
+    <section id="sec-5-11">
+        <h2>5.11 PAST QUESTION BANK FOR CHAPTER 5</h2>
+
+        <h3>Theory Questions</h3>
+        <table class="question-table">
+            <tr><th>Year</th><th>Q.No.</th><th>Marks</th><th>Question</th></tr>
+            <tr><td>2078 Chaitra</td><td>Q5(a)</td><td>[6]</td><td>Write the step-by-step procedure to determine transmissivity (T) by Thiem&rsquo;s method with the necessary mathematical expression.</td></tr>
+            <tr><td>2073 Bhadra</td><td>Q5(a)</td><td>[2]</td><td>Why is the pumping test carried out in groundwater studies?</td></tr>
+            <tr><td>2072 Ashwin</td><td>Q11</td><td>[6]</td><td>Explain the Theis solution for determination of storage coefficient and transmissibility of an aquifer.</td></tr>
+            <tr><td>2072 Magh</td><td>Q6</td><td>[8]</td><td>Explain the types of pumping test used in the field to determine the permeability of soil.</td></tr>
+            <tr><td>2072 Magh</td><td>Q7</td><td>[6]</td><td>Explain the Cooper and Jacob method for determination of storage coefficient and transmissivity of an aquifer using time-drawdown data.</td></tr>
+        </table>
+
+        <h3>Numerical Questions (Solved in <a href="numerical/chapter5.html">Numerical &rarr; Chapter 5</a>)</h3>
+        <table class="question-table">
+            <tr><th>Year</th><th>Q.No.</th><th>Marks</th><th>Problem Type</th><th>Key Answer</th></tr>
+            <tr><td>2078, 2073, 2072 Ash</td><td>Q5b/Q6</td><td>[6–8]</td><td>Cooper-Jacob time-drawdown</td><td>T &asymp; 1000 m&sup2;/day, S &asymp; 10<sup>&minus;4</sup></td></tr>
+            <tr><td>2071 Bhadra</td><td>Q8</td><td>[10]</td><td>Distance-drawdown (Thiem)</td><td>T &asymp; 0.0135 m&sup2;/s, R<sub>0</sub> &asymp; 613 m</td></tr>
+        </table>
+    </section>
+
+    <!-- ======== SUMMARY ======== -->
+    <section id="sec-summary">
+        <h2>CHAPTER SUMMARY AND EXAM FORMULA SHEET</h2>
+
+        <h3>Core Equations — Must Memorise</h3>
+        <table class="formula-table">
+            <tr><th>Method</th><th>Formula</th><th>Yields</th></tr>
+            <tr><td>Theis (general)</td><td>\(s = \frac{Q}{4\pi T}W(u)\), &ensp; \(u = \frac{r^2 S}{4Tt}\)</td><td>T, S</td></tr>
+            <tr><td>Theis type-curve</td><td>\(T = \frac{Q\,W(u)}{4\pi\,s}\), &ensp; \(S = \frac{4Tu}{r^2}\)</td><td>T, S</td></tr>
+            <tr><td>Cooper-Jacob (time-drawdown)</td><td>\(T = \frac{2.303\,Q}{4\pi\,\Delta s}\), &ensp; \(S = \frac{2.25\,T\,t_0}{r^2}\)</td><td>T, S</td></tr>
+            <tr><td>Thiem / Distance-drawdown</td><td>\(T = \frac{2.303\,Q}{2\pi\,\Delta s}\), &ensp; R<sub>0</sub> from s = 0</td><td>T, R<sub>0</sub></td></tr>
+            <tr><td>Recovery test</td><td>\(T = \frac{2.303\,Q}{4\pi\,\Delta s'}\)</td><td>T (check)</td></tr>
+        </table>
+
+        <h3>Key Relationships</h3>
+        <div class="grid-two">
+            <div class="mini-note">
+                <h4>Transmissivity</h4>
+                <div class="equation">$$ T = K \cdot b $$</div>
+                <p>Typical: 50–5000 m&sup2;/day (good aquifer: &gt;500)</p>
+            </div>
+            <div class="mini-note">
+                <h4>Storage Coefficient</h4>
+                <p>Confined: S = 10<sup>&minus;5</sup>–10<sup>&minus;3</sup></p>
+                <p>Unconfined: S<sub>y</sub> = 0.01–0.30</p>
+            </div>
+        </div>
+
+        <h3>Exam Tips for Chapter 5</h3>
+        <div class="study-note">
+            <h4>HIGH-YIELD STUDY POINTS</h4>
+            <ol>
+                <li><strong>Cooper-Jacob time-drawdown numerical</strong> has appeared in 3 of 4 exams with identical data. Master the semi-log plot, &Delta;s per log cycle, and t<sub>0</sub> calculation.</li>
+                <li><strong>Thiem&rsquo;s method step-by-step</strong> was asked in 2078 for 6 marks. Write the full derivation from Darcy&rsquo;s law, not just the final formula.</li>
+                <li><strong>Theis solution explanation</strong> (2072 Ashwin) requires stating all 7 assumptions, the heat-analogy idea, the well function definition, and the type-curve matching procedure.</li>
+                <li><strong>Types of pumping tests</strong> (2072 Magh) is an 8-mark question — describe all types with diagrams.</li>
+                <li>Always distinguish between \(4\pi\) (transient/Cooper-Jacob) and \(2\pi\) (steady-state/Thiem) in the denominator.</li>
+                <li>Always state the validity condition: \(u = r^2S/(4Tt) < 0.01\) for Cooper-Jacob.</li>
+                <li>Draw semi-log plots clearly showing data points, the best-fit line, &Delta;s annotation, and the t<sub>0</sub> or R<sub>0</sub> intercept.</li>
+            </ol>
+        </div>
+
+        <h3>Quick Reference: Which Method to Use?</h3>
+        <div class="figure-container">
+            <svg width="780" height="260" viewBox="0 0 780 260" style="font-family:'Times New Roman',Times,serif;font-size:13px;">
+                <text x="390" y="20" text-anchor="middle" font-weight="bold" font-size="15">DECISION FLOWCHART — PUMPING TEST ANALYSIS</text>
+                <!-- Start -->
+                <rect x="280" y="40" width="220" height="30" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="390" y="60" text-anchor="middle" font-weight="bold" font-size="12">Pumping test data available</text>
+                <line x1="390" y1="70" x2="390" y2="90" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <!-- Branch: steady? -->
+                <rect x="300" y="90" width="180" height="28" fill="var(--svg-bg-light, #f5f5f5)" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="390" y="108" text-anchor="middle" font-size="12">Is drawdown stable over time?</text>
+                <!-- Yes: steady -->
+                <line x1="300" y1="104" x2="170" y2="104" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="238" y="98" text-anchor="middle" font-size="11">Yes (steady)</text>
+                <line x1="170" y1="104" x2="170" y2="135" stroke="var(--svg-fg, #111)" stroke-width="2" marker-end="url(#arr)"/>
+                <rect x="70" y="138" width="200" height="50" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="170" y="157" text-anchor="middle" font-weight="bold" font-size="12">Thiem&rsquo;s Method</text>
+                <text x="170" y="177" text-anchor="middle" font-size="11">T = 2.303Q / (2&pi;&Delta;s)</text>
+                <!-- No: transient -->
+                <line x1="480" y1="104" x2="610" y2="104" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="545" y="98" text-anchor="middle" font-size="11">No (transient)</text>
+                <line x1="610" y1="104" x2="610" y2="135" stroke="var(--svg-fg, #111)" stroke-width="2" marker-end="url(#arr)"/>
+                <rect x="505" y="138" width="210" height="28" fill="var(--svg-bg-light, #f5f5f5)" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="610" y="157" text-anchor="middle" font-size="12">Late-time data available?</text>
+                <!-- Late-time yes -->
+                <line x1="505" y1="152" x2="410" y2="152" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="460" y="146" text-anchor="middle" font-size="11">Yes</text>
+                <line x1="410" y1="152" x2="410" y2="198" stroke="var(--svg-fg, #111)" stroke-width="2" marker-end="url(#arr)"/>
+                <rect x="310" y="200" width="200" height="50" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="410" y="220" text-anchor="middle" font-weight="bold" font-size="12">Cooper-Jacob</text>
+                <text x="410" y="240" text-anchor="middle" font-size="11">T = 2.303Q / (4&pi;&Delta;s)</text>
+                <!-- All data -->
+                <line x1="715" y1="152" x2="740" y2="152" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="725" y="146" text-anchor="middle" font-size="11">All</text>
+                <line x1="740" y1="152" x2="740" y2="198" stroke="var(--svg-fg, #111)" stroke-width="2" marker-end="url(#arr)"/>
+                <rect x="640" y="200" width="200" height="50" fill="var(--svg-bg-fill, #fff)" stroke="var(--svg-fg, #111)" stroke-width="2"/>
+                <text x="740" y="220" text-anchor="middle" font-weight="bold" font-size="12">Theis Type-Curve</text>
+                <text x="740" y="240" text-anchor="middle" font-size="11">T = Q&middot;W(u) / (4&pi;s)</text>
+            </svg>
+            <div class="figcaption">Figure 5.10: Decision flowchart for selecting the appropriate pumping test analysis method.</div>
+        </div>
+    </section>
+    <nav class="chapter-nav">
+      <a href="chapter4.html">
+        <span class="nav-label">&larr; Previous</span>
+        <span class="nav-title">Ch 4: Well Hydraulics</span>
+      </a>
+      <a href="chapter6.html" class="nav-next">
+        <span class="nav-label">Next &rarr;</span>
+        <span class="nav-title">Ch 6: GW Exploration</span>
+      </a>
+    </nav>
+  </main>
+</div>
+<script src="common.js"></script>
+</body>
+</html>

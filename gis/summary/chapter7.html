@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 7: Raster Analysis</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch7);--ch-color-lt:var(--ch7-lt);--ch-color-dk:var(--ch7-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter7.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 7 &mdash; Summary</div>
+    <h1>Spatial Analysis (Raster GIS)</h1>
+    <span class="ch-number-bg">07</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">6 Teaching Hours</span>
+      <span class="meta-badge exam">14 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">30+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~250</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">5</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-critical">Critical</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> Spatial Interpolation</h2>
+    <p>Estimating unknown values at unsampled locations from known sample points.</p>
+    <ul>
+      <li><strong>IDW (Inverse Distance Weighted):</strong> Closer points have more influence. Weight = 1/d<sup>p</sup> (p usually 2). Deterministic, simple, fast; no error estimate.</li>
+      <li><strong>Kriging:</strong> Geostatistical method using semivariograms; considers spatial autocorrelation; provides error map; more accurate but slower.</li>
+      <li><strong>Splines:</strong> Fits smooth mathematical surface through points; can overshoot; exact interpolator.</li>
+    </ul>
+    <div class="formula">
+      IDW: Z = &Sigma;(Z<sub>i</sub> &times; W<sub>i</sub>) / &Sigma;(W<sub>i</sub>) &nbsp; where W<sub>i</sub> = 1/d<sub>i</sub>&sup2;
+    </div>
+
+    <h2><span class="section-num">2</span> Raster Analysis Functions</h2>
+    <ul>
+      <li><strong>Map Algebra:</strong> Cell-by-cell arithmetic on rasters.</li>
+      <li><strong>Slope:</strong> Rate of elevation change; output in degrees or percent.</li>
+      <li><strong>Aspect:</strong> Direction of steepest descent (0&ndash;360&deg;).</li>
+      <li><strong>Hillshade:</strong> Simulated illumination for 3D visualisation.</li>
+      <li><strong>Viewshed:</strong> Binary raster of visible areas from an observer point.</li>
+      <li><strong>Euclidean Distance:</strong> Distance from each cell to nearest source.</li>
+      <li><strong>Reclassify:</strong> Reassign cell values to new categories.</li>
+      <li><strong>Zonal Statistics:</strong> Statistics for zones defined by another raster.</li>
+    </ul>
+
+    <h2><span class="section-num">3</span> Local, Focal, and Zonal Operations</h2>
+    <ul>
+      <li><strong>Local:</strong> Output depends only on same-position cells. Example: NDVI.</li>
+      <li><strong>Focal/Neighbourhood:</strong> Output depends on surrounding cells (3&times;3 window). Example: slope, aspect.</li>
+      <li><strong>Zonal:</strong> Output computed for groups of cells (zones). Example: mean elevation per land-use class.</li>
+    </ul>
+
+    <h2><span class="section-num">4</span> Weighted Overlay (Suitability Analysis)</h2>
+    <ol>
+      <li>Reclassify all input rasters to a common suitability scale (e.g., 1&ndash;10).</li>
+      <li>Assign weights to each factor (must sum to 100%).</li>
+      <li>Score = &Sigma;(Reclassified_value &times; Weight).</li>
+      <li>Apply threshold to produce final suitability map.</li>
+    </ol>
+
+    <h2><span class="section-num">5</span> NDVI</h2>
+    <div class="formula">
+      NDVI = (NIR &minus; Red) / (NIR + Red)<br>
+      Range: &minus;1 to +1. &nbsp; &lt;0 = water, &nbsp; 0&ndash;0.1 = bare soil, &nbsp; 0.2&ndash;0.4 = sparse, &nbsp; 0.5&ndash;0.8 = dense vegetation.
+    </div>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain raster functions: Slope, Aspect, Hillshade, Map Algebra, Viewshed, Reclassify, Zonal Statistics. <em>(Every exam 2071&ndash;2082)</em></span></div><div class="qa-answer">
+      <p>For 10+ mark questions, explain at least 5 functions with one example each. Include sample input/output grids where possible.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain spatial interpolation types &mdash; IDW, Kriging, Splines. <em>(2079, 2075, 2074, 2072, 2071, 2073, 2081)</em></span></div><div class="qa-answer">
+      <p>Define each. IDW: deterministic, simple. Kriging: geostatistical, error estimate. Splines: smooth, overshoots. Compare in a table.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">IDW numerical &mdash; interpolate value from 4 known points at given distances. <em>(2074 Bhadra, 4 marks)</em></span></div><div class="qa-answer">
+      <p>Values 160, 170, 180, 90 at distances 1000, 400, 600, 120 m. W = 1/d&sup2;, Z = &Sigma;(Z&times;W)/&Sigma;W. Result approx 99.7.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Rice crop suitability &mdash; weighted overlay numerical. <em>(2074 Magh, 14 marks)</em></span></div><div class="qa-answer">
+      <p>Reclassify slope, soil, land use to 1&ndash;10. Apply weights (Slope 50%, Soil 30%, LU 20%). Compute cell-by-cell. Threshold &ge; 6 = suitable.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Why is NDVI a local function while slope/aspect are neighbourhood functions? <em>(2080 Chaitra)</em></span></div><div class="qa-answer">
+      <p>NDVI uses only same-position pixels in NIR and Red (local). Slope/aspect use a 3&times;3 window of surrounding elevation values (focal).</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Reservoir suitability: slope &lt;10 deg, within 1 km of river, non-forested, clay/silt soil. <em>(2081 Chaitra)</em></span></div><div class="qa-answer">
+      <p>Slope from DEM &rarr; reclassify. Euclidean distance from rivers &rarr; reclassify. Reclassify land cover and soil. Map Algebra: multiply all binary layers.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter6.html">&larr; Chapter 6</a>
+      <a href="chapter8.html">Chapter 8 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 7 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

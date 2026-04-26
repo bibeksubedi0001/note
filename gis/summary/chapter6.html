@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 6: Vector Analysis</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch6);--ch-color-lt:var(--ch6-lt);--ch-color-dk:var(--ch6-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter6.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 6 &mdash; Summary</div>
+    <h1>Spatial Analysis (Vector GIS)</h1>
+    <span class="ch-number-bg">06</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">6 Teaching Hours</span>
+      <span class="meta-badge exam">10 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">18+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~90</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">5</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-high">High</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> Geoprocessing Tools</h2>
+    <ul>
+      <li><strong>Buffer:</strong> Create polygon at specified distance around feature.</li>
+      <li><strong>Clip:</strong> Cookie-cutter &mdash; extracts features within clip boundary.</li>
+      <li><strong>Intersect:</strong> Keeps only overlapping area; combines attributes from both layers.</li>
+      <li><strong>Union:</strong> Combines both layers entirely; splits at boundaries.</li>
+      <li><strong>Merge:</strong> Combines multiple datasets of same type into one (appends features).</li>
+      <li><strong>Dissolve:</strong> Merges adjacent features sharing a common attribute value.</li>
+      <li><strong>Erase:</strong> Removes area of one layer covered by another.</li>
+    </ul>
+
+    <h2><span class="section-num">2</span> Key Comparisons</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Clip</th><th>Intersect</th></tr></thead>
+        <tbody>
+          <tr><td>Geometry</td><td>Input features cut by clip boundary</td><td>Overlapping geometry of both layers</td></tr>
+          <tr><td>Attributes</td><td>Input layer only</td><td>Both layers combined</td></tr>
+          <tr><td>Analogy</td><td>Cookie cutter</td><td>Overlap finder</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Merge</th><th>Dissolve</th></tr></thead>
+        <tbody>
+          <tr><td>Input</td><td>Multiple datasets</td><td>Single dataset</td></tr>
+          <tr><td>Action</td><td>Appends features together</td><td>Removes internal boundaries</td></tr>
+          <tr><td>Result</td><td>More features</td><td>Fewer, larger features</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2><span class="section-num">3</span> Intersection = Union + Clip</h2>
+    <div class="key-concept">
+      <strong>Conceptually:</strong> Intersect gives you the overlap area with combined attributes. This is equivalent to first performing Union (combine everything) and then clipping to the overlap zone.
+    </div>
+
+    <h2><span class="section-num">4</span> Site Selection Workflow</h2>
+    <ol>
+      <li>Define criteria (e.g., within 500 m of road, slope &lt;10&deg;, land use = agriculture).</li>
+      <li>Buffer relevant features (roads, rivers, facilities).</li>
+      <li>Overlay/intersect all constraint layers.</li>
+      <li>Query: select areas satisfying all criteria simultaneously.</li>
+      <li>Rank or score remaining candidates.</li>
+    </ol>
+
+    <h2><span class="section-num">5</span> Data Management vs Spatial Analysis</h2>
+    <ul>
+      <li><strong>Data management:</strong> Merge, append, dissolve, project, clip (organising data).</li>
+      <li><strong>Spatial analysis:</strong> Buffer, overlay, intersection, network analysis (answering spatial questions).</li>
+    </ul>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain vector geoprocessing tools with diagrams. <em>(Every exam 2071&ndash;2082, 6&ndash;10 marks)</em></span></div><div class="qa-answer">
+      <p>Buffer, Clip, Intersect, Union, Merge, Dissolve, Erase. Draw before/after diagrams for each. Show attributes in output.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Compare Clip and Intersect. Compare Merge and Dissolve. <em>(2074, 2076, 2079, 2081)</em></span></div><div class="qa-answer">
+      <p>Clip: geometry from input, attributes from input only. Intersect: overlap geometry, attributes from both. Merge: combines datasets. Dissolve: removes internal boundaries. Use comparison tables.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain site selection using vector overlay analysis. <em>(2073, 2075, 2078, 2080)</em></span></div><div class="qa-answer">
+      <p>Define criteria, buffer, overlay, query, rank. Show a practical example: hospital site selection with road proximity, land use, slope constraints.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">How is Intersection equivalent to Union + Clip? <em>(2074 Magh)</em></span></div><div class="qa-answer">
+      <p>Union combines all features and splits at boundaries. Clipping the union result to the overlap area yields the same as Intersect. Draw Venn diagram.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Distinguish data management operations from spatial analysis operations. <em>(2072, 2082)</em></span></div><div class="qa-answer">
+      <p>Management: organising data (merge, project, dissolve). Analysis: answering questions (buffer, overlay, proximity). Give 3 examples each.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter5.html">&larr; Chapter 5</a>
+      <a href="chapter7.html">Chapter 7 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 6 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

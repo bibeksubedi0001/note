@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 2 Numericals – RMS Error &amp; Distance</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .code-editor{margin:22px 0;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.1);font-family:"Consolas","Fira Code","Menlo","Monaco","Courier New",monospace;font-size:11pt;line-height:1.7}
+    .code-editor .editor-titlebar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#252526;border-bottom:1px solid #1e1e1e;user-select:none}
+    .code-editor .editor-dots{display:flex;gap:6px}
+    .code-editor .editor-dots span{width:11px;height:11px;border-radius:50%;display:inline-block}
+    .code-editor .editor-dots .dot-r{background:#ff5f56}
+    .code-editor .editor-dots .dot-y{background:#ffbd2e}
+    .code-editor .editor-dots .dot-g{background:#27c93f}
+    .code-editor .editor-tab{padding:3px 14px;background:#1e1e1e;color:#ccc;font-size:10pt;border-radius:4px 4px 0 0;border:1px solid #333;border-bottom:1px solid #1e1e1e}
+    .code-editor .editor-tab .tab-icon{color:#e8c96a;margin-right:4px}
+    .code-editor .editor-body{display:flex;background:#1e1e1e;padding:16px 0;overflow-x:auto}
+    .code-editor .line-numbers{padding:0 12px 0 16px;text-align:right;color:#858585;user-select:none;border-right:1px solid #333;min-width:44px;flex-shrink:0}
+    .code-editor .line-numbers div{line-height:1.7}
+    .code-editor .code-content{padding:0 18px;color:#d4d4d4;white-space:pre;flex:1}
+    .code-editor .code-content div{line-height:1.7;min-height:1.7em}
+    .code-editor .editor-statusbar{display:flex;justify-content:space-between;padding:4px 14px;background:#007acc;color:#fff;font-size:9pt}
+    .m-cmt{color:#6a9955;font-style:italic}
+    .m-kw{color:#569cd6;font-weight:bold}
+    .m-var{color:#9cdcfe}
+    .m-fn{color:#dcdcaa}
+    .m-str{color:#ce9178}
+    .m-num{color:#b5cea8}
+    .m-op{color:#d4d4d4}
+    .m-res{color:#4ec9b0;font-weight:bold}
+    .grid-table{border-collapse:collapse;margin:1em auto}
+    .grid-table td,.grid-table th{border:1px solid var(--line);padding:6px 10px;text-align:center;min-width:36px;font-family:'Courier New',monospace;font-size:.92em}
+    .grid-table th{background:var(--accent-light);font-weight:600}
+    .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.78em;font-weight:700;letter-spacing:.3px;vertical-align:middle;margin-left:6px}
+    .badge-v{background:#d4edda;color:#155724}
+    .badge-n{background:#fff3cd;color:#856404}
+    .formula-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:18px 22px;border-radius:0 8px 8px 0;margin:18px 0;font-size:1.02em}
+    .formula-box h4{margin:0 0 8px;color:var(--accent)}
+    .formula-box p{margin:6px 0}
+    .formula-box code{background:var(--soft);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace}
+    .process-steps{counter-reset:step;list-style:none;padding-left:0}
+    .process-steps li{counter-increment:step;padding:8px 0 8px 40px;position:relative;border-left:2px solid var(--accent);margin-left:12px}
+    .process-steps li::before{content:counter(step);position:absolute;left:-14px;top:6px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;text-align:center;line-height:26px;font-weight:bold;font-size:.85em}
+    [data-theme="dark"] .code-editor{box-shadow:0 4px 24px rgba(0,0,0,.35),0 1px 4px rgba(0,0,0,.2)}
+    nav.toc{margin:24px 0;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+    nav.toc h2{margin:0;padding:14px 20px;font-size:.9rem;font-weight:700;background:var(--accent-light);color:var(--accent);border-bottom:1px solid var(--line);text-transform:none;letter-spacing:normal}
+    nav.toc h2::after{display:none}
+    nav.toc ol{list-style:none;padding:0;margin:0;columns:1;counter-reset:toc-item}
+    nav.toc li{counter-increment:toc-item;border-bottom:1px solid var(--line)}
+    nav.toc li:last-child{border-bottom:none}
+    nav.toc li a{display:flex;align-items:center;gap:12px;padding:10px 20px;text-decoration:none;color:var(--ink);font-size:.88rem;transition:all .15s}
+    nav.toc li a:hover{background:var(--accent-light);padding-left:24px}
+    nav.toc li a::before{content:counter(toc-item);width:24px;height:24px;border-radius:6px;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;transition:all .15s}
+    nav.toc li a:hover::before{background:var(--accent);color:#fff}
+    [data-theme="dark"] nav.toc{border-color:var(--line);background:var(--paper)}
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; All Numericals</a>
+    <div class="eyebrow">Chapter 2 &mdash; Numericals</div>
+    <h1>RMS Planimetric Error &amp; Distance Calculations</h1>
+  </header>
+  <main>
+
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#formulas">Key Formulas &amp; Process</a></li>
+        <li><a href="#rms-table">Quick RMS Reference Table</a></li>
+        <li><a href="#q1">Q1. RMS Error for 1:20,000 (2079 Chaitra)</a></li>
+        <li><a href="#q2">Q2. RMS Error for 1:25,000 (2078 Chaitra / 2076 Bhadra)</a></li>
+        <li><a href="#q3">Q3. RMS Error for 1:5,000 &amp; 1:15,000 (2071 Bhadra)</a></li>
+        <li><a href="#q4">Q4. RMS Error for 1:30,000 &amp; 1:5,000 (2074 Magh)</a></li>
+        <li><a href="#q5">Q5. RMS Error for 1:2,500 (2075 Bhadra)</a></li>
+        <li><a href="#q6">Q6. Distance Between Two Points (2079 Chaitra)</a></li>
+        <li><a href="#q7">Q7. Difference: 1&deg; Latitude vs 1&deg; Longitude (2076 Bhadra)</a></li>
+        <li><a href="#q8">Q8. Distance Calculation (2074 Bhadra)</a></li>
+      </ol>
+    </nav>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  FORMULAS & PROCESS                                            -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="formulas">Key Formulas &amp; Process</h2>
+
+<div class="formula-box">
+  <h4>1. RMS Planimetric Error</h4>
+  <p>The allowable RMS (Root Mean Square) planimetric error specifies how accurate a map must be on the ground.</p>
+  <p><strong>Formula:</strong> <code>RMS Error = 0.5 mm &times; Scale Denominator</code></p>
+  <p><strong>Convert to metres:</strong> <code>RMS (m) = Scale Denominator / 2000</code></p>
+  <p><strong>Why 0.5 mm?</strong> This is the minimum plottable width on paper &mdash; the smallest mark a person can reliably draw or read on a map. Multiplying by the scale denominator converts this paper error to ground distance.</p>
+</div>
+
+<div class="formula-box">
+  <h4>2. Distance Between Geographic Points</h4>
+  <p>To find the distance between two points given in latitude/longitude:</p>
+  <p><strong>North-South distance:</strong> <code>d<sub>NS</sub> = &Delta;lat &times; (&pi;/180) &times; R</code></p>
+  <p><strong>East-West distance:</strong> <code>d<sub>EW</sub> = &Delta;lon &times; (&pi;/180) &times; R &times; cos(mean_lat)</code></p>
+  <p><strong>Total distance:</strong> <code>D = &radic;(d<sub>NS</sub>&sup2; + d<sub>EW</sub>&sup2;)</code></p>
+  <p><strong>Where:</strong> R = 6,378,137 m (WGS-84 equatorial radius), &Delta;lat and &Delta;lon in degrees.</p>
+  <p>The <code>cos(mean_lat)</code> factor accounts for meridians converging toward the poles &mdash; 1&deg; of longitude covers less ground distance at higher latitudes.</p>
+</div>
+
+<div class="formula-box">
+  <h4>3. Length of 1&deg; Latitude vs 1&deg; Longitude</h4>
+  <p><strong>1&deg; latitude:</strong> <code>2&pi; &times; R<sub>pole</sub> / 360</code> &asymp; 110,946 m (nearly constant everywhere)</p>
+  <p><strong>1&deg; longitude:</strong> <code>2&pi; &times; R<sub>eq</sub> / 360</code> &asymp; 111,319 m at equator, decreases toward poles</p>
+  <p>The difference arises because Earth is an oblate spheroid &mdash; the equatorial radius (6,378,137 m) is larger than the polar radius (6,356,752 m).</p>
+</div>
+
+<h3>Process Steps</h3>
+<ol class="process-steps">
+  <li><strong>Identify the scale denominator</strong> &mdash; extract the number after &ldquo;1:&rdquo; (e.g., 1:25,000 &rarr; 25,000)</li>
+  <li><strong>Apply the RMS formula</strong> &mdash; multiply 0.5 mm by the denominator to get error in mm</li>
+  <li><strong>Convert units</strong> &mdash; divide by 1,000 to get metres, or by 1,000,000 to get km</li>
+  <li><strong>For distance problems</strong> &mdash; compute &Delta;lat and &Delta;lon, find N-S and E-W components, then Pythagoras</li>
+  <li><strong>State the answer</strong> with appropriate units and precision</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  QUICK REFERENCE TABLE                                         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="rms-table">Quick RMS Reference Table</h2>
+<table class="grid-table">
+  <tr><th>Scale</th><th>RMS (mm)</th><th>RMS (m)</th><th>Exam Reference</th></tr>
+  <tr><td>1:2,500</td><td>1,250</td><td><strong>1.25</strong></td><td>2075 Bhadra Q2b</td></tr>
+  <tr><td>1:5,000</td><td>2,500</td><td><strong>2.50</strong></td><td>2074 Magh / 2071 Bhadra</td></tr>
+  <tr><td>1:15,000</td><td>7,500</td><td><strong>7.50</strong></td><td>2071 Bhadra Q2c</td></tr>
+  <tr><td>1:20,000</td><td>10,000</td><td><strong>10.00</strong></td><td>2079 Chaitra Q2a</td></tr>
+  <tr><td>1:25,000</td><td>12,500</td><td><strong>12.50</strong></td><td>2078 Chaitra / 2076 Bhadra</td></tr>
+  <tr><td>1:30,000</td><td>15,000</td><td><strong>15.00</strong></td><td>2074 Magh Q2b</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q1: RMS 1:20,000                                             -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q1">Q1. RMS Error for 1:20,000 Scale Map <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2079 Chaitra Q2a [3 Marks]</div>
+<p><strong>Question:</strong> What is the allowable RMS error for a 1:20,000 scale map?</p>
+<p><strong>Concept:</strong> The 0.5 mm standard represents the minimum discernible width on paper. At 1:20,000, every 1 mm on the map corresponds to 20 m on the ground, so 0.5 mm = 10 m.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RMS_20000.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Allowable RMS Planimetric Error</span></div><div><span class="m-kw">Given:</span> Scale = 1:<span class="m-num">20,000</span></div><div></div><div><span class="m-cmt">// Step 1: Apply formula</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">0.5</span> mm <span class="m-op">&times;</span> <span class="m-num">20,000</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">10,000</span> mm</div><div></div><div><span class="m-cmt">// Step 2: Convert to metres</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">10,000</span> <span class="m-op">/</span> <span class="m-num">1000</span> <span class="m-op">=</span> <span class="m-res">10.0 m</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> The allowable RMS planimetric error for a 1:20,000 scale map is <strong>10.0 metres</strong>.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q2: RMS 1:25,000                                             -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q2">Q2. RMS Error for 1:25,000 Scale Map <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2078 Chaitra / 2076 Bhadra [3 Marks]</div>
+<p><strong>Question:</strong> What is the allowable RMS error for a 1:25,000 scale map?</p>
+<p><strong>Concept:</strong> At this common topographic map scale, 0.5 mm on paper = 12.5 m on ground. This is a frequently asked question &mdash; memorize the answer.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RMS_25000.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Allowable RMS Planimetric Error</span></div><div><span class="m-kw">Given:</span> Scale = 1:<span class="m-num">25,000</span></div><div></div><div><span class="m-cmt">// Step 1: Apply formula</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">0.5</span> mm <span class="m-op">&times;</span> <span class="m-num">25,000</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">12,500</span> mm</div><div></div><div><span class="m-cmt">// Step 2: Convert to metres</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">12,500</span> <span class="m-op">/</span> <span class="m-num">1000</span> <span class="m-op">=</span> <span class="m-res">12.5 m</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> The allowable RMS planimetric error for a 1:25,000 scale map is <strong>12.5 metres</strong>.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q3: RMS 1:5,000 & 1:15,000                                   -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q3">Q3. RMS Error for 1:15,000 &amp; 1:5,000 <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2071 Bhadra Q2c [3 Marks]</div>
+<p><strong>Question:</strong> Calculate the allowable RMS error in 1:15,000 and 1:5,000 maps.</p>
+<p><strong>Concept:</strong> Same formula applied to two different scales. Notice how the error increases with the scale denominator &mdash; smaller-scale maps (larger area, less detail) tolerate more ground error.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RMS_15000_5000.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Scale 1:15,000 ──</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">0.5</span> mm <span class="m-op">&times;</span> <span class="m-num">15,000</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">7,500</span> mm</div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">7,500</span> <span class="m-op">/</span> <span class="m-num">1000</span> <span class="m-op">=</span> <span class="m-res">7.5 m</span></div><div></div><div><span class="m-cmt">// ── Scale 1:5,000 ──</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">0.5</span> mm <span class="m-op">&times;</span> <span class="m-num">5,000</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">2,500</span> mm</div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">2,500</span> <span class="m-op">/</span> <span class="m-num">1000</span> <span class="m-op">=</span> <span class="m-res">2.5 m</span></div><div></div><div><span class="m-cmt">// Notice: 1:15,000 (smaller scale) has larger</span></div><div><span class="m-cmt">// allowable error than 1:5,000 (larger scale)</span></div><div><span class="m-cmt">// because smaller scale = less detail = more tolerance</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RMS for 1:15,000 = <strong>7.5 m</strong> &nbsp;|&nbsp; RMS for 1:5,000 = <strong>2.5 m</strong></p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q4: RMS 1:30,000 & 1:5,000                                   -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q4">Q4. RMS Error for 1:30,000 &amp; 1:5,000 <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2074 Magh Q2b [3 Marks]</div>
+<p><strong>Question:</strong> Calculate the allowable errors for 1:30,000 and 1:5,000 maps.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RMS_30000_5000.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Scale 1:30,000 ──</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">0.5</span> mm <span class="m-op">&times;</span> <span class="m-num">30,000</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">15,000</span> mm <span class="m-op">=</span> <span class="m-res">15.0 m</span></div><div></div><div><span class="m-cmt">// ── Scale 1:5,000 ──</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">0.5</span> mm <span class="m-op">&times;</span> <span class="m-num">5,000</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">2,500</span> mm <span class="m-op">=</span> <span class="m-res">2.5 m</span></div><div></div><div><span class="m-cmt">// Ratio: 15.0/2.5 = 6&times; &mdash; the 1:30,000 map allows 6&times; more error</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RMS for 1:30,000 = <strong>15.0 m</strong> &nbsp;|&nbsp; RMS for 1:5,000 = <strong>2.5 m</strong></p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q5: RMS 1:2,500                                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q5">Q5. RMS Error for 1:2,500 (UTM Projection) <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2075 Bhadra Q2b [3 Marks]</div>
+<p><strong>Question:</strong> Calculate the allowable RMS error for a map of scale 1:2,500 in UTM projection.</p>
+<p><strong>Concept:</strong> The projection type (UTM, Lambert, etc.) does not change the RMS formula &mdash; it only affects how coordinates are represented. The allowable error depends solely on the scale.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RMS_2500_UTM.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Allowable RMS Error &mdash; UTM doesn't change the formula</span></div><div><span class="m-kw">Given:</span> Scale = 1:<span class="m-num">2,500</span>  (UTM projection)</div><div></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">0.5</span> mm <span class="m-op">&times;</span> <span class="m-num">2,500</span></div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">1,250</span> mm</div><div><span class="m-var">RMS</span> <span class="m-op">=</span> <span class="m-num">1,250</span> <span class="m-op">/</span> <span class="m-num">1000</span> <span class="m-op">=</span> <span class="m-res">1.25 m</span></div><div></div><div><span class="m-cmt">// This is a large-scale map (small area, high detail)</span></div><div><span class="m-cmt">// so the allowable error is very small: just 1.25 m</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> The allowable RMS planimetric error for a 1:2,500 scale map is <strong>1.25 metres</strong>, regardless of whether UTM or any other projection is used.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q6: Distance Between Points                                  -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q6">Q6. Distance Between Two Geographic Points <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2079 Chaitra Q2b [3 Marks]</div>
+<p><strong>Question:</strong> Find the distance between points A(24.5&deg;N, 83.5&deg;E) and B(24.6&deg;N, 84.5&deg;E). Radius of Earth = 6,378 km.</p>
+<p><strong>Concept:</strong> We decompose the problem into a North-South component (along meridians) and an East-West component (along parallels). The E-W distance must account for the convergence of meridians toward the poles by multiplying by cos(mean latitude). The final distance uses the Pythagorean theorem.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Distance_AB.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Distance between two geographic points</span></div><div><span class="m-kw">Given:</span></div><div>  A = (<span class="m-num">24.5</span>&deg;N, <span class="m-num">83.5</span>&deg;E)</div><div>  B = (<span class="m-num">24.6</span>&deg;N, <span class="m-num">84.5</span>&deg;E)</div><div>  R = <span class="m-num">6,378</span> km</div><div></div><div><span class="m-cmt">// Step 1: Compute differences</span></div><div><span class="m-var">&Delta;lat</span> <span class="m-op">=</span> <span class="m-num">24.6</span> <span class="m-op">&minus;</span> <span class="m-num">24.5</span> <span class="m-op">=</span> <span class="m-num">0.1&deg;</span></div><div><span class="m-var">&Delta;lon</span> <span class="m-op">=</span> <span class="m-num">84.5</span> <span class="m-op">&minus;</span> <span class="m-num">83.5</span> <span class="m-op">=</span> <span class="m-num">1.0&deg;</span></div><div></div><div><span class="m-cmt">// Step 2: Mean latitude &amp; cosine factor</span></div><div><span class="m-var">Mean lat</span> <span class="m-op">=</span> (<span class="m-num">24.5</span> + <span class="m-num">24.6</span>) / 2 <span class="m-op">=</span> <span class="m-num">24.55&deg;</span></div><div>cos(<span class="m-num">24.55&deg;</span>) <span class="m-op">=</span> <span class="m-num">0.9096</span></div><div></div><div><span class="m-cmt">// Step 3: N-S and E-W distances</span></div><div><span class="m-var">d_NS</span> <span class="m-op">=</span> <span class="m-num">0.1</span> <span class="m-op">&times;</span> (&pi;/180) <span class="m-op">&times;</span> <span class="m-num">6378</span> <span class="m-op">=</span> <span class="m-res">11.13 km</span></div><div><span class="m-var">d_EW</span> <span class="m-op">=</span> <span class="m-num">1.0</span> <span class="m-op">&times;</span> (&pi;/180) <span class="m-op">&times;</span> <span class="m-num">6378</span> <span class="m-op">&times;</span> <span class="m-num">0.9096</span> <span class="m-op">=</span> <span class="m-res">101.25 km</span></div><div></div><div><span class="m-cmt">// Step 4: Pythagorean distance</span></div><div><span class="m-var">D</span> <span class="m-op">=</span> &radic;(<span class="m-num">11.13</span>&sup2; + <span class="m-num">101.25</span>&sup2;) <span class="m-op">=</span> &radic;(<span class="m-num">123.88</span> + <span class="m-num">10,251.56</span>)</div><div><span class="m-var">D</span> <span class="m-op">=</span> &radic;<span class="m-num">10,375.44</span> <span class="m-op">=</span> <span class="m-res">101.86 km</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> The distance between A and B is approximately <strong>101.86 km</strong>.</p>
+<p><strong>Note:</strong> The E-W component dominates (101.25 km) because the longitude difference (1&deg;) is 10&times; the latitude difference (0.1&deg;). The direction from A to B is nearly due east.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q7: 1° Lat vs 1° Lon                                         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q7">Q7. Difference: 1&deg; Latitude vs 1&deg; Longitude <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2076 Bhadra Q2c [3 Marks]</div>
+<p><strong>Question:</strong> Find the difference between 1&deg; of latitude and 1&deg; of longitude if the equatorial radius is 6,378,137 m and the polar radius is 6,356,752.31 m.</p>
+<p><strong>Concept:</strong> Earth is not a perfect sphere &mdash; it bulges at the equator. The equatorial circumference (used for 1&deg; longitude at equator) is larger than the polar circumference (used for 1&deg; latitude). This means 1&deg; of longitude at the equator is slightly longer than 1&deg; of latitude.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Lat_Lon_Diff.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div></div>
+    <div class="code-content"><div><span class="m-cmt">// 1 degree latitude vs 1 degree longitude</span></div><div><span class="m-kw">Given:</span></div><div>  R<sub>eq</sub>   = <span class="m-num">6,378,137</span> m     (WGS-84)</div><div>  R<sub>pole</sub> = <span class="m-num">6,356,752.31</span> m  (WGS-84)</div><div></div><div><span class="m-cmt">// 1&deg; latitude &asymp; arc along a meridian</span></div><div><span class="m-var">1&deg; lat</span> <span class="m-op">=</span> 2&pi; &times; R<sub>pole</sub> / 360</div><div>       <span class="m-op">=</span> 2 &times; 3.14159 &times; <span class="m-num">6,356,752.31</span> / 360</div><div>       <span class="m-op">=</span> <span class="m-res">110,946.26 m</span></div><div></div><div><span class="m-cmt">// 1&deg; longitude at equator &asymp; arc along equator</span></div><div><span class="m-var">1&deg; lon</span> <span class="m-op">=</span> 2&pi; &times; R<sub>eq</sub> / 360</div><div>       <span class="m-op">=</span> 2 &times; 3.14159 &times; <span class="m-num">6,378,137</span> / 360</div><div>       <span class="m-op">=</span> <span class="m-res">111,319.49 m</span></div><div><span class="m-var">Diff</span>  <span class="m-op">=</span> <span class="m-num">111,319.49</span> &minus; <span class="m-num">110,946.26</span> <span class="m-op">=</span> <span class="m-res">373.23 m &asymp; 0.373 km</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> 1&deg; longitude at equator (111,319 m) is longer than 1&deg; latitude (110,946 m) by approximately <strong>373 m</strong>.</p>
+<p><strong>Why?</strong> Because Earth is an oblate spheroid &mdash; the equatorial radius is 21,385 m larger than the polar radius, making the equatorial circumference longer.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q8: Distance Calculation                                     -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h3 id="q8">Q8. Distance Calculation (Alternate) <span class="badge badge-v">VERIFIED</span></h3>
+<div class="exam-note"><strong>Exam:</strong> 2074 Bhadra [3 Marks]</div>
+<p><strong>Question:</strong> Find the distance between two points P(27.7&deg;N, 85.3&deg;E) and Q(27.8&deg;N, 85.5&deg;E). R = 6,378 km.</p>
+<p><strong>Concept:</strong> Same method as Q6 but with different coordinates near Kathmandu, Nepal. At &sim;27.75&deg;N, the cosine factor is smaller, so 1&deg; longitude covers less ground distance than at the equator.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Distance_PQ.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Distance between two points near Kathmandu</span></div><div><span class="m-kw">Given:</span></div><div>  P = (<span class="m-num">27.7</span>&deg;N, <span class="m-num">85.3</span>&deg;E)</div><div>  Q = (<span class="m-num">27.8</span>&deg;N, <span class="m-num">85.5</span>&deg;E)</div><div>  R = <span class="m-num">6,378</span> km</div><div></div><div><span class="m-var">&Delta;lat</span> <span class="m-op">=</span> <span class="m-num">27.8</span> &minus; <span class="m-num">27.7</span> <span class="m-op">=</span> <span class="m-num">0.1&deg;</span></div><div><span class="m-var">&Delta;lon</span> <span class="m-op">=</span> <span class="m-num">85.5</span> &minus; <span class="m-num">85.3</span> <span class="m-op">=</span> <span class="m-num">0.2&deg;</span></div><div><span class="m-var">Mean lat</span> <span class="m-op">=</span> <span class="m-num">27.75&deg;</span>   cos(<span class="m-num">27.75</span>) = <span class="m-num">0.8854</span></div><div></div><div><span class="m-cmt">// N-S distance (along meridian, constant)</span></div><div><span class="m-var">d_NS</span> <span class="m-op">=</span> <span class="m-num">0.1</span> &times; (&pi;/180) &times; <span class="m-num">6378</span> <span class="m-op">=</span> <span class="m-res">11.13 km</span></div><div></div><div><span class="m-cmt">// E-W distance (adjusted by cos factor)</span></div><div><span class="m-var">d_EW</span> <span class="m-op">=</span> <span class="m-num">0.2</span> &times; (&pi;/180) &times; <span class="m-num">6378</span> &times; <span class="m-num">0.8854</span> <span class="m-op">=</span> <span class="m-res">19.70 km</span></div><div></div><div><span class="m-cmt">// Pythagorean distance</span></div><div><span class="m-var">D</span> <span class="m-op">=</span> &radic;(<span class="m-num">11.13</span>&sup2; + <span class="m-num">19.70</span>&sup2;)</div><div><span class="m-var">D</span> <span class="m-op">=</span> &radic;(<span class="m-num">123.88</span> + <span class="m-num">388.09</span>) <span class="m-op">=</span> &radic;<span class="m-num">511.97</span> <span class="m-op">=</span> <span class="m-res">22.63 km</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> The distance between P and Q is approximately <strong>22.63 km</strong>.</p>
+
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 10: GPS</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch10);--ch-color-lt:var(--ch10-lt);--ch-color-dk:var(--ch10-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter10.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 10 &mdash; Summary</div>
+    <h1>GPS (Global Positioning System)</h1>
+    <span class="ch-number-bg">10</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">4 Teaching Hours</span>
+      <span class="meta-badge exam">8 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">15+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~80</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">6</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-high">High</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> Three Segments</h2>
+    <h3>Space Segment</h3>
+    <ul>
+      <li>24+ satellites, 6 orbital planes, ~20,200 km altitude, 12-hour orbit.</li>
+      <li>Broadcasts on L1 (1575.42 MHz) and L2 (1227.60 MHz).</li>
+    </ul>
+    <h3>Control Segment</h3>
+    <ul>
+      <li>1 Master Control Station (Colorado Springs) + 5 Monitor Stations + 3 Ground Antennas.</li>
+      <li>Tracks satellites, computes orbits, uploads corrections.</li>
+    </ul>
+    <h3>User Segment</h3>
+    <ul>
+      <li>GPS receivers: handheld, survey-grade, vehicle-mounted.</li>
+    </ul>
+
+    <h2><span class="section-num">2</span> Trilateration</h2>
+    <ul>
+      <li>Distance = Speed of light &times; Travel time.</li>
+      <li>1 satellite = sphere. 2 = circle. 3 = two points. 4th = unique point + clock correction.</li>
+      <li>Minimum 4 satellites: 3 for X,Y,Z + 1 for clock bias.</li>
+    </ul>
+
+    <h2><span class="section-num">3</span> DGPS and RTK</h2>
+    <ul>
+      <li>Base station at known location computes error, sends correction to rover.</li>
+      <li><strong>Real-time DGPS:</strong> Corrections via radio/cellular. Accuracy 1&ndash;3 m.</li>
+      <li><strong>RTK:</strong> Carrier phase. Centimetre-level accuracy (1&ndash;2 cm).</li>
+    </ul>
+
+    <h2><span class="section-num">4</span> GPS Error Sources</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Error</th><th>Magnitude</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td>Ionospheric delay</td><td>5&ndash;15 m</td><td>Dual-frequency, models</td></tr>
+          <tr><td>Tropospheric delay</td><td>2&ndash;5 m</td><td>Atmospheric models</td></tr>
+          <tr><td>Multipath</td><td>1&ndash;5 m</td><td>Ground plane antenna</td></tr>
+          <tr><td>Clock error</td><td>1&ndash;3 m</td><td>4th satellite</td></tr>
+          <tr><td>Ephemeris error</td><td>1&ndash;2 m</td><td>Control segment updates</td></tr>
+          <tr><td>GDOP</td><td>Variable</td><td>Good satellite geometry</td></tr>
+          <tr><td>Selective Availability</td><td>~100 m</td><td>Turned off May 2000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2><span class="section-num">5</span> GDOP</h2>
+    <ul>
+      <li>Low GDOP (1&ndash;2) = satellites spread = accurate. High (&gt;6) = clustered = poor.</li>
+      <li>Types: PDOP (position), HDOP (horizontal), VDOP (vertical), TDOP (time).</li>
+    </ul>
+
+    <h2><span class="section-num">6</span> GPS-GIS Integration</h2>
+    <ol>
+      <li>Plan survey (accuracy, coordinate system).</li>
+      <li>Collect GPS data with attributes.</li>
+      <li>Differential correction.</li>
+      <li>Transfer and coordinate transformation.</li>
+      <li>Import into GIS, overlay, analyse.</li>
+    </ol>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain the components of GPS (three segments). <em>(2071&ndash;2082, 4&ndash;8 marks)</em></span></div><div class="qa-answer">
+      <p>Space: 24+ sats, 6 planes, 20,200 km. Control: MCS + monitors + antennas. User: receivers. Draw signal flow diagram.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">How does GPS work? Explain trilateration. <em>(2074, 2075, 2079)</em></span></div><div class="qa-answer">
+      <p>Distance = c &times; dt. Sphere intersection. Draw diagram with 4 satellites and receiver.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain DGPS and how it improves accuracy. <em>(2073, 2074, 2076, 2080, 2081)</em></span></div><div class="qa-answer">
+      <p>Base station computes error, sends correction. Standalone 5&ndash;10 m &rarr; DGPS 1&ndash;3 m &rarr; RTK 1&ndash;2 cm.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Sources of errors in GPS and their corrections. <em>(2072, 2075, 2078, 2079, 2081, 2082)</em></span></div><div class="qa-answer">
+      <p>Use error table. Seven sources with magnitude and correction for each.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What is GDOP? Why is satellite geometry important? <em>(2079 Chaitra)</em></span></div><div class="qa-answer">
+      <p>GDOP quantifies geometry effect on accuracy. Low = good, High = poor. Types: PDOP, HDOP, VDOP, TDOP.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Steps of integrating GPS with GIS. <em>(2071, 2072)</em></span></div><div class="qa-answer">
+      <p>Plan, collect, correct, transfer, transform, import, overlay, analyse.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter9.html">&larr; Chapter 9</a>
+      <a href="chapter11.html">Chapter 11 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 10 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

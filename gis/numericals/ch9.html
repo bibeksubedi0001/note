@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 9 Numericals – DEM Hydrology</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .code-editor{margin:22px 0;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.1);font-family:"Consolas","Fira Code","Menlo","Monaco","Courier New",monospace;font-size:11pt;line-height:1.7}
+    .code-editor .editor-titlebar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#252526;border-bottom:1px solid #1e1e1e;user-select:none}
+    .code-editor .editor-dots{display:flex;gap:6px}
+    .code-editor .editor-dots span{width:11px;height:11px;border-radius:50%;display:inline-block}
+    .code-editor .editor-dots .dot-r{background:#ff5f56}
+    .code-editor .editor-dots .dot-y{background:#ffbd2e}
+    .code-editor .editor-dots .dot-g{background:#27c93f}
+    .code-editor .editor-tab{padding:3px 14px;background:#1e1e1e;color:#ccc;font-size:10pt;border-radius:4px 4px 0 0;border:1px solid #333;border-bottom:1px solid #1e1e1e}
+    .code-editor .editor-tab .tab-icon{color:#e8c96a;margin-right:4px}
+    .code-editor .editor-body{display:flex;background:#1e1e1e;padding:16px 0;overflow-x:auto}
+    .code-editor .line-numbers{padding:0 12px 0 16px;text-align:right;color:#858585;user-select:none;border-right:1px solid #333;min-width:44px;flex-shrink:0}
+    .code-editor .line-numbers div{line-height:1.7}
+    .code-editor .code-content{padding:0 18px;color:#d4d4d4;white-space:pre;flex:1}
+    .code-editor .code-content div{line-height:1.7;min-height:1.7em}
+    .code-editor .editor-statusbar{display:flex;justify-content:space-between;padding:4px 14px;background:#007acc;color:#fff;font-size:9pt}
+    .m-cmt{color:#6a9955;font-style:italic}
+    .m-kw{color:#569cd6;font-weight:bold}
+    .m-var{color:#9cdcfe}
+    .m-fn{color:#dcdcaa}
+    .m-str{color:#ce9178}
+    .m-num{color:#b5cea8}
+    .m-op{color:#d4d4d4}
+    .m-res{color:#4ec9b0;font-weight:bold}
+    .grid-table{border-collapse:collapse;margin:1em auto}
+    .grid-table td,.grid-table th{border:1px solid var(--line);padding:6px 10px;text-align:center;min-width:36px;font-family:'Courier New',monospace;font-size:.92em}
+    .grid-table th{background:var(--accent-light);font-weight:600}
+    .sink-cell{background:#ffe0e0 !important;font-weight:bold}
+    .river-cell{background:#d0e8ff !important;font-weight:bold}
+    .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.78em;font-weight:700;letter-spacing:.3px;vertical-align:middle;margin-left:6px}
+    .badge-v{background:#d4edda;color:#155724}
+    .badge-n{background:#fff3cd;color:#856404}
+    .formula-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:18px 22px;border-radius:0 8px 8px 0;margin:18px 0;font-size:1.02em}
+    .formula-box h4{margin:0 0 8px;color:var(--accent)}
+    .formula-box p{margin:6px 0}
+    .formula-box code{background:var(--soft);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace}
+    .process-steps{counter-reset:step;list-style:none;padding-left:0}
+    .process-steps li{counter-increment:step;padding:8px 0 8px 40px;position:relative;border-left:2px solid var(--accent);margin-left:12px}
+    .process-steps li::before{content:counter(step);position:absolute;left:-14px;top:6px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;text-align:center;line-height:26px;font-weight:bold;font-size:.85em}
+    [data-theme="dark"] .sink-cell{background:#5c2020 !important}
+    [data-theme="dark"] .river-cell{background:#1a3a5c !important}
+    [data-theme="dark"] .code-editor{box-shadow:0 4px 24px rgba(0,0,0,.35),0 1px 4px rgba(0,0,0,.2)}
+    nav.toc{margin:24px 0;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+    nav.toc h2{margin:0;padding:14px 20px;font-size:.9rem;font-weight:700;background:var(--accent-light);color:var(--accent);border-bottom:1px solid var(--line);text-transform:none;letter-spacing:normal}
+    nav.toc h2::after{display:none}
+    nav.toc ol{list-style:none;padding:0;margin:0;columns:1;counter-reset:toc-item}
+    nav.toc li{counter-increment:toc-item;border-bottom:1px solid var(--line)}
+    nav.toc li:last-child{border-bottom:none}
+    nav.toc li a{display:flex;align-items:center;gap:12px;padding:10px 20px;text-decoration:none;color:var(--ink);font-size:.88rem;transition:all .15s}
+    nav.toc li a:hover{background:var(--accent-light);padding-left:24px}
+    nav.toc li a::before{content:counter(toc-item);width:24px;height:24px;border-radius:6px;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;transition:all .15s}
+    nav.toc li a:hover::before{background:var(--accent);color:#fff}
+    [data-theme="dark"] nav.toc{border-color:var(--line);background:var(--paper)}
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; All Numericals</a>
+    <div class="eyebrow">Chapter 9 &mdash; Numericals</div>
+    <h1>DEM Hydrology &mdash; Sink, Flow &amp; Watershed</h1>
+  </header>
+  <main>
+
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#formulas">Key Formulas &amp; Process</a></li>
+        <li><a href="#q1">Q1. 6&times;6 DEM, 30m &mdash; Full Process (2080 Chaitra)</a></li>
+        <li><a href="#q2">Q2. 6&times;6 DEM, 100m (2079 Chaitra)</a></li>
+        <li><a href="#q3">Q3. 6&times;5 DEM, 100m &mdash; Threshold 6 (2075 Magh)</a></li>
+        <li><a href="#q4">Q4. 6&times;6 DEM &mdash; Flow Direction (2075 Bhadra)</a></li>
+        <li><a href="#q5">Q5. 6&times;6 DEM &mdash; Threshold 4 (2074 Magh)</a></li>
+        <li><a href="#q6">Q6. 6&times;5 DEM, 100m &mdash; Threshold 10 (2074 Bhadra)</a></li>
+        <li><a href="#q7">Q7. 6&times;5 DEM, 30m &mdash; Pour Point (2073 Magh)</a></li>
+        <li><a href="#q8">Q8. 5&times;5 DEM (2072 Ashwin)</a></li>
+        <li><a href="#q9">Q9. 4&times;4 DEM &mdash; Threshold 9 (2071 Magh)</a></li>
+        <li><a href="#q10">Q10. 5&times;5 DEM &mdash; Threshold 5 (2071 Bhadra)</a></li>
+        <li><a href="#q11">Q11. 6&times;6 LiDAR 10m (2081 Chaitra)</a></li>
+      </ol>
+    </nav>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  FORMULAS & PROCESS                                            -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="formulas">Key Formulas &amp; Process</h2>
+
+<div class="formula-box">
+  <h4>1. Sink Detection</h4>
+  <p>A <strong>sink</strong> is a cell whose elevation is <em>lower than ALL 8 neighbours</em>.</p>
+  <p>Check: if <code>Z(cell) &lt; min(8 neighbours)</code> &rarr; it&rsquo;s a sink.</p>
+  <p>Sinks trap water and disconnect river networks &mdash; they must be filled before hydrological analysis.</p>
+</div>
+
+<div class="formula-box">
+  <h4>2. Sink Filling</h4>
+  <p><strong>Formula:</strong> <code>Filled value = min(8 neighbours) + 0.5</code></p>
+  <p>This ensures water can flow out of the former sink to its lowest neighbour.</p>
+</div>
+
+<div class="formula-box">
+  <h4>3. Flow Direction (D8)</h4>
+  <p>Each cell flows to the neighbour with the <strong>steepest downhill slope</strong>.</p>
+  <p>For cardinal directions: slope = &Delta;Z / cell_size</p>
+  <p>For diagonal directions: slope = &Delta;Z / (cell_size &times; &radic;2)</p>
+  <p><strong>D8 Codes:</strong> E=1, SE=2, S=4, SW=8, W=16, NW=32, N=64, NE=128</p>
+</div>
+
+<div class="formula-box">
+  <h4>4. Flow Accumulation</h4>
+  <p>Count how many cells flow <em>into</em> each cell (upstream count).</p>
+  <p>Start from ridge cells (FA=0) and trace downstream, adding 1 for each contributing cell.</p>
+  <p>The cell with the <strong>highest FA</strong> is the outlet of the entire grid.</p>
+</div>
+
+<div class="formula-box">
+  <h4>5. River Network</h4>
+  <p><strong>Formula:</strong> <code>River threshold (cells) = Threshold area / cell area</code></p>
+  <p>Cell area = resolution &times; resolution (e.g., 30m &times; 30m = 900 m&sup2;)</p>
+  <p>All cells with FA &ge; threshold are river cells.</p>
+</div>
+
+<div class="formula-box">
+  <h4>6. Watershed Area</h4>
+  <p><strong>Formula:</strong> <code>Watershed area = Number of contributing cells &times; cell area</code></p>
+  <p>The watershed includes ALL cells that drain to the outlet point.</p>
+  <p>For the grid outlet: watershed area = total cells &times; cell area.</p>
+</div>
+
+<h3>Standard Process (Exam Steps)</h3>
+<ol class="process-steps">
+  <li><strong>Find sinks:</strong> Check each interior cell &mdash; is it lower than ALL 8 neighbours?</li>
+  <li><strong>Fill sinks:</strong> Raise to min_neighbour + 0.5</li>
+  <li><strong>Flow Direction:</strong> For each cell, find the neighbour with steepest drop</li>
+  <li><strong>Flow Accumulation:</strong> Count upstream cells flowing into each cell</li>
+  <li><strong>River Network:</strong> Convert threshold area to cells; mark FA &ge; threshold as river</li>
+  <li><strong>Watershed:</strong> Count all cells draining to the outlet; multiply by cell area</li>
+</ol>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q1: 2080 Chaitra – 30m DEM                                   -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q1">Q1. 6&times;6 DEM, 30m &mdash; Full Process <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2080 Chaitra Q10 [2+2+2+3+3 = 12 Marks]</div>
+<p><strong>Question:</strong> Given a 6&times;6 DEM with 30m resolution and area threshold 4500 m&sup2;:</p>
+<p>(a) Identify sinks and fill &nbsp; (b) Flow direction &nbsp; (c) Flow accumulation &nbsp; (d) River network &nbsp; (e) Watershed area</p>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+  <tr><th>1</th><td>130</td><td>128</td><td>102</td><td>101</td><td>124</td><td>138</td></tr>
+  <tr><th>2</th><td>135</td><td>118</td><td>97</td><td>88</td><td>114</td><td>121</td></tr>
+  <tr><th>3</th><td>110</td><td>98</td><td>84</td><td class="sink-cell">68</td><td>92</td><td>103</td></tr>
+  <tr><th>4</th><td>115</td><td>86</td><td>81</td><td>78</td><td>76</td><td>87</td></tr>
+  <tr><th>5</th><td>112</td><td>102</td><td>84</td><td class="sink-cell">73</td><td>96</td><td>105</td></tr>
+  <tr><th>6</th><td>129</td><td>118</td><td>103</td><td>85</td><td>119</td><td>105</td></tr>
+</table>
+
+<h4>(a) Sink Detection &amp; Filling</h4>
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q1_SinkFill.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Check each interior cell against 8 neighbours</span></div><div></div><div><span class="m-kw">Sink 1:</span> <span class="m-var">D3</span> = <span class="m-num">68</span></div><div>  Neighbours: C2=<span class="m-num">97</span> D2=<span class="m-num">88</span> E2=<span class="m-num">114</span> C3=<span class="m-num">84</span> E3=<span class="m-num">92</span> C4=<span class="m-num">81</span> D4=<span class="m-num">78</span> E4=<span class="m-num">76</span></div><div>  Min neighbour = <span class="m-num">76</span> (E4) &nbsp; 68 &lt; 76 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">76</span> + 0.5 = <span class="m-res">76.5</span></div><div></div><div><span class="m-kw">Sink 2:</span> <span class="m-var">D5</span> = <span class="m-num">73</span></div><div>  Neighbours: C4=<span class="m-num">81</span> D4=<span class="m-num">78</span> E4=<span class="m-num">76</span> C5=<span class="m-num">84</span> E5=<span class="m-num">96</span> C6=<span class="m-num">103</span> D6=<span class="m-num">85</span> E6=<span class="m-num">119</span></div><div>  Min neighbour = <span class="m-num">76</span> (E4) &nbsp; 73 &lt; 76 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">76</span> + 0.5 = <span class="m-res">76.5</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+<h4>(b) Flow Direction (D8)</h4>
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q1_FlowDir.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+    <div class="code-content"><div><span class="m-cmt">// D8 Flow Direction (steepest downhill)</span></div><div><span class="m-cmt">//       A     B     C     D     E     F</span></div><div><span class="m-kw">Row 1:</span>  <span class="m-str">SE</span>    <span class="m-str"> E</span>    <span class="m-str">SE</span>    <span class="m-str"> S</span>    <span class="m-str">SW</span>    <span class="m-str"> S</span></div><div><span class="m-kw">Row 2:</span>  <span class="m-str">SE</span>    <span class="m-str">SE</span>    <span class="m-str">SE</span>    <span class="m-str"> S</span>    <span class="m-str">SW</span>    <span class="m-str">SW</span></div><div><span class="m-kw">Row 3:</span>  <span class="m-str">SE</span>    <span class="m-str"> E</span>    <span class="m-str"> E</span>    <span class="m-str">SE</span>    <span class="m-str"> S</span>    <span class="m-str">SW</span></div><div><span class="m-kw">Row 4:</span>  <span class="m-str"> E</span>    <span class="m-str"> E</span>    <span class="m-str"> E</span>    <span class="m-str"> E</span>   <span class="m-res">OUT</span>    <span class="m-str"> W</span></div><div><span class="m-kw">Row 5:</span>  <span class="m-str">NE</span>    <span class="m-str"> E</span>    <span class="m-str"> E</span>    <span class="m-str"> E</span>    <span class="m-str"> N</span>    <span class="m-str">NW</span></div><div><span class="m-kw">Row 6:</span>  <span class="m-str">NE</span>    <span class="m-str">NE</span>    <span class="m-str"> N</span>    <span class="m-str"> N</span>    <span class="m-str"> W</span>    <span class="m-str">NW</span></div><div><span class="m-cmt">// E4 is the outlet (lowest edge cell = 76)</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+<h4>(c) Flow Accumulation</h4>
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q1_FlowAccum.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Flow Accumulation (upstream cell count)</span></div><div><span class="m-cmt">//    A   B   C    D   E   F</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">0</span>    <span class="m-num">4</span>   <span class="m-num">0</span>   <span class="m-num">1</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">4</span>   <span class="m-res">17</span>   <span class="m-num">2</span>   <span class="m-num">0</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">3</span>   <span class="m-num">4</span>    <span class="m-num">0</span>  <span class="m-res">35</span>   <span class="m-num">0</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">4</span>    <span class="m-res">7</span>   <span class="m-num">1</span>   <span class="m-num">0</span></div><div><span class="m-kw">R6:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">1</span>   <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-cmt">// Highest FA = E4 (35) — this is the outlet</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+<h4>(d) River Network &amp; (e) Watershed</h4>
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q1_River_Watershed.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div></div>
+    <div class="code-content"><div><span class="m-cmt">// River threshold</span></div><div><span class="m-var">Threshold</span> = <span class="m-num">4500</span> m&sup2; / (<span class="m-num">30</span> &times; <span class="m-num">30</span>) = <span class="m-res">5 cells</span></div><div></div><div><span class="m-kw">River cells (FA&ge;5):</span> D3(<span class="m-num">17</span>)  E4(<span class="m-num">35</span>)  D5(<span class="m-num">7</span>)</div><div></div><div><span class="m-cmt">// Watershed at outlet E4</span></div><div><span class="m-var">All 36 cells</span> drain to E4</div><div><span class="m-var">Area</span> = <span class="m-num">36</span> &times; <span class="m-num">900</span> = <span class="m-res">32,400 m&sup2;</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q2: 2079 Chaitra – 100m DEM                                  -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q2">Q2. 6&times;6 DEM, 100m <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2079 Chaitra Q8 [10 Marks]</div>
+<p><strong>Question:</strong> Given a 6&times;6 DEM with 100m resolution. Find sinks, fill, flow direction, flow accumulation, river network (threshold 40,000 m&sup2;), and watershed.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+  <tr><th>1</th><td>78</td><td>72</td><td>69</td><td>71</td><td>58</td><td>49</td></tr>
+  <tr><th>2</th><td>74</td><td>67</td><td>56</td><td>49</td><td>46</td><td>50</td></tr>
+  <tr><th>3</th><td>69</td><td class="sink-cell">40</td><td>44</td><td>37</td><td>37</td><td>48</td></tr>
+  <tr><th>4</th><td>64</td><td>58</td><td>55</td><td>22</td><td>22</td><td>24</td></tr>
+  <tr><th>5</th><td>78</td><td>61</td><td>47</td><td>21</td><td>21</td><td>19</td></tr>
+  <tr><th>6</th><td>74</td><td>53</td><td>34</td><td>12</td><td>11</td><td>12</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q2_2079Chaitra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── (a) Sink &amp; Fill ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">B3</span> = <span class="m-num">40</span></div><div>  Neighbours: A2=<span class="m-num">74</span> B2=<span class="m-num">67</span> C2=<span class="m-num">56</span> A3=<span class="m-num">69</span> C3=<span class="m-num">44</span> A4=<span class="m-num">64</span> B4=<span class="m-num">58</span> C4=<span class="m-num">55</span></div><div>  Min neighbour = <span class="m-num">44</span> (C3) &nbsp; 40 &lt; 44 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">44</span> + 0.5 = <span class="m-res">44.5</span></div><div></div><div><span class="m-cmt">// ── (b) Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B   C    D    E   F</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">1</span>    <span class="m-num">2</span>    <span class="m-num">2</span>   <span class="m-num">0</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-res">6</span>   <span class="m-res">7</span>    <span class="m-res">5</span>    <span class="m-res">4</span>   <span class="m-num">0</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-res">15</span>    <span class="m-res">5</span>   <span class="m-num">1</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-res">17</span>    <span class="m-num">0</span>   <span class="m-res">8</span></div><div><span class="m-kw">R6:</span>  <span class="m-num">0</span>   <span class="m-num">2</span>   <span class="m-res">4</span>   <span class="m-res">23</span>   <span class="m-res">35</span>   <span class="m-res">9</span></div><div></div><div><span class="m-cmt">// ── River &amp; Watershed ──</span></div><div><span class="m-var">Threshold</span> = <span class="m-num">40,000</span> / (<span class="m-num">100</span>&times;<span class="m-num">100</span>) = <span class="m-res">4 cells</span></div><div><span class="m-kw">River:</span> B3(<span class="m-num">6</span>) C3(<span class="m-num">7</span>) D3(<span class="m-num">5</span>) E3(<span class="m-num">4</span>) D4(<span class="m-num">15</span>) E4(<span class="m-num">5</span>)</div><div>       D5(<span class="m-num">17</span>) F5(<span class="m-num">8</span>) C6(<span class="m-num">4</span>) D6(<span class="m-num">23</span>) E6(<span class="m-num">35</span>) F6(<span class="m-num">9</span>)</div><div></div><div><span class="m-var">Watershed</span> = <span class="m-num">36</span> &times; <span class="m-num">10,000</span> = <span class="m-res">360,000 m&sup2; = 36 ha</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q3: 2075 Magh                                                -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q3">Q3. 6&times;5 DEM, 100m &mdash; Threshold 6 <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2075 Magh Q3b [8 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+  <tr><th>1</th><td>510</td><td>500</td><td>490</td><td>480</td><td>470</td></tr>
+  <tr><th>2</th><td>505</td><td>495</td><td>490</td><td>475</td><td>480</td></tr>
+  <tr><th>3</th><td>500</td><td>485</td><td class="sink-cell">455</td><td>470</td><td>475</td></tr>
+  <tr><th>4</th><td>495</td><td>490</td><td>480</td><td>465</td><td>470</td></tr>
+  <tr><th>5</th><td>490</td><td>485</td><td>475</td><td>455</td><td>450</td></tr>
+  <tr><th>6</th><td>500</td><td>490</td><td>480</td><td>460</td><td>445</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q3_2075Magh.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sink &amp; Fill ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">C3</span> = <span class="m-num">455</span></div><div>  Neighbours: B2=<span class="m-num">495</span> C2=<span class="m-num">490</span> D2=<span class="m-num">475</span> B3=<span class="m-num">485</span> D3=<span class="m-num">470</span> B4=<span class="m-num">490</span> C4=<span class="m-num">480</span> D4=<span class="m-num">465</span></div><div>  Min = <span class="m-num">465</span> (D4) &nbsp; 455 &lt; 465 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">465</span> + 0.5 = <span class="m-res">465.5</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B    C    D   E</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">0</span>   <span class="m-num">2</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">0</span>    <span class="m-num">2</span>   <span class="m-num">0</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-num">3</span>   <span class="m-res">11</span>    <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-res">14</span>   <span class="m-num">0</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">0</span>   <span class="m-num">2</span>    <span class="m-num">4</span>    <span class="m-res">6</span>  <span class="m-res">16</span></div><div><span class="m-kw">R6:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">1</span>  <span class="m-res">26</span></div><div></div><div><span class="m-kw">River (FA&ge;6):</span> C3(<span class="m-num">11</span>) D4(<span class="m-num">14</span>) D5(<span class="m-num">6</span>) E5(<span class="m-num">16</span>) E6(<span class="m-num">26</span>)</div><div><span class="m-var">Watershed at E6</span> = <span class="m-num">27</span> &times; <span class="m-num">10,000</span> = <span class="m-res">270,000 m&sup2; = 27 ha</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q4: 2075 Bhadra                                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q4">Q4. 6&times;6 DEM &mdash; Flow Direction <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2075 Bhadra Q9a [8 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+  <tr><th>1</th><td>58</td><td>52</td><td>55</td><td>53</td><td>56</td><td>58</td></tr>
+  <tr><th>2</th><td>55</td><td>40</td><td>42</td><td>45</td><td>51</td><td>55</td></tr>
+  <tr><th>3</th><td>48</td><td>34</td><td class="sink-cell">20</td><td>33</td><td>48</td><td>52</td></tr>
+  <tr><th>4</th><td>33</td><td>23</td><td>28</td><td>27</td><td>25</td><td>38</td></tr>
+  <tr><th>5</th><td>17</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td></tr>
+  <tr><th>6</th><td>12</td><td>10</td><td>15</td><td>18</td><td>16</td><td>17</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q4_2075Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sink &amp; Fill ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">C3</span> = <span class="m-num">20</span></div><div>  Min neighbour = <span class="m-num">23</span> (B4) &nbsp; 20 &lt; 23 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">23</span> + 0.5 = <span class="m-res">23.5</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A    B    C   D   E   F</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>    <span class="m-num">3</span>    <span class="m-num">1</span>   <span class="m-num">2</span>   <span class="m-num">1</span>   <span class="m-num">0</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-res">12</span>   <span class="m-num">2</span>   <span class="m-num">1</span>   <span class="m-num">0</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-res">15</span>    <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">3</span>   <span class="m-num">0</span></div><div><span class="m-kw">R5:</span> <span class="m-res">17</span>    <span class="m-num">0</span>    <span class="m-num">1</span>   <span class="m-res">5</span>   <span class="m-num">0</span>   <span class="m-num">1</span></div><div><span class="m-kw">R6:</span> <span class="m-res">18</span>   <span class="m-res">30</span>    <span class="m-res">7</span>   <span class="m-num">0</span>   <span class="m-num">4</span>   <span class="m-num">2</span></div><div></div><div><span class="m-kw">River (FA&ge;5):</span> C3(<span class="m-num">12</span>) B4(<span class="m-num">15</span>) A5(<span class="m-num">17</span>) D5(<span class="m-num">5</span>)</div><div>              A6(<span class="m-num">18</span>) B6(<span class="m-num">30</span>) C6(<span class="m-num">7</span>)</div><div><span class="m-var">Watershed</span> = <span class="m-num">31</span> &times; <span class="m-num">10,000</span> = <span class="m-res">310,000 m&sup2; = 31 ha</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q5: 2074 Magh                                                 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q5">Q5. 6&times;6 DEM &mdash; Threshold 4 <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2074 Magh Q5b [10 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+  <tr><th>1</th><td>109</td><td>106</td><td>104</td><td>103</td><td>114</td><td>115</td></tr>
+  <tr><th>2</th><td>107</td><td>105</td><td>102</td><td>100</td><td>112</td><td>113</td></tr>
+  <tr><th>3</th><td>105</td><td>103</td><td>100</td><td>95</td><td>110</td><td>112</td></tr>
+  <tr><th>4</th><td>106</td><td>105</td><td>99</td><td class="sink-cell">90</td><td>108</td><td>110</td></tr>
+  <tr><th>5</th><td>107</td><td>110</td><td>98</td><td>94</td><td>110</td><td>111</td></tr>
+  <tr><th>6</th><td>108</td><td>111</td><td>96</td><td>95</td><td>112</td><td>115</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q5_2074Magh.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sink &amp; Fill ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">D4</span> = <span class="m-num">90</span></div><div>  Min neighbour = <span class="m-num">94</span> (D5) &nbsp; 90 &lt; 94 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">94</span> + 0.5 = <span class="m-res">94.5</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B   C    D   E   F</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">0</span>    <span class="m-num">1</span>   <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">2</span>    <span class="m-num">3</span>   <span class="m-num">1</span>   <span class="m-num">0</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-num">3</span>   <span class="m-res">5</span>   <span class="m-res">17</span>   <span class="m-num">1</span>   <span class="m-num">0</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">2</span>   <span class="m-num">3</span>   <span class="m-res">27</span>   <span class="m-res">4</span>   <span class="m-num">0</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">1</span>   <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-res">35</span>   <span class="m-num">0</span>   <span class="m-num">1</span></div><div><span class="m-kw">R6:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">1</span>   <span class="m-num">0</span>   <span class="m-num">0</span></div><div></div><div><span class="m-kw">River (FA&ge;4):</span> C3(<span class="m-num">5</span>) D3(<span class="m-num">17</span>) D4(<span class="m-num">27</span>) E4(<span class="m-num">4</span>) D5(<span class="m-num">35</span>)</div><div><span class="m-var">Catchment</span> = <span class="m-num">36</span> &times; <span class="m-num">30</span>&times;<span class="m-num">30</span> = <span class="m-res">32,400 m&sup2;</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q6: 2074 Bhadra                                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q6">Q6. 6&times;5 DEM, 100m &mdash; Threshold 10 <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2074 Bhadra Q2b [12 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+  <tr><th>1</th><td>480</td><td>500</td><td>490</td><td>480</td><td>485</td></tr>
+  <tr><th>2</th><td>505</td><td>495</td><td>490</td><td>475</td><td>480</td></tr>
+  <tr><th>3</th><td>500</td><td>485</td><td class="sink-cell">455</td><td>470</td><td>475</td></tr>
+  <tr><th>4</th><td>495</td><td>490</td><td>480</td><td>465</td><td>470</td></tr>
+  <tr><th>5</th><td>490</td><td>485</td><td>475</td><td>455</td><td>450</td></tr>
+  <tr><th>6</th><td>500</td><td>490</td><td>480</td><td>460</td><td>445</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q6_2074Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sink &amp; Fill ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">C3</span> = <span class="m-num">455</span></div><div>  Min neighbour = <span class="m-num">465</span> (D4) &nbsp; 455 &lt; 465 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">465</span> + 0.5 = <span class="m-res">465.5</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B    C    D   E</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">2</span>   <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">3</span>   <span class="m-num">0</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-num">2</span>   <span class="m-res">10</span>    <span class="m-num">1</span>   <span class="m-num">0</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-res">14</span>   <span class="m-num">0</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">0</span>   <span class="m-num">2</span>    <span class="m-num">4</span>    <span class="m-num">6</span>  <span class="m-res">16</span></div><div><span class="m-kw">R6:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">1</span>  <span class="m-res">26</span></div><div></div><div><span class="m-kw">River (FA&ge;10):</span> C3(<span class="m-num">10</span>) D4(<span class="m-num">14</span>) E5(<span class="m-num">16</span>) E6(<span class="m-num">26</span>)</div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+<p><strong>Watershed at E6 (445)</strong> = 27 &times; 10,000 = <strong>270,000 m&sup2; = 27 ha</strong></p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q7: 2073 Magh                                                 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q7">Q7. 6&times;5 DEM, 30m &mdash; Pour Point <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2073 Magh Q7 [10 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+  <tr><th>1</th><td>118</td><td>112</td><td>109</td><td>111</td><td>115</td></tr>
+  <tr><th>2</th><td>114</td><td>107</td><td>96</td><td>89</td><td>92</td></tr>
+  <tr><th>3</th><td>109</td><td class="sink-cell">40</td><td>84</td><td>77</td><td>79</td></tr>
+  <tr><th>4</th><td>104</td><td>99</td><td>95</td><td>62</td><td>65</td></tr>
+  <tr><th>5</th><td>68</td><td>68</td><td>67</td><td>61</td><td>64</td></tr>
+  <tr><th>6</th><td>62</td><td>60</td><td>58</td><td>56</td><td>50</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q7_2073Magh.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sink &amp; Fill ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">B3</span> = <span class="m-num">40</span></div><div>  Min neighbour = <span class="m-num">84</span> (C3) &nbsp; 40 &lt; 84 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">84</span> + 0.5 = <span class="m-res">84.5</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B   C    D   E</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">1</span>    <span class="m-num">2</span>   <span class="m-num">1</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-res">4</span>   <span class="m-res">5</span>    <span class="m-res">5</span>   <span class="m-num">2</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-res">17</span>   <span class="m-num">3</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">1</span>   <span class="m-num">1</span>   <span class="m-num">0</span>   <span class="m-res">18</span>   <span class="m-num">0</span></div><div><span class="m-kw">R6:</span>  <span class="m-num">2</span>   <span class="m-res">5</span>   <span class="m-res">7</span>    <span class="m-res">8</span>  <span class="m-res">29</span></div><div></div><div><span class="m-kw">River (FA&ge;4):</span> B3(<span class="m-num">4</span>) C3(<span class="m-num">5</span>) D3(<span class="m-num">5</span>) D4(<span class="m-num">17</span>) D5(<span class="m-num">18</span>)</div><div>              B6(<span class="m-num">5</span>) C6(<span class="m-num">7</span>) D6(<span class="m-num">8</span>) E6(<span class="m-num">29</span>)</div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+<p><strong>Watershed</strong> = 30 cells &times; 900 = <strong>27,000 m&sup2; = 2.7 ha</strong></p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q8: 2072 Ashwin                                               -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q8">Q8. 5&times;5 DEM <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2072 Ashwin Q5b [8 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+  <tr><th>1</th><td>100</td><td>98</td><td>97</td><td>98</td><td>99</td></tr>
+  <tr><th>2</th><td>105</td><td>103</td><td>102</td><td>99</td><td>100</td></tr>
+  <tr><th>3</th><td>107</td><td>105</td><td class="sink-cell">95</td><td>100</td><td>101</td></tr>
+  <tr><th>4</th><td>109</td><td>106</td><td>104</td><td>102</td><td>104</td></tr>
+  <tr><th>5</th><td>115</td><td>112</td><td>110</td><td>109</td><td>108</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q8_2072Ashwin.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sink ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">C3</span> = <span class="m-num">95</span></div><div>  Min neighbour = <span class="m-num">99</span> (D2) &nbsp; 95 &lt; 99 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">99</span> + 0.5 = <span class="m-res">99.5</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B    C   D   E</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">1</span>   <span class="m-num">4</span>   <span class="m-res">24</span>   <span class="m-num">2</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">0</span>  <span class="m-res">14</span>   <span class="m-num">0</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-res">7</span>   <span class="m-num">3</span>   <span class="m-num">1</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">3</span>    <span class="m-num">1</span>   <span class="m-num">2</span>   <span class="m-num">0</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span></div><div></div><div><span class="m-kw">River (FA&ge;5):</span> C1(<span class="m-num">24</span>) D2(<span class="m-num">14</span>) C3(<span class="m-num">7</span>)</div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+<p><strong>Watershed</strong> = 25 cells &times; 10,000 = <strong>250,000 m&sup2;</strong></p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q9: 2071 Magh                                                 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q9">Q9. 4&times;4 DEM &mdash; Threshold 9 <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2071 Magh Q4a [2+2+2 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+  <tr><th>1</th><td>156</td><td>144</td><td>138</td><td>142</td></tr>
+  <tr><th>2</th><td>148</td><td>134</td><td>112</td><td>98</td></tr>
+  <tr><th>3</th><td>138</td><td>106</td><td>88</td><td>74</td></tr>
+  <tr><th>4</th><td>128</td><td>116</td><td>110</td><td>44</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q9_2071Magh.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sinks ──</span></div><div><span class="m-kw">Sinks:</span> <span class="m-res">None</span>  <span class="m-cmt">// All water flows to D4=44 (corner)</span></div><div></div><div><span class="m-cmt">// ── Flow Direction ──</span></div><div><span class="m-kw">R1:</span>  <span class="m-str">SE</span>   <span class="m-str">SE</span>   <span class="m-str">SE</span>    <span class="m-str">S</span></div><div><span class="m-kw">R2:</span>  <span class="m-str">SE</span>   <span class="m-str">SE</span>   <span class="m-str">SE</span>    <span class="m-str">S</span></div><div><span class="m-kw">R3:</span>   <span class="m-str">E</span>    <span class="m-str">E</span>   <span class="m-str">SE</span>    <span class="m-str">S</span></div><div><span class="m-kw">R4:</span>  <span class="m-str">NE</span>   <span class="m-str">NE</span>    <span class="m-str">E</span>  <span class="m-res">OUT</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">1</span>    <span class="m-num">2</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-num">3</span>    <span class="m-num">7</span>    <span class="m-num">5</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-res">15</span></div><div><span class="m-kw">River (FA&ge;9):</span> D4(FA=<span class="m-num">15</span>) &nbsp;&nbsp; <span class="m-var">Area</span> = <span class="m-num">16</span> &times; <span class="m-num">10,000</span> = <span class="m-res">160,000 m&sup2;</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+<p><strong>Note:</strong> This is a simple grid with no sinks &mdash; all water flows to the bottom-right corner D4 (44).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q10: 2071 Bhadra                                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q10">Q10. 5&times;5 DEM &mdash; Threshold 5 <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2071 Bhadra Q7 [12 Marks]</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+  <tr><th>1</th><td>93</td><td>90</td><td>89</td><td>90</td><td>89</td></tr>
+  <tr><th>2</th><td>91</td><td>88</td><td>82</td><td>79</td><td>78</td></tr>
+  <tr><th>3</th><td>89</td><td class="sink-cell">71</td><td>72</td><td>73</td><td>74</td></tr>
+  <tr><th>4</th><td>86</td><td>83</td><td>82</td><td>70</td><td>69</td></tr>
+  <tr><th>5</th><td>86</td><td>84</td><td>82</td><td>75</td><td>68</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q10_2071Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sink ──</span></div><div><span class="m-kw">Sink:</span> <span class="m-var">B3</span> = <span class="m-num">71</span></div><div>  Min neighbour = <span class="m-num">72</span> (C3) &nbsp; 71 &lt; 72 &rArr; <span class="m-res">SINK</span></div><div>  Fill: <span class="m-num">72</span> + 0.5 = <span class="m-res">72.5</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B    C    D   E</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">1</span>    <span class="m-num">2</span>   <span class="m-num">1</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-res">7</span>   <span class="m-res">10</span>    <span class="m-num">3</span>   <span class="m-num">2</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">0</span>   <span class="m-res">18</span>   <span class="m-num">3</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">1</span>    <span class="m-num">0</span>  <span class="m-res">24</span></div><div></div><div><span class="m-kw">River (FA&ge;5):</span> B3(<span class="m-num">7</span>) C3(<span class="m-num">10</span>) D4(<span class="m-num">18</span>) E5(<span class="m-num">24</span>)</div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+<p><strong>Watershed</strong> = 25 cells &times; 10,000 = <strong>250,000 m&sup2;</strong></p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q11: 2081 Chaitra – LiDAR                                    -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q11">Q11. 6&times;6 LiDAR 10m DEM <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2081 Chaitra &mdash; LiDAR 10m, Threshold 1000 m&sup2;</div>
+
+<table class="grid-table">
+  <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+  <tr><th>1</th><td>125</td><td>123</td><td>121</td><td>120</td><td>118</td><td>117</td></tr>
+  <tr><th>2</th><td>124</td><td>118</td><td>119</td><td>117</td><td>116</td><td>118</td></tr>
+  <tr><th>3</th><td>123</td><td>120</td><td>118</td><td>116</td><td>114</td><td>115</td></tr>
+  <tr><th>4</th><td>122</td><td>118</td><td>116</td><td>115</td><td>113</td><td>114</td></tr>
+  <tr><th>5</th><td>121</td><td>118</td><td>114</td><td>112</td><td>112</td><td>114</td></tr>
+  <tr><th>6</th><td>120</td><td>117</td><td>115</td><td>113</td><td>109</td><td>112</td></tr>
+</table>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Q11_2081Chaitra_LiDAR.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ── Sinks ──</span></div><div><span class="m-kw">Sinks:</span> <span class="m-res">None</span>  <span class="m-cmt">// Water flows toward E6=109 (lowest)</span></div><div></div><div><span class="m-cmt">// ── Flow Accumulation ──</span></div><div><span class="m-cmt">//    A   B   C   D    E   F</span></div><div><span class="m-kw">R1:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>    <span class="m-num">0</span>   <span class="m-num">0</span></div><div><span class="m-kw">R2:</span>  <span class="m-num">0</span>   <span class="m-num">4</span>   <span class="m-num">0</span>   <span class="m-num">2</span>    <span class="m-num">2</span>   <span class="m-num">0</span></div><div><span class="m-kw">R3:</span>  <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-num">1</span>    <span class="m-num">6</span>   <span class="m-num">1</span></div><div><span class="m-kw">R4:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">1</span>   <span class="m-num">1</span>   <span class="m-res">11</span>   <span class="m-num">0</span></div><div><span class="m-kw">R5:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">6</span>  <span class="m-res">12</span>   <span class="m-res">13</span>   <span class="m-num">0</span></div><div><span class="m-kw">R6:</span>  <span class="m-num">0</span>   <span class="m-num">1</span>   <span class="m-num">0</span>   <span class="m-num">0</span>   <span class="m-res">30</span>   <span class="m-num">0</span></div><div></div><div><span class="m-var">Threshold</span> = <span class="m-num">1000</span> m&sup2; / (<span class="m-num">10</span>&times;<span class="m-num">10</span>) = <span class="m-res">10 cells</span></div><div><span class="m-kw">River:</span> E4(<span class="m-num">11</span>) D5(<span class="m-num">12</span>) E5(<span class="m-num">13</span>) E6(<span class="m-num">30</span>)</div><div><span class="m-var">Watershed</span> = <span class="m-num">31</span> cells &times; <span class="m-num">100</span> = <span class="m-res">3,100 m&sup2;</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>Hydrology &middot; DEM</span><span>UTF-8</span></div>
+</div>
+<p><strong>Note:</strong> This LiDAR DEM uses 10m resolution (cell area = 100 m&sup2;), so the threshold in cells is much higher than for coarser DEMs with the same area threshold.</p>
+
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

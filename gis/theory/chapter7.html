@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7 – Spatial Analysis</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    /* ── VS Code–style Math / Calculation blocks ── */
+    .code-editor {
+      margin: 22px 0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.18), 0 1px 4px rgba(0,0,0,.1);
+      font-family: "Consolas", "Fira Code", "Menlo", "Monaco", "Courier New", monospace;
+      font-size: 11pt;
+      line-height: 1.7;
+    }
+    .code-editor .editor-titlebar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: #252526;
+      border-bottom: 1px solid #1e1e1e;
+      user-select: none;
+    }
+    .code-editor .editor-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .code-editor .editor-dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .code-editor .editor-dots .dot-r { background: #ff5f56; }
+    .code-editor .editor-dots .dot-y { background: #ffbd2e; }
+    .code-editor .editor-dots .dot-g { background: #27c93f; }
+    .code-editor .editor-tab {
+      padding: 3px 14px;
+      background: #1e1e1e;
+      color: #cccccc;
+      font-size: 10pt;
+      border-radius: 4px 4px 0 0;
+      border: 1px solid #333;
+      border-bottom: 1px solid #1e1e1e;
+      letter-spacing: .02em;
+    }
+    .code-editor .editor-tab .tab-icon {
+      color: #e8c96a;
+      margin-right: 4px;
+    }
+    .code-editor .editor-body {
+      display: flex;
+      background: #1e1e1e;
+      padding: 16px 0;
+      overflow-x: auto;
+    }
+    .code-editor .line-numbers {
+      padding: 0 12px 0 16px;
+      text-align: right;
+      color: #858585;
+      user-select: none;
+      border-right: 1px solid #333;
+      min-width: 44px;
+      flex-shrink: 0;
+    }
+    .code-editor .line-numbers div {
+      line-height: 1.7;
+    }
+    .code-editor .code-content {
+      padding: 0 18px;
+      color: #d4d4d4;
+      white-space: pre;
+      flex: 1;
+    }
+    .code-editor .code-content div {
+      line-height: 1.7;
+      min-height: 1.7em;
+    }
+    /* Math syntax tokens */
+    .m-cmt  { color: #6a9955; font-style: italic; }  /* Comments */
+    .m-kw   { color: #569cd6; font-weight: bold; }   /* Keywords: Given, Formula, Step */
+    .m-var  { color: #9cdcfe; }                       /* Variables */
+    .m-fn   { color: #dcdcaa; }                       /* Function names */
+    .m-num  { color: #b5cea8; }                       /* Numbers */
+    .m-op   { color: #d4d4d4; }                       /* Operators: +, -, ×, ÷, = */
+    .m-str  { color: #ce9178; }                       /* Strings / labels */
+    .m-res  { color: #4ec9b0; font-weight: bold; }    /* Result / answer highlight */
+    .m-unit { color: #c586c0; }                       /* Units: m, km, kg */
+    .m-punc { color: #d4d4d4; }                       /* Punctuation */
+    .m-sym  { color: #dcdcaa; font-style: italic; }   /* Math symbols: Σ, Δ */
+    .code-editor .editor-statusbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 14px;
+      background: #007acc;
+      color: #fff;
+      font-size: 9pt;
+      letter-spacing: .02em;
+    }
+    [data-theme="dark"] .code-editor {
+      box-shadow: 0 4px 24px rgba(0,0,0,.35), 0 1px 4px rgba(0,0,0,.2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 7</div>
+    <h1>Spatial Analysis</h1>
+  </header>
+  <main>
+
+    <!-- ══════ Syllabus & Marks Distribution (Top) ══════ -->
+<div class="chapter-info-section">
+      <h2>Syllabus &amp; Marks Distribution</h2>
+      <table class="marks-table">
+        <thead>
+          <tr><th>Detail</th><th>Information</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Chapter</td><td>7 &mdash; Spatial Analysis</td></tr>
+          <tr><td>Teaching Hours</td><td>6 hours</td></tr>
+          <tr class="highlight-row"><td>Marks Allocation</td><td>10 marks</td></tr>
+          <tr><td>Total Course Marks</td><td>80 marks</td></tr>
+          <tr><td>Weight</td><td>12.5% of total</td></tr>
+        </tbody>
+      </table>
+      <h3>Syllabus Topics</h3>
+      <ul class="syllabus-topics">
+        <li>Spatial interpolation methods</li>
+        <li>Raster analysis including topological overlay</li>
+        <li>Map calculations</li>
+        <li>Statistics</li>
+        <li>Integrated spatial analysis</li>
+      </ul>
+      <p><em>Note: This is one of the highest-weighted chapters (10 marks). Expect at least one long-answer question on interpolation methods or raster overlay analysis with numerical computation.</em></p>
+    </div>
+
+    <!-- ══════ Importance & Frequently Asked Topics ══════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>Importance &amp; Frequently Asked Topics <span class="importance-high">HIGH</span></h2>
+      
+      
+            <h3>Marks Distribution by Each Exam</h3>
+      <p class="importance-summary">Asked <strong>20 times</strong> across past exams. Estimated total marks: <strong>~200</strong>. (NS = marks not specified in source paper)</p>
+      <div class="table-wrap">
+        <table class="marks-dist-table">
+          <thead>
+            <tr><th>Exam</th><th>Marks</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2071 Bhadra</td><td>10</td></tr>
+            <tr><td>2071 Magh</td><td>20</td></tr>
+            <tr><td>2072 Ashwin</td><td>10</td></tr>
+            <tr><td>2072 Magh</td><td>10</td></tr>
+            <tr><td>2073 Bhadra</td><td>10</td></tr>
+            <tr><td>2073 Magh</td><td>12</td></tr>
+            <tr><td>2074 Bhadra</td><td>24</td></tr>
+            <tr><td>2074 Magh</td><td>14</td></tr>
+            <tr><td>2075 Bhadra</td><td class="ns-cell">NS</td></tr>
+            <tr><td>2075 Magh</td><td class="ns-cell">NS</td></tr>
+            <tr><td>2076 Bhadra</td><td>8</td></tr>
+            <tr><td>2078 Chaitra</td><td>10</td></tr>
+            <tr><td>2079 Chaitra</td><td>16</td></tr>
+            <tr><td>2080 Chaitra</td><td>10</td></tr>
+            <tr><td>2081 Chaitra</td><td class="ns-cell">NS</td></tr>
+            <tr><td>2082 Shrawan</td><td class="dim-cell">&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Frequently Asked Topics</h3>
+      <div class="table-wrap">
+        <table class="freq-topics-table">
+          <thead>
+            <tr><th>Topic</th><th>Times Asked</th><th>Frequency</th></tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>Raster Analysis Including Topological Overlay</td>
+            <td>13</td>
+            <td><div class="freq-bar" style="width:100%"></div></td>
+          </tr>
+          <tr>
+            <td>Spatial Interpolation Methods</td>
+            <td>8</td>
+            <td><div class="freq-bar" style="width:61%"></div></td>
+          </tr>
+          <tr>
+            <td>Integrated Spatial Analysis</td>
+            <td>3</td>
+            <td><div class="freq-bar" style="width:23%"></div></td>
+          </tr>
+          <tr>
+            <td>Statistics</td>
+            <td>1</td>
+            <td><div class="freq-bar" style="width:7%"></div></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    
+      <h3>Topic-wise Importance &amp; Exam Tips</h3>
+      <div class="table-wrap">
+        <table class="importance-table">
+        <thead>
+          <tr><th>Topic</th><th>Importance</th><th>Key Points / Exam Tips</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Spatial interpolation methods (IDW, Kriging, Spline)</td><td><span class="importance-badge importance-high">High</span></td><td>Most frequently asked. Compare IDW vs Kriging. Know formulas, advantages, and when to use each method.</td></tr>
+          <tr><td>Raster overlay (Map algebra, Boolean operations)</td><td><span class="importance-badge importance-high">High</span></td><td>Numerical problems common. Show how multiple raster layers are combined using arithmetic and logical operators for suitability analysis.</td></tr>
+          <tr><td>Local, focal, zonal, global operations</td><td><span class="importance-badge importance-high">High</span></td><td>Define each with grid examples. Focal operations with 3&times;3 kernel (mean, max, min filters) are exam favorites.</td></tr>
+          <tr><td>Suitability analysis / Multi-criteria evaluation</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Step-by-step site selection using weighted overlay. Combine multiple criteria rasters.</td></tr>
+          <tr><td>Thiessen/Voronoi polygons</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Construction method and application (rainfall estimation from rain gauge stations).</td></tr>
+          <tr><td>Map calculations and statistics</td><td><span class="importance-badge importance-low">Low</span></td><td>Basic raster statistics: mean, standard deviation, histogram analysis.</td></tr>
+          <tr><td>Integrated spatial analysis</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Combining raster and vector analysis for real-world applications like flood risk mapping, landfill site selection.</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+    </div>
+
+
+
+    <!-- Part 1: Concept, Purpose, and DEM Generation -->
+    <h2>Part 1: Concept, Purpose, and DEM Generation</h2>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>What is spatial interpolation? Classify it. Compare minimum curvature splines with IDW [2+3+5] <em>(2071 Magh, Q9)</em></li>
+            <li>Why is interpolation needed for producing a DEM? Explain one such method [2+4] <em>(2072 Magh, Q9)</em></li>
+            <li>What is the purpose of spatial interpolation? Give examples where you would use it [4+2] <em>(2079 Chaitra, Q5b)</em></li>
+            <li>Explain the concept of spatial interpolation. Describe one method and discuss its advantages and disadvantages <em>(2081 Chaitra)</em></li>
+        </ol>
+    </div>
+
+    <h3>1. What is Spatial Interpolation?</h3>
+    <p>Spatial interpolation is the mathematical and statistical process of estimating the values of a continuous geographic phenomenon at unknown, unsampled locations based on the known values of surrounding sampled points.</p>
+
+    <h3>2. What is the purpose of spatial interpolation?</h3>
+    <p>In reality, it is impossible, physically and financially, to measure data (like elevation, rainfall, or soil strength) at every single square meter of a study area. The primary purpose of interpolation is to take isolated sample points (like weather stations, borehole logs, or GPS spot heights) and create a continuous surface (a raster grid) that models the entire region.</p>
+
+    
+    <h3>Comparison: IDW vs. Minimum Curvature Spline</h3>
+    <table>
+      <thead>
+        <tr><th>Aspect</th><th>IDW (Inverse Distance Weighted)</th><th>Minimum Curvature Spline</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Principle</td><td>Weighted average based on distance &mdash; closer points have more influence</td><td>Fits a smooth mathematical surface through all data points</td></tr>
+        <tr><td>Exact interpolator?</td><td>Yes &mdash; predicted value matches known value at sample points</td><td>Yes &mdash; surface passes exactly through known points</td></tr>
+        <tr><td>Surface smoothness</td><td>Not smooth &mdash; creates "bull's-eye" patterns around sample points</td><td>Very smooth &mdash; minimizes surface curvature</td></tr>
+        <tr><td>Extrapolation</td><td>Cannot extrapolate beyond the range of known values</td><td>Can extrapolate (but may produce unrealistic values beyond data range)</td></tr>
+        <tr><td>Sensitivity to outliers</td><td>Less sensitive &mdash; outliers only affect nearby areas</td><td>More sensitive &mdash; outliers can distort the entire surface</td></tr>
+        <tr><td>Best for</td><td>Densely sampled data, phenomena that vary gradually</td><td>Smooth continuous surfaces (temperature, pressure, water table)</td></tr>
+        <tr><td>Weakness</td><td>Bull's-eye effect; cannot model trends</td><td>May overshoot in data-sparse areas; sensitive to data distribution</td></tr>
+        <tr><td>Speed</td><td>Fast computation</td><td>Slower &mdash; requires solving system of equations</td></tr>
+      </tbody>
+    </table>
+
+<h3>3. Why is interpolation needed for producing a DEM?</h3>
+    <p>A Digital Elevation Model (DEM) is a continuous raster grid where every single pixel contains an elevation value. However, field surveyors and LiDAR point clouds only capture elevation at discrete, scattered points. Interpolation is absolutely strictly required to calculate the elevation of the "empty" spaces between the surveyed points, effectively creating a solid, continuous topographic surface from isolated data.</p>
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <defs><filter id="f711"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity=".12"/></filter></defs>
+          <text x="350" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">From Scattered Points to Continuous DEM Surface</text>
+          <!-- Step 1: Survey Points -->
+          <g filter="url(#f711)"><rect x="15" y="28" width="190" height="100" rx="8" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="110" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">1. Scattered Survey Points</text>
+          <circle cx="50" cy="62" r="4" fill="#1a3c5e"/><text x="50" y="76" text-anchor="middle" font-size="6" fill="#555">820m</text>
+          <circle cx="100" cy="70" r="4" fill="#1a3c5e"/><text x="100" y="84" text-anchor="middle" font-size="6" fill="#555">785m</text>
+          <circle cx="145" cy="58" r="4" fill="#1a3c5e"/><text x="145" y="72" text-anchor="middle" font-size="6" fill="#555">910m</text>
+          <circle cx="75" cy="100" r="4" fill="#1a3c5e"/><text x="75" y="114" text-anchor="middle" font-size="6" fill="#555">750m</text>
+          <circle cx="170" cy="95" r="4" fill="#1a3c5e"/><text x="170" y="109" text-anchor="middle" font-size="6" fill="#555">860m</text>
+          <text x="110" y="126" text-anchor="middle" font-size="7" fill="#888" font-style="italic">GPS / LiDAR / Survey</text></g>
+          <!-- Arrow 1 -->
+          <polygon points="215,78 235,70 235,74 260,74 260,82 235,82 235,86" fill="#b8860b"/>
+          <text x="238" y="66" font-size="7" fill="#b8860b" font-weight="bold">Interpolation</text>
+          <!-- Step 2: Algorithm -->
+          <g filter="url(#f711)"><rect x="265" y="28" width="160" height="100" rx="8" fill="#fff5ec" stroke="#b8860b" stroke-width="1.2"/>
+          <text x="345" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#b8860b">2. Algorithm Fills Gaps</text>
+          <text x="345" y="66" text-anchor="middle" font-size="8" fill="#555">IDW / Spline / Kriging</text>
+          <text x="345" y="82" text-anchor="middle" font-size="20" fill="#b8860b">&#x2234;</text>
+          <text x="345" y="106" text-anchor="middle" font-size="7.5" fill="#555">Estimates unknown</text>
+          <text x="345" y="118" text-anchor="middle" font-size="7.5" fill="#555">values between points</text></g>
+          <!-- Arrow 2 -->
+          <polygon points="435,78 455,70 455,74 480,74 480,82 455,82 455,86" fill="#2d7d46"/>
+          <text x="458" y="66" font-size="7" fill="#2d7d46" font-weight="bold">Output</text>
+          <!-- Step 3: DEM -->
+          <g filter="url(#f711)"><rect x="485" y="28" width="200" height="100" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1.2"/>
+          <text x="585" y="46" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">3. Continuous Raster DEM</text>
+          <g transform="translate(500,52)">
+            <rect x="0" y="0" width="22" height="16" fill="#2a6e2a" stroke="#fff" stroke-width=".5"/><text x="11" y="12" text-anchor="middle" font-size="6" fill="#fff">910</text>
+            <rect x="22" y="0" width="22" height="16" fill="#3a8e3a" stroke="#fff" stroke-width=".5"/><text x="33" y="12" text-anchor="middle" font-size="6" fill="#fff">880</text>
+            <rect x="44" y="0" width="22" height="16" fill="#4aae4a" stroke="#fff" stroke-width=".5"/><text x="55" y="12" text-anchor="middle" font-size="6" fill="#fff">855</text>
+            <rect x="66" y="0" width="22" height="16" fill="#5ac85a" stroke="#fff" stroke-width=".5"/><text x="77" y="12" text-anchor="middle" font-size="6" fill="#fff">830</text>
+            <rect x="88" y="0" width="22" height="16" fill="#6ae06a" stroke="#fff" stroke-width=".5"/><text x="99" y="12" text-anchor="middle" font-size="6">820</text>
+            <rect x="0" y="16" width="22" height="16" fill="#3a8e3a" stroke="#fff" stroke-width=".5"/><text x="11" y="28" text-anchor="middle" font-size="6" fill="#fff">870</text>
+            <rect x="22" y="16" width="22" height="16" fill="#5aae5a" stroke="#fff" stroke-width=".5"/><text x="33" y="28" text-anchor="middle" font-size="6">845</text>
+            <rect x="44" y="16" width="22" height="16" fill="#7ac87a" stroke="#fff" stroke-width=".5"/><text x="55" y="28" text-anchor="middle" font-size="6">810</text>
+            <rect x="66" y="16" width="22" height="16" fill="#90d890" stroke="#fff" stroke-width=".5"/><text x="77" y="28" text-anchor="middle" font-size="6">785</text>
+            <rect x="88" y="16" width="22" height="16" fill="#a8e8a8" stroke="#fff" stroke-width=".5"/><text x="99" y="28" text-anchor="middle" font-size="6">760</text>
+            <rect x="0" y="32" width="22" height="16" fill="#5aae5a" stroke="#fff" stroke-width=".5"/><text x="11" y="44" text-anchor="middle" font-size="6">840</text>
+            <rect x="22" y="32" width="22" height="16" fill="#7ac87a" stroke="#fff" stroke-width=".5"/><text x="33" y="44" text-anchor="middle" font-size="6">800</text>
+            <rect x="44" y="32" width="22" height="16" fill="#a0d468" stroke="#fff" stroke-width=".5"/><text x="55" y="44" text-anchor="middle" font-size="6">775</text>
+            <rect x="66" y="32" width="22" height="16" fill="#b8e888" stroke="#fff" stroke-width=".5"/><text x="77" y="44" text-anchor="middle" font-size="6">755</text>
+            <rect x="88" y="32" width="22" height="16" fill="#d0f0a8" stroke="#fff" stroke-width=".5"/><text x="99" y="44" text-anchor="middle" font-size="6">750</text>
+          </g>
+          <text x="585" y="120" text-anchor="middle" font-size="7" fill="#2d7d46" font-weight="bold">Every pixel has elevation</text></g>
+        </svg>
+        <figcaption>Fig 7.1 &ndash; Interpolation workflow: scattered survey points are processed by an algorithm to produce a continuous raster DEM where every pixel holds an elevation value</figcaption>
+      </figure>
+    </div>
+
+    <!-- Part 2: Classification and Types of Interpolation -->
+    
+    <div class="callout-box" style="background:var(--callout-bg,#f0f4f8);border-left:4px solid var(--accent,#1a3c5e);padding:1em 1.2em;margin:1em 0;border-radius:0 6px 6px 0;">
+      <h4 style="margin-top:0;">Bilinear Interpolation (Lectures p.26)</h4>
+      <p><strong>Bilinear interpolation</strong> calculates values at a grid location using the <em>four closest cell centres</em>. It assigns output values by taking the weighted average based on distance from each neighbouring cell centre. It produces a smoother surface than nearest-neighbour but less smooth than cubic convolution (which uses 16 cells).</p>
+      <p><strong>Best for:</strong> Continuous data without distinct boundaries (e.g., elevation, temperature). Not suitable for categorical/classified data.</p>
+    </div>
+
+    <div class="callout-box" style="background:var(--callout-bg,#f0f4f8);border-left:4px solid var(--accent,#1a3c5e);padding:1em 1.2em;margin:1em 0;border-radius:0 6px 6px 0;">
+      <h4 style="margin-top:0;">TIN Interpolation (Lectures pp.27&ndash;28)</h4>
+      <p><strong>TIN interpolation</strong> relies on constructing a Delaunay triangulation from sample points. Each new prediction point is located within a triangle, and its value is calculated as a weighted combination of the three triangle vertices. The method is fast, efficient, and works well with many observations. However, it does <em>not smooth</em> the data, and predictions depend only on the three vertices of the enclosing triangle.</p>
+      <p><strong>Limitations:</strong> Small-scale variations (e.g., abrupt elevation changes) may create unrealistic discontinuous areas. Accuracy is strongly dependent on the density of observations.</p>
+    </div>
+<h2>Part 2: Classification and Types of Interpolation</h2>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>What is spatial interpolation? Classify it. Compare minimum curvature splines with IDW [2+3+5] <em>(2071 Magh, Q9)</em></li>
+            <li>Explain different types of interpolation methods in raster GIS and their application in different engineering fields [4] <em>(2074 Bhadra, Q3a)</em></li>
+            <li>Explain different types of interpolation in Raster GIS <em>(2075 Magh, Q5a)</em></li>
+        </ol>
+    </div>
+    <p>If asked to classify or explain the different types break them down into two main families:</p>
+
+    <h3>A. Deterministic Methods</h3>
+    <p>These use predefined mathematical equations based on the distance or geometric layout of the known points. They do not account for statistical probability.</p>
+    <ul>
+      <li><strong>Inverse Distance Weighted (IDW):</strong> Assigns values to unknown points by using a weighted average of the surrounding known points. The closer a known point is the more heavily it influences the unknown value.</li>
+      <li><strong>Spline (Minimum Curvature):</strong> Fits a mathematically smooth flexible "rubber sheet" through all the known data points minimizing the overall curvature of the surface.</li>
+      <li><strong>Thiessen Polygons (Nearest Neighbor):</strong> Creates sharp boundaries. Any unknown location simply takes the exact value of the single nearest known point.</li>
+    </ul>
+
+    <h3>B. Geostatistical Methods</h3>
+    <p>These rely on both the distance and the statistical relationship (spatial autocorrelation) among the measured points.</p>
+    <ul>
+      <li><strong>Kriging:</strong> A highly advanced method that not only estimates the unknown values but also provides a map of the estimated error/uncertainty. It looks at the overall spatial trend and variance in the dataset.</li>
+    </ul>
+
+    <!-- Part 3: Detailed Method Comparison (IDW vs. Spline) -->
+    
+
+    <!-- Fig 7.2 -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <defs>
+            <linearGradient id="detGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8eef4"/><stop offset="100%" stop-color="#fff"/></linearGradient>
+            <linearGradient id="geoGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#edf7f0"/><stop offset="100%" stop-color="#fff"/></linearGradient>
+          </defs>
+          <text x="350" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">Deterministic vs Geostatistical Interpolation</text>
+          <rect x="20" y="36" width="310" height="210" rx="8" fill="url(#detGrad)" stroke="#1a3c5e" stroke-width="1.2"/>
+          <text x="175" y="56" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">DETERMINISTIC</text>
+          <text x="175" y="72" text-anchor="middle" font-size="8" fill="#6b6b6b">Uses mathematical formulas only</text>
+          <line x1="40" y1="80" x2="310" y2="80" stroke="#1a3c5e" stroke-width=".5" opacity=".3"/>
+          <rect x="35" y="90" width="130" height="70" rx="5" fill="#fff" stroke="#1a3c5e" stroke-width=".8"/>
+          <text x="100" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">IDW</text>
+          <text x="100" y="122" text-anchor="middle" font-size="7.5" fill="#555">Weight = 1/d^p</text>
+          <text x="100" y="136" text-anchor="middle" font-size="7" fill="#6b6b6b">Closer points</text>
+          <text x="100" y="147" text-anchor="middle" font-size="7" fill="#6b6b6b">= more influence</text>
+          <rect x="185" y="90" width="130" height="70" rx="5" fill="#fff" stroke="#1a3c5e" stroke-width=".8"/>
+          <text x="250" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Spline</text>
+          <text x="250" y="122" text-anchor="middle" font-size="7.5" fill="#555">Min. Curvature</text>
+          <text x="250" y="136" text-anchor="middle" font-size="7" fill="#6b6b6b">Smooth surface</text>
+          <text x="250" y="147" text-anchor="middle" font-size="7" fill="#6b6b6b">through all points</text>
+          <text x="40" y="185" font-size="7.5" fill="#555">[OK] Fast computation</text>
+          <text x="40" y="198" font-size="7.5" fill="#555">[OK] Simple parameters</text>
+          <text x="40" y="211" font-size="7.5" fill="#8b2500">[X] No error estimation</text>
+          <text x="40" y="224" font-size="7.5" fill="#8b2500">[X] No spatial autocorrelation</text>
+          <rect x="370" y="36" width="310" height="210" rx="8" fill="url(#geoGrad)" stroke="#2d7d46" stroke-width="1.2"/>
+          <text x="525" y="56" text-anchor="middle" font-size="11" font-weight="bold" fill="#2d7d46">GEOSTATISTICAL</text>
+          <text x="525" y="72" text-anchor="middle" font-size="8" fill="#6b6b6b">Uses statistics + spatial structure</text>
+          <line x1="390" y1="80" x2="660" y2="80" stroke="#2d7d46" stroke-width=".5" opacity=".3"/>
+          <rect x="400" y="90" width="250" height="70" rx="5" fill="#fff" stroke="#2d7d46" stroke-width=".8"/>
+          <text x="525" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Kriging (BLUE)</text>
+          <text x="525" y="124" text-anchor="middle" font-size="7.5" fill="#555">Fits semivariogram -> models spatial autocorrelation</text>
+          <text x="525" y="138" text-anchor="middle" font-size="7.5" fill="#555">Weights based on distance AND spatial pattern</text>
+          <text x="525" y="150" text-anchor="middle" font-size="7.5" fill="#555">Produces prediction + error surface</text>
+          <text x="400" y="185" font-size="7.5" fill="#555">[OK] Error/uncertainty estimation</text>
+          <text x="400" y="198" font-size="7.5" fill="#555">[OK] Uses spatial autocorrelation</text>
+          <text x="400" y="211" font-size="7.5" fill="#555">[OK] Statistically optimal</text>
+          <text x="400" y="224" font-size="7.5" fill="#8b2500">[X] Complex needs variogram fitting</text>
+          <circle cx="350" cy="140" r="16" fill="#b8860b" opacity=".15"/>
+          <text x="350" y="144" text-anchor="middle" font-size="10" font-weight="bold" fill="#b8860b">VS</text>
+        </svg>
+        <figcaption>Fig 7.2 &ndash; Deterministic vs Geostatistical Interpolation: IDW/Spline use math formulas; Kriging uses spatial statistics with error estimates</figcaption>
+      </figure>
+    </div>
+
+    
+    <div class="callout-box" style="background:var(--callout-bg,#f0f4f8);border-left:4px solid var(--accent,#1a3c5e);padding:1em 1.2em;margin:1em 0;border-radius:0 6px 6px 0;">
+      <h4 style="margin-top:0;">Kriging Interpolation (Lectures p.29)</h4>
+      <p><strong>Kriging</strong> is a geostatistical technique that considers both the <em>distance</em> and the <em>degree of variation</em> between known data points. Unlike IDW, Kriging is statistically more sophisticated because it allows identifying distortions (possible errors) in the data through the <strong>variance output</strong>. It produces both a prediction surface and a confidence/error surface, making it the most scientifically rigorous interpolation method.</p>
+    </div>
+<h2>Part 3: Detailed Method Comparison (IDW vs. Spline)</h2>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>What is spatial interpolation? Classify it. Compare minimum curvature splines with IDW [2+3+5] <em>(2071 Magh, Q9)</em></li>
+            <li>Explain the following with at least 1 relevant example: (c) IDW interpolation [3] <em>(2073 Magh, Q11c)</em></li>
+            <li>Explain the concept of spatial interpolation. Describe one method and discuss its advantages and disadvantages <em>(2081 Chaitra)</em></li>
+        </ol>
+    </div>
+    <p>The examiners frequently ask you to describe one method in detail discuss its pros and cons or compare IDW and Spline directly.</p>
+
+    <h3>Inverse Distance Weighted (IDW)</h3>
+    <ul>
+      <li><strong>Concept:</strong> Assumes that "things that are closer are more alike."</li>
+      <li><strong>Advantages:</strong> Very simple to understand fast to compute and respects the exact values of the sampled points.</li>
+      <li><strong>Disadvantages:</strong> It cannot predict a value higher than the highest known point or lower than the lowest known point (no extrapolation). It often creates artificial "bullseye" or circular patterns around isolated data points.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 440 195" width="440" height="195" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond' 'Times New Roman' serif">
+        <defs>
+          <linearGradient id="gIDW" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#d0e8f8"/></linearGradient>
+          <radialGradient id="gPt" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#ff7a7a"/><stop offset="100%" stop-color="#c03030"/></radialGradient>
+          <radialGradient id="gTgt" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#ffe570"/><stop offset="100%" stop-color="#d4a010"/></radialGradient>
+          <filter id="fIDW"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/></filter>
+        </defs>
+        <!-- Surface panel -->
+        <rect x="12" y="8" width="225" height="150" rx="8" fill="url(#gIDW)" stroke="#1a3c5e" stroke-width="1.2" filter="url(#fIDW)"/>
+        <text x="124" y="24" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">Interpolation Surface</text>
+        <!-- Known points -->
+        <circle cx="55" cy="52" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="55" y="56" text-anchor="middle" font-size="8" fill="white" font-weight="bold">160</text>
+        <circle cx="195" cy="48" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="195" y="52" text-anchor="middle" font-size="8" fill="white" font-weight="bold">170</text>
+        <circle cx="165" cy="118" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="165" y="122" text-anchor="middle" font-size="8" fill="white" font-weight="bold">180</text>
+        <circle cx="75" cy="128" r="10" fill="url(#gPt)" stroke="#a03030" stroke-width="1.2"/>
+        <text x="75" y="132" text-anchor="middle" font-size="8" fill="white" font-weight="bold">90</text>
+        <!-- Unknown target -->
+        <circle cx="125" cy="85" r="9" fill="url(#gTgt)" stroke="#b8860b" stroke-width="1.5"/>
+        <text x="125" y="89" text-anchor="middle" font-size="9" font-weight="bold" fill="#333">?</text>
+        <!-- Distance lines with weights -->
+        <line x1="55" y1="52" x2="125" y2="85" stroke="#1a3c5e" stroke-width="1.5" stroke-dasharray="4 3" stroke-opacity="0.6"/>
+        <text x="82" y="62" font-size="7" fill="#1a3c5e">d₁ short → high w</text>
+        <line x1="195" y1="48" x2="125" y2="85" stroke="#1a3c5e" stroke-width="0.8" stroke-dasharray="4 3" stroke-opacity="0.4"/>
+        <text x="170" y="62" font-size="7" fill="#888">d₂ long</text>
+        <line x1="165" y1="118" x2="125" y2="85" stroke="#1a3c5e" stroke-width="1.2" stroke-dasharray="4 3" stroke-opacity="0.5"/>
+        <line x1="75" y1="128" x2="125" y2="85" stroke="#1a3c5e" stroke-width="1" stroke-dasharray="4 3" stroke-opacity="0.45"/>
+        <!-- Legend panel -->
+        <rect x="255" y="18" width="170" height="130" rx="8" fill="#faf8f4" stroke="#d4cfc5" stroke-width="0.8" filter="url(#fIDW)"/>
+        <text x="340" y="36" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Legend</text>
+        <circle cx="272" cy="52" r="6" fill="url(#gPt)" stroke="#a03030" stroke-width="0.8"/>
+        <text x="285" y="56" font-size="9" fill="#333">Known point (Z)</text>
+        <circle cx="272" cy="72" r="6" fill="url(#gTgt)" stroke="#b8860b" stroke-width="0.8"/>
+        <text x="285" y="76" font-size="9" fill="#333">Unknown target</text>
+        <line x1="266" y1="90" x2="282" y2="90" stroke="#1a3c5e" stroke-width="1" stroke-dasharray="3 2"/>
+        <text x="290" y="94" font-size="9" fill="#333">Distance (d)</text>
+        <line x1="265" y1="105" x2="415" y2="105" stroke="#d4cfc5" stroke-width="0.5"/>
+        <text x="340" y="120" text-anchor="middle" font-size="8" fill="#1a3c5e" font-weight="bold">w = 1/dᵐ</text>
+        <text x="340" y="134" text-anchor="middle" font-size="8" fill="#555" font-style="italic">Closer → higher weight</text>
+        <!-- Bottom note -->
+        <text x="220" y="185" text-anchor="middle" font-size="8" fill="#888" font-style="italic">Weight decreases with distance—nearby samples dominate the estimate</text>
+      </svg>
+      <figcaption>Fig 7.3 – IDW Interpolation: Closer known points exert greater influence on the unknown value</figcaption>
+    </figure>
+
+    <h3>Spline (Minimum Curvature)</h3>
+    <ul>
+      <li><strong>Concept:</strong> Fits a smooth curve through the points much like bending a flexible ruler.</li>
+      <li><strong>Advantages:</strong> Creates highly visually appealing smooth surfaces. Unlike IDW a Spline can predict values outside the range of the input data (e.g. predicting a mountain peak even if surveyors only measured points on the slopes).</li>
+      <li><strong>Disadvantages:</strong> Highly sensitive to outliers. If one data point is incorrectly recorded as extremely high the Spline will wildly distort the surrounding surface to force the "rubber sheet" through that error.</li>
+    </ul>
+
+    <!-- Part 4: Engineering Applications -->
+    
+
+    <!-- Fig 7.4 – IDW vs Spline Surface -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="max-width:700px">
+          <text x="350" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a3c5e">IDW vs Spline: Surface Behaviour Comparison</text>
+          <rect x="20" y="30" width="310" height="180" rx="6" fill="#fafafa" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="175" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a3c5e">IDW (Inverse Distance Weighted)</text>
+          <path d="M40 170 Q80 160 120 100 Q140 80 160 85 Q200 95 220 70 Q260 50 280 80 Q300 120 310 170" fill="none" stroke="#1a3c5e" stroke-width="2"/>
+          <circle cx="120" cy="100" r="5" fill="#1a3c5e"/><text x="120" y="93" text-anchor="middle" font-size="7" fill="#1a3c5e">28&#xb0;C</text>
+          <circle cx="160" cy="85" r="5" fill="#1a3c5e"/><text x="160" y="78" text-anchor="middle" font-size="7" fill="#1a3c5e">32&#xb0;C</text>
+          <circle cx="220" cy="70" r="5" fill="#1a3c5e"/><text x="220" y="63" text-anchor="middle" font-size="7" fill="#1a3c5e">35&#xb0;C</text>
+          <circle cx="280" cy="80" r="5" fill="#1a3c5e"/><text x="280" y="73" text-anchor="middle" font-size="7" fill="#1a3c5e">30&#xb0;C</text>
+          <circle cx="120" cy="100" r="14" fill="none" stroke="#8b2500" stroke-width=".8" stroke-dasharray="3 2"/>
+          <circle cx="220" cy="70" r="14" fill="none" stroke="#8b2500" stroke-width=".8" stroke-dasharray="3 2"/>
+          <text x="175" y="148" text-anchor="middle" font-size="8" fill="#8b2500"> "Bull's-eye" pattern around points</text>
+          <text x="175" y="162" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; Cannot predict above max or below min</text>
+          <text x="175" y="175" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; Flat spots between distant points</text>
+          <text x="175" y="188" text-anchor="middle" font-size="7.5" fill="#2d7d46">Best for: Dense evenly-spaced data</text>
+          <rect x="370" y="30" width="310" height="180" rx="6" fill="#fafafa" stroke="#2d7d46" stroke-width="1"/>
+          <text x="525" y="50" text-anchor="middle" font-size="10" font-weight="bold" fill="#2d7d46">Spline (Minimum Curvature)</text>
+          <path d="M390 170 C420 155 450 80 480 90 C510 100 530 50 560 60 C590 70 620 110 660 170" fill="none" stroke="#2d7d46" stroke-width="2"/>
+          <circle cx="470" cy="88" r="5" fill="#2d7d46"/><text x="470" y="81" text-anchor="middle" font-size="7" fill="#2d7d46">28&#xb0;C</text>
+          <circle cx="510" cy="92" r="5" fill="#2d7d46"/><text x="510" y="85" text-anchor="middle" font-size="7" fill="#2d7d46">32&#xb0;C</text>
+          <circle cx="555" cy="62" r="5" fill="#2d7d46"/><text x="555" y="55" text-anchor="middle" font-size="7" fill="#2d7d46">35&#xb0;C</text>
+          <circle cx="630" cy="110" r="5" fill="#2d7d46"/><text x="630" y="103" text-anchor="middle" font-size="7" fill="#2d7d46">30&#xb0;C</text>
+          <text x="525" y="142" text-anchor="middle" font-size="8" fill="#2d7d46">[OK] Smooth continuous surface</text>
+          <text x="525" y="156" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; CAN predict above max / below min</text>
+          <text x="525" y="169" text-anchor="middle" font-size="7.5" fill="#555">&#x2022; Passes exactly through known points</text>
+          <text x="525" y="182" text-anchor="middle" font-size="7.5" fill="#8b2500"> May overshoot at sparse areas</text>
+          <text x="525" y="195" text-anchor="middle" font-size="7.5" fill="#2d7d46">Best for: Smooth phenomena (temp elev)</text>
+        </svg>
+        <figcaption>Fig 7.4 &ndash; IDW creates "bull's-eye" concentric patterns; Spline creates smooth surfaces but may overshoot</figcaption>
+      </figure>
+    </div>
+
+    <h2>Part 4: Engineering Applications</h2>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>Explain different types of interpolation methods in raster GIS and their application in different engineering fields [4] <em>(2074 Bhadra, Q3a)</em></li>
+            <li>What is the purpose of spatial interpolation? Give examples where you would use it [4+2] <em>(2079 Chaitra, Q5b)</em></li>
+        </ol>
+    </div>
+    <p>To answer "application in different engineering fields" effectively provide these specific examples:</p>
+    <ol>
+      <li><strong>Hydrology (mHM Modeling):</strong> Interpolating isolated daily rainfall data from a few regional meteorological stations to create a continuous precipitation raster across an entire river basin.</li>
+      <li><strong>Geotechnical Engineering (Site Response Analysis):</strong> Interpolating shear wave velocity (V<sub>s30</sub>) or bedrock depth from scattered borehole logs to create a continuous subsurface vulnerability map for the Kathmandu Valley.</li>
+      <li><strong>Water Resources (HEC-RAS):</strong> Interpolating riverbed bathymetry from surveyed cross-sections to generate a continuous 3D channel terrain for 2D flood inundation modeling.</li>
+      <li><strong>Environmental Engineering:</strong> Modeling the dispersion plume of airborne pollutants or groundwater contamination spreading from an industrial site based on a few scattered air/water quality monitoring sensors.</li>
+    </ol>
+
+    
+
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="max-width:600px">
+          <defs><filter id="f712"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity=".12"/></filter></defs>
+          <text x="300" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Spatial Interpolation in Engineering Fields</text>
+          <!-- Central node -->
+          <circle cx="300" cy="115" r="38" fill="#1a3c5e" filter="url(#f712)"/>
+          <text x="300" y="110" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">Spatial</text>
+          <text x="300" y="122" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">Interpolation</text>
+          <!-- Hydrology -->
+          <line x1="262" y1="100" x2="120" y2="55" stroke="#1a3c5e" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="20" y="30" width="200" height="50" rx="8" fill="#e8f4fd" stroke="#1a3c5e" stroke-width="1"/>
+          <text x="120" y="48" text-anchor="middle" font-size="9" font-weight="bold" fill="#1a3c5e">Hydrology</text>
+          <text x="120" y="62" text-anchor="middle" font-size="7" fill="#555">Rainfall surface from weather stations</text>
+          <text x="120" y="73" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: IDW / Kriging</text></g>
+          <!-- Geotechnical -->
+          <line x1="338" y1="100" x2="480" y2="55" stroke="#8b2500" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="380" y="30" width="200" height="50" rx="8" fill="#fdf0ec" stroke="#8b2500" stroke-width="1"/>
+          <text x="480" y="48" text-anchor="middle" font-size="9" font-weight="bold" fill="#8b2500">Geotechnical</text>
+          <text x="480" y="62" text-anchor="middle" font-size="7" fill="#555">Vs30 map from borehole logs</text>
+          <text x="480" y="73" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: Kriging (with error map)</text></g>
+          <!-- Water Resources -->
+          <line x1="262" y1="130" x2="120" y2="175" stroke="#2d7d46" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="20" y="150" width="200" height="50" rx="8" fill="#edf7f0" stroke="#2d7d46" stroke-width="1"/>
+          <text x="120" y="168" text-anchor="middle" font-size="9" font-weight="bold" fill="#2d7d46">Water Resources</text>
+          <text x="120" y="182" text-anchor="middle" font-size="7" fill="#555">Riverbed bathymetry for HEC-RAS</text>
+          <text x="120" y="193" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: Spline / TIN</text></g>
+          <!-- Environmental -->
+          <line x1="338" y1="130" x2="480" y2="175" stroke="#6c4f9e" stroke-width="1.2"/>
+          <g filter="url(#f712)"><rect x="380" y="150" width="200" height="50" rx="8" fill="#f5f0ff" stroke="#6c4f9e" stroke-width="1"/>
+          <text x="480" y="168" text-anchor="middle" font-size="9" font-weight="bold" fill="#6c4f9e">Environmental</text>
+          <text x="480" y="182" text-anchor="middle" font-size="7" fill="#555">Pollution plume from monitoring wells</text>
+          <text x="480" y="193" text-anchor="middle" font-size="7" fill="#888" font-style="italic">Method: IDW / Kriging</text></g>
+        </svg>
+        <figcaption>Fig 7.5 &ndash; Spatial interpolation applications across four engineering disciplines each with the most suitable interpolation method</figcaption>
+      </figure>
+    </div>
+
+    <!-- Part 5: The Numerical Question -->
+    <h2>Part 5: The Numerical Question</h2>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <p><em>2074 Q3b – 4 Marks</em></p>
+    </div>
+    <p><strong>Question:</strong> Interpolate a value using any one method if the distance from four known values 160 170 180 and 90 are 1000 400 600 and 120 m respectively.</p>
+    <p>Always use the Inverse Distance Weighted (IDW) method for manual exams assuming a power of p=1 (or p=2 but p=1 is faster to calculate manually unless specified). Let's use p=1.</p>
+    <p>This is the linear weighting method we did earlier. It assumes influence drops off linearly with distance.</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> IDW_Power1.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── IDW Interpolation  ·  Power p = 1 ──</span></div><div></div><div><span class="m-kw">Given:</span></div><div>  <span class="m-var">Values</span>  <span class="m-op">=</span> [<span class="m-num">160</span> <span class="m-num">170</span> <span class="m-num">180</span> <span class="m-num">90</span>]</div><div>  <span class="m-var">Distances</span> <span class="m-op">=</span> [<span class="m-num">1000</span> <span class="m-num">400</span> <span class="m-num">600</span> <span class="m-num">120</span>] <span class="m-unit">m</span></div><div></div><div><span class="m-kw">Formula:</span></div><div>  <span class="m-fn">Z</span> <span class="m-op">=</span> <span class="m-sym">&Sigma;</span>(<span class="m-var">w<sub>i</sub></span> <span class="m-op">&times;</span> <span class="m-var">z<sub>i</sub></span>) <span class="m-op">/</span> <span class="m-sym">&Sigma;</span>(<span class="m-var">w<sub>i</sub></span>)   <span class="m-cmt">where</span>  <span class="m-var">w<sub>i</sub></span> <span class="m-op">=</span> <span class="m-num">1</span> <span class="m-op">/</span> <span class="m-var">d<sub>i</sub></span><sup><span class="m-var">p</span></sup></div><div></div><div><span class="m-kw">Step 1:</span> <span class="m-cmt">Compute weights  (p = 1)</span></div><div>  <span class="m-var">w₁</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">1000</span>  <span class="m-op">=</span> <span class="m-num">0.00100</span></div><div>  <span class="m-var">w₂</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">400</span>   <span class="m-op">=</span> <span class="m-num">0.00250</span></div><div>  <span class="m-var">w₃</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">600</span>   <span class="m-op">=</span> <span class="m-num">0.00167</span></div><div>  <span class="m-var">w₄</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">120</span>   <span class="m-op">=</span> <span class="m-num">0.00833</span></div><div></div><div><span class="m-kw">Step 2:</span> <span class="m-cmt">Weighted numerator  &Sigma;(w&#xB7;z)</span></div><div>  <span class="m-op">=</span> (<span class="m-num">0.00100</span><span class="m-op">&times;</span><span class="m-num">160</span>) <span class="m-op">+</span> (<span class="m-num">0.00250</span><span class="m-op">&times;</span><span class="m-num">170</span>) <span class="m-op">+</span> (<span class="m-num">0.00167</span><span class="m-op">&times;</span><span class="m-num">180</span>) <span class="m-op">+</span> (<span class="m-num">0.00833</span><span class="m-op">&times;</span><span class="m-num">90</span>)</div><div>  <span class="m-op">=</span> <span class="m-num">0.160</span> <span class="m-op">+</span> <span class="m-num">0.425</span> <span class="m-op">+</span> <span class="m-num">0.300</span> <span class="m-op">+</span> <span class="m-num">0.750</span>  <span class="m-op">=</span>  <span class="m-num">1.635</span></div><div></div><div><span class="m-kw">Step 3:</span> <span class="m-cmt">Sum of weights  &Sigma;w</span></div><div>  <span class="m-op">=</span> <span class="m-num">0.00100</span> <span class="m-op">+</span> <span class="m-num">0.00250</span> <span class="m-op">+</span> <span class="m-num">0.00167</span> <span class="m-op">+</span> <span class="m-num">0.00833</span>  <span class="m-op">=</span>  <span class="m-num">0.01350</span></div><div></div><div><span class="m-kw">Result:</span></div><div>  <span class="m-fn">Z</span> <span class="m-op">=</span> <span class="m-num">1.635</span> <span class="m-op">/</span> <span class="m-num">0.01350</span>  <span class="m-op">=</span>  <span class="m-res">121.11</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; IDW</span><span>Power = 1 &middot; 23 lines</span></div>
+    </div>
+
+    <h3>Inverse Distance Weighted (IDW) with Power = 2</h3>
+    <p>This is the default setting in most GIS software (like QGIS or ArcGIS). Squaring the distance means that points further away lose their influence exponentially faster.</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> IDW_Power2.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── IDW Interpolation  ·  Power p = 2 ──</span></div><div></div><div><span class="m-kw">Given:</span> <span class="m-cmt">Same data as above</span></div><div>  <span class="m-var">Values</span>  <span class="m-op">=</span> [<span class="m-num">160</span> <span class="m-num">170</span> <span class="m-num">180</span> <span class="m-num">90</span>]</div><div>  <span class="m-var">Distances</span> <span class="m-op">=</span> [<span class="m-num">1000</span> <span class="m-num">400</span> <span class="m-num">600</span> <span class="m-num">120</span>] <span class="m-unit">m</span></div><div></div><div><span class="m-kw">Step 1:</span> <span class="m-cmt">Compute weights  (p = 2  &rarr;  w = 1/d&sup2;)</span></div><div>  <span class="m-var">w₁</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">1000</span>&sup2;  <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">1 000 000</span>   <span class="m-op">=</span> <span class="m-num">0.00000100</span></div><div>  <span class="m-var">w₂</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">400</span>&sup2;   <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">160 000</span>     <span class="m-op">=</span> <span class="m-num">0.00000625</span></div><div>  <span class="m-var">w₃</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">600</span>&sup2;   <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">360 000</span>     <span class="m-op">=</span> <span class="m-num">0.00000278</span></div><div>  <span class="m-var">w₄</span> <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">120</span>&sup2;   <span class="m-op">=</span> <span class="m-num">1</span><span class="m-op">/</span><span class="m-num">14 400</span>      <span class="m-op">=</span> <span class="m-num">0.00006944</span></div><div></div><div><span class="m-kw">Step 2:</span> <span class="m-cmt">Weighted numerator  &Sigma;(w&#xB7;z)</span></div><div>  <span class="m-op">=</span> (<span class="m-num">0.00000100</span><span class="m-op">&times;</span><span class="m-num">160</span>) <span class="m-op">+</span> (<span class="m-num">0.00000625</span><span class="m-op">&times;</span><span class="m-num">170</span>) <span class="m-op">+</span> (<span class="m-num">0.00000278</span><span class="m-op">&times;</span><span class="m-num">180</span>) <span class="m-op">+</span> (<span class="m-num">0.00006944</span><span class="m-op">&times;</span><span class="m-num">90</span>)</div><div>  <span class="m-op">=</span> <span class="m-num">0.000160</span> <span class="m-op">+</span> <span class="m-num">0.001063</span> <span class="m-op">+</span> <span class="m-num">0.000500</span> <span class="m-op">+</span> <span class="m-num">0.006250</span>  <span class="m-op">=</span>  <span class="m-num">0.007973</span></div><div></div><div><span class="m-kw">Step 3:</span> <span class="m-cmt">Sum of weights  &Sigma;w</span></div><div>  <span class="m-op">=</span> <span class="m-num">0.00000100</span> <span class="m-op">+</span> <span class="m-num">0.00000625</span> <span class="m-op">+</span> <span class="m-num">0.00000278</span> <span class="m-op">+</span> <span class="m-num">0.00006944</span>  <span class="m-op">=</span>  <span class="m-num">0.00007947</span></div><div></div><div><span class="m-kw">Result:</span></div><div>  <span class="m-fn">Z</span> <span class="m-op">=</span> <span class="m-num">0.007973</span> <span class="m-op">/</span> <span class="m-num">0.00007947</span>  <span class="m-op">=</span>  <span class="m-res">100.32</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; IDW</span><span>Power = 2 &middot; 23 lines</span></div>
+    </div>
+    <p>Notice how changing the power to 2 pulled the final answer much closer to 90? That is because squaring the distance made the far-away points (like the one 1000m away) almost mathematically irrelevant.</p>
+
+    <!-- 7.2 Raster Analysis Including Topological Overlay -->
+    <h2>7.2 Raster Analysis Including Topological Overlay</h2>
+
+    <!-- Part 1: Theoretical Foundations of Raster Analysis -->
+    <h3>Part 1: Theoretical Foundations of Raster Analysis</h3>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>What are the advantages and disadvantages of raster based analysis? State four of the raster analysis operations in GIS. And explain them [3+3+4] <em>(2071 Magh, Q8)</em></li>
+            <li>Differentiate between map overlay and map calculations. Explain how Raster analysis and topological overlay are carried out? [4+6] <em>(2072 Ashwin, Q3a)</em></li>
+            <li>Explain why calculation of NDVI from NIR and Red bands of satellite data is called local function in raster data analysis while calculation of slope and aspects are considered as neighborhood functions? [6] <em>(2080 Chaitra, Q8b)</em></li>
+            <li>Explain proximity map calculation and summarize zone functions of Raster GIS [Not specified] <em>(2075 Magh, Q5b)</em></li>
+            <li>Explain the following with at least 1 relevant example: (a) Raster algebra (b) Zonal statistics (d) Reclassification [3+3+3] <em>(2073 Magh, Q11)</em></li>
+            <li>Explain why NDVI from NIR and Red bands is called local function while slope and aspects are neighborhood functions? [6] <em>(2080 Chaitra, Q8b)</em></li>
+            <li>Grid Code of a raster data with 25 m grid resolution is shown below. Derive a suitable map and suitable area for Rice Crop. Suitable parameters on 1 to 10 scale for slope, soil, and landuse are given in Table 1. The weightage for slope, soil, and landuse are 50%, 30%, and 20% respectively. Assume the value greater than 6 is suitable. [14] <em>(2074 Magh, Q6)</em></li>
+            <li>Explain the following with at least 1 relevant example: (a) Raster algebra (b) Zonal statistics (d) Reclassification [3+3+3] <em>(2073 Magh, Q11)</em></li>
+            <li>Explain the following Raster function with relevant example (a) View shade (b) Euclidean Distance (c) Reclassify (d) Slope and aspect (e) Hillshade [8] <em>(2076 Bhadra, Q7a)</em></li>
+        </ol>
+    </div>
+
+    <h3>1. What is Raster Analysis?</h3>
+    <p>Raster analysis is the process of performing spatial operations on raster (grid-based) data to derive new information. Unlike vector analysis which works with discrete features, raster analysis processes continuous surfaces where each cell holds a numeric value.</p>
+
+    <h4>Advantages and Disadvantages of Raster-Based Analysis</h4>
+    <table>
+      <thead>
+        <tr><th>Advantages</th><th>Disadvantages</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Simple, uniform data structure (grid of cells)</td><td>Large file sizes &mdash; every cell stores a value even in empty areas</td></tr>
+        <tr><td>Easy to perform overlay operations (cell-by-cell math)</td><td>Loss of spatial precision &mdash; features snap to grid cells</td></tr>
+        <tr><td>Excellent for modeling continuous surfaces (elevation, temperature)</td><td>No topology &mdash; cannot define spatial relationships between features</td></tr>
+        <tr><td>Fast spatial analysis and map algebra</td><td>Resolution-dependent &mdash; detail limited by cell size</td></tr>
+        <tr><td>Ideal for remote sensing imagery</td><td>Poor at representing linear features (roads appear as staircase)</td></tr>
+        <tr><td>Supports multi-band analysis (satellite imagery)</td><td>Attribute data limited to one value per cell per band</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Map Overlay vs. Map Calculations</h4>
+    <table>
+      <thead>
+        <tr><th>Aspect</th><th>Map Overlay</th><th>Map Calculations (Map Algebra)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Definition</td><td>Combining two or more raster layers by stacking them</td><td>Performing cell-by-cell mathematical operations on raster layers</td></tr>
+        <tr><td>Purpose</td><td>Find spatial coincidence or combined spatial patterns</td><td>Derive new values through arithmetic, logical, or statistical operations</td></tr>
+        <tr><td>Operation type</td><td>Logical (AND, OR, NOT) or weighted combination</td><td>Arithmetic (+, &minus;, &times;, &divide;), Boolean, relational, conditional</td></tr>
+        <tr><td>Example</td><td>Overlay slope + soil + land use to find suitable sites</td><td>NDVI = (NIR &minus; Red) / (NIR + Red)</td></tr>
+        <tr><td>Output</td><td>Combined classification map</td><td>New raster with calculated values</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2. Types of Raster Operations (Local, Focal, Zonal, Global)</h3>
+    <p>Raster operations are classified by the spatial extent of cells involved in each calculation:</p>
+    <table>
+      <thead>
+        <tr><th>Operation Type</th><th>Description</th><th>Input</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Local</strong></td><td>Operates on each cell independently, using corresponding cells from one or more layers</td><td>Individual cell values</td><td>NDVI calculation: (NIR &minus; Red)/(NIR + Red) for each pixel</td></tr>
+        <tr><td><strong>Focal (Neighborhood)</strong></td><td>Operates on a cell and its surrounding neighbors (typically 3&times;3 window)</td><td>Cell + its neighborhood</td><td>Slope, Aspect, Hillshade &mdash; use 3&times;3 window around each cell</td></tr>
+        <tr><td><strong>Zonal</strong></td><td>Operates on groups of cells that share a common zone value</td><td>All cells within each zone</td><td>Average elevation per land use category; total rainfall per watershed</td></tr>
+        <tr><td><strong>Global</strong></td><td>Operates using all cells in the entire raster</td><td>Entire raster dataset</td><td>Euclidean distance from each cell to nearest source; flow accumulation</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Why NDVI is Local and Slope is Focal:</strong> NDVI is a local function because it calculates each pixel's value using only the corresponding NIR and Red band values at that same pixel location. Slope is a focal (neighborhood) function because calculating the slope at any cell requires reading the elevation values of its 8 surrounding neighbors in a 3&times;3 moving window.</p>
+
+    <h3>Map Algebra (Tomlin's Framework)</h3>
+    <p><strong>Map algebra</strong> is a set of rules and operators for performing cell-by-cell mathematical operations on raster data, first formalized by Dana Tomlin. It is the raster equivalent of SQL for vector data.</p>
+    <ul>
+      <li><strong>Arithmetic operations:</strong> Addition, subtraction, multiplication, division of raster layers (e.g., Weighted Overlay = 0.5 &times; Slope + 0.3 &times; Soil + 0.2 &times; LandUse)</li>
+      <li><strong>Boolean operations:</strong> AND, OR, NOT &mdash; used for suitability queries (e.g., Slope &lt; 10 AND LandUse = "Grassland")</li>
+      <li><strong>Relational operations:</strong> Greater than, less than, equal to &mdash; create binary rasters (1/0)</li>
+      <li><strong>Conditional operations:</strong> IF-THEN-ELSE &mdash; reclassify based on conditions</li>
+    </ul>
+
+    
+    <div class="callout-box" style="background:var(--callout-bg,#f0f4f8);border-left:4px solid var(--accent,#1a3c5e);padding:1em 1.2em;margin:1em 0;border-radius:0 6px 6px 0;">
+      <h4 style="margin-top:0;">Map Algebra Operators (Lectures p.29)</h4>
+      <p>Algebraic expressions create new raster data from existing ones. The basic operator types:</p>
+      <ul>
+        <li><strong>Arithmetic:</strong> +, &minus;, &times;, &divide; (e.g., NDVI = (NIR &minus; Red) / (NIR + Red))</li>
+        <li><strong>Relational:</strong> &gt;, &ge;, =, &lt;, &le;, &ne; (e.g., Select cells where elevation &gt; 500m)</li>
+        <li><strong>Boolean:</strong> AND, OR, NOT (e.g., slope &lt; 15 AND land_use = &ldquo;forest&rdquo;)</li>
+        <li><strong>Assignment:</strong> = (assign new values based on conditions)</li>
+        <li><strong>Accumulative:</strong> Running totals (e.g., flow accumulation)</li>
+      </ul>
+    </div>
+<h3>Reclassification</h3>
+    <p><strong>Reclassify</strong> is the process of reassigning cell values in a raster to new values based on defined criteria. It converts continuous data into discrete categories for analysis.</p>
+    <ul>
+      <li><strong>Example:</strong> Reclassify a slope raster: 0&ndash;5&deg; &rarr; 1 (Flat), 5&ndash;15&deg; &rarr; 2 (Moderate), 15&ndash;30&deg; &rarr; 3 (Steep), &gt;30&deg; &rarr; 4 (Very Steep)</li>
+      <li><strong>Purpose:</strong> Simplifies complex data for overlay analysis. Essential in suitability modeling where continuous data must be converted to a common ranking scale (e.g., 1&ndash;10).</li>
+      <li><strong>Types:</strong>
+        <ul>
+          <li>Range-based: Group values into ranges (0&ndash;100 &rarr; Low, 100&ndash;200 &rarr; Medium)</li>
+          <li>Individual value: Replace specific values (NoData &rarr; 0)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Hillshade</h3>
+    <p><strong>Hillshade</strong> creates a 3D shaded relief representation of a terrain surface by simulating the illumination of a surface from a hypothetical light source (the sun). It is a <em>focal</em> function that uses a 3&times;3 neighborhood window.</p>
+    <ul>
+      <li><strong>Input:</strong> DEM (Digital Elevation Model)</li>
+      <li><strong>Parameters:</strong>
+        <ul>
+          <li><em>Altitude (Sun Elevation Angle):</em> Height of the sun above the horizon (default: 45&deg;)</li>
+          <li><em>Azimuth (Sun Direction):</em> Compass direction of the sun (default: 315&deg; = northwest)</li>
+        </ul>
+      </li>
+      <li><strong>Formula:</strong> Hillshade = 255 &times; [(cos(Zenith) &times; cos(Slope)) + (sin(Zenith) &times; sin(Slope) &times; cos(Azimuth &minus; Aspect))]</li>
+      <li><strong>Output:</strong> Grayscale raster (0&ndash;255) where bright areas face the sun and dark areas are in shadow</li>
+      <li><strong>Application:</strong> Visual enhancement of terrain maps; used as a background layer beneath semi-transparent thematic layers for better 3D perception</li>
+    </ul>
+
+    <h3>Viewshed (View Shade)</h3>
+    <p><strong>Viewshed</strong> analysis determines which areas on a terrain surface are visible from one or more observation points. It uses line-of-sight calculations across a DEM.</p>
+    <ul>
+      <li><strong>Input:</strong> DEM + one or more observer points (with optional height offset)</li>
+      <li><strong>Output:</strong> Binary raster where 1 = visible from the observer, 0 = not visible (hidden by terrain)</li>
+      <li><strong>How it works:</strong> For each cell in the DEM, a straight line is drawn from the observer to that cell. If any intermediate cell's elevation blocks the line-of-sight, the target cell is marked as not visible.</li>
+      <li><strong>Applications:</strong>
+        <ul>
+          <li>Locating telecom towers to maximize signal coverage</li>
+          <li>Road alignment to identify scenic routes</li>
+          <li>Military: Finding hidden positions not visible from enemy locations</li>
+          <li>Environmental: Visual impact assessment of proposed buildings or wind turbines</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Euclidean Distance</h3>
+    <p><strong>Euclidean Distance</strong> calculates the straight-line distance from each raster cell to the nearest source feature. It is a <em>global</em> function.</p>
+    <ul>
+      <li><strong>Input:</strong> Source raster or feature (e.g., river, road, hospital locations)</li>
+      <li><strong>Output:</strong> Distance raster where each cell value = its distance to the nearest source</li>
+      <li><strong>Application:</strong> Finding areas within a certain distance of a river (for flood analysis) or determining accessibility to hospitals</li>
+    </ul>
+
+    <h3>Cost Path Analysis</h3>
+    <p><strong>Cost Path</strong> finds the least-cost route between a source and destination across a surface where movement cost varies by location.</p>
+    <ul>
+      <li><strong>Input:</strong>
+        <ul>
+          <li><em>Cost Surface:</em> Raster where each cell value represents the cost of traversing that cell (based on slope, land cover, etc.)</li>
+          <li><em>Source point:</em> Starting location</li>
+          <li><em>Destination point:</em> Ending location</li>
+        </ul>
+      </li>
+      <li><strong>Process:</strong> (1) Create a <em>Cost Distance</em> raster showing accumulated cost from source, (2) Create a <em>Back Link</em> raster recording direction of cheapest path, (3) Trace back from destination to source using the back link</li>
+      <li><strong>Application:</strong> Finding optimal road alignment that minimizes construction cost across varying terrain; pipeline routing; wildlife corridor planning</li>
+    </ul>
+
+    <ul>
+      <li><strong>Concept:</strong> This function calculates summary statistics (like Area, Sum, Mean, Maximum, Minimum) for a continuous "Value Raster" strictly within the boundaries defined by a separate "Zone Dataset". The Zone Dataset can be either a vector polygon shapefile or an integer raster.</li>
+      <li><strong>Mechanism:</strong> The software identifies all the pixels of the Value Raster that physically fall inside Zone A, lumps them together, calculates the requested statistic (e.g., the average), and then moves on to Zone B.</li>
+      <li><strong>Exam Example:</strong> For your final year project on Site Response Analysis, you have a highly detailed, continuous raster grid showing Peak Ground Acceleration (PGA) across the Kathmandu Valley. You also have a polygon shapefile of the municipal wards. Using the Summarize Zone tool, the software will calculate and output a table showing the exact Mean and Maximum PGA specifically for each individual ward, allowing you to rank the wards by seismic vulnerability.</li>
+    </ul>
+
+    <h3>3. Proximity Map Calculation &amp; Distance</h3>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>Explain proximity map calculation and summarize zone functions of Raster GIS [Not specified] <em>(2075 Magh, Q5b)</em></li>
+            <li>Explain the following Raster function with relevant example (a) View shade (b) Euclidean Distance (c) Reclassify (d) Slope and aspect (e) Hillshade [8] <em>(2076 Bhadra, Q7a)</em></li>
+        </ol>
+    </div>
+    <p>Distance and Proximity are often used interchangeably in raster analysis, but they represent slightly different ways of modeling "how close" something is.</p>
+
+    <h4>Distance (Euclidean Distance)</h4>
+    <ul>
+      <li><strong>Concept:</strong> Calculates the straight-line distance from every single cell center to the closest source feature.</li>
+      <li><strong>Mechanism:</strong> It generates a continuous raster where the numerical value of every single pixel represents its distance (in meters or feet) to the target.</li>
+      <li><strong>Exam Example:</strong> When mapping the "Smart Village" initiative, you need a general overview of water accessibility. You run a Distance function on the "Water Tap" point layer. The output is a gradient raster where pixels right next to the taps have values near 0m, and pixels on the outskirts of the village have values of 500m or more.</li>
+    </ul>
+
+    <h4>Proximity (Raster Buffering / Allocation)</h4>
+    <ul>
+      <li><strong>Concept:</strong> Instead of a continuous distance gradient, a Proximity calculation often groups cells into distinct bands or allocates them to the nearest source.</li>
+      <li><strong>Mechanism:</strong> It classifies pixels based on a threshold. For example, assigning a value of "1" to all pixels within 30 meters of a source, and "0" to everything else (acting like a vector buffer, but in grid format).</li>
+      <li><strong>Exam Example:</strong> To enforce sanitation regulations for a new rural toilet, it must be located at least 30 meters away from any drinking water well. You run a Proximity map calculation on the wells, instructing the tool to flag all raster cells within a 30m radius. This instantly generates a restricted "no-build" pixel zone across your study area.</li>
+    </ul>
+
+    <!-- Scenario-Based Questions -->
+    <h2>Scenario-Based Questions</h2>
+
+    <h3>1. The Environmental Impact Scenario</h3>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>You are working on a project to analyze the impact of deforestation on local water resources. What types of spatial data would you use, and how would you represent them in GIS? Describe with sketches [4] <em>(2080 Chaitra, Q3)</em></li>
+        </ol>
+    </div>
+    <p><strong>Question:</strong> You are working on a project to analyze the impact of deforestation on local water resources. What types of spatial data would you use, and how would you represent them in GIS? Describe with sketches.</p>
+    <p>This question aligns perfectly with soil conservation and watershed management studies. You need to list the exact data types and how the GIS software handles them.</p>
+    <p><strong>Data Types &amp; Representation:</strong></p>
+    <ol>
+      <li><strong>Land Cover / Land Use (Raster):</strong> Used to represent the changing extent of the forest over time. A raster grid where pixels are classified as "Forest" or "Deforested/Barren".</li>
+      <li><strong>Digital Elevation Model / DEM (Raster):</strong> A continuous elevation grid used to delineate the watershed boundaries and calculate terrain slopes, which directly affect surface runoff and soil erosion.</li>
+      <li><strong>River Network (Vector – Line):</strong> A polyline shapefile representing the streams and rivers to analyze where the increased runoff and sediment load will ultimately flow.</li>
+      <li><strong>Meteorological Data / Rainfall (Raster):</strong> An interpolated continuous surface (using IDW) of precipitation data to model the water input into the deforested basin.</li>
+      <li><strong>Soil Hydrologic Groups (Vector – Polygon):</strong> Polygons representing different soil types to estimate infiltration rates vs. surface runoff.</li>
+    </ol>
+    <p><strong>The Sketch:</strong> Draw a simple flowchart showing: DEM + Land Cover + Soil Type pointing into a Hydrologic Model (e.g., mHM or HEC-HMS), which then points to a River Network Line showing "Increased Peak Discharge."</p>
+
+    <h3>2. The Reservoir Site Selection Scenario</h3>    <p><strong>Question:</strong> You are tasked with identifying suitable locations for building a new reservoir in a region. The ideal location must meet the following criteria:</p>
+    <ol>
+      <li>The area must have a slope of less than 10 degrees to ensure stability.</li>
+      <li>It must be within 1 kilometer of a river to allow for water supply.</li>
+      <li>The land cover must be non-forested (e.g., grassland or bare soil) to minimize environmental impact.</li>
+      <li>The area must have a high water-retention capacity, indicated by soil types classified as "clay" or "silt".</li>
+    </ol>
+    <p>The data provided are DEM, Soil type, River, and Land cover data. Using raster data analysis, describe the steps you would take to identify suitable locations. Include at least four raster analysis functions in your explanation.</p>
+
+    <p><strong>Approach:</strong> This is a classic <strong>Boolean Overlay</strong> (True/False) suitability model. Each dataset is independently processed, reclassified into binary (1=Suitable, 0=Unsuitable), and then multiplied cell-by-cell. The multiplication acts as a logical AND — a cell must pass <em>all</em> four tests to be marked suitable.</p>
+
+    <h4>The Four Raster Analysis Functions Used</h4>
+    <ol>
+      <li><strong>Slope (from DEM):</strong> A <em>Focal/Neighborhood</em> function that computes the rate of elevation change using a 3×3 moving window. Input: DEM raster. Output: Continuous slope raster in degrees (0°–90°). This is a neighborhood function because each pixel's slope depends on its 8 surrounding neighbors.</li>
+      <li><strong>Euclidean Distance (from River):</strong> A <em>Distance</em> function that calculates straight-line distance from every cell center to the nearest river feature. Input: River vector (or raster). Output: Continuous distance raster in meters. Cells near rivers have low values; distant cells have high values.</li>
+      <li><strong>Reclassify:</strong> A <em>Local</em> function that reassigns ranges of continuous values into discrete binary classes. Applied independently to all four datasets:
+        <ul>
+          <li>Slope: 0°–10° → 1, >10° → 0</li>
+          <li>Distance: 0–1000 m → 1, >1000 m → 0</li>
+          <li>Land Cover: Grassland/Bare soil → 1, Forest → 0</li>
+          <li>Soil Type: Clay/Silt → 1, Sand/Gravel → 0</li>
+        </ul>
+      </li>
+      <li><strong>Raster Calculator / Map Algebra:</strong> A <em>Local</em> function that performs cell-by-cell arithmetic across multiple aligned rasters. Here we multiply all four binary grids: Final = Slope_Rec × Distance_Rec × LandCover_Rec × Soil_Rec. Any cell with a 0 in any layer becomes 0 in the output (Boolean AND logic).</li>
+    </ol>
+
+    <p><strong>Workflow Overview:</strong></p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 530 235" width="530" height="235" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="a7r" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#1a3c5e"/></marker>
+          <linearGradient id="gB1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5cc5ef"/><stop offset="100%" stop-color="#3ba8d8"/></linearGradient>
+          <linearGradient id="gB2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b8e986"/><stop offset="100%" stop-color="#8cc63f"/></linearGradient>
+          <linearGradient id="gB3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fdd66b"/><stop offset="100%" stop-color="#e8a820"/></linearGradient>
+          <linearGradient id="gB4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c4a8ed"/><stop offset="100%" stop-color="#9a72d8"/></linearGradient>
+          <filter id="f73"><feDropShadow dx="1" dy="1.5" stdDeviation="1.5" flood-opacity="0.12"/></filter>
+        </defs>
+        <!-- Step 1: Input data -->
+        <rect x="5" y="8" width="92" height="34" rx="6" fill="url(#gB1)" stroke="#2a7cb5" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="28" text-anchor="middle" font-size="8" font-weight="bold" fill="white"> DEM</text>
+        <rect x="5" y="48" width="92" height="34" rx="6" fill="url(#gB2)" stroke="#5a9a20" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="68" text-anchor="middle" font-size="8" font-weight="bold" fill="white">River</text>
+        <rect x="5" y="88" width="92" height="34" rx="6" fill="url(#gB3)" stroke="#b8860b" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="108" text-anchor="middle" font-size="8" font-weight="bold" fill="#333">Land Cover</text>
+        <rect x="5" y="128" width="92" height="34" rx="6" fill="url(#gB4)" stroke="#7b52b5" stroke-width="1" filter="url(#f73)"/>
+        <text x="51" y="148" text-anchor="middle" font-size="8" font-weight="bold" fill="white">Soil Type</text>
+        <!-- Connecting lines -->
+        <line x1="100" y1="25" x2="118" y2="55" stroke="#888" stroke-width="1"/>
+        <line x1="100" y1="65" x2="118" y2="65" stroke="#888" stroke-width="1"/>
+        <line x1="100" y1="105" x2="118" y2="80" stroke="#888" stroke-width="1"/>
+        <line x1="100" y1="145" x2="118" y2="90" stroke="#888" stroke-width="1"/>
+        <!-- Step 2: Process -->
+        <rect x="120" y="38" width="105" height="50" rx="8" fill="#faf8f4" stroke="#d4cfc5" stroke-width="1" filter="url(#f73)"/>
+        <text x="172" y="56" text-anchor="middle" font-size="8" font-weight="bold" fill="#1a3c5e">Slope / Distance</text>
+        <text x="172" y="70" text-anchor="middle" font-size="7.5" fill="#555">Euclidean Calc</text>
+        <!-- Step 3: Reclassify -->
+        <line x1="228" y1="63" x2="248" y2="63" stroke="#1a3c5e" stroke-width="1.8" marker-end="url(#a7r)"/>
+        <rect x="252" y="38" width="100" height="50" rx="8" fill="#fff0f0" stroke="#ed5565" stroke-width="1.2" filter="url(#f73)"/>
+        <text x="302" y="56" text-anchor="middle" font-size="8" font-weight="bold" fill="#ed5565">Reclassify</text>
+        <text x="302" y="70" text-anchor="middle" font-size="7.5" fill="#555">1=Suit, 0=Not</text>
+        <!-- Step 4: Map Algebra -->
+        <line x1="355" y1="63" x2="375" y2="63" stroke="#1a3c5e" stroke-width="1.8" marker-end="url(#a7r)"/>
+        <rect x="379" y="38" width="100" height="50" rx="8" fill="#1a3c5e" stroke="#0e2a42" stroke-width="1" filter="url(#f73)"/>
+        <text x="429" y="54" text-anchor="middle" font-size="8" font-weight="bold" fill="#f6bb42">[X] Map Algebra</text>
+        <text x="429" y="66" text-anchor="middle" font-size="7" fill="#aac8e0">A × B × C × D</text>
+        <text x="429" y="78" text-anchor="middle" font-size="7" fill="#aac8e0">(Boolean AND)</text>
+        <!-- Step 5: Output -->
+        <line x1="429" y1="91" x2="429" y2="112" stroke="#1a3c5e" stroke-width="1.8" marker-end="url(#a7r)"/>
+        <rect x="379" y="116" width="100" height="42" rx="8" fill="#a0d468" stroke="#2a8c2a" stroke-width="2" filter="url(#f73)"/>
+        <text x="429" y="134" text-anchor="middle" font-size="9" font-weight="bold" fill="white">[OK] Suitable</text>
+        <text x="429" y="148" text-anchor="middle" font-size="8" fill="white">Sites (= 1)</text>
+        <!-- Bottom note -->
+        <text x="265" y="195" text-anchor="middle" font-size="9" fill="#555" font-style="italic">Only cells where ALL criteria = 1 are suitable (Boolean AND)</text>
+        <text x="265" y="210" text-anchor="middle" font-size="8" fill="#888">One criterion fails → cell becomes 0 (× 0 = 0)</text>
+      </svg>
+      <figcaption>Fig 7.15 – Boolean Overlay Suitability Model Workflow for Reservoir Site Selection</figcaption>
+    </figure>
+
+    <h4>Step 1: Calculate Slope (Tool: Slope)</h4>
+    <p>Input the DEM raster and run the Slope function to generate a continuous raster showing the steepness in degrees.</p>
+
+    <h4>Step 2: Calculate Proximity (Tool: Euclidean Distance)</h4>
+    <p>Input the River vector data and run the Euclidean Distance tool to create a raster where every pixel value represents its distance from the river.</p>
+
+    <h4>Step 3: Standardize the Criteria (Tool: Reclassify)</h4>
+    <p>You must convert all datasets into a binary scale where 1 = Suitable and 0 = Unsuitable.</p>
+    <ul>
+      <li>Reclassify Slope: 0° to 10° = 1. Greater than 10° = 0.</li>
+      <li>Reclassify Distance: 0 to 1000m = 1. Greater than 1000m = 0.</li>
+      <li>Reclassify Land Cover: Grassland/Bare soil = 1. Forested = 0.</li>
+      <li>Reclassify Soil: Clay/Silt = 1. Sand/Gravel = 0.</li>
+    </ul>
+
+    <h4>Step 4: Combine the Constraints (Tool: Raster Calculator / Map Algebra)</h4>
+    <p>Multiply all four reclassified grids together using the equation:</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> boolean_overlay.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Boolean Site Selection  ·  AND Logic ──</span></div><div></div><div><span class="m-kw">Raster Calculator:</span></div><div>  <span class="m-fn">Final_Site</span> <span class="m-op">=</span> [<span class="m-var">Slope_Rec</span>] <span class="m-op">*</span> [<span class="m-var">Distance_Rec</span>] <span class="m-op">*</span> [<span class="m-var">LandCover_Rec</span>] <span class="m-op">*</span> [<span class="m-var">Soil_Rec</span>]</div><div></div><div><span class="m-cmt">// Logic: Multiplication acts as AND operator</span></div><div><span class="m-cmt">//   1 * 1 * 1 * 1  =  1  →  All criteria met   </span></div><div><span class="m-cmt">//   1 * 1 * 0 * 1  =  0  →  One criteria failed </span></div><div></div><div><span class="m-kw">Output:</span></div><div>  <span class="m-var">Pixel</span> <span class="m-op">=</span> <span class="m-res">1</span>  <span class="m-op">&rarr;</span>  <span class="m-str">"Suitable site"</span>  <span class="m-cmt">// ALL four constraints passed</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Raster Calc</span><span>Boolean AND &middot; 11 lines</span></div>
+    </div>
+
+    <p>Because you are multiplying, if any single criteria fails (has a 0), the final pixel value becomes 0. The output raster will only have a value of 1 where all criteria are perfectly met.</p>
+
+    <h3>3. The Raster Condition Numerical</h3>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>Generate output raster of suitable area for landfill site from given distance rasters <em>(2075 Bhadra)</em></li>
+        </ol>
+    </div>
+    <p><strong>Question:</strong> Generate an output raster of the suitable area for landfill site from the given raster below. The values in both rasters given below denote the distances in kilometers from settlement buildings and river network. The area located farther from the buildings and closer from the river network is the suitable for it. First of all set the conditions for both raster.</p>
+
+    <!-- Given Data: Two 5×4 grids -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" style="max-width:660px">
+          <text x="155" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Distance from Buildings (km)</text>
+          <text x="500" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#2d7d46">Distance from River (km)</text>
+          <!-- LEFT GRID: Buildings -->
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="15" y1="30" x2="295" y2="30"/><line x1="15" y1="72" x2="295" y2="72"/>
+            <line x1="15" y1="114" x2="295" y2="114"/><line x1="15" y1="156" x2="295" y2="156"/>
+            <line x1="15" y1="198" x2="295" y2="198"/><line x1="15" y1="240" x2="295" y2="240"/>
+            <line x1="15" y1="30" x2="15" y2="240"/><line x1="85" y1="30" x2="85" y2="240"/>
+            <line x1="155" y1="30" x2="155" y2="240"/><line x1="225" y1="30" x2="225" y2="240"/>
+            <line x1="295" y1="30" x2="295" y2="240"/>
+          </g>
+          <!-- Row 1: 4 8 3 3 -->
+          <text x="50" y="57" text-anchor="middle" font-size="14" fill="#8b2500">4</text>
+          <text x="120" y="57" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">8</text>
+          <text x="190" y="57" text-anchor="middle" font-size="14" fill="#8b2500">3</text>
+          <text x="260" y="57" text-anchor="middle" font-size="14" fill="#8b2500">3</text>
+          <!-- Row 2: 3 1 5 5 -->
+          <text x="50" y="99" text-anchor="middle" font-size="14" fill="#8b2500">3</text>
+          <text x="120" y="99" text-anchor="middle" font-size="14" fill="#8b2500">1</text>
+          <text x="190" y="99" text-anchor="middle" font-size="14" fill="#8b2500">5</text>
+          <text x="260" y="99" text-anchor="middle" font-size="14" fill="#8b2500">5</text>
+          <!-- Row 3: 6 4 11 12 -->
+          <text x="50" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">6</text>
+          <text x="120" y="141" text-anchor="middle" font-size="14" fill="#8b2500">4</text>
+          <text x="190" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">11</text>
+          <text x="260" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">12</text>
+          <!-- Row 4: 9 5 14 15 -->
+          <text x="50" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">9</text>
+          <text x="120" y="183" text-anchor="middle" font-size="14" fill="#8b2500">5</text>
+          <text x="190" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">14</text>
+          <text x="260" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">15</text>
+          <!-- Row 5: 4 8 16 17 -->
+          <text x="50" y="225" text-anchor="middle" font-size="14" fill="#8b2500">4</text>
+          <text x="120" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">8</text>
+          <text x="190" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">16</text>
+          <text x="260" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">17</text>
+
+          <!-- RIGHT GRID: River -->
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="365" y1="30" x2="645" y2="30"/><line x1="365" y1="72" x2="645" y2="72"/>
+            <line x1="365" y1="114" x2="645" y2="114"/><line x1="365" y1="156" x2="645" y2="156"/>
+            <line x1="365" y1="198" x2="645" y2="198"/><line x1="365" y1="240" x2="645" y2="240"/>
+            <line x1="365" y1="30" x2="365" y2="240"/><line x1="435" y1="30" x2="435" y2="240"/>
+            <line x1="505" y1="30" x2="505" y2="240"/><line x1="575" y1="30" x2="575" y2="240"/>
+            <line x1="645" y1="30" x2="645" y2="240"/>
+          </g>
+          <!-- Row 1: 11 10 9 9 -->
+          <text x="400" y="57" text-anchor="middle" font-size="14" fill="#8b2500">11</text>
+          <text x="470" y="57" text-anchor="middle" font-size="14" fill="#8b2500">10</text>
+          <text x="540" y="57" text-anchor="middle" font-size="14" fill="#8b2500">9</text>
+          <text x="610" y="57" text-anchor="middle" font-size="14" fill="#8b2500">9</text>
+          <!-- Row 2: 10 9 8 7 -->
+          <text x="400" y="99" text-anchor="middle" font-size="14" fill="#8b2500">10</text>
+          <text x="470" y="99" text-anchor="middle" font-size="14" fill="#8b2500">9</text>
+          <text x="540" y="99" text-anchor="middle" font-size="14" fill="#8b2500">8</text>
+          <text x="610" y="99" text-anchor="middle" font-size="14" fill="#8b2500">7</text>
+          <!-- Row 3: 6 5 2 1 -->
+          <text x="400" y="141" text-anchor="middle" font-size="14" fill="#8b2500">6</text>
+          <text x="470" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">5</text>
+          <text x="540" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">2</text>
+          <text x="610" y="141" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">1</text>
+          <!-- Row 4: 5 4 3 2 -->
+          <text x="400" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">5</text>
+          <text x="470" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">4</text>
+          <text x="540" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">3</text>
+          <text x="610" y="183" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">2</text>
+          <!-- Row 5: 5 4 3 2 -->
+          <text x="400" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">5</text>
+          <text x="470" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">4</text>
+          <text x="540" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">3</text>
+          <text x="610" y="225" text-anchor="middle" font-size="14" fill="#2d7d46" font-weight="bold">2</text>
+        </svg>
+        <figcaption>Fig 7.16 &ndash; Given data: Distance from settlement buildings (left, km) and Distance from river network (right, km)</figcaption>
+      </figure>
+    </div>
+
+    <h4>Step 1: Set the Conditions (Engineering Judgment)</h4>
+    <p>The question leaves the thresholds to your judgment. We must define explicit rules:</p>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> landfill_conditions.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Landfill Site Selection  ·  2075 Bhadra ──</span></div><div></div><div><span class="m-kw">Condition A</span> <span class="m-cmt">(Buildings): Farther = Safer</span></div><div>  <span class="m-var">Distance_Building</span>  <span class="m-op">&gt;</span>  <span class="m-num">5</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-res">1</span> <span class="m-str">(Suitable)</span></div><div>  <span class="m-var">Distance_Building</span>  <span class="m-op">&le;</span>  <span class="m-num">5</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-num">0</span> <span class="m-str">(Unsuitable)</span></div><div></div><div><span class="m-kw">Condition B</span> <span class="m-cmt">(River): Closer = Better access</span></div><div>  <span class="m-var">Distance_River</span>  <span class="m-op">&lt;</span>  <span class="m-num">6</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-res">1</span> <span class="m-str">(Suitable)</span></div><div>  <span class="m-var">Distance_River</span>  <span class="m-op">&ge;</span>  <span class="m-num">6</span> <span class="m-unit">km</span>  <span class="m-op">&rarr;</span>  <span class="m-num">0</span> <span class="m-str">(Unsuitable)</span></div><div></div><div><span class="m-kw">Final Output:</span></div><div>  <span class="m-fn">Suitable</span> <span class="m-op">=</span> <span class="m-var">Building_Rec</span> <span class="m-op">&times;</span> <span class="m-var">River_Rec</span>  <span class="m-cmt">// Boolean AND</span></div><div></div><div><span class="m-cmt">// Cell is suitable ONLY if BOTH conditions are met</span></div><div><span class="m-cmt">//   Building > 5 km  AND  River &lt; 6 km  →  1 (Suitable)</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Raster Calc</span><span>Conditions &middot; 15 lines</span></div>
+    </div>
+
+    <h4>Step 2: Reclassify Both Grids to Binary (1/0)</h4>
+
+    <div class="code-editor">
+      <div class="editor-titlebar">
+        <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+        <div class="editor-tab"><span class="tab-icon">&#x1D453;</span> landfill_reclassify.calc</div>
+      </div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div></div>
+        <div class="code-content"><div><span class="m-cmt">// ── Step 2: Reclassify each cell ──</span></div><div></div><div><span class="m-kw">Building Grid</span> <span class="m-cmt">(Condition: &gt; 5 km → 1)</span></div><div><span class="m-cmt">// Original:                  Reclassified:</span></div><div>  [<span class="m-num"> 4</span>,  <span class="m-num">8</span>,  <span class="m-num">3</span>,  <span class="m-num">3</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num"> 3</span>,  <span class="m-num">1</span>,  <span class="m-num">5</span>,  <span class="m-num">5</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num"> 6</span>,  <span class="m-num">4</span>, <span class="m-num">11</span>, <span class="m-num">12</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 9</span>,  <span class="m-num">5</span>, <span class="m-num">14</span>, <span class="m-num">15</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 4</span>,  <span class="m-num">8</span>, <span class="m-num">16</span>, <span class="m-num">17</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div></div><div><span class="m-kw">River Grid</span> <span class="m-cmt">(Condition: &lt; 6 km → 1)</span></div><div><span class="m-cmt">// Original:                  Reclassified:</span></div><div>  [<span class="m-num">11</span>, <span class="m-num">10</span>, <span class="m-num">9</span>, <span class="m-num">9</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num">10</span>,  <span class="m-num">9</span>, <span class="m-num">8</span>, <span class="m-num">7</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num"> 6</span>,  <span class="m-num">5</span>, <span class="m-num">2</span>, <span class="m-num">1</span>]     <span class="m-op">&rarr;</span>   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 5</span>,  <span class="m-num">4</span>, <span class="m-num">3</span>, <span class="m-num">2</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num"> 5</span>,  <span class="m-num">4</span>, <span class="m-num">3</span>, <span class="m-num">2</span>]     <span class="m-op">&rarr;</span>   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div></div><div><span class="m-cmt">// ═══════════════════════════════════════════</span></div><div><span class="m-cmt">// Step 3: Map Algebra  ·  Boolean AND</span></div><div><span class="m-cmt">// ═══════════════════════════════════════════</span></div><div><span class="m-fn">Output</span> <span class="m-op">=</span> <span class="m-var">Building_Rec</span> <span class="m-op">&times;</span> <span class="m-var">River_Rec</span></div><div></div><div><span class="m-cmt">//  Building_Rec:     River_Rec:       Output:</span></div><div>  [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-num">0</span>]</div><div>  [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-num">0</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-res">1</span>, <span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div>  [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]   [<span class="m-num">0</span>, <span class="m-res">1</span>, <span class="m-res">1</span>, <span class="m-res">1</span>]</div><div></div><div><span class="m-kw">Result:</span> <span class="m-res">8</span> <span class="m-cmt">cells out of 20 are suitable for landfill</span></div></div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Raster Calc</span><span>Landfill Overlay &middot; 37 lines</span></div>
+    </div>
+
+    <!-- Output Suitability Grid Figure -->
+    <div class="figure">
+      <figure>
+        <svg viewBox="0 0 440 260" xmlns="http://www.w3.org/2000/svg" style="max-width:440px">
+          <text x="220" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a3c5e">Final Output: Suitable Landfill Sites</text>
+          <text x="220" y="32" text-anchor="middle" font-size="8" fill="#888">1 = Suitable (shaded)  &middot;  0 = Unsuitable</text>
+          <g stroke="#b0bec5" stroke-width=".6">
+            <line x1="50" y1="42" x2="390" y2="42"/><line x1="50" y1="84" x2="390" y2="84"/>
+            <line x1="50" y1="126" x2="390" y2="126"/><line x1="50" y1="168" x2="390" y2="168"/>
+            <line x1="50" y1="210" x2="390" y2="210"/><line x1="50" y1="252" x2="390" y2="252"/>
+            <line x1="50" y1="42" x2="50" y2="252"/><line x1="135" y1="42" x2="135" y2="252"/>
+            <line x1="220" y1="42" x2="220" y2="252"/><line x1="305" y1="42" x2="305" y2="252"/>
+            <line x1="390" y1="42" x2="390" y2="252"/>
+          </g>
+          <!-- Row 1: 0 0 0 0 -->
+          <text x="92" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="177" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="262" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="347" y="69" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <!-- Row 2: 0 0 0 0 -->
+          <text x="92" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="177" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="262" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="347" y="111" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <!-- Row 3: 0 0 1 1 -->
+          <text x="92" y="153" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <text x="177" y="153" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <rect x="220" y="126" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="262" y="153" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="305" y="126" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="347" y="153" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <!-- Row 4: 1 0 1 1 -->
+          <rect x="50" y="168" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="92" y="195" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <text x="177" y="195" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <rect x="220" y="168" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="262" y="195" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="305" y="168" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="347" y="195" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <!-- Row 5: 0 1 1 1 -->
+          <text x="92" y="237" text-anchor="middle" font-size="16" fill="#ccc">0</text>
+          <rect x="135" y="210" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="177" y="237" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="220" y="210" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="262" y="237" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+          <rect x="305" y="210" width="85" height="42" fill="#2d7d46" opacity=".2"/>
+          <text x="347" y="237" text-anchor="middle" font-size="16" fill="#2d7d46" font-weight="bold">1</text>
+        </svg>
+        <figcaption>Fig 7.17 &ndash; Output raster: 8 out of 20 cells are suitable (shaded green) for landfill site placement</figcaption>
+      </figure>
+    </div>
+
+    <h3>4. Rice Crop Suitability — Weighted Overlay (14 Marks Numerical)</h3>
+    <div class="exam-note">
+        <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+        <ol>
+            <li>Grid Code of a raster data with 25 m grid resolution is shown below. Derive a suitable map and suitable area for Rice Crop. Suitable parameters on 1 to 10 scale for slope, soil, and landuse are given in Table 1. The weightage for slope, soil, and landuse are 50%, 30%, and 20% respectively. Assume the value greater than 6 is suitable. [14] <em>(2074 Magh, Q6)</em></li>
+        </ol>
+    </div>
+    <p><strong>This is a Weighted Overlay problem.</strong> Unlike the Boolean (AND) approach above, here each input layer has a <em>different importance</em> (weight), and we assign suitability scores on a 1&ndash;10 scale, then compute a weighted sum. The final value determines suitability.</p>
+
+    <h4>The Formula</h4>
+    <div class="callout-box" style="background:var(--callout-bg,#f0f4f8);border-left:4px solid var(--accent,#1a3c5e);padding:1em 1.2em;margin:1em 0;border-radius:0 6px 6px 0;">
+      <p style="margin:0;font-size:11pt;"><strong>Suitability = (Slope Score &times; 0.50) + (Soil Score &times; 0.30) + (LandUse Score &times; 0.20)</strong></p>
+      <p style="margin:0.5em 0 0;font-size:9.5pt;color:#666;">If Suitability &gt; 6 &rarr; Suitable for rice crop. Otherwise &rarr; Not suitable.</p>
+    </div>
+
+    <h4>Step-by-Step Solution Method</h4>
+    <p>The question provides three input grids (slope grid, soil grid, landuse grid) and a reclassification table. Follow these steps:</p>
+
+    <p><strong>Step 1: Reclassify</strong> each input grid using the given Table 1 (which maps grid codes to suitability scores 1&ndash;10).</p>
+    <p><strong>Step 2: Apply weights</strong> — multiply each reclassified cell by its weight factor (0.50, 0.30, 0.20).</p>
+    <p><strong>Step 3: Add</strong> — sum the three weighted grids cell-by-cell to get the final suitability score per cell.</p>
+    <p><strong>Step 4: Threshold</strong> — any cell with suitability &gt; 6 is suitable; others are not suitable.</p>
+    <p><strong>Step 5: Calculate area</strong> — count suitable cells &times; cell area (25m &times; 25m = 625 m&sup2; per cell).</p>
+
+    <h4>Worked Example (Generic 3&times;3 Grid)</h4>
+    <p>Since the actual grid data varies per exam paper, here is a complete worked example showing the method:</p>
+
+    <p><em>Suppose after reclassification, the 1&ndash;10 suitability scores for a 3&times;3 grid are:</em></p>
+    <table>
+      <thead><tr><th colspan="3">Slope Scores</th><th></th><th colspan="3">Soil Scores</th><th></th><th colspan="3">LandUse Scores</th></tr></thead>
+      <tbody>
+        <tr><td>8</td><td>7</td><td>5</td><td rowspan="3" style="border:none;width:20px;"></td><td>6</td><td>8</td><td>4</td><td rowspan="3" style="border:none;width:20px;"></td><td>9</td><td>7</td><td>3</td></tr>
+        <tr><td>6</td><td>9</td><td>4</td><td>7</td><td>5</td><td>6</td><td>8</td><td>6</td><td>5</td></tr>
+        <tr><td>3</td><td>4</td><td>7</td><td>9</td><td>3</td><td>8</td><td>5</td><td>8</td><td>9</td></tr>
+      </tbody>
+    </table>
+
+    <div class="code-editor">
+      <div class="editor-toolbar"><div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><div class="editor-tab"><span class="tab-icon">&#9881;</span> Weighted_Overlay_RiceCrop.gis</div></div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div></div>
+        <div class="code-content">
+          <div><span class="m-cmt">// ── Rice Crop Weighted Overlay  ·  2074 Magh Q6 ──</span></div>
+          <div><span class="m-kw">Weights</span><span class="m-op">:</span> <span class="m-var">Slope</span> <span class="m-op">=</span> <span class="m-num">0.50</span><span class="m-op">,</span> <span class="m-var">Soil</span> <span class="m-op">=</span> <span class="m-num">0.30</span><span class="m-op">,</span> <span class="m-var">LandUse</span> <span class="m-op">=</span> <span class="m-num">0.20</span></div>
+          <div><span class="m-kw">Threshold</span><span class="m-op">:</span> <span class="m-var">Suitability</span> <span class="m-op">&gt;</span> <span class="m-num">6</span> <span class="m-op">&rarr;</span> <span class="m-str">Suitable</span></div>
+          <div></div>
+          <div><span class="m-cmt">// Cell (1,1): Slope=8, Soil=6, LandUse=9</span></div>
+          <div><span class="m-var">S(1,1)</span> <span class="m-op">=</span> <span class="m-num">8</span><span class="m-op">&times;</span><span class="m-num">0.50</span> <span class="m-op">+</span> <span class="m-num">6</span><span class="m-op">&times;</span><span class="m-num">0.30</span> <span class="m-op">+</span> <span class="m-num">9</span><span class="m-op">&times;</span><span class="m-num">0.20</span></div>
+          <div><span class="m-var">S(1,1)</span> <span class="m-op">=</span> <span class="m-num">4.0</span> <span class="m-op">+</span> <span class="m-num">1.8</span> <span class="m-op">+</span> <span class="m-num">1.8</span> <span class="m-op">=</span> <span class="m-res">7.6</span> <span class="m-str">&gt;6 ✓ Suitable</span></div>
+          <div></div>
+          <div><span class="m-cmt">// Cell (1,2): Slope=7, Soil=8, LandUse=7</span></div>
+          <div><span class="m-var">S(1,2)</span> <span class="m-op">=</span> <span class="m-num">7</span><span class="m-op">&times;</span><span class="m-num">0.50</span> <span class="m-op">+</span> <span class="m-num">8</span><span class="m-op">&times;</span><span class="m-num">0.30</span> <span class="m-op">+</span> <span class="m-num">7</span><span class="m-op">&times;</span><span class="m-num">0.20</span></div>
+          <div><span class="m-var">S(1,2)</span> <span class="m-op">=</span> <span class="m-num">3.5</span> <span class="m-op">+</span> <span class="m-num">2.4</span> <span class="m-op">+</span> <span class="m-num">1.4</span> <span class="m-op">=</span> <span class="m-res">7.3</span> <span class="m-str">&gt;6 ✓ Suitable</span></div>
+          <div></div>
+          <div><span class="m-cmt">// Cell (1,3): Slope=5, Soil=4, LandUse=3</span></div>
+          <div><span class="m-var">S(1,3)</span> <span class="m-op">=</span> <span class="m-num">5</span><span class="m-op">&times;</span><span class="m-num">0.50</span> <span class="m-op">+</span> <span class="m-num">4</span><span class="m-op">&times;</span><span class="m-num">0.30</span> <span class="m-op">+</span> <span class="m-num">3</span><span class="m-op">&times;</span><span class="m-num">0.20</span></div>
+          <div><span class="m-var">S(1,3)</span> <span class="m-op">=</span> <span class="m-num">2.5</span> <span class="m-op">+</span> <span class="m-num">1.2</span> <span class="m-op">+</span> <span class="m-num">0.6</span> <span class="m-op">=</span> <span class="m-res">4.3</span> <span class="m-str">&le;6 ✗ Not Suitable</span></div>
+          <div></div>
+          <div><span class="m-cmt">// Cell (2,2): Slope=9, Soil=5, LandUse=6</span></div>
+          <div><span class="m-var">S(2,2)</span> <span class="m-op">=</span> <span class="m-num">9</span><span class="m-op">&times;</span><span class="m-num">0.50</span> <span class="m-op">+</span> <span class="m-num">5</span><span class="m-op">&times;</span><span class="m-num">0.30</span> <span class="m-op">+</span> <span class="m-num">6</span><span class="m-op">&times;</span><span class="m-num">0.20</span></div>
+          <div><span class="m-var">S(2,2)</span> <span class="m-op">=</span> <span class="m-num">4.5</span> <span class="m-op">+</span> <span class="m-num">1.5</span> <span class="m-op">+</span> <span class="m-num">1.2</span> <span class="m-op">=</span> <span class="m-res">7.2</span> <span class="m-str">&gt;6 ✓ Suitable</span></div>
+          <div></div>
+          <div><span class="m-cmt">// ... repeat for all cells in the grid</span></div>
+          <div></div>
+          <div><span class="m-kw">Final Grid</span><span class="m-op">:</span></div>
+          <div>  <span class="m-res">7.6</span>  <span class="m-res">7.3</span>  <span class="m-num">4.3</span></div>
+          <div>  <span class="m-res">6.7</span>  <span class="m-res">7.2</span>  <span class="m-num">4.8</span></div>
+          <div>  <span class="m-num">4.2</span>  <span class="m-num">4.6</span>  <span class="m-res">7.7</span></div>
+        </div>
+      </div>
+      <div class="editor-statusbar"><span>Math &middot; Weighted Overlay</span><span>14 marks</span></div>
+    </div>
+
+    <h4>Final Suitability Map &amp; Area Calculation</h4>
+    <table>
+      <thead><tr><th>Cell</th><th>Weighted Score</th><th>Suitable?</th></tr></thead>
+      <tbody>
+        <tr><td>(1,1)</td><td>7.6</td><td style="color:green;font-weight:bold;">✓ Yes</td></tr>
+        <tr><td>(1,2)</td><td>7.3</td><td style="color:green;font-weight:bold;">✓ Yes</td></tr>
+        <tr><td>(1,3)</td><td>4.3</td><td style="color:red;">✗ No</td></tr>
+        <tr><td>(2,1)</td><td>6.7</td><td style="color:green;font-weight:bold;">✓ Yes</td></tr>
+        <tr><td>(2,2)</td><td>7.2</td><td style="color:green;font-weight:bold;">✓ Yes</td></tr>
+        <tr><td>(2,3)</td><td>4.8</td><td style="color:red;">✗ No</td></tr>
+        <tr><td>(3,1)</td><td>4.2</td><td style="color:red;">✗ No</td></tr>
+        <tr><td>(3,2)</td><td>4.6</td><td style="color:red;">✗ No</td></tr>
+        <tr><td>(3,3)</td><td>7.7</td><td style="color:green;font-weight:bold;">✓ Yes</td></tr>
+      </tbody>
+    </table>
+    <div class="code-editor">
+      <div class="editor-toolbar"><div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div><div class="editor-tab"><span class="tab-icon">&#9881;</span> Area_Calculation.gis</div></div>
+      <div class="editor-body">
+        <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div></div>
+        <div class="code-content">
+          <div><span class="m-cmt">// Area of suitable rice crop land</span></div>
+          <div><span class="m-var">Suitable cells</span> <span class="m-op">=</span> <span class="m-num">5</span> <span class="m-str">(cells with score &gt; 6)</span></div>
+          <div><span class="m-var">Cell area</span> <span class="m-op">=</span> <span class="m-num">25</span> <span class="m-unit">m</span> <span class="m-op">&times;</span> <span class="m-num">25</span> <span class="m-unit">m</span> <span class="m-op">=</span> <span class="m-num">625</span> <span class="m-unit">m&sup2;</span></div>
+          <div><span class="m-var">Total suitable area</span> <span class="m-op">=</span> <span class="m-num">5</span> <span class="m-op">&times;</span> <span class="m-num">625</span> <span class="m-op">=</span> <span class="m-res">3,125 m&sup2;</span></div>
+          <div><span class="m-res">Suitable area = 3,125 m&sup2; = 0.3125 hectares</span></div>
+        </div>
+      </div>
+      <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+    </div>
+    <p><strong>Key exam tip:</strong> In the actual exam, you will be given specific grid codes and a reclassification table. Reclassify each cell first, then apply the weighted formula to every cell. Show all arithmetic clearly for full marks.</p>
+
+    <!-- ══════ Chapter Summary & Importance ══════ -->
+<div class="chapter-info-section">
+      <h2>Chapter Summary</h2>
+      <p>This chapter focuses on raster-based spatial analysis techniques. <strong>Spatial interpolation methods</strong> estimate values at unsampled locations from known sample points &mdash; key methods include IDW (Inverse Distance Weighting), Kriging (geostatistical, uses semivariograms), Spline (smooth surface fitting), and Thiessen/Voronoi polygons (nearest-neighbor assignment). <strong>Raster analysis</strong> covers local operations (cell-by-cell calculations), focal/neighborhood operations (using moving windows/kernels), zonal operations (statistics within defined zones), and global operations (entire raster). <strong>Topological overlay</strong> in raster involves combining multiple raster layers through arithmetic (add, subtract, multiply) and logical (AND, OR, NOT) operations for suitability analysis. <strong>Map algebra</strong> provides the mathematical framework for raster calculations. <strong>Statistical analysis</strong> includes descriptive statistics, correlation, and regression on spatial data. <strong>Integrated spatial analysis</strong> combines vector and raster methods for complex multi-criteria decision making like site selection and land suitability analysis.</p>
+    </div>
+
+    
+
+<p class="footer-note">End of Chapter 7 – Spatial Analysis</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

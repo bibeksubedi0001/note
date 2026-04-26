@@ -1,0 +1,671 @@
+======================================================================
+  CHAPTER 2: RMS ERROR & DISTANCE SOLUTIONS
+======================================================================
+  1:20,000: 0.5mm x 20,000 = 10,000 mm = 10.00 m
+  1:25,000: 0.5mm x 25,000 = 12,500 mm = 12.50 m
+  1:2,500: 0.5mm x 2,500 = 1,250 mm = 1.25 m
+  1:30,000: 0.5mm x 30,000 = 15,000 mm = 15.00 m
+  1:5,000: 0.5mm x 5,000 = 2,500 mm = 2.50 m
+  1:15,000: 0.5mm x 15,000 = 7,500 mm = 7.50 m
+
+  --- Distance: A(24.5N, 83.5E) to B(24.6N, 84.5E), R=6378km ---
+  Mean latitude: 24.55 deg, cos(mean_lat) = 0.909599
+  N-S distance = 0.1 x pi/180 x 6378 = 11.1317 km
+  E-W distance = 1.0 x pi/180 x 6378 x cos(24.55) = 101.2539 km
+  Total distance = sqrt(11.1317^2 + 101.2539^2) = 101.8640 km
+
+  --- 1 deg Latitude vs 1 deg Longitude difference ---
+  1 deg latitude = 2*pi * R_pole / 360 = 110946.26 m
+  1 deg longitude = 2*pi * R_equator / 360 = 111319.49 m
+  Difference = 373.23 m = 0.373 km
+
+
+======================================================================
+  CHAPTER 9: DEM HYDROLOGY SOLUTIONS
+======================================================================
+
+============================================================
+  Q1: 2080 Chaitra Q10 (30m) [VERIFY]
+  Grid: 6├ù6, Cell Size: 30m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (D,3): value=68, min_neighbor=76, filled to 76.5
+  Sink at (D,5): value=73, min_neighbor=76, filled to 76.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   ΓåÆ   Γåÿ   Γåô   ΓåÖ   Γåô
+   Γåÿ   Γåÿ   Γåÿ   Γåô   ΓåÖ   ΓåÖ
+   Γåÿ   ΓåÆ   ΓåÆ   Γåÿ   Γåô   ΓåÖ
+   ΓåÆ   ΓåÆ   Γåù   ΓåÆ   ΓÇó   ΓåÉ
+   Γåù   ΓåÆ   ΓåÆ   Γåù   Γåæ   Γåû
+   Γåù   Γåù   Γåæ   Γåæ   ΓåÉ   Γåû
+
+  Flow Direction Codes:
+    2    1    2    4    8    4
+    2    2    2    4    8    8
+    2    1    1    2    4    8
+    1    1  128    1    0   16
+  128    1    1  128   64   32
+  128  128   64   64   16   32
+
+--- STEP 3: Flow Accumulation ---
+    0    0    1    0    0    0
+    0    1    0    4    0    1
+    0    1    4   17    2    0
+    0    3    4    0   35    0
+    0    1    4    7    1    0
+    0    0    0    1    0    0
+
+--- STEP 4: River Network (threshold area = 4500 m┬▓, min cells = 5) ---
+  River cells: (D,3) FA=17, (E,4) FA=35, (D,5) FA=7
+  River Map (R=river, .=land):
+  .  .  .  .  .  .
+  .  .  .  .  .  .
+  .  .  .  R  .  .
+  .  .  .  .  R  .
+  .  .  .  R  .  .
+  .  .  .  .  .  .
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+
+  Basin sizes (cells): {}
+  Largest watershed: 0 cells = 0 m2 = 0.00 hectares
+
+============================================================
+  Q2: 2079 Chaitra Q8 (100m) [VERIFY]
+  Grid: 6├ù6, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (B,3): value=40, min_neighbor=44, filled to 44.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   Γåÿ   Γåÿ   Γåô   Γåô   ΓåÖ
+   Γåÿ   Γåô   Γåÿ   Γåô   Γåô   ΓåÖ
+   ΓåÆ   ΓåÆ   Γåÿ   Γåô   Γåô   Γåô
+   Γåù   Γåæ   ΓåÆ   Γåô   Γåÿ   Γåô
+   Γåÿ   Γåÿ   ΓåÆ   Γåô   Γåô   Γåô
+   ΓåÆ   ΓåÆ   ΓåÆ   ΓåÆ   ΓÇó   ΓåÉ
+
+  Flow Direction Codes:
+    2    2    2    4    4    8
+    2    4    2    4    4    8
+    1    1    2    4    4    4
+  128   64    1    4    2    4
+    2    2    1    4    4    4
+    1    1    1    1    0   16
+
+--- STEP 3: Flow Accumulation ---
+    0    0    0    0    0    0
+    0    1    1    2    2    0
+    0    6    7    5    4    0
+    0    0    0   15    5    1
+    0    0    0   17    0    8
+    0    2    4   23   35    9
+
+--- STEP 4: River Network (threshold area = 40000 m┬▓, min cells = 4) ---
+  River cells: (B,3) FA=6, (C,3) FA=7, (D,3) FA=5, (E,3) FA=4, (D,4) FA=15, (E,4) FA=5, (D,5) FA=17, (F,5) FA=8, (C,6) FA=4, (D,6) FA=23, (E,6) FA=35, (F,6) FA=9
+  River Map (R=river, .=land):
+  .  .  .  .  .  .
+  .  .  .  .  .  .
+  .  R  R  R  R  .
+  .  .  .  R  R  .
+  .  .  .  R  .  R
+  .  .  R  R  R  R
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+
+  Basin sizes (cells): {0: 36}
+  Largest watershed: 36 cells = 360,000 m2 = 36.00 hectares
+
+============================================================
+  Q7: 2074 Magh Q5b (threshold 4 cells)
+  Grid: 6├ù6, Cell Size: 30m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (D,4): value=90, min_neighbor=94, filled to 94.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   ΓåÆ   Γåÿ   Γåÿ   Γåô   ΓåÉ   ΓåÖ
+   Γåÿ   Γåÿ   Γåÿ   Γåô   ΓåÖ   ΓåÖ
+   ΓåÆ   ΓåÆ   ΓåÆ   Γåô   ΓåÉ   ΓåÖ
+   Γåù   ΓåÆ   ΓåÆ   Γåô   ΓåÉ   ΓåÉ
+   Γåù   ΓåÆ   ΓåÆ   ΓÇó   ΓåÉ   Γåû
+   Γåæ   ΓåÆ   Γåù   Γåæ   ΓåÉ   Γåæ
+
+  Flow Direction Codes:
+    1    2    2    4   16    8
+    2    2    2    4    8    8
+    1    1    1    4   16    8
+  128    1    1    4   16   16
+  128    1    1    0   16   32
+   64    1  128   64   16   64
+
+--- STEP 3: Flow Accumulation ---
+    0    1    0    1    0    0
+    0    0    2    3    1    0
+    0    3    5   17    1    0
+    0    2    3   27    4    0
+    1    0    1   35    0    1
+    0    0    1    1    0    0
+
+--- STEP 4: River Network (threshold = 4 cells) ---
+  River cells: (C,3) FA=5, (D,3) FA=17, (D,4) FA=27, (E,4) FA=4, (D,5) FA=35
+  River Map (R=river, .=land):
+  .  .  .  .  .  .
+  .  .  .  .  .  .
+  .  .  R  R  .  .
+  .  .  .  R  R  .
+  .  .  .  R  .  .
+  .  .  .  .  .  .
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+  -1  -1  -1  -1  -1  -1
+
+  Basin sizes (cells): {}
+  Largest watershed: 0 cells = 0 m2 = 0.00 hectares
+
+============================================================
+  Q8: 2074 Bhadra Q2b (100m, threshold 10)
+  Grid: 6├ù5, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (C,3): value=455, min_neighbor=465, filled to 465.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   ΓÇó   ΓåÉ   Γåÿ   Γåô   ΓåÖ
+   Γåæ   Γåÿ   Γåô   ΓåÖ   ΓåÖ
+   ΓåÆ   ΓåÆ   Γåÿ   Γåô   ΓåÖ
+   Γåù   Γåù   Γåÿ   Γåÿ   Γåô
+   ΓåÆ   ΓåÆ   ΓåÆ   Γåÿ   Γåô
+   Γåù   Γåù   ΓåÆ   ΓåÆ   ΓÇó
+
+  Flow Direction Codes:
+    0   16    2    4    8
+   64    2    4    8    8
+    1    1    2    4    8
+  128  128    2    2    4
+    1    1    1    2    4
+  128  128    1    1    0
+
+--- STEP 3: Flow Accumulation ---
+    2    0    0    0    0
+    0    0    0    3    0
+    0    2   10    1    0
+    0    0    0   14    0
+    0    2    4    6   16
+    0    0    0    1   26
+
+--- STEP 4: River Network (threshold = 10 cells) ---
+  River cells: (C,3) FA=10, (D,4) FA=14, (E,5) FA=16, (E,6) FA=26
+  River Map (R=river, .=land):
+  .  .  .  .  .
+  .  .  .  .  .
+  .  .  R  .  .
+  .  .  .  R  .
+  .  .  .  .  R
+  .  .  .  .  R
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   1   1   0   0   0
+   1   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+
+  Basin sizes (cells): {1: 3, 0: 27}
+  Largest watershed: 27 cells = 270,000 m2 = 27.00 hectares
+
+============================================================
+  Q9: 2073 Magh Q7 (30m, pour point 4,4)
+  Grid: 6├ù5, Cell Size: 30m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (B,3): value=40, min_neighbor=84, filled to 84.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   Γåÿ   Γåÿ   Γåô   Γåô
+   Γåÿ   Γåô   Γåÿ   Γåô   Γåô
+   ΓåÆ   ΓåÆ   Γåÿ   Γåô   Γåô
+   Γåô   Γåô   ΓåÆ   Γåô   ΓåÉ
+   Γåô   Γåô   Γåô   Γåÿ   Γåô
+   ΓåÆ   ΓåÆ   ΓåÆ   ΓåÆ   ΓÇó
+
+  Flow Direction Codes:
+    2    2    2    4    4
+    2    4    2    4    4
+    1    1    2    4    4
+    4    4    1    4   16
+    4    4    4    2    4
+    1    1    1    1    0
+
+--- STEP 3: Flow Accumulation ---
+    0    0    0    0    0
+    0    1    1    2    1
+    0    4    5    5    2
+    0    0    0   17    3
+    1    1    0   18    0
+    2    5    7    8   29
+
+--- STEP 4: River Network (threshold = 4 cells) ---
+  River cells: (B,3) FA=4, (C,3) FA=5, (D,3) FA=5, (D,4) FA=17, (D,5) FA=18, (B,6) FA=5, (C,6) FA=7, (D,6) FA=8, (E,6) FA=29
+  River Map (R=river, .=land):
+  .  .  .  .  .
+  .  .  .  .  .
+  .  R  R  R  .
+  .  .  .  R  .
+  .  .  .  R  .
+  .  R  R  R  R
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+
+  Basin sizes (cells): {0: 30}
+  Largest watershed: 30 cells = 27,000 m2 = 2.70 hectares
+
+============================================================
+  Q10: 2073 Bhadra Q8 (100m) [SAME AS Q2]
+  Grid: 6├ù6, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (B,3): value=40, min_neighbor=44, filled to 44.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   Γåÿ   Γåÿ   Γåô   Γåô   ΓåÖ
+   Γåÿ   Γåô   Γåÿ   Γåô   Γåô   ΓåÖ
+   ΓåÆ   ΓåÆ   Γåÿ   Γåô   Γåô   Γåô
+   Γåù   Γåæ   ΓåÆ   Γåô   Γåÿ   Γåô
+   Γåÿ   Γåÿ   ΓåÆ   Γåô   Γåô   Γåô
+   ΓåÆ   ΓåÆ   ΓåÆ   ΓåÆ   ΓÇó   ΓåÉ
+
+  Flow Direction Codes:
+    2    2    2    4    4    8
+    2    4    2    4    4    8
+    1    1    2    4    4    4
+  128   64    1    4    2    4
+    2    2    1    4    4    4
+    1    1    1    1    0   16
+
+--- STEP 3: Flow Accumulation ---
+    0    0    0    0    0    0
+    0    1    1    2    2    0
+    0    6    7    5    4    0
+    0    0    0   15    5    1
+    0    0    0   17    0    8
+    0    2    4   23   35    9
+
+--- STEP 4: River Network (threshold area = 40000 m┬▓, min cells = 4) ---
+  River cells: (B,3) FA=6, (C,3) FA=7, (D,3) FA=5, (E,3) FA=4, (D,4) FA=15, (E,4) FA=5, (D,5) FA=17, (F,5) FA=8, (C,6) FA=4, (D,6) FA=23, (E,6) FA=35, (F,6) FA=9
+  River Map (R=river, .=land):
+  .  .  .  .  .  .
+  .  .  .  .  .  .
+  .  R  R  R  R  .
+  .  .  .  R  R  .
+  .  .  .  R  .  R
+  .  .  R  R  R  R
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+
+  Basin sizes (cells): {0: 36}
+  Largest watershed: 36 cells = 360,000 m2 = 36.00 hectares
+
+============================================================
+  Q11: 2072 Ashwin Q5b
+  Grid: 5├ù5, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (C,3): value=95, min_neighbor=99, filled to 99.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   ΓåÆ   ΓåÆ   ΓÇó   ΓåÉ   ΓåÉ
+   Γåæ   Γåæ   Γåæ   Γåû   Γåû
+   Γåù   ΓåÆ   Γåù   Γåæ   Γåû
+   ΓåÆ   Γåù   Γåæ   Γåæ   Γåæ
+   Γåù   Γåæ   Γåæ   Γåæ   Γåû
+
+  Flow Direction Codes:
+    1    1    0   16   16
+   64   64   64   32   32
+  128    1  128   64   32
+    1  128   64   64   64
+  128   64   64   64   32
+
+--- STEP 3: Flow Accumulation ---
+    1    4   24    2    0
+    0    1    0   14    0
+    0    0    7    3    1
+    0    3    1    2    0
+    0    0    0    0    0
+
+--- STEP 4: River Network (threshold = 5 cells) ---
+  River cells: (C,1) FA=24, (D,2) FA=14, (C,3) FA=7
+  River Map (R=river, .=land):
+  .  .  R  .  .
+  .  .  .  R  .
+  .  .  R  .  .
+  .  .  .  .  .
+  .  .  .  .  .
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+
+  Basin sizes (cells): {0: 25}
+  Largest watershed: 25 cells = 250,000 m2 = 25.00 hectares
+
+============================================================
+  Q12: 2071 Magh Q4a (threshold 9)
+  Grid: 4├ù4, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  No sinks found.
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   Γåÿ   Γåÿ   Γåô
+   Γåÿ   Γåÿ   Γåÿ   Γåô
+   ΓåÆ   ΓåÆ   Γåÿ   Γåô
+   Γåù   Γåù   ΓåÆ   ΓÇó
+
+  Flow Direction Codes:
+    2    2    2    4
+    2    2    2    4
+    1    1    2    4
+  128  128    1    0
+
+--- STEP 3: Flow Accumulation ---
+    0    0    0    0
+    0    1    1    2
+    0    3    7    5
+    0    0    0   15
+
+--- STEP 4: River Network (threshold = 9 cells) ---
+  River cells: (D,4) FA=15
+  River Map (R=river, .=land):
+  .  .  .  .
+  .  .  .  .
+  .  .  .  .
+  .  .  .  R
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   0
+   0   0   0   0
+   0   0   0   0
+   0   0   0   0
+
+  Basin sizes (cells): {0: 16}
+  Largest watershed: 16 cells = 160,000 m2 = 16.00 hectares
+
+============================================================
+  Q13: 2071 Bhadra Q7 (threshold 5)
+  Grid: 5├ù5, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (B,3): value=71, min_neighbor=72, filled to 72.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   Γåÿ   Γåÿ   Γåô   Γåô
+   Γåÿ   Γåô   Γåô   Γåô   Γåô
+   ΓåÆ   ΓåÆ   Γåÿ   Γåô   Γåô
+   Γåù   Γåæ   ΓåÆ   Γåÿ   Γåô
+   Γåù   ΓåÆ   Γåù   ΓåÆ   ΓÇó
+
+  Flow Direction Codes:
+    2    2    2    4    4
+    2    4    4    4    4
+    1    1    2    4    4
+  128   64    1    2    4
+  128    1  128    1    0
+
+--- STEP 3: Flow Accumulation ---
+    0    0    0    0    0
+    0    1    1    2    1
+    0    7   10    3    2
+    0    1    0   18    3
+    0    0    1    0   24
+
+--- STEP 4: River Network (threshold = 5 cells) ---
+  River cells: (B,3) FA=7, (C,3) FA=10, (D,4) FA=18, (E,5) FA=24
+  River Map (R=river, .=land):
+  .  .  .  .  .
+  .  .  .  .  .
+  .  R  R  .  .
+  .  .  .  R  .
+  .  .  .  .  R
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+
+  Basin sizes (cells): {0: 25}
+  Largest watershed: 25 cells = 250,000 m2 = 25.00 hectares
+
+============================================================
+  Q14: 2081 Chaitra (LiDAR 10m, 1000m┬▓)
+  Grid: 6├ù6, Cell Size: 10m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  No sinks found.
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   Γåô   Γåÿ   Γåô   Γåô   ΓåÖ
+   ΓåÆ   ΓÇó   Γåÿ   Γåÿ   Γåô   Γåô
+   Γåù   Γåÿ   Γåÿ   Γåÿ   Γåô   ΓåÖ
+   ΓåÆ   Γåÿ   Γåÿ   Γåô   Γåô   ΓåÖ
+   ΓåÆ   ΓåÆ   ΓåÆ   Γåÿ   Γåô   ΓåÖ
+   ΓåÆ   Γåù   Γåù   ΓåÆ   ΓÇó   ΓåÉ
+
+  Flow Direction Codes:
+    2    4    2    4    4    8
+    1    0    2    2    4    4
+  128    2    2    2    4    8
+    1    2    2    4    4    8
+    1    1    1    2    4    8
+    1  128  128    1    0   16
+
+--- STEP 3: Flow Accumulation ---
+    0    0    0    0    0    0
+    0    4    0    2    2    0
+    0    0    0    1    6    1
+    0    1    1    1   11    0
+    0    1    6   12   13    0
+    0    1    0    0   30    0
+
+--- STEP 4: River Network (threshold area = 1000 m┬▓, min cells = 10) ---
+  River cells: (E,4) FA=11, (D,5) FA=12, (E,5) FA=13, (E,6) FA=30
+  River Map (R=river, .=land):
+  .  .  .  .  .  .
+  .  .  .  .  .  .
+  .  .  .  .  .  .
+  .  .  .  .  R  .
+  .  .  .  R  R  .
+  .  .  .  .  R  .
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+  -1  -1   0   0   0   0
+  -1  -1   0   0   0   0
+  -1   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+
+  Basin sizes (cells): {0: 31}
+  Largest watershed: 31 cells = 3,100 m2 = 0.31 hectares
+
+============================================================
+  Q5: 2075 Magh Q3b (100m, threshold 6)
+  Grid: 6├ù5, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (C,3): value=455, min_neighbor=465, filled to 465.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   ΓåÆ   Γåÿ   ΓåÆ   ΓÇó
+   Γåÿ   Γåÿ   Γåô   ΓåÖ   Γåæ
+   ΓåÆ   ΓåÆ   Γåÿ   Γåô   ΓåÖ
+   Γåù   Γåù   Γåÿ   Γåÿ   Γåô
+   ΓåÆ   ΓåÆ   ΓåÆ   Γåÿ   Γåô
+   Γåù   Γåù   ΓåÆ   ΓåÆ   ΓÇó
+
+  Flow Direction Codes:
+    2    1    2    1    0
+    2    2    4    8   64
+    1    1    2    4    8
+  128  128    2    2    4
+    1    1    1    2    4
+  128  128    1    1    0
+
+--- STEP 3: Flow Accumulation ---
+    0    0    1    0    2
+    0    1    0    2    0
+    0    3   11    0    0
+    0    0    0   14    0
+    0    2    4    6   16
+    0    0    0    1   26
+
+--- STEP 4: River Network (threshold = 6 cells) ---
+  River cells: (C,3) FA=11, (D,4) FA=14, (D,5) FA=6, (E,5) FA=16, (E,6) FA=26
+  River Map (R=river, .=land):
+  .  .  .  .  .
+  .  .  .  .  .
+  .  .  R  .  .
+  .  .  .  R  .
+  .  .  .  R  R
+  .  .  .  .  R
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   1   1
+   0   0   0   0   1
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+   0   0   0   0   0
+
+  Basin sizes (cells): {0: 27, 1: 3}
+  Largest watershed: 27 cells = 270,000 m2 = 27.00 hectares
+
+============================================================
+  Q6: 2075 Bhadra Q9a
+  Grid: 6├ù6, Cell Size: 100m
+============================================================
+
+--- STEP 1: Sink Detection & Fill ---
+  Sink at (C,3): value=20, min_neighbor=23, filled to 23.5
+
+--- STEP 2: Flow Direction (D8) ---
+  Flow Direction Arrows:
+   Γåÿ   Γåô   Γåô   Γåô   ΓåÖ   ΓåÖ
+   ΓåÆ   Γåÿ   Γåô   ΓåÖ   ΓåÖ   ΓåÖ
+   Γåÿ   Γåô   ΓåÖ   ΓåÉ   Γåô   ΓåÖ
+   Γåô   ΓåÖ   Γåô   Γåô   ΓåÖ   Γåô
+   Γåô   Γåô   ΓåÖ   ΓåÖ   Γåô   Γåô
+   ΓåÆ   ΓÇó   ΓåÉ   ΓåÉ   ΓÇó   ΓåÉ
+
+  Flow Direction Codes:
+    2    4    4    4    8    8
+    1    2    4    8    8    8
+    2    4    8   16    4    8
+    4    8    4    4    8    4
+    4    4    8    8    4    4
+    1    0   16   16    0   16
+
+--- STEP 3: Flow Accumulation ---
+    0    0    0    0    0    0
+    0    3    1    2    1    0
+    0    0   12    2    1    0
+    0   15    0    0    3    0
+   17    0    1    5    0    1
+   18   30    7    0    4    2
+
+--- STEP 4: River Network (threshold = 5 cells) ---
+  River cells: (C,3) FA=12, (B,4) FA=15, (A,5) FA=17, (D,5) FA=5, (A,6) FA=18, (B,6) FA=30, (C,6) FA=7
+  River Map (R=river, .=land):
+  .  .  .  .  .  .
+  .  .  .  .  .  .
+  .  .  R  .  .  .
+  .  R  .  .  .  .
+  R  .  .  R  .  .
+  R  R  R  .  .  .
+
+--- STEP 5: Watershed Delineation ---
+  Basin Map:
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   0
+   0   0   0   0   0   1
+   0   0   0   0   1   1
+   0   0   0   0   1   1
+
+  Basin sizes (cells): {0: 31, 1: 5}
+  Largest watershed: 31 cells = 310,000 m2 = 31.00 hectares
+
+
+======================================================================
+  ALL SOLUTIONS COMPLETE
+======================================================================

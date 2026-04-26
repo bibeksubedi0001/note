@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 2: GIS and Maps</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch2);--ch-color-lt:var(--ch2-lt);--ch-color-dk:var(--ch2-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter2.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 2 &mdash; Summary</div>
+    <h1>GIS and Maps</h1>
+    <span class="ch-number-bg">02</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">4 Teaching Hours</span>
+      <span class="meta-badge exam">6 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">15+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~70</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">6</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-medium">Medium</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> Map Projections</h2>
+    <ul>
+      <li><strong>Purpose:</strong> Transform 3D Earth onto 2D surface. All projections introduce distortion.</li>
+      <li><strong>Types by surface:</strong> Cylindrical (Mercator), Conical (Lambert), Azimuthal/Planar (Stereographic).</li>
+      <li><strong>Properties preserved:</strong> Conformal (shape), Equal-area (area), Equidistant (distance). No projection preserves all.</li>
+      <li><strong>UTM (Universal Transverse Mercator):</strong> 60 zones, each 6 degrees wide, central meridian scale 0.9996.</li>
+    </ul>
+
+    <h2><span class="section-num">2</span> Nepal Datum and MUTM</h2>
+    <ul>
+      <li><strong>Nepal datum:</strong> Nagarkot as origin, Everest 1830 ellipsoid.</li>
+      <li><strong>MUTM (Modified UTM):</strong> Zone width reduced to 3 degrees (84&ndash;87&deg;E and 87&ndash;90&deg;E). Scale factor = 0.9999. More accurate for Nepal's narrow east-west extent.</li>
+    </ul>
+
+    <h2><span class="section-num">3</span> GCS vs PCS</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>GCS</th><th>PCS</th></tr></thead>
+        <tbody>
+          <tr><td>Units</td><td>Degrees (lat/long)</td><td>Metres/feet</td></tr>
+          <tr><td>Surface</td><td>3D (sphere/ellipsoid)</td><td>2D flat plane</td></tr>
+          <tr><td>Distortion</td><td>None (angular reference)</td><td>Some (depends on projection)</td></tr>
+          <tr><td>Use</td><td>Global referencing</td><td>Mapping, measurement</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2><span class="section-num">4</span> RMS Error</h2>
+    <div class="formula">
+      RMS = &radic;[(&Sigma;(x<sub>i</sub>&prime; &minus; x<sub>i</sub>)&sup2; + (y<sub>i</sub>&prime; &minus; y<sub>i</sub>)&sup2;) / n]
+    </div>
+    <p>Used in georeferencing to measure accuracy of transformation. Lower RMS = better fit. Acceptable threshold depends on scale (typically &lt;1 pixel).</p>
+
+    <h2><span class="section-num">5</span> Accuracy vs Precision</h2>
+    <ul>
+      <li><strong>Accuracy:</strong> Closeness to true value. High accuracy = low systematic error.</li>
+      <li><strong>Precision:</strong> Repeatability/consistency. High precision = low random error.</li>
+      <li>A measurement can be precise but inaccurate (consistently wrong), or accurate but imprecise (close on average but scattered).</li>
+    </ul>
+
+    <h2><span class="section-num">6</span> Scale Types</h2>
+    <ul>
+      <li><strong>Verbal:</strong> "1 cm represents 1 km."</li>
+      <li><strong>Representative Fraction (RF):</strong> 1:50,000.</li>
+      <li><strong>Graphical (bar scale):</strong> Visual bar. Remains valid when map is resized.</li>
+      <li>Large scale = small area, more detail (1:5,000). Small scale = large area, less detail (1:1,000,000).</li>
+    </ul>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain types of map projections with examples. <em>(2073, 2076, 2079)</em></span></div><div class="qa-answer">
+      <p>Cylindrical (Mercator), Conical (Lambert), Azimuthal. Explain properties: conformal, equal-area, equidistant. Draw projection surfaces.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What is MUTM? How is it different from standard UTM? <em>(2074, 2075, 2078, 2081)</em></span></div><div class="qa-answer">
+      <p>MUTM: 3-degree zones for Nepal (vs 6-degree UTM). Scale factor 0.9999 (vs 0.9996). More accurate for Nepal's narrow extent. Two zones: 84&ndash;87 E and 87&ndash;90 E.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Differentiate between GCS and PCS. <em>(2072, 2079, 2080)</em></span></div><div class="qa-answer">
+      <p>GCS: angular (degrees), 3D reference. PCS: linear (metres), flat plane. GCS = location reference; PCS = measurement system. Use comparison table.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What is RMS error? Given control points, calculate RMS. <em>(2074 Bhadra, 2076, 2082)</em></span></div><div class="qa-answer">
+      <p>RMS = sqrt(sum of squared residuals / n). Show calculation step by step. Compare with acceptable threshold.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Distinguish accuracy and precision with diagram. <em>(2071, 2075)</em></span></div><div class="qa-answer">
+      <p>Draw target diagrams: (a) accurate + precise, (b) precise + inaccurate, (c) accurate + imprecise, (d) neither. Explain systematic vs random error.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain types of map scales with examples. <em>(2073, 2078)</em></span></div><div class="qa-answer">
+      <p>Verbal, RF, graphical. Graphical best because it resizes with map. Large scale = large detail, small area.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter1.html">&larr; Chapter 1</a>
+      <a href="chapter3.html">Chapter 3 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 2 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

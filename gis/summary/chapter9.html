@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 9: River Network Generation</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch9);--ch-color-lt:var(--ch9-lt);--ch-color-dk:var(--ch9-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter9.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 9 &mdash; Summary</div>
+    <h1>River Network Generation</h1>
+    <span class="ch-number-bg">09</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">4 Teaching Hours</span>
+      <span class="meta-badge exam">12 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">20+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~160</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">14+</span><span class="stat-label">Numericals</span></div>
+      <div class="stat-card"><span class="pill pill-critical">Critical</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <div class="exam-box">
+      <strong>Exam strategy:</strong> This is the highest-scoring numerical in the course. The same pattern appears in almost every paper (10&ndash;12 marks). Given a DEM grid: find sinks, fill them, derive flow direction, compute flow accumulation, extract river network with threshold, and calculate watershed area.
+    </div>
+
+    <h2><span class="section-num">1</span> Complete Watershed Delineation Workflow</h2>
+    <ol>
+      <li><strong>Fill Sinks:</strong> Identify cells lower than ALL 8 neighbours. Raise to min neighbour + 0.5 m.</li>
+      <li><strong>Flow Direction (D8):</strong> Each cell points to steepest downhill neighbour. Codes: E=1, SE=2, S=4, SW=8, W=16, NW=32, N=64, NE=128. Diagonal: divide by &radic;2.</li>
+      <li><strong>Flow Accumulation:</strong> Count upstream cells flowing into each cell. 0 = ridge.</li>
+      <li><strong>Stream Definition:</strong> Accumulation &times; cell area &ge; threshold = river cell.</li>
+      <li><strong>Watershed Delineation:</strong> Trace divide boundaries.</li>
+    </ol>
+
+    <h2><span class="section-num">2</span> Sink Identification and Filling</h2>
+    <ul>
+      <li>A <strong>sink</strong> is a cell lower than all 8 surrounding cells.</li>
+      <li>Must be filled to ensure continuous flow paths.</li>
+      <li>Fill to minimum neighbour elevation + 0.5 m.</li>
+    </ul>
+
+    <h2><span class="section-num">3</span> Flow Direction (D8 Method)</h2>
+    <ul>
+      <li>Eight possible directions with power-of-2 codes.</li>
+      <li>For diagonal: slope = (elev diff) / &radic;2.</li>
+      <li>Edge cells: only consider existing neighbours.</li>
+    </ul>
+    <div class="key-concept">
+      <strong>Direction codes:</strong> E=1, SE=2, S=4, SW=8, W=16, NW=32, N=64, NE=128. Draw arrows from each cell pointing to its flow direction.
+    </div>
+
+    <h2><span class="section-num">4</span> Flow Accumulation</h2>
+    <p>Start from ridge cells (accum = 0), trace downstream, add counts. High accumulation = stream channels.</p>
+
+    <h2><span class="section-num">5</span> Stream Threshold</h2>
+    <div class="formula">
+      Threshold: Accumulation &times; Cell_Area &ge; Min_Catchment_Area<br>
+      Example: 100 m &times; 100 m = 10,000 m&sup2;. Threshold 40,000 m&sup2; &rarr; need &ge;4 cells accumulation.
+    </div>
+
+    <h2><span class="section-num">6</span> Watershed Area</h2>
+    <p>Count cells in each watershed &times; cell area = watershed area. Largest watershed = most cells draining to outlet.</p>
+
+    <h2><span class="section-num">7</span> Stream Ordering (Shreve)</h2>
+    <ul>
+      <li>Exterior (source) links = order 1.</li>
+      <li>At confluence, orders are <strong>added</strong> (unlike Strahler).</li>
+      <li>Order 1 + Order 1 = Order 2; Order 2 + Order 1 = Order 3.</li>
+    </ul>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Given a DEM grid: find sink, fill, flow direction, flow accumulation, river network, watershed area. <em>(2071&ndash;2082, 8&ndash;12 marks)</em></span></div><div class="qa-answer">
+      <p><strong>(a)</strong> Check each cell against 8 neighbours. Fill sink to min_neighbour + 0.5.</p>
+      <p><strong>(b)</strong> Calculate slope to each neighbour. Arrow to steepest descent. Show all arrows.</p>
+      <p><strong>(c)</strong> Start from 0-accum cells. Trace downstream, count upstream contributors.</p>
+      <p><strong>(d)</strong> Apply threshold. Cells &ge; threshold = river.</p>
+      <p><strong>(e)</strong> Trace divide lines. Count cells per watershed. Area = count &times; cell_size&sup2;.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain the flowchart of watershed delineation. <em>(2076 Bhadra)</em></span></div><div class="qa-answer">
+      <p>DEM &rarr; Fill Sinks &rarr; Flow Direction &rarr; Flow Accumulation &rarr; Stream Definition &rarr; Stream to Feature &rarr; Pour Point &rarr; Watershed.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain Sink, Flow Direction, Flow Accumulation, River Grid, Stream Lines. <em>(2074 Magh)</em></span></div><div class="qa-answer">
+      <p>Define each briefly. Sink: depression. Flow Dir: D8. Flow Accum: upstream count. River Grid: binary raster. Stream Lines: vector conversion.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain the Shreve method of stream ordering. <em>(2075 Bhadra)</em></span></div><div class="qa-answer">
+      <p>Exterior links = 1. At confluence, orders summed. Gives magnitude of drainage network.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Steps to generate river network from multiple DEMs. <em>(2082 Shrawan)</em></span></div><div class="qa-answer">
+      <p>Mosaic &rarr; clip with buffer &rarr; fill sinks &rarr; flow direction &rarr; flow accumulation &rarr; threshold &rarr; convert to vector &rarr; clip to boundary.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter8.html">&larr; Chapter 8</a>
+      <a href="chapter10.html">Chapter 10 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 9 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

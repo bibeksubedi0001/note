@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 11: Remote Sensing</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch11);--ch-color-lt:var(--ch11-lt);--ch-color-dk:var(--ch11-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter11.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 11 &mdash; Summary</div>
+    <h1>Remote Sensing</h1>
+    <span class="ch-number-bg">11</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">6 Teaching Hours</span>
+      <span class="meta-badge exam">16 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">25+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~200</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">8</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-critical">Critical</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> Remote Sensing Basics</h2>
+    <ul>
+      <li><strong>Definition:</strong> Acquiring information about Earth's surface without physical contact, using EM energy.</li>
+      <li><strong>Active RS:</strong> Own energy source (RADAR, LiDAR). Day/night, penetrates clouds.</li>
+      <li><strong>Passive RS:</strong> Depends on sunlight (Landsat, SPOT). Affected by clouds/darkness.</li>
+    </ul>
+
+    <h2><span class="section-num">2</span> EM Spectrum Bands</h2>
+    <ul>
+      <li>Visible: Blue (0.45&ndash;0.52), Green (0.52&ndash;0.60), Red (0.63&ndash;0.69 &mu;m).</li>
+      <li>NIR: 0.76&ndash;0.90 &mu;m &mdash; vegetation health.</li>
+      <li>SWIR: 1.55&ndash;2.35 &mu;m &mdash; soil moisture, minerals.</li>
+      <li>Thermal IR: 10.4&ndash;12.5 &mu;m &mdash; surface temperature.</li>
+      <li>Microwave: &gt;1 mm &mdash; RADAR, penetrates clouds.</li>
+    </ul>
+
+    <h2><span class="section-num">3</span> Spectral Signatures (MOST ASKED)</h2>
+    <div class="exam-box">
+      <strong>Draw this diagram in every related exam question.</strong> Spectral signatures are the most frequently tested topic in this chapter.
+    </div>
+    <ul>
+      <li><strong>Vegetation:</strong> Low visible (photosynthesis absorption), sharp rise at Red Edge (~0.7 &mu;m), very high NIR, dips at water bands (1.4, 1.9 &mu;m).</li>
+      <li><strong>Water:</strong> High blue-green, near-zero after red. Clear water absorbs NIR.</li>
+      <li><strong>Soil:</strong> Gradual increase visible to SWIR. Wet soil = lower reflectance.</li>
+    </ul>
+
+    <h2><span class="section-num">4</span> Four Resolutions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Resolution</th><th>Definition</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Spatial</td><td>Pixel size on ground</td><td>Landsat: 30 m, WorldView: 0.31 m</td></tr>
+          <tr><td>Spectral</td><td>Number/width of bands</td><td>Multi: 4&ndash;10, Hyper: 200+ bands</td></tr>
+          <tr><td>Radiometric</td><td>Bit depth per pixel</td><td>8-bit: 256, 16-bit: 65,536 levels</td></tr>
+          <tr><td>Temporal</td><td>Revisit time</td><td>Landsat: 16 days, MODIS: daily</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2><span class="section-num">5</span> Landsat 8 Band Combinations</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Band</th><th>Name</th><th>&mu;m</th><th>Res</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Coastal Aerosol</td><td>0.43&ndash;0.45</td><td>30 m</td></tr>
+          <tr><td>2</td><td>Blue</td><td>0.45&ndash;0.51</td><td>30 m</td></tr>
+          <tr><td>3</td><td>Green</td><td>0.53&ndash;0.59</td><td>30 m</td></tr>
+          <tr><td>4</td><td>Red</td><td>0.64&ndash;0.67</td><td>30 m</td></tr>
+          <tr><td>5</td><td>NIR</td><td>0.85&ndash;0.88</td><td>30 m</td></tr>
+          <tr><td>6</td><td>SWIR 1</td><td>1.57&ndash;1.65</td><td>30 m</td></tr>
+          <tr><td>7</td><td>SWIR 2</td><td>2.11&ndash;2.29</td><td>30 m</td></tr>
+          <tr><td>8</td><td>Pan</td><td>0.50&ndash;0.68</td><td>15 m</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>True Colour:</strong> 4, 3, 2 &mdash; natural image.</li>
+      <li><strong>False Colour (FCC):</strong> 5, 4, 3 &mdash; vegetation appears red.</li>
+      <li><strong>SWIR:</strong> 7, 5, 4 &mdash; urban, bare soil, geology.</li>
+    </ul>
+
+    <h2><span class="section-num">6</span> Image Classification</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Supervised</th><th>Unsupervised</th></tr></thead>
+        <tbody>
+          <tr><td>Training data</td><td>User provides</td><td>Not needed</td></tr>
+          <tr><td>Algorithm</td><td>MLC, Min Distance, SVM</td><td>K-Means, ISODATA</td></tr>
+          <tr><td>Knowledge</td><td>Must know area</td><td>Can be exploratory</td></tr>
+          <tr><td>Accuracy</td><td>Generally higher</td><td>Lower, needs labelling</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2><span class="section-num">7</span> NDVI</h2>
+    <div class="formula">
+      NDVI = (NIR &minus; Red) / (NIR + Red)<br>
+      &lt;0 water | 0&ndash;0.1 bare | 0.2&ndash;0.4 sparse | 0.5&ndash;0.8 dense vegetation
+    </div>
+
+    <h2><span class="section-num">8</span> Change Detection</h2>
+    <ul>
+      <li>Compare two images from different dates.</li>
+      <li>Methods: image differencing, ratioing, post-classification comparison, PCA.</li>
+      <li>Applications: deforestation, urban growth, flood mapping, glacial retreat.</li>
+    </ul>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Draw and explain spectral signatures of vegetation, water, and soil. <em>(Every exam 2071&ndash;2082)</em></span></div><div class="qa-answer">
+      <p>Draw reflectance vs wavelength (0.4&ndash;2.5 &mu;m). Three curves. Label Red Edge, water absorption bands. Explain each curve shape.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain the four types of resolution in Remote Sensing. <em>(2072, 2074, 2076, 2079, 2081)</em></span></div><div class="qa-answer">
+      <p>Spatial (pixel size), Spectral (bands), Radiometric (bit depth), Temporal (revisit). Give satellite examples.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Compare active and passive remote sensing. <em>(2071, 2073, 2078)</em></span></div><div class="qa-answer">
+      <p>Active: own energy, day/night, RADAR/LiDAR. Passive: sunlight, limited by clouds, Landsat/SPOT. Draw comparison diagram.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What are band combinations? Explain True Colour, FCC, SWIR for Landsat 8. <em>(2074, 2076, 2079, 2080, 2082)</em></span></div><div class="qa-answer">
+      <p>True: 4,3,2. FCC: 5,4,3. SWIR: 7,5,4. Include band table. Explain what appears red/green in each.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Compare supervised and unsupervised classification. <em>(2073, 2075, 2076, 2079, 2081)</em></span></div><div class="qa-answer">
+      <p>Supervised: training data, MLC. Unsupervised: K-Means, ISODATA, user labels after. Use comparison table.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">How is NDVI used for vegetation analysis? <em>(2074 Bhadra, 2075, 2080 Chaitra)</em></span></div><div class="qa-answer">
+      <p>Formula, range. Applications: crop health, forestry, drought. Multi-temporal for seasonal change.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain change detection using RS imagery. <em>(2078, 2080, 2082)</em></span></div><div class="qa-answer">
+      <p>Multi-date images. Pre-processing: geometric + radiometric correction. Methods: differencing, NDVI diff, post-classification. Nepal examples: flood, deforestation.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter10.html">&larr; Chapter 10</a>
+      <a href="chapter12.html">Chapter 12 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 11 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

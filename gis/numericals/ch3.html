@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3 Numericals – Raster Encoding</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .code-editor{margin:22px 0;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.1);font-family:"Consolas","Fira Code","Menlo","Monaco","Courier New",monospace;font-size:11pt;line-height:1.7}
+    .code-editor .editor-titlebar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#252526;border-bottom:1px solid #1e1e1e;user-select:none}
+    .code-editor .editor-dots{display:flex;gap:6px}
+    .code-editor .editor-dots span{width:11px;height:11px;border-radius:50%;display:inline-block}
+    .code-editor .editor-dots .dot-r{background:#ff5f56}
+    .code-editor .editor-dots .dot-y{background:#ffbd2e}
+    .code-editor .editor-dots .dot-g{background:#27c93f}
+    .code-editor .editor-tab{padding:3px 14px;background:#1e1e1e;color:#ccc;font-size:10pt;border-radius:4px 4px 0 0;border:1px solid #333;border-bottom:1px solid #1e1e1e}
+    .code-editor .editor-tab .tab-icon{color:#e8c96a;margin-right:4px}
+    .code-editor .editor-body{display:flex;background:#1e1e1e;padding:16px 0;overflow-x:auto}
+    .code-editor .line-numbers{padding:0 12px 0 16px;text-align:right;color:#858585;user-select:none;border-right:1px solid #333;min-width:44px;flex-shrink:0}
+    .code-editor .line-numbers div{line-height:1.7}
+    .code-editor .code-content{padding:0 18px;color:#d4d4d4;white-space:pre;flex:1}
+    .code-editor .code-content div{line-height:1.7;min-height:1.7em}
+    .code-editor .editor-statusbar{display:flex;justify-content:space-between;padding:4px 14px;background:#007acc;color:#fff;font-size:9pt}
+    .m-cmt{color:#6a9955;font-style:italic}
+    .m-kw{color:#569cd6;font-weight:bold}
+    .m-var{color:#9cdcfe}
+    .m-fn{color:#dcdcaa}
+    .m-str{color:#ce9178}
+    .m-num{color:#b5cea8}
+    .m-op{color:#d4d4d4}
+    .m-res{color:#4ec9b0;font-weight:bold}
+    .grid-table{border-collapse:collapse;margin:1em auto}
+    .grid-table td,.grid-table th{border:1px solid var(--line);padding:6px 10px;text-align:center;min-width:36px;font-family:'Courier New',monospace;font-size:.92em}
+    .grid-table th{background:var(--accent-light);font-weight:600}
+    .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.78em;font-weight:700;letter-spacing:.3px;vertical-align:middle;margin-left:6px}
+    .badge-v{background:#d4edda;color:#155724}
+    .badge-n{background:#fff3cd;color:#856404}
+    .formula-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:18px 22px;border-radius:0 8px 8px 0;margin:18px 0;font-size:1.02em}
+    .formula-box h4{margin:0 0 8px;color:var(--accent)}
+    .formula-box p{margin:6px 0}
+    .formula-box code{background:var(--soft);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace}
+    .process-steps{counter-reset:step;list-style:none;padding-left:0}
+    .process-steps li{counter-increment:step;padding:8px 0 8px 40px;position:relative;border-left:2px solid var(--accent);margin-left:12px}
+    .process-steps li::before{content:counter(step);position:absolute;left:-14px;top:6px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;text-align:center;line-height:26px;font-weight:bold;font-size:.85em}
+    .quadtree-diagram{margin:12px 0;padding:12px 18px;background:var(--soft);border-radius:8px;font-family:'Courier New',monospace;font-size:.95em;line-height:1.8;overflow-x:auto}
+    [data-theme="dark"] .code-editor{box-shadow:0 4px 24px rgba(0,0,0,.35),0 1px 4px rgba(0,0,0,.2)}
+    nav.toc{margin:24px 0;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+    nav.toc h2{margin:0;padding:14px 20px;font-size:.9rem;font-weight:700;background:var(--accent-light);color:var(--accent);border-bottom:1px solid var(--line);text-transform:none;letter-spacing:normal}
+    nav.toc h2::after{display:none}
+    nav.toc ol{list-style:none;padding:0;margin:0;columns:1;counter-reset:toc-item}
+    nav.toc li{counter-increment:toc-item;border-bottom:1px solid var(--line)}
+    nav.toc li:last-child{border-bottom:none}
+    nav.toc li a{display:flex;align-items:center;gap:12px;padding:10px 20px;text-decoration:none;color:var(--ink);font-size:.88rem;transition:all .15s}
+    nav.toc li a:hover{background:var(--accent-light);padding-left:24px}
+    nav.toc li a::before{content:counter(toc-item);width:24px;height:24px;border-radius:6px;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;transition:all .15s}
+    nav.toc li a:hover::before{background:var(--accent);color:#fff}
+    [data-theme="dark"] nav.toc{border-color:var(--line);background:var(--paper)}
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; All Numericals</a>
+    <div class="eyebrow">Chapter 3 &mdash; Numericals</div>
+    <h1>Raster Encoding &amp; Compression</h1>
+  </header>
+  <main>
+
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#formulas">Key Formulas &amp; Process</a></li>
+        <li><a href="#q1">Q1. 6&times;6 Grid &mdash; RLE &amp; Block Encoding (2074 Bhadra)</a></li>
+        <li><a href="#q2">Q2. 8&times;8 Grid &mdash; RLE &amp; Quadtree (2081 Chaitra)</a></li>
+        <li><a href="#q3">Q3. 8&times;8 Grid &mdash; RLE &amp; Quadtree (2080 Chaitra)</a></li>
+        <li><a href="#q4">Q4. 8&times;8 Grid &mdash; RLE &amp; Quadtree (2076 Bhadra)</a></li>
+        <li><a href="#q5">Q5. 8&times;8 Grid &mdash; RLE &amp; Quadtree (2075 Bhadra)</a></li>
+        <li><a href="#q6">Q6. 8&times;8 Grid &mdash; RLE &amp; Quadtree (2073 Magh)</a></li>
+        <li><a href="#q7">Q7. 8&times;8 Grid &mdash; Quadtree Compression (2073 Bhadra)</a></li>
+      </ol>
+    </nav>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  FORMULAS & PROCESS                                            -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="formulas">Key Formulas &amp; Process</h2>
+
+<div class="formula-box">
+  <h4>1. Full Raster Encoding</h4>
+  <p>Every cell stores its own value. Total storage = rows &times; cols values.</p>
+  <p><strong>Formula:</strong> <code>Full Size = rows &times; columns</code></p>
+  <p>This is the baseline against which all compression methods are compared.</p>
+</div>
+
+<div class="formula-box">
+  <h4>2. Run-Length Encoding (RLE)</h4>
+  <p>Scans each row left-to-right. Consecutive identical values are stored as a single <code>(value, count)</code> pair.</p>
+  <p><strong>Size:</strong> <code>RLE Size = Total pairs &times; 2</code> (each pair has a value and a count)</p>
+  <p><strong>Process:</strong></p>
+  <p>&bull; Read row left to right</p>
+  <p>&bull; Count consecutive identical values</p>
+  <p>&bull; Write (value, count) for each run</p>
+  <p>&bull; Repeat for all rows</p>
+</div>
+
+<div class="formula-box">
+  <h4>3. Block Encoding</h4>
+  <p>Stores rectangular blocks of identical values as <code>(value, r1, c1, r2, c2)</code>.</p>
+  <p><strong>Size:</strong> <code>Block Size = Number of blocks &times; 5</code></p>
+  <p>Better for data with large rectangular regions of uniform value.</p>
+</div>
+
+<div class="formula-box">
+  <h4>4. Quadtree Encoding</h4>
+  <p>Recursively divides the grid into 4 equal quadrants: <strong>NW, NE, SW, SE</strong>.</p>
+  <p>&bull; If a quadrant is uniform (all same value) &rarr; it becomes a <strong>leaf node</strong></p>
+  <p>&bull; If a quadrant is mixed &rarr; subdivide into 4 again</p>
+  <p>&bull; <strong>Requires power-of-2 grid size</strong> (4&times;4, 8&times;8, 16&times;16, etc.)</p>
+  <p><strong>Total nodes = internal nodes + leaf nodes</strong></p>
+</div>
+
+<div class="formula-box">
+  <h4>5. Percentage Decrease</h4>
+  <p><strong>Formula:</strong> <code>% Decrease = (Full &minus; Encoded) / Full &times; 100</code></p>
+</div>
+
+<h3>Process Steps</h3>
+<ol class="process-steps">
+  <li><strong>Draw/read the grid</strong> and note its dimensions (rows &times; columns)</li>
+  <li><strong>Compute Full Raster size</strong> = total cells</li>
+  <li><strong>For RLE:</strong> scan each row, group consecutive identical values into (value, count) pairs, sum all pairs</li>
+  <li><strong>For Quadtree:</strong> check if entire grid is uniform; if not, split into NW/NE/SW/SE and recurse</li>
+  <li><strong>For Block:</strong> identify largest rectangular uniform blocks and encode as (value, r1, c1, r2, c2)</li>
+  <li><strong>Calculate % decrease</strong> for each method</li>
+</ol>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q1: 6×6 Grid (2074 Bhadra)                                   -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q1">Q1. 6&times;6 Grid &mdash; RLE &amp; Block Encoding <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2074 Bhadra Q1b [6 Marks]</div>
+<p><strong>Question:</strong> Encode the following 6&times;6 raster using Run-Length Encoding and Block Encoding. Calculate the percentage decrease for each.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th></tr>
+  <tr><th>R1</th><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
+  <tr><th>R2</th><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
+  <tr><th>R3</th><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td><td>25</td></tr>
+  <tr><th>R4</th><td>5</td><td>5</td><td>5</td><td>10</td><td>10</td><td>10</td></tr>
+  <tr><th>R5</th><td>5</td><td>5</td><td>5</td><td>12</td><td>12</td><td>12</td></tr>
+  <tr><th>R6</th><td>5</td><td>5</td><td>5</td><td>15</td><td>12</td><td>12</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 6 &times; 6 = <strong>36 cells</strong></p>
+
+<h4>Solution (a) &mdash; Run-Length Encoding</h4>
+<p>Scan each row left to right, grouping consecutive identical values:</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_2074Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Run-Length Encoding (row by row)</span></div><div></div><div><span class="m-kw">Row 1:</span> (<span class="m-num">25</span>,<span class="m-num">6</span>)                      <span class="m-cmt">// 1 pair  &mdash; all 25s</span></div><div><span class="m-kw">Row 2:</span> (<span class="m-num">25</span>,<span class="m-num">6</span>)                      <span class="m-cmt">// 1 pair  &mdash; all 25s</span></div><div><span class="m-kw">Row 3:</span> (<span class="m-num">25</span>,<span class="m-num">6</span>)                      <span class="m-cmt">// 1 pair  &mdash; all 25s</span></div><div><span class="m-kw">Row 4:</span> (<span class="m-num">5</span>,<span class="m-num">3</span>)(<span class="m-num">10</span>,<span class="m-num">3</span>)                <span class="m-cmt">// 2 pairs &mdash; split at col 4</span></div><div><span class="m-kw">Row 5:</span> (<span class="m-num">5</span>,<span class="m-num">3</span>)(<span class="m-num">12</span>,<span class="m-num">3</span>)                <span class="m-cmt">// 2 pairs &mdash; split at col 4</span></div><div><span class="m-kw">Row 6:</span> (<span class="m-num">5</span>,<span class="m-num">3</span>)(<span class="m-num">15</span>,<span class="m-num">1</span>)(<span class="m-num">12</span>,<span class="m-num">2</span>)          <span class="m-cmt">// 3 pairs &mdash; 3 runs</span></div><div></div><div><span class="m-cmt">// Total pairs = 1 + 1 + 1 + 2 + 2 + 3 = 10</span></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">10</span> pairs <span class="m-op">=</span> <span class="m-num">20</span> values</div><div></div><div><span class="m-cmt">// Percentage decrease</span></div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">36</span> &minus; <span class="m-num">20</span>) / <span class="m-num">36</span> &times; 100</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> <span class="m-num">16</span> / <span class="m-num">36</span> &times; 100</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> <span class="m-res">44.44%</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (b) &mdash; Block Encoding</h4>
+<p>Identify the largest rectangular blocks of uniform values:</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Block_2074Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Block Encoding: (value, r1, c1, r2, c2)</span></div><div><span class="m-cmt">// Each entry = 5 values</span></div><div></div><div><span class="m-kw">Block 1:</span> (<span class="m-num">25</span>, 1,1, 3,6)    <span class="m-cmt">// 3&times;6 = 18 cells &mdash; top 3 rows</span></div><div><span class="m-kw">Block 2:</span> ( <span class="m-num">5</span>, 4,1, 6,3)    <span class="m-cmt">// 3&times;3 =  9 cells &mdash; bottom-left</span></div><div><span class="m-kw">Block 3:</span> (<span class="m-num">10</span>, 4,4, 4,6)    <span class="m-cmt">// 1&times;3 =  3 cells &mdash; row 4 right</span></div><div><span class="m-kw">Block 4:</span> (<span class="m-num">12</span>, 5,4, 5,6)    <span class="m-cmt">// 1&times;3 =  3 cells &mdash; row 5 right</span></div><div><span class="m-kw">Block 5:</span> (<span class="m-num">15</span>, 6,4, 6,4)    <span class="m-cmt">// 1&times;1 =  1 cell  &mdash; single cell</span></div><div><span class="m-kw">Block 6:</span> (<span class="m-num">12</span>, 6,5, 6,6)    <span class="m-cmt">// 1&times;2 =  2 cells &mdash; row 6 right</span></div><div>                             <span class="m-cmt">// Check: 18+9+3+3+1+2 = 36 &check;</span></div><div></div><div><span class="m-var">Total</span> <span class="m-op">=</span> <span class="m-num">6</span> blocks &times; <span class="m-num">5</span> values/block <span class="m-op">=</span> <span class="m-num">30</span> values</div><div></div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">36</span> &minus; <span class="m-num">30</span>) / <span class="m-num">36</span> &times; 100</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> <span class="m-res">16.67%</span></div><div></div><div><span class="m-cmt">// RLE (44.44%) beats Block (16.67%) for this grid</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RLE = 20 values (<strong>44.44% decrease</strong>) &nbsp;|&nbsp; Block = 30 values (<strong>16.67% decrease</strong>). RLE is more efficient for this grid because rows have long runs but the lower-right corner has irregular rectangular shapes.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q2: 8×8 Grid (2081 Chaitra)                                  -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q2">Q2. 8&times;8 Grid &mdash; RLE &amp; Quadtree <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2081 Chaitra [8 Marks]</div>
+<p><strong>Question:</strong> Perform Run-Length Encoding and construct a Quadtree for the following 8&times;8 raster. Calculate percentage decrease for each.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>88</td><td>88</td><td>75</td><td>34</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+  <tr><th>R2</th><td>88</td><td>88</td><td>33</td><td>75</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+  <tr><th>R3</th><td>88</td><td>88</td><td>88</td><td>34</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+  <tr><th>R4</th><td>77</td><td>77</td><td>77</td><td>77</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+  <tr><th>R5</th><td>56</td><td>56</td><td>56</td><td>56</td><td>56</td><td>56</td><td>10</td><td>10</td></tr>
+  <tr><th>R6</th><td>56</td><td>56</td><td>56</td><td>56</td><td>33</td><td>25</td><td>10</td><td>10</td></tr>
+  <tr><th>R7</th><td>56</td><td>56</td><td>56</td><td>56</td><td>33</td><td>33</td><td>33</td><td>9</td></tr>
+  <tr><th>R8</th><td>56</td><td>56</td><td>56</td><td>56</td><td>33</td><td>33</td><td>33</td><td>33</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<h4>Solution (a) &mdash; Run-Length Encoding</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_2081Chaitra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Run-Length Encoding (row by row)</span></div><div></div><div><span class="m-kw">Row 1:</span> (<span class="m-num">88</span>,<span class="m-num">2</span>)(<span class="m-num">75</span>,<span class="m-num">1</span>)(<span class="m-num">34</span>,<span class="m-num">1</span>)(<span class="m-num">9</span>,<span class="m-num">4</span>)    <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 2:</span> (<span class="m-num">88</span>,<span class="m-num">2</span>)(<span class="m-num">33</span>,<span class="m-num">1</span>)(<span class="m-num">75</span>,<span class="m-num">1</span>)(<span class="m-num">9</span>,<span class="m-num">4</span>)   <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 3:</span> (<span class="m-num">88</span>,<span class="m-num">3</span>)(<span class="m-num">34</span>,<span class="m-num">1</span>)(<span class="m-num">9</span>,<span class="m-num">4</span>)          <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 4:</span> (<span class="m-num">77</span>,<span class="m-num">4</span>)(<span class="m-num">9</span>,<span class="m-num">4</span>)                 <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 5:</span> (<span class="m-num">56</span>,<span class="m-num">6</span>)(<span class="m-num">10</span>,<span class="m-num">2</span>)                <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 6:</span> (<span class="m-num">56</span>,<span class="m-num">4</span>)(<span class="m-num">33</span>,<span class="m-num">1</span>)(<span class="m-num">25</span>,<span class="m-num">1</span>)(<span class="m-num">10</span>,<span class="m-num">2</span>)  <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 7:</span> (<span class="m-num">56</span>,<span class="m-num">4</span>)(<span class="m-num">33</span>,<span class="m-num">3</span>)(<span class="m-num">9</span>,<span class="m-num">1</span>)           <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 8:</span> (<span class="m-num">56</span>,<span class="m-num">4</span>)(<span class="m-num">33</span>,<span class="m-num">4</span>)                <span class="m-cmt">// 2 pairs</span></div><div></div><div><span class="m-cmt">// Total = 4+4+3+2+2+4+3+2 = 24 pairs</span></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">24</span> pairs <span class="m-op">=</span> <span class="m-num">48</span> values</div><div></div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">48</span>) / <span class="m-num">64</span> &times; 100</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> <span class="m-res">25.0%</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (b) &mdash; Quadtree Encoding</h4>
+<p>The 8&times;8 grid is divided into four 4&times;4 quadrants. Each quadrant is checked for uniformity:</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Quadtree_2081Chaitra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Quadtree Decomposition (8&times;8)</span></div><div></div><div><span class="m-kw">Level 0 (8&times;8):</span> Not uniform &rarr; split into 4 quadrants</div><div></div><div><span class="m-cmt">// ── NW Quadrant (R1-4, C1-4) ──</span></div><div><span class="m-kw">NW (4&times;4):</span> {88,88,75,34,88,88,33,75,88,88,88,34,77,77,77,77}</div><div>  Not uniform &rarr; split into 4</div><div>  <span class="m-kw">NW-NW</span> (R1-2, C1-2): all <span class="m-num">88</span> &check;  <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NW-NE</span> (R1-2, C3-4): {75,34,33,75} &rarr; 4 leaves</div><div>  <span class="m-kw">NW-SW</span> (R3-4, C1-2): {88,88,77,77} &rarr; 4 leaves</div><div>  <span class="m-kw">NW-SE</span> (R3-4, C3-4): {88,34,77,77} &rarr; 4 leaves</div><div>  <span class="m-cmt">// NW total: 1 internal + (1+4+4+4) = 17 nodes</span></div><div></div><div><span class="m-cmt">// ── NE Quadrant (R1-4, C5-8) ──</span></div><div><span class="m-kw">NE (4&times;4):</span> all <span class="m-num">9</span> &check;  <span class="m-res">1 leaf node</span></div><div></div><div><span class="m-cmt">// ── SW Quadrant (R5-8, C1-4) ──</span></div><div><span class="m-kw">SW (4&times;4):</span> all <span class="m-num">56</span> &check;  <span class="m-res">1 leaf node</span></div><div></div><div><span class="m-cmt">// ── SE Quadrant (R5-8, C5-8) ──</span></div><div><span class="m-kw">SE (4&times;4):</span> {56,56,10,10,33,25,10,10,33,33,33,9,33,33,33,33}</div><div>  Not uniform &rarr; split into 4</div><div>  <span class="m-kw">SE-NW</span> (R5-6, C5-6): {56,56,33,25} &rarr; 4 leaves</div><div>  <span class="m-kw">SE-NE</span> (R5-6, C7-8): all <span class="m-num">10</span> &check;  <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-SW</span> (R7-8, C5-6): all <span class="m-num">33</span> &check;  <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-SE</span> (R7-8, C7-8): {33,9,33,33} &rarr; 4 leaves</div><div>  <span class="m-cmt">// SE total: 1 internal + (4+1+1+4) + 1 = 13 nodes</span></div><div></div><div><span class="m-var">Total leaf nodes</span> <span class="m-op">=</span> 1 + 12 + 1 + 1 + 10 <span class="m-op">=</span> <span class="m-res">25</span></div><div><span class="m-var">Total internal</span> <span class="m-op">=</span> 1(root) + 1(NW) + 1(SE) <span class="m-op">=</span> <span class="m-num">3</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RLE = 48 values (<strong>25.0% decrease</strong>). Quadtree has 25 leaf nodes and 3 internal nodes. This grid is quite heterogeneous, so neither method achieves great compression.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q3: 8×8 Grid (2080 Chaitra)                                  -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q3">Q3. 8&times;8 Grid &mdash; RLE &amp; Quadtree <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2080 Chaitra Q7 [8 Marks]</div>
+<p><strong>Question:</strong> Perform RLE and Quadtree encoding on the following 8&times;8 raster.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>25</td><td>25</td><td>25</td><td>25</td><td>31</td><td>31</td><td>31</td><td>31</td></tr>
+  <tr><th>R2</th><td>25</td><td>25</td><td>25</td><td>25</td><td>31</td><td>31</td><td>31</td><td>31</td></tr>
+  <tr><th>R3</th><td>25</td><td>25</td><td>27</td><td>27</td><td>31</td><td>31</td><td>35</td><td>35</td></tr>
+  <tr><th>R4</th><td>25</td><td>25</td><td>27</td><td>27</td><td>31</td><td>31</td><td>35</td><td>35</td></tr>
+  <tr><th>R5</th><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+  <tr><th>R6</th><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+  <tr><th>R7</th><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+  <tr><th>R8</th><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_2080Chaitra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Run-Length Encoding</span></div><div></div><div><span class="m-kw">Row 1:</span> (<span class="m-num">25</span>,<span class="m-num">4</span>)(<span class="m-num">31</span>,<span class="m-num">4</span>)               <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 2:</span> (<span class="m-num">25</span>,<span class="m-num">4</span>)(<span class="m-num">31</span>,<span class="m-num">4</span>)               <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 3:</span> (<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">27</span>,<span class="m-num">2</span>)(<span class="m-num">31</span>,<span class="m-num">2</span>)(<span class="m-num">35</span>,<span class="m-num">2</span>)  <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 4:</span> (<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">27</span>,<span class="m-num">2</span>)(<span class="m-num">31</span>,<span class="m-num">2</span>)(<span class="m-num">35</span>,<span class="m-num">2</span>)  <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 5:</span> (<span class="m-num">3</span>,<span class="m-num">8</span>)                       <span class="m-cmt">// 1 pair</span></div><div><span class="m-kw">Row 6:</span> (<span class="m-num">3</span>,<span class="m-num">8</span>)                       <span class="m-cmt">// 1 pair</span></div><div><span class="m-kw">Row 7:</span> (<span class="m-num">3</span>,<span class="m-num">8</span>)                       <span class="m-cmt">// 1 pair</span></div><div><span class="m-kw">Row 8:</span> (<span class="m-num">3</span>,<span class="m-num">8</span>)                       <span class="m-cmt">// 1 pair</span></div><div></div><div><span class="m-cmt">// Total = 2+2+4+4+1+1+1+1 = 16 pairs</span></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">16</span> pairs <span class="m-op">=</span> <span class="m-num">32</span> values</div><div></div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">32</span>) / <span class="m-num">64</span> &times; 100 <span class="m-op">=</span> <span class="m-res">50.0%</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Quadtree_2080Chaitra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Quadtree Decomposition</span></div><div></div><div><span class="m-kw">Root (8&times;8):</span> Not uniform &rarr; split</div><div></div><div><span class="m-kw">NW (R1-4, C1-4):</span> mixed &rarr; split</div><div>  NW-NW (R1-2, C1-2): all <span class="m-num">25</span> &check; <span class="m-res">Leaf</span></div><div>  NW-NE (R1-2, C3-4): all <span class="m-num">25</span> &check; <span class="m-res">Leaf</span></div><div>  NW-SW (R3-4, C1-2): all <span class="m-num">25</span> &check; <span class="m-res">Leaf</span></div><div>  NW-SE (R3-4, C3-4): all <span class="m-num">27</span> &check; <span class="m-res">Leaf</span></div><div></div><div><span class="m-kw">NE (R1-4, C5-8):</span> mixed &rarr; split</div><div>  NE-NW (R1-2, C5-6): all <span class="m-num">31</span> &check; <span class="m-res">Leaf</span></div><div>  NE-NE (R1-2, C7-8): all <span class="m-num">31</span> &check; <span class="m-res">Leaf</span></div><div>  NE-SW (R3-4, C5-6): all <span class="m-num">31</span> &check; <span class="m-res">Leaf</span></div><div>  NE-SE (R3-4, C7-8): all <span class="m-num">35</span> &check; <span class="m-res">Leaf</span></div><div></div><div><span class="m-kw">SW (R5-8, C1-4):</span> all <span class="m-num">3</span> &check; <span class="m-res">1 leaf</span></div><div><span class="m-kw">SE (R5-8, C5-8):</span> all <span class="m-num">3</span> &check; <span class="m-res">1 leaf</span></div><div></div><div><span class="m-var">Leaf nodes</span> <span class="m-op">=</span> 4 + 4 + 1 + 1 <span class="m-op">=</span> <span class="m-res">10</span>   <span class="m-var">Internal</span> <span class="m-op">=</span> <span class="m-num">3</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RLE = 32 values (<strong>50% decrease</strong>). Quadtree = 10 leaf nodes, 3 internal. This grid compresses well because the bottom half is entirely value 3, and the top has regular 2&times;2 blocks.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q4: 8×8 Grid (2076 Bhadra)                                   -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q4">Q4. 8&times;8 Grid &mdash; RLE &amp; Quadtree <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2076 Bhadra Q3b [6 Marks]</div>
+<p><strong>Question:</strong> Perform RLE and Quadtree encoding for the following 8&times;8 raster.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+  <tr><th>R2</th><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+  <tr><th>R3</th><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+  <tr><th>R4</th><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td></tr>
+  <tr><th>R5</th><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>5</td><td>5</td></tr>
+  <tr><th>R6</th><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>5</td><td>5</td></tr>
+  <tr><th>R7</th><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>5</td><td>5</td></tr>
+  <tr><th>R8</th><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>4</td><td>5</td><td>5</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_2076Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Run-Length Encoding</span></div><div></div><div><span class="m-kw">Row 1&ndash;4:</span> (<span class="m-num">1</span>,<span class="m-num">4</span>)(<span class="m-num">2</span>,<span class="m-num">4</span>)                <span class="m-cmt">// 2 pairs each &times; 4 rows = 8</span></div><div><span class="m-kw">Row 5&ndash;8:</span> (<span class="m-num">3</span>,<span class="m-num">4</span>)(<span class="m-num">4</span>,<span class="m-num">2</span>)(<span class="m-num">5</span>,<span class="m-num">2</span>)         <span class="m-cmt">// 3 pairs each &times; 4 rows = 12</span></div><div></div><div><span class="m-cmt">// Total = 8 + 12 = 20 pairs</span></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">20</span> pairs <span class="m-op">=</span> <span class="m-num">40</span> values</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">40</span>) / <span class="m-num">64</span> &times; 100 <span class="m-op">=</span> <span class="m-res">37.5%</span></div><div></div><div><span class="m-cmt">// Quadtree</span></div><div><span class="m-kw">NW (R1-4, C1-4):</span> all <span class="m-num">1</span> &check; <span class="m-res">Leaf</span></div><div><span class="m-kw">NE (R1-4, C5-8):</span> all <span class="m-num">2</span> &check; <span class="m-res">Leaf</span></div><div><span class="m-kw">SW (R5-8, C1-4):</span> all <span class="m-num">3</span> &check; <span class="m-res">Leaf</span></div><div><span class="m-kw">SE (R5-8, C5-8):</span> mixed &rarr; 4 sub-quads all uniform: <span class="m-num">4</span>,<span class="m-num">5</span>,<span class="m-num">4</span>,<span class="m-num">5</span> &rarr; <span class="m-res">4 leaves</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RLE = 40 values (<strong>37.5% decrease</strong>). Quadtree = 7 leaf nodes, 2 internal. Quadtree is extremely efficient here because the grid naturally aligns with power-of-2 boundaries.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q5: 8×8 Grid (2075 Bhadra)                                   -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q5">Q5. 8&times;8 Grid &mdash; RLE &amp; Quadtree <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2075 Bhadra Q3a [8 Marks]</div>
+<p><strong>Question:</strong> Encode the following land-use raster using RLE and Quadtree compression.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>12</td><td>12</td><td>10</td><td>10</td><td>9</td><td>7</td><td>7</td><td>7</td></tr>
+  <tr><th>R2</th><td>12</td><td>12</td><td>10</td><td>10</td><td>2</td><td>6</td><td>6</td><td>6</td></tr>
+  <tr><th>R3</th><td>4</td><td>4</td><td>1</td><td>1</td><td>3</td><td>3</td><td>8</td><td>8</td></tr>
+  <tr><th>R4</th><td>4</td><td>4</td><td>1</td><td>1</td><td>3</td><td>3</td><td>5</td><td>5</td></tr>
+  <tr><th>R5</th><td>4</td><td>4</td><td>4</td><td>4</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+  <tr><th>R6</th><td>4</td><td>4</td><td>4</td><td>4</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+  <tr><th>R7</th><td>4</td><td>4</td><td>4</td><td>4</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+  <tr><th>R8</th><td>4</td><td>4</td><td>4</td><td>4</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_2075Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Run-Length Encoding</span></div><div></div><div><span class="m-kw">Row 1:</span> (<span class="m-num">12</span>,<span class="m-num">2</span>)(<span class="m-num">10</span>,<span class="m-num">2</span>)(<span class="m-num">9</span>,<span class="m-num">1</span>)(<span class="m-num">7</span>,<span class="m-num">3</span>)   <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 2:</span> (<span class="m-num">12</span>,<span class="m-num">2</span>)(<span class="m-num">10</span>,<span class="m-num">2</span>)(<span class="m-num">2</span>,<span class="m-num">1</span>)(<span class="m-num">6</span>,<span class="m-num">3</span>)   <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 3:</span> (<span class="m-num">4</span>,<span class="m-num">2</span>)(<span class="m-num">1</span>,<span class="m-num">2</span>)(<span class="m-num">3</span>,<span class="m-num">2</span>)(<span class="m-num">8</span>,<span class="m-num">2</span>)    <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 4:</span> (<span class="m-num">4</span>,<span class="m-num">2</span>)(<span class="m-num">1</span>,<span class="m-num">2</span>)(<span class="m-num">3</span>,<span class="m-num">2</span>)(<span class="m-num">5</span>,<span class="m-num">2</span>)    <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 5:</span> (<span class="m-num">4</span>,<span class="m-num">4</span>)(<span class="m-num">3</span>,<span class="m-num">4</span>)                <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 6:</span> (<span class="m-num">4</span>,<span class="m-num">4</span>)(<span class="m-num">3</span>,<span class="m-num">4</span>)                <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 7:</span> (<span class="m-num">4</span>,<span class="m-num">4</span>)(<span class="m-num">3</span>,<span class="m-num">4</span>)                <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 8:</span> (<span class="m-num">4</span>,<span class="m-num">4</span>)(<span class="m-num">3</span>,<span class="m-num">4</span>)                <span class="m-cmt">// 2 pairs</span></div><div></div><div><span class="m-cmt">// Total = 4+4+4+4+2+2+2+2 = 24 pairs</span></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">24</span> pairs <span class="m-op">=</span> <span class="m-num">48</span> values</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">48</span>) / <span class="m-num">64</span> &times; 100 <span class="m-op">=</span> <span class="m-res">25.0%</span></div><div></div><div><span class="m-cmt">// Quadtree: NW mixed(4 sub → all 2×2 uniform: 12,10,4,1 = 4 leaves)</span></div><div><span class="m-cmt">//           NE mixed(4 sub → all mixed → 16 leaves at 1×1)</span></div><div><span class="m-cmt">//           SW: all 4 → 1 leaf   SE: all 3 → 1 leaf</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Quadtree_2075Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Quadtree Decomposition</span></div><div></div><div><span class="m-kw">Root (8&times;8):</span> Not uniform &rarr; split</div><div></div><div><span class="m-kw">NW (R1-4, C1-4):</span> mixed &rarr; split</div><div>  NW-NW: all <span class="m-num">12</span> &check;   NW-NE: all <span class="m-num">10</span> &check;</div><div>  NW-SW: all  <span class="m-num">4</span> &check;   NW-SE: all  <span class="m-num">1</span> &check;</div><div>  <span class="m-cmt">// 4 leaves</span></div><div></div><div><span class="m-kw">NE (R1-4, C5-8):</span> mixed &rarr; split</div><div>  NE-NW: {9,7,2,6} &rarr; 4 leaves  NE-NE: {7,7,6,6} &rarr; 4 leaves</div><div>  NE-SW: {3,3,3,3} &check; <span class="m-res">Leaf</span>     NE-SE: {8,8,5,5} &rarr; 4 leaves</div><div>  <span class="m-cmt">// 1 + 12 = 13 leaves + 4 internals</span></div><div></div><div><span class="m-kw">SW (R5-8, C1-4):</span> all <span class="m-num">4</span> &check; <span class="m-res">1 leaf</span></div><div><span class="m-kw">SE (R5-8, C5-8):</span> all <span class="m-num">3</span> &check; <span class="m-res">1 leaf</span></div><div></div><div><span class="m-var">Total leaves</span> <span class="m-op">=</span> 4 + 13 + 1 + 1 <span class="m-op">=</span> <span class="m-res">19</span></div><div><span class="m-var">Internal nodes</span> <span class="m-op">=</span> 1 + 1 + 4 <span class="m-op">=</span> <span class="m-num">6</span></div><div><span class="m-var">Total nodes</span> <span class="m-op">=</span> <span class="m-num">25</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RLE = 48 values (<strong>25.0% decrease</strong>). Quadtree = 19 leaf nodes, 6 internal. The NE quadrant is highly heterogeneous, limiting compression.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q6: 8×8 Grid (2073 Magh)                                     -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q6">Q6. 8&times;8 Land-Use Grid (F, W, O, S) <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2073 Magh Q3 [6 Marks]</div>
+<p><strong>Question:</strong> Encode the following land-use raster using RLE and Quadtree. F=Forest, W=Water, O=Open, S=Settlement.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>W</td><td>W</td></tr>
+  <tr><th>R2</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>W</td><td>W</td></tr>
+  <tr><th>R3</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>W</td><td>W</td></tr>
+  <tr><th>R4</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>W</td><td>W</td></tr>
+  <tr><th>R5</th><td>O</td><td>O</td><td>O</td><td>O</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+  <tr><th>R6</th><td>O</td><td>O</td><td>O</td><td>O</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+  <tr><th>R7</th><td>O</td><td>O</td><td>O</td><td>O</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+  <tr><th>R8</th><td>O</td><td>O</td><td>O</td><td>O</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_LandUse_2073Magh.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div></div>
+    <div class="code-content"><div><span class="m-cmt">// This is a perfectly aligned grid &mdash; best case!</span></div><div></div><div><span class="m-kw">Row 1&ndash;4:</span> (F,<span class="m-num">4</span>)(W,<span class="m-num">4</span>)   <span class="m-cmt">// 2 pairs &times; 4 rows = 8</span></div><div><span class="m-kw">Row 5&ndash;8:</span> (O,<span class="m-num">4</span>)(S,<span class="m-num">4</span>)   <span class="m-cmt">// 2 pairs &times; 4 rows = 8</span></div><div></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">16</span> pairs <span class="m-op">=</span> <span class="m-num">32</span> values</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">32</span>) / <span class="m-num">64</span> &times; 100 <span class="m-op">=</span> <span class="m-res">50.0%</span></div><div></div><div><span class="m-cmt">// Quadtree &mdash; perfect alignment with 4&times;4 quadrants</span></div><div><span class="m-kw">NW:</span> all F &check;   <span class="m-kw">NE:</span> all W &check;</div><div><span class="m-kw">SW:</span> all O &check;   <span class="m-kw">SE:</span> all S &check;</div><div></div><div><span class="m-var">Quadtree</span> <span class="m-op">=</span> <span class="m-num">1</span> root + <span class="m-num">4</span> leaves <span class="m-op">=</span> <span class="m-res">5 nodes total</span></div><div><span class="m-cmt">// This is the MINIMUM possible quadtree for an 8&times;8 grid!</span></div><div><span class="m-cmt">// Only 4 values needed vs. 64 &mdash; 93.75% decrease</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RLE = 32 values (<strong>50% decrease</strong>). Quadtree = just 4 leaf nodes + 1 root (<strong>93.75% decrease</strong>). This is the ideal case &mdash; four uniform quadrants perfectly aligned with power-of-2 boundaries.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q7: 8×8 Grid (2073 Bhadra)                                   -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q7">Q7. 8&times;8 Grid &mdash; Quadtree Compression <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2073 Bhadra Q3c [6 Marks]</div>
+<p><strong>Question:</strong> Compress the following raster using Quadtree encoding.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>12</td><td>12</td><td>5</td><td>5</td><td>6</td><td>6</td><td>6</td><td>6</td></tr>
+  <tr><th>R2</th><td>12</td><td>12</td><td>5</td><td>5</td><td>6</td><td>6</td><td>6</td><td>6</td></tr>
+  <tr><th>R3</th><td>61</td><td>61</td><td>62</td><td>62</td><td>6</td><td>6</td><td>6</td><td>6</td></tr>
+  <tr><th>R4</th><td>61</td><td>61</td><td>62</td><td>62</td><td>6</td><td>6</td><td>6</td><td>6</td></tr>
+  <tr><th>R5</th><td>7</td><td>7</td><td>7</td><td>7</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+  <tr><th>R6</th><td>7</td><td>7</td><td>7</td><td>7</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+  <tr><th>R7</th><td>7</td><td>7</td><td>7</td><td>7</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+  <tr><th>R8</th><td>7</td><td>7</td><td>7</td><td>7</td><td>9</td><td>9</td><td>9</td><td>9</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Quadtree_2073Bhadra.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Quadtree Decomposition</span></div><div></div><div><span class="m-kw">Root (8&times;8):</span> Not uniform &rarr; split</div><div></div><div><span class="m-kw">NW (R1-4, C1-4):</span> mixed &rarr; split</div><div>  NW-NW (R1-2, C1-2): all <span class="m-num">12</span> &check; <span class="m-res">Leaf</span></div><div>  NW-NE (R1-2, C3-4): all  <span class="m-num">5</span> &check; <span class="m-res">Leaf</span></div><div>  NW-SW (R3-4, C1-2): all <span class="m-num">61</span> &check; <span class="m-res">Leaf</span></div><div>  NW-SE (R3-4, C3-4): all <span class="m-num">62</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-cmt">// NW = 1 internal + 4 leaves</span></div><div></div><div><span class="m-kw">NE (R1-4, C5-8):</span> all <span class="m-num">6</span> &check; <span class="m-res">1 leaf</span></div><div><span class="m-kw">SW (R5-8, C1-4):</span> all <span class="m-num">7</span> &check; <span class="m-res">1 leaf</span></div><div><span class="m-kw">SE (R5-8, C5-8):</span> all <span class="m-num">9</span> &check; <span class="m-res">1 leaf</span></div><div></div><div><span class="m-var">Total leaves</span> <span class="m-op">=</span> 4 + 1 + 1 + 1 <span class="m-op">=</span> <span class="m-res">7</span></div><div><span class="m-var">Internal</span> <span class="m-op">=</span> 1 (root) + 1 (NW) <span class="m-op">=</span> <span class="m-num">2</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> Quadtree = 7 leaf nodes, 2 internal, 9 total nodes. Only 7 values stored vs 64 &mdash; <strong>89.06% decrease</strong>. This grid is well-structured with uniform 2&times;2 and 4&times;4 blocks, making quadtree very efficient.</p>
+
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Summary &ndash; Ch 5: Database Concepts</title>
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="summary-page" style="--ch-color:var(--ch5);--ch-color-lt:var(--ch5-lt);--ch-color-dk:var(--ch5-dk)">
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Summary Index</a>
+    <a href="../theory/chapter5.html" class="back-link">Full Chapter &rarr;</a>
+    <div class="eyebrow">Chapter 5 &mdash; Summary</div>
+    <h1>Database Concepts for GIS</h1>
+    <span class="ch-number-bg">05</span>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">4 Teaching Hours</span>
+      <span class="meta-badge exam">6 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="stat-row">
+      <div class="stat-card"><span class="stat-value">10+</span><span class="stat-label">Times Asked</span></div>
+      <div class="stat-card"><span class="stat-value">~50</span><span class="stat-label">Total Marks</span></div>
+      <div class="stat-card"><span class="stat-value">5</span><span class="stat-label">Topics</span></div>
+      <div class="stat-card"><span class="pill pill-medium">Medium</span><span class="stat-label">Priority</span></div>
+    </div>
+
+    <h2><span class="section-num">1</span> RDBMS and GIS</h2>
+    <ul>
+      <li><strong>RDBMS:</strong> Data stored in tables (relations) with rows (tuples) and columns (attributes).</li>
+      <li>Tables linked via <strong>primary keys</strong> (unique identifier) and <strong>foreign keys</strong> (reference to another table).</li>
+      <li>GIS uses RDBMS to store attribute data linked to spatial features by a common ID field.</li>
+    </ul>
+
+    <h2><span class="section-num">2</span> Types of DBMS</h2>
+    <ul>
+      <li><strong>Hierarchical:</strong> Tree structure (parent-child). Fast but rigid. Example: IMS.</li>
+      <li><strong>Network:</strong> Graph structure (many-to-many). Flexible but complex. Example: CODASYL.</li>
+      <li><strong>Relational:</strong> Tables with keys. Most common. Example: PostgreSQL, Oracle, SQL Server.</li>
+      <li><strong>Object-oriented:</strong> Stores complex objects with methods. Example: ObjectStore.</li>
+      <li><strong>Object-relational:</strong> Combines relational + object features. Example: PostGIS (spatial extension of PostgreSQL).</li>
+    </ul>
+
+    <h2><span class="section-num">3</span> Normalisation</h2>
+    <ul>
+      <li><strong>1NF:</strong> Each cell contains a single atomic value. No repeating groups.</li>
+      <li><strong>2NF:</strong> 1NF + no partial dependency (every non-key attribute depends on the entire primary key).</li>
+      <li><strong>3NF:</strong> 2NF + no transitive dependency (non-key attributes depend only on the primary key, not on other non-key attributes).</li>
+    </ul>
+    <div class="key-concept">
+      <strong>Purpose of normalisation:</strong> Reduce redundancy, prevent update anomalies, ensure data integrity. Over-normalisation can hurt performance &mdash; balance with denormalisation for query speed.
+    </div>
+
+    <h2><span class="section-num">4</span> SQL and JOIN Operations</h2>
+    <ul>
+      <li><strong>SQL (Structured Query Language):</strong> SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP.</li>
+      <li><strong>INNER JOIN:</strong> Returns rows with matching values in both tables.</li>
+      <li><strong>LEFT JOIN:</strong> All rows from left table + matching from right.</li>
+      <li><strong>Spatial SQL (PostGIS):</strong> ST_Intersects, ST_Buffer, ST_Contains, ST_Distance.</li>
+    </ul>
+
+    <h2><span class="section-num">5</span> Database Querying in GIS</h2>
+    <ul>
+      <li><strong>Attribute query:</strong> "Select all parcels WHERE area &gt; 500 m&sup2;"</li>
+      <li><strong>Spatial query:</strong> "Select all schools WITHIN 1 km of a hospital."</li>
+      <li><strong>Combined:</strong> "Select commercial buildings WITHIN flood zone AND value &gt; 10 million."</li>
+    </ul>
+
+    <div class="qa-section-title"><span class="qa-icon">Q</span> Past Exam Questions <button class="expand-all-btn filter-btn" style="margin-left:auto">Expand All</button></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What is RDBMS? How is it used in GIS? <em>(2073, 2076, 2079)</em></span></div><div class="qa-answer">
+      <p>Tables with rows/columns. Primary/foreign keys. GIS links spatial features to attribute tables via ID field. Supports SQL queries.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain types of DBMS. <em>(2072, 2075)</em></span></div><div class="qa-answer">
+      <p>Hierarchical, Network, Relational, Object-oriented, Object-relational. Give structure and example for each. Relational most common in GIS.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Explain normalisation with 1NF, 2NF, 3NF examples. <em>(2074, 2078, 2081)</em></span></div><div class="qa-answer">
+      <p>Define each normal form. Show a table violating each form and its corrected version. Explain partial vs transitive dependency.</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">What are SQL JOIN operations? Write example queries. <em>(2076, 2080)</em></span></div><div class="qa-answer">
+      <p>INNER JOIN, LEFT JOIN. Write: SELECT parcels.id, owners.name FROM parcels INNER JOIN owners ON parcels.owner_id = owners.id WHERE parcels.area &gt; 500;</p>
+    </div></div>
+
+    <div class="qa-block"><div class="qa-question"><span class="qa-toggle">+</span><span class="qa-q-text">Differentiate attribute query and spatial query with examples. <em>(2071, 2074, 2082)</em></span></div><div class="qa-answer">
+      <p>Attribute: condition on column values. Spatial: condition on location/geometry. Combined: both at once. Give one GIS example for each type.</p>
+    </div></div>
+
+    <div class="chapter-nav">
+      <a href="chapter4.html">&larr; Chapter 4</a>
+      <a href="chapter6.html">Chapter 6 &rarr;</a>
+    </div>
+    <p class="footer-note">End of Chapter 5 Summary</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+<script src="common.js"></script>
+</body>
+</html>

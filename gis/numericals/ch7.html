@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7 Numericals – IDW &amp; Suitability</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .code-editor{margin:22px 0;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.1);font-family:"Consolas","Fira Code","Menlo","Monaco","Courier New",monospace;font-size:11pt;line-height:1.7}
+    .code-editor .editor-titlebar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#252526;border-bottom:1px solid #1e1e1e;user-select:none}
+    .code-editor .editor-dots{display:flex;gap:6px}
+    .code-editor .editor-dots span{width:11px;height:11px;border-radius:50%;display:inline-block}
+    .code-editor .editor-dots .dot-r{background:#ff5f56}
+    .code-editor .editor-dots .dot-y{background:#ffbd2e}
+    .code-editor .editor-dots .dot-g{background:#27c93f}
+    .code-editor .editor-tab{padding:3px 14px;background:#1e1e1e;color:#ccc;font-size:10pt;border-radius:4px 4px 0 0;border:1px solid #333;border-bottom:1px solid #1e1e1e}
+    .code-editor .editor-tab .tab-icon{color:#e8c96a;margin-right:4px}
+    .code-editor .editor-body{display:flex;background:#1e1e1e;padding:16px 0;overflow-x:auto}
+    .code-editor .line-numbers{padding:0 12px 0 16px;text-align:right;color:#858585;user-select:none;border-right:1px solid #333;min-width:44px;flex-shrink:0}
+    .code-editor .line-numbers div{line-height:1.7}
+    .code-editor .code-content{padding:0 18px;color:#d4d4d4;white-space:pre;flex:1}
+    .code-editor .code-content div{line-height:1.7;min-height:1.7em}
+    .code-editor .editor-statusbar{display:flex;justify-content:space-between;padding:4px 14px;background:#007acc;color:#fff;font-size:9pt}
+    .m-cmt{color:#6a9955;font-style:italic}
+    .m-kw{color:#569cd6;font-weight:bold}
+    .m-var{color:#9cdcfe}
+    .m-fn{color:#dcdcaa}
+    .m-str{color:#ce9178}
+    .m-num{color:#b5cea8}
+    .m-op{color:#d4d4d4}
+    .m-res{color:#4ec9b0;font-weight:bold}
+    .grid-table{border-collapse:collapse;margin:1em auto}
+    .grid-table td,.grid-table th{border:1px solid var(--line);padding:6px 10px;text-align:center;min-width:36px;font-family:'Courier New',monospace;font-size:.92em}
+    .grid-table th{background:var(--accent-light);font-weight:600}
+    .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.78em;font-weight:700;letter-spacing:.3px;vertical-align:middle;margin-left:6px}
+    .badge-v{background:#d4edda;color:#155724}
+    .badge-n{background:#fff3cd;color:#856404}
+    .formula-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:18px 22px;border-radius:0 8px 8px 0;margin:18px 0;font-size:1.02em}
+    .formula-box h4{margin:0 0 8px;color:var(--accent)}
+    .formula-box p{margin:6px 0}
+    .formula-box code{background:var(--soft);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace}
+    .process-steps{counter-reset:step;list-style:none;padding-left:0}
+    .process-steps li{counter-increment:step;padding:8px 0 8px 40px;position:relative;border-left:2px solid var(--accent);margin-left:12px}
+    .process-steps li::before{content:counter(step);position:absolute;left:-14px;top:6px;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;text-align:center;line-height:26px;font-weight:bold;font-size:.85em}
+    .suit-grid td.suitable{background:#d4edda !important;font-weight:bold}
+    .suit-grid td.not-suitable{background:#f8d7da !important;color:#721c24}
+    [data-theme="dark"] .suit-grid td.suitable{background:#1b4332 !important;color:#a8e6cf}
+    [data-theme="dark"] .suit-grid td.not-suitable{background:#5c2020 !important;color:#f5b7b1}
+    [data-theme="dark"] .code-editor{box-shadow:0 4px 24px rgba(0,0,0,.35),0 1px 4px rgba(0,0,0,.2)}
+    nav.toc{margin:24px 0;padding:0;border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+    nav.toc h2{margin:0;padding:14px 20px;font-size:.9rem;font-weight:700;background:var(--accent-light);color:var(--accent);border-bottom:1px solid var(--line);text-transform:none;letter-spacing:normal}
+    nav.toc h2::after{display:none}
+    nav.toc ol{list-style:none;padding:0;margin:0;columns:1;counter-reset:toc-item}
+    nav.toc li{counter-increment:toc-item;border-bottom:1px solid var(--line)}
+    nav.toc li:last-child{border-bottom:none}
+    nav.toc li a{display:flex;align-items:center;gap:12px;padding:10px 20px;text-decoration:none;color:var(--ink);font-size:.88rem;transition:all .15s}
+    nav.toc li a:hover{background:var(--accent-light);padding-left:24px}
+    nav.toc li a::before{content:counter(toc-item);width:24px;height:24px;border-radius:6px;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;transition:all .15s}
+    nav.toc li a:hover::before{background:var(--accent);color:#fff}
+    [data-theme="dark"] nav.toc{border-color:var(--line);background:var(--paper)}
+  </style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; All Numericals</a>
+    <div class="eyebrow">Chapter 7 &mdash; Numericals</div>
+    <h1>IDW Interpolation &amp; Suitability Analysis</h1>
+  </header>
+  <main>
+
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#formulas">Key Formulas &amp; Process</a></li>
+        <li><a href="#q1">Q1. IDW Interpolation &mdash; p=1 and p=2 (2074 Bhadra)</a></li>
+        <li><a href="#q2">Q2. Rice Crop Suitability Analysis (2074 Magh)</a></li>
+      </ol>
+    </nav>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  FORMULAS & PROCESS                                            -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="formulas">Key Formulas &amp; Process</h2>
+
+<div class="formula-box">
+  <h4>1. Inverse Distance Weighting (IDW)</h4>
+  <p>IDW estimates the value at an unknown point using values from nearby known points, giving more weight to closer points.</p>
+  <p><strong>Formula:</strong></p>
+  <p><code>Z = &Sigma;(Z<sub>i</sub> / d<sub>i</sub><sup>p</sup>) / &Sigma;(1 / d<sub>i</sub><sup>p</sup>)</code></p>
+  <p>Where:</p>
+  <p>&bull; <code>Z<sub>i</sub></code> = value at known point <em>i</em></p>
+  <p>&bull; <code>d<sub>i</sub></code> = distance from unknown point to known point <em>i</em></p>
+  <p>&bull; <code>p</code> = power parameter (typically 1 or 2)</p>
+  <p><strong>Key insight:</strong> Higher <code>p</code> &rarr; nearest point dominates more. When p=2 (GIS default), the nearest point has much more influence than distant ones.</p>
+</div>
+
+<div class="formula-box">
+  <h4>2. Weighted Suitability Analysis</h4>
+  <p>Combines multiple raster layers using weighted overlay.</p>
+  <p><strong>Formula:</strong></p>
+  <p><code>Score = &Sigma;(Weight<sub>i</sub> &times; Rating<sub>i</sub>)</code></p>
+  <p>Where:</p>
+  <p>&bull; <code>Weight<sub>i</sub></code> = importance of factor <em>i</em> (must sum to 1.0)</p>
+  <p>&bull; <code>Rating<sub>i</sub></code> = suitability rating of the cell for factor <em>i</em> (typically 1&ndash;10)</p>
+  <p>&bull; <code>Suitable area</code> = count of suitable cells &times; cell area</p>
+</div>
+
+<h3>Process Steps</h3>
+<ol class="process-steps">
+  <li><strong>IDW:</strong> Calculate weight w<sub>i</sub> = 1/d<sub>i</sub><sup>p</sup> for each known point</li>
+  <li><strong>IDW:</strong> Multiply each weight by its value: w<sub>i</sub> &times; Z<sub>i</sub></li>
+  <li><strong>IDW:</strong> Sum weighted values and divide by sum of weights: Z = &Sigma;(w<sub>i</sub>Z<sub>i</sub>) / &Sigma;w<sub>i</sub></li>
+  <li><strong>Suitability:</strong> Reclassify each input layer to a common scale (1&ndash;10)</li>
+  <li><strong>Suitability:</strong> Multiply each reclassified layer by its weight</li>
+  <li><strong>Suitability:</strong> Sum weighted layers, apply threshold to find suitable cells</li>
+</ol>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q1: IDW Interpolation                                         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q1">Q1. IDW Interpolation <span class="badge badge-v">VERIFIED</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2074 Bhadra Q3b [4 Marks]</div>
+<p><strong>Question:</strong> Given four known elevation values at different distances from an unknown point, estimate the elevation using IDW with p=1 and p=2.</p>
+
+<table class="grid-table">
+  <tr><th>Point</th><th>Elevation (Z)</th><th>Distance (d)</th></tr>
+  <tr><td><strong>1</strong></td><td>160</td><td>1000 m</td></tr>
+  <tr><td><strong>2</strong></td><td>170</td><td>400 m</td></tr>
+  <tr><td><strong>3</strong></td><td>180</td><td>600 m</td></tr>
+  <tr><td><strong>4</strong></td><td>90</td><td>120 m</td></tr>
+</table>
+
+<h4>Solution (a) &mdash; p = 1 (Linear)</h4>
+<p>With p=1, weights are inversely proportional to distance: w = 1/d</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> IDW_p1.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// IDW with p = 1 (Linear weighting)</span></div><div><span class="m-cmt">// Formula: Z = &Sigma;(Zi/di) / &Sigma;(1/di)</span></div><div></div><div><span class="m-cmt">//  Point  Z       d      w = 1/d        w &times; Z</span></div><div><span class="m-kw">Pt 1:</span> Z=<span class="m-num">160</span>  d=<span class="m-num">1000</span>  w = 1/1000 = <span class="m-num">0.00100</span>  wZ = <span class="m-num">0.160</span></div><div><span class="m-kw">Pt 2:</span> Z=<span class="m-num">170</span>  d=<span class="m-num"> 400</span>  w = 1/400  = <span class="m-num">0.00250</span>  wZ = <span class="m-num">0.425</span></div><div><span class="m-kw">Pt 3:</span> Z=<span class="m-num">180</span>  d=<span class="m-num"> 600</span>  w = 1/600  = <span class="m-num">0.00167</span>  wZ = <span class="m-num">0.300</span></div><div><span class="m-kw">Pt 4:</span> Z=<span class="m-num"> 90</span>  d=<span class="m-num"> 120</span>  w = 1/120  = <span class="m-num">0.00833</span>  wZ = <span class="m-num">0.750</span></div><div></div><div><span class="m-cmt">// Sum of weights</span></div><div><span class="m-var">&Sigma;w</span> = 0.00100 + 0.00250 + 0.00167 + 0.00833 = <span class="m-num">0.01350</span></div><div></div><div><span class="m-cmt">// Sum of weighted values</span></div><div><span class="m-var">&Sigma;wZ</span> = 0.160 + 0.425 + 0.300 + 0.750 = <span class="m-num">1.635</span></div><div></div><div><span class="m-var">Z(p=1)</span> <span class="m-op">=</span> <span class="m-num">1.635</span> / <span class="m-num">0.01350</span> <span class="m-op">=</span> <span class="m-res">121.11</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (b) &mdash; p = 2 (Quadratic &mdash; GIS Default)</h4>
+<p>With p=2, weights are inversely proportional to the <em>square</em> of distance: w = 1/d&sup2;. This gives much more influence to nearby points.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> IDW_p2.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div></div>
+    <div class="code-content"><div><span class="m-cmt">// IDW with p = 2 (Quadratic weighting)</span></div><div><span class="m-cmt">// Formula: Z = &Sigma;(Zi/di&sup2;) / &Sigma;(1/di&sup2;)</span></div><div></div><div><span class="m-cmt">//  Point  Z       d       d&sup2;          w = 1/d&sup2;        w &times; Z</span></div><div><span class="m-kw">Pt 1:</span> Z=<span class="m-num">160</span>  d=<span class="m-num">1000</span>  d&sup2;=<span class="m-num">1,000,000</span>  w=<span class="m-num">0.0000010</span>  wZ=<span class="m-num">0.000160</span></div><div><span class="m-kw">Pt 2:</span> Z=<span class="m-num">170</span>  d=<span class="m-num"> 400</span>  d&sup2;=<span class="m-num">  160,000</span>  w=<span class="m-num">0.0000063</span>  wZ=<span class="m-num">0.001063</span></div><div><span class="m-kw">Pt 3:</span> Z=<span class="m-num">180</span>  d=<span class="m-num"> 600</span>  d&sup2;=<span class="m-num">  360,000</span>  w=<span class="m-num">0.0000028</span>  wZ=<span class="m-num">0.000500</span></div><div><span class="m-kw">Pt 4:</span> Z=<span class="m-num"> 90</span>  d=<span class="m-num"> 120</span>  d&sup2;=<span class="m-num">   14,400</span>  w=<span class="m-num">0.0000694</span>  wZ=<span class="m-num">0.006250</span></div><div></div><div><span class="m-cmt">// Sum of weights</span></div><div><span class="m-var">&Sigma;w</span> = 0.0000010 + 0.0000063 + 0.0000028 + 0.0000694</div><div>   = <span class="m-num">0.0000795</span></div><div></div><div><span class="m-cmt">// Sum of weighted values</span></div><div><span class="m-var">&Sigma;wZ</span> = 0.000160 + 0.001063 + 0.000500 + 0.006250</div><div>    = <span class="m-num">0.007973</span></div><div></div><div><span class="m-var">Z(p=2)</span> <span class="m-op">=</span> <span class="m-num">0.007973</span> / <span class="m-num">0.0000795</span> <span class="m-op">=</span> <span class="m-res">100.32</span></div><div></div><div><span class="m-cmt">// Why is p=2 closer to 90? Because Point 4 (Z=90, d=120)</span></div><div><span class="m-cmt">// is MUCH closer than others, and p=2 squares the weight</span></div><div><span class="m-cmt">// making it 87% of total weight vs 62% with p=1</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<div class="callout">
+  <strong>Key Takeaway:</strong>
+  <br>&bull; <strong>p=1:</strong> Z = 121.11 &mdash; moderate influence from all points
+  <br>&bull; <strong>p=2:</strong> Z = 100.32 &mdash; nearest point (Z=90 at 120m) dominates
+  <br>Higher power &rArr; result is pulled more toward the nearest point's value
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q2: Rice Crop Suitability                                     -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q2">Q2. Rice Crop Suitability Analysis <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2074 Magh Q6 [14 Marks]</div>
+<p><strong>Question:</strong> Using the given 5&times;5 raster with coded landuse, slope, and soil ratings, calculate the weighted suitability score for rice cultivation. Cell size = 25 m. Weights: Slope 50%, Soil 30%, Landuse 20%. Suitable if score &gt; 6.</p>
+
+<h4>Step 1 &mdash; Rating Table</h4>
+<table class="grid-table">
+  <tr><th>Code</th><th>Slope Rating</th><th>Soil Rating</th><th>Landuse Rating</th></tr>
+  <tr><td><strong>1</strong></td><td>10</td><td>8</td><td>8</td></tr>
+  <tr><td><strong>2</strong></td><td>8</td><td>4</td><td>1</td></tr>
+  <tr><td><strong>3</strong></td><td>6</td><td>10</td><td>4</td></tr>
+  <tr><td><strong>4</strong></td><td>4</td><td>1</td><td>8</td></tr>
+  <tr><td><strong>5</strong></td><td>1</td><td>1</td><td>10</td></tr>
+</table>
+
+<h4>Step 2 &mdash; Weighted Score Calculation</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Rice_Suitability.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Weighted Suitability Score</span></div><div><span class="m-cmt">// Formula: Score = Slope&times;0.5 + Soil&times;0.3 + LU&times;0.2</span></div><div><span class="m-cmt">// Suitable if Score &gt; 6</span></div><div></div><div><span class="m-cmt">//  Code   Slope&times;0.5    Soil&times;0.3    LU&times;0.2    Score</span></div><div></div><div><span class="m-kw">Code 1:</span> <span class="m-num">10</span> &times; 0.5 = <span class="m-num">5.0</span></div><div>        <span class="m-num"> 8</span> &times; 0.3 = <span class="m-num">2.4</span></div><div>        <span class="m-num"> 8</span> &times; 0.2 = <span class="m-num">1.6</span></div><div>        Total = 5.0 + 2.4 + 1.6 = <span class="m-res">9.0  &check; SUITABLE</span></div><div></div><div><span class="m-kw">Code 2:</span> <span class="m-num"> 8</span> &times; 0.5 = <span class="m-num">4.0</span></div><div>        <span class="m-num"> 4</span> &times; 0.3 = <span class="m-num">1.2</span></div><div>        <span class="m-num"> 1</span> &times; 0.2 = <span class="m-num">0.2</span></div><div>        Total = 4.0 + 1.2 + 0.2 = <span class="m-num">5.4</span>  <span class="m-cmt">&cross; NOT suitable</span></div><div></div><div><span class="m-kw">Code 3:</span> <span class="m-num"> 6</span> &times; 0.5 = <span class="m-num">3.0</span></div><div>        <span class="m-num">10</span> &times; 0.3 = <span class="m-num">3.0</span></div><div>        <span class="m-num"> 4</span> &times; 0.2 = <span class="m-num">0.8</span></div><div>        Total = 3.0 + 3.0 + 0.8 = <span class="m-res">6.8  &check; SUITABLE</span></div><div></div><div><span class="m-kw">Code 4:</span> <span class="m-num"> 4</span> &times; 0.5 = <span class="m-num">2.0</span></div><div>        <span class="m-num"> 1</span> &times; 0.3 = <span class="m-num">0.3</span></div><div>        <span class="m-num"> 8</span> &times; 0.2 = <span class="m-num">1.6</span></div><div>        Total = 2.0 + 0.3 + 1.6 = <span class="m-num">3.9</span>  <span class="m-cmt">&cross; NOT suitable</span></div><div></div><div><span class="m-kw">Code 5:</span> <span class="m-num"> 1</span> &times; 0.5 = <span class="m-num">0.5</span></div><div>        <span class="m-num"> 1</span> &times; 0.3 = <span class="m-num">0.3</span></div><div>        <span class="m-num">10</span> &times; 0.2 = <span class="m-num">2.0</span></div><div>        Total = 0.5 + 0.3 + 2.0 = <span class="m-num">2.8</span>  <span class="m-cmt">&cross; NOT suitable</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Step 3 &mdash; Suitability Summary</h4>
+<table class="grid-table suit-grid">
+  <tr><th>Code</th><th>Score</th><th>Result</th></tr>
+  <tr><td>1</td><td class="suitable">9.0</td><td class="suitable">&check; Suitable</td></tr>
+  <tr><td>2</td><td class="not-suitable">5.4</td><td class="not-suitable">&cross; Not suitable</td></tr>
+  <tr><td>3</td><td class="suitable">6.8</td><td class="suitable">&check; Suitable</td></tr>
+  <tr><td>4</td><td class="not-suitable">3.9</td><td class="not-suitable">&cross; Not suitable</td></tr>
+  <tr><td>5</td><td class="not-suitable">2.8</td><td class="not-suitable">&cross; Not suitable</td></tr>
+</table>
+
+<h4>Step 4 &mdash; Area Calculation</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Rice_Area.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Count cells with Codes 1 or 3 (suitable)</span></div><div><span class="m-var">Suitable cells</span> = <span class="m-num">5</span> <span class="m-cmt">// count from the coded raster grid</span></div><div></div><div><span class="m-cmt">// Cell area</span></div><div><span class="m-var">Cell area</span> = <span class="m-num">25</span> m &times; <span class="m-num">25</span> m = <span class="m-num">625</span> m&sup2;</div><div></div><div><span class="m-cmt">// Total suitable area</span></div><div><span class="m-var">Total area</span> = <span class="m-num">5</span> &times; <span class="m-num">625</span> = <span class="m-res">3,125 m&sup2;</span></div><div></div><div><span class="m-res">Suitable area = 3,125 m&sup2; = 0.3125 hectares</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<div class="callout">
+  <strong>Answer:</strong> Only Codes 1 (score 9.0) and 3 (score 6.8) are suitable for rice cultivation. The total suitable area is <strong>3,125 m&sup2;</strong> (0.3125 ha). Code 1 has the highest score because it has the best slope (10) and good soil/landuse. Code 5 is worst because its steep slope (rating 1) outweighs even good landuse (rating 10) due to slope's 50% weight.
+</div>
+
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>
