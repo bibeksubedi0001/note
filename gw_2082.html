@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CE 76509 — Ground Water Engineering (Elective II) | 2082 Chaitra Solved</title>
+<!-- KaTeX for math rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Libre Baskerville', 'Georgia', 'Times New Roman', serif;
+    background: #fff;
+    color: #000;
+    line-height: 1.9;
+    font-size: 15px;
+  }
+
+  /* ── Top Bar ── */
+  .top-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: #000; color: #fff;
+    padding: 8px 24px; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 3px solid #000;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .top-bar h1 { font-size: 1rem; font-weight: 600; letter-spacing: 0.3px; }
+  .top-bar-controls { display: flex; gap: 8px; }
+  .top-bar button {
+    background: transparent; border: 1px solid #666; color: #fff;
+    padding: 4px 12px; font-size: 0.8rem; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; transition: background 0.2s;
+  }
+  .top-bar button:hover { background: #333; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: fixed; top: 44px; left: -320px; width: 310px;
+    height: calc(100% - 44px); background: #fafafa;
+    border-right: 2px solid #000; overflow-y: auto;
+    transition: left 0.3s; z-index: 999; padding: 20px;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .sidebar.open { left: 0; }
+  .sidebar h3 {
+    font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #000;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .sidebar a {
+    display: block; padding: 6px 10px; color: #000; text-decoration: none;
+    font-size: 0.82rem; margin-bottom: 2px; border-left: 3px solid transparent;
+    transition: all 0.15s; line-height: 1.4;
+  }
+  .sidebar a:hover { border-left-color: #000; background: #eee; }
+  .sidebar a .q-num { font-weight: 700; margin-right: 4px; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 998; }
+  .overlay.show { display: block; }
+
+  /* ── Container ── */
+  .container { max-width: 820px; margin: 64px auto 60px; padding: 0 28px; }
+
+  /* ── Exam Header ── */
+  .exam-header {
+    text-align: center; padding: 28px 20px; margin-bottom: 36px;
+    border: 2px solid #000; position: relative;
+  }
+  .exam-header::before, .exam-header::after {
+    content: ''; position: absolute; left: 4px; right: 4px;
+    border: 1px solid #000;
+  }
+  .exam-header::before { top: 4px; bottom: 4px; }
+  .exam-header .uni-name {
+    font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px;
+    font-family: 'Source Sans 3', sans-serif; margin-bottom: 2px;
+  }
+  .exam-header .inst-name {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px;
+    font-family: 'Source Sans 3', sans-serif; margin-bottom: 4px;
+  }
+  .exam-header h2 {
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 2px;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .exam-header .year { font-size: 0.85rem; margin-bottom: 10px; }
+  .exam-header .subject-line {
+    font-size: 0.95rem; font-weight: 700; margin: 10px 0 8px;
+    font-style: italic;
+  }
+  .exam-meta {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 20px;
+    font-size: 0.82rem; font-family: 'Source Sans 3', sans-serif; margin-top: 8px;
+  }
+  .exam-meta span { font-weight: 600; }
+
+  .exam-instructions {
+    text-align: left; font-size: 0.82rem; margin-top: 14px; padding-top: 10px;
+    border-top: 1px solid #000; font-style: italic; line-height: 1.6;
+  }
+  .exam-instructions ul { list-style: '✓  '; margin-left: 18px; }
+  .exam-instructions li { margin-bottom: 2px; }
+
+  /* ── Question Card (always open, no collapse) ── */
+  .question-card {
+    margin-bottom: 32px; border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+  .question-header {
+    background: #fff; color: #000; padding: 12px 18px;
+    display: flex; justify-content: space-between;
+    align-items: center; user-select: none;
+    font-family: 'Libre Baskerville', 'Georgia', 'Times New Roman', serif;
+    border-bottom: 1px solid #000;
+  }
+  .question-header .q-title { font-size: 0.92rem; font-weight: 600; flex: 1; padding-right: 12px; line-height: 1.5; }
+  .question-header .q-num { font-weight: 700; margin-right: 6px; }
+  .question-header .marks { font-size: 0.8rem; font-weight: 700; white-space: nowrap; color: #555; }
+
+  .answer-body {
+    padding: 24px 22px;
+  }
+
+  /* ── Typography ── */
+  .answer-body h3 {
+    font-size: 1.05rem; margin: 28px 0 10px;
+    padding-bottom: 4px; border-bottom: 2px solid #000;
+    font-weight: 700;
+  }
+  .answer-body h3:first-child { margin-top: 0; }
+  .answer-body h4 {
+    font-size: 0.95rem; margin: 20px 0 8px; font-weight: 700;
+    font-style: italic;
+  }
+  .answer-body p { margin-bottom: 10px; text-align: justify; }
+  .answer-body ul, .answer-body ol { margin: 8px 0 12px 24px; }
+  .answer-body li { margin-bottom: 6px; }
+  .answer-body strong { font-weight: 700; }
+  .answer-body em { font-style: italic; }
+
+  /* ── Highlight Box ── */
+  .highlight-box {
+    border: 1px solid #000; border-left: 4px solid #000;
+    padding: 10px 16px; margin: 14px 0; background: #fff;
+    font-size: 0.92rem;
+  }
+
+  /* ── Tables ── */
+  .answer-body table {
+    width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem;
+  }
+  .answer-body table th, .answer-body table td {
+    border: 1px solid #000; padding: 8px 10px; text-align: left;
+  }
+  .answer-body table th { background: #fff; color: #000; font-weight: 700; font-family: 'Source Sans 3', sans-serif; border: 1px solid #000; }
+  .answer-body table tr:nth-child(even) { background: #fff; }
+
+  /* ── Formula Box (KaTeX) ── */
+  .formula-box {
+    border: 1px solid #999; background: #fff;
+    padding: 14px 18px; margin: 14px 0; overflow-x: auto;
+    font-size: 0.95rem;
+  }
+  .formula-box.highlight {
+    border: 2px solid #000; background: #fff; font-weight: 700;
+  }
+
+  /* ── SVG Sketches ── */
+  .svg-sketch { margin: 14px 0; text-align: center; }
+  .svg-sketch svg { max-width: 100%; height: auto; }
+
+  /* ── Back to Top ── */
+  .back-to-top {
+    position: fixed; bottom: 20px; right: 20px; width: 40px; height: 40px;
+    border: 2px solid #000; background: #fff; color: #000;
+    font-size: 1.1rem; cursor: pointer; display: none;
+    align-items: center; justify-content: center; z-index: 100;
+  }
+  .back-to-top:hover { background: #000; color: #fff; }
+  .back-to-top.show { display: flex; }
+
+  /* ── Print ── */
+  @media print {
+    .top-bar, .sidebar, .overlay, .back-to-top { display: none !important; }
+    .container { margin: 0 auto; padding: 0 15px; max-width: 100%; }
+    body { font-size: 11pt; line-height: 1.6; background: #fff; }
+    .exam-header {
+      page-break-after: always; page-break-inside: avoid;
+      padding: 20px 16px; margin-bottom: 0;
+    }
+    .exam-header .uni-name { font-size: 0.8rem; margin-bottom: 1px; }
+    .exam-header .inst-name { font-size: 0.75rem; margin-bottom: 3px; }
+    .exam-header h2 { font-size: 0.95rem; margin-bottom: 1px; }
+    .exam-header .year { font-size: 0.8rem; margin-bottom: 6px; }
+    .exam-header .subject-line { font-size: 0.88rem; margin: 6px 0 5px; }
+    .exam-meta { font-size: 0.78rem; gap: 4px 16px; margin-top: 5px; }
+    .exam-instructions { font-size: 0.78rem; margin-top: 10px; padding-top: 8px; line-height: 1.5; }
+    .exam-instructions li { margin-bottom: 1px; }
+    .question-card { border: 1px solid #000; margin-bottom: 18px; page-break-inside: auto; }
+    .question-header { background: #fff !important; color: #000 !important; }
+    .answer-body { padding: 14px 16px; }
+    .answer-body h3 { font-size: 11pt; margin: 14px 0 6px; }
+    .answer-body h4 { font-size: 10.5pt; margin: 10px 0 4px; }
+    .answer-body p { margin-bottom: 6px; }
+    .answer-body ul, .answer-body ol { margin: 4px 0 8px 18px; }
+    .answer-body li { margin-bottom: 3px; }
+    .formula-box { padding: 8px 12px; margin: 8px 0; border: 1px solid #999; background: #fff !important; }
+    .formula-box.highlight { border: 2px solid #000; background: #fff !important; }
+    .highlight-box { background: #fff !important; padding: 8px 12px; }
+    .svg-sketch svg { max-width: 480px; height: auto; }
+    .answer-body table th { background: #fff !important; color: #000 !important; font-weight: 700; border: 1px solid #000; }
+    .answer-body table tr:nth-child(even) { background: #fff !important; }
+    a { color: #000 !important; text-decoration: none !important; }
+  }
+
+  @page {
+    size: A4;
+    margin: 15mm 12mm 15mm 12mm;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .container { padding: 0 14px; }
+    .answer-body { font-size: 0.9rem; }
+    .exam-meta { flex-direction: column; align-items: center; }
+    .top-bar h1 { font-size: 0.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════ TOP BAR ══════ -->
+<div class="top-bar">
+  <h1>CE 76509 — Ground Water Engineering | 2082 Chaitra</h1>
+  <div class="top-bar-controls">
+    <button onclick="toggleSidebar()">&#9776; Index</button>
+    <button onclick="window.print()">&#128438; Print / PDF</button>
+  </div>
+</div>
+
+<!-- ══════ SIDEBAR ══════ -->
+<div class="sidebar" id="sidebar">
+  <h3>Questions</h3>
+  <a href="#q1" onclick="closeSidebar()"><span class="q-num">1.</span> Hydrological Cycle &amp; Subsurface Movement</a>
+  <a href="#q2a" onclick="closeSidebar()"><span class="q-num">2a.</span> Darcy's Law &amp; 3-D Form</a>
+  <a href="#q2b" onclick="closeSidebar()"><span class="q-num">2b.</span> Confined Aquifer – Variable Thickness (Numerical)</a>
+  <a href="#q3a" onclick="closeSidebar()"><span class="q-num">3a.</span> Flow Net – Definition &amp; Seepage Discharge</a>
+  <a href="#q3b" onclick="closeSidebar()"><span class="q-num">3b.</span> Flownet Analysis – Transmissivity &amp; Permeability</a>
+  <a href="#q4a" onclick="closeSidebar()"><span class="q-num">4a.</span> Well Drawdown – Confined &amp; Screened Well</a>
+  <a href="#q4b" onclick="closeSidebar()"><span class="q-num">4b.</span> Open Well vs Tube Well</a>
+  <a href="#q5a" onclick="closeSidebar()"><span class="q-num">5a.</span> Thiem's Method for Transmissivity</a>
+  <a href="#q5b" onclick="closeSidebar()"><span class="q-num">5b.</span> Cooper-Jacob Method</a>
+  <a href="#q6" onclick="closeSidebar()"><span class="q-num">6.</span> Objectives of Groundwater Exploration</a>
+  <a href="#q7a" onclick="closeSidebar()"><span class="q-num">7a.</span> Open Well Recuperation Test (Numerical)</a>
+  <a href="#q7b" onclick="closeSidebar()"><span class="q-num">7b.</span> Types of Tube Wells &amp; Suitability</a>
+  <a href="#q8" onclick="closeSidebar()"><span class="q-num">8.</span> Deep Well Vertical Turbine Pump</a>
+  <a href="#q9" onclick="closeSidebar()"><span class="q-num">9.</span> Groundwater Development in Terai</a>
+</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ══════ CONTAINER ══════ -->
+<div class="container">
+
+<!-- ══ EXAM HEADER ══ -->
+<div class="exam-header">
+  <div class="uni-name">Tribhuvan University</div>
+  <div class="inst-name">Institute of Engineering</div>
+  <h2>Examination Control Division</h2>
+  <div class="year">2082 Chaitra</div>
+  <div class="subject-line">Subject: Ground Water Engineering (Elective II) — CE 76509</div>
+  <div class="exam-meta">
+    <span>Exam: Regular</span>
+    <span>Level: BE</span>
+    <span>Programme: BCE</span>
+    <span>Year/Part: IV/II</span>
+    <span>Full Marks: 80</span>
+    <span>Pass Marks: 32</span>
+    <span>Time: 3 hrs</span>
+  </div>
+  <div class="exam-instructions">
+    <ul>
+      <li>Candidates are required to give their answers in their own words as far as practicable.</li>
+      <li>Attempt <u><strong>All</strong></u> questions.</li>
+      <li>The figures in the margin indicate <u><strong>Full Marks</strong></u>.</li>
+      <li>Necessary <u><strong>Semi log graph</strong></u> should be provided.</li>
+      <li>Assume suitable data if necessary.</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 1 ═══════════════════════════ -->
+<div class="question-card" id="q1">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">1.</span> Explain in brief hydrological cycle focusing on components of subsurface movement of water.</div>
+    <span class="marks">[4]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Hydrological Cycle</h3>
+    <p>The <strong>hydrological cycle</strong> (water cycle) is the continuous circulation of water within the Earth's hydrosphere through the processes of evaporation, condensation, precipitation, infiltration, runoff, and subsurface flow. It is a closed system driven primarily by solar energy and gravity.</p>
+
+    <!-- SVG: Hydrological Cycle -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 700 420" xmlns="http://www.w3.org/2000/svg" style="max-width:650px;">
+        <!-- Sky -->
+        <rect x="0" y="0" width="700" height="120" fill="#eef6ff"/>
+        <!-- Cloud -->
+        <ellipse cx="350" cy="55" rx="80" ry="30" fill="#ccc" stroke="#000" stroke-width="1.5"/>
+        <ellipse cx="310" cy="60" rx="50" ry="25" fill="#ccc" stroke="#000" stroke-width="1.5"/>
+        <ellipse cx="390" cy="60" rx="50" ry="25" fill="#ccc" stroke="#000" stroke-width="1.5"/>
+        <text x="350" y="60" text-anchor="middle" font-size="11" font-weight="bold">Cloud</text>
+        <!-- Sun -->
+        <circle cx="80" cy="45" r="25" fill="#ffe066" stroke="#f5a623" stroke-width="2"/>
+        <text x="80" y="49" text-anchor="middle" font-size="10" font-weight="bold">Sun</text>
+        <!-- Ground surface -->
+        <line x1="0" y1="200" x2="700" y2="200" stroke="#555" stroke-width="2"/>
+        <text x="620" y="195" font-size="10" fill="#555">Ground Surface</text>
+        <!-- Mountain -->
+        <polygon points="580,200 640,120 700,200" fill="#a8d5a2" stroke="#000" stroke-width="1.5"/>
+        <!-- Water body -->
+        <rect x="20" y="200" width="120" height="40" fill="#a0cfed" stroke="#000" stroke-width="1.5"/>
+        <text x="80" y="225" text-anchor="middle" font-size="10" font-weight="bold">Lake/Ocean</text>
+        <!-- Evaporation arrow -->
+        <path d="M 100 200 Q 130 140 200 80" fill="none" stroke="#e74c3c" stroke-width="2" marker-end="url(#arrowRed)"/>
+        <text x="120" y="135" font-size="10" fill="#e74c3c" font-weight="bold">Evaporation</text>
+        <!-- Precipitation arrow -->
+        <line x1="340" y1="85" x2="340" y2="195" stroke="#2980b9" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowBlue)"/>
+        <line x1="370" y1="85" x2="370" y2="195" stroke="#2980b9" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrowBlue)"/>
+        <text x="400" y="145" font-size="10" fill="#2980b9" font-weight="bold">Precipitation</text>
+        <!-- Transpiration -->
+        <path d="M 500 200 Q 490 150 450 80" fill="none" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowGreen)"/>
+        <text x="510" y="145" font-size="10" fill="#27ae60" font-weight="bold">Transpiration</text>
+        <!-- Tree -->
+        <rect x="495" y="180" width="8" height="20" fill="#8B4513"/>
+        <ellipse cx="499" cy="175" rx="18" ry="15" fill="#2ecc71" stroke="#000" stroke-width="1"/>
+        <!-- Runoff arrow -->
+        <path d="M 350 205 Q 280 220 150 225" fill="none" stroke="#e67e22" stroke-width="2" marker-end="url(#arrowOrange)"/>
+        <text x="230" y="218" font-size="10" fill="#e67e22" font-weight="bold">Surface Runoff</text>
+        <!-- Subsurface Zones -->
+        <rect x="0" y="240" width="700" height="40" fill="#f5e6cc" stroke="none"/>
+        <text x="350" y="265" text-anchor="middle" font-size="11" font-weight="bold" fill="#8B4513">Soil Moisture Zone (Vadose Zone)</text>
+        <line x1="0" y1="280" x2="700" y2="280" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="0" y="280" width="700" height="30" fill="#fdebd0" stroke="none"/>
+        <text x="350" y="300" text-anchor="middle" font-size="11" font-weight="bold" fill="#a0522d">Intermediate Vadose Zone</text>
+        <line x1="0" y1="310" x2="700" y2="310" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+        <rect x="0" y="310" width="700" height="25" fill="#d4efdf" stroke="none"/>
+        <text x="350" y="327" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a5276">Capillary Fringe</text>
+        <!-- Water Table -->
+        <line x1="0" y1="335" x2="700" y2="335" stroke="#2980b9" stroke-width="2.5"/>
+        <text x="620" y="348" font-size="10" fill="#2980b9" font-weight="bold">Water Table</text>
+        <!-- Saturated Zone -->
+        <rect x="0" y="335" width="700" height="55" fill="#d6eaf8" stroke="none"/>
+        <text x="350" y="367" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a5276">Saturated Zone (Aquifer)</text>
+        <!-- Infiltration arrow -->
+        <path d="M 300 205 L 300 260" fill="none" stroke="#8e44ad" stroke-width="2" marker-end="url(#arrowPurple)"/>
+        <text x="235" y="235" font-size="10" fill="#8e44ad" font-weight="bold">Infiltration</text>
+        <!-- Percolation arrow -->
+        <path d="M 300 270 L 300 350" fill="none" stroke="#8e44ad" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowPurple)"/>
+        <text x="310" y="310" font-size="10" fill="#8e44ad" font-weight="bold">Percolation</text>
+        <!-- Groundwater flow arrow -->
+        <path d="M 200 360 L 100 360 Q 60 360 50 340 L 40 240" fill="none" stroke="#1a5276" stroke-width="2" marker-end="url(#arrowNavy)"/>
+        <text x="110" y="380" font-size="10" fill="#1a5276" font-weight="bold">GW Flow → Baseflow</text>
+        <!-- Impermeable bed -->
+        <rect x="0" y="390" width="700" height="30" fill="#bbb" stroke="none"/>
+        <text x="350" y="410" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Impermeable Bed (Aquiclude)</text>
+        <!-- Arrow markers -->
+        <defs>
+          <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#e74c3c"/></marker>
+          <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#2980b9"/></marker>
+          <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#27ae60"/></marker>
+          <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#e67e22"/></marker>
+          <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#8e44ad"/></marker>
+          <marker id="arrowNavy" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#1a5276"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>Components of Subsurface Movement of Water</h3>
+
+    <h4>1. Infiltration</h4>
+    <p>Water enters the soil through pores and cracks at the ground surface. Rate depends on soil type, moisture content, and rainfall intensity.</p>
+
+    <h4>2. Soil Moisture Zone (Vadose Zone)</h4>
+    <p>Contains both air and water in pore spaces. Comprises three sub-zones:</p>
+    <ul>
+      <li><strong>Soil Water Zone:</strong> Root zone; water held by capillary and adhesive forces</li>
+      <li><strong>Intermediate Vadose Zone:</strong> Water percolates downward under gravity</li>
+      <li><strong>Capillary Fringe:</strong> Above water table; nearly saturated under negative pressure</li>
+    </ul>
+
+    <h4>3. Percolation</h4>
+    <p>Downward movement of water through vadose zone under gravity to the water table.</p>
+
+    <h4>4. Groundwater Flow (Saturated Zone)</h4>
+    <p>Below the water table, all pores are saturated. Water flows from higher to lower hydraulic head (Darcy's Law), eventually discharging as <strong>baseflow</strong> into rivers, springs, or ocean.</p>
+
+    <h4>5. Baseflow (Groundwater Discharge)</h4>
+    <p>Groundwater seeping into surface water bodies. Sustains rivers during dry seasons.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 2a ═══════════════════════════ -->
+<div class="question-card" id="q2a">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">2. a)</span> Explain Darcy's law for groundwater flow? Derive 3-D form of it and also explain its validity.</div>
+    <span class="marks">[8]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Darcy's Law</h3>
+    <p><strong>Statement:</strong> The discharge through a porous medium is proportional to the cross-sectional area and hydraulic gradient.</p>
+
+    <!-- SVG: Darcy's Experiment -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+        <!-- Sand column -->
+        <rect x="200" y="60" width="200" height="200" fill="#f5deb3" stroke="#000" stroke-width="2" rx="3"/>
+        <text x="300" y="170" text-anchor="middle" font-size="13" font-weight="bold">Porous Medium</text>
+        <text x="300" y="190" text-anchor="middle" font-size="11">(Sand)</text>
+        <!-- Dots for sand -->
+        <circle cx="230" cy="100" r="2" fill="#8B4513"/><circle cx="260" cy="120" r="2" fill="#8B4513"/>
+        <circle cx="290" cy="90" r="2" fill="#8B4513"/><circle cx="320" cy="130" r="2" fill="#8B4513"/>
+        <circle cx="350" cy="110" r="2" fill="#8B4513"/><circle cx="370" cy="140" r="2" fill="#8B4513"/>
+        <circle cx="240" cy="210" r="2" fill="#8B4513"/><circle cx="280" cy="230" r="2" fill="#8B4513"/>
+        <circle cx="330" cy="200" r="2" fill="#8B4513"/><circle cx="360" cy="220" r="2" fill="#8B4513"/>
+        <!-- Inflow -->
+        <line x1="120" y1="160" x2="195" y2="160" stroke="#2980b9" stroke-width="3" marker-end="url(#arrowB)"/>
+        <text x="140" y="150" font-size="11" fill="#2980b9" font-weight="bold">Q (inflow)</text>
+        <!-- Outflow -->
+        <line x1="405" y1="160" x2="480" y2="160" stroke="#2980b9" stroke-width="3" marker-end="url(#arrowB)"/>
+        <text x="420" y="150" font-size="11" fill="#2980b9" font-weight="bold">Q (outflow)</text>
+        <!-- Piezometer 1 -->
+        <line x1="240" y1="60" x2="240" y2="20" stroke="#000" stroke-width="1.5"/>
+        <line x1="240" y1="20" x2="240" y2="10" stroke="#2980b9" stroke-width="4"/>
+        <text x="240" y="7" text-anchor="middle" font-size="10" font-weight="bold">h₁</text>
+        <!-- Piezometer 2 -->
+        <line x1="360" y1="60" x2="360" y2="35" stroke="#000" stroke-width="1.5"/>
+        <line x1="360" y1="35" x2="360" y2="25" stroke="#2980b9" stroke-width="4"/>
+        <text x="360" y="22" text-anchor="middle" font-size="10" font-weight="bold">h₂</text>
+        <!-- h1 level line -->
+        <line x1="225" y1="10" x2="255" y2="10" stroke="#e74c3c" stroke-width="1"/>
+        <!-- h2 level line -->
+        <line x1="345" y1="25" x2="375" y2="25" stroke="#e74c3c" stroke-width="1"/>
+        <!-- Datum -->
+        <line x1="150" y1="280" x2="450" y2="280" stroke="#000" stroke-width="1.5" stroke-dasharray="6,3"/>
+        <text x="460" y="284" font-size="10">Datum</text>
+        <!-- h1 dimension -->
+        <line x1="230" y1="280" x2="230" y2="10" stroke="#e74c3c" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="210" y="145" font-size="10" fill="#e74c3c" font-weight="bold" transform="rotate(-90,210,145)">h₁</text>
+        <!-- h2 dimension -->
+        <line x1="370" y1="280" x2="370" y2="25" stroke="#e74c3c" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="385" y="155" font-size="10" fill="#e74c3c" font-weight="bold" transform="rotate(-90,385,155)">h₂</text>
+        <!-- L dimension -->
+        <line x1="240" y1="270" x2="360" y2="270" stroke="#000" stroke-width="1.5" marker-start="url(#arrowBS)" marker-end="url(#arrowB)"/>
+        <text x="300" y="295" text-anchor="middle" font-size="11" font-weight="bold">L</text>
+        <!-- A label -->
+        <text x="410" y="85" font-size="11" font-weight="bold">A = Cross-sectional area</text>
+        <defs>
+          <marker id="arrowB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#2980b9"/></marker>
+          <marker id="arrowBS" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M8,0 L0,3 L8,6" fill="#000"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h4>Mathematical Expression (1-D)</h4>
+    <div class="formula-box highlight">
+      $$Q = -KA\frac{dh}{dl}$$
+    </div>
+    <p>Where:</p>
+    <ul>
+      <li>$Q$ = Discharge (volume flow rate) [m³/s]</li>
+      <li>$K$ = Hydraulic conductivity [m/s]</li>
+      <li>$A$ = Cross-sectional area perpendicular to flow [m²]</li>
+      <li>$\frac{dh}{dl}$ = Hydraulic gradient (change in head per unit length) [dimensionless]</li>
+      <li>The negative sign indicates flow is in the direction of decreasing head</li>
+    </ul>
+    <p>The specific discharge (Darcy velocity) is:</p>
+    <div class="formula-box">
+      $$q = \frac{Q}{A} = -K\frac{dh}{dl}$$
+    </div>
+
+    <h3>Derivation of 3-D Form of Darcy's Law (General Groundwater Flow Equation)</h3>
+
+    <h4>Step 1: 3-D Darcy's Law Components</h4>
+    <p>In a three-dimensional porous medium, groundwater flows simultaneously in all three coordinate directions ($x$, $y$, $z$). Applying Darcy's law independently in each direction for a heterogeneous, anisotropic medium:</p>
+    <div class="formula-box">
+      $$q_x = -K_x \frac{\partial h}{\partial x}, \quad q_y = -K_y \frac{\partial h}{\partial y}, \quad q_z = -K_z \frac{\partial h}{\partial z}$$
+    </div>
+    <p>where $K_x$, $K_y$, $K_z$ are the hydraulic conductivities in the $x$, $y$, $z$ directions respectively, and $h$ is the hydraulic head at any point $(x, y, z)$ at time $t$.</p>
+
+    <h4>Step 2: Control Volume and Mass Balance</h4>
+    <p>Consider an elementary <strong>control volume (REV — Representative Elementary Volume)</strong> of dimensions $dx \cdot dy \cdot dz$ within a saturated porous medium. We apply the principle of <strong>conservation of mass</strong>:</p>
+
+    <div class="highlight-box">
+      <strong>Mass Balance:</strong> [Mass inflow rate] − [Mass outflow rate] = [Rate of change of mass storage within the control volume]
+    </div>
+
+    <!-- SVG: 3D Control Volume Element -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 500 380" xmlns="http://www.w3.org/2000/svg" style="max-width:480px;">
+        <!-- 3D cube (control volume) -->
+        <!-- Front face -->
+        <polygon points="120,180 320,180 320,300 120,300" fill="#d6eaf8" fill-opacity="0.3" stroke="#000" stroke-width="1.5"/>
+        <!-- Top face -->
+        <polygon points="120,180 200,120 400,120 320,180" fill="#d6eaf8" fill-opacity="0.2" stroke="#000" stroke-width="1.5"/>
+        <!-- Right face -->
+        <polygon points="320,180 400,120 400,240 320,300" fill="#d6eaf8" fill-opacity="0.15" stroke="#000" stroke-width="1.5"/>
+        <!-- Back edges (dashed) -->
+        <line x1="120" y1="300" x2="200" y2="240" stroke="#000" stroke-width="1" stroke-dasharray="5,3"/>
+        <line x1="200" y1="240" x2="400" y2="240" stroke="#000" stroke-width="1" stroke-dasharray="5,3"/>
+        <line x1="200" y1="240" x2="200" y2="120" stroke="#000" stroke-width="1" stroke-dasharray="5,3"/>
+
+        <!-- dx label (bottom front edge) -->
+        <text x="220" y="318" text-anchor="middle" font-size="13" font-weight="bold">dx</text>
+        <!-- dy label (right bottom edge) -->
+        <text x="375" y="280" text-anchor="middle" font-size="13" font-weight="bold">dy</text>
+        <!-- dz label (left vertical edge) -->
+        <text x="100" y="245" text-anchor="middle" font-size="13" font-weight="bold">dz</text>
+
+        <!-- qx arrow (entering left face) -->
+        <line x1="40" y1="240" x2="115" y2="240" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr3dR)"/>
+        <text x="50" y="230" font-size="12" fill="#e74c3c" font-weight="bold">q<tspan font-size="9" dy="3">x</tspan></text>
+
+        <!-- qx + dqx arrow (leaving right face) -->
+        <line x1="325" y1="210" x2="460" y2="210" stroke="#e74c3c" stroke-width="2.5" marker-end="url(#arr3dR)"/>
+        <text x="370" y="200" font-size="11" fill="#e74c3c" font-weight="bold">q<tspan font-size="8" dy="2">x</tspan><tspan dy="-2"> + </tspan><tspan font-size="9">∂q</tspan><tspan font-size="7" dy="2">x</tspan></text>
+
+        <!-- qy arrow (entering front face — diagonal, y-direction) -->
+        <line x1="145" y1="345" x2="195" y2="308" stroke="#2980b9" stroke-width="2.5" marker-end="url(#arr3dR_b)"/>
+        <text x="110" y="350" font-size="12" fill="#2980b9" font-weight="bold">q<tspan font-size="9" dy="3">y</tspan></text>
+
+        <!-- qy + dqy arrow (leaving back face — diagonal, y-direction) -->
+        <line x1="340" y1="155" x2="420" y2="95" stroke="#2980b9" stroke-width="2.5" marker-end="url(#arr3dR_b)"/>
+        <text x="425" y="90" font-size="11" fill="#2980b9" font-weight="bold">q<tspan font-size="8" dy="2">y</tspan><tspan dy="-2"> + </tspan><tspan font-size="9">∂q</tspan><tspan font-size="7" dy="2">y</tspan></text>
+
+        <!-- qz arrow (entering bottom face — vertical, z-direction) -->
+        <line x1="220" y1="355" x2="220" y2="305" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arr3dUg)"/>
+        <text x="230" y="362" font-size="12" fill="#27ae60" font-weight="bold">q<tspan font-size="9" dy="3">z</tspan></text>
+
+        <!-- qz + dqz arrow (leaving top face — vertical, z-direction) -->
+        <line x1="260" y1="175" x2="260" y2="60" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arr3dUg)"/>
+        <text x="225" y="55" font-size="11" fill="#27ae60" font-weight="bold">q<tspan font-size="8" dy="2">z</tspan><tspan dy="-2"> + </tspan><tspan font-size="9">∂q</tspan><tspan font-size="7" dy="2">z</tspan></text>
+
+        <!-- Axes -->
+        <line x1="40" y1="340" x2="100" y2="340" stroke="#000" stroke-width="1.5" marker-end="url(#arr3dBk)"/>
+        <text x="108" y="344" font-size="12" font-weight="bold">x</text>
+        <line x1="40" y1="340" x2="70" y2="310" stroke="#000" stroke-width="1.5" marker-end="url(#arr3dBk)"/>
+        <text x="75" y="308" font-size="12" font-weight="bold">y</text>
+        <line x1="40" y1="340" x2="40" y2="300" stroke="#000" stroke-width="1.5" marker-end="url(#arr3dBk)"/>
+        <text x="30" y="298" font-size="12" font-weight="bold">z</text>
+
+        <!-- Label -->
+        <text x="250" y="250" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a5276">Control Volume</text>
+        <text x="250" y="266" text-anchor="middle" font-size="11" fill="#1a5276">dx·dy·dz</text>
+
+        <defs>
+          <marker id="arr3dR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#e74c3c"/></marker>
+          <marker id="arr3dR_b" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#2980b9"/></marker>
+          <marker id="arr3dUg" markerWidth="6" markerHeight="8" refX="3" refY="0" orient="auto"><path d="M0,8 L3,0 L6,8" fill="#27ae60"/></marker>
+          <marker id="arr3dBk" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#000"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h4>Step 3: Flow Analysis in Each Direction</h4>
+
+    <p><strong>In the x-direction:</strong></p>
+    <p>The volume of water entering the left face (area $dy \cdot dz$) per unit time:</p>
+    <div class="formula-box">
+      $$\text{Inflow}_x = q_x \cdot (dy \cdot dz)$$
+    </div>
+    <p>The volume of water leaving the right face per unit time (using Taylor series expansion, retaining first-order terms):</p>
+    <div class="formula-box">
+      $$\text{Outflow}_x = \left(q_x + \frac{\partial q_x}{\partial x} dx\right) \cdot (dy \cdot dz)$$
+    </div>
+    <p>Net inflow in x-direction:</p>
+    <div class="formula-box">
+      $$\Delta Q_x = \text{Inflow}_x - \text{Outflow}_x = -\frac{\partial q_x}{\partial x} dx \cdot dy \cdot dz$$
+    </div>
+
+    <p><strong>Similarly, in the y-direction:</strong></p>
+    <div class="formula-box">
+      $$\Delta Q_y = -\frac{\partial q_y}{\partial y} dx \cdot dy \cdot dz$$
+    </div>
+
+    <p><strong>And in the z-direction:</strong></p>
+    <div class="formula-box">
+      $$\Delta Q_z = -\frac{\partial q_z}{\partial z} dx \cdot dy \cdot dz$$
+    </div>
+
+    <h4>Step 4: Total Net Inflow</h4>
+    <p>The total net volume of water flowing into the control volume per unit time:</p>
+    <div class="formula-box">
+      $$\Delta Q_{total} = -\left(\frac{\partial q_x}{\partial x} + \frac{\partial q_y}{\partial y} + \frac{\partial q_z}{\partial z}\right) dx \cdot dy \cdot dz$$
+    </div>
+
+    <h4>Step 5: Rate of Change of Storage</h4>
+    <p>The rate of change of water stored within the control volume is expressed using the <strong>specific storage</strong> $S_s$ (volume of water released from storage per unit volume of aquifer per unit decline in head):</p>
+    <div class="formula-box">
+      $$\text{Rate of storage change} = S_s \frac{\partial h}{\partial t} \cdot (dx \cdot dy \cdot dz)$$
+    </div>
+
+    <h4>Step 6: Equation of Continuity</h4>
+    <p>Equating net inflow to rate of storage change:</p>
+    <div class="formula-box">
+      $$-\left(\frac{\partial q_x}{\partial x} + \frac{\partial q_y}{\partial y} + \frac{\partial q_z}{\partial z}\right) dx \cdot dy \cdot dz = S_s \frac{\partial h}{\partial t} \cdot dx \cdot dy \cdot dz$$
+    </div>
+    <p>Dividing both sides by $dx \cdot dy \cdot dz$:</p>
+    <div class="formula-box">
+      $$-\left(\frac{\partial q_x}{\partial x} + \frac{\partial q_y}{\partial y} + \frac{\partial q_z}{\partial z}\right) = S_s \frac{\partial h}{\partial t}$$
+    </div>
+
+    <h4>Step 7: Substituting Darcy's Law</h4>
+    <p>Substituting $q_x = -K_x \frac{\partial h}{\partial x}$, $q_y = -K_y \frac{\partial h}{\partial y}$, $q_z = -K_z \frac{\partial h}{\partial z}$:</p>
+    <div class="formula-box">
+      $$-\frac{\partial}{\partial x}\left(-K_x \frac{\partial h}{\partial x}\right) - \frac{\partial}{\partial y}\left(-K_y \frac{\partial h}{\partial y}\right) - \frac{\partial}{\partial z}\left(-K_z \frac{\partial h}{\partial z}\right) = S_s \frac{\partial h}{\partial t}$$
+    </div>
+
+    <p>The negative signs cancel, giving the <strong>General 3-D Groundwater Flow Equation</strong>:</p>
+    <div class="formula-box highlight">
+      $$\boxed{\frac{\partial}{\partial x}\left(K_x \frac{\partial h}{\partial x}\right) + \frac{\partial}{\partial y}\left(K_y \frac{\partial h}{\partial y}\right) + \frac{\partial}{\partial z}\left(K_z \frac{\partial h}{\partial z}\right) = S_s \frac{\partial h}{\partial t}}$$
+    </div>
+    <p>This is the <strong>general 3-D groundwater flow equation</strong> for a heterogeneous, anisotropic aquifer under transient conditions. It governs the spatial and temporal distribution of hydraulic head $h(x, y, z, t)$ throughout the aquifer.</p>
+
+    <h4>Special Cases:</h4>
+    <p><strong>For a homogeneous, isotropic aquifer</strong> ($K_x = K_y = K_z = K$):</p>
+    <div class="formula-box">
+      $$K\left(\frac{\partial^2 h}{\partial x^2} + \frac{\partial^2 h}{\partial y^2} + \frac{\partial^2 h}{\partial z^2}\right) = S_s \frac{\partial h}{\partial t}$$
+    </div>
+
+    <p><strong>For steady-state flow</strong> ($\frac{\partial h}{\partial t} = 0$):</p>
+    <div class="formula-box">
+      $$\frac{\partial^2 h}{\partial x^2} + \frac{\partial^2 h}{\partial y^2} + \frac{\partial^2 h}{\partial z^2} = 0 \quad \text{(Laplace Equation)}$$
+    </div>
+
+    <h3>Validity of Darcy's Law</h3>
+
+    <p>Darcy's law is essentially an application of <strong>Newton's law of viscosity</strong> to flow through porous media:</p>
+    <div class="formula-box">
+      $$\tau = \mu \frac{du}{dy}$$
+    </div>
+    <p>In laminar flow, viscous shear forces dominate. The linear relationship $q \propto \frac{dh}{dl}$ in Darcy's law arises because viscous resistance (governed by Newton's law) is proportional to velocity. Hence, Darcy's law is valid when viscous forces dominate over inertial forces.</p>
+
+    <h4>1. Laminar Flow Condition</h4>
+    <p>Valid only for <strong>laminar flow</strong> ($Re < 1$, applicable up to $Re \approx 10$):</p>
+    <div class="formula-box">
+      $$Re = \frac{q \cdot d}{\nu}$$
+    </div>
+    <p>where $q$ = specific discharge, $d$ = grain diameter, $\nu$ = kinematic viscosity.</p>
+
+    <h4>2. Saturated Flow</h4>
+    <p>Applies to fully saturated media. For unsaturated flow, requires modification (Richard's equation).</p>
+
+    <h4>3. Incompressible, Homogeneous Fluid</h4>
+    <p>Constant density and viscosity assumed. Needs modification for variable-density flow (saltwater intrusion).</p>
+
+    <h4>4. Not Valid for Very Low Permeability</h4>
+    <p>In clays, a threshold gradient may be required before flow begins.</p>
+
+    <div class="highlight-box">
+      <strong>Summary:</strong> Darcy's law (based on Newton's law of viscosity) is valid for laminar flow ($Re < 10$) through saturated, homogeneous porous media. Fails at high velocities (turbulent flow) and very low permeabilities (clays).
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 2b ═══════════════════════════ -->
+<div class="question-card" id="q2b">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">2. b)</span> A confined aquifer with a horizontal bed has a varying thickness as shown. K = 12 + 0.006x, where x = 0 at section (1). Piezometric heads at sections (1) and (2) are 14.2 m and 18.8 m respectively. Determine the flow rate per unit width.</div>
+    <span class="marks">[8]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Given Data</h3>
+    <ul>
+      <li>Confined aquifer with horizontal bed</li>
+      <li>Hydraulic conductivity: $K = 12 + 0.006x$ (inhomogeneous), where $x = 0$ at section (1)</li>
+      <li>Thickness at section 1: $b_1 = 30$ m</li>
+      <li>Thickness at section 2: $b_2 = 75$ m</li>
+      <li>Piezometric head at section 1: $h_1 = 14.2$ m</li>
+      <li>Piezometric head at section 2: $h_2 = 18.8$ m</li>
+      <li>Distance between sections: $L = 3600$ m</li>
+    </ul>
+
+    <!-- SVG: Confined aquifer diagram -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+        <!-- Upper confining layer -->
+        <rect x="50" y="40" width="550" height="20" fill="#bbb" stroke="#000" stroke-width="1.5"/>
+        <text x="325" y="35" text-anchor="middle" font-size="10" font-weight="bold">Upper Confining Layer</text>
+        <!-- Aquifer (varying thickness) -->
+        <polygon points="50,60 600,60 600,235 50,110" fill="#d6eaf8" stroke="#000" stroke-width="2"/>
+        <text x="325" y="150" text-anchor="middle" font-size="12" font-weight="bold">Confined Aquifer</text>
+        <text x="325" y="170" text-anchor="middle" font-size="11">K = 12 + 0.006x</text>
+        <!-- Lower bed -->
+        <line x1="50" y1="110" x2="600" y2="235" stroke="#000" stroke-width="2"/>
+        <rect x="50" y="110" width="5" height="0" fill="none"/>
+        <!-- Section 1 -->
+        <line x1="80" y1="30" x2="80" y2="130" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="80" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">1</text>
+        <!-- Section 2 -->
+        <line x1="570" y1="30" x2="570" y2="250" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="570" y="25" text-anchor="middle" font-size="11" font-weight="bold" fill="#e74c3c">2</text>
+        <!-- Piezometric levels -->
+        <line x1="80" y1="45" x2="80" y2="0" stroke="#2980b9" stroke-width="2"/>
+        <text x="60" y="50" font-size="9" fill="#2980b9">h₁=14.2m</text>
+        <line x1="570" y1="45" x2="570" y2="-5" stroke="#2980b9" stroke-width="2"/>
+        <text x="545" y="50" font-size="9" fill="#2980b9">h₂=18.8m</text>
+        <!-- b1 dimension -->
+        <line x1="55" y1="60" x2="55" y2="110" stroke="#000" stroke-width="1" marker-start="url(#arrBk2)" marker-end="url(#arrBk)"/>
+        <text x="35" y="88" font-size="10" font-weight="bold">30 m</text>
+        <!-- b2 dimension -->
+        <line x1="610" y1="60" x2="610" y2="235" stroke="#000" stroke-width="1" marker-start="url(#arrBk2)" marker-end="url(#arrBk)"/>
+        <text x="620" y="150" font-size="10" font-weight="bold">75 m</text>
+        <!-- L dimension -->
+        <line x1="80" y1="260" x2="570" y2="260" stroke="#000" stroke-width="1.5" marker-start="url(#arrBk2)" marker-end="url(#arrBk)"/>
+        <text x="325" y="275" text-anchor="middle" font-size="11" font-weight="bold">3,600 m</text>
+        <!-- Flow direction -->
+        <line x1="500" y1="140" x2="150" y2="100" stroke="#27ae60" stroke-width="2.5" marker-end="url(#arrGn)"/>
+        <text x="280" y="108" font-size="10" fill="#27ae60" font-weight="bold">Q (flow direction)</text>
+        <defs>
+          <marker id="arrBk" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#000"/></marker>
+          <marker id="arrBk2" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M8,0 L0,3 L8,6" fill="#000"/></marker>
+          <marker id="arrGn" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#27ae60"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>Solution</h3>
+
+    <h4>Step 1: Express the varying thickness</h4>
+    <p>The aquifer thickness varies linearly from $b_1 = 30$ m at $x = 0$ to $b_2 = 75$ m at $x = 3600$ m:</p>
+    <div class="formula-box">
+      $$b(x) = b_1 + \frac{b_2 - b_1}{L} \cdot x = 30 + \frac{75 - 30}{3600} \cdot x = 30 + 0.0125x$$
+    </div>
+
+    <h4>Step 2: Apply Darcy's Law for the confined aquifer</h4>
+    <p>For steady one-dimensional flow in a confined aquifer per unit width:</p>
+    <div class="formula-box">
+      $$q = -K(x) \cdot b(x) \cdot \frac{dh}{dx} = -T(x) \cdot \frac{dh}{dx}$$
+    </div>
+    <p>where $T(x) = K(x) \cdot b(x)$ is the transmissivity at position $x$.</p>
+
+    <h4>Step 3: Transmissivity as a function of x</h4>
+    <div class="formula-box">
+      $$T(x) = K(x) \cdot b(x) = (12 + 0.006x)(30 + 0.0125x)$$
+    </div>
+    <p>Expanding:</p>
+    <div class="formula-box">
+      $$T(x) = 360 + 0.15x + 0.18x + 0.000075x^2 = 360 + 0.33x + 0.000075x^2$$
+    </div>
+
+    <h4>Step 4: Integrate using continuity</h4>
+    <p>For steady flow, $q$ is constant along the flow path. Rearranging Darcy's law:</p>
+    <div class="formula-box">
+      $$q = -T(x) \frac{dh}{dx} \implies dh = -\frac{q}{T(x)} dx$$
+    </div>
+    <p>Integrating from section 1 to section 2:</p>
+    <div class="formula-box">
+      $$\int_{h_1}^{h_2} dh = -q \int_0^{L} \frac{dx}{T(x)}$$
+    </div>
+    <div class="formula-box">
+      $$h_2 - h_1 = -q \int_0^{3600} \frac{dx}{360 + 0.33x + 0.000075x^2}$$
+    </div>
+
+    <h4>Step 5: Evaluate the integral and solve for q</h4>
+    <p>Evaluating the integral $\displaystyle\int_0^{3600} \frac{dx}{360 + 0.33x + 0.000075x^2}$ using calculator:</p>
+    <div class="formula-box">
+      $$\int_0^{3600} \frac{dx}{T(x)} = 3.7777$$
+    </div>
+
+    <p>Substituting:</p>
+    <div class="formula-box">
+      $$h_2 - h_1 = -q \times 3.7777$$
+    </div>
+    <div class="formula-box">
+      $$18.8 - 14.2 = -q \times 3.7777$$
+    </div>
+    <div class="formula-box highlight">
+      $$q = -\frac{4.6}{3.7777} = -1.2176 \text{ m}^2/\text{s}$$
+    </div>
+
+    <p>The negative sign indicates flow from section 2 (higher head) towards section 1 (lower head).</p>
+
+    <div class="highlight-box">
+      <strong>Result:</strong> Flow rate per unit width = <strong>1.218 m²/s</strong> (from section 2 towards section 1).
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 3a ═══════════════════════════ -->
+<div class="question-card" id="q3a">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">3. a)</span> Define flow net with neat sketch. What are the application of flow net in geotechnical engineering? Derive the expression for determining seepage discharge from flow net.</div>
+    <span class="marks">[3+3+4]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Definition of Flow Net</h3>
+    <p>A <strong>flow net</strong> is a graphical representation of 2D groundwater flow consisting of:</p>
+    <ol>
+      <li><strong>Flow lines:</strong> Lines along which water particles travel (direction of flow)</li>
+      <li><strong>Equipotential lines:</strong> Lines of equal hydraulic head (perpendicular to flow lines)</li>
+    </ol>
+    <p>These curves intersect at right angles forming curvilinear squares.</p>
+
+    <!-- SVG: Normal Flow Net -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 650 380" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+        <!-- Ground surface -->
+        <line x1="30" y1="50" x2="620" y2="50" stroke="#000" stroke-width="2"/>
+        <text x="325" y="40" text-anchor="middle" font-size="11" font-weight="bold">Ground Surface</text>
+        <!-- Upstream head H₁ -->
+        <rect x="30" y="50" width="15" height="100" fill="#a0cfed" stroke="#2980b9" stroke-width="1.5"/>
+        <text x="20" y="105" text-anchor="end" font-size="12" font-weight="bold" fill="#1a5276">H₁</text>
+        <!-- Downstream head H₂ -->
+        <rect x="605" y="50" width="15" height="50" fill="#a0cfed" stroke="#2980b9" stroke-width="1.5"/>
+        <text x="630" y="80" font-size="12" font-weight="bold" fill="#1a5276">H₂</text>
+        <!-- Permeable soil zone -->
+        <rect x="45" y="50" width="560" height="260" fill="#f5e6c8" opacity="0.3" stroke="none"/>
+        <text x="325" y="345" text-anchor="middle" font-size="11" fill="#8B4513" font-weight="bold">Permeable Soil</text>
+        <!-- Impermeable boundary -->
+        <line x1="30" y1="310" x2="620" y2="310" stroke="#000" stroke-width="3"/>
+        <text x="325" y="330" text-anchor="middle" font-size="11" font-weight="bold">Impermeable Boundary</text>
+        <!-- Equipotential lines (vertical) -->
+        <line x1="140" y1="50" x2="140" y2="310" stroke="#2980b9" stroke-width="1.2" stroke-dasharray="6,3"/>
+        <line x1="240" y1="50" x2="240" y2="310" stroke="#2980b9" stroke-width="1.2" stroke-dasharray="6,3"/>
+        <line x1="340" y1="50" x2="340" y2="310" stroke="#2980b9" stroke-width="1.2" stroke-dasharray="6,3"/>
+        <line x1="440" y1="50" x2="440" y2="310" stroke="#2980b9" stroke-width="1.2" stroke-dasharray="6,3"/>
+        <line x1="540" y1="50" x2="540" y2="310" stroke="#2980b9" stroke-width="1.2" stroke-dasharray="6,3"/>
+        <!-- Potential drop labels -->
+        <text x="90" y="68" text-anchor="middle" font-size="9" fill="#2980b9">Δh</text>
+        <text x="190" y="68" text-anchor="middle" font-size="9" fill="#2980b9">Δh</text>
+        <text x="290" y="68" text-anchor="middle" font-size="9" fill="#2980b9">Δh</text>
+        <text x="390" y="68" text-anchor="middle" font-size="9" fill="#2980b9">Δh</text>
+        <text x="490" y="68" text-anchor="middle" font-size="9" fill="#2980b9">Δh</text>
+        <!-- Flow lines (horizontal) with arrows -->
+        <line x1="45" y1="100" x2="605" y2="100" stroke="#e74c3c" stroke-width="1.5"/>
+        <line x1="45" y1="150" x2="605" y2="150" stroke="#e74c3c" stroke-width="1.5"/>
+        <line x1="45" y1="200" x2="605" y2="200" stroke="#e74c3c" stroke-width="1.5"/>
+        <line x1="45" y1="250" x2="605" y2="250" stroke="#e74c3c" stroke-width="1.5"/>
+        <!-- Flow direction arrows -->
+        <polygon points="400,96 410,100 400,104" fill="#e74c3c"/>
+        <polygon points="350,146 360,150 350,154" fill="#e74c3c"/>
+        <polygon points="400,196 410,200 400,204" fill="#e74c3c"/>
+        <polygon points="350,246 360,250 350,254" fill="#e74c3c"/>
+        <!-- Curvilinear square labels -->
+        <text x="190" y="130" text-anchor="middle" font-size="10" fill="#555">a</text>
+        <text x="240" y="170" text-anchor="middle" font-size="10" fill="#555">b</text>
+        <rect x="141" y="101" width="98" height="48" fill="none" stroke="#555" stroke-width="0.8" stroke-dasharray="2,2"/>
+        <text x="190" y="185" text-anchor="middle" font-size="9" fill="#555">(a ≈ b)</text>
+        <!-- Nf label -->
+        <text x="25" y="125" text-anchor="end" font-size="9" fill="#555">Δq₁</text>
+        <text x="25" y="175" text-anchor="end" font-size="9" fill="#555">Δq₂</text>
+        <text x="25" y="225" text-anchor="end" font-size="9" fill="#555">Δq₃</text>
+        <text x="25" y="275" text-anchor="end" font-size="9" fill="#555">Δq₄</text>
+        <!-- Legend -->
+        <line x1="440" y1="358" x2="480" y2="358" stroke="#e74c3c" stroke-width="2"/>
+        <text x="490" y="362" font-size="10">Flow lines (N<tspan font-size="8" dy="2">f</tspan><tspan dy="-2"> = 4)</tspan></text>
+        <line x1="440" y1="373" x2="480" y2="373" stroke="#2980b9" stroke-width="2" stroke-dasharray="6,3"/>
+        <text x="490" y="377" font-size="10">Equipotential lines (N<tspan font-size="8" dy="2">d</tspan><tspan dy="-2"> = 6)</tspan></text>
+      </svg>
+    </div>
+
+    <h3>Applications of Flow Net in Geotechnical Engineering</h3>
+    <ol>
+      <li><strong>Seepage discharge estimation:</strong> Calculating the quantity of water seeping through or under earth dams, levees, sheet piles, and retaining walls.</li>
+      <li><strong>Uplift pressure calculation:</strong> Determining the pore water pressure distribution at the base of hydraulic structures (dams, weirs) to check against uplift failure.</li>
+      <li><strong>Exit gradient determination:</strong> Finding the hydraulic gradient at the downstream exit point to check against piping (internal erosion) failure. Critical when exit gradient approaches the critical gradient $i_c = \frac{G_s - 1}{1 + e}$.</li>
+      <li><strong>Design of dewatering systems:</strong> Planning well-point systems and cut-off walls for excavation dewatering.</li>
+      <li><strong>Seepage force analysis:</strong> Evaluating seepage forces acting on soil particles, which affect slope stability and foundation design.</li>
+      <li><strong>Design of drainage systems:</strong> Designing filters, drains, and relief wells to safely control seepage in earth dams.</li>
+    </ol>
+
+    <h3>Derivation: Seepage Discharge from Flow Net</h3>
+
+    <h4>Assumptions</h4>
+    <ul>
+      <li>Flow is two-dimensional, steady, and laminar</li>
+      <li>The soil is homogeneous, isotropic, and saturated</li>
+      <li>Darcy's law is valid</li>
+      <li>Water is incompressible</li>
+    </ul>
+
+    <h4>Derivation</h4>
+    <p>Consider a flow net with:</p>
+    <ul>
+      <li>$N_f$ = Number of flow channels (spaces between adjacent flow lines)</li>
+      <li>$N_d$ = Number of equipotential drops (spaces between adjacent equipotential lines)</li>
+      <li>$H$ = Total head loss = $H_1 - H_2$ (difference between upstream and downstream heads)</li>
+    </ul>
+
+    <p><strong>Step 1:</strong> The total head loss is divided equally among the $N_d$ potential drops:</p>
+    <div class="formula-box">
+      $$\Delta h = \frac{H}{N_d}$$
+    </div>
+
+    <p><strong>Step 2:</strong> Consider one elementary square (field) of the flow net with dimensions $a \times b$ (width $\times$ length along flow). For a curvilinear square, $a \approx b$.</p>
+
+    <p><strong>Step 3:</strong> Apply Darcy's law to this single field. The discharge through one flow channel per unit width perpendicular to the flow plane:</p>
+    <div class="formula-box">
+      $$\Delta q = K \cdot \frac{\Delta h}{b} \cdot a \cdot 1$$
+    </div>
+    <p>Since $a \approx b$ (curvilinear square):</p>
+    <div class="formula-box">
+      $$\Delta q = K \cdot \Delta h = K \cdot \frac{H}{N_d}$$
+    </div>
+
+    <p><strong>Step 4:</strong> The total seepage discharge through all $N_f$ flow channels:</p>
+    <div class="formula-box highlight">
+      $$q = N_f \cdot \Delta q = K \cdot H \cdot \frac{N_f}{N_d}$$
+    </div>
+
+    <p>For a structure of length $L$ perpendicular to the cross-section:</p>
+    <div class="formula-box highlight">
+      $$Q = K \cdot H \cdot \frac{N_f}{N_d} \cdot L$$
+    </div>
+
+    <div class="highlight-box">
+      <strong>Final Expression:</strong> $Q = K \cdot H \cdot \frac{N_f}{N_d} \cdot L$, where $K$ = hydraulic conductivity, $H$ = total head loss, $N_f$ = number of flow channels, $N_d$ = number of potential drops, and $L$ = length of structure.
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 3b ═══════════════════════════ -->
+<div class="question-card" id="q3b">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">3. b)</span> From flownet analysis of a well pumping at 150,000 lpm at Rajbandhu Project: Number of flow channels = 30, Head drop between successive piezometric contours = 6 m, Thickness of aquifer = 30 m. Determine the transmissibility and permeability of the aquifer.</div>
+    <span class="marks">[6]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Given Data</h3>
+    <ul>
+      <li>Pumping rate: $Q = 150{,}000$ lpm $= \frac{150{,}000}{1000 \times 60} = 2.5$ m³/s</li>
+      <li>Number of flow channels: $N_f = 30$</li>
+      <li>Head drop between successive piezometric contours: $\Delta h = 6$ m</li>
+      <li>Thickness of aquifer: $b = 30$ m</li>
+    </ul>
+
+    <h3>Solution</h3>
+
+    <h4>Step 1: Discharge per flow channel</h4>
+    <div class="formula-box">
+      $$\Delta q = \frac{Q}{N_f} = \frac{2.5}{30} = 0.08333 \text{ m}^3/\text{s per flow channel}$$
+    </div>
+
+    <h4>Step 2: Determine Transmissivity (T)</h4>
+    <div class="formula-box">
+      $$\Delta q = T \cdot \Delta h$$
+    </div>
+    <div class="formula-box">
+      $$T = \frac{\Delta q}{\Delta h} = \frac{0.08333}{6} = 0.01389 \text{ m}^2/\text{s}$$
+    </div>
+
+    <div class="formula-box highlight">
+      $$\boxed{T = 0.01389 \text{ m}^2/\text{s} = 1200 \text{ m}^2/\text{day}}$$
+    </div>
+
+    <h4>Step 3: Determine Permeability (K)</h4>
+    <div class="formula-box">
+      $$K = \frac{T}{b} = \frac{0.01389}{30} = 4.63 \times 10^{-4} \text{ m/s}$$
+    </div>
+
+    <div class="formula-box highlight">
+      $$\boxed{K = 4.63 \times 10^{-4} \text{ m/s} = 40 \text{ m/day}}$$
+    </div>
+
+    <div class="highlight-box">
+      <strong>Results:</strong><br>
+      Transmissivity, $T = 0.01389$ m²/s = <strong>1200 m²/day</strong><br>
+      Permeability, $K = 4.63 \times 10^{-4}$ m/s = <strong>40 m/day</strong>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 4a ═══════════════════════════ -->
+<div class="question-card" id="q4a">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">4. a)</span> A 30 cm well penetrates fully a homogeneous aquifer having a permeability of 40 m/day. The saturated thickness of the aquifer is 15 m. What is the drawdown in the well when pumped at the rate of 1,000 lpm? What will be the drawdown if only the bottom half of the aquifer is screened? Assume a radius of influence of 300 m.</div>
+    <span class="marks">[6]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Given Data</h3>
+    <ul>
+      <li>Well diameter = 30 cm, so radius of well: $r_w = 0.15$ m</li>
+      <li>Permeability: $K = 40$ m/day $= \frac{40}{86400} = 4.63 \times 10^{-4}$ m/s</li>
+      <li>Saturated thickness: $b = H = 15$ m</li>
+      <li>Pumping rate: $Q = 1000$ lpm $= \frac{1000}{1000 \times 60} = 0.01667$ m³/s</li>
+      <li>Radius of influence: $R = 300$ m</li>
+    </ul>
+
+    <!-- SVG: Well in aquifer -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 600 320" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+        <!-- Ground surface -->
+        <line x1="30" y1="40" x2="570" y2="40" stroke="#000" stroke-width="2"/>
+        <text x="50" y="35" font-size="10">Ground Surface</text>
+        <!-- Water table / piezometric surface -->
+        <line x1="30" y1="60" x2="200" y2="60" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <line x1="400" y1="60" x2="570" y2="60" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="440" y="55" font-size="9" fill="#2980b9">Static Water Level</text>
+        <!-- Cone of depression -->
+        <path d="M 200 60 Q 250 110 290 160 L 310 160 Q 350 110 400 60" fill="none" stroke="#e74c3c" stroke-width="2"/>
+        <text x="370" y="120" font-size="10" fill="#e74c3c" font-weight="bold">Cone of Depression</text>
+        <!-- Well -->
+        <rect x="293" y="30" width="14" height="210" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="300" y="25" text-anchor="middle" font-size="10" font-weight="bold">Pumping Well</text>
+        <!-- Aquifer -->
+        <rect x="30" y="60" width="540" height="180" fill="#d6eaf8" opacity="0.3" stroke="none"/>
+        <text x="100" y="160" font-size="11" fill="#1a5276" font-weight="bold">Aquifer (b = H = 15 m)</text>
+        <!-- Impermeable bottom -->
+        <line x1="30" y1="240" x2="570" y2="240" stroke="#000" stroke-width="3"/>
+        <text x="430" y="258" font-size="10">Impermeable Base</text>
+        <!-- b/H dimension -->
+        <line x1="585" y1="60" x2="585" y2="240" stroke="#000" stroke-width="1"/>
+        <text x="595" y="155" font-size="10" font-weight="bold">15 m</text>
+        <!-- Drawdown sw -->
+        <line x1="270" y1="60" x2="270" y2="160" stroke="#e74c3c" stroke-width="1.5"/>
+        <text x="248" y="115" font-size="10" fill="#e74c3c" font-weight="bold">s<tspan font-size="8" dy="3">w</tspan></text>
+        <!-- Q arrow -->
+        <line x1="300" y1="22" x2="300" y2="5" stroke="#000" stroke-width="2" marker-end="url(#arrUpC)"/>
+        <text x="320" y="12" font-size="9">Q</text>
+        <defs>
+          <marker id="arrUpC" markerWidth="8" markerHeight="6" refX="4" refY="6" orient="auto"><path d="M0,6 L4,0 L8,6" fill="#000"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- ============ METHOD 1: CONFINED ============ -->
+    <h3 style="color:#1a5276; border-bottom:2px solid #1a5276; padding-bottom:4px;">Method 1: Confined Aquifer Approach (Thiem's Equation)</h3>
+
+    <h4>Transmissivity:</h4>
+    <div class="formula-box">
+      $$T = K \cdot b = 4.63 \times 10^{-4} \times 15 = 6.944 \times 10^{-3} \text{ m}^2/\text{s}$$
+    </div>
+
+    <h4>Part (i): Fully Penetrating Well</h4>
+    <div class="formula-box">
+      $$Q = \frac{2\pi T \cdot s_w}{\ln(R/r_w)} \implies s_w = \frac{Q \cdot \ln(R/r_w)}{2\pi T}$$
+    </div>
+    <div class="formula-box">
+      $$s_w = \frac{0.01667 \times \ln(300/0.15)}{2\pi \times 6.944 \times 10^{-3}} = \frac{0.01667 \times 7.6009}{0.04363}$$
+    </div>
+    <div class="formula-box highlight">
+      $$s_w = \boxed{2.904 \text{ m}}$$
+    </div>
+
+    <h4>Part (ii): Partially Penetrating (Bottom Half Screened)</h4>
+    <p>Screen length: $l_s = b/2 = 7.5$ m, penetration ratio $\alpha = l_s/b = 0.5$</p>
+
+    <p>For a partially penetrating well, the drawdown is related to the fully penetrating drawdown by:</p>
+    <div class="formula-box highlight">
+      $$s_w' = s_w \times \frac{1}{\alpha}\left(1 + 7\sqrt{\frac{r_w}{2b}}\cos\frac{\pi\alpha}{2}\right)$$
+    </div>
+
+    <p>Calculating the correction term:</p>
+    <div class="formula-box">
+      $$7\sqrt{\frac{r_w}{2b}}\cos\frac{\pi\alpha}{2} = 7 \times \sqrt{\frac{0.15}{2 \times 15}} \times \cos\frac{\pi \times 0.5}{2}$$
+    </div>
+    <div class="formula-box">
+      $$= 7 \times \sqrt{0.005} \times \cos 45° = 7 \times 0.07071 \times 0.7071 = 0.350$$
+    </div>
+
+    <p>Drawdown:</p>
+    <div class="formula-box">
+      $$s_w' = 2.904 \times \frac{1}{0.5}\left(1 + 0.350\right) = 2.904 \times 2 \times 1.35$$
+    </div>
+    <div class="formula-box highlight">
+      $$s_w' = 2.904 \times 2.70 = \boxed{7.841 \text{ m}}$$
+    </div>
+
+    <div class="highlight-box">
+      <strong>Confined Results:</strong><br>
+      Fully penetrating: $s_w = $ <strong>2.904 m</strong><br>
+      Partially penetrating: $s_w' = $ <strong>7.841 m</strong>
+    </div>
+
+    <!-- ============ METHOD 2: UNCONFINED ============ -->
+    <h3 style="color:#27ae60; border-bottom:2px solid #27ae60; padding-bottom:4px;">Method 2: Unconfined Aquifer Approach (Dupuit's Equation)</h3>
+
+    <p>Here $H = 15$ m is the initial saturated thickness.</p>
+
+    <h4>Part (i): Fully Penetrating Well</h4>
+    <div class="formula-box">
+      $$H^2 - h_w^2 = \frac{2.3 Q}{\pi K} \log_{10} \frac{R}{r_w}$$
+    </div>
+    <div class="formula-box">
+      $$15^2 - h_w^2 = \frac{2.3 \times (1/60)}{\pi \times (40/86400)} \log_{10} \frac{300}{0.15}$$
+    </div>
+    <div class="formula-box">
+      $$225 - h_w^2 = \frac{0.03833}{1.4544 \times 10^{-3}} \times \log_{10}(2000) = 26.356 \times 3.3010 = 86.5$$
+    </div>
+    <div class="formula-box">
+      $$h_w^2 = 225 - 86.5 = 138.5 \implies h_w = 11.76 \text{ m}$$
+    </div>
+    <div class="formula-box highlight">
+      $$s_w = H - h_w = 15 - 11.76 = \boxed{3.24 \text{ m}}$$
+    </div>
+
+    <h4>Part (ii): Partially Penetrating (Bottom Half Screened)</h4>
+    <p>Length of well screen $= \frac{1}{2} \times 15 = 7.5$ m from the bottom of the aquifer.</p>
+    <div class="formula-box">
+      $$\alpha = \frac{l}{h_w} = \frac{7.5}{11.76} \approx 0.637, \quad 1 - \alpha \approx 0.363$$
+    </div>
+
+    <p>Additional drawdown due to partial penetration:</p>
+    <div class="formula-box">
+      $$\Delta s_w \cdot 2H = \frac{2.3026 \times Q}{\pi K} \cdot \frac{(1 - \alpha)}{\alpha} \cdot \log_{10}\left(\frac{(1 - \alpha) \cdot l}{r_w}\right)$$
+    </div>
+    <div class="formula-box">
+      $$\Delta s_w \cdot 2H = \frac{2.3026 \times (1/60)}{\pi \times (40/86400)} \cdot \frac{0.363}{0.637} \cdot \log_{10}\left(\frac{0.363 \times 7.5}{0.15}\right)$$
+    </div>
+    <div class="formula-box">
+      $$= 26.40 \times 0.5699 \times \log_{10}(18.15) = 15.05 \times 1.259 \approx 18.9$$
+    </div>
+
+    <p>Total $(H^2 - h_w'^2)$ for partially penetrating well:</p>
+    <div class="formula-box">
+      $$(H^2 - h_w'^2)_{pp} = 86.5 + 18.9 = 105.4$$
+    </div>
+    <div class="formula-box">
+      $$15^2 - h_w'^2 = 105.4 \implies h_w'^2 = 119.6 \implies h_w' \approx 10.94 \text{ m}$$
+    </div>
+    <div class="formula-box highlight">
+      $$s_{wp} = 15 - 10.94 = \boxed{4.06 \text{ m}}$$
+    </div>
+
+    <p>Additional drawdown due to partial penetration:</p>
+    <div class="formula-box highlight">
+      $$\Delta s_w = 4.06 - 3.24 = \boxed{0.82 \text{ m}}$$
+    </div>
+
+    <div class="highlight-box">
+      <strong>Unconfined Results:</strong><br>
+      Fully penetrating: $s_w = $ <strong>3.24 m</strong><br>
+      Partially penetrating: $s_{wp} = $ <strong>4.06 m</strong><br>
+      Additional drawdown: $\Delta s_w = $ <strong>0.82 m</strong>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 4b ═══════════════════════════ -->
+<div class="question-card" id="q4b">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">4. b)</span> Differentiate between open well and tube well.</div>
+    <span class="marks">[2]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Comparison: Open Well vs Tube Well</h3>
+    <table>
+      <tr><th>Feature</th><th>Open Well</th><th>Tube Well</th></tr>
+      <tr><td><strong>Construction</strong></td><td>Dug; lined with brick/concrete</td><td>Drilled; cased with steel/PVC</td></tr>
+      <tr><td><strong>Diameter</strong></td><td>2–8 m</td><td>100–600 mm</td></tr>
+      <tr><td><strong>Depth</strong></td><td>5–20 m</td><td>Up to 300–500+ m</td></tr>
+      <tr><td><strong>Aquifer</strong></td><td>Shallow unconfined only</td><td>Both shallow and deep</td></tr>
+      <tr><td><strong>Yield</strong></td><td>3–6 L/s</td><td>Up to 50–200 L/s</td></tr>
+      <tr><td><strong>Water quality</strong></td><td>More contamination risk</td><td>Better; less surface contamination</td></tr>
+      <tr><td><strong>Cost</strong></td><td>Lower initial cost</td><td>Higher cost, greater yield</td></tr>
+      <tr><td><strong>Pump</strong></td><td>Centrifugal/hand pump</td><td>Submersible/turbine pump</td></tr>
+      <tr><td><strong>Use</strong></td><td>Rural domestic, small irrigation</td><td>Municipal, industrial, large irrigation</td></tr>
+    </table>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 5a ═══════════════════════════ -->
+<div class="question-card" id="q5a">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">5. a)</span> Write down step by step procedure to determine transmissivity (T) by Thiem's method with necessary mathematical expression.</div>
+    <span class="marks">[3]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Thiem's Method (Equilibrium Method)</h3>
+    <p>A steady-state method to determine <strong>T</strong> of a confined aquifer using two observation wells.</p>
+
+    <!-- SVG: Thiem's method setup -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+        <!-- Confining layers -->
+        <rect x="30" y="40" width="540" height="15" fill="#bbb" stroke="#000" stroke-width="1"/>
+        <text x="300" y="35" text-anchor="middle" font-size="10">Upper Confining Layer</text>
+        <rect x="30" y="220" width="540" height="15" fill="#bbb" stroke="#000" stroke-width="1"/>
+        <!-- Aquifer -->
+        <rect x="30" y="55" width="540" height="165" fill="#d6eaf8" opacity="0.4" stroke="none"/>
+        <text x="100" y="150" font-size="11" fill="#1a5276" font-weight="bold">Confined Aquifer</text>
+        <!-- Original piezometric surface -->
+        <line x1="30" y1="20" x2="570" y2="20" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="450" y="16" font-size="9" fill="#2980b9">Original Piezometric Surface</text>
+        <!-- Cone of depression -->
+        <path d="M 120 20 Q 170 40 230 70 L 270 70 Q 330 40 380 20" fill="none" stroke="#e74c3c" stroke-width="2"/>
+        <!-- Pumping well -->
+        <rect x="245" y="10" width="10" height="225" fill="#fff" stroke="#000" stroke-width="1.5"/>
+        <text x="250" y="8" text-anchor="middle" font-size="9" font-weight="bold">PW</text>
+        <!-- Observation well 1 -->
+        <rect x="180" y="10" width="6" height="100" fill="#fff" stroke="#27ae60" stroke-width="1.5"/>
+        <text x="183" y="8" text-anchor="middle" font-size="9" fill="#27ae60" font-weight="bold">OW₁</text>
+        <line x1="183" y1="50" x2="183" y2="55" stroke="#2980b9" stroke-width="3"/>
+        <!-- Observation well 2 -->
+        <rect x="140" y="10" width="6" height="100" fill="#fff" stroke="#27ae60" stroke-width="1.5"/>
+        <text x="143" y="8" text-anchor="middle" font-size="9" fill="#27ae60" font-weight="bold">OW₂</text>
+        <line x1="143" y1="32" x2="143" y2="37" stroke="#2980b9" stroke-width="3"/>
+        <!-- r1 -->
+        <line x1="183" y1="250" x2="250" y2="250" stroke="#000" stroke-width="1" marker-start="url(#arrL)" marker-end="url(#arrR)"/>
+        <text x="216" y="265" text-anchor="middle" font-size="10" font-weight="bold">r₁</text>
+        <!-- r2 -->
+        <line x1="143" y1="260" x2="250" y2="260" stroke="#000" stroke-width="1" marker-start="url(#arrL)" marker-end="url(#arrR)"/>
+        <text x="196" y="275" text-anchor="middle" font-size="10" font-weight="bold">r₂</text>
+        <!-- s1 -->
+        <line x1="190" y1="20" x2="190" y2="52" stroke="#e74c3c" stroke-width="1" marker-start="url(#arrRU2)" marker-end="url(#arrRD2)"/>
+        <text x="200" y="40" font-size="9" fill="#e74c3c" font-weight="bold">s₁</text>
+        <!-- s2 -->
+        <line x1="150" y1="20" x2="150" y2="34" stroke="#e74c3c" stroke-width="1" marker-start="url(#arrRU2)" marker-end="url(#arrRD2)"/>
+        <text x="160" y="30" font-size="9" fill="#e74c3c" font-weight="bold">s₂</text>
+        <defs>
+          <marker id="arrL" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M8,0 L0,3 L8,6" fill="#000"/></marker>
+          <marker id="arrR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#000"/></marker>
+          <marker id="arrRU2" markerWidth="6" markerHeight="8" refX="3" refY="0" orient="auto"><path d="M0,8 L3,0 L6,8" fill="#e74c3c"/></marker>
+          <marker id="arrRD2" markerWidth="6" markerHeight="8" refX="3" refY="8" orient="auto"><path d="M0,0 L3,8 L6,0" fill="#e74c3c"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h4>Step-by-Step Procedure</h4>
+
+    <p><strong>Step 1:</strong> Pump at constant rate $Q$. Measure drawdowns $s_1$, $s_2$ at two observation wells at distances $r_1$, $r_2$ ($r_1 < r_2$) until steady state.</p>
+
+    <p><strong>Step 2:</strong> Record $Q$, $s_1$, $s_2$, $r_1$, $r_2$.</p>
+
+    <p><strong>Step 3: Apply Thiem's Equation</strong></p>
+    <div class="formula-box highlight">
+      $$T = \frac{Q}{2\pi(s_1 - s_2)} \ln\left(\frac{r_2}{r_1}\right)$$
+    </div>
+    <p>or equivalently:</p>
+    <div class="formula-box">
+      $$T = \frac{2.303 \, Q}{2\pi(s_1 - s_2)} \log_{10}\left(\frac{r_2}{r_1}\right)$$
+    </div>
+
+    <p><strong>Step 4:</strong> Substitute measured values to compute $T$.</p>
+
+    <p><strong>Step 5: Determine K</strong></p>
+    <div class="formula-box">
+      $$K = \frac{T}{b}$$
+    </div>
+    <p>where $b$ = aquifer thickness.</p>
+
+    <div class="highlight-box">
+      <strong>Note:</strong> Thiem's method determines only $T$ (not $S$) — uses steady-state data. For $S$, use Theis or Cooper-Jacob.
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 5b ═══════════════════════════ -->
+<div class="question-card" id="q5b">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">5. b)</span> Explain Cooper and Jacob method for the determination of storage coefficient and transmissivity of aquifer using time drawdown data.</div>
+    <span class="marks">[5]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Cooper-Jacob Straight-Line Method (Time-Drawdown)</h3>
+    <p>The Cooper-Jacob method (1946) is a simplification of the Theis equation for determining <strong>T</strong> and <strong>S</strong> of a confined aquifer.</p>
+
+    <h4>Theoretical Background</h4>
+    <p>The Theis equation:</p>
+    <div class="formula-box">
+      $$s = \frac{Q}{4\pi T} W(u), \quad u = \frac{r^2 S}{4Tt}$$
+    </div>
+
+    <p>For small $u$ (i.e., $u < 0.01$), the well function is approximated as:</p>
+    <div class="formula-box">
+      $$W(u) \approx 2.303 \log\frac{2.25Tt}{r^2 S}$$
+    </div>
+
+    <p>Substituting:</p>
+    <div class="formula-box highlight">
+      $$s = \frac{2.303 \, Q}{4\pi T} \log\left(\frac{2.25Tt}{r^2 S}\right)$$
+    </div>
+
+    <p>This shows $s$ vs $\log t$ is a <strong>straight line</strong> on a semi-log plot.</p>
+
+    <h4>Determination of T and S</h4>
+
+    <p>From the straight-line portion of the $s$ vs $\log t$ plot:</p>
+    <ul>
+      <li>$\Delta s$ = drawdown per one log cycle of time</li>
+      <li>$t_0$ = time at which the straight line intercepts $s = 0$</li>
+    </ul>
+
+    <div class="formula-box highlight">
+      $$T = \frac{2.303 \, Q}{4\pi \, \Delta s}$$
+    </div>
+
+    <div class="formula-box highlight">
+      $$S = \frac{2.25 \, T \, t_0}{r^2}$$
+    </div>
+
+    <div class="highlight-box">
+      <strong>Summary:</strong><br>
+      $T = \frac{2.303 \, Q}{4\pi \, \Delta s}$ — from slope of straight line<br>
+      $S = \frac{2.25 \, T \, t_0}{r^2}$ — from zero-drawdown intercept<br>
+      <em>Validity:</em> $u = \frac{r^2 S}{4Tt} < 0.01$
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 6 ═══════════════════════════ -->
+<div class="question-card" id="q6">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">6.</span> What are the objectives of groundwater exploration?</div>
+    <span class="marks">[4]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Objectives of Groundwater Exploration</h3>
+    <ol>
+      <li>To identify the occurrence and type of groundwater (confined, unconfined, semi-confined aquifers)</li>
+      <li>To determine the depth, extent, and geometry of aquifers</li>
+      <li>To estimate the quantity of groundwater available (safe yield and sustainable yield)</li>
+      <li>To determine hydraulic parameters — transmissivity ($T$), hydraulic conductivity ($K$), and storativity ($S$)</li>
+      <li>To assess groundwater recharge rate (natural and artificial)</li>
+      <li>To evaluate the chemical, physical, and biological quality of groundwater for drinking, irrigation, and industrial use</li>
+      <li>To select the most suitable well sites for maximum yield at minimum cost</li>
+      <li>To provide data for design of wells — depth, diameter, screen length, pump capacity, and spacing</li>
+      <li>To plan sustainable groundwater management and prevent over-exploitation</li>
+      <li>To identify areas vulnerable to contamination (arsenic, fluoride, nitrates)</li>
+      <li>To establish monitoring networks for water level and quality surveillance</li>
+      <li>To plan artificial recharge schemes for replenishment of depleted aquifers</li>
+    </ol>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 7a ═══════════════════════════ -->
+<div class="question-card" id="q7a">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">7. a)</span> For the irrigation project planned in Kailali by groundwater pumping, a recuperation test was conducted on an open well. The water level in the well was depressed by 4.5 m and it was left to raise by 2.2 m in 90 minutes. Calculate the specific yield of open well in that region. Also determine the yield from a well of 5 m diameter under a depression head of 2.5 m?</div>
+    <span class="marks">[6]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Given Data</h3>
+    <ul>
+      <li>Initial depression: $s_1 = 4.5$ m</li>
+      <li>Rise in water level in 90 minutes: 2.2 m</li>
+      <li>Residual depression after 90 min: $s_2 = 4.5 - 2.2 = 2.3$ m</li>
+      <li>Time of recuperation: $t = 90$ min = 1.5 hours</li>
+      <li>Well diameter for yield calculation: $D = 5$ m, so $r = 2.5$ m</li>
+      <li>Depression head for yield: $H = 2.5$ m</li>
+    </ul>
+
+    <!-- SVG: Recuperation test -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 550 340" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;">
+        <!-- Well walls -->
+        <rect x="150" y="30" width="10" height="280" fill="#888" stroke="#000" stroke-width="1.5"/>
+        <rect x="390" y="30" width="10" height="280" fill="#888" stroke="#000" stroke-width="1.5"/>
+        <!-- Ground surface -->
+        <line x1="50" y1="50" x2="150" y2="50" stroke="#000" stroke-width="2"/>
+        <line x1="400" y1="50" x2="500" y2="50" stroke="#000" stroke-width="2"/>
+        <text x="460" y="45" font-size="10">GL</text>
+        <!-- Static water level -->
+        <line x1="50" y1="100" x2="150" y2="100" stroke="#2980b9" stroke-width="1.5"/>
+        <line x1="400" y1="100" x2="500" y2="100" stroke="#2980b9" stroke-width="1.5"/>
+        <line x1="160" y1="100" x2="390" y2="100" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="60" y="95" font-size="10" fill="#2980b9" font-weight="bold">SWL</text>
+        <!-- Depressed level (initial) -->
+        <line x1="160" y1="235" x2="390" y2="235" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="255" y="250" font-size="10" fill="#e74c3c">Initial depressed level</text>
+        <!-- Recovered level -->
+        <rect x="160" y="169" width="230" height="66" fill="#a0cfed" opacity="0.5" stroke="none"/>
+        <line x1="160" y1="169" x2="390" y2="169" stroke="#27ae60" stroke-width="2"/>
+        <text x="255" y="165" font-size="10" fill="#27ae60" font-weight="bold">Level after 90 min</text>
+        <!-- Water in well (below recovered level) -->
+        <rect x="160" y="169" width="230" height="141" fill="#a0cfed" opacity="0.4" stroke="none"/>
+        <!-- s1 dimension -->
+        <line x1="420" y1="100" x2="420" y2="235" stroke="#e74c3c" stroke-width="1.5" marker-start="url(#amU)" marker-end="url(#amD)"/>
+        <text x="440" y="170" font-size="11" fill="#e74c3c" font-weight="bold">s₁ = 4.5 m</text>
+        <!-- s2 dimension -->
+        <line x1="130" y1="100" x2="130" y2="169" stroke="#27ae60" stroke-width="1.5" marker-start="url(#agU)" marker-end="url(#agD)"/>
+        <text x="85" y="140" font-size="11" fill="#27ae60" font-weight="bold">s₂ = 2.3 m</text>
+        <!-- Rise = 2.2 m -->
+        <line x1="440" y1="169" x2="440" y2="235" stroke="#8e44ad" stroke-width="1.5" marker-start="url(#apU)" marker-end="url(#apD)"/>
+        <text x="460" y="208" font-size="10" fill="#8e44ad" font-weight="bold">Rise = 2.2 m</text>
+        <defs>
+          <marker id="amU" markerWidth="6" markerHeight="8" refX="3" refY="0" orient="auto"><path d="M0,8 L3,0 L6,8" fill="#e74c3c"/></marker>
+          <marker id="amD" markerWidth="6" markerHeight="8" refX="3" refY="8" orient="auto"><path d="M0,0 L3,8 L6,0" fill="#e74c3c"/></marker>
+          <marker id="agU" markerWidth="6" markerHeight="8" refX="3" refY="0" orient="auto"><path d="M0,8 L3,0 L6,8" fill="#27ae60"/></marker>
+          <marker id="agD" markerWidth="6" markerHeight="8" refX="3" refY="8" orient="auto"><path d="M0,0 L3,8 L6,0" fill="#27ae60"/></marker>
+          <marker id="apU" markerWidth="6" markerHeight="8" refX="3" refY="0" orient="auto"><path d="M0,8 L3,0 L6,8" fill="#8e44ad"/></marker>
+          <marker id="apD" markerWidth="6" markerHeight="8" refX="3" refY="8" orient="auto"><path d="M0,0 L3,8 L6,0" fill="#8e44ad"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>Solution</h3>
+
+    <h4>Part 1: Specific Yield (Specific Capacity) of the Open Well</h4>
+    <p>The specific yield of an open well from the recuperation test is defined as the rate of flow into the well per unit area of the well under a unit depression head.</p>
+
+    <p>The recuperation rate is given by:</p>
+    <div class="formula-box">
+      $$K' = \frac{1}{t} \ln\left(\frac{s_1}{s_2}\right)$$
+    </div>
+
+    <p>where $K'$ is the specific yield (specific capacity) in units of $\text{m}^3/\text{hr}/\text{m}^2$ of well area / m of depression head.</p>
+
+    <div class="formula-box">
+      $$K' = \frac{1}{1.5} \ln\left(\frac{4.5}{2.3}\right)$$
+    </div>
+    <div class="formula-box">
+      $$K' = 0.6667 \times \ln(1.9565)$$
+    </div>
+    <div class="formula-box">
+      $$K' = 0.6667 \times 0.6710 = 0.4474 \text{ per hour}$$
+    </div>
+
+    <div class="formula-box highlight">
+      $$\boxed{K' = 0.4474 \text{ m}^3/\text{hr per m}^2 \text{ of well area per m of head}}$$
+    </div>
+
+    <h4>Part 2: Yield from the 5 m diameter well</h4>
+    <p>The yield (discharge) from an open well is given by:</p>
+    <div class="formula-box">
+      $$Q = K' \times A \times H$$
+    </div>
+    <p>where:</p>
+    <ul>
+      <li>$A$ = cross-sectional area of the well $= \frac{\pi D^2}{4} = \frac{\pi \times 5^2}{4} = 19.635$ m²</li>
+      <li>$H$ = depression head $= 2.5$ m</li>
+    </ul>
+
+    <div class="formula-box">
+      $$Q = 0.4474 \times 19.635 \times 2.5$$
+    </div>
+    <div class="formula-box">
+      $$Q = 0.4474 \times 49.088 = 21.96 \text{ m}^3/\text{hr}$$
+    </div>
+
+    <p>Converting to m³/s:</p>
+    <div class="formula-box">
+      $$Q = \frac{21.96}{3600} = 6.1 \times 10^{-3} \text{ m}^3/\text{s}$$
+    </div>
+
+    <div class="formula-box highlight">
+      $$\boxed{Q = 6.1 \times 10^{-3} \text{ m}^3/\text{s} = 21.96 \text{ m}^3/\text{hr}}$$
+    </div>
+
+    <div class="highlight-box">
+      <strong>Results:</strong><br>
+      Specific yield of the open well: $K' = $ <strong>0.4474 m³/hr per m² per m of head</strong><br>
+      Yield from 5 m dia. well at 2.5 m depression: $Q = $ <strong>6.1 × 10⁻³ m³/s (21.96 m³/hr)</strong>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 7b ═══════════════════════════ -->
+<div class="question-card" id="q7b">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">7. b)</span> Explain the types of tube wells and their suitability.</div>
+    <span class="marks">[4]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Types of Tube Wells</h3>
+
+    <h4>1. Strainer Type Tube Well</h4>
+    <p>Most common type, consisting of casing pipe, well screen (strainer), and gravel pack. The screen allows water entry while preventing sand.</p>
+
+    <!-- SVG: Strainer Type Tube Well -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;">
+        <!-- Ground -->
+        <line x1="30" y1="50" x2="160" y2="50" stroke="#000" stroke-width="2"/>
+        <line x1="240" y1="50" x2="370" y2="50" stroke="#000" stroke-width="2"/>
+        <text x="310" y="45" font-size="9">GL</text>
+        <!-- Casing pipe -->
+        <rect x="170" y="20" width="60" height="170" fill="#eee" stroke="#000" stroke-width="1.5"/>
+        <text x="200" y="100" text-anchor="middle" font-size="9" font-weight="bold">Casing</text>
+        <text x="200" y="112" text-anchor="middle" font-size="9" font-weight="bold">Pipe</text>
+        <!-- Screen/Strainer section -->
+        <rect x="170" y="190" width="60" height="120" fill="#d6eaf8" stroke="#000" stroke-width="1.5"/>
+        <!-- Screen slots -->
+        <line x1="175" y1="200" x2="225" y2="200" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="210" x2="225" y2="210" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="220" x2="225" y2="220" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="230" x2="225" y2="230" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="240" x2="225" y2="240" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="250" x2="225" y2="250" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="260" x2="225" y2="260" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="270" x2="225" y2="270" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="280" x2="225" y2="280" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="290" x2="225" y2="290" stroke="#2980b9" stroke-width="0.8"/>
+        <line x1="175" y1="300" x2="225" y2="300" stroke="#2980b9" stroke-width="0.8"/>
+        <text x="280" y="245" font-size="9" fill="#2980b9" font-weight="bold">Well Screen</text>
+        <text x="280" y="258" font-size="9" fill="#2980b9">(Strainer)</text>
+        <line x1="275" y1="250" x2="230" y2="250" stroke="#2980b9" stroke-width="0.8"/>
+        <!-- Gravel pack -->
+        <rect x="150" y="190" width="20" height="120" fill="#f5deb3" stroke="#8B4513" stroke-width="1" stroke-dasharray="2,2"/>
+        <rect x="230" y="190" width="20" height="120" fill="#f5deb3" stroke="#8B4513" stroke-width="1" stroke-dasharray="2,2"/>
+        <text x="80" y="255" font-size="9" fill="#8B4513" font-weight="bold">Gravel Pack</text>
+        <line x1="120" y1="252" x2="148" y2="252" stroke="#8B4513" stroke-width="0.8"/>
+        <!-- Bottom plug -->
+        <rect x="170" y="310" width="60" height="10" fill="#888" stroke="#000" stroke-width="1"/>
+        <text x="280" y="318" font-size="8">Bottom Plug</text>
+        <!-- Pump -->
+        <rect x="185" y="20" width="30" height="15" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <text x="200" y="15" text-anchor="middle" font-size="9" font-weight="bold">Pump</text>
+        <!-- Water flow arrows -->
+        <path d="M 140 230 L 165 230" fill="none" stroke="#2980b9" stroke-width="1.5" marker-end="url(#stArr)"/>
+        <path d="M 260 240 L 235 240" fill="none" stroke="#2980b9" stroke-width="1.5" marker-end="url(#stArr2)"/>
+        <!-- Aquifer -->
+        <rect x="30" y="180" width="140" height="140" fill="#d6eaf8" opacity="0.2" stroke="none"/>
+        <rect x="250" y="180" width="120" height="140" fill="#d6eaf8" opacity="0.2" stroke="none"/>
+        <text x="80" y="340" font-size="9" fill="#1a5276">Alluvial Aquifer</text>
+        <defs>
+          <marker id="stArr" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#2980b9"/></marker>
+          <marker id="stArr2" markerWidth="6" markerHeight="4" refX="0" refY="2" orient="auto"><path d="M6,0 L0,2 L6,4" fill="#2980b9"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <ul>
+      <li><strong>Suitability:</strong> Alluvial formations (sand, gravel) — Terai region</li>
+      <li><strong>Depth:</strong> Up to 200–300 m</li>
+      <li><strong>Yield:</strong> Moderate to high (20–100 L/s)</li>
+    </ul>
+
+    <h4>2. Cavity Type Tube Well</h4>
+    <p>Casing is driven into the aquifer and a cavity is formed at the bottom by pumping out sand with water. No screen or gravel pack is used.</p>
+
+    <!-- SVG: Cavity Type Tube Well -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;">
+        <!-- Ground -->
+        <line x1="30" y1="50" x2="160" y2="50" stroke="#000" stroke-width="2"/>
+        <line x1="240" y1="50" x2="370" y2="50" stroke="#000" stroke-width="2"/>
+        <text x="310" y="45" font-size="9">GL</text>
+        <!-- Clay layer -->
+        <rect x="30" y="50" width="340" height="80" fill="#c9a66b" opacity="0.4" stroke="none"/>
+        <text x="80" y="95" font-size="9" fill="#8B4513">Clay Layer</text>
+        <!-- Casing pipe -->
+        <rect x="170" y="20" width="60" height="160" fill="#eee" stroke="#000" stroke-width="1.5"/>
+        <text x="200" y="100" text-anchor="middle" font-size="9" font-weight="bold">Casing</text>
+        <!-- Sand aquifer -->
+        <rect x="30" y="130" width="340" height="150" fill="#f5deb3" opacity="0.4" stroke="none"/>
+        <text x="310" y="200" font-size="9" fill="#8B4513">Sand Aquifer</text>
+        <!-- Cavity at bottom -->
+        <ellipse cx="200" cy="210" rx="60" ry="30" fill="#d6eaf8" stroke="#2980b9" stroke-width="2"/>
+        <text x="200" y="215" text-anchor="middle" font-size="10" fill="#1a5276" font-weight="bold">Cavity</text>
+        <!-- Bottom of casing -->
+        <rect x="170" y="175" width="60" height="5" fill="#888" stroke="#000" stroke-width="1"/>
+        <!-- Opening -->
+        <line x1="185" y1="180" x2="215" y2="180" stroke="#2980b9" stroke-width="2"/>
+        <!-- Water flow into cavity -->
+        <path d="M 130 210 Q 145 210 150 205" fill="none" stroke="#2980b9" stroke-width="1.5" marker-end="url(#cvArr)"/>
+        <path d="M 270 210 Q 255 210 250 205" fill="none" stroke="#2980b9" stroke-width="1.5" marker-end="url(#cvArr2)"/>
+        <path d="M 200 250 L 200 240" fill="none" stroke="#2980b9" stroke-width="1.5" marker-end="url(#cvArrU)"/>
+        <!-- Pump -->
+        <rect x="185" y="20" width="30" height="15" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <text x="200" y="15" text-anchor="middle" font-size="9" font-weight="bold">Pump</text>
+        <defs>
+          <marker id="cvArr" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#2980b9"/></marker>
+          <marker id="cvArr2" markerWidth="6" markerHeight="4" refX="0" refY="2" orient="auto"><path d="M6,0 L0,2 L6,4" fill="#2980b9"/></marker>
+          <marker id="cvArrU" markerWidth="6" markerHeight="8" refX="3" refY="0" orient="auto"><path d="M0,8 L3,0 L6,8" fill="#2980b9"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <ul>
+      <li><strong>Suitability:</strong> Shallow aquifers (10–60 m) in fine to medium sand with clay above</li>
+      <li><strong>Yield:</strong> Low to moderate (5–25 L/s)</li>
+      <li><strong>Advantages:</strong> Lower cost, quick installation</li>
+      <li><strong>Limitations:</strong> Not for deep aquifers; cavity may collapse</li>
+    </ul>
+
+    <h4>3. Slotted Pipe Type Tube Well</h4>
+    <p>Uses slotted PVC or steel pipes instead of manufactured well screens. Slots are cut at regular intervals.</p>
+
+    <!-- SVG: Slotted Pipe Type Tube Well -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;">
+        <!-- Ground -->
+        <line x1="30" y1="50" x2="160" y2="50" stroke="#000" stroke-width="2"/>
+        <line x1="240" y1="50" x2="370" y2="50" stroke="#000" stroke-width="2"/>
+        <text x="310" y="45" font-size="9">GL</text>
+        <!-- Casing pipe -->
+        <rect x="170" y="20" width="60" height="130" fill="#eee" stroke="#000" stroke-width="1.5"/>
+        <text x="200" y="90" text-anchor="middle" font-size="9" font-weight="bold">Casing</text>
+        <!-- Slotted pipe section -->
+        <rect x="170" y="150" width="60" height="130" fill="#eee" stroke="#000" stroke-width="1.5"/>
+        <!-- Slots (rectangular) -->
+        <rect x="172" y="160" width="8" height="2" fill="#2980b9"/><rect x="184" y="160" width="8" height="2" fill="#2980b9"/><rect x="196" y="160" width="8" height="2" fill="#2980b9"/><rect x="208" y="160" width="8" height="2" fill="#2980b9"/><rect x="220" y="160" width="8" height="2" fill="#2980b9"/>
+        <rect x="172" y="175" width="8" height="2" fill="#2980b9"/><rect x="184" y="175" width="8" height="2" fill="#2980b9"/><rect x="196" y="175" width="8" height="2" fill="#2980b9"/><rect x="208" y="175" width="8" height="2" fill="#2980b9"/><rect x="220" y="175" width="8" height="2" fill="#2980b9"/>
+        <rect x="172" y="190" width="8" height="2" fill="#2980b9"/><rect x="184" y="190" width="8" height="2" fill="#2980b9"/><rect x="196" y="190" width="8" height="2" fill="#2980b9"/><rect x="208" y="190" width="8" height="2" fill="#2980b9"/><rect x="220" y="190" width="8" height="2" fill="#2980b9"/>
+        <rect x="172" y="205" width="8" height="2" fill="#2980b9"/><rect x="184" y="205" width="8" height="2" fill="#2980b9"/><rect x="196" y="205" width="8" height="2" fill="#2980b9"/><rect x="208" y="205" width="8" height="2" fill="#2980b9"/><rect x="220" y="205" width="8" height="2" fill="#2980b9"/>
+        <rect x="172" y="220" width="8" height="2" fill="#2980b9"/><rect x="184" y="220" width="8" height="2" fill="#2980b9"/><rect x="196" y="220" width="8" height="2" fill="#2980b9"/><rect x="208" y="220" width="8" height="2" fill="#2980b9"/><rect x="220" y="220" width="8" height="2" fill="#2980b9"/>
+        <rect x="172" y="235" width="8" height="2" fill="#2980b9"/><rect x="184" y="235" width="8" height="2" fill="#2980b9"/><rect x="196" y="235" width="8" height="2" fill="#2980b9"/><rect x="208" y="235" width="8" height="2" fill="#2980b9"/><rect x="220" y="235" width="8" height="2" fill="#2980b9"/>
+        <rect x="172" y="250" width="8" height="2" fill="#2980b9"/><rect x="184" y="250" width="8" height="2" fill="#2980b9"/><rect x="196" y="250" width="8" height="2" fill="#2980b9"/><rect x="208" y="250" width="8" height="2" fill="#2980b9"/><rect x="220" y="250" width="8" height="2" fill="#2980b9"/>
+        <rect x="172" y="265" width="8" height="2" fill="#2980b9"/><rect x="184" y="265" width="8" height="2" fill="#2980b9"/><rect x="196" y="265" width="8" height="2" fill="#2980b9"/><rect x="208" y="265" width="8" height="2" fill="#2980b9"/><rect x="220" y="265" width="8" height="2" fill="#2980b9"/>
+        <text x="280" y="215" font-size="9" fill="#2980b9" font-weight="bold">Slotted Pipe</text>
+        <line x1="275" y1="212" x2="232" y2="212" stroke="#2980b9" stroke-width="0.8"/>
+        <!-- Aquifer -->
+        <rect x="30" y="140" width="140" height="160" fill="#d6eaf8" opacity="0.2" stroke="none"/>
+        <rect x="240" y="140" width="130" height="160" fill="#d6eaf8" opacity="0.2" stroke="none"/>
+        <text x="80" y="300" font-size="9" fill="#1a5276">Coarse Sand/Gravel</text>
+        <!-- Bottom plug -->
+        <rect x="170" y="280" width="60" height="8" fill="#888" stroke="#000" stroke-width="1"/>
+        <!-- Pump -->
+        <rect x="185" y="20" width="30" height="15" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <text x="200" y="15" text-anchor="middle" font-size="9" font-weight="bold">Pump</text>
+      </svg>
+    </div>
+
+    <ul>
+      <li><strong>Suitability:</strong> Coarse-grained formations (coarse sand and gravel)</li>
+      <li><strong>Yield:</strong> Moderate</li>
+      <li><strong>Advantages:</strong> Lower cost; suitable for rural community supply</li>
+      <li><strong>Limitations:</strong> Not for fine sand (sand entry problems); lower efficiency than manufactured screens</li>
+    </ul>
+
+    <h4>Summary Table</h4>
+    <table>
+      <tr><th>Type</th><th>Formation</th><th>Depth</th><th>Yield</th></tr>
+      <tr><td>Strainer</td><td>Alluvial (sand, gravel)</td><td>Up to 300 m</td><td>High</td></tr>
+      <tr><td>Cavity</td><td>Shallow fine sand</td><td>10–60 m</td><td>Low–Medium</td></tr>
+      <tr><td>Slotted Pipe</td><td>Coarse sand/gravel</td><td>Up to 100 m</td><td>Medium</td></tr>
+    </table>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 8 ═══════════════════════════ -->
+<div class="question-card" id="q8">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">8.</span> Draw neat sketch of deep well vertical turbine pump showing its major components. Explain its application and limitation.</div>
+    <span class="marks">[4+2+2]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Deep Well Vertical Turbine Pump</h3>
+    <p>A centrifugal pump with multi-stage impellers on a vertical shaft, designed for deep wells. Pump bowl assembly is submerged below water level; motor is mounted on the surface.</p>
+
+    <!-- SVG: Deep Well Vertical Turbine Pump -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 550 700" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;">
+        <!-- Motor -->
+        <rect x="220" y="20" width="110" height="70" fill="#ddd" stroke="#000" stroke-width="2" rx="5"/>
+        <text x="275" y="55" text-anchor="middle" font-size="11" font-weight="bold">Electric</text>
+        <text x="275" y="70" text-anchor="middle" font-size="11" font-weight="bold">Motor</text>
+        <!-- Motor base / head assembly -->
+        <rect x="210" y="90" width="130" height="40" fill="#ccc" stroke="#000" stroke-width="2"/>
+        <text x="275" y="115" text-anchor="middle" font-size="10" font-weight="bold">Discharge Head</text>
+        <!-- Discharge pipe (horizontal) -->
+        <rect x="340" y="100" width="100" height="20" fill="#aaa" stroke="#000" stroke-width="1.5"/>
+        <line x1="440" y1="100" x2="470" y2="100" stroke="#2980b9" stroke-width="3" marker-end="url(#awR)"/>
+        <text x="390" y="95" text-anchor="middle" font-size="9" font-weight="bold">Discharge</text>
+        <text x="390" y="138" text-anchor="middle" font-size="9">Pipe</text>
+        <!-- Ground level -->
+        <line x1="100" y1="145" x2="230" y2="145" stroke="#000" stroke-width="2.5"/>
+        <line x1="320" y1="145" x2="470" y2="145" stroke="#000" stroke-width="2.5"/>
+        <text x="130" y="140" font-size="10">Ground Level</text>
+        <!-- Well casing -->
+        <rect x="215" y="145" width="8" height="530" fill="#999" stroke="#000" stroke-width="1"/>
+        <rect x="327" y="145" width="8" height="530" fill="#999" stroke="#000" stroke-width="1"/>
+        <text x="155" y="200" font-size="10" font-weight="bold">Well</text>
+        <text x="155" y="215" font-size="10" font-weight="bold">Casing</text>
+        <!-- Water level -->
+        <line x1="223" y1="250" x2="327" y2="250" stroke="#2980b9" stroke-width="2"/>
+        <text x="365" y="255" font-size="10" fill="#2980b9" font-weight="bold">Pumping Water Level</text>
+        <!-- Water in well -->
+        <rect x="223" y="250" width="104" height="425" fill="#d6eaf8" opacity="0.4" stroke="none"/>
+        <!-- Column pipe -->
+        <rect x="268" y="130" width="14" height="380" fill="#eee" stroke="#000" stroke-width="1.5"/>
+        <text x="170" y="320" font-size="10" font-weight="bold">Column</text>
+        <text x="170" y="335" font-size="10" font-weight="bold">Pipe</text>
+        <line x1="195" y1="328" x2="265" y2="328" stroke="#000" stroke-width="0.8" marker-end="url(#awR2)"/>
+        <!-- Line shaft (inside column pipe) -->
+        <line x1="275" y1="90" x2="275" y2="560" stroke="#333" stroke-width="3"/>
+        <text x="380" y="350" font-size="10" font-weight="bold">Line Shaft</text>
+        <line x1="375" y1="345" x2="290" y2="340" stroke="#000" stroke-width="0.8" marker-end="url(#awR2)"/>
+        <!-- Bearing -->
+        <rect x="264" y="290" width="22" height="8" fill="#f5a623" stroke="#000" stroke-width="1"/>
+        <text x="380" y="300" font-size="9">Shaft Bearing</text>
+        <line x1="374" y1="296" x2="290" y2="294" stroke="#000" stroke-width="0.8" marker-end="url(#awR2)"/>
+        <rect x="264" y="390" width="22" height="8" fill="#f5a623" stroke="#000" stroke-width="1"/>
+        <!-- Pump bowl assembly -->
+        <rect x="240" y="510" width="70" height="60" fill="#bbb" stroke="#000" stroke-width="2" rx="3"/>
+        <text x="275" y="535" text-anchor="middle" font-size="9" font-weight="bold">Bowl</text>
+        <text x="275" y="548" text-anchor="middle" font-size="9" font-weight="bold">Assembly</text>
+        <!-- Impellers (inside bowl) -->
+        <ellipse cx="275" cy="525" rx="25" ry="6" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+        <ellipse cx="275" cy="545" rx="25" ry="6" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+        <ellipse cx="275" cy="555" rx="25" ry="6" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+        <text x="155" y="530" font-size="10" fill="#e74c3c" font-weight="bold">Impellers</text>
+        <text x="155" y="545" font-size="10" fill="#e74c3c">(Multi-stage)</text>
+        <line x1="195" y1="538" x2="248" y2="540" stroke="#e74c3c" stroke-width="0.8" marker-end="url(#awRr)"/>
+        <!-- Suction pipe / strainer -->
+        <rect x="262" y="570" width="26" height="50" fill="#eee" stroke="#000" stroke-width="1.5"/>
+        <!-- Strainer slots -->
+        <line x1="266" y1="580" x2="284" y2="580" stroke="#000" stroke-width="0.5"/>
+        <line x1="266" y1="590" x2="284" y2="590" stroke="#000" stroke-width="0.5"/>
+        <line x1="266" y1="600" x2="284" y2="600" stroke="#000" stroke-width="0.5"/>
+        <line x1="266" y1="610" x2="284" y2="610" stroke="#000" stroke-width="0.5"/>
+        <text x="380" y="595" font-size="10" font-weight="bold">Suction Strainer</text>
+        <line x1="375" y1="590" x2="292" y2="590" stroke="#000" stroke-width="0.8" marker-end="url(#awR2)"/>
+        <!-- Bottom of well -->
+        <line x1="215" y1="675" x2="335" y2="675" stroke="#000" stroke-width="3"/>
+        <!-- Well screen area -->
+        <rect x="223" y="500" width="5" height="160" fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <rect x="322" y="500" width="5" height="160" fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <text x="355" y="640" font-size="9" fill="#27ae60" font-weight="bold">Well Screen</text>
+        <!-- Flow arrows -->
+        <path d="M 210 580 Q 220 580 223 575" fill="none" stroke="#2980b9" stroke-width="1.5" marker-end="url(#awR)"/>
+        <path d="M 340 560 Q 332 560 327 555" fill="none" stroke="#2980b9" stroke-width="1.5" marker-end="url(#awR3)"/>
+        <!-- Up arrow in column pipe -->
+        <line x1="260" y1="480" x2="260" y2="200" stroke="#2980b9" stroke-width="1.5" marker-end="url(#awUp)"/>
+        <text x="240" y="430" font-size="9" fill="#2980b9" transform="rotate(-90,240,430)">Flow ↑</text>
+        <defs>
+          <marker id="awR" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#2980b9"/></marker>
+          <marker id="awR2" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#000"/></marker>
+          <marker id="awRr" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto"><path d="M0,0 L6,2 L0,4" fill="#e74c3c"/></marker>
+          <marker id="awR3" markerWidth="6" markerHeight="4" refX="0" refY="2" orient="auto"><path d="M6,0 L0,2 L6,4" fill="#2980b9"/></marker>
+          <marker id="awUp" markerWidth="8" markerHeight="6" refX="4" refY="0" orient="auto"><path d="M0,6 L4,0 L8,6" fill="#2980b9"/></marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>Major Components</h3>
+    <ol>
+      <li>Electric Motor (surface-mounted)</li>
+      <li>Discharge Head</li>
+      <li>Column Pipe</li>
+      <li>Line Shaft</li>
+      <li>Shaft Bearings</li>
+      <li>Pump Bowl Assembly</li>
+      <li>Impellers (Multi-stage)</li>
+      <li>Suction Strainer</li>
+    </ol>
+
+    <h3>Applications</h3>
+    <ul>
+      <li>Suitable for <strong>high head</strong> pumping from deep wells (50–500+ m)</li>
+      <li>Suitable for <strong>high lift</strong> applications where water must be raised over large vertical distances</li>
+      <li>Provides <strong>non-pulsating, continuous flow</strong> — smooth and steady discharge</li>
+      <li>Municipal and industrial water supply requiring large, reliable discharge</li>
+      <li>Large-scale irrigation projects from deep aquifers</li>
+    </ul>
+
+    <h3>Disadvantages</h3>
+    <ul>
+      <li><strong>Performs poorly in sandy wells</strong> — sand particles cause abrasion and damage to impellers and bearings</li>
+      <li>Requires <strong>skilled workers</strong> for installation, alignment, and maintenance</li>
+      <li>High initial cost due to long column pipe, shaft, and multiple bearings</li>
+      <li>Well must be perfectly straight — even slight crookedness causes shaft misalignment and failure</li>
+      <li>Entire column pipe and shaft assembly must be pulled out for any repair</li>
+    </ul>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 9 ═══════════════════════════ -->
+<div class="question-card" id="q9">
+  <div class="question-header">
+    <div class="q-title"><span class="q-num">9.</span> Discuss about the groundwater development possibilities of Terai belt.</div>
+    <span class="marks">[6]</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>Groundwater Development Possibilities of Terai Belt</h3>
+
+    <h4>1. Introduction</h4>
+    <p>The <strong>Terai belt</strong> is a flat alluvial plain in southern Nepal (~800 km long, 25–40 km wide, elevation 60–300 m). Covers 17% of Nepal’s area but hosts over 50% of the population. It has the <strong>highest groundwater potential</strong> in Nepal due to thick alluvial deposits.</p>
+
+    <h4>2. Hydrogeological Setting</h4>
+    <ul>
+      <li><strong>Quaternary alluvial deposits:</strong> Sand, gravel, silt, and clay from Himalayan rivers</li>
+      <li><strong>Shallow aquifer (0–50 m):</strong> Unconfined to semi-confined; fine to medium sand; water table 2–15 m depth</li>
+      <li><strong>Deep aquifer (50–300+ m):</strong> Confined; medium to coarse sand/gravel; higher yield, better quality</li>
+      <li><strong>Total alluvial thickness:</strong> 200 m (eastern Terai) to 1,500+ m (western Terai)</li>
+    </ul>
+
+    <h4>3. Groundwater Potential</h4>
+
+    <!-- SVG: Terai cross-section -->
+    <div class="svg-sketch">
+      <svg viewBox="0 0 650 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+        <!-- Labels -->
+        <text x="70" y="20" text-anchor="middle" font-size="11" font-weight="bold">North (Siwalik Hills)</text>
+        <text x="560" y="20" text-anchor="middle" font-size="11" font-weight="bold">South (India Border)</text>
+        <!-- Ground surface (sloping) -->
+        <polygon points="30,40 30,80 620,120 620,40" fill="#f5deb3" stroke="none"/>
+        <line x1="30" y1="80" x2="620" y2="120" stroke="#000" stroke-width="2"/>
+        <text x="325" y="70" text-anchor="middle" font-size="10">Ground Surface</text>
+        <!-- Shallow aquifer -->
+        <rect x="30" y="80" width="590" height="40" fill="#d6eaf8" opacity="0.6" stroke="none"/>
+        <line x1="30" y1="120" x2="620" y2="120" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="325" y="108" text-anchor="middle" font-size="10" fill="#1a5276" font-weight="bold">Shallow Aquifer (Unconfined, 0-50m)</text>
+        <!-- Clay layer -->
+        <rect x="30" y="120" width="590" height="15" fill="#c9a66b" stroke="none"/>
+        <text x="325" y="132" text-anchor="middle" font-size="8" fill="#000">Clay/Silt Aquitard</text>
+        <!-- Deep aquifer -->
+        <rect x="30" y="135" width="590" height="50" fill="#a8d5f2" opacity="0.6" stroke="none"/>
+        <text x="325" y="165" text-anchor="middle" font-size="10" fill="#1a5276" font-weight="bold">Deep Confined Aquifer (50-300+m)</text>
+        <!-- Clay layer 2 -->
+        <rect x="30" y="185" width="590" height="15" fill="#c9a66b" stroke="none"/>
+        <!-- Deeper aquifer -->
+        <rect x="30" y="200" width="590" height="35" fill="#7fb3d8" opacity="0.5" stroke="none"/>
+        <text x="325" y="222" text-anchor="middle" font-size="10" fill="#1a5276">Deeper Aquifer Zones</text>
+        <!-- Bedrock -->
+        <rect x="30" y="235" width="590" height="25" fill="#888" stroke="none"/>
+        <text x="325" y="252" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">Bedrock</text>
+        <!-- Wells -->
+        <rect x="200" y="70" width="4" height="55" fill="#000"/>
+        <text x="202" y="65" text-anchor="middle" font-size="8">Shallow Well</text>
+        <rect x="420" y="70" width="4" height="120" fill="#e74c3c"/>
+        <text x="422" y="65" text-anchor="middle" font-size="8" fill="#e74c3c">Deep Tube Well</text>
+        <!-- Water table -->
+        <line x1="50" y1="95" x2="600" y2="108" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="550" y="100" font-size="8" fill="#2980b9">Water Table</text>
+      </svg>
+    </div>
+
+    <table>
+      <tr><th>Parameter</th><th>Shallow Aquifer</th><th>Deep Aquifer</th></tr>
+      <tr><td>Depth</td><td>0–50 m</td><td>50–300+ m</td></tr>
+      <tr><td>Aquifer type</td><td>Unconfined/Semi-confined</td><td>Confined</td></tr>
+      <tr><td>Yield</td><td>5–30 L/s</td><td>30–100+ L/s</td></tr>
+      <tr><td>Transmissivity</td><td>100–500 m²/day</td><td>500–3000+ m²/day</td></tr>
+      <tr><td>Water quality</td><td>Variable (iron, arsenic issues)</td><td>Generally good</td></tr>
+    </table>
+
+    <h4>4. Current Status of Development</h4>
+    <ul>
+      <li><strong>Irrigation:</strong> Over 40,000 STWs and 8,000 DTWs installed by GWRDB</li>
+      <li><strong>Drinking water:</strong> Hand pumps and motorized tube wells for rural; deep wells for urban</li>
+      <li><strong>Industrial use:</strong> Growing extraction by Terai industries</li>
+    </ul>
+
+    <h4>5. Development Possibilities</h4>
+    <ul>
+      <li><strong>Large-scale irrigation:</strong> Deep tube wells for 50–200 hectares each; solar-powered pumping increasingly viable</li>
+      <li><strong>Municipal water supply:</strong> Deep aquifer wells for growing Terai cities (Biratnagar, Birgunj, Nepalgunj, Dhangadhi)</li>
+      <li><strong>Conjunctive use:</strong> Integrating surface water irrigation with groundwater during low-flow periods</li>
+    </ul>
+
+  </div>
+</div>
+
+
+</div><!-- container end -->
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+  window.addEventListener('scroll', function() {
+    var btn = document.getElementById('backToTop');
+    if (window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  document.querySelectorAll('.sidebar a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').substring(1);
+      var el = document.getElementById(id);
+      if (el) {
+        var y = el.getBoundingClientRect().top + window.pageYOffset - 54;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

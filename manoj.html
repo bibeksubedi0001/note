@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CE 78507 — Natural Resources Safeguards in Infrastructures | Solved</title>
+<!-- KaTeX for math rendering -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Libre Baskerville', 'Georgia', 'Times New Roman', serif;
+    background: #fff;
+    color: #000;
+    line-height: 1.9;
+    font-size: 15px;
+  }
+
+  /* ── Top Bar ── */
+  .top-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: #000; color: #fff;
+    padding: 8px 24px; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 3px solid #000;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .top-bar h1 { font-size: 1rem; font-weight: 600; letter-spacing: 0.3px; }
+  .top-bar-controls { display: flex; gap: 8px; }
+  .top-bar button {
+    background: transparent; border: 1px solid #666; color: #fff;
+    padding: 4px 12px; font-size: 0.8rem; cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif; transition: background 0.2s;
+  }
+  .top-bar button:hover { background: #333; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    position: fixed; top: 44px; left: -320px; width: 310px;
+    height: calc(100% - 44px); background: #fafafa;
+    border-right: 2px solid #000; overflow-y: auto;
+    transition: left 0.3s; z-index: 999; padding: 20px;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .sidebar.open { left: 0; }
+  .sidebar h3 {
+    font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #000;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .sidebar a {
+    display: block; padding: 6px 10px; color: #000; text-decoration: none;
+    font-size: 0.82rem; margin-bottom: 2px; border-left: 3px solid transparent;
+    transition: all 0.15s; line-height: 1.4;
+  }
+  .sidebar a:hover { border-left-color: #000; background: #eee; }
+  .sidebar a .q-num { font-weight: 700; margin-right: 4px; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 998; }
+  .overlay.show { display: block; }
+
+  /* ── Container ── */
+  .container { max-width: 820px; margin: 64px auto 60px; padding: 0 28px; }
+
+  /* ── Exam Header ── */
+  .exam-header {
+    text-align: center; padding: 28px 20px; margin-bottom: 36px;
+    border: 2px solid #000; position: relative;
+  }
+  .exam-header::before, .exam-header::after {
+    content: ''; position: absolute; left: 4px; right: 4px;
+    border: 1px solid #000;
+  }
+  .exam-header::before { top: 4px; bottom: 4px; }
+  .exam-header .uni-name {
+    font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px;
+    font-family: 'Source Sans 3', sans-serif; margin-bottom: 2px;
+  }
+  .exam-header .inst-name {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px;
+    font-family: 'Source Sans 3', sans-serif; margin-bottom: 4px;
+  }
+  .exam-header h2 {
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 2px;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .exam-header .year { font-size: 0.85rem; margin-bottom: 10px; }
+  .exam-header .subject-line {
+    font-size: 0.95rem; font-weight: 700; margin: 10px 0 8px;
+    font-style: italic;
+  }
+  .exam-meta {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 20px;
+    font-size: 0.82rem; font-family: 'Source Sans 3', sans-serif; margin-top: 8px;
+  }
+  .exam-meta span { font-weight: 600; }
+
+  .exam-instructions {
+    text-align: left; font-size: 0.82rem; margin-top: 14px; padding-top: 10px;
+    border-top: 1px solid #000; font-style: italic; line-height: 1.6;
+  }
+  .exam-instructions ul { list-style: '✓  '; margin-left: 18px; }
+  .exam-instructions li { margin-bottom: 2px; }
+
+  /* ── Question Card ── */
+  .question-card {
+    margin-bottom: 32px; border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+  .question-header {
+    background: #fff; color: #000; padding: 12px 18px;
+    cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; user-select: none;
+    font-family: 'Libre Baskerville', 'Georgia', 'Times New Roman', serif;
+    border-bottom: 1px solid #000;
+  }
+  .question-header:hover { background: #f5f5f5; }
+  .question-header .q-title { font-size: 0.92rem; font-weight: 600; flex: 1; padding-right: 12px; line-height: 1.5; }
+  .question-header .q-num { font-weight: 700; margin-right: 6px; }
+  .question-header .toggle-icon {
+    font-size: 1.1rem; transition: transform 0.3s; flex-shrink: 0;
+  }
+  .question-card.open .toggle-icon { transform: rotate(180deg); }
+
+  .answer-body {
+    padding: 0; max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+  }
+  .question-card.open .answer-body { padding: 24px 22px; max-height: none; }
+
+  /* ── Typography ── */
+  .answer-body h3 {
+    font-size: 1.05rem; margin: 28px 0 10px;
+    padding-bottom: 4px; border-bottom: 2px solid #000;
+    font-weight: 700;
+  }
+  .answer-body h3:first-child { margin-top: 0; }
+  .answer-body h4 {
+    font-size: 0.95rem; margin: 20px 0 8px; font-weight: 700;
+    font-style: italic;
+  }
+  .answer-body p { margin-bottom: 10px; text-align: justify; }
+  .answer-body ul, .answer-body ol { margin: 8px 0 12px 24px; }
+  .answer-body li { margin-bottom: 6px; }
+  .answer-body strong { font-weight: 700; }
+  .answer-body em { font-style: italic; }
+
+  /* ── Highlight Box ── */
+  .highlight-box {
+    border: 1px solid #000; border-left: 4px solid #000;
+    padding: 10px 16px; margin: 14px 0; background: #f5f5f5;
+    font-size: 0.92rem;
+  }
+
+  /* ── Tables ── */
+  .answer-body table {
+    width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.88rem;
+  }
+  .answer-body table th, .answer-body table td {
+    border: 1px solid #000; padding: 8px 10px; text-align: left;
+  }
+  .answer-body table th { background: #000; color: #fff; font-weight: 600; font-family: 'Source Sans 3', sans-serif; }
+  .answer-body table tr:nth-child(even) { background: #f5f5f5; }
+
+  /* ── Equation Box (for non-KaTeX) ── */
+  .equation-box {
+    border: 1px solid #999; background: #fafafa;
+    padding: 14px 18px; margin: 14px 0; overflow-x: auto;
+    font-size: 0.95rem; line-height: 2;
+  }
+
+  /* ── Diagram Box ── */
+  .diagram-box {
+    border: 1px solid #000; padding: 16px; margin: 14px 0;
+    text-align: center; font-family: 'Courier New', monospace;
+    font-size: 0.82rem; line-height: 1.4; white-space: pre; overflow-x: auto;
+    background: #fafafa;
+  }
+
+  /* ── SVG Sketches ── */
+  .svg-sketch { margin: 14px 0; text-align: center; }
+  .svg-sketch svg { max-width: 100%; height: auto; }
+
+  /* ── Flowchart ── */
+  .flowchart { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 14px 0; }
+  .flow-box {
+    background: #000; color: #fff; padding: 9px 18px; border: 2px solid #000;
+    font-size: 0.85rem; text-align: center; max-width: 500px; min-width: 180px;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .flow-diamond {
+    border: 2px solid #000; background: #f0f0f0; color: #000;
+    padding: 10px 16px; font-size: 0.83rem; text-align: center;
+    font-family: 'Source Sans 3', sans-serif; font-weight: 600;
+  }
+  .flow-arrow { font-size: 1.2rem; color: #000; font-weight: bold; }
+  .flow-branch { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
+  .flow-branch .branch { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .branch-label { font-size: 0.78rem; font-weight: 700; font-family: 'Source Sans 3', sans-serif; }
+
+  /* ── Formula Box (KaTeX) ── */
+  .formula-box {
+    border: 1px solid #999; background: #fafafa;
+    padding: 14px 18px; margin: 14px 0; overflow-x: auto;
+    font-size: 0.95rem;
+  }
+  .formula-box.highlight {
+    border: 2px solid #000; background: #f0f0f0; font-weight: 700;
+  }
+
+  /* ── Back to Top ── */
+  .back-to-top {
+    position: fixed; bottom: 20px; right: 20px; width: 40px; height: 40px;
+    border: 2px solid #000; background: #fff; color: #000;
+    font-size: 1.1rem; cursor: pointer; display: none;
+    align-items: center; justify-content: center; z-index: 100;
+  }
+  .back-to-top:hover { background: #000; color: #fff; }
+  .back-to-top.show { display: flex; }
+
+  /* ── Print ── */
+  @media print {
+    .top-bar, .sidebar, .overlay, .back-to-top { display: none !important; }
+    .container { margin-top: 0; }
+    .question-card.open .answer-body { max-height: none; padding: 18px; }
+    .question-card { break-inside: avoid; border: 1px solid #000; }
+    body { font-size: 11pt; }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .container { padding: 0 14px; }
+    .answer-body { font-size: 0.9rem; }
+    .exam-meta { flex-direction: column; align-items: center; }
+    .top-bar h1 { font-size: 0.82rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════ TOP BAR ══════ -->
+<div class="top-bar">
+  <h1>CE 78507 — Natural Resources Safeguards in Infrastructures</h1>
+  <div class="top-bar-controls">
+    <button onclick="toggleSidebar()">&#9776; Index</button>
+    <button onclick="expandAll()">Expand All</button>
+    <button onclick="collapseAll()">Collapse All</button>
+  </div>
+</div>
+
+<!-- ══════ SIDEBAR ══════ -->
+<div class="sidebar" id="sidebar">
+  <h3>Questions</h3>
+  <a href="#q1" onclick="closeSidebar()"><span class="q-num">1.</span> Significance of Natural Resources Safeguard</a>
+  <a href="#q2" onclick="closeSidebar()"><span class="q-num">2.</span> Wildlife Corridors &amp; Biodiversity</a>
+  <a href="#q3" onclick="closeSidebar()"><span class="q-num">3.</span> Ecology &amp; Road Design (Asian Elephant)</a>
+  <a href="#q4" onclick="closeSidebar()"><span class="q-num">4.</span> Impact on Biodiversity in Nepal</a>
+  <a href="#q5" onclick="closeSidebar()"><span class="q-num">5.</span> Biodiversity Baseline Assessment</a>
+  <a href="#q6" onclick="closeSidebar()"><span class="q-num">6.</span> SWOT — Wildlife-Friendly Directive 2078</a>
+  <a href="#q7" onclick="closeSidebar()"><span class="q-num">7.</span> Animal Passageways &amp; Connectivity</a>
+  <a href="#q8" onclick="closeSidebar()"><span class="q-num">8.</span> Overpasses &amp; Underpasses</a>
+  <a href="#q9" onclick="closeSidebar()"><span class="q-num">9.</span> Noise Levels &amp; Gabion Walls</a>
+  <a href="#q10" onclick="closeSidebar()"><span class="q-num">10.</span> Crossing Selection Flowchart</a>
+  <a href="#q11" onclick="closeSidebar()"><span class="q-num">11.</span> Wildlife-Friendly Infra in Nepal</a>
+  <a href="#q12" onclick="closeSidebar()"><span class="q-num">12.</span> Courbon's Method</a>
+  <a href="#q13" onclick="closeSidebar()"><span class="q-num">13.</span> Abutment Stem Analysis (Numerical)</a>
+</div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ══════ CONTAINER ══════ -->
+<div class="container">
+
+<!-- ══ EXAM HEADER ══ -->
+<div class="exam-header">
+  <div class="uni-name">Tribhuvan University</div>
+  <div class="inst-name">Institute of Engineering</div>
+  <h2>Examination Control Division</h2>
+  <div class="year">2081 Chaitra</div>
+  <div class="subject-line">Subject: Natural Resources Safeguards in Infrastructures (Elective III) — CE 78507</div>
+  <div class="exam-meta">
+    <span>Exam: Regular</span>
+    <span>Level: BE</span>
+    <span>Programme: BCE</span>
+    <span>Year/Part: IV/II</span>
+    <span>Full Marks: 80</span>
+    <span>Pass Marks: 32</span>
+    <span>Time: 3 hrs</span>
+  </div>
+  <div class="exam-instructions">
+    <ul>
+      <li>Candidates are required to give their answers in their own words as far as practicable.</li>
+      <li>Attempt <u><strong>All</strong></u> questions.</li>
+      <li>The figures in the margin indicate <u><strong>Full Marks</strong></u>.</li>
+      <li>Assume suitable data if necessary.</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 1 ═══════════════════════════ -->
+<div class="question-card open" id="q1">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">1.</span> Explain the significance of natural resources safeguard in linear infrastructure projects. Why is it essential to integrate environmental considerations in such projects?</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Linear infrastructure projects — such as highways, railways, transmission lines, pipelines, and canals — stretch across vast landscapes, traversing multiple ecosystems, watersheds, and habitats. Unlike point-based infrastructure (e.g., a single building), linear projects create a continuous physical barrier that can fragment habitats, alter hydrological regimes, and degrade natural resources on a landscape scale. Natural resources safeguard refers to a systematic set of policies, practices, engineering measures, and institutional mechanisms aimed at protecting natural resources (water, soil, biodiversity, air, forests, and wetlands) during the planning, design, construction, and operation of these infrastructure projects.</p>
+    <p>The concept has gained immense importance globally due to rapid urbanization, growing infrastructure demand, and the alarming rate of biodiversity loss. International bodies like the World Bank, Asian Development Bank (ADB), and the International Finance Corporation (IFC) mandate environmental safeguard policies before financing any infrastructure project. Nepal, being a biodiversity-rich country with fragile mountain ecosystems and the Terai lowlands, is particularly vulnerable to the negative impacts of linear infrastructure if adequate safeguards are not adopted.</p>
+
+    <h3>2. Significance of Natural Resources Safeguard</h3>
+
+    <h4>2.1 Preservation of Biodiversity</h4>
+    <p>Linear infrastructure projects pass through diverse ecosystems including forests, grasslands, wetlands, and riverine systems. Without safeguards, these projects cause habitat destruction, fragmentation, and degradation. Safeguard measures ensure that critical habitats are identified early, and avoidance or mitigation strategies are designed accordingly. For example, wildlife crossing structures (overpasses and underpasses) allow animals to safely cross roads or railways, maintaining gene flow between populations. Nepal's Terai Arc Landscape, which hosts Bengal tigers, one-horned rhinoceros, and Asian elephants, requires strict safeguards during road and railway construction.</p>
+
+    <h4>2.2 Protection of Water Resources</h4>
+    <p>Roads, railways, and pipelines often cross rivers, streams, and aquifers. Construction activities can lead to sedimentation of water bodies, alteration of drainage patterns, contamination of groundwater, and disruption of aquatic ecosystems. Safeguard measures include proper drainage design, silt traps, buffer zones along water bodies, construction of adequately sized culverts and bridges, and prohibition of dumping spoil materials into rivers. In Nepal, where rivers originate from fragile mountain watersheds, the protection of water resources during infrastructure development is critical for downstream communities that depend on these water sources for drinking, irrigation, and livelihoods.</p>
+
+    <h4>2.3 Soil Conservation and Erosion Control</h4>
+    <p>Linear infrastructure involves extensive earthwork — cutting, filling, grading, and excavation — that disturbs soil stability. Without proper safeguards, this leads to landslides, slope failures, erosion, and loss of topsoil. Bioengineering techniques (using vegetation for slope stabilization), retaining walls, proper slope design, and erosion control measures (such as jute netting, silt fences, and terracing) are essential safeguards. In Nepal's hilly and mountainous terrain, improper road construction has historically caused devastating landslides, destroying settlements and blocking rivers.</p>
+
+    <h4>2.4 Air Quality and Climate Considerations</h4>
+    <p>Construction activities generate dust, emissions from vehicles and machinery, and greenhouse gases from deforestation and land-use change. Safeguards include dust suppression measures, use of low-emission machinery, replanting trees to offset carbon emissions, and selecting alignments that minimize deforestation. Climate-resilient infrastructure design — accounting for increased rainfall, floods, and temperature changes — is also a critical component of modern safeguards.</p>
+
+    <h4>2.5 Protection of Cultural and Social Resources</h4>
+    <p>Natural resources are deeply intertwined with the cultural and spiritual lives of local communities, especially indigenous peoples. Sacred groves, community forests, traditional water sources, and culturally significant landscapes must be identified and protected during project planning. Free, Prior, and Informed Consent (FPIC) of affected communities is a key safeguard principle recognized internationally.</p>
+
+    <h3>3. Why Integration of Environmental Considerations is Essential</h3>
+
+    <h4>3.1 Legal and Regulatory Compliance</h4>
+    <p>Most countries, including Nepal, have enacted environmental legislation that mandates Environmental Impact Assessment (EIA) or Initial Environmental Examination (IEE) for infrastructure projects. Nepal's Environment Protection Act (EPA) 2076 and Environment Protection Rules (EPR) 2077 require all significant infrastructure projects to undergo EIA, prepare Environmental Management Plans (EMP), and obtain environmental clearance. Non-compliance can result in project delays, legal penalties, and loss of financing.</p>
+
+    <h4>3.2 Economic Rationale — Cost of Inaction</h4>
+    <p>The cost of environmental damage far exceeds the cost of prevention. Landslides caused by poorly designed roads destroy infrastructure worth millions of dollars and claim human lives. River sedimentation reduces hydropower generation capacity. Loss of ecosystem services (pollination, water purification, flood regulation) has long-term economic consequences. Studies show that every dollar invested in environmental safeguards saves 4–7 dollars in avoided damages and rehabilitation costs.</p>
+
+    <h4>3.3 Long-term Sustainability and Resilience</h4>
+    <p>Infrastructure projects designed with environmental considerations have longer lifespans and require less maintenance. Roads that respect natural drainage patterns suffer less from waterlogging and erosion. Bridges designed considering flood hydrology withstand extreme weather events. Green infrastructure approaches (such as bioengineered slopes, permeable pavements, and natural drainage systems) enhance resilience while reducing construction and maintenance costs.</p>
+
+    <h4>3.4 International Financing Requirements</h4>
+    <p>Multilateral development banks (World Bank, ADB, AIIB) and bilateral donors require adherence to environmental and social safeguard policies as a precondition for financing. The World Bank's Environmental and Social Framework (ESF), introduced in 2018, includes 10 Environmental and Social Standards (ESS) covering biodiversity, pollution, resource efficiency, community health, and indigenous peoples. Nepal, being heavily dependent on international financing for major infrastructure, must comply with these standards.</p>
+
+    <h4>3.5 Maintaining Ecosystem Services</h4>
+    <p>Ecosystems provide essential services — clean water, clean air, climate regulation, food, medicine, and recreation. Linear infrastructure that destroys or degrades ecosystems undermines these services, affecting millions of people. Integrating environmental considerations ensures that infrastructure development enhances rather than degrades the natural capital upon which human well-being depends.</p>
+
+    <h4>3.6 Mitigation Hierarchy</h4>
+    <p>The internationally accepted mitigation hierarchy provides a framework for integrating environmental considerations:</p>
+    <ol>
+      <li><strong>Avoidance:</strong> Selecting project alignments that avoid sensitive ecosystems, protected areas, and critical habitats.</li>
+      <li><strong>Minimization:</strong> Reducing the footprint and duration of construction, using best practices to minimize disturbance.</li>
+      <li><strong>Restoration:</strong> Rehabilitating disturbed areas through replanting, soil stabilization, and habitat restoration.</li>
+      <li><strong>Offset/Compensation:</strong> Compensating for unavoidable residual impacts through biodiversity offsets, payments for ecosystem services, or creation of new habitats elsewhere.</li>
+    </ol>
+
+    <h3>4. Case Studies and Examples</h3>
+    <p><strong>Nijgadh International Airport, Nepal:</strong> The proposed airport project in Bara district required clearing approximately 2.4 million trees from the Bara forest, a critical habitat for wildlife. The Supreme Court of Nepal halted the project, citing inadequate environmental safeguards and the need for a comprehensive EIA.</p>
+    <p><strong>East-West Highway, Nepal:</strong> The Mahendra Highway passes through the Terai forests, fragmenting habitats of tigers, elephants, and rhinoceros. Subsequent studies have recommended wildlife crossing structures, speed control zones, and habitat restoration as safeguard measures.</p>
+    <p><strong>Banff National Park, Canada:</strong> The Trans-Canada Highway through Banff has implemented 44 wildlife crossing structures (6 overpasses and 38 underpasses), reducing wildlife-vehicle collisions by over 80% and demonstrating the effectiveness of safeguards.</p>
+
+    <h3>5. Conclusion</h3>
+    <p>Natural resources safeguard in linear infrastructure is not merely an environmental obligation but an economic, social, and ethical necessity. It ensures that infrastructure development — which is essential for economic growth — does not come at the cost of environmental degradation, biodiversity loss, and compromised ecosystem services. By integrating environmental considerations from the earliest planning stages through the mitigation hierarchy, using robust EIA processes, adopting green engineering solutions, and complying with national and international safeguard standards, infrastructure projects can achieve a balance between development and conservation.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 2 ═══════════════════════════ -->
+<div class="question-card" id="q2">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">2.</span> How do wildlife corridors contribute to species migration and genetic diversity? Provide examples to support your answer.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction to Wildlife Corridors</h3>
+    <p>A wildlife corridor (also known as a habitat corridor, ecological corridor, or biological corridor) is a strip of natural habitat that connects two or more larger areas of similar habitat. These corridors enable wildlife to move between otherwise isolated habitat patches, which is essential for feeding, breeding, migration, and maintaining healthy populations. Wildlife corridors can be natural (river valleys, ridgelines, forest strips) or designed (landscape-level corridors planned as part of conservation strategy or infrastructure mitigation).</p>
+
+    <h3>2. Contribution to Species Migration</h3>
+
+    <h4>2.1 Seasonal Migration</h4>
+    <p>Many species undertake seasonal migrations in search of food, water, breeding grounds, or favorable climate. Elephants in Nepal's Terai move between forest patches in India and Nepal seasonally. Wildlife corridors provide safe passage for these migrations, preventing populations from being trapped in isolated habitat patches where resources may be seasonally insufficient.</p>
+
+    <h4>2.2 Dispersal of Young Animals</h4>
+    <p>Juvenile animals must disperse from their birth territory to find their own home range and avoid inbreeding with close relatives. Without corridors, young animals attempting to cross roads or agricultural lands face mortality from vehicle collisions, poaching, or human-wildlife conflict. Corridors provide safe dispersal routes.</p>
+
+    <h4>2.3 Daily and Routine Movements</h4>
+    <p>Many animals have daily movement patterns — moving between resting areas, feeding grounds, and water sources. Roads cutting through these daily movement routes cause frequent wildlife-vehicle collisions and alter animal behavior. Corridors, including wildlife crossing structures, allow animals to maintain their daily routines safely.</p>
+
+    <h4>2.4 Climate Change Adaptation</h4>
+    <p>As climate change alters temperature and precipitation patterns, species must shift their ranges to track suitable habitat conditions. Corridors running along altitudinal gradients (e.g., from the Terai to the mid-hills in Nepal) enable species to move to higher elevations as temperatures rise. Studies predict that up to 35% of species may face extinction by 2050 if they cannot migrate to suitable habitats.</p>
+
+    <h3>3. Contribution to Genetic Diversity</h3>
+
+    <h4>3.1 Gene Flow Between Populations</h4>
+    <p>When a population is divided into small, isolated groups by infrastructure or land-use change, each fragment becomes genetically isolated. Over generations, this leads to inbreeding. Wildlife corridors enable individuals to move between populations, introducing new genes and maintaining genetic diversity — a process known as gene flow.</p>
+
+    <h4>3.2 Avoiding Inbreeding Depression</h4>
+    <p>Inbreeding depression manifests as reduced fertility, lower survival rates, increased susceptibility to disease, and physical deformities. Classic examples include the Florida panther, whose population declined to about 20 individuals with severe inbreeding effects. The introduction of Texas pumas through a corridor-like intervention restored genetic diversity and population health.</p>
+
+    <h4>3.3 Metapopulation Dynamics</h4>
+    <p>The metapopulation concept views a species' total population as a network of smaller subpopulations connected by corridors. If one subpopulation goes extinct due to a disease outbreak, fire, or flood, the habitat can be recolonized by individuals from connected subpopulations. This "rescue effect" depends entirely on the existence of corridors.</p>
+
+    <h4>3.4 Minimum Viable Population</h4>
+    <p>Conservation biology defines the minimum viable population (MVP) — typically 500–5000 individuals for vertebrates — as the smallest population size that can survive long-term. Corridors effectively increase the functional population size by connecting multiple patches, making the combined metapopulation viable.</p>
+
+    <h3>4. Examples of Wildlife Corridors</h3>
+
+    <h4>4.1 Terai Arc Landscape (TAL), Nepal/India</h4>
+    <p>The TAL spans approximately 49,500 km² across southern Nepal and northern India, connecting 11 protected areas through forest corridors. The Khata corridor (connecting Bardia National Park to Katarniaghat Wildlife Sanctuary in India) and the Basanta corridor have been critical for elephant and tiger movement. Genetic studies have confirmed gene flow between tiger populations connected by these corridors.</p>
+
+    <h4>4.2 Chitwan–Annapurna Landscape (CHAL), Nepal</h4>
+    <p>The CHAL connects the lowland Terai (Chitwan National Park) with the high Himalayas (Annapurna Conservation Area) through an altitudinal gradient. Species like the clouded leopard, red panda, and various bird species depend on this connectivity.</p>
+
+    <h4>4.3 Banff Wildlife Crossings, Canada</h4>
+    <p>Parks Canada installed 44 wildlife crossing structures (6 overpasses and 38 underpasses) along 82 km of the Trans-Canada Highway. Monitoring recorded over 200,000 animal crossings, and genetic studies showed grizzly bear populations on either side of the highway were reconnected genetically.</p>
+
+    <h4>4.4 Yellowstone to Yukon (Y2Y) Initiative, North America</h4>
+    <p>The Y2Y initiative aims to connect 3,200 km of habitat from Yellowstone to the Yukon, supporting grizzly bears, wolverines, caribou, and wolves.</p>
+
+    <h4>4.5 European Green Belt</h4>
+    <p>Following the fall of the Iron Curtain in 1989, the former border zone was designated as a continental-scale ecological corridor stretching 12,500 km from the Barents Sea to the Black Sea.</p>
+
+    <h3>5. Design Considerations for Effective Corridors</h3>
+    <ul>
+      <li><strong>Width:</strong> Corridors must be wide enough to provide core habitat conditions (100–500 m for interior species; several km for large mammals).</li>
+      <li><strong>Length:</strong> Shorter corridors are generally more effective. Stepping-stone habitats can supplement long corridors.</li>
+      <li><strong>Habitat Quality:</strong> The corridor must contain suitable habitat for the target species.</li>
+      <li><strong>Minimal Disturbance:</strong> Free from excessive human activity, artificial lighting, noise, and hunting.</li>
+      <li><strong>Species-Specific Design:</strong> Arboreal species need canopy connectivity, aquatic species need stream corridors, large mammals need wide, unobstructed paths.</li>
+      <li><strong>Integration with Infrastructure:</strong> Where corridors cross roads or railways, wildlife crossing structures must be installed.</li>
+    </ul>
+
+    <h3>6. Conclusion</h3>
+    <p>Wildlife corridors are indispensable tools for maintaining species migration, genetic diversity, and long-term population viability. By enabling gene flow, supporting seasonal and daily movements, facilitating climate adaptation, and maintaining metapopulation dynamics, corridors serve as the lifelines of biodiversity conservation. For linear infrastructure projects, incorporating corridor protection and wildlife crossing structures into project design is essential for achieving sustainable development.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 3 ═══════════════════════════ -->
+<div class="question-card" id="q3">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">3.</span> How the ecology and behaviour of wildlife affects the linear infrastructure construction? Describe the design in road construction inhabited by Asian wild elephant.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>The ecology and behavior of wildlife play a critical role in shaping the design, alignment, construction methodology, and operational management of linear infrastructure projects. Understanding species-specific ecological needs — including habitat requirements, movement patterns, breeding behavior, sensitivity to disturbance, and population dynamics — is essential for designing infrastructure that minimizes negative impacts on wildlife.</p>
+
+    <h3>2. How Wildlife Ecology and Behaviour Affect Infrastructure Construction</h3>
+
+    <h4>2.1 Movement Patterns and Home Range</h4>
+    <p>Animals with large home ranges (e.g., elephants, tigers, bears) regularly move across landscapes, often crossing proposed infrastructure alignments. Understanding these movement patterns through GPS tracking, camera trapping, and sign surveys is essential for identifying critical crossing points and designing appropriate crossing structures.</p>
+
+    <h4>2.2 Habitat Requirements</h4>
+    <p>Different species have specific habitat requirements. Infrastructure construction can degrade these habitats through deforestation, soil disturbance, water pollution, and noise. Understanding habitat requirements helps in selecting alignments that avoid critical habitats.</p>
+
+    <h4>2.3 Breeding and Nesting Behaviour</h4>
+    <p>Many species have specific breeding seasons and nesting requirements. Construction activities during breeding seasons can cause nest abandonment and reduced reproductive success. Safeguard measures include seasonal construction restrictions.</p>
+
+    <h4>2.4 Sensitivity to Noise and Light</h4>
+    <p>Many wildlife species are highly sensitive to noise and artificial light. Construction noise causes behavioral changes — animals avoid the area, alter movement patterns, or experience chronic stress. Artificial lighting disrupts nocturnal species.</p>
+
+    <h4>2.5 Response to Barriers</h4>
+    <p>Different species respond differently to road barriers. Small mammals and amphibians are often killed attempting to cross roads. Large mammals may be deterred, leading to population isolation. Understanding these responses determines the type of crossing structure needed.</p>
+
+    <h4>2.6 Feeding Ecology</h4>
+    <p>Road verges often attract herbivores due to new vegetation growth, which increases wildlife-vehicle collision risk. Understanding feeding ecology helps in vegetation management along roads and placement of crossing structures.</p>
+
+    <h3>3. Road Design in Areas Inhabited by Asian Wild Elephant</h3>
+
+    <h4>3.1 Ecology and Behaviour of Asian Wild Elephant</h4>
+    <p>The Asian wild elephant (<em>Elephas maximus</em>) is one of the most challenging species for road design due to its:</p>
+    <ul>
+      <li><strong>Large body size:</strong> Adult males weigh 4,000–5,000 kg and stand 2.5–3 m tall</li>
+      <li><strong>Large home range:</strong> 100–1,000 km² depending on habitat quality</li>
+      <li><strong>Long-distance movements:</strong> Daily movements of 10–20 km; seasonal movements of 50–100+ km</li>
+      <li><strong>Herd structure:</strong> Family herds of 8–20 individuals led by a matriarch</li>
+      <li><strong>Intelligence and memory:</strong> Elephants use traditional routes passed down through generations</li>
+      <li><strong>Water dependence:</strong> Must drink daily; regularly moves between forest and water sources</li>
+      <li><strong>Nocturnal activity:</strong> Often moves at night, increasing collision risk on roads</li>
+    </ul>
+
+    <h4>3.2 Road Design Considerations for Elephant Areas</h4>
+
+    <h4>3.2.1 Alignment Selection</h4>
+    <ul>
+      <li>Avoid alignments through core elephant habitat, corridors, and known migration routes</li>
+      <li>Use telemetry data and community knowledge to map elephant movement patterns</li>
+      <li>Prefer alignments along the periphery of elephant habitat rather than through the center</li>
+      <li>Avoid alignments that cut between forest and water sources</li>
+    </ul>
+
+    <h4>3.2.2 Underpasses for Elephants</h4>
+    <table>
+      <tr><th>Parameter</th><th>Specification</th></tr>
+      <tr><td>Minimum height</td><td>4.5–5.0 m (to accommodate bull elephants with raised trunk)</td></tr>
+      <tr><td>Minimum width</td><td>8–12 m (to allow herd passage with calves)</td></tr>
+      <tr><td>Maximum length</td><td>Should not exceed 30–40 m; openness ratio $\geq 0.6$</td></tr>
+      <tr><td>Floor surface</td><td>Natural earth/soil (not concrete) to encourage use</td></tr>
+      <tr><td>Lighting</td><td>Natural light preferred; no artificial lighting inside tunnel</td></tr>
+      <tr><td>Approaches</td><td>Funnel-shaped with natural vegetation to guide elephants</td></tr>
+      <tr><td>Drainage</td><td>Must not flood; proper drainage on both sides</td></tr>
+      <tr><td>Human activity</td><td>No settlements or activity near underpass entrances</td></tr>
+    </table>
+
+    <h4>3.2.3 Elevated Roads / Viaducts</h4>
+    <p>In areas with frequent elephant movement, elevated road sections (viaducts) allow elephants to pass underneath freely. Viaducts should have a minimum clearance of 5 m and spans of 20–50 m at crossing points, with natural vegetation maintained underneath.</p>
+
+    <h4>3.2.4 Fencing and Barriers</h4>
+    <ul>
+      <li>Concrete barriers, trenches (2 m deep, 2 m wide), or electric fencing to prevent elephants from crossing at dangerous locations</li>
+      <li>Barriers guide elephants toward designated crossing structures</li>
+      <li>V-shaped trenches along road edges to prevent elephant access at non-crossing locations</li>
+    </ul>
+
+    <h4>3.2.5 Speed Management</h4>
+    <ul>
+      <li>Reduced speed zones (30–40 km/h) in elephant crossing areas</li>
+      <li>Speed breakers, rumble strips, and road narrowing at crossing points</li>
+      <li>LED warning systems triggered by sensors when elephants are detected near the road</li>
+    </ul>
+
+    <h4>3.2.6 Vegetation Management</h4>
+    <ul>
+      <li>Maintain forest cover on both sides of the road near crossing points</li>
+      <li>Clear 30–50 m of vegetation from road edges to improve visibility for drivers</li>
+      <li>Do not plant fruiting or fodder trees near road edges (attracts elephants to road)</li>
+    </ul>
+
+    <h4>3.2.7 Construction Timing and Methodology</h4>
+    <ul>
+      <li>Avoid construction during elephant breeding and calving seasons</li>
+      <li>Minimize construction noise (no blasting) in elephant habitat</li>
+      <li>No construction camps within 1 km of elephant corridors</li>
+    </ul>
+
+    <h4>3.2.8 Monitoring and Adaptive Management</h4>
+    <ul>
+      <li>Camera traps at crossing structures to monitor elephant use</li>
+      <li>GPS collar monitoring of elephant herds near road</li>
+      <li>Community-based monitoring and early warning systems</li>
+      <li>Adaptive management — modify crossing structures if elephants avoid them</li>
+    </ul>
+
+    <h3>4. Case Studies</h3>
+    <p><strong>Nepal — East-West Highway:</strong> The Mahendra Highway crosses elephant corridors between Nepal and India. Critical crossing points have been identified, and elephant underpasses are planned at Khata, Basanta, and Laljhadi corridors.</p>
+    <p><strong>India — NH 766:</strong> Night traffic ban (9 PM to 6 AM) was implemented through Bandipur and Nagarahole Tiger Reserves. Elevated highway sections are being considered.</p>
+    <p><strong>Sri Lanka — Southern Expressway:</strong> Elephant underpasses were included at identified crossing points. Design modifications (wider entrances, natural flooring) improved usage rates.</p>
+
+    <h3>5. Conclusion</h3>
+    <p>The ecology and behavior of wildlife fundamentally shape how linear infrastructure must be planned, designed, built, and operated. For the Asian wild elephant, road design must incorporate elephant underpasses, elevated road sections, speed management, vegetation management, fencing, and long-term monitoring. By integrating ecological knowledge into engineering design, it is possible to build infrastructure that serves human needs while coexisting with wildlife.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 4 ═══════════════════════════ -->
+<div class="question-card" id="q4">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">4.</span> What are the types of impact of linear infrastructure on biodiversity? Describe one type in Nepal's road construction.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Linear infrastructure — including roads, highways, railways, transmission lines, canals, and pipelines — extends over large distances, crossing multiple habitats and ecosystems. The biodiversity impacts of such infrastructure are diverse, cumulative, and often irreversible.</p>
+
+    <h3>2. Types of Impact of Linear Infrastructure on Biodiversity</h3>
+
+    <h4>2.1 Habitat Loss and Destruction</h4>
+    <p>The most immediate and visible impact is the direct destruction of habitat due to land clearing for the road/rail corridor, associated facilities, and ancillary infrastructure. The area of habitat lost includes not just the road surface but also the right-of-way (typically 30–60 m wide for highways).</p>
+
+    <h4>2.2 Habitat Fragmentation</h4>
+    <p>Linear infrastructure divides previously continuous habitats into smaller, isolated fragments. This reduces the effective habitat area, creates edge effects, isolates populations, and reduces genetic diversity. Even a narrow road can be an impassable barrier for many species.</p>
+
+    <h4>2.3 Wildlife Mortality (Road Kill)</h4>
+    <p>Direct mortality from vehicle collisions is significant, especially for species that regularly cross roads. Nepal's highways record significant numbers of wildlife casualties including snakes, monitor lizards, leopards, and even elephants.</p>
+
+    <h4>2.4 Barrier Effect</h4>
+    <p>Roads and railways create physical and psychological barriers to animal movement. Busy roads with high traffic volume, noise, and artificial lighting deter many species from crossing.</p>
+
+    <h4>2.5 Edge Effects</h4>
+    <p>Road corridors create forest edges with different microclimatic conditions (more sunlight, wind, temperature fluctuations, lower humidity). These edge effects can penetrate 50–300 m into the forest.</p>
+
+    <h4>2.6 Pollution</h4>
+    <ul>
+      <li><strong>Noise pollution:</strong> Disrupts wildlife behavior, communication, breeding</li>
+      <li><strong>Light pollution:</strong> Disrupts nocturnal species</li>
+      <li><strong>Chemical pollution:</strong> Vehicle emissions, fuel spills, road salt, herbicides</li>
+      <li><strong>Dust:</strong> Unpaved roads generate dust that degrades vegetation and aquatic habitats</li>
+    </ul>
+
+    <h4>2.7 Introduction of Invasive Species</h4>
+    <p>Roads serve as conduits for invasive species. Disturbed road edges provide ideal conditions for invasive plant establishment. In Nepal, invasive species like <em>Mikania micanantha</em>, <em>Lantana camara</em>, and <em>Chromolaena odorata</em> have spread along road corridors into protected areas.</p>
+
+    <h4>2.8 Hydrological Disruption</h4>
+    <p>Roads alter natural drainage patterns by blocking, concentrating, or redirecting water flow. Inadequately sized culverts cause upstream flooding and downstream drying.</p>
+
+    <h4>2.9 Increased Human Access and Secondary Impacts</h4>
+    <p>Roads provide access to previously remote areas, enabling poaching, illegal logging, encroachment, and agricultural expansion. These secondary impacts can be more damaging than the direct impacts.</p>
+
+    <h3>3. Detailed Description: Habitat Fragmentation in Nepal's Road Construction</h3>
+
+    <h4>3.1 Context</h4>
+    <p>Nepal's strategic road network has expanded from about 5,000 km in 2000 to over 35,000 km. Many of these roads pass through biodiversity-rich areas including the Terai forests, Chure hills, and mid-hills.</p>
+
+    <h4>3.2 Case: Terai Highway Network and Tiger/Elephant Habitat</h4>
+    <p>The Mahendra Highway and its feeder roads fragment the forest corridors connecting protected areas:</p>
+    <ul>
+      <li><strong>Tiger populations:</strong> The Chitwan tiger population is partially isolated from the Parsa population. Genetic studies show reduced gene flow.</li>
+      <li><strong>Elephant corridors:</strong> The Khata corridor is constricted by the Mahendra Highway and settlements. Elephants face traffic when crossing.</li>
+      <li><strong>Rhinoceros:</strong> Populations in Chitwan are effectively isolated from Bardia populations.</li>
+    </ul>
+
+    <h4>3.3 Ecological Consequences</h4>
+    <ul>
+      <li>Reduced genetic diversity due to isolation</li>
+      <li>Edge effects altering microhabitat for shade-loving species</li>
+      <li>Altered species composition favoring edge-adapted and invasive species</li>
+      <li>Increased human-wildlife conflict</li>
+    </ul>
+
+    <h4>3.4 Mitigation Measures</h4>
+    <ul>
+      <li>Identification and legal protection of critical wildlife corridors (13 corridors identified in the Terai)</li>
+      <li>Construction of wildlife underpasses at key crossing points</li>
+      <li>Speed restrictions and night traffic bans in corridor areas</li>
+      <li>Community-based corridor management and reforestation</li>
+      <li>Elevated road sections (viaducts) proposed for new highway alignments</li>
+    </ul>
+
+    <h3>4. Summary Table: Types of Impact</h3>
+    <table>
+      <tr><th>Type of Impact</th><th>Nature</th><th>Spatial Scale</th><th>Reversibility</th></tr>
+      <tr><td>Habitat loss</td><td>Direct</td><td>Local</td><td>Irreversible</td></tr>
+      <tr><td>Habitat fragmentation</td><td>Direct/Indirect</td><td>Landscape</td><td>Partially reversible</td></tr>
+      <tr><td>Wildlife mortality</td><td>Direct</td><td>Local</td><td>Ongoing</td></tr>
+      <tr><td>Barrier effect</td><td>Direct</td><td>Landscape</td><td>Reversible with crossings</td></tr>
+      <tr><td>Edge effects</td><td>Indirect</td><td>Local–Landscape</td><td>Partially reversible</td></tr>
+      <tr><td>Pollution</td><td>Direct/Indirect</td><td>Local–Regional</td><td>Partially reversible</td></tr>
+      <tr><td>Invasive species</td><td>Indirect</td><td>Landscape–Regional</td><td>Difficult to reverse</td></tr>
+      <tr><td>Hydrological disruption</td><td>Direct</td><td>Local–Watershed</td><td>Partially reversible</td></tr>
+      <tr><td>Increased human access</td><td>Indirect</td><td>Landscape–Regional</td><td>Difficult to reverse</td></tr>
+    </table>
+
+    <h3>5. Conclusion</h3>
+    <p>Linear infrastructure impacts on biodiversity are multifaceted. Habitat fragmentation is arguably the most significant impact because it reduces the long-term viability of wildlife populations. In Nepal, understanding and mitigating these impacts — particularly fragmentation of Terai wildlife corridors — is critical for reconciling infrastructure development with biodiversity conservation.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 5 ═══════════════════════════ -->
+<div class="question-card" id="q5">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">5.</span> What the general methods available to conduct biodiversity baseline assessment? Describe one method useful in Nepal's terai linear infrastructure construction.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>A Biodiversity Baseline Assessment (BBA) is a systematic survey and documentation of the biological diversity (flora, fauna, and ecosystems) present in a project area before any development activity begins. It serves as the reference point against which future changes can be measured.</p>
+
+    <h3>2. General Methods for Biodiversity Baseline Assessment</h3>
+
+    <h4>2.1 Desktop Study / Literature Review</h4>
+    <ul>
+      <li>Published scientific literature, government databases, and previous EIA/IEE reports</li>
+      <li>IUCN Red List and CITES databases for threatened species</li>
+      <li>Land-use and land-cover maps, satellite imagery</li>
+      <li>Community-based biodiversity monitoring reports</li>
+    </ul>
+
+    <h4>2.2 Vegetation Survey (Flora Assessment)</h4>
+    <ul>
+      <li><strong>Quadrat sampling:</strong> Systematic placement of plots along transects</li>
+      <li><strong>Point-centered quarter method:</strong> Efficient for measuring tree density and basal area</li>
+      <li><strong>Rapid vegetation assessment:</strong> Walk-through surveys documenting dominant species</li>
+    </ul>
+
+    <h4>2.3 Fauna Surveys</h4>
+    <ul>
+      <li><strong>Camera trapping:</strong> Passive infrared cameras to detect and identify species</li>
+      <li><strong>Line transect surveys:</strong> Walking standardized routes and recording animals</li>
+      <li><strong>Point counts:</strong> For birds — recording all species detected at fixed points</li>
+      <li><strong>Sign surveys:</strong> Tracks, scats, feeding signs, nests</li>
+      <li><strong>Live trapping:</strong> Sherman traps, pitfall traps for small animals</li>
+      <li><strong>Acoustic monitoring:</strong> Recording and analyzing animal calls</li>
+      <li><strong>Environmental DNA (eDNA):</strong> Analyzing water/soil samples for species detection</li>
+    </ul>
+
+    <h4>2.4 Remote Sensing and GIS Analysis</h4>
+    <ul>
+      <li>Satellite imagery for habitat mapping and land-use classification</li>
+      <li>Aerial surveys using drones for wildlife counts</li>
+      <li>GIS-based habitat connectivity analysis</li>
+    </ul>
+
+    <h4>2.5 Community/Indigenous Knowledge</h4>
+    <ul>
+      <li>Participatory rural appraisal (PRA) with local communities</li>
+      <li>Key informant interviews with hunters, fishers, herbalists</li>
+      <li>Traditional ecological knowledge documentation</li>
+    </ul>
+
+    <h4>2.6 Rapid Biodiversity Assessment (RBA)</h4>
+    <p>A condensed assessment deploying multi-disciplinary teams of taxonomic experts for intensive field surveys over 2–4 weeks, focusing on indicator species and habitats.</p>
+
+    <h3>3. Detailed Method: Camera Trapping for Nepal's Terai</h3>
+
+    <h4>3.1 Why Camera Trapping?</h4>
+    <ul>
+      <li>The Terai forests are dense, making direct observation difficult</li>
+      <li>Many target species (tiger, leopard, elephant, rhinoceros) are elusive or nocturnal</li>
+      <li>Camera traps operate 24/7, capturing both diurnal and nocturnal species</li>
+      <li>Individual identification possible for species with unique markings (tiger stripes, leopard rosettes)</li>
+      <li>Non-invasive — does not disturb animals</li>
+      <li>Nepal has extensive experience from national tiger surveys</li>
+    </ul>
+
+    <h4>3.2 Methodology</h4>
+    <ul>
+      <li><strong>Survey area:</strong> Infrastructure corridor plus 2–5 km buffer zone</li>
+      <li><strong>Grid system:</strong> Divide area into 2×2 km cells for large mammals</li>
+      <li><strong>Camera placement:</strong> One pair of cameras per grid cell on wildlife trails, water points, salt licks</li>
+      <li><strong>Duration:</strong> Minimum 30 trap-nights per station</li>
+      <li><strong>Season:</strong> Pre-monsoon (March–May) and post-monsoon (October–December)</li>
+    </ul>
+
+    <h4>3.3 Data Analysis</h4>
+    <ul>
+      <li><strong>Species inventory:</strong> List all species detected across the corridor</li>
+      <li><strong>Relative abundance index (RAI):</strong> Independent detections per 100 trap-nights</li>
+      <li><strong>Occupancy modeling:</strong> Probability of species presence at each grid cell</li>
+      <li><strong>Activity patterns:</strong> Circular statistics for diurnal/nocturnal activity</li>
+      <li><strong>Individual identification:</strong> Pattern matching for tigers and leopards</li>
+      <li><strong>Movement corridors:</strong> Spatial analysis to identify critical crossing points</li>
+    </ul>
+
+    <h4>3.4 Application to Infrastructure Planning</h4>
+    <ul>
+      <li>High tiger/elephant detections → wildlife crossing structures needed</li>
+      <li>Species activity patterns → timing of construction restrictions</li>
+      <li>Corridor pinch points → alignment modifications to avoid</li>
+      <li>Baseline estimates → monitoring benchmarks for post-construction comparison</li>
+    </ul>
+
+    <h4>3.5 Advantages and Limitations</h4>
+    <table>
+      <tr><th>Advantages</th><th>Limitations</th></tr>
+      <tr><td>Non-invasive, no disturbance</td><td>Costly equipment (USD 200–500 per camera)</td></tr>
+      <tr><td>24/7 monitoring capability</td><td>Theft and vandalism risk</td></tr>
+      <tr><td>Photographic evidence</td><td>Bias toward ground-dwelling species</td></tr>
+      <tr><td>Individual identification possible</td><td>Not effective for birds, insects, aquatic species</td></tr>
+      <tr><td>Large area coverage</td><td>Large data volume requires processing time</td></tr>
+    </table>
+
+    <h3>4. Conclusion</h3>
+    <p>Biodiversity baseline assessment is a fundamental prerequisite for environmentally responsible linear infrastructure development. Camera trapping stands out as particularly valuable for Nepal's Terai, where dense forests and elusive megafauna make it the method of choice. The data generated directly informs infrastructure design, crossing structure placement, and long-term monitoring.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 6 ═══════════════════════════ -->
+<div class="question-card" id="q6">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">6.</span> Analyze the strengths, weaknesses, opportunities, and threats (SWOT) of the Wildlife-Friendly Infrastructure Directive, 2078.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>The Wildlife-Friendly Infrastructure Directive, 2078 (2021 AD) was issued by the Government of Nepal as a policy guideline to integrate wildlife conservation considerations into the planning, design, construction, and operation of infrastructure projects. It represents Nepal's first dedicated policy instrument addressing the interface between infrastructure and wildlife.</p>
+
+    <h3>2. SWOT Analysis</h3>
+
+    <h4>Strengths</h4>
+    <ul>
+      <li><strong>S1. First Dedicated Policy Framework:</strong> Fills a critical policy gap by providing focused guidance on wildlife-friendly infrastructure.</li>
+      <li><strong>S2. Technical Specifications:</strong> Provides specific guidelines for wildlife crossing structures with dimensions, materials, and placement criteria.</li>
+      <li><strong>S3. EIA Integration:</strong> Mandates that wildlife-friendly measures be integrated into the EIA/IEE process for all projects in wildlife habitat areas.</li>
+      <li><strong>S4. Multi-Stakeholder Approach:</strong> Involves Department of Roads, Railways, National Parks, Forests, and provincial governments.</li>
+      <li><strong>S5. Corridor Recognition:</strong> Explicitly recognizes the importance of wildlife corridors and mandates their protection.</li>
+      <li><strong>S6. Monitoring and Adaptive Management:</strong> Requires post-construction monitoring of crossing structures with provisions for adaptive management.</li>
+    </ul>
+
+    <h4>Weaknesses</h4>
+    <ul>
+      <li><strong>W1. Lack of Legal Enforceability:</strong> The directive is a policy guideline, not a law. Compliance is largely voluntary with no clear penalties.</li>
+      <li><strong>W2. Insufficient Budget Allocation:</strong> No dedicated budget provisions. Wildlife crossing structures cost USD 200,000–2 million each.</li>
+      <li><strong>W3. Limited Capacity:</strong> Nepal has limited technical capacity in wildlife-friendly infrastructure design.</li>
+      <li><strong>W4. Narrow Scope:</strong> Primarily focuses on large mammals. Inadequate provisions for smaller fauna, aquatic species, and avifauna.</li>
+      <li><strong>W5. Inadequate Community Engagement:</strong> Lacks detailed mechanisms for meaningful community engagement.</li>
+      <li><strong>W6. Weak Coordination Mechanism:</strong> No designated lead agency or inter-agency committee with clear authority.</li>
+    </ul>
+
+    <h4>Opportunities</h4>
+    <ul>
+      <li><strong>O1. International Funding:</strong> World Bank, ADB, GEF, USAID are increasingly funding biodiversity-friendly infrastructure.</li>
+      <li><strong>O2. SDG/CBD Alignment:</strong> Aligns with SDG 15 and CBD Post-2020 Global Biodiversity Framework.</li>
+      <li><strong>O3. Technology and Innovation:</strong> Advances in monitoring technology, modular crossings, and GIS-based planning.</li>
+      <li><strong>O4. Integration with Infrastructure Plans:</strong> Nepal's mega-projects (Fast Track, Mid-Hills Highway, railway) provide opportunities to embed measures from design stage.</li>
+      <li><strong>O5. Regional Collaboration:</strong> Framework for engaging India on transboundary wildlife-friendly infrastructure.</li>
+      <li><strong>O6. Tourism Revenue:</strong> Wildlife-friendly infrastructure can enhance eco-tourism appeal.</li>
+    </ul>
+
+    <h4>Threats</h4>
+    <ul>
+      <li><strong>T1. Political Pressure:</strong> Pressure to complete projects quickly leads to shortcuts in environmental compliance.</li>
+      <li><strong>T2. Corruption:</strong> Substandard implementation — undersized culverts or complete omission of specified measures.</li>
+      <li><strong>T3. Climate Change:</strong> Altering species distributions and increasing extreme weather events that can damage crossing structures.</li>
+      <li><strong>T4. Rapid Urbanization:</strong> Corridors may lose functionality due to land-use change.</li>
+      <li><strong>T5. Inadequate Research Base:</strong> Nepal lacks comprehensive baseline data on wildlife movement patterns.</li>
+      <li><strong>T6. Institutional Instability:</strong> Frequent government changes undermine institutional memory and commitment.</li>
+    </ul>
+
+    <h3>3. Summary SWOT Matrix</h3>
+    <table>
+      <tr><th colspan="2" style="text-align:center;">INTERNAL FACTORS</th></tr>
+      <tr>
+        <td style="vertical-align:top; width:50%;"><strong>STRENGTHS</strong><br>&#8226; First dedicated policy framework<br>&#8226; Technical specifications provided<br>&#8226; Integrated with EIA process<br>&#8226; Multi-stakeholder approach<br>&#8226; Corridor recognition<br>&#8226; Adaptive management provision</td>
+        <td style="vertical-align:top;"><strong>WEAKNESSES</strong><br>&#8226; Lacks legal enforceability<br>&#8226; No dedicated budget<br>&#8226; Limited capacity<br>&#8226; Narrow taxonomic scope<br>&#8226; Weak community engagement<br>&#8226; Poor coordination mechanism</td>
+      </tr>
+      <tr><th colspan="2" style="text-align:center;">EXTERNAL FACTORS</th></tr>
+      <tr>
+        <td style="vertical-align:top;"><strong>OPPORTUNITIES</strong><br>&#8226; International funding<br>&#8226; SDG/CBD alignment<br>&#8226; Technology advances<br>&#8226; Integration with mega-projects<br>&#8226; Regional collaboration<br>&#8226; Eco-tourism potential</td>
+        <td style="vertical-align:top;"><strong>THREATS</strong><br>&#8226; Political pressure<br>&#8226; Corruption / non-compliance<br>&#8226; Climate change impacts<br>&#8226; Rapid urbanization<br>&#8226; Insufficient research data<br>&#8226; Institutional instability</td>
+      </tr>
+    </table>
+
+    <h3>4. Recommendations</h3>
+    <ol>
+      <li><strong>Upgrade to Legal Status:</strong> Convert the directive into a regulation with clear penalties.</li>
+      <li><strong>Establish Dedicated Fund:</strong> Create a Wildlife Infrastructure Fund from infrastructure project budgets and international grants.</li>
+      <li><strong>Capacity Building:</strong> Training programs for engineers, ecologists, and planners.</li>
+      <li><strong>Expand Scope:</strong> Include small fauna, aquatic species, and bird-safe design for transmission lines.</li>
+      <li><strong>Strengthen Coordination:</strong> Establish an inter-agency Wildlife Infrastructure Committee.</li>
+      <li><strong>Research Investment:</strong> Fund baseline research on wildlife movement and crossing structure effectiveness.</li>
+    </ol>
+
+    <h3>5. Conclusion</h3>
+    <p>The Wildlife-Friendly Infrastructure Directive, 2078 is a significant step forward. Its strengths — technical specifications, EIA integration, and corridor recognition — provide a solid foundation. However, weaknesses in legal status, funding, and capacity, combined with external threats, limit its effectiveness. Addressing these weaknesses and capitalizing on opportunities can strengthen the directive into a robust framework.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 7 ═══════════════════════════ -->
+<div class="question-card" id="q7">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">7.</span> Discuss the crucial factors that must be taken into account when calculating the overall quantity and distribution of animal passageways required to maintain habitat connectivity.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Animal passageways are engineered structures — overpasses, underpasses, culverts, tunnels, canopy bridges, and aquatic passages — designed to allow wildlife to safely cross linear infrastructure. Determining the optimal number, size, type, and spatial distribution is complex and must consider ecological, topographic, engineering, and socio-economic factors.</p>
+
+    <h3>2. Crucial Factors</h3>
+
+    <h4>2.1 Target Species and Their Ecology</h4>
+    <ul>
+      <li><strong>Home range size:</strong> Species with large home ranges need passages at every intersection with infrastructure</li>
+      <li><strong>Daily movement patterns:</strong> Spacing should be within the species' typical daily movement range</li>
+      <li><strong>Body size:</strong> Determines minimum passage dimensions</li>
+      <li><strong>Behavioral response:</strong> Some species prefer underpasses, others prefer overpasses</li>
+      <li><strong>Conservation status:</strong> Endangered species justify higher investment</li>
+    </ul>
+    <div class="highlight-box"><strong>Key Principle:</strong> Design for the most sensitive and demanding target species (umbrella species approach). Passages designed for large, demanding species will generally accommodate smaller species too.</div>
+
+    <h4>2.2 Landscape Context and Habitat Quality</h4>
+    <ul>
+      <li>Passages must connect similar or complementary habitat types</li>
+      <li>Passages are useless if habitat on one or both sides is degraded</li>
+      <li>Existing connectivity features (streams, ravines) may provide natural crossing opportunities</li>
+      <li>More fragmented landscapes require more passages</li>
+    </ul>
+
+    <h4>2.3 Road/Rail Characteristics</h4>
+    <ul>
+      <li>Higher traffic volume → more and larger passages</li>
+      <li>Wider roads → longer passages (which animals may avoid)</li>
+      <li>Fenced roads concentrate crossing demand at passage locations</li>
+    </ul>
+
+    <h4>2.4 Topography and Hydrology</h4>
+    <ul>
+      <li>Valley bottoms, river crossings, and ridgeline crossings are natural movement corridors</li>
+      <li>Stream crossings already require bridges or culverts — upgrading these is cost-effective</li>
+      <li>Passages in flood-prone areas must remain functional during floods</li>
+    </ul>
+
+    <h4>2.5 Wildlife Movement Data</h4>
+    <ul>
+      <li>GPS/satellite telemetry, camera trap data, road kill data, track surveys, community knowledge</li>
+    </ul>
+
+    <h4>2.6 Spacing and Density Guidelines</h4>
+    <table>
+      <tr><th>Species Group</th><th>Recommended Spacing</th><th>Passage Type</th></tr>
+      <tr><td>Large mammals (elephant, tiger)</td><td>1 per 1–2 km in corridors</td><td>Large underpass or overpass</td></tr>
+      <tr><td>Medium mammals (deer, wild boar)</td><td>1 per 300–500 m</td><td>Medium underpass</td></tr>
+      <tr><td>Small mammals, reptiles</td><td>1 per 100–300 m</td><td>Small culvert/pipe</td></tr>
+      <tr><td>Amphibians</td><td>1 per 50–100 m during migration</td><td>Amphibian tunnel + guide fence</td></tr>
+      <tr><td>Arboreal species</td><td>1 per 200–500 m in forest</td><td>Canopy/rope bridge</td></tr>
+      <tr><td>Aquatic species</td><td>At every stream crossing</td><td>Bridge or bottomless arch culvert</td></tr>
+    </table>
+
+    <h4>2.7 Cost-Effectiveness and Prioritization</h4>
+    <ul>
+      <li>Multi-use structures (combining drainage culverts with wildlife passages) improve cost-effectiveness</li>
+      <li>Critical connectivity areas should receive priority</li>
+      <li>Phased implementation — install priority passages first, add more based on monitoring data</li>
+    </ul>
+
+    <h4>2.8 Complementary Measures</h4>
+    <ul>
+      <li>Guide fencing to direct animals toward passages</li>
+      <li>Vegetation management at approaches</li>
+      <li>Speed management near passages</li>
+      <li>No artificial light near passages</li>
+      <li>No human activity near passage entrances</li>
+    </ul>
+
+    <h3>3. Analytical Framework (Flowchart)</h3>
+    <div class="flowchart">
+      <div class="flow-box">1. Identify Target Species and Conservation Priority</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">2. Map Wildlife Movement Patterns (telemetry, camera traps, sign surveys)</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">3. Overlay Movement Data with Infrastructure Alignment</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">4. Identify Critical Crossing Points (high movement + corridor pinch points)</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">5. Determine Passage Type and Size Based on Target Species</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">6. Apply Spacing Guidelines Adjusted for Local Conditions</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">7. Prioritize Based on Cost-Effectiveness and Conservation Value</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">8. Implement, Monitor, and Adapt</div>
+    </div>
+
+    <h3>4. Case Study: Banff National Park, Canada</h3>
+    <p>Over 25 years, 44 passages (6 overpasses, 38 underpasses) were built along 82 km of the Trans-Canada Highway. Over 200,000 documented animal crossings; wildlife-vehicle collisions reduced by >80%.</p>
+
+    <h3>5. Conclusion</h3>
+    <p>Determining the optimal quantity and distribution requires integrating ecological knowledge, landscape analysis, infrastructure characteristics, and practical considerations. A science-based approach using empirical wildlife data, validated spacing guidelines, and adaptive management ensures effective habitat connectivity.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 8 ═══════════════════════════ -->
+<div class="question-card" id="q8">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">8.</span> Describe with neat sketches the key components of animal overpasses and underpasses.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Animal overpasses (wildlife bridges or green bridges) and underpasses (wildlife tunnels or culverts) are engineered structures designed to provide safe crossing opportunities for wildlife over or under linear infrastructure. Their design must balance engineering requirements with ecological functionality.</p>
+
+    <h3>2. Animal Overpasses (Wildlife Bridges)</h3>
+
+    <h4>2.1 Description</h4>
+    <p>An animal overpass is a bridge-like structure spanning a road or railway, covered with soil, vegetation, and other natural materials to create a continuous habitat link.</p>
+
+    <h4>2.2 Cross-Section Sketch</h4>
+    <div class="svg-sketch">
+      <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+        <rect x="0" y="280" width="700" height="120" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <rect x="220" y="280" width="260" height="50" fill="#999" stroke="#000" stroke-width="1"/>
+        <line x1="350" y1="280" x2="350" y2="330" stroke="#000" stroke-width="2" stroke-dasharray="8,6"/>
+        <text x="350" y="345" text-anchor="middle" fill="#000" font-size="12" font-family="Source Sans 3, sans-serif">ROAD / RAILWAY</text>
+        <path d="M 120 280 Q 130 180 200 140 Q 280 90 350 80 Q 420 90 500 140 Q 570 180 580 280" fill="#ddd" stroke="#000" stroke-width="2"/>
+        <path d="M 140 270 Q 200 160 350 120 Q 500 160 560 270" fill="#aaa" stroke="#000" stroke-width="1.5"/>
+        <circle cx="200" cy="160" r="18" fill="#888" stroke="#000" stroke-width="1"/>
+        <circle cx="250" cy="135" r="22" fill="#777" stroke="#000" stroke-width="1"/>
+        <circle cx="310" cy="118" r="15" fill="#888" stroke="#000" stroke-width="1"/>
+        <circle cx="350" cy="110" r="20" fill="#666" stroke="#000" stroke-width="1"/>
+        <circle cx="400" cy="118" r="17" fill="#888" stroke="#000" stroke-width="1"/>
+        <circle cx="450" cy="135" r="22" fill="#777" stroke="#000" stroke-width="1"/>
+        <circle cx="500" cy="160" r="18" fill="#888" stroke="#000" stroke-width="1"/>
+        <circle cx="170" cy="200" r="12" fill="#999" stroke="#000" stroke-width="1"/>
+        <circle cx="530" cy="200" r="12" fill="#999" stroke="#000" stroke-width="1"/>
+        <path d="M 30 280 Q 50 240 120 280" fill="#aaa" stroke="#000" stroke-width="1.5"/>
+        <path d="M 580 280 Q 650 240 670 280" fill="#aaa" stroke="#000" stroke-width="1.5"/>
+        <line x1="30" y1="275" x2="120" y2="275" stroke="#000" stroke-width="3"/>
+        <line x1="580" y1="275" x2="670" y2="275" stroke="#000" stroke-width="3"/>
+        <line x1="50" y1="265" x2="50" y2="280" stroke="#000" stroke-width="2"/>
+        <line x1="80" y1="265" x2="80" y2="280" stroke="#000" stroke-width="2"/>
+        <line x1="110" y1="265" x2="110" y2="280" stroke="#000" stroke-width="2"/>
+        <line x1="600" y1="265" x2="600" y2="280" stroke="#000" stroke-width="2"/>
+        <line x1="630" y1="265" x2="630" y2="280" stroke="#000" stroke-width="2"/>
+        <line x1="660" y1="265" x2="660" y2="280" stroke="#000" stroke-width="2"/>
+        <text x="350" y="40" text-anchor="middle" fill="#000" font-size="14" font-weight="bold" font-family="Source Sans 3, sans-serif">WILDLIFE OVERPASS (Cross-Section)</text>
+        <line x1="140" y1="60" x2="140" y2="270" stroke="#000" stroke-width="1"/>
+        <line x1="135" y1="60" x2="145" y2="60" stroke="#000" stroke-width="1"/>
+        <line x1="135" y1="270" x2="145" y2="270" stroke="#000" stroke-width="1"/>
+        <text x="100" y="165" fill="#000" font-size="10" transform="rotate(-90,100,165)" font-family="Source Sans 3, sans-serif">Min 5m clearance</text>
+        <line x1="160" y1="390" x2="540" y2="390" stroke="#000" stroke-width="1"/>
+        <line x1="160" y1="385" x2="160" y2="395" stroke="#000" stroke-width="1"/>
+        <line x1="540" y1="385" x2="540" y2="395" stroke="#000" stroke-width="1"/>
+        <text x="350" y="385" text-anchor="middle" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Width: 40–80 m (large mammals)</text>
+        <line x1="350" y1="95" x2="430" y2="55" stroke="#000" stroke-width="1"/>
+        <text x="435" y="58" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Vegetation (native species)</text>
+        <line x1="300" y1="145" x2="600" y2="70" stroke="#000" stroke-width="1"/>
+        <text x="520" y="78" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Soil substrate (1–2 m deep)</text>
+        <line x1="80" y1="275" x2="30" y2="55" stroke="#000" stroke-width="1"/>
+        <text x="10" y="50" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Guide fencing</text>
+      </svg>
+    </div>
+
+    <h4>2.3 Key Components</h4>
+    <table>
+      <tr><th>Component</th><th>Description</th><th>Specifications</th></tr>
+      <tr><td>Bridge Deck</td><td>Reinforced concrete or steel arch spanning the road</td><td>Typical span 30–60 m</td></tr>
+      <tr><td>Soil Substrate</td><td>Layer of natural soil placed on the bridge deck</td><td>Min 1.5–2.0 m depth for tree roots</td></tr>
+      <tr><td>Vegetation</td><td>Native trees, shrubs, grasses</td><td>Must match surrounding habitat</td></tr>
+      <tr><td>Width</td><td>Crossing width perpendicular to road</td><td>Min 40–50 m for large mammals</td></tr>
+      <tr><td>Earth Berms</td><td>Raised walls to block noise and light</td><td>Min 2–3 m high; vegetated</td></tr>
+      <tr><td>Guide Fencing</td><td>Directs animals toward overpass</td><td>Min 500 m on each side</td></tr>
+      <tr><td>Approach Ramps</td><td>Gently graded ramps to overpass surface</td><td>Max gradient 1:4 to 1:6</td></tr>
+      <tr><td>Anti-Headlight Screens</td><td>Prevents vehicle headlights illuminating overpass</td><td>Solid screens or dense vegetation</td></tr>
+      <tr><td>Drainage System</td><td>Internal drainage to prevent waterlogging</td><td>Drainage layer below soil</td></tr>
+    </table>
+
+    <h3>3. Animal Underpasses</h3>
+
+    <h4>3.1 Description</h4>
+    <p>An animal underpass is a tunnel, culvert, or bridge opening beneath a road or railway. Underpasses range from small pipe culverts for amphibians to large open-span structures for elephants.</p>
+
+    <h4>3.2 Cross-Section Sketch</h4>
+    <div class="svg-sketch">
+      <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" style="max-width:620px;">
+        <rect x="0" y="200" width="700" height="180" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <rect x="0" y="180" width="700" height="40" fill="#999" stroke="#000" stroke-width="1"/>
+        <line x1="0" y1="200" x2="700" y2="200" stroke="#000" stroke-width="2" stroke-dasharray="8,6"/>
+        <text x="350" y="170" text-anchor="middle" fill="#000" font-size="12" font-weight="bold" font-family="Source Sans 3, sans-serif">ROAD SURFACE</text>
+        <rect x="250" y="220" width="200" height="120" fill="#f5f5f5" stroke="#000" stroke-width="3" rx="3"/>
+        <path d="M 250 240 Q 350 200 450 240" fill="#999" stroke="#000" stroke-width="2"/>
+        <rect x="255" y="240" width="190" height="100" fill="#fafafa"/>
+        <rect x="255" y="320" width="190" height="20" fill="#aaa" stroke="#000" stroke-width="1"/>
+        <text x="350" y="335" text-anchor="middle" fill="#000" font-size="9" font-family="Source Sans 3, sans-serif">Natural earth floor</text>
+        <line x1="240" y1="220" x2="240" y2="340" stroke="#000" stroke-width="1"/>
+        <line x1="235" y1="220" x2="245" y2="220" stroke="#000" stroke-width="1"/>
+        <line x1="235" y1="340" x2="245" y2="340" stroke="#000" stroke-width="1"/>
+        <text x="210" y="285" fill="#000" font-size="10" transform="rotate(-90,210,285)" font-family="Source Sans 3, sans-serif">H: 3–5 m</text>
+        <line x1="250" y1="350" x2="450" y2="350" stroke="#000" stroke-width="1"/>
+        <line x1="250" y1="345" x2="250" y2="355" stroke="#000" stroke-width="1"/>
+        <line x1="450" y1="345" x2="450" y2="355" stroke="#000" stroke-width="1"/>
+        <text x="350" y="368" text-anchor="middle" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">W: 4–15 m</text>
+        <line x1="30" y1="215" x2="250" y2="215" stroke="#000" stroke-width="3"/>
+        <line x1="450" y1="215" x2="670" y2="215" stroke="#000" stroke-width="3"/>
+        <text x="350" y="30" text-anchor="middle" fill="#000" font-size="14" font-weight="bold" font-family="Source Sans 3, sans-serif">WILDLIFE UNDERPASS (Cross-Section)</text>
+        <line x1="140" y1="215" x2="140" y2="60" stroke="#000" stroke-width="1"/>
+        <text x="145" y="55" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Guide fencing</text>
+        <text x="350" y="290" text-anchor="middle" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Openness = (H × W) / L ≥ 0.6</text>
+      </svg>
+    </div>
+
+    <h4>3.3 Types of Underpasses</h4>
+    <table>
+      <tr><th>Type</th><th>Target Species</th><th>Dimensions</th></tr>
+      <tr><td>Large mammal underpass</td><td>Elephants, ungulates, bears</td><td>H: 4–5 m, W: 8–15 m</td></tr>
+      <tr><td>Medium mammal underpass</td><td>Deer, wild boar, leopard</td><td>H: 2.5–4 m, W: 4–8 m</td></tr>
+      <tr><td>Small mammal culvert</td><td>Foxes, hares, small cats</td><td>H: 1–2 m, W: 1.5–3 m</td></tr>
+      <tr><td>Amphibian/reptile tunnel</td><td>Frogs, turtles, snakes</td><td>H: 0.5–1 m, dia. 0.5–1 m</td></tr>
+      <tr><td>Aquatic passage</td><td>Fish, otters, turtles</td><td>Full stream width; natural substrate</td></tr>
+    </table>
+
+    <h4>3.4 Key Components</h4>
+    <table>
+      <tr><th>Component</th><th>Description</th><th>Specifications</th></tr>
+      <tr><td>Tunnel Structure</td><td>Concrete box culvert, arch, or bridge span</td><td>Waterproof; durable</td></tr>
+      <tr><td>Natural Floor</td><td>Earth, gravel, or sand floor</td><td>Mimics natural substrate</td></tr>
+      <tr><td>Openness Ratio</td><td>$(H \times W) / L$</td><td>Min 0.6 for large mammals</td></tr>
+      <tr><td>Entrance Design</td><td>Funnel-shaped approaches</td><td>Wide, open with natural vegetation</td></tr>
+      <tr><td>Guide Fencing</td><td>Directs animals to underpass</td><td>Min 200–500 m on each side</td></tr>
+      <tr><td>Drainage</td><td>Prevents flooding inside tunnel</td><td>Channels along sides</td></tr>
+      <tr><td>Dry Ledge</td><td>Elevated ledge for small mammals</td><td>30–50 cm wide above water level</td></tr>
+      <tr><td>Monitoring Equipment</td><td>Camera traps, track plates</td><td>Weatherproof; checked regularly</td></tr>
+    </table>
+
+    <h3>4. Comparison: Overpass vs. Underpass</h3>
+    <table>
+      <tr><th>Criterion</th><th>Overpass</th><th>Underpass</th></tr>
+      <tr><td>Cost</td><td>Very high (USD 2–10 million)</td><td>Moderate (USD 0.1–2 million)</td></tr>
+      <tr><td>Best for</td><td>Species avoiding enclosed spaces</td><td>Bears, cats, elephants, small mammals</td></tr>
+      <tr><td>Habitat continuity</td><td>Excellent</td><td>Limited</td></tr>
+      <tr><td>Light conditions</td><td>Natural daylight</td><td>Dark (unless short/open-topped)</td></tr>
+      <tr><td>Multi-species use</td><td>High</td><td>Moderate</td></tr>
+      <tr><td>Maintenance</td><td>Vegetation, soil stabilization</td><td>Debris removal, drainage</td></tr>
+    </table>
+
+    <h3>5. Conclusion</h3>
+    <p>Both overpasses and underpasses are essential for maintaining wildlife connectivity. Overpasses provide superior habitat continuity but are expensive. Underpasses are cost-effective for many species. Both require complementary measures — guide fencing, vegetation management, and monitoring — to function effectively. A combination of both types provides optimal connectivity.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 9 ═══════════════════════════ -->
+<div class="question-card" id="q9">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">9.</span> Classify noise levels and their effects on wild animals. How gabion wall works in reducing the intensity of noise level?</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Noise pollution from linear infrastructure is one of the most pervasive impacts on wildlife. Sound travels far beyond the physical footprint, creating an "acoustic footprint" extending hundreds of meters to several kilometers. Anthropogenic noise can mask communication, alter behavior, cause stress, reduce reproductive success, and affect population viability.</p>
+
+    <h3>2. Classification of Noise Levels</h3>
+
+    <h4>2.1 Noise Level Scale</h4>
+    <p>Noise is measured in decibels (dB) on a logarithmic scale. An increase of 10 dB represents a tenfold increase in sound intensity.</p>
+    <table>
+      <tr><th>dB Level</th><th>Source Example</th><th>Category</th></tr>
+      <tr><td>0–10</td><td>Threshold of hearing, rustling leaves</td><td>Very quiet</td></tr>
+      <tr><td>10–30</td><td>Whisper, quiet forest</td><td>Quiet</td></tr>
+      <tr><td>30–50</td><td>Quiet rural area, bird song</td><td>Moderate</td></tr>
+      <tr><td>50–70</td><td>Normal conversation, light traffic</td><td>Moderately loud</td></tr>
+      <tr><td>70–90</td><td>Heavy traffic, construction machinery</td><td>Loud</td></tr>
+      <tr><td>90–110</td><td>Blasting, heavy machinery</td><td>Very loud</td></tr>
+      <tr><td>110–130</td><td>Jet aircraft</td><td>Extremely loud</td></tr>
+      <tr><td>&gt;130</td><td>Explosion, gunfire</td><td>Painful/damaging</td></tr>
+    </table>
+
+    <h4>2.2 Classification by Infrastructure Source</h4>
+    <table>
+      <tr><th>Source</th><th>Typical dB</th><th>Range of Impact</th></tr>
+      <tr><td>Light vehicles</td><td>65–75 dB</td><td>100–300 m</td></tr>
+      <tr><td>Heavy vehicles</td><td>80–90 dB</td><td>300–800 m</td></tr>
+      <tr><td>High-speed highway</td><td>70–85 dB</td><td>500 m – 2 km</td></tr>
+      <tr><td>Freight train</td><td>85–100 dB</td><td>500 m – 1.5 km</td></tr>
+      <tr><td>Rock blasting</td><td>100–120 dB</td><td>1–5 km</td></tr>
+      <tr><td>Pile driving</td><td>95–110 dB</td><td>500 m – 2 km</td></tr>
+    </table>
+
+    <h3>3. Effects of Noise on Wild Animals</h3>
+
+    <h4>3.1 Communication Masking</h4>
+    <p>Traffic noise overlaps with many species' call frequencies. Birds near roads sing at higher frequencies. Male frogs' calls are masked, reducing mating success. Elephants' low-frequency communication (14–35 Hz) is disrupted by heavy vehicle noise.</p>
+
+    <h4>3.2 Behavioral Changes</h4>
+    <ul>
+      <li>Habitat avoidance: woodland birds have reduced density up to 1.5 km from highways</li>
+      <li>Altered activity patterns — diurnal to nocturnal shifts</li>
+      <li>Flight responses, nest abandonment</li>
+      <li>Reduced predator detection due to masking</li>
+    </ul>
+
+    <h4>3.3 Physiological Stress</h4>
+    <p>Chronic noise elevates cortisol levels, reducing immune function, growth rate, and reproductive output. Studies on elk show elevated stress hormones correlated with traffic volume.</p>
+
+    <h4>3.4 Reproductive Impacts</h4>
+    <ul>
+      <li>Reduced mating call effectiveness</li>
+      <li>Lower clutch sizes and hatching success in nesting birds near roads</li>
+      <li>Nest abandonment in sensitive species (raptors, herons)</li>
+    </ul>
+
+    <h4>3.5 Classification by Effect on Wildlife</h4>
+    <table>
+      <tr><th>Noise Level (dB)</th><th>Effect on Wildlife</th><th>Species Most Affected</th></tr>
+      <tr><td>&lt;40</td><td>No significant effect</td><td>—</td></tr>
+      <tr><td>40–55</td><td>Minor behavioral changes; masking begins</td><td>Forest birds, bats</td></tr>
+      <tr><td>55–70</td><td>Significant communication masking; avoidance</td><td>Songbirds, frogs, primates</td></tr>
+      <tr><td>70–85</td><td>Strong avoidance; chronic stress</td><td>Mammals, raptors, owls</td></tr>
+      <tr><td>85–100</td><td>Severe disturbance; nest abandonment</td><td>Large mammals, colonial birds</td></tr>
+      <tr><td>&gt;100</td><td>Hearing damage; panic; mortality risk</td><td>All species</td></tr>
+    </table>
+
+    <h3>4. Gabion Walls for Noise Reduction</h3>
+
+    <h4>4.1 What is a Gabion Wall?</h4>
+    <p>A gabion wall is a structure made of wire mesh cages filled with rocks, stones, or other durable materials. Originally used for erosion control and retaining walls, gabion walls are increasingly used as noise barriers.</p>
+
+    <h4>4.2 Sketch of Gabion Noise Barrier</h4>
+    <div class="svg-sketch">
+      <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="max-width:560px;">
+        <rect x="0" y="250" width="700" height="70" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <rect x="0" y="230" width="280" height="30" fill="#999" stroke="#000" stroke-width="1"/>
+        <text x="140" y="250" text-anchor="middle" fill="#000" font-size="11" font-family="Source Sans 3, sans-serif">ROAD</text>
+        <rect x="290" y="130" width="70" height="120" fill="#bbb" stroke="#000" stroke-width="2"/>
+        <circle cx="310" cy="150" r="8" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <circle cx="330" cy="145" r="6" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <circle cx="345" cy="155" r="7" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <circle cx="315" cy="170" r="7" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <circle cx="335" cy="168" r="8" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <circle cx="305" cy="190" r="6" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <circle cx="325" cy="188" r="7" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <circle cx="348" cy="185" r="6" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <circle cx="310" cy="210" r="8" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <circle cx="340" cy="205" r="7" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <circle cx="320" cy="228" r="7" fill="#ddd" stroke="#000" stroke-width="1"/>
+        <circle cx="345" cy="230" r="6" fill="#ccc" stroke="#000" stroke-width="1"/>
+        <line x1="290" y1="170" x2="360" y2="170" stroke="#000" stroke-width="1"/>
+        <line x1="290" y1="200" x2="360" y2="200" stroke="#000" stroke-width="1"/>
+        <line x1="325" y1="130" x2="325" y2="250" stroke="#000" stroke-width="1"/>
+        <!-- Noise arrows -->
+        <path d="M 200 200 Q 220 190 200 180" fill="none" stroke="#000" stroke-width="2"/>
+        <path d="M 210 205 Q 240 190 210 175" fill="none" stroke="#000" stroke-width="2"/>
+        <path d="M 220 210 Q 260 190 220 170" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="180" y="165" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Noise waves</text>
+        <path d="M 400 200 Q 410 195 400 190" fill="none" stroke="#000" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="418" y="195" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">Reduced noise</text>
+        <text x="350" y="30" text-anchor="middle" fill="#000" font-size="14" font-weight="bold" font-family="Source Sans 3, sans-serif">GABION NOISE BARRIER</text>
+        <line x1="370" y1="130" x2="370" y2="250" stroke="#000" stroke-width="1"/>
+        <line x1="365" y1="130" x2="375" y2="130" stroke="#000" stroke-width="1"/>
+        <line x1="365" y1="250" x2="375" y2="250" stroke="#000" stroke-width="1"/>
+        <text x="385" y="195" fill="#000" font-size="10" font-family="Source Sans 3, sans-serif">H: 3–5 m</text>
+        <text x="325" y="120" text-anchor="middle" fill="#000" font-size="11" font-weight="bold" font-family="Source Sans 3, sans-serif">Gabion Wall</text>
+        <text x="325" y="108" text-anchor="middle" fill="#000" font-size="9" font-family="Source Sans 3, sans-serif">(Wire mesh + stones)</text>
+        <!-- Reflected arrow -->
+        <line x1="290" y1="185" x2="260" y2="160" stroke="#000" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <text x="225" y="152" fill="#000" font-size="9" font-family="Source Sans 3, sans-serif">Reflected</text>
+        <text x="310" y="98" fill="#000" font-size="9" font-family="Source Sans 3, sans-serif">Absorbed &amp; diffracted</text>
+        <!-- Wildlife side label -->
+        <text x="560" y="240" fill="#000" font-size="11" font-family="Source Sans 3, sans-serif">Wildlife habitat side</text>
+      </svg>
+    </div>
+
+    <h4>4.3 Three Mechanisms of Noise Reduction</h4>
+
+    <p><strong>(i) Sound Absorption:</strong> The irregular surface and void spaces between stones absorb sound energy. Sound waves entering the gaps undergo multiple reflections, converting sound energy into heat through friction. The absorption coefficient of gabion walls ranges from 0.5–0.8, compared to 0.03–0.05 for smooth concrete.</p>
+
+    <p><strong>(ii) Sound Reflection:</strong> The dense, massive structure reflects a portion of sound energy back toward the source. Gabion walls have high surface mass (typically 500–1000 kg/m²), providing excellent reflection-based noise reduction.</p>
+
+    <p><strong>(iii) Sound Diffraction:</strong> Sound waves diffract over the top of the barrier. The taller the barrier, the greater the noise reduction. Gabion walls of 3–5 m height provide 8–15 dB reduction.</p>
+
+    <h4>4.4 Noise Reduction Performance</h4>
+    <table>
+      <tr><th>Wall Height</th><th>Noise Reduction (dB)</th><th>Effective Range</th></tr>
+      <tr><td>2 m</td><td>5–8</td><td>50–100 m behind wall</td></tr>
+      <tr><td>3 m</td><td>8–12</td><td>100–200 m behind wall</td></tr>
+      <tr><td>4 m</td><td>10–14</td><td>150–300 m behind wall</td></tr>
+      <tr><td>5 m</td><td>12–16</td><td>200–500 m behind wall</td></tr>
+    </table>
+    <p><em>Note: A 10 dB reduction is perceived as approximately half the loudness.</em></p>
+
+    <h4>4.5 Advantages of Gabion Walls for Wildlife Areas</h4>
+    <ul>
+      <li><strong>Ecological compatibility:</strong> Can be vegetated, blending with the landscape</li>
+      <li><strong>Habitat provision:</strong> Gaps between stones provide microhabitat for small animals</li>
+      <li><strong>Local materials:</strong> Built with locally available stone, reducing costs</li>
+      <li><strong>Durability:</strong> Resistant to damage from animals</li>
+      <li><strong>Combined function:</strong> Noise barrier + retaining wall + erosion control</li>
+      <li><strong>Cost-effective:</strong> 30–50% cheaper than engineered concrete barriers</li>
+    </ul>
+
+    <h3>5. Conclusion</h3>
+    <p>Noise above 40–55 dB begins to affect sensitive wildlife species. Gabion walls provide an effective, ecologically compatible noise reduction solution, achieving 8–16 dB reduction. Their sound absorption, habitat provision, and cost-effectiveness make them particularly suitable for wildlife-friendly infrastructure.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 10 ═══════════════════════════ -->
+<div class="question-card" id="q10">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">10.</span> With the use of a flow chart, indicate the best kind of crossing for a region with a high level of wildlife diversity while taking target species and topographic restrictions into account.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Selecting the appropriate type of wildlife crossing structure for a region with high biodiversity is a complex decision-making process involving species ecology, behavioral preferences, topographic constraints, and engineering feasibility.</p>
+
+    <h3>2. Decision Flowchart</h3>
+
+    <div class="flowchart">
+      <div class="flow-box">START: High Biodiversity Region — Crossing Structure Selection</div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 1: Is a water body (stream/river) present at the crossing point?</div>
+      <div class="flow-branch">
+        <div class="branch">
+          <div class="branch-label">YES &#8594;</div>
+          <div class="flow-box">BRIDGE or BOTTOMLESS ARCH CULVERT<br>Min span = 1.2× bankfull width<br>Natural substrate; dry ledges for terrestrial species</div>
+        </div>
+        <div class="branch"><div class="branch-label">NO &#8595;</div></div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 2: Is the road in a CUT section (road below grade)?</div>
+      <div class="flow-branch">
+        <div class="branch">
+          <div class="branch-label">YES &#8594;</div>
+          <div class="flow-box">WILDLIFE OVERPASS (Green Bridge)<br>Width &#8805; 40 m for large mammals<br>Earth, vegetation, natural features</div>
+        </div>
+        <div class="branch"><div class="branch-label">NO &#8595;</div></div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 3: Is the road on FILL / EMBANKMENT?</div>
+      <div class="flow-branch">
+        <div class="branch">
+          <div class="branch-label">YES &#8594;</div>
+          <div class="flow-box">LARGE UNDERPASS (Box Culvert / Arch)<br>H &#8805; 4 m, W &#8805; 8 m for elephants<br>Natural floor, open approaches</div>
+        </div>
+        <div class="branch"><div class="branch-label">NO &#8595;</div></div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 4: Is the target species a LARGE MAMMAL?</div>
+      <div class="flow-branch">
+        <div class="branch">
+          <div class="branch-label">Prefers open &#8594;</div>
+          <div class="flow-box">OVERPASS (40–80 m wide)</div>
+        </div>
+        <div class="branch">
+          <div class="branch-label">Prefers enclosed &#8594;</div>
+          <div class="flow-box">LARGE UNDERPASS (H &#8805; 4 m, W &#8805; 8 m)<br>Openness ratio &#8805; 0.6</div>
+        </div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 5: ARBOREAL species (monkey, squirrel, civet)?</div>
+      <div class="flow-branch">
+        <div class="branch">
+          <div class="branch-label">YES &#8594;</div>
+          <div class="flow-box">CANOPY BRIDGE / ROPE BRIDGE<br>Connected to trees; height &#8805; 6 m above road</div>
+        </div>
+        <div class="branch"><div class="branch-label">NO &#8595;</div></div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 6: SMALL MAMMAL or REPTILE?</div>
+      <div class="flow-branch">
+        <div class="branch">
+          <div class="branch-label">YES &#8594;</div>
+          <div class="flow-box">SMALL UNDERPASS / CULVERT<br>Dia. 0.5–1.5 m; every 100–300 m<br>With guide fencing; natural substrate</div>
+        </div>
+        <div class="branch"><div class="branch-label">NO &#8595;</div></div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 7: AMPHIBIAN?</div>
+      <div class="flow-branch">
+        <div class="branch">
+          <div class="branch-label">YES &#8594;</div>
+          <div class="flow-box">AMPHIBIAN TUNNEL<br>Dia. 30–50 cm; every 50–100 m<br>With permanent guide fence; moist conditions</div>
+        </div>
+        <div class="branch"><div class="branch-label">NO &#8595;</div></div>
+      </div>
+      <div class="flow-arrow">&#8595;</div>
+
+      <div class="flow-diamond">Step 8: Multiple species with different requirements?</div>
+      <div class="flow-arrow">&#8595;</div>
+      <div class="flow-box">MULTI-USE CROSSING SYSTEM<br>Combine large underpass + small culverts + canopy bridge<br>Design for the MOST DEMANDING species</div>
+    </div>
+
+    <h3>3. Topographic Restrictions and Solutions</h3>
+    <table>
+      <tr><th>Topographic Condition</th><th>Restriction</th><th>Recommended Crossing</th></tr>
+      <tr><td>Flat terrain</td><td>Cannot build overpass without major earthwork</td><td>Large underpass; at-grade passage with traffic calming</td></tr>
+      <tr><td>Road in cut section</td><td>Natural terrain above road</td><td>Overpass (ideal — minimal earthwork)</td></tr>
+      <tr><td>Road on embankment</td><td>Road higher than terrain</td><td>Underpass (ideal — tunnel through embankment)</td></tr>
+      <tr><td>Steep hillside</td><td>Difficult to build wide structures</td><td>Multiple smaller underpasses; viaduct sections</td></tr>
+      <tr><td>River valley</td><td>Flooding risk</td><td>Bridge with natural substrate; elevated approaches</td></tr>
+      <tr><td>Wetland</td><td>Soft ground; water table</td><td>Bridge/viaduct on piles</td></tr>
+    </table>
+
+    <h3>4. Application to Nepal's Terai</h3>
+    <ul>
+      <li>Elephants and rhinoceros: Large underpasses ($H \geq 5$ m, $W \geq 10$ m)</li>
+      <li>Tigers and leopards: Medium to large underpasses with natural vegetation</li>
+      <li>Deer, wild boar: Medium underpasses at 500 m intervals</li>
+      <li>River crossings: Bridges with full-span bottomless design</li>
+      <li>Primates: Canopy bridges over forested corridors</li>
+      <li>Amphibians/reptiles: Small tunnels with guide fencing</li>
+    </ul>
+
+    <div class="highlight-box"><strong>Umbrella Species Approach:</strong> Design for the most demanding target species. Structures designed for elephants will also serve tigers, deer, and smaller mammals. Supplement with species-specific structures for arboreal species and amphibians.</div>
+
+    <h3>5. Conclusion</h3>
+    <p>The flowchart provides a structured approach from water body presence through species-specific requirements to multi-species solutions. In high-biodiversity regions like Nepal's Terai, a combination of crossing types integrated into a comprehensive system provides the best outcome for biodiversity conservation.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 11 ═══════════════════════════ -->
+<div class="question-card" id="q11">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">11.</span> Discuss the past, present, and future implementation of wildlife-friendly infrastructure in Nepal. Highlight key challenges and gaps observed in past projects and ongoing initiatives.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Nepal hosts extraordinary biodiversity due to its dramatic altitudinal range (60 m to 8,848 m). The country's rapid infrastructure expansion has increasingly come into conflict with biodiversity conservation.</p>
+
+    <h3>2. Past Implementation (Before 2015)</h3>
+    <ul>
+      <li>Road projects planned primarily on engineering and economic criteria</li>
+      <li>No dedicated wildlife overpasses or underpasses constructed on any road in Nepal</li>
+      <li>EIA was legally required since 1997, but implementation was often superficial</li>
+      <li>Major roads (Mahendra Highway, feeder roads) fragmented wildlife corridors without mitigation</li>
+    </ul>
+    <h4>Gaps in Past Implementation</h4>
+    <ul>
+      <li>No policy framework, technical guidelines, or standards for wildlife-friendly design</li>
+      <li>No wildlife movement data used in road planning</li>
+      <li>No inter-agency coordination between road and conservation agencies</li>
+      <li>No monitoring of infrastructure impacts on wildlife</li>
+    </ul>
+
+    <h3>3. Present Implementation (2015–2025)</h3>
+
+    <h4>3.1 Policy Developments</h4>
+    <ul>
+      <li><strong>Wildlife-Friendly Infrastructure Directive, 2078 (2021):</strong> First dedicated policy guideline</li>
+      <li><strong>Updated EPA 2076 and EPR 2077:</strong> Strengthened EIA requirements</li>
+      <li><strong>National Biodiversity Strategy and Action Plan</strong></li>
+      <li><strong>Terai Arc Landscape Strategy:</strong> Identifies critical corridors</li>
+    </ul>
+
+    <h4>3.2 Ongoing Projects</h4>
+    <ul>
+      <li><strong>Kathmandu-Terai Fast Track:</strong> 76 km expressway with provisions for wildlife underpasses — potentially the first major road in Nepal with dedicated crossing structures</li>
+      <li><strong>East-West Railway:</strong> 945 km through the Terai, crossing multiple corridors. Wildlife passages in preliminary design.</li>
+      <li><strong>ADB-funded highway upgrades:</strong> Include oversized culverts at corridor locations and speed management zones</li>
+    </ul>
+
+    <h4>3.3 Conservation Initiatives</h4>
+    <ul>
+      <li>National tiger surveys (2009, 2013, 2018, 2022) providing extensive movement data</li>
+      <li>GPS collaring of tigers, elephants, and rhinoceros</li>
+      <li>13 Terai corridors mapped and characterized</li>
+      <li>Community-based wildlife monitoring near infrastructure</li>
+    </ul>
+
+    <h4>3.4 Present Challenges</h4>
+    <ul>
+      <li>Implementation gap — policies not translated into built structures</li>
+      <li>Budget constraints — wildlife features cut during value engineering</li>
+      <li>Few Nepali engineers trained in wildlife-friendly design</li>
+      <li>Directive lacks legal enforceability</li>
+      <li>Political pressure to complete projects quickly</li>
+      <li>Data gaps on wildlife movement across all corridors</li>
+    </ul>
+
+    <h3>4. Future Implementation (Post-2025 Vision)</h3>
+    <ol>
+      <li><strong>Legal framework:</strong> Convert directive into enforceable regulations with penalties</li>
+      <li><strong>Capacity building:</strong> Integrate wildlife-friendly design into civil engineering curricula</li>
+      <li><strong>Dedicated funding:</strong> Create Wildlife Infrastructure Fund (1–2% of project budgets)</li>
+      <li><strong>Research:</strong> Comprehensive wildlife movement studies across all corridors</li>
+      <li><strong>Technology:</strong> Real-time wildlife detection systems (thermal cameras, radar, AI)</li>
+      <li><strong>Landscape-level planning:</strong> Connectivity modeling to optimize alignments</li>
+      <li><strong>Transboundary cooperation:</strong> Bilateral protocols with India for shared corridors</li>
+      <li><strong>Retrofit program:</strong> Add wildlife crossings to existing highways at critical bottlenecks</li>
+    </ol>
+
+    <h3>5. Summary Timeline</h3>
+    <table>
+      <tr><th>Period</th><th>Characteristics</th><th>Key Gap</th></tr>
+      <tr><td>Past (&lt;2015)</td><td>No wildlife consideration; habitat destruction</td><td>Complete absence of wildlife-friendly infrastructure</td></tr>
+      <tr><td>Present (2015–2025)</td><td>Policy framework emerging; some project-level provisions</td><td>Policies not translated into built structures</td></tr>
+      <tr><td>Future (&gt;2025)</td><td>Legal enforcement; dedicated funding; landscape-level planning</td><td>Political will; sustained funding; capacity</td></tr>
+    </table>
+
+    <h3>6. Conclusion</h3>
+    <p>The key challenge remains the implementation gap — translating good policies into actual built infrastructure. Closing this gap requires legal enforceability, dedicated funding, technical capacity, comprehensive data, and sustained political will.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 12 ═══════════════════════════ -->
+<div class="question-card" id="q12">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">12.</span> Explain assumptions of Courbon's method and derive distribution coefficient for girder bridge.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Introduction</h3>
+    <p>Courbon's method is a simplified analytical approach used in bridge engineering to determine the distribution of live loads among the longitudinal girders of a girder bridge (T-beam or slab-and-girder bridge). When a vehicle crosses a bridge, the load is not distributed equally among all girders — girders closer to the load receive a larger share. Courbon's method provides a rational method to calculate the share (distribution coefficient) of each girder based on the transverse position of the load.</p>
+
+    <h3>2. Assumptions of Courbon's Method</h3>
+
+    <h4>Assumption 1: Transversely rigid deck</h4>
+    <p>The deck slab and cross-beams connecting the longitudinal girders are assumed to be sufficiently stiff to ensure that a transverse section of the bridge remains plane (straight line) when loaded. The deck deflects linearly in the transverse direction. Valid when cross-beams (diaphragms) are present at regular intervals and $L/B > 2$.</p>
+
+    <h4>Assumption 2: Equal moment of inertia</h4>
+    <p>All longitudinal girders are identical in cross-section and material properties, each having the same flexural rigidity $EI$.</p>
+
+    <h4>Assumption 3: Equal spacing</h4>
+    <p>All longitudinal girders are placed at equal intervals (spacing $= g$) across the bridge width.</p>
+
+    <h4>Assumption 4: Simply supported girders</h4>
+    <p>The girders are simply supported at their ends. The method is typically applied at the mid-span section.</p>
+
+    <h4>Assumption 5: Linear variation of deflection</h4>
+    <p>Due to the rigid deck, when an eccentric load is applied, the deflection varies linearly across the width.</p>
+
+    <h4>Assumption 6: Deck acts as a single rigid beam transversely</h4>
+    <p>The entire deck system (slab + girders + diaphragms) acts as a single transverse beam.</p>
+
+    <div class="highlight-box"><strong>Validity Condition:</strong> Courbon's method is valid when $L/B > 2$ and adequate cross-bracing or diaphragms are provided.</div>
+
+    <h3>3. Derivation of Distribution Coefficient</h3>
+
+    <h4>3.1 Setup and Notation</h4>
+    <p>Consider a bridge with $n$ equally spaced longitudinal girders. Let:</p>
+    <ul>
+      <li>$n$ = number of longitudinal girders</li>
+      <li>$g$ = spacing between adjacent girders (c/c)</li>
+      <li>$W$ = total live load acting on the bridge</li>
+      <li>$e$ = eccentricity of the resultant load $W$ from the center of the bridge</li>
+      <li>$d_i$ = distance of the $i$-th girder from the center of the bridge</li>
+      <li>$R_i$ = reaction (load share) carried by the $i$-th girder</li>
+    </ul>
+
+    <h4>3.2 Coordinate System</h4>
+    <p>Place the origin at the center of the bridge. For $n = 4$ girders with spacing $g$:</p>
+    $$d_1 = -1.5g,\quad d_2 = -0.5g,\quad d_3 = +0.5g,\quad d_4 = +1.5g$$
+
+    <h4>3.3 Deflection Profile</h4>
+    <p>Due to the rigid deck assumption, the deflection at girder $i$ varies linearly:</p>
+    $$\delta_i = \delta_0 + \theta \cdot d_i$$
+    <p>where $\delta_0$ = deflection at center (mean deflection), $\theta$ = rotation (tilt) of the rigid deck.</p>
+
+    <h4>3.4 Reaction at Each Girder</h4>
+    <p>Since all girders have equal stiffness, the reaction is proportional to deflection:</p>
+    $$R_i = k \cdot \delta_i = k(\delta_0 + \theta \cdot d_i)$$
+    <p>where $k$ = proportionality constant (stiffness per girder).</p>
+
+    <h4>3.5 Equilibrium Conditions</h4>
+    <p><strong>Condition 1 — Vertical equilibrium:</strong></p>
+    $$\sum R_i = W$$
+    $$k \sum (\delta_0 + \theta \cdot d_i) = W$$
+    $$k(n \cdot \delta_0 + \theta \sum d_i) = W$$
+    <p>Since girders are symmetrically placed, $\sum d_i = 0$. Therefore:</p>
+    $$k \cdot n \cdot \delta_0 = W \implies k \cdot \delta_0 = \frac{W}{n} \quad \cdots (i)$$
+
+    <p><strong>Condition 2 — Moment equilibrium about center:</strong></p>
+    $$\sum (R_i \cdot d_i) = W \cdot e$$
+    $$k \sum (\delta_0 + \theta \cdot d_i) \cdot d_i = W \cdot e$$
+    $$k(\delta_0 \sum d_i + \theta \sum d_i^2) = W \cdot e$$
+    <p>Since $\sum d_i = 0$:</p>
+    $$k \cdot \theta \cdot \sum d_i^2 = W \cdot e \implies k \cdot \theta = \frac{W \cdot e}{\sum d_i^2} \quad \cdots (ii)$$
+
+    <h4>3.6 Distribution Coefficient</h4>
+    <p>Substituting (i) and (ii) into $R_i = k\delta_0 + k\theta \cdot d_i$:</p>
+    $$R_i = \frac{W}{n} + \frac{W \cdot e \cdot d_i}{\sum d_i^2}$$
+
+    <p>Therefore, the load carried by the $i$-th girder is:</p>
+    <div class="formula-box highlight">
+      $$\boxed{R_i = \frac{W}{n}\left[1 + \frac{n \cdot e \cdot d_i}{\sum d_i^2}\right]}$$
+    </div>
+
+    <p>The <strong>distribution coefficient</strong> for girder $i$:</p>
+    <div class="formula-box highlight">
+      $$\boxed{C_i = 1 + \frac{n \cdot e \cdot d_i}{\sum d_i^2}}$$
+    </div>
+
+    <p>so that $R_i = C_i \times \dfrac{W}{n}$.</p>
+
+    <h3>4. Special Cases</h3>
+
+    <h4>4.1 Concentric Loading ($e = 0$)</h4>
+    $$C_i = 1 \text{ for all girders} \implies R_i = \frac{W}{n} \text{ (equal distribution)}$$
+
+    <h4>4.2 Sum of Distribution Coefficients</h4>
+    $$\sum C_i = \sum\left[1 + \frac{n \cdot e \cdot d_i}{\sum d_i^2}\right] = n + \frac{n \cdot e}{\sum d_i^2}\sum d_i = n + 0 = n$$
+    <p>This is consistent with the total load being $W$.</p>
+
+    <h3>5. Numerical Example</h3>
+    <p>Consider a bridge with 4 girders spaced at 2.5 m c/c. The resultant load has an eccentricity $e = 1.0$ m from center.</p>
+
+    <p><strong>Given:</strong> $n = 4$, $g = 2.5$ m, $e = 1.0$ m</p>
+
+    <p><strong>Girder positions from center:</strong></p>
+    $$d_1 = -3.75 \text{ m},\quad d_2 = -1.25 \text{ m},\quad d_3 = +1.25 \text{ m},\quad d_4 = +3.75 \text{ m}$$
+
+    <p><strong>Sum of squares:</strong></p>
+    $$\sum d_i^2 = 3.75^2 + 1.25^2 + 1.25^2 + 3.75^2 = 14.0625 + 1.5625 + 1.5625 + 14.0625 = 31.25 \text{ m}^2$$
+
+    <p><strong>Distribution coefficients:</strong></p>
+    $$C_1 = 1 + \frac{4 \times 1.0 \times (-3.75)}{31.25} = 1 - 0.48 = 0.52$$
+    $$C_2 = 1 + \frac{4 \times 1.0 \times (-1.25)}{31.25} = 1 - 0.16 = 0.84$$
+    $$C_3 = 1 + \frac{4 \times 1.0 \times (+1.25)}{31.25} = 1 + 0.16 = 1.16$$
+    $$C_4 = 1 + \frac{4 \times 1.0 \times (+3.75)}{31.25} = 1 + 0.48 = 1.48$$
+
+    <p><strong>Check:</strong> $\sum C_i = 0.52 + 0.84 + 1.16 + 1.48 = 4.0$ &#10003;</p>
+
+    <p><strong>Load on each girder:</strong></p>
+    $$R_1 = 0.52 \times \frac{W}{4} = 0.13W,\qquad R_2 = 0.84 \times \frac{W}{4} = 0.21W$$
+    $$R_3 = 1.16 \times \frac{W}{4} = 0.29W,\qquad R_4 = 1.48 \times \frac{W}{4} = 0.37W \text{ (max — nearest to load)}$$
+
+    <h3>6. Limitations</h3>
+    <ul>
+      <li>Assumes perfectly rigid transverse deck — real decks have some flexibility</li>
+      <li>Applicable only when $L/B > 2$ with adequate diaphragms</li>
+      <li>Does not account for torsional stiffness of girders</li>
+      <li>Not applicable for bridges with different girder sizes</li>
+      <li>More accurate methods (Hendry-Jaeger, Guyon-Massonnet, FEM) are preferred for complex bridges</li>
+    </ul>
+
+    <h3>7. Conclusion</h3>
+    <p>Courbon's method provides a simple yet effective approach for transverse live load distribution. The distribution coefficient $C_i = 1 + \frac{n \cdot e \cdot d_i}{\sum d_i^2}$ captures the effect of load eccentricity. It is widely used in preliminary design and is valid for bridges with high span-to-width ratio and adequate transverse bracing.</p>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ QUESTION 13 ═══════════════════════════ -->
+<div class="question-card" id="q13">
+  <div class="question-header" onclick="toggleCard(this)">
+    <div class="q-title"><span class="q-num">13.</span> Analyze the abutment stem of a slab bridge of span 10 m and width 6 m. Given: slab thickness = 600 mm, imposed load = 10 kN/m², depth of abutment = 6 m, $k_a$ = 0.3, top width = 0.6 m, loads at 0.3 m from river face.</div>
+    <span class="toggle-icon">&#9660;</span>
+  </div>
+  <div class="answer-body">
+
+    <h3>1. Given Data</h3>
+    <table>
+      <tr><td>Span of bridge</td><td>$L = 10$ m</td></tr>
+      <tr><td>Width of bridge</td><td>$B = 6$ m</td></tr>
+      <tr><td>Thickness of slab</td><td>$t = 600$ mm $= 0.6$ m</td></tr>
+      <tr><td>Equivalent imposed load</td><td>$q = 10$ kN/m²</td></tr>
+      <tr><td>Depth of abutment above foundation</td><td>$H = 6$ m</td></tr>
+      <tr><td>Active earth pressure coefficient</td><td>$K_a = 0.3$</td></tr>
+      <tr><td>Top width of abutment stem</td><td>$b_1 = 0.6$ m</td></tr>
+      <tr><td>Load application from river face</td><td>$= 0.3$ m</td></tr>
+      <tr><td>Unit weight of concrete (assumed)</td><td>$\gamma_c = 24$ kN/m³</td></tr>
+      <tr><td>Unit weight of soil (assumed)</td><td>$\gamma_s = 18$ kN/m³</td></tr>
+    </table>
+
+    <div class="highlight-box"><strong>Note:</strong> Consider only imposed load, dead load, and earth pressure. Neglect back wall and abutment cap projection. Assume bottom width $b_2 = 1.5$ m (typical ratio $\approx 0.25H$).</div>
+
+    <h3>2. Load Calculations</h3>
+
+    <h4>2.1 Dead Load from Superstructure (Slab)</h4>
+    <p>Each abutment supports half the span. Per metre run of abutment:</p>
+    $$\text{Dead Load} = \gamma_c \times t \times \dfrac{L}{2} = 24 \times 0.6 \times 5 = 72 \text{ kN/m}$$
+    <p>This acts at 0.3 m from river face of abutment.</p>
+
+    <h4>2.2 Imposed Load (Live Load)</h4>
+    $$\text{Imposed Load} = q \times \dfrac{L}{2} = 10 \times 5 = 50 \text{ kN/m}$$
+    <p>This also acts at 0.3 m from river face.</p>
+
+    <h4>2.3 Self-Weight of Abutment Stem</h4>
+    <p>The stem is trapezoidal with top width $b_1 = 0.6$ m, bottom width $b_2 = 1.5$ m, height $H = 6$ m. Break into rectangle + triangle:</p>
+
+    <p><strong>Rectangle:</strong> width = 0.6 m, height = 6 m</p>
+    $$W_{\text{rect}} = 24 \times 0.6 \times 6 = 86.4 \text{ kN/m}$$
+    <p>Centroid from river face $= 0.6/2 = 0.3$ m</p>
+
+    <p><strong>Triangle:</strong> base = $(1.5 - 0.6) = 0.9$ m, height = 6 m (on earth side)</p>
+    $$W_{\text{tri}} = 24 \times \dfrac{0.9 \times 6}{2} = 64.8 \text{ kN/m}$$
+    <p>Centroid from river face $= 0.6 + 0.9/3 = 0.9$ m</p>
+
+    <p><strong>Total self-weight:</strong></p>
+    $$W_{\text{self}} = 86.4 + 64.8 = 151.2 \text{ kN/m}$$
+
+    <p><strong>Combined centroid from river face:</strong></p>
+    $$\bar{x} = \dfrac{86.4 \times 0.3 + 64.8 \times 0.9}{151.2} = \dfrac{25.92 + 58.32}{151.2} = \dfrac{84.24}{151.2} = 0.557 \text{ m}$$
+
+    <h4>2.4 Active Earth Pressure</h4>
+    $$P_a = \tfrac{1}{2}\, K_a \, \gamma_s \, H^2 = \tfrac{1}{2} \times 0.3 \times 18 \times 6^2 = \tfrac{1}{2} \times 0.3 \times 18 \times 36 = 97.2 \text{ kN/m}$$
+    <p>This acts at $H/3 = 6/3 = 2.0$ m from the base (horizontal force).</p>
+
+    <h3>3. Analysis at Base of Abutment Stem</h3>
+    <p>Taking moments about the <strong>toe</strong> (river face at base level):</p>
+
+    <h4>3.1 Forces and Lever Arms</h4>
+    <table>
+      <tr><th>Force</th><th>Magnitude (kN/m)</th><th>Direction</th><th>Lever Arm (m)</th><th>Moment (kN·m/m)</th></tr>
+      <tr><td>Dead load (slab)</td><td>72</td><td>Vertical &#8595;</td><td>0.3</td><td>$72 \times 0.3 = 21.6$ (stabilizing)</td></tr>
+      <tr><td>Imposed load</td><td>50</td><td>Vertical &#8595;</td><td>0.3</td><td>$50 \times 0.3 = 15.0$ (stabilizing)</td></tr>
+      <tr><td>Self-wt (rectangle)</td><td>86.4</td><td>Vertical &#8595;</td><td>0.3</td><td>$86.4 \times 0.3 = 25.92$ (stabilizing)</td></tr>
+      <tr><td>Self-wt (triangle)</td><td>64.8</td><td>Vertical &#8595;</td><td>0.9</td><td>$64.8 \times 0.9 = 58.32$ (stabilizing)</td></tr>
+      <tr><td>Earth pressure</td><td>97.2</td><td>Horizontal &#8594;</td><td>2.0</td><td>$97.2 \times 2.0 = 194.4$ (overturning)</td></tr>
+    </table>
+
+    <h4>3.2 Total Vertical Load</h4>
+    $$V = 72 + 50 + 151.2 = 273.2 \text{ kN/m}$$
+
+    <h4>3.3 Total Horizontal Force</h4>
+    $$H = P_a = 97.2 \text{ kN/m}$$
+
+    <h4>3.4 Moments about Toe</h4>
+    <p><strong>Stabilizing Moment:</strong></p>
+    $$M_s = 21.6 + 15.0 + 25.92 + 58.32 = 120.84 \text{ kN}\!\cdot\!\text{m/m}$$
+
+    <p><strong>Overturning Moment:</strong></p>
+    $$M_o = 194.4 \text{ kN}\!\cdot\!\text{m/m}$$
+
+    <p><strong>Net Moment:</strong></p>
+    $$M_{\text{net}} = M_o - M_s = 194.4 - 120.84 = 73.56 \text{ kN}\!\cdot\!\text{m/m} \quad (\text{overturning})$$
+
+    <h3>4. Base Pressure Distribution</h3>
+    <p>Point of application of resultant vertical load from toe:</p>
+    $$x_v = \dfrac{M_s}{V} = \dfrac{120.84}{273.2} = 0.442 \text{ m from river face}$$
+
+    <p>Eccentricity from center of base ($b_2/2 = 0.75$ m):</p>
+    $$e = \frac{b_2}{2} - x_v = 0.75 - 0.442 = 0.308 \text{ m}$$
+
+    <p>Middle third check: $b_2/6 = 1.5/6 = 0.25$ m. Since $e = 0.308 > 0.25$, the resultant falls outside the middle third.</p>
+
+    <p><strong>Base pressure formula (linear distribution):</strong></p>
+    $$\sigma = \frac{V}{b_2} \pm \frac{6 \, M_{\text{net}}}{b_2^{\,2}}$$
+
+    $$\sigma_{\max} = \frac{273.2}{1.5} + \frac{6 \times 73.56}{1.5^2} = 182.13 + \frac{441.36}{2.25} = 182.13 + 196.16 = 378.3 \text{ kN/m}^{2}$$
+
+    $$\sigma_{\min} = 182.13 - 196.16 = -14.03 \text{ kN/m}^{2} \quad (\text{tension at heel})$$
+
+    <div class="highlight-box"><strong>Observation:</strong> Negative pressure (tension) at the heel indicates the resultant falls outside the middle third. A wider footing is required in practice to keep $e \leq b/6$.</div>
+
+    <h3>5. Bending Moment at Base of Stem</h3>
+    <p>The stem is designed as a vertical cantilever fixed at the base.</p>
+
+    $$M_{\text{earth}} = P_a \times \frac{H}{3} = 97.2 \times 2.0 = 194.4 \text{ kN}\!\cdot\!\text{m/m}$$
+
+    <p>Net design BM at base:</p>
+    $$M_{\text{design}} = M_o - M_s = 194.4 - 120.84 = 73.56 \text{ kN}\!\cdot\!\text{m/m}$$
+
+    <h3>6. Shear Force at Base</h3>
+    $$V_{\text{shear}} = P_a = 97.2 \text{ kN/m}$$
+
+    <h3>7. Check — Factor of Safety Against Overturning</h3>
+    $$\text{FOS}_{\,\text{overturning}} = \frac{M_s}{M_o} = \frac{120.84}{194.4} = 0.622$$
+    <p>Required FOS $\geq 2.0$. <strong>FOS = 0.622 &lt; 2.0 — Inadequate for stem alone.</strong></p>
+    <p>A wider base/footing is needed. Additional stabilizing moment required:</p>
+    $$M_{\text{additional}} = 2 \times M_o - M_s = 2 \times 194.4 - 120.84 = 267.96 \text{ kN}\!\cdot\!\text{m/m}$$
+
+    <h3>8. Check — Factor of Safety Against Sliding</h3>
+    <p>Assuming coefficient of friction $\mu = 0.5$ (concrete on soil):</p>
+    $$\text{FOS}_{\,\text{sliding}} = \frac{\mu \times V}{H} = \frac{0.5 \times 273.2}{97.2} = \frac{136.6}{97.2} = 1.405$$
+    <p>Required FOS $\geq 1.5$. <strong>FOS = 1.405 &lt; 1.5 — Marginally inadequate.</strong> A shear key is needed.</p>
+
+    <h3>9. Summary of Results</h3>
+    <table>
+      <tr><th>Parameter</th><th>Value</th></tr>
+      <tr><td>Total vertical load</td><td>$273.2$ kN/m</td></tr>
+      <tr><td>Total horizontal force (earth pressure)</td><td>$97.2$ kN/m</td></tr>
+      <tr><td>Stabilizing moment about toe</td><td>$120.84$ kN·m/m</td></tr>
+      <tr><td>Overturning moment about toe</td><td>$194.4$ kN·m/m</td></tr>
+      <tr><td>Net moment at base</td><td>$73.56$ kN·m/m (overturning)</td></tr>
+      <tr><td>Max base pressure (toe)</td><td>$378.3$ kN/m²</td></tr>
+      <tr><td>Min base pressure (heel)</td><td>$-14.03$ kN/m² (tension)</td></tr>
+      <tr><td>Shear at base</td><td>$97.2$ kN/m</td></tr>
+      <tr><td>FOS against overturning</td><td>$0.622$ (inadequate for stem alone)</td></tr>
+      <tr><td>FOS against sliding</td><td>$1.405$ (marginally inadequate)</td></tr>
+    </table>
+
+    <h3>10. Conclusion</h3>
+    <p>The analysis shows that the abutment stem alone (top width 0.6 m, bottom width 1.5 m, height 6 m) is insufficient to resist the overturning moment from active earth pressure. The FOS against overturning is 0.622, well below the required 2.0. The FOS against sliding is 1.405, marginally below the required 1.5. In practice, a wider foundation footing (with heel and toe projections) is designed to provide additional stabilizing moment from the weight of earth on the heel slab, and a shear key is added to increase sliding resistance.</p>
+
+  </div>
+</div>
+
+
+</div><!-- container end -->
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+<script>
+  function toggleCard(header) {
+    header.parentElement.classList.toggle('open');
+  }
+  function expandAll() {
+    document.querySelectorAll('.question-card').forEach(c => c.classList.add('open'));
+  }
+  function collapseAll() {
+    document.querySelectorAll('.question-card').forEach(c => c.classList.remove('open'));
+  }
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+  window.addEventListener('scroll', function() {
+    var btn = document.getElementById('backToTop');
+    if (window.scrollY > 400) btn.classList.add('show');
+    else btn.classList.remove('show');
+  });
+  document.querySelectorAll('.sidebar a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').substring(1);
+      var el = document.getElementById(id);
+      if (el) {
+        el.classList.add('open');
+        var y = el.getBoundingClientRect().top + window.pageYOffset - 54;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
