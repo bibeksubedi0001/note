@@ -273,12 +273,12 @@
     var path = window.location.pathname.replace(/\\/g, '/');
     var file = decodeURIComponent(path.split('/').pop() || '');
     var dir = '';
-    var m = path.match(/\/(gis|TES|gw\/Theory|gw\/Numerical|Structure|Water)\//i);
+    var m = path.match(/\/(gis\/theory|gis\/summary|gis\/numericals|gis|TES|gw\/Summary_Note|gw\/Theory|gw\/Numerical|Structure|Water)\//i);
     if (m) dir = m[1].replace(/\\/g, '/');
 
     var NAV = {
-      'gis': {
-        index: 'index.html',
+      'gis/theory': {
+        index: '../index.html',
         label: 'GIS & Remote Sensing',
         chapters: [
           { f: 'chapter1.html',  t: 'Ch 1: Introduction & Overview' },
@@ -292,8 +292,43 @@
           { f: 'chapter9.html',  t: 'Ch 9: River Network Generation' },
           { f: 'chapter10.html', t: 'Ch 10: GPS' },
           { f: 'chapter11.html', t: 'Ch 11: Remote Sensing' },
-          { f: 'chapter12.html', t: 'Ch 12: Making Maps' },
-          { f: 'exam-answers.html', t: 'Exam Answers' }
+          { f: 'chapter12.html', t: 'Ch 12: Making Maps' }
+        ]
+      },
+      'gis/summary': {
+        index: '../index.html',
+        label: 'GIS & Remote Sensing',
+        chapters: [
+          { f: 'chapter1.html',  t: 'Ch 1: Introduction & Overview' },
+          { f: 'chapter2.html',  t: 'Ch 2: GIS and Maps' },
+          { f: 'chapter3.html',  t: 'Ch 3: Spatial Data Models' },
+          { f: 'chapter4.html',  t: 'Ch 4: Data Sources' },
+          { f: 'chapter5.html',  t: 'Ch 5: Database Concepts' },
+          { f: 'chapter6.html',  t: 'Ch 6: Vector Analysis' },
+          { f: 'chapter7.html',  t: 'Ch 7: Spatial Analysis' },
+          { f: 'chapter8.html',  t: 'Ch 8: Surface Model' },
+          { f: 'chapter9.html',  t: 'Ch 9: River Network Generation' },
+          { f: 'chapter10.html', t: 'Ch 10: GPS' },
+          { f: 'chapter11.html', t: 'Ch 11: Remote Sensing' },
+          { f: 'chapter12.html', t: 'Ch 12: Making Maps' }
+        ]
+      },
+      'gis/numericals': {
+        index: '../index.html',
+        label: 'GIS & Remote Sensing',
+        chapters: [
+          { f: 'ch2.html', t: 'Ch 2: RMS Error & Distance' },
+          { f: 'ch3.html', t: 'Ch 3: RLE & Quadtree' },
+          { f: 'ch7.html', t: 'Ch 7: IDW & Suitability' },
+          { f: 'ch9.html', t: 'Ch 9: DEM Hydrology' }
+        ]
+      },
+      'gis': {
+        index: 'index.html',
+        label: 'GIS & Remote Sensing',
+        chapters: [
+          { f: 'exam-answers.html', t: 'Exam Answers' },
+          { f: 'exam-numericals.html', t: 'Exam Numericals' }
         ]
       },
       'TES': {
