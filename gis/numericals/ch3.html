@@ -81,6 +81,10 @@
         <li><a href="#q5">Q5. 8&times;8 Grid &mdash; RLE &amp; Quadtree (2075 Bhadra)</a></li>
         <li><a href="#q6">Q6. 8&times;8 Grid &mdash; RLE &amp; Quadtree (2073 Magh)</a></li>
         <li><a href="#q7">Q7. 8&times;8 Grid &mdash; Quadtree Compression (2073 Bhadra)</a></li>
+        <li><a href="#q8">Q8. 8&times;8 Grid &mdash; RLE, Quadtree, Block &amp; Chain (2080 Chaitra)</a></li>
+        <li><a href="#q9">Q9. 8&times;8 Land-Use Grid &mdash; Full Raster, RLE, Quadtree &amp; Value Point (2073 Magh)</a></li>
+        <li><a href="#q10">Q10. Vector Data Model &mdash; Label Components (2074 Bhadra)</a></li>
+        <li><a href="#q11">Q11. Vector Data Model &mdash; Label &amp; Vector Models (2071 Bhadra)</a></li>
       </ol>
     </nav>
 
@@ -432,6 +436,448 @@
   <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
 </div>
 <p><strong>Answer:</strong> Quadtree = 7 leaf nodes, 2 internal, 9 total nodes. Only 7 values stored vs 64 &mdash; <strong>89.06% decrease</strong>. This grid is well-structured with uniform 2&times;2 and 4&times;4 blocks, making quadtree very efficient.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q8: 8×8 Grid (2080 Chaitra) – RLE, Quadtree, Block, Chain    -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q8">Q8. 8&times;8 Grid &mdash; RLE, Quadtree, Block &amp; Chain <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2080 Chaitra Q7 [4+2+2+2 = 10 Marks]</div>
+<p><strong>Question:</strong> Explain run length encoding using the following raster data. Also produce each of the following encoding for this data: (a) Quad tree encoding (b) Block encoding (c) Chain encoding.</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+  <tr><th>R2</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+  <tr><th>R3</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+  <tr><th>R4</th><td>25</td><td>25</td><td>31</td><td>31</td><td>25</td><td>25</td><td>3</td><td>3</td></tr>
+  <tr><th>R5</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td></tr>
+  <tr><th>R6</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td></tr>
+  <tr><th>R7</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>35</td><td>27</td></tr>
+  <tr><th>R8</th><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td><td>27</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<h4>Solution (a) &mdash; Run-Length Encoding</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_Q8.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Run-Length Encoding (row by row)</span></div><div></div><div><span class="m-kw">Row 1:</span> (<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">31</span>,<span class="m-num">2</span>)(<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">3</span>,<span class="m-num">2</span>)     <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 2:</span> (<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">31</span>,<span class="m-num">2</span>)(<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">3</span>,<span class="m-num">2</span>)     <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 3:</span> (<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">31</span>,<span class="m-num">2</span>)(<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">3</span>,<span class="m-num">2</span>)     <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 4:</span> (<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">31</span>,<span class="m-num">2</span>)(<span class="m-num">25</span>,<span class="m-num">2</span>)(<span class="m-num">3</span>,<span class="m-num">2</span>)     <span class="m-cmt">// 4 pairs</span></div><div><span class="m-kw">Row 5:</span> (<span class="m-num">27</span>,<span class="m-num">8</span>)                          <span class="m-cmt">// 1 pair</span></div><div><span class="m-kw">Row 6:</span> (<span class="m-num">27</span>,<span class="m-num">8</span>)                          <span class="m-cmt">// 1 pair</span></div><div><span class="m-kw">Row 7:</span> (<span class="m-num">27</span>,<span class="m-num">6</span>)(<span class="m-num">35</span>,<span class="m-num">1</span>)(<span class="m-num">27</span>,<span class="m-num">1</span>)           <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 8:</span> (<span class="m-num">27</span>,<span class="m-num">8</span>)                          <span class="m-cmt">// 1 pair</span></div><div></div><div><span class="m-cmt">// Total = 4+4+4+4+1+1+3+1 = 22 pairs</span></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">22</span> pairs <span class="m-op">=</span> <span class="m-num">44</span> values</div><div></div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">44</span>) / <span class="m-num">64</span> &times; 100</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> <span class="m-res">31.25%</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (b) &mdash; Quadtree Encoding</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Quadtree_Q8.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Quadtree Decomposition (8&times;8)</span></div><div></div><div><span class="m-kw">Root (8&times;8):</span> Not uniform &rarr; split</div><div></div><div><span class="m-cmt">// ── NW Quadrant (R1-4, C1-4) ──</span></div><div><span class="m-kw">NW (4&times;4):</span> mixed &rarr; split</div><div>  <span class="m-kw">NW-NW</span> (R1-2, C1-2): all <span class="m-num">25</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NW-NE</span> (R1-2, C3-4): all <span class="m-num">31</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NW-SW</span> (R3-4, C1-2): all <span class="m-num">25</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NW-SE</span> (R3-4, C3-4): all <span class="m-num">31</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-cmt">// NW = 1 internal + 4 leaves</span></div><div></div><div><span class="m-cmt">// ── NE Quadrant (R1-4, C5-8) ──</span></div><div><span class="m-kw">NE (4&times;4):</span> mixed &rarr; split</div><div>  <span class="m-kw">NE-NW</span> (R1-2, C5-6): all <span class="m-num">25</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NE-NE</span> (R1-2, C7-8): all <span class="m-num">3</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NE-SW</span> (R3-4, C5-6): all <span class="m-num">25</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NE-SE</span> (R3-4, C7-8): all <span class="m-num">3</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-cmt">// NE = 1 internal + 4 leaves</span></div><div></div><div><span class="m-cmt">// ── SW Quadrant (R5-8, C1-4) ──</span></div><div><span class="m-kw">SW (4&times;4):</span> all <span class="m-num">27</span> &check; <span class="m-res">1 leaf</span></div><div></div><div><span class="m-cmt">// ── SE Quadrant (R5-8, C5-8) ──</span></div><div><span class="m-kw">SE (4&times;4):</span> mixed &rarr; split</div><div>  <span class="m-kw">SE-NW</span> (R5-6, C5-6): all <span class="m-num">27</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-NE</span> (R5-6, C7-8): all <span class="m-num">27</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-SW</span> (R7-8, C5-6): all <span class="m-num">27</span> &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-SE</span> (R7-8, C7-8): {<span class="m-num">35</span>,<span class="m-num">27</span>,<span class="m-num">27</span>,<span class="m-num">27</span>} &rarr; 4 leaves (1&times;1 each)</div><div>  <span class="m-cmt">// SE = 2 internals + 7 leaves</span></div><div></div><div><span class="m-var">Total leaf nodes</span> <span class="m-op">=</span> 4 + 4 + 1 + 7 <span class="m-op">=</span> <span class="m-res">16</span></div><div><span class="m-var">Internal nodes</span> <span class="m-op">=</span> 1(root) + 1(NW) + 1(NE) + 2(SE) <span class="m-op">=</span> <span class="m-num">5</span></div><div><span class="m-var">Total nodes</span> <span class="m-op">=</span> <span class="m-num">21</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (c) &mdash; Block Encoding</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Block_Q8.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Block Encoding: (value, r1, c1, r2, c2)</span></div><div></div><div><span class="m-kw">Block 1:</span> (<span class="m-num">25</span>, 1,1, 4,2)   <span class="m-cmt">// 4&times;2 = 8 cells</span></div><div><span class="m-kw">Block 2:</span> (<span class="m-num">31</span>, 1,3, 4,4)   <span class="m-cmt">// 4&times;2 = 8 cells</span></div><div><span class="m-kw">Block 3:</span> (<span class="m-num">25</span>, 1,5, 4,6)   <span class="m-cmt">// 4&times;2 = 8 cells</span></div><div><span class="m-kw">Block 4:</span> ( <span class="m-num">3</span>, 1,7, 4,8)   <span class="m-cmt">// 4&times;2 = 8 cells</span></div><div><span class="m-kw">Block 5:</span> (<span class="m-num">27</span>, 5,1, 8,6)   <span class="m-cmt">// 4&times;6 = 24 cells</span></div><div><span class="m-kw">Block 6:</span> (<span class="m-num">27</span>, 5,7, 6,8)   <span class="m-cmt">// 2&times;2 = 4 cells</span></div><div><span class="m-kw">Block 7:</span> (<span class="m-num">35</span>, 7,7, 7,7)   <span class="m-cmt">// 1&times;1 = 1 cell</span></div><div><span class="m-kw">Block 8:</span> (<span class="m-num">27</span>, 7,8, 7,8)   <span class="m-cmt">// 1&times;1 = 1 cell</span></div><div><span class="m-kw">Block 9:</span> (<span class="m-num">27</span>, 8,7, 8,8)   <span class="m-cmt">// 1&times;2 = 2 cells</span></div><div>                            <span class="m-cmt">// Check: 8+8+8+8+24+4+1+1+2 = 64 &check;</span></div><div></div><div><span class="m-var">Total</span> <span class="m-op">=</span> <span class="m-num">9</span> blocks &times; <span class="m-num">5</span> values/block <span class="m-op">=</span> <span class="m-num">45</span> values</div><div></div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">45</span>) / <span class="m-num">64</span> &times; 100</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> <span class="m-res">29.69%</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (d) &mdash; Chain Encoding</h4>
+<p>Chain encoding traces the boundary of each region using Freeman chain codes. Using 4-direction codes: <strong>0=East, 1=South, 2=West, 3=North</strong>. Format: <code>(start_row, start_col, value, chain)</code></p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Chain_Q8.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Chain Encoding (Freeman 4-direction)</span></div><div><span class="m-cmt">// 0=East  1=South  2=West  3=North</span></div><div></div><div><span class="m-kw">Region 25</span> (R1-4, C1-2): Start (1,1)</div><div>  Chain: <span class="m-str">0,0, 1,1,1,1, 2,2, 3,3,3,3</span>  <span class="m-cmt">// 12 codes</span></div><div></div><div><span class="m-kw">Region 31</span> (R1-4, C3-4): Start (1,3)</div><div>  Chain: <span class="m-str">0,0, 1,1,1,1, 2,2, 3,3,3,3</span>  <span class="m-cmt">// 12 codes</span></div><div></div><div><span class="m-kw">Region 25</span> (R1-4, C5-6): Start (1,5)</div><div>  Chain: <span class="m-str">0,0, 1,1,1,1, 2,2, 3,3,3,3</span>  <span class="m-cmt">// 12 codes</span></div><div></div><div><span class="m-kw">Region 3</span> (R1-4, C7-8): Start (1,7)</div><div>  Chain: <span class="m-str">0,0, 1,1,1,1, 2,2, 3,3,3,3</span>  <span class="m-cmt">// 12 codes</span></div><div></div><div><span class="m-kw">Region 27</span> (R5-8, C1-8, hole at R7C7): Start (5,1)</div><div>  Outer: <span class="m-str">0,0,0,0,0,0,0,0, 1,1,1,1, 2,2,2,2,2,2,2,2, 3,3,3,3</span> <span class="m-cmt">// 24</span></div><div>  Hole at (7,7): <span class="m-str">0, 1, 2, 3</span>  <span class="m-cmt">// 4 codes</span></div><div></div><div><span class="m-kw">Region 35</span> (R7, C7): Start (7,7)</div><div>  Chain: <span class="m-str">0, 1, 2, 3</span>  <span class="m-cmt">// 4 codes (single cell)</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> RLE = 44 values (<strong>31.25% decrease</strong>). Quadtree = 16 leaves + 5 internal = 21 nodes. Block = 45 values (<strong>29.69% decrease</strong>). The single cell of value 35 at (R7,C7) disrupts compression in the SE quadrant.</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q9: 8×8 Land-Use Grid (2073 Magh)                            -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q9">Q9. 8&times;8 Land-Use Grid &mdash; Full Raster, RLE, Quadtree &amp; Value Point <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2073 Magh Q3 [6 Marks]</div>
+<p><strong>Question:</strong> How is the following raster encoded using full raster encoding, run length encoding, quad tree encoding, and value point encoding? (F=Forest, W=Water, O=Open Space, S=Settlement)</p>
+
+<table class="grid-table">
+  <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th><th>C7</th><th>C8</th></tr>
+  <tr><th>R1</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>F</td><td>F</td></tr>
+  <tr><th>R2</th><td>F</td><td>F</td><td>F</td><td>F</td><td>W</td><td>W</td><td>F</td><td>F</td></tr>
+  <tr><th>R3</th><td>F</td><td>F</td><td>F</td><td>F</td><td>O</td><td>O</td><td>F</td><td>F</td></tr>
+  <tr><th>R4</th><td>F</td><td>F</td><td>F</td><td>F</td><td>O</td><td>O</td><td>F</td><td>F</td></tr>
+  <tr><th>R5</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+  <tr><th>R6</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>S</td><td>S</td></tr>
+  <tr><th>R7</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>W</td><td>W</td></tr>
+  <tr><th>R8</th><td>F</td><td>F</td><td>F</td><td>F</td><td>S</td><td>S</td><td>W</td><td>W</td></tr>
+</table>
+<p><strong>Full Raster</strong> = 8 &times; 8 = <strong>64 cells</strong></p>
+
+<h4>Solution (a) &mdash; Full Raster Encoding</h4>
+<p>Every cell value is stored individually, row by row:</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> FullRaster_Q9.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Full Raster &mdash; store every cell value</span></div><div></div><div><span class="m-kw">Row 1:</span> F F F F W W F F</div><div><span class="m-kw">Row 2:</span> F F F F W W F F</div><div><span class="m-kw">Row 3:</span> F F F F O O F F</div><div><span class="m-kw">Row 4:</span> F F F F O O F F</div><div><span class="m-kw">Row 5:</span> F F F F S S S S</div><div><span class="m-kw">Row 6:</span> F F F F S S S S</div><div><span class="m-kw">Row 7:</span> F F F F S S W W</div><div><span class="m-kw">Row 8:</span> F F F F S S W W</div><div></div><div><span class="m-var">Total</span> <span class="m-op">=</span> <span class="m-num">64</span> values <span class="m-cmt">// no compression</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (b) &mdash; Run-Length Encoding</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> RLE_Q9.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Run-Length Encoding (row by row)</span></div><div></div><div><span class="m-kw">Row 1:</span> (F,<span class="m-num">4</span>)(W,<span class="m-num">2</span>)(F,<span class="m-num">2</span>)          <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 2:</span> (F,<span class="m-num">4</span>)(W,<span class="m-num">2</span>)(F,<span class="m-num">2</span>)          <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 3:</span> (F,<span class="m-num">4</span>)(O,<span class="m-num">2</span>)(F,<span class="m-num">2</span>)          <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 4:</span> (F,<span class="m-num">4</span>)(O,<span class="m-num">2</span>)(F,<span class="m-num">2</span>)          <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 5:</span> (F,<span class="m-num">4</span>)(S,<span class="m-num">4</span>)               <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 6:</span> (F,<span class="m-num">4</span>)(S,<span class="m-num">4</span>)               <span class="m-cmt">// 2 pairs</span></div><div><span class="m-kw">Row 7:</span> (F,<span class="m-num">4</span>)(S,<span class="m-num">2</span>)(W,<span class="m-num">2</span>)          <span class="m-cmt">// 3 pairs</span></div><div><span class="m-kw">Row 8:</span> (F,<span class="m-num">4</span>)(S,<span class="m-num">2</span>)(W,<span class="m-num">2</span>)          <span class="m-cmt">// 3 pairs</span></div><div></div><div><span class="m-cmt">// Total = 3+3+3+3+2+2+3+3 = 22 pairs</span></div><div><span class="m-var">Total RLE</span> <span class="m-op">=</span> <span class="m-num">22</span> pairs <span class="m-op">=</span> <span class="m-num">44</span> values</div><div></div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> (<span class="m-num">64</span> &minus; <span class="m-num">44</span>) / <span class="m-num">64</span> &times; 100</div><div><span class="m-var">% Decrease</span> <span class="m-op">=</span> <span class="m-res">31.25%</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (c) &mdash; Quadtree Encoding</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Quadtree_Q9.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Quadtree Decomposition (8&times;8)</span></div><div></div><div><span class="m-kw">Root (8&times;8):</span> Not uniform &rarr; split</div><div></div><div><span class="m-kw">NW (R1-4, C1-4):</span> all F &check; <span class="m-res">1 leaf</span></div><div></div><div><span class="m-kw">NE (R1-4, C5-8):</span> mixed &rarr; split</div><div>  <span class="m-kw">NE-NW</span> (R1-2, C5-6): all W &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NE-NE</span> (R1-2, C7-8): all F &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NE-SW</span> (R3-4, C5-6): all O &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">NE-SE</span> (R3-4, C7-8): all F &check; <span class="m-res">Leaf</span></div><div>  <span class="m-cmt">// NE = 1 internal + 4 leaves</span></div><div></div><div><span class="m-kw">SW (R5-8, C1-4):</span> all F &check; <span class="m-res">1 leaf</span></div><div></div><div><span class="m-kw">SE (R5-8, C5-8):</span> mixed &rarr; split</div><div>  <span class="m-kw">SE-NW</span> (R5-6, C5-6): all S &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-NE</span> (R5-6, C7-8): all S &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-SW</span> (R7-8, C5-6): all S &check; <span class="m-res">Leaf</span></div><div>  <span class="m-kw">SE-SE</span> (R7-8, C7-8): all W &check; <span class="m-res">Leaf</span></div><div>  <span class="m-cmt">// SE = 1 internal + 4 leaves</span></div><div></div><div><span class="m-var">Total leaf nodes</span> <span class="m-op">=</span> 1 + 4 + 1 + 4 <span class="m-op">=</span> <span class="m-res">10</span></div><div><span class="m-var">Internal nodes</span> <span class="m-op">=</span> 1(root) + 1(NE) + 1(SE) <span class="m-op">=</span> <span class="m-num">3</span></div><div><span class="m-var">Total nodes</span> <span class="m-op">=</span> <span class="m-num">13</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Solution (d) &mdash; Value Point Encoding</h4>
+<p>Each unique value is listed with all cell positions where it occurs: <code>(value, row, col)</code></p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> ValuePoint_Q9.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Value Point Encoding</span></div><div><span class="m-cmt">// Lists each unique value with every (row,col) where it occurs</span></div><div></div><div><span class="m-kw">F (Forest):</span> <span class="m-num">40</span> occurrences</div><div>  R1-8 C1-4 (32 cells) + R1-2 C7-8 (4) + R3-4 C7-8 (4)</div><div>  = (1,1)(1,2)(1,3)(1,4)...(8,4), (1,7)(1,8)...(4,8)</div><div></div><div><span class="m-kw">W (Water):</span> <span class="m-num">8</span> occurrences</div><div>  R1-2 C5-6 (4 cells) + R7-8 C7-8 (4 cells)</div><div>  = (1,5)(1,6)(2,5)(2,6)(7,7)(7,8)(8,7)(8,8)</div><div></div><div><span class="m-kw">O (Open):</span> <span class="m-num">4</span> occurrences</div><div>  = (3,5)(3,6)(4,5)(4,6)</div><div></div><div><span class="m-kw">S (Settlement):</span> <span class="m-num">12</span> occurrences</div><div>  R5-6 C5-8 (8 cells) + R7-8 C5-6 (4 cells)</div><div>  = (5,5)(5,6)(5,7)(5,8)(6,5)(6,6)(6,7)(6,8)(7,5)(7,6)(8,5)(8,6)</div><div></div><div><span class="m-var">Check:</span> 40 + 8 + 4 + 12 <span class="m-op">=</span> <span class="m-num">64</span> &check;</div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+<p><strong>Answer:</strong> Full raster = 64 values. RLE = 44 values (<strong>31.25% decrease</strong>). Quadtree = 10 leaves + 3 internal = 13 nodes. Value point encoding groups 64 cells under 4 unique values (F:40, W:8, O:4, S:12).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q10: Vector Data Model – Label Components (2074 Bhadra)       -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q10">Q10. Vector Data Model &mdash; Label Components <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2074 Bhadra Q1c [2 Marks]</div>
+<p><strong>Question:</strong> Label vertex, node, arc, and polygon for the following figure.</p>
+
+<!-- ── Given (unlabeled) figure ── -->
+<h4>Given Figure</h4>
+<svg viewBox="0 0 500 380" width="460" style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;display:block;margin:12px auto">
+  <!-- outer boundary -->
+  <polygon points="110,45 260,20 390,60 430,185 370,310 200,340 75,290 45,165" fill="#f5f5f5" stroke="#333" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- internal edges from N2 down to centre, then radiating out -->
+  <line x1="260" y1="20" x2="260" y2="185" stroke="#333" stroke-width="2"/>
+  <line x1="260" y1="185" x2="430" y2="185" stroke="#333" stroke-width="2"/>
+  <line x1="260" y1="185" x2="200" y2="340" stroke="#333" stroke-width="2"/>
+  <line x1="260" y1="185" x2="45" y2="165" stroke="#333" stroke-width="2"/>
+</svg>
+
+<!-- ── Labeled figure ── -->
+<h4>Labeled Figure &mdash; Nodes, Vertices, Arcs &amp; Polygons</h4>
+<svg viewBox="0 0 540 410" width="500" style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;display:block;margin:12px auto">
+  <!-- colour-coded fills for polygons -->
+  <polygon points="120,55 270,30 270,195 55,175" fill="#f3e5f5" fill-opacity=".35" stroke="none"/>
+  <polygon points="270,30 400,70 440,195 270,195" fill="#e8f5e9" fill-opacity=".35" stroke="none"/>
+  <polygon points="270,195 440,195 380,320 210,350" fill="#fff3e0" fill-opacity=".35" stroke="none"/>
+  <polygon points="270,195 210,350 85,300 55,175" fill="#e3f2fd" fill-opacity=".35" stroke="none"/>
+  <polygon points="55,175 85,300 210,350 380,320 440,195 400,70 270,30 120,55" fill="none" stroke="none"/>
+
+  <!-- outer boundary -->
+  <polygon points="120,55 270,30 400,70 440,195 380,320 210,350 85,300 55,175" fill="none" stroke="#333" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- internal edges -->
+  <line x1="270" y1="30" x2="270" y2="195" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="270" y1="195" x2="440" y2="195" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="270" y1="195" x2="210" y2="350" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="270" y1="195" x2="55" y2="175" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+
+  <!-- ── NODES (red circles with white centre) ── -->
+  <circle cx="120" cy="55" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="94" y="46" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N1</text>
+
+  <circle cx="270" cy="30" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="280" y="24" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N2</text>
+
+  <circle cx="400" cy="70" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="412" y="64" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N3</text>
+
+  <circle cx="440" cy="195" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="452" y="192" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N4</text>
+
+  <circle cx="380" cy="320" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="392" y="316" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N5</text>
+
+  <circle cx="210" cy="350" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="218" y="370" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N6</text>
+
+  <circle cx="85" cy="300" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="56" y="312" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N7</text>
+
+  <circle cx="55" cy="175" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="22" y="168" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N8</text>
+
+  <circle cx="270" cy="195" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="280" y="218" font-size="13" fill="#c0392b" font-weight="bold" font-family="sans-serif">N9</text>
+
+  <!-- ── VERTICES (blue diamonds) ── -->
+  <rect x="190" y="38" width="10" height="10" transform="rotate(45,195,43)" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+  <text x="175" y="32" font-size="12" fill="#2471a3" font-weight="bold" font-family="sans-serif">v1</text>
+
+  <rect x="333" y="47" width="10" height="10" transform="rotate(45,338,52)" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+  <text x="346" y="44" font-size="12" fill="#2471a3" font-weight="bold" font-family="sans-serif">v2</text>
+
+  <rect x="138" y="232" width="10" height="10" transform="rotate(45,143,237)" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+  <text x="112" y="248" font-size="12" fill="#2471a3" font-weight="bold" font-family="sans-serif">v3</text>
+
+  <!-- ── ARC labels (green, placed on each edge) ── -->
+  <text x="182" y="24" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a1</text>
+  <text x="342" y="34" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a2</text>
+  <text x="434" y="134" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a3</text>
+  <text x="420" y="264" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a4</text>
+  <text x="298" y="350" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a5</text>
+  <text x="132" y="338" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a6</text>
+  <text x="48" y="244" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a7</text>
+  <text x="64" y="108" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a8</text>
+  <text x="254" y="114" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a9</text>
+  <text x="362" y="186" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a10</text>
+  <text x="222" y="282" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a11</text>
+  <text x="148" y="174" font-size="12" fill="#27ae60" font-weight="bold" font-family="sans-serif">a12</text>
+
+  <!-- ── POLYGON labels (purple, centred inside each region) ── -->
+  <text x="175" y="112" font-size="18" fill="#8e44ad" font-weight="bold" font-family="sans-serif">P1</text>
+  <text x="340" y="130" font-size="18" fill="#8e44ad" font-weight="bold" font-family="sans-serif">P2</text>
+  <text x="340" y="260" font-size="18" fill="#8e44ad" font-weight="bold" font-family="sans-serif">P3</text>
+  <text x="198" y="280" font-size="18" fill="#8e44ad" font-weight="bold" font-family="sans-serif">P4</text>
+  <text x="120" y="210" font-size="18" fill="#8e44ad" font-weight="bold" font-family="sans-serif">P5</text>
+
+  <!-- ── Legend box ── -->
+  <rect x="8" y="380" width="530" height="24" rx="4" fill="var(--soft)" stroke="var(--line)" stroke-width="1"/>
+  <circle cx="24" cy="392" r="5" fill="#e74c3c"/><text x="34" y="397" font-size="11" fill="#c0392b" font-weight="bold" font-family="sans-serif">Node (junction)</text>
+  <rect x="148" y="387" width="8" height="8" transform="rotate(45,152,391)" fill="#2980b9"/><text x="162" y="397" font-size="11" fill="#2471a3" font-weight="bold" font-family="sans-serif">Vertex (bend)</text>
+  <text x="275" y="397" font-size="11" fill="#27ae60" font-weight="bold" font-family="sans-serif">a = Arc (edge)</text>
+  <text x="400" y="397" font-size="11" fill="#8e44ad" font-weight="bold" font-family="sans-serif">P = Polygon (area)</text>
+</svg>
+
+<div class="formula-box">
+  <h4>Key Definitions</h4>
+  <p><strong>Node:</strong> A topological junction point where two or more arcs meet. Nodes are always at the <em>endpoints</em> of arcs. (Marked as <span style="color:#e74c3c;font-weight:bold">red circles</span>)</p>
+  <p><strong>Vertex:</strong> An intermediate point <em>along</em> an arc that defines its shape/curvature. A vertex is NOT a junction &mdash; only one arc passes through it. (Marked as <span style="color:#2980b9;font-weight:bold">blue diamonds</span>)</p>
+  <p><strong>Arc:</strong> A line segment connecting two nodes. May contain vertices along its length. (Labeled in <span style="color:#27ae60;font-weight:bold">green</span>)</p>
+  <p><strong>Polygon:</strong> A closed area bounded by one or more arcs forming a complete ring. (Labeled in <span style="color:#8e44ad;font-weight:bold">purple</span>)</p>
+</div>
+
+<h4>Solution &mdash; Identifying Each Component</h4>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> VectorLabel_Q10.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div><div>38</div><div>39</div><div>40</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ═══ NODES (9 total) ═══</span></div><div><span class="m-cmt">// Rule: a node is where 2+ arcs meet</span></div><div></div><div><span class="m-kw">N1</span>  &mdash; top-left corner      (arcs: a8, a1)</div><div><span class="m-kw">N2</span>  &mdash; top-centre           (arcs: a1, a2, <span class="m-str">a9</span>)  <span class="m-cmt">// 3 arcs!</span></div><div><span class="m-kw">N3</span>  &mdash; top-right corner     (arcs: a2, a3)</div><div><span class="m-kw">N4</span>  &mdash; right                (arcs: a3, <span class="m-str">a10</span>, a4)  <span class="m-cmt">// 3 arcs!</span></div><div><span class="m-kw">N5</span>  &mdash; bottom-right corner  (arcs: a4, a5)</div><div><span class="m-kw">N6</span>  &mdash; bottom-centre        (arcs: a5, a6, <span class="m-str">a11</span>)  <span class="m-cmt">// 3 arcs!</span></div><div><span class="m-kw">N7</span>  &mdash; bottom-left corner   (arcs: a6, a7)</div><div><span class="m-kw">N8</span>  &mdash; left                 (arcs: a7, a8, <span class="m-str">a12</span>)  <span class="m-cmt">// 3 arcs!</span></div><div><span class="m-kw">N9</span>  &mdash; <span class="m-res">CENTRE</span> junction     (arcs: <span class="m-str">a9, a10, a11, a12</span>)  <span class="m-cmt">// 4 arcs!</span></div><div></div><div><span class="m-cmt">// ═══ ARCS (12 total) ═══</span></div><div><span class="m-cmt">// 8 boundary arcs + 4 internal arcs</span></div><div></div><div><span class="m-kw">a1</span>  N1 &rarr; N2   (outer, top)         has vertex <span class="m-var">v1</span></div><div><span class="m-kw">a2</span>  N2 &rarr; N3   (outer, top-right)   has vertex <span class="m-var">v2</span></div><div><span class="m-kw">a3</span>  N3 &rarr; N4   (outer, right)</div><div><span class="m-kw">a4</span>  N4 &rarr; N5   (outer, bottom-right)</div><div><span class="m-kw">a5</span>  N5 &rarr; N6   (outer, bottom)</div><div><span class="m-kw">a6</span>  N6 &rarr; N7   (outer, bottom-left)  has vertex <span class="m-var">v3</span></div><div><span class="m-kw">a7</span>  N7 &rarr; N8   (outer, left)</div><div><span class="m-kw">a8</span>  N8 &rarr; N1   (outer, top-left)</div><div><span class="m-kw">a9</span>  N2 &rarr; N9   (<span class="m-str">internal</span>, vertical)</div><div><span class="m-kw">a10</span> N9 &rarr; N4   (<span class="m-str">internal</span>, horizontal)</div><div><span class="m-kw">a11</span> N9 &rarr; N6   (<span class="m-str">internal</span>, diagonal &searr;)</div><div><span class="m-kw">a12</span> N8 &rarr; N9   (<span class="m-str">internal</span>, diagonal &nearr;)</div><div></div><div><span class="m-cmt">// ═══ VERTICES (3 total) ═══</span></div><div><span class="m-cmt">// Points where boundary bends but NO intersection</span></div><div></div><div><span class="m-kw">v1</span>  on arc a1 (between N1 and N2)</div><div><span class="m-kw">v2</span>  on arc a2 (between N2 and N3)</div><div><span class="m-kw">v3</span>  on arc a6 (between N6 and N7)</div><div></div><div><span class="m-cmt">// ═══ POLYGONS (5 total) ═══</span></div><div></div><div><span class="m-kw">P1</span>  bounded by  a8, a1, a9, a12   (top-left region)</div><div><span class="m-kw">P2</span>  bounded by  a9, a2, a3, a10   (top-right region)</div><div><span class="m-kw">P3</span>  bounded by  a10, a4, a5, a11  (bottom-right region)</div><div><span class="m-kw">P4</span>  bounded by  a11, a6, a7, a12  (bottom-left region)</div><div><span class="m-kw">P5</span>  <span class="m-cmt">// = Universe polygon (outside the figure)</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Summary Table</h4>
+<table class="grid-table">
+  <tr><th>Component</th><th>Count</th><th>List</th></tr>
+  <tr><td><strong>Nodes</strong></td><td>9</td><td>N1, N2, N3, N4, N5, N6, N7, N8, N9</td></tr>
+  <tr><td><strong>Arcs</strong></td><td>12</td><td>a1&ndash;a8 (boundary) + a9, a10, a11, a12 (internal)</td></tr>
+  <tr><td><strong>Vertices</strong></td><td>3</td><td>v1 (on a1), v2 (on a2), v3 (on a6)</td></tr>
+  <tr><td><strong>Polygons</strong></td><td>5</td><td>P1 (top-left), P2 (top-right), P3 (bottom-right), P4 (bottom-left), P5 (outside/universe)</td></tr>
+</table>
+<p><strong>Answer:</strong> The figure has <strong>9 nodes</strong> (N1&ndash;N9 &mdash; all boundary corners plus central junction N9), <strong>12 arcs</strong> (8 boundary + 4 internal all radiating from N9), <strong>3 vertices</strong> (v1, v2, v3 &mdash; bends on the boundary that are not junctions), and <strong>5 polygons</strong> (4 internal regions + universe polygon).</p>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  Q11: Vector Data Model – Label & Models (2071 Bhadra)         -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<h2 id="q11">Q11. Vector Data Model &mdash; Label &amp; Write Vector Models <span class="badge badge-n">NEW</span></h2>
+<div class="exam-note"><strong>Exam:</strong> 2071 Bhadra Q3b [6 Marks]</div>
+<p><strong>Question:</strong> Label vertex, node, arc, and polygon for the given figure and write different vector models of the given figure.</p>
+
+<!-- ── Labeled figure (same shape, repeated for self-contained reference) ── -->
+<h4>Part (a) &mdash; Labeled Figure</h4>
+
+<svg viewBox="0 0 540 410" width="500" style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px;display:block;margin:12px auto">
+  <!-- polygon fills -->
+  <polygon points="120,55 270,30 270,195 55,175" fill="#f3e5f5" fill-opacity=".35" stroke="none"/>
+  <polygon points="270,30 400,70 440,195 270,195" fill="#e8f5e9" fill-opacity=".35" stroke="none"/>
+  <polygon points="270,195 440,195 380,320 210,350" fill="#fff3e0" fill-opacity=".35" stroke="none"/>
+  <polygon points="270,195 210,350 85,300 55,175" fill="#e3f2fd" fill-opacity=".35" stroke="none"/>
+
+  <!-- outer boundary -->
+  <polygon points="120,55 270,30 400,70 440,195 380,320 210,350 85,300 55,175" fill="none" stroke="#333" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- internal edges -->
+  <line x1="270" y1="30" x2="270" y2="195" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="270" y1="195" x2="440" y2="195" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="270" y1="195" x2="210" y2="350" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="270" y1="195" x2="55" y2="175" stroke="#555" stroke-width="2" stroke-dasharray="6,3"/>
+
+  <!-- NODES -->
+  <circle cx="120" cy="55" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="94" y="46" font-size="13" fill="#c0392b" font-weight="bold">N1</text>
+  <circle cx="270" cy="30" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="280" y="24" font-size="13" fill="#c0392b" font-weight="bold">N2</text>
+  <circle cx="400" cy="70" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="412" y="64" font-size="13" fill="#c0392b" font-weight="bold">N3</text>
+  <circle cx="440" cy="195" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="452" y="192" font-size="13" fill="#c0392b" font-weight="bold">N4</text>
+  <circle cx="380" cy="320" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="392" y="316" font-size="13" fill="#c0392b" font-weight="bold">N5</text>
+  <circle cx="210" cy="350" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="218" y="370" font-size="13" fill="#c0392b" font-weight="bold">N6</text>
+  <circle cx="85" cy="300" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="56" y="312" font-size="13" fill="#c0392b" font-weight="bold">N7</text>
+  <circle cx="55" cy="175" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="22" y="168" font-size="13" fill="#c0392b" font-weight="bold">N8</text>
+  <circle cx="270" cy="195" r="8" fill="#e74c3c" stroke="#fff" stroke-width="2"/>
+  <text x="280" y="218" font-size="13" fill="#c0392b" font-weight="bold">N9</text>
+
+  <!-- VERTICES -->
+  <rect x="190" y="38" width="10" height="10" transform="rotate(45,195,43)" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+  <text x="175" y="32" font-size="12" fill="#2471a3" font-weight="bold">v1</text>
+  <rect x="333" y="47" width="10" height="10" transform="rotate(45,338,52)" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+  <text x="346" y="44" font-size="12" fill="#2471a3" font-weight="bold">v2</text>
+  <rect x="138" y="232" width="10" height="10" transform="rotate(45,143,237)" fill="#2980b9" stroke="#fff" stroke-width="1.5"/>
+  <text x="112" y="248" font-size="12" fill="#2471a3" font-weight="bold">v3</text>
+
+  <!-- ARC labels -->
+  <text x="182" y="24" font-size="12" fill="#27ae60" font-weight="bold">a1</text>
+  <text x="342" y="34" font-size="12" fill="#27ae60" font-weight="bold">a2</text>
+  <text x="434" y="134" font-size="12" fill="#27ae60" font-weight="bold">a3</text>
+  <text x="420" y="264" font-size="12" fill="#27ae60" font-weight="bold">a4</text>
+  <text x="298" y="350" font-size="12" fill="#27ae60" font-weight="bold">a5</text>
+  <text x="132" y="338" font-size="12" fill="#27ae60" font-weight="bold">a6</text>
+  <text x="48" y="244" font-size="12" fill="#27ae60" font-weight="bold">a7</text>
+  <text x="64" y="108" font-size="12" fill="#27ae60" font-weight="bold">a8</text>
+  <text x="254" y="114" font-size="12" fill="#27ae60" font-weight="bold">a9</text>
+  <text x="362" y="186" font-size="12" fill="#27ae60" font-weight="bold">a10</text>
+  <text x="222" y="282" font-size="12" fill="#27ae60" font-weight="bold">a11</text>
+  <text x="148" y="174" font-size="12" fill="#27ae60" font-weight="bold">a12</text>
+
+  <!-- POLYGON labels -->
+  <text x="175" y="112" font-size="18" fill="#8e44ad" font-weight="bold">P1</text>
+  <text x="340" y="130" font-size="18" fill="#8e44ad" font-weight="bold">P2</text>
+  <text x="340" y="260" font-size="18" fill="#8e44ad" font-weight="bold">P3</text>
+  <text x="198" y="280" font-size="18" fill="#8e44ad" font-weight="bold">P4</text>
+  <text x="120" y="210" font-size="14" fill="#999" font-style="italic">P5 (outside)</text>
+
+  <!-- Legend -->
+  <rect x="8" y="380" width="530" height="24" rx="4" fill="var(--soft)" stroke="var(--line)" stroke-width="1"/>
+  <circle cx="24" cy="392" r="5" fill="#e74c3c"/><text x="34" y="397" font-size="11" fill="#c0392b" font-weight="bold">Node</text>
+  <rect x="88" y="387" width="8" height="8" transform="rotate(45,92,391)" fill="#2980b9"/><text x="102" y="397" font-size="11" fill="#2471a3" font-weight="bold">Vertex</text>
+  <text x="165" y="397" font-size="11" fill="#27ae60" font-weight="bold">a = Arc</text>
+  <text x="245" y="397" font-size="11" fill="#8e44ad" font-weight="bold">P = Polygon</text>
+  <line x1="330" y1="392" x2="350" y2="392" stroke="#555" stroke-width="2" stroke-dasharray="4,2"/><text x="356" y="397" font-size="11" fill="#555">= Internal edge</text>
+</svg>
+
+<p>From the figure: <strong>9 Nodes</strong> (N1&ndash;N9), <strong>12 Arcs</strong> (a1&ndash;a12), <strong>3 Vertices</strong> (v1&ndash;v3), <strong>5 Polygons</strong> (P1&ndash;P4 + P5 universe).</p>
+
+<h4>Part (b) &mdash; Three Vector Data Models</h4>
+
+<h5>Model 1: Spaghetti Model (No Topology)</h5>
+<p>Each polygon is stored as an <strong>independent, closed list of coordinates</strong>. Shared boundaries are duplicated. No relationship between polygons is recorded.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Spaghetti_Q11.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Spaghetti Model &mdash; each polygon = independent ring</span></div><div><span class="m-cmt">// Shared edges stored TWICE &rarr; redundant</span></div><div></div><div><span class="m-kw">P1:</span> N8 &rarr; N1 &rarr; <span class="m-var">v1</span> &rarr; N2 &rarr; N9 &rarr; N8</div><div>    <span class="m-cmt">// edge N8&ndash;N9 duplicated in P4, P5</span></div><div>    <span class="m-cmt">// edge N2&ndash;N9 duplicated in P2</span></div><div></div><div><span class="m-kw">P2:</span> N2 &rarr; <span class="m-var">v2</span> &rarr; N3 &rarr; N4 &rarr; N9 &rarr; N2</div><div>    <span class="m-cmt">// edge N9&ndash;N4 duplicated in P3</span></div><div></div><div><span class="m-kw">P3:</span> N9 &rarr; N4 &rarr; N5 &rarr; N6 &rarr; N9</div><div>    <span class="m-cmt">// edge N9&ndash;N6 duplicated in P4</span></div><div></div><div><span class="m-kw">P4:</span> N9 &rarr; N6 &rarr; <span class="m-var">v3</span> &rarr; N7 &rarr; N8 &rarr; N9</div><div></div><div><span class="m-cmt">// Problem: edge N2&ndash;N9 appears in P1 &amp; P2 (stored twice!)</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h5>Model 2: Topological Model (Node-Arc-Polygon)</h5>
+<p>Stores three related tables. <strong>No shared boundary is duplicated.</strong> Each arc records its left and right polygon.</p>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Topological_Q11.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div>31</div><div>32</div><div>33</div><div>34</div><div>35</div><div>36</div><div>37</div><div>38</div><div>39</div><div>40</div><div>41</div><div>42</div><div>43</div><div>44</div><div>45</div><div>46</div><div>47</div><div>48</div><div>49</div></div>
+    <div class="code-content"><div><span class="m-cmt">// ═══════ NODE TABLE ═══════</span></div><div><span class="m-kw">Node</span>  |  <span class="m-kw">Arcs at this node</span></div><div> N1   |  a8, a1</div><div> N2   |  a1, a2, a9</div><div> N3   |  a2, a3</div><div> N4   |  a3, a10, a4</div><div> N5   |  a4, a5</div><div> N6   |  a5, a11, a6</div><div> N7   |  a6, a7</div><div> N8   |  a7, a12, a8</div><div> N9   |  a9, a10, a11, a12   <span class="m-cmt">// central hub</span></div><div></div><div><span class="m-cmt">// ═══════ ARC TABLE ═══════</span></div><div><span class="m-kw">Arc</span>  | <span class="m-kw">Start</span> | <span class="m-kw">End</span> | <span class="m-kw">Left Poly</span> | <span class="m-kw">Right Poly</span> | <span class="m-kw">Vertices</span></div><div> a1   |  N1    | N2  |  P1        |  P5 (out)   |  v1</div><div> a2   |  N2    | N3  |  P2        |  P5 (out)   |  v2</div><div> a3   |  N3    | N4  |  P2        |  P5 (out)   |  &mdash;</div><div> a4   |  N4    | N5  |  P3        |  P5 (out)   |  &mdash;</div><div> a5   |  N5    | N6  |  P3        |  P5 (out)   |  &mdash;</div><div> a6   |  N6    | N7  |  P4        |  P5 (out)   |  v3</div><div> a7   |  N7    | N8  |  P4        |  P5 (out)   |  &mdash;</div><div> a8   |  N8    | N1  |  P1        |  P5 (out)   |  &mdash;</div><div> a9   |  N2    | N9  |  <span class="m-res">P1</span>        |  <span class="m-res">P2</span>         |  &mdash;</div><div> a10  |  N9    | N4  |  <span class="m-res">P2</span>        |  <span class="m-res">P3</span>         |  &mdash;</div><div> a11  |  N9    | N6  |  <span class="m-res">P3</span>        |  <span class="m-res">P4</span>         |  &mdash;</div><div> a12  |  N8    | N9  |  <span class="m-res">P4</span>        |  <span class="m-res">P1</span>         |  &mdash;</div><div></div><div><span class="m-cmt">// Note: internal arcs (a9&ndash;a12) have TWO internal</span></div><div><span class="m-cmt">// polygons (left &amp; right). Boundary arcs have P5 on one side.</span></div><div></div><div><span class="m-cmt">// ═══════ POLYGON TABLE ═══════</span></div><div><span class="m-kw">Poly</span> | <span class="m-kw">Bounding Arcs</span></div><div> P1   |  a8, a1, a9, a12     <span class="m-cmt">// top-left region</span></div><div> P2   |  a9, a2, a3, a10     <span class="m-cmt">// top-right region</span></div><div> P3   |  a10, a4, a5, a11    <span class="m-cmt">// bottom-right region</span></div><div> P4   |  a11, a6, a7, a12    <span class="m-cmt">// bottom-left region</span></div><div> P5   |  a1&ndash;a8 (all boundary) <span class="m-cmt">// universe / outside</span></div><div></div><div><span class="m-cmt">// ═══════ VERTEX TABLE ═══════</span></div><div><span class="m-kw">Vertex</span> | <span class="m-kw">On Arc</span> | <span class="m-kw">Position</span></div><div> v1     |  a1     |  between N1 and N2  <span class="m-cmt">// top-left bend</span></div><div> v2     |  a2     |  between N2 and N3  <span class="m-cmt">// top-right bend</span></div><div> v3     |  a6     |  between N6 and N7  <span class="m-cmt">// bottom-left bend</span></div><div></div><div><span class="m-cmt">// Advantage: shared edges stored ONCE</span></div><div><span class="m-cmt">// e.g. arc a9 (N2&ndash;N9) separates P1 and P2</span></div><div><span class="m-cmt">//      &rarr; no duplication unlike spaghetti model</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h5>Model 3: Network Model</h5>
+
+<div class="code-editor">
+  <div class="editor-titlebar">
+    <div class="editor-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    <div class="editor-tab"><span class="tab-icon">&#9881;</span> Network_Q11.calc</div>
+  </div>
+  <div class="editor-body">
+    <div class="line-numbers"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div><div>15</div><div>16</div></div>
+    <div class="code-content"><div><span class="m-cmt">// Network Model &mdash; connectivity &amp; flow</span></div><div><span class="m-cmt">// Used for: roads, pipelines, utility networks</span></div><div></div><div><span class="m-kw">Nodes</span> = junctions (N1&ndash;N9)</div><div><span class="m-kw">Links</span> = arcs with cost/impedance attributes</div><div></div><div><span class="m-kw">Link</span>  | <span class="m-kw">From</span> | <span class="m-kw">To</span> | <span class="m-kw">Cost</span></div><div> a1    |  N1   | N2 |  d(N1,N2)</div><div> a2    |  N2   | N3 |  d(N2,N3)</div><div> ...   |  ...  | .. |  ...</div><div> a9    |  N2   | N9 |  d(N2,N9)</div><div> a10   |  N9   | N4 |  d(N9,N4)</div><div></div><div><span class="m-cmt">// Focuses on shortest paths / connectivity</span></div><div><span class="m-cmt">// Does NOT store polygon areas</span></div><div><span class="m-cmt">// Best for route analysis, not area analysis</span></div></div>
+  </div>
+  <div class="editor-statusbar"><span>GIS Calculation</span><span>UTF-8</span></div>
+</div>
+
+<h4>Comparison of Three Models</h4>
+<table class="grid-table">
+  <tr><th>Feature</th><th>Spaghetti</th><th>Topological</th><th>Network</th></tr>
+  <tr><td>Topology stored?</td><td>No</td><td><strong>Yes</strong></td><td>Partial</td></tr>
+  <tr><td>Shared edges duplicated?</td><td><strong>Yes</strong></td><td>No</td><td>No</td></tr>
+  <tr><td>Polygon info?</td><td>Yes (redundant)</td><td><strong>Yes (efficient)</strong></td><td>No</td></tr>
+  <tr><td>Neighbour queries?</td><td>Slow</td><td><strong>Fast</strong></td><td>N/A</td></tr>
+  <tr><td>Routing / flow?</td><td>No</td><td>No</td><td><strong>Yes</strong></td></tr>
+  <tr><td>Storage</td><td>Large</td><td>Medium</td><td>Small</td></tr>
+  <tr><td>Best for</td><td>Simple display</td><td>Spatial analysis</td><td>Transportation</td></tr>
+</table>
+
+<p><strong>Answer:</strong> (1) <strong>Spaghetti model</strong> stores each polygon as independent coordinate rings &mdash; simple but redundant (shared edges duplicated). (2) <strong>Topological (Node-Arc-Polygon) model</strong> eliminates redundancy with Node, Arc, and Polygon tables; each arc records left/right polygon, enabling neighbour queries. (3) <strong>Network model</strong> focuses on node connectivity and arc costs for routing &mdash; does not store area polygons.</p>
 
   </main>
 </div>
