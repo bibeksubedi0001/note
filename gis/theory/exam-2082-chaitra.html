@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2082 Chaitra – GIS Application &amp; Remote Sensing – Solved</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .grid-table{border-collapse:collapse;margin:1em auto}
+    .grid-table td,.grid-table th{border:1px solid var(--line);padding:6px 10px;text-align:center;min-width:36px;font-family:'Courier New',monospace;font-size:.92em}
+    .grid-table th{background:var(--accent-light);font-weight:600}
+    .sink-cell{background:#ffe0e0 !important;font-weight:bold}
+    .stream-cell{background:#d0e8ff !important;font-weight:bold}
+    .filled-cell{background:#e0ffe0 !important;font-weight:bold}
+    .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.78em;font-weight:700;margin-left:6px}
+    .badge-v{background:#d4edda;color:#155724}
+    [data-theme="dark"] .sink-cell{background:#5c2020 !important}
+    [data-theme="dark"] .stream-cell{background:#1a3a5c !important}
+    [data-theme="dark"] .filled-cell{background:#1f4a1f !important}
+    .crit-table th{background:var(--accent-light)}
+    .crit-table td:first-child{font-weight:600}
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Tribhuvan University &bull; IOE &bull; 2082 Chaitra &bull; BE / BCE / IV-II &bull; Full Marks 80 &bull; 3 hrs</div>
+    <h1>GIS Application and Remote Sensing (CE 78501) — Solved Question Paper</h1>
+  </header>
+  <main>
+
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#q1">Q1. Evolution of GIS &amp; Map Accuracy [4+5]</a></li>
+        <li><a href="#q2">Q2. Infrastructure Map for Kailali District [4+3]</a></li>
+        <li><a href="#q3">Q3. Raster vs Vector &amp; Compression [3+4]</a></li>
+        <li><a href="#q4">Q4. GPS Positioning &amp; DGPS [4+4]</a></li>
+        <li><a href="#q5">Q5. RDBMS &amp; Database Normalization [4+3]</a></li>
+        <li><a href="#q6">Q6. Vector Overlay &amp; Buffer Analysis [5+5]</a></li>
+        <li><a href="#q7">Q7. Multi-Criteria Landfill Site Selection [10]</a></li>
+        <li><a href="#q8">Q8. DEM Hydrology – Sinks, Flow, Watershed [2+3+3]</a></li>
+        <li><a href="#q9">Q9. Spectral Signatures &amp; Sensor Resolutions [4+4]</a></li>
+        <li><a href="#q10">Q10. Choropleth Map &amp; Misleading Design [4]</a></li>
+      </ol>
+    </nav>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q1">Question 1: Evolution of GIS &amp; Map Accuracy <span class="exam-ref">[4 + 5 Marks]</span></h2>
+
+    <h3>(a) Evolution of GIS &mdash; difference from CAD, Cartography &amp; DBMS [4]</h3>
+
+    <p><strong>Evolution of GIS</strong> &mdash; A brief historical timeline:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Era</th><th>Milestone</th></tr></thead>
+        <tbody>
+          <tr><td>1854</td><td>John Snow's cholera map of London — first true spatial analysis using a map.</td></tr>
+          <tr><td>1960s</td><td>Roger Tomlinson develops <strong>CGIS</strong> (Canada Geographic Information System) — recognised as the first true GIS.</td></tr>
+          <tr><td>1969</td><td>Jack Dangermond founds <strong>ESRI</strong>; Harvard Lab releases SYMAP.</td></tr>
+          <tr><td>1982</td><td>Release of <strong>ARC/INFO</strong> — first commercial vector GIS for minicomputers.</td></tr>
+          <tr><td>1990s</td><td>Desktop GIS (ArcView, MapInfo); rise of relational geodatabases.</td></tr>
+          <tr><td>2005&ndash;present</td><td>Google Earth, web-GIS, open source (QGIS), cloud GIS, mobile GIS, integration with remote sensing &amp; AI.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>How GIS differs from CAD, Cartography and DBMS:</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Aspect</th><th>Cartography</th><th>CAD</th><th>DBMS</th><th>GIS</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Primary purpose</td><td>Map design &amp; visualisation</td><td>Engineering drawing</td><td>Storage of tabular data</td><td>Spatial analysis + visualisation + database</td></tr>
+          <tr><td>Geo-referenced?</td><td>Yes (paper)</td><td>Local coordinates only</td><td>No</td><td>Yes (Earth coordinates)</td></tr>
+          <tr><td>Attribute data</td><td>Limited (labels)</td><td>Limited (annotations)</td><td>Rich tabular</td><td>Rich tabular linked to geometry</td></tr>
+          <tr><td>Spatial queries / analysis</td><td>Visual only</td><td>Geometric only</td><td>Attribute only</td><td>Spatial + attribute (overlay, buffer, network…)</td></tr>
+          <tr><td>Topology</td><td>None</td><td>None</td><td>None</td><td>Built-in (adjacency, connectivity, containment)</td></tr>
+          <tr><td>Output</td><td>Static maps</td><td>Drawings (DWG)</td><td>Reports</td><td>Maps, models, reports, web apps</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><strong>One-liner:</strong> GIS = Cartography (display) + CAD (geometry) + DBMS (data engine) + <em>Spatial Analysis</em>.</div>
+
+    <h3>(b) Positional accuracy of a map digitised from a 1:25,000 source [5]</h3>
+
+    <p><strong>Given:</strong> Smallest mark drawable on map = 0.5&nbsp;mm; source scale = 1:25,000.</p>
+    <p><strong>Concept:</strong> The minimum detectable distance on the paper map (0.5&nbsp;mm) translates to a real-world distance equal to <code>0.5&nbsp;mm &times; scale&nbsp;denominator</code>. This is the best positional accuracy that can ever be achieved from that source.</p>
+
+    <div class="formula-box">
+      <p><strong>RMS planimetric error</strong> = 0.5&nbsp;mm &times; 25,000 = 12,500&nbsp;mm = <strong>12.5&nbsp;m</strong></p>
+    </div>
+
+    <p><strong>Interpretation:</strong> Any feature digitised from a 1:25,000 source map cannot be located on the ground better than <strong>&plusmn;12.5&nbsp;m</strong>. Even with a perfect digitiser and operator, the inherent map accuracy limits the result. Therefore the digitised dataset is unsuitable for engineering work requiring sub-metre precision (e.g. cadastral survey, road centre-line setting-out) but acceptable for regional planning, watershed studies and small-scale infrastructure mapping.</p>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q2">Question 2: Infrastructure Development Map &mdash; Kailali District <span class="exam-ref">[4 + 3 Marks]</span></h2>
+
+    <h3>(a) Choice of map projection and coordinate system [4]</h3>
+
+    <p>Kailali lies in the far-western Tarai of Nepal, between approximately <strong>28&deg;15&prime;–29&deg;15&prime;N</strong> and <strong>80&deg;30&prime;–81&deg;30&prime;E</strong>, falling within <strong>UTM Zone 44N</strong>.</p>
+
+    <p><strong>Recommended projection:</strong> <em>Modified Universal Transverse Mercator (MUTM) Zone 81</em> (the official projection of the Survey Department of Nepal) <em>or</em> standard <em>UTM Zone 44N</em> on the WGS-84 datum.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parameter</th><th>Choice</th><th>Justification</th></tr></thead>
+        <tbody>
+          <tr><td>Projection</td><td>Transverse Mercator (UTM / MUTM)</td><td>Conformal — preserves <strong>shapes &amp; angles</strong>, essential for engineering layouts (roads, pipes, plots).</td></tr>
+          <tr><td>Central meridian</td><td>81&deg;E (MUTM-81) or 87&deg;E for UTM-44N</td><td>Kailali is closest to 81&deg;E; minimises scale distortion.</td></tr>
+          <tr><td>Datum</td><td>Everest 1830 (national) <em>or</em> WGS-84 (GPS)</td><td>Everest matches existing topo-sheets; WGS-84 matches GNSS data — choose based on dataset compatibility.</td></tr>
+          <tr><td>Coordinate system</td><td>Projected metric (Easting, Northing in metres)</td><td>Distances and areas can be measured directly — required for design quantities.</td></tr>
+          <tr><td>Linear unit</td><td>Metres</td><td>SI standard, used by Survey Department.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Why <em>not</em> Geographic (lat/long)?</strong> Latitude/longitude is angular &mdash; one cannot directly compute area or length in metres. For construction quantities, alignment, and overlay analysis, a projected metric system is mandatory.</p>
+
+    <h3>(b) Effect of scale &amp; projection errors on area and distance [3]</h3>
+
+    <ul>
+      <li><strong>Scale distortion:</strong> Every projection has a <em>line of true scale</em>; away from it the scale factor (k) deviates from 1. In UTM, k = 0.9996 along the central meridian and grows to ~1.001 at the zone boundary. Distances measured on the map differ from ground distance by this factor; areas differ by k². In a district as wide as Kailali this can introduce errors of <strong>0.04–0.1 %</strong> in distance and up to <strong>0.2 %</strong> in area.</li>
+      <li><strong>Projection error:</strong> Transverse Mercator is conformal but <em>not</em> equal-area. If land-acquisition area is calculated directly from UTM coordinates without applying the area scale-factor, the computed area can be slightly larger or smaller than the true ground area, potentially causing financial/legal disputes.</li>
+      <li><strong>Mitigation:</strong> apply the <em>scale-factor correction</em> for distance (true&nbsp;distance = grid&nbsp;distance / k); for areas use either an equal-area auxiliary projection (e.g. Albers) or apply the local area scale-factor (k²).</li>
+    </ul>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q3">Question 3: Raster vs Vector &amp; Raster Compression <span class="exam-ref">[3 + 4 Marks]</span></h2>
+
+    <h3>(a) Raster vs Vector for satellite imagery and cadastral maps [3]</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Dataset</th><th>Recommended model</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Satellite imagery</strong></td>
+            <td><strong>Raster</strong></td>
+            <td>Imagery is naturally a regular grid of pixels recording reflectance values per band. The raster model preserves continuous spectral information, supports band-math, classification, NDVI, filtering and texture analysis. Vectorising every pixel would explode storage and discard the radiometric content.</td>
+          </tr>
+          <tr>
+            <td><strong>Cadastral maps</strong></td>
+            <td><strong>Vector</strong></td>
+            <td>Cadastral parcels are discrete polygons with sharp boundaries, owner attributes, and exact geometry. Vector preserves topology (shared edges between adjoining plots), supports precise area/perimeter computation, enables attribute joins (owner, tax, land-use) and clean plotting at any scale &mdash; all critical for legal land records.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>For land-use mapping the two are <strong>combined</strong>: the satellite raster is classified to produce a thematic raster, then converted to vector polygons that can be overlaid on cadastral parcels.</p>
+
+    <h3>(b) Run-length and Quadtree compression for raster data [4]</h3>
+
+    <p><strong>1. Run-Length Encoding (RLE)</strong></p>
+    <p>RLE compresses a raster by scanning row-by-row and storing each consecutive sequence of identical cell values as a pair: <code>(value, run-length)</code>.</p>
+    <p><em>Example &mdash; one row of a land-use raster (F = Forest, A = Agriculture, U = Urban):</em></p>
+    <pre style="background:var(--soft);padding:10px;border-radius:6px;overflow-x:auto">
+Original (16 cells): F F F F F A A A A A A U U U U U
+RLE encoded:         (F,5) (A,6) (U,5)        →  6 numbers instead of 16</pre>
+    <p><strong>Best when:</strong> raster has large homogeneous patches (land-use, soil maps). <strong>Poor when:</strong> raster is highly heterogeneous (a satellite image at full resolution) — RLE may even <em>increase</em> the file size.</p>
+
+    <p><strong>2. Quadtree</strong></p>
+    <p>The raster is recursively subdivided into four equal quadrants. Any quadrant that is uniform (all cells the same value) is stored as a single leaf node; non-uniform quadrants are subdivided further until uniformity is reached or the single-cell limit is hit.</p>
+
+    <figure class="figure" style="text-align:center">
+      <svg viewBox="0 0 540 220" width="500" height="200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Original 4x4 raster -->
+        <g font-family="sans-serif" font-size="11">
+          <text x="60" y="14" text-anchor="middle" font-weight="bold">4&times;4 raster</text>
+          <!-- Row 1 -->
+          <rect x="10" y="22" width="25" height="25" fill="#4a90e2"/>
+          <rect x="35" y="22" width="25" height="25" fill="#4a90e2"/>
+          <rect x="60" y="22" width="25" height="25" fill="#7cb342"/>
+          <rect x="85" y="22" width="25" height="25" fill="#7cb342"/>
+          <rect x="10" y="47" width="25" height="25" fill="#4a90e2"/>
+          <rect x="35" y="47" width="25" height="25" fill="#4a90e2"/>
+          <rect x="60" y="47" width="25" height="25" fill="#7cb342"/>
+          <rect x="85" y="47" width="25" height="25" fill="#7cb342"/>
+          <rect x="10" y="72" width="25" height="25" fill="#e0a020"/>
+          <rect x="35" y="72" width="25" height="25" fill="#e0a020"/>
+          <rect x="60" y="72" width="25" height="25" fill="#7cb342"/>
+          <rect x="85" y="72" width="25" height="25" fill="#d04020"/>
+          <rect x="10" y="97" width="25" height="25" fill="#e0a020"/>
+          <rect x="35" y="97" width="25" height="25" fill="#e0a020"/>
+          <rect x="60" y="97" width="25" height="25" fill="#7cb342"/>
+          <rect x="85" y="97" width="25" height="25" fill="#d04020"/>
+          <g stroke="#222" stroke-width="0.5" fill="none">
+            <rect x="10" y="22" width="100" height="100"/>
+          </g>
+          <line x1="60" y1="22" x2="60" y2="122" stroke="#000" stroke-width="2"/>
+          <line x1="10" y1="72" x2="110" y2="72" stroke="#000" stroke-width="2"/>
+        </g>
+        <!-- Quadtree -->
+        <g font-family="sans-serif" font-size="10" transform="translate(180,0)">
+          <text x="160" y="14" text-anchor="middle" font-weight="bold">Quadtree decomposition</text>
+          <circle cx="160" cy="40" r="14" fill="#fff" stroke="#333"/>
+          <text x="160" y="44" text-anchor="middle">Root</text>
+          <line x1="150" y1="52" x2="60" y2="80" stroke="#333"/>
+          <line x1="155" y1="54" x2="120" y2="80" stroke="#333"/>
+          <line x1="165" y1="54" x2="200" y2="80" stroke="#333"/>
+          <line x1="170" y1="52" x2="260" y2="80" stroke="#333"/>
+          <rect x="40" y="80" width="40" height="22" fill="#4a90e2"/>
+          <text x="60" y="95" text-anchor="middle" fill="#fff">NW Blue</text>
+          <rect x="100" y="80" width="40" height="22" fill="#7cb342"/>
+          <text x="120" y="95" text-anchor="middle" fill="#fff">NE Green</text>
+          <rect x="180" y="80" width="40" height="22" fill="#e0a020"/>
+          <text x="200" y="95" text-anchor="middle" fill="#fff">SW Yellow</text>
+          <circle cx="260" cy="91" r="14" fill="#fff" stroke="#333"/>
+          <text x="260" y="95" text-anchor="middle">SE</text>
+          <line x1="250" y1="103" x2="220" y2="130" stroke="#333"/>
+          <line x1="255" y1="105" x2="248" y2="130" stroke="#333"/>
+          <line x1="265" y1="105" x2="272" y2="130" stroke="#333"/>
+          <line x1="270" y1="103" x2="298" y2="130" stroke="#333"/>
+          <rect x="208" y="130" width="22" height="20" fill="#7cb342"/>
+          <rect x="238" y="130" width="22" height="20" fill="#d04020"/>
+          <rect x="262" y="130" width="22" height="20" fill="#7cb342"/>
+          <rect x="288" y="130" width="22" height="20" fill="#d04020"/>
+          <text x="260" y="172" text-anchor="middle" font-style="italic">SE quadrant heterogeneous &rarr; subdivided</text>
+        </g>
+      </svg>
+      <figcaption>Fig 3.1 &mdash; Quadtree compresses uniform regions into single leaf nodes.</figcaption>
+    </figure>
+    <p><strong>Best when:</strong> the raster contains both large uniform regions and small detailed regions (land-cover, soil). <strong>Trade-off:</strong> traversal is more complex than RLE but compression is far better for two-dimensional clusters.</p>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q4">Question 4: GPS Positioning &amp; DGPS <span class="exam-ref">[4 + 4 Marks]</span></h2>
+
+    <h3>(a) How GPS determines location using satellite signals [4]</h3>
+
+    <p>GPS positioning is based on the principle of <strong>trilateration</strong> using precise time measurements of radio signals transmitted by satellites.</p>
+
+    <ol>
+      <li><strong>Signal transmission:</strong> Each GPS satellite broadcasts a unique pseudo-random code together with its own ephemeris (precise orbit) and the exact time of transmission, generated by an on-board atomic clock.</li>
+      <li><strong>Travel-time measurement:</strong> The receiver matches the incoming code with an internally generated replica and measures the time-shift &Delta;t between transmission and reception.</li>
+      <li><strong>Pseudo-range:</strong> The distance from satellite <em>i</em> to the receiver is <code>R<sub>i</sub> = c &times; &Delta;t<sub>i</sub></code>, where c &asymp; 3&times;10<sup>8</sup>&nbsp;m/s. It is called a <em>pseudo</em>-range because the receiver clock is biased by an unknown offset <em>dt</em>.</li>
+      <li><strong>Trilateration:</strong> Each pseudo-range defines a sphere of radius R<sub>i</sub> centred on the satellite. With <strong>three</strong> spheres the receiver lies on a unique point in space; a <strong>fourth</strong> satellite is needed to solve for the clock bias <em>dt</em>. The four equations are:
+        <pre style="background:var(--soft);padding:8px;border-radius:6px">(X<sub>i</sub>&minus;x)² + (Y<sub>i</sub>&minus;y)² + (Z<sub>i</sub>&minus;z)² = (R<sub>i</sub> &minus; c&middot;dt)²    i = 1…4</pre>
+      Solved simultaneously for the unknowns <em>x, y, z, dt</em>.</li>
+      <li><strong>Output:</strong> Geocentric (ECEF) coordinates are converted to lat/long/height on a chosen datum (typically WGS-84).</li>
+    </ol>
+
+    <figure class="figure" style="text-align:center">
+      <svg viewBox="0 0 460 220" width="420" height="200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="80"  cy="40"  r="10" fill="#5ea3e0"/>
+        <circle cx="230" cy="20"  r="10" fill="#5ea3e0"/>
+        <circle cx="380" cy="50"  r="10" fill="#5ea3e0"/>
+        <circle cx="300" cy="120" r="10" fill="#5ea3e0"/>
+        <text x="80" y="30" text-anchor="middle" font-size="10">Sat 1</text>
+        <text x="230" y="14" text-anchor="middle" font-size="10">Sat 2</text>
+        <text x="380" y="40" text-anchor="middle" font-size="10">Sat 3</text>
+        <text x="300" y="142" text-anchor="middle" font-size="10">Sat 4</text>
+        <line x1="80" y1="50"  x2="220" y2="180" stroke="#888" stroke-dasharray="4,3"/>
+        <line x1="230" y1="30" x2="220" y2="180" stroke="#888" stroke-dasharray="4,3"/>
+        <line x1="380" y1="60" x2="220" y2="180" stroke="#888" stroke-dasharray="4,3"/>
+        <line x1="300" y1="130" x2="220" y2="180" stroke="#888" stroke-dasharray="4,3"/>
+        <rect x="200" y="180" width="40" height="20" fill="#1a3c5e"/>
+        <text x="220" y="195" text-anchor="middle" font-size="11" fill="#fff">GPS Rx</text>
+      </svg>
+      <figcaption>Fig 4.1 &mdash; Trilateration from four satellites yields position (x,y,z) and resolves clock bias.</figcaption>
+    </figure>
+
+    <h3>(b) Major sources of GPS error and how DGPS improves accuracy [4]</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Error source</th><th>Magnitude</th><th>Cause</th></tr></thead>
+        <tbody>
+          <tr><td>Ionospheric delay</td><td>1–10 m</td><td>Free electrons in ionosphere slow the signal.</td></tr>
+          <tr><td>Tropospheric delay</td><td>0.5–2 m</td><td>Water vapour and pressure in lower atmosphere.</td></tr>
+          <tr><td>Satellite clock &amp; orbit (ephemeris)</td><td>1–3 m</td><td>Imperfect clock model and predicted orbit.</td></tr>
+          <tr><td>Multipath</td><td>0.5–5 m</td><td>Signal reflects off buildings, water surfaces.</td></tr>
+          <tr><td>Receiver noise</td><td>0.3–1 m</td><td>Hardware thermal noise, code-tracking jitter.</td></tr>
+          <tr><td>Geometry (PDOP)</td><td>multiplier</td><td>Poor satellite distribution magnifies all above.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Differential GPS (DGPS)</strong> improves accuracy from typical 5–15 m down to <strong>0.5–3 m</strong> (or sub-cm with carrier-phase RTK) using these steps:</p>
+    <ol>
+      <li>A <strong>Reference (Base) station</strong> is set up at a precisely-known surveyed point.</li>
+      <li>The base receives the same satellite signals and computes its <em>own</em> position. The difference between observed and known position is the <strong>error correction</strong> — atmospheric, satellite-clock and ephemeris errors are common to nearby receivers.</li>
+      <li>Corrections are broadcast in real time (radio, GSM, NTRIP) to the <strong>Rover</strong> receiver.</li>
+      <li>The rover applies the corrections to its own pseudo-ranges, eliminating the spatially-correlated errors.</li>
+    </ol>
+    <p><strong>Why DGPS works:</strong> If the base and rover are within ~30 km, both observe nearly identical atmospheric and satellite errors; subtraction cancels them out. Multipath and receiver noise are <em>not</em> corrected (site-specific) but their effect is small.</p>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q5">Question 5: RDBMS for GIS <span class="exam-ref">[4 + 3 Marks]</span></h2>
+
+    <h3>(a) Concept of RDBMS &amp; suitability for spatial / non-spatial data [4]</h3>
+
+    <p>A <strong>Relational Database Management System (RDBMS)</strong> stores data in two-dimensional tables (<em>relations</em>) consisting of rows (tuples) and columns (attributes). Tables are linked through <strong>primary keys</strong> and <strong>foreign keys</strong>, and queried using a declarative language &mdash; <strong>SQL</strong>. Examples: PostgreSQL/PostGIS, Oracle Spatial, SQL Server, MySQL.</p>
+
+    <p><strong>Key characteristics:</strong></p>
+    <ul>
+      <li><strong>Tabular structure</strong> with a fixed schema (defined column names &amp; data types).</li>
+      <li><strong>Primary &amp; foreign keys</strong> enforce uniqueness and referential integrity between tables.</li>
+      <li><strong>ACID transactions</strong> (Atomicity, Consistency, Isolation, Durability) guarantee data reliability under concurrent edits.</li>
+      <li><strong>SQL query language</strong> &mdash; declarative, optimisable, standardised.</li>
+      <li><strong>Indexing</strong> (B-tree for attributes, R-tree/GiST for geometry) for fast retrieval.</li>
+      <li><strong>Multi-user, role-based security</strong>.</li>
+    </ul>
+
+    <p><strong>Why RDBMS suits GIS data:</strong></p>
+    <ul>
+      <li>Modern spatial RDBMS (PostGIS, Oracle Spatial) extends standard SQL with a <em>geometry / geography</em> data type plus spatial functions (<code>ST_Intersects</code>, <code>ST_Buffer</code>, <code>ST_Within</code>) so spatial &amp; attribute data live in <strong>one</strong> system.</li>
+      <li>R-tree spatial indexing makes "find all parcels within 500 m of this river" execute in milliseconds even on millions of features.</li>
+      <li>Multiple GIS clients (ArcGIS, QGIS, web maps) can simultaneously read/write through the same RDBMS &mdash; supporting enterprise GIS workflows like the Survey Department, road authority, utility companies.</li>
+      <li>ACID transactions prevent half-finished edits from corrupting cadastral or utility datasets.</li>
+      <li>Backup, replication, and version-control mechanisms of RDBMS protect long-term institutional data.</li>
+    </ul>
+
+    <h3>(b) Database structuring &amp; normalisation reduce redundancy and maintain consistency [3]</h3>
+
+    <p><strong>Normalisation</strong> is the systematic decomposition of tables so that each attribute depends only on the <em>whole</em> primary key. The first three normal forms (1NF, 2NF, 3NF) eliminate repeating groups, partial dependencies and transitive dependencies respectively.</p>
+
+    <p><em>Un-normalised parcel table:</em></p>
+    <table>
+      <thead><tr><th>ParcelID</th><th>OwnerName</th><th>OwnerPhone</th><th>OwnerAddress</th><th>LandUse</th><th>LandUseRate</th></tr></thead>
+      <tbody>
+        <tr><td>P-101</td><td>Ram Bahadur</td><td>9841…</td><td>Dhangadhi-5</td><td>Agriculture</td><td>NPR 200/m²</td></tr>
+        <tr><td>P-102</td><td>Ram Bahadur</td><td>9841…</td><td>Dhangadhi-5</td><td>Agriculture</td><td>NPR 200/m²</td></tr>
+      </tbody>
+    </table>
+    <p>If Ram changes phone number, two rows must be updated &rarr; <strong>update anomaly</strong>.</p>
+
+    <p><em>Normalised (3NF):</em></p>
+    <ul>
+      <li><strong>Owner</strong>(<u>OwnerID</u>, Name, Phone, Address)</li>
+      <li><strong>LandUse</strong>(<u>LandUseCode</u>, Description, Rate)</li>
+      <li><strong>Parcel</strong>(<u>ParcelID</u>, Geometry, OwnerID&nbsp;FK, LandUseCode&nbsp;FK, Area)</li>
+    </ul>
+
+    <p><strong>Benefits:</strong></p>
+    <ul>
+      <li><strong>Redundancy removed</strong> — owner details stored once.</li>
+      <li><strong>Consistency</strong> — change phone in one place, all parcels reflect it.</li>
+      <li><strong>Insertion / deletion anomalies eliminated</strong> — a new owner can be entered before any parcel is assigned; deleting a parcel does not lose owner info.</li>
+      <li><strong>Easier to maintain &amp; extend</strong> — adding a new attribute (e.g. owner email) touches only the Owner table.</li>
+      <li>Combined with <strong>topological structuring</strong> on the spatial side, the geodatabase remains internally consistent (no overlapping parcels, no dangling road segments).</li>
+    </ul>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q6">Question 6: Vector Overlay &amp; Buffer Analysis (Road Expansion) <span class="exam-ref">[5 + 5 Marks]</span></h2>
+
+    <p class="lead">Scenario: Existing 7&nbsp;m two-lane road is to be widened to a 20&nbsp;m four-lane highway. The corridor passes through agricultural land, residential areas, commercial zones and small forest patches.</p>
+
+    <h3>(a) Vector overlay operations to determine impacts [5]</h3>
+
+    <p>Overlay analysis combines two or more vector layers so that the resulting layer carries the geometry <em>and</em> the attributes of all inputs.</p>
+
+    <p><strong>Input layers:</strong> proposed alignment (line) → buffered to a <em>20-m corridor polygon</em> (and original 7-m corridor for the "land already in road" subtraction); land-use (polygon: agriculture, residential, commercial, forest); cadastral parcels (polygon).</p>
+
+    <p><strong>Step-by-step procedure</strong></p>
+    <ol class="process-steps">
+      <li><strong>Buffer</strong> the proposed centre-line by 10 m (each side) → <em>Proposed_Corridor</em> polygon (20 m wide).</li>
+      <li>Buffer the existing centre-line by 3.5 m → <em>Existing_RoW</em>; <strong>Erase</strong> Existing_RoW from Proposed_Corridor → <em>New_Acquisition</em> polygon (the strip that must be acquired).</li>
+      <li><strong>Intersect</strong>(New_Acquisition, LandUse) → <em>Acquisition_by_LandUse</em>: every new piece of acquisition split by land-use class with attributes from both layers.</li>
+      <li><strong>Intersect</strong>(New_Acquisition, Parcels) → <em>Acquisition_by_Parcel</em>: each parcel clipped to the corridor with owner attributes preserved.</li>
+      <li><strong>Calculate Geometry</strong> on the result polygons (area in m²).</li>
+      <li><strong>Summarize / Dissolve</strong> by land-use to obtain totals.</li>
+    </ol>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Question to answer</th><th>GIS tool</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><td>Total area of agricultural land acquired</td><td>Intersect → Select "Agriculture" → Sum(Area)</td><td>Total ha of farmland lost</td></tr>
+          <tr><td>Number of residential / commercial parcels affected</td><td>Intersect(Corridor, Parcels) → Select by attribute LandUse IN ('Residential','Commercial') → Count</td><td>Parcel count + owner list</td></tr>
+          <tr><td>Extent of forest impacted</td><td>Intersect → Select "Forest" → Sum(Area)</td><td>m² / ha of forest cleared</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Key tools:</strong> <em>Buffer</em> (creates corridor), <em>Erase / Difference</em> (excludes existing RoW), <em>Intersect</em> (combines geometries &amp; attributes), <em>Clip</em> (alternative when only geometry of one input is needed), <em>Dissolve</em> (aggregates by category), <em>Summary Statistics</em> (totals per class), <em>Spatial Join</em> (counts of parcels within corridor).</p>
+
+    <h3>(b) Multi-ring buffer for environmental &amp; social impact zones [5]</h3>
+
+    <p>Two concentric buffers around the proposed alignment are created:</p>
+    <ul>
+      <li><strong>Inner 50-m buffer</strong> &mdash; <em>Direct construction-impact zone</em>: physical occupation by structures, side drains, slope-protection works, displaced land-uses, dust generation, blasting, vegetation clearance.</li>
+      <li><strong>Outer 30-m buffer</strong> beyond the 50-m line (i.e. 50–80 m from centre) &mdash; <em>Noise &amp; air-pollution assessment zone</em>: traffic noise (typically &gt;55 dB(A) within 80 m of a four-lane highway), vehicle exhaust (NOx, PM<sub>2.5</sub>) and visual impact.</li>
+    </ul>
+
+    <figure class="figure" style="text-align:center">
+      <svg viewBox="0 0 480 160" width="460" height="150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20"  width="440" height="120" fill="#fffbe9" stroke="#e0c060" stroke-dasharray="4,3"/>
+        <rect x="20" y="40"  width="440" height="80"  fill="#ffeacc" stroke="#d08020"/>
+        <rect x="20" y="68"  width="440" height="24"  fill="#404040"/>
+        <line x1="20" y1="80" x2="460" y2="80" stroke="#ffd000" stroke-dasharray="10,8" stroke-width="1.2"/>
+        <text x="240" y="84" text-anchor="middle" fill="#fff" font-size="10">20 m carriageway</text>
+        <text x="240" y="58" text-anchor="middle" fill="#7a4a10" font-size="11" font-weight="bold">50 m buffer &mdash; direct impact</text>
+        <text x="240" y="135" text-anchor="middle" fill="#806020" font-size="11" font-weight="bold">+30 m &mdash; noise &amp; air-pollution buffer (50–80 m)</text>
+      </svg>
+      <figcaption>Fig 6.1 &mdash; Multi-ring buffer used to delineate impact zones along the corridor.</figcaption>
+    </figure>
+
+    <p><strong>How these buffers help impact-mitigation planning</strong></p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Buffer</th><th>Use in mitigation planning</th></tr></thead>
+        <tbody>
+          <tr><td>50 m direct-impact</td><td>Quantifies land-acquisition area, number of structures to demolish, trees to be felled, cost of compensation; identifies parcels needing resettlement; basis for the Land Acquisition Plan.</td></tr>
+          <tr><td>30 m additional (noise/air)</td><td>Identifies sensitive receptors (schools, hospitals, religious sites) within 80 m where noise barriers, plantation belts, speed limits or pollution monitoring stations should be installed; informs the EIA report.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Overlaying the two buffers with land-use, settlements, water bodies and forest layers produces an <strong>Environmental &amp; Social Impact Map</strong> that decision-makers can use to choose alternative alignments, plan compensation, and design mitigation measures (sound barriers, green belts, drainage controls).</p>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q7">Question 7: Multi-Criteria Suitability Analysis &mdash; Landfill Site Selection <span class="exam-ref">[10 Marks]</span></h2>
+
+    <p>The five criteria are translated into raster layers through standard <em>raster analysis functions</em>. The final suitability map is obtained by <strong>Boolean overlay</strong> (AND of all binary suitability rasters) or, more flexibly, by <strong>Weighted Overlay</strong>.</p>
+
+    <h3>Available data &amp; the function applied to each</h3>
+    <div class="table-wrap">
+      <table class="crit-table">
+        <thead><tr><th>Criterion</th><th>Source raster</th><th>Raster function used</th><th>Suitability rule</th></tr></thead>
+        <tbody>
+          <tr><td>(i) Slope &lt; 8&deg;</td><td>DEM</td><td><strong>Slope</strong> &rarr; <strong>Reclassify</strong></td><td>Slope&nbsp;raster ≤ 8 → 1; else 0</td></tr>
+          <tr><td>(ii) ≥ 500 m from rivers</td><td>River network</td><td><strong>Euclidean Distance</strong> &rarr; <strong>Reclassify</strong></td><td>Distance ≥ 500 → 1; else 0</td></tr>
+          <tr><td>(iii) Avoid dense forest &amp; built-up</td><td>Land cover</td><td><strong>Reclassify</strong></td><td>Forest, built-up → 0; barren, shrub → 1</td></tr>
+          <tr><td>(iv) Low-permeability soil</td><td>Soil-type map</td><td><strong>Reclassify</strong></td><td>Clay/silty-clay → 1; sand/gravel → 0</td></tr>
+          <tr><td>(v) ≥ 1 km from settlements AND ≤ 5 km from main roads</td><td>Settlement &amp; Road layers</td><td>Two <strong>Euclidean Distance</strong> rasters &rarr; Reclassify &rarr; <strong>Boolean AND</strong></td><td>Dist<sub>settle</sub> ≥ 1000 AND Dist<sub>road</sub> ≤ 5000 → 1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Step-by-step procedure</h3>
+    <ol class="process-steps">
+      <li><strong>Pre-processing</strong> &mdash; ensure all rasters share the same projection, cell size and extent.</li>
+      <li><strong>Slope generation</strong>: <em>Surface &rarr; Slope</em> on the DEM &rarr; <code>Slope_deg</code>. Reclassify (≤8°)→1, (&gt;8°)→0 &rarr; <code>S1_slope</code>.</li>
+      <li><strong>Distance from rivers</strong>: <em>Euclidean Distance</em> on River layer &rarr; <code>Dist_river</code>. Reclassify (≥500&nbsp;m)→1 &rarr; <code>S2_river</code>.</li>
+      <li><strong>Land-cover suitability</strong>: Reclassify Land-Cover &rarr; <code>S3_lcov</code> (forest, built-up = 0; rest = 1).</li>
+      <li><strong>Soil suitability</strong>: Reclassify Soil-type &rarr; <code>S4_soil</code> (clay/silty-clay = 1; permeable = 0).</li>
+      <li><strong>Accessibility / settlement</strong>: <em>Euclidean Distance</em> on Settlement → reclass (≥1000&nbsp;m)→1 &rarr; <code>S5a</code>. <em>Euclidean Distance</em> on Roads → reclass (≤5000&nbsp;m)→1 &rarr; <code>S5b</code>. Combine: <code>S5 = S5a × S5b</code> (Boolean AND).</li>
+      <li><strong>Final overlay</strong> (Boolean): <code>Suitability = S1 × S2 × S3 × S4 × S5</code> &mdash; cells with value 1 satisfy <em>every</em> criterion.</li>
+      <li><strong>Post-processing</strong>: convert suitable cells to polygons (<em>Raster &rarr; Polygon</em>); apply a <em>minimum-area filter</em> (e.g. ≥ 1 ha) to remove fragmented patches; rank shortlisted sites by additional factors (size, road accessibility) using <strong>Weighted Overlay</strong>.</li>
+    </ol>
+
+    <h3>Role of the four key raster-analysis functions</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Function</th><th>Contribution to the suitability map</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Slope (Surface analysis)</strong></td><td>Derives slope (in degrees) from the DEM &mdash; used to enforce criterion (i) on terrain stability.</td></tr>
+          <tr><td><strong>Euclidean Distance</strong></td><td>Generates continuous proximity rasters from rivers, settlements and roads &mdash; the geometric basis for buffer-style criteria (ii) and (v).</td></tr>
+          <tr><td><strong>Reclassify</strong></td><td>Converts each continuous or thematic raster into a binary suitability raster (1 = suitable, 0 = unsuitable) using the threshold defined by each criterion.</td></tr>
+          <tr><td><strong>Map Algebra (Boolean / Weighted Overlay)</strong></td><td>Combines all binary suitability rasters into a single map. Boolean (×) keeps only cells that satisfy every rule; weighted overlay assigns relative importance if criteria are not equally critical.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout"><strong>Optional refinement:</strong> use <em>Zonal Statistics</em> to attach summary information (mean slope, area, distance to road) to each candidate polygon, then apply <em>AHP weights</em> for final ranking among the shortlisted sites.</div>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q8">Question 8: DEM Hydrology &mdash; Sinks, Flow Direction, Watershed <span class="exam-ref">[2 + 3 + 3 Marks]</span></h2>
+
+    <p><strong>Original 6 × 6 DEM</strong> (10 m resolution; the value 133 in cell <em>(row 3, col 2)</em> was circled as a suspected sink):</p>
+
+    <table class="grid-table">
+      <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th></tr>
+      <tr><th>R1</th><td>142</td><td>140</td><td>138</td><td>136</td><td>135</td><td>133</td></tr>
+      <tr><th>R2</th><td>141</td><td>137</td><td>136</td><td>134</td><td>133</td><td>132</td></tr>
+      <tr><th>R3</th><td>140</td><td class="sink-cell">133</td><td>134</td><td>131</td><td>129</td><td>131</td></tr>
+      <tr><th>R4</th><td>139</td><td>136</td><td>132</td><td>128</td><td>127</td><td>129</td></tr>
+      <tr><th>R5</th><td>138</td><td>135</td><td>131</td><td>129</td><td>126</td><td>128</td></tr>
+      <tr><th>R6</th><td>137</td><td>134</td><td>130</td><td>127</td><td>124</td><td>126</td></tr>
+    </table>
+
+    <h3>(a) Identify and fill sinks [2]</h3>
+
+    <p>A <strong>sink</strong> is a cell whose four immediate (rook) neighbours are <em>all</em> higher; water cannot flow out of it. Edge cells with no lower neighbour drain off the grid and are not treated as true sinks (they are outlets).</p>
+
+    <p>Testing every interior cell:</p>
+    <ul>
+      <li><strong>Cell (R3, C2) = 133</strong> &mdash; neighbours: N&nbsp;(R2,C2)=137, S&nbsp;(R4,C2)=136, W&nbsp;(R3,C1)=140, E&nbsp;(R3,C3)=134. All higher &rarr; <strong>sink confirmed</strong>.</li>
+      <li>No other interior cell satisfies the condition.</li>
+    </ul>
+
+    <p><strong>Fill</strong>: replace the sink with the <em>minimum value of its surrounding neighbours that allows outflow</em>, i.e. the lowest neighbour = 134.</p>
+
+    <p><strong>Filled DEM</strong> (only the sink changes; (R3,C2) 133 → 134):</p>
+    <table class="grid-table">
+      <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th></tr>
+      <tr><th>R1</th><td>142</td><td>140</td><td>138</td><td>136</td><td>135</td><td>133</td></tr>
+      <tr><th>R2</th><td>141</td><td>137</td><td>136</td><td>134</td><td>133</td><td>132</td></tr>
+      <tr><th>R3</th><td>140</td><td class="filled-cell">134</td><td>134</td><td>131</td><td>129</td><td>131</td></tr>
+      <tr><th>R4</th><td>139</td><td>136</td><td>132</td><td>128</td><td>127</td><td>129</td></tr>
+      <tr><th>R5</th><td>138</td><td>135</td><td>131</td><td>129</td><td>126</td><td>128</td></tr>
+      <tr><th>R6</th><td>137</td><td>134</td><td>130</td><td>127</td><td>124</td><td>126</td></tr>
+    </table>
+
+    <h3>(b) Flow direction &amp; flow accumulation (D8) [3]</h3>
+
+    <p><strong>D8 codes</strong> (ESRI): E=1, SE=2, S=4, SW=8, W=16, NW=32, N=64, NE=128. For each cell the steepest descent is chosen using <code>slope = (z &minus; z<sub>nbr</sub>) / d</code>, with d = 10&nbsp;m for cardinal and 14.14&nbsp;m for diagonal neighbours.</p>
+
+    <p><strong>Flow Direction matrix:</strong></p>
+    <table class="grid-table">
+      <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th></tr>
+      <tr><th>R1</th><td>2 (SE)</td><td>4 (S)</td><td>2 (SE)</td><td>2 (SE)</td><td>2 (SE)</td><td>4 (S)</td></tr>
+      <tr><th>R2</th><td>2 (SE)</td><td>4 (S)</td><td>2 (SE)</td><td>2 (SE)</td><td>4 (S)</td><td>8 (SW)</td></tr>
+      <tr><th>R3</th><td>1 (E)</td><td>2 (SE)</td><td>2 (SE)</td><td>4 (S)</td><td>4 (S)</td><td>8 (SW)</td></tr>
+      <tr><th>R4</th><td>128 (NE)</td><td>1 (E)</td><td>1 (E)</td><td>2 (SE)</td><td>4 (S)</td><td>8 (SW)</td></tr>
+      <tr><th>R5</th><td>1 (E)</td><td>1 (E)</td><td>2 (SE)</td><td>1 (E)</td><td>4 (S)</td><td>8 (SW)</td></tr>
+      <tr><th>R6</th><td>1 (E)</td><td>1 (E)</td><td>1 (E)</td><td>1 (E)</td><td>0 (outlet)</td><td>16 (W)</td></tr>
+    </table>
+
+    <p><strong>Sample calculations</strong></p>
+    <pre style="background:var(--soft);padding:10px;border-radius:6px;overflow-x:auto">
+(R1,C1)=142 &rarr; neighbours E=140, S=141, SE=137
+   slope_E  = (142&minus;140)/10   = 0.200
+   slope_S  = (142&minus;141)/10   = 0.100
+   slope_SE = (142&minus;137)/14.14= 0.354  ← steepest  &rArr; FD = 2 (SE)
+
+(R3,C2)=134 (filled) &rarr; SE neighbour (R4,C3)=132 lowest, slope = 2/14.14 = 0.141  &rArr; FD = 2 (SE)
+
+(R6,C5)=124 (lowest cell, on grid edge) &rarr; no lower neighbour &rArr; outlet</pre>
+
+    <p><strong>Flow Accumulation</strong> &mdash; processing cells from highest to lowest elevation, each cell receives the sum of accumulations of all upstream cells flowing into it (initial value = 1 per cell). The result:</p>
+
+    <table class="grid-table">
+      <tr><th></th><th>C1</th><th>C2</th><th>C3</th><th>C4</th><th>C5</th><th>C6</th></tr>
+      <tr><th>R1</th><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><th>R2</th><td>1</td><td>3</td><td>1</td><td>2</td><td>2</td><td>3</td></tr>
+      <tr><th>R3</th><td>1</td><td>7</td><td>1</td><td>2</td><td>8</td><td>1</td></tr>
+      <tr><th>R4</th><td>1</td><td>1</td><td>9</td><td class="stream-cell">13</td><td class="stream-cell">10</td><td>1</td></tr>
+      <tr><th>R5</th><td>1</td><td>2</td><td>3</td><td>1</td><td class="stream-cell">26</td><td>1</td></tr>
+      <tr><th>R6</th><td>1</td><td>2</td><td>3</td><td>7</td><td class="stream-cell">36</td><td>1</td></tr>
+    </table>
+    <p style="font-style:italic;text-align:center">Verification: total of all accumulations = 36 (number of cells contributing to outlet) ✓</p>
+
+    <h3>(c) Watershed delineation &amp; stream extraction (threshold ≥ 1000 m²) [3]</h3>
+
+    <p>Each cell area = 10&nbsp;m × 10&nbsp;m = <strong>100 m²</strong>. Therefore the threshold of 1000&nbsp;m² corresponds to a <strong>flow-accumulation value ≥ 10 cells</strong>.</p>
+
+    <p><strong>Stream cells</strong> (accumulation ≥ 10) — highlighted blue above:</p>
+    <ul>
+      <li>(R4, C4) = 13</li>
+      <li>(R4, C5) = 10</li>
+      <li>(R5, C5) = 26</li>
+      <li>(R6, C5) = 36 &mdash; <em>outlet</em></li>
+    </ul>
+
+    <p><strong>Stream network</strong> (using flow-direction):</p>
+    <pre style="background:var(--soft);padding:10px;border-radius:6px">
+   (R4,C4) ──SE──┐
+                  ├──→ (R5,C5) ──S──→ (R6,C5)  [outlet]
+   (R4,C5) ──S───┘</pre>
+
+    <p>Two head-stream segments converge at (R5,C5) and continue south to the outlet at (R6,C5).</p>
+
+    <p><strong>Watershed:</strong> tracing all cells whose flow-paths terminate at the outlet (R6,C5) shows that <strong>every one of the 36 cells</strong> drains there — the entire 6 × 6 grid forms a <em>single watershed</em>, area = 36 × 100&nbsp;m² = <strong>3,600&nbsp;m²</strong>. The watershed boundary therefore coincides with the outer edge of the grid.</p>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q9">Question 9: Electromagnetic Spectrum, Spectral Signatures &amp; Sensor Resolution <span class="exam-ref">[4 + 4 Marks]</span></h2>
+
+    <h3>(a) Electromagnetic spectrum &amp; spectral signatures in land-cover classification [4]</h3>
+
+    <p><strong>Electromagnetic (EM) spectrum:</strong> the continuum of all EM wavelengths, from gamma rays (10⁻¹² m) to radio waves (10² m). Remote sensing of land cover uses mainly <strong>visible (0.4–0.7&nbsp;μm)</strong>, <strong>NIR (0.7–1.3&nbsp;μm)</strong>, <strong>SWIR (1.3–3&nbsp;μm)</strong>, <strong>thermal IR (8–14&nbsp;μm)</strong> and <strong>microwave (1&nbsp;mm–1&nbsp;m)</strong> regions.</p>
+
+    <p><strong>Role of the spectrum:</strong> Different ground objects interact differently with each wavelength &mdash; absorbing some, reflecting others. By measuring reflectance in several discrete wavelength bands, the sensor produces a multi-band raster from which surface materials can be discriminated.</p>
+
+    <p><strong>Spectral signature:</strong> the unique reflectance-vs-wavelength curve of a feature. It is the "fingerprint" used by classification algorithms (Maximum Likelihood, Random Forest, SVM) to assign each pixel to a land-cover class.</p>
+
+    <figure class="figure" style="text-align:center">
+      <svg viewBox="0 0 480 220" width="460" height="200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="50" y1="180" x2="450" y2="180" stroke="#333"/>
+        <line x1="50" y1="180" x2="50" y2="20" stroke="#333"/>
+        <text x="245" y="200" text-anchor="middle" font-size="11">Wavelength (μm)</text>
+        <text x="20" y="100" font-size="11" transform="rotate(-90 20 100)">% Reflectance</text>
+        <!-- Vegetation -->
+        <polyline points="60,160 110,150 160,170 200,40 280,55 350,90 430,120" fill="none" stroke="#2a7d2a" stroke-width="2"/>
+        <text x="430" y="115" font-size="10" fill="#2a7d2a">Vegetation</text>
+        <!-- Water -->
+        <polyline points="60,140 110,150 160,165 200,170 280,178 350,179 430,180" fill="none" stroke="#1a4ea8" stroke-width="2"/>
+        <text x="430" y="178" font-size="10" fill="#1a4ea8">Water</text>
+        <!-- Soil -->
+        <polyline points="60,150 110,135 160,115 200,100 280,80 350,75 430,90" fill="none" stroke="#a04a18" stroke-width="2"/>
+        <text x="430" y="88" font-size="10" fill="#a04a18">Bare soil</text>
+        <!-- Bands -->
+        <text x="100" y="20" font-size="9">Vis</text><text x="200" y="20" font-size="9">NIR</text><text x="320" y="20" font-size="9">SWIR</text>
+        <line x1="155" y1="22" x2="155" y2="180" stroke="#888" stroke-dasharray="2,2"/>
+        <line x1="270" y1="22" x2="270" y2="180" stroke="#888" stroke-dasharray="2,2"/>
+      </svg>
+      <figcaption>Fig 9.1 &mdash; Typical spectral signatures: vegetation peaks in NIR; water absorbs strongly beyond NIR; bare soil rises gradually.</figcaption>
+    </figure>
+
+    <p><strong>Use in classification:</strong></p>
+    <ul>
+      <li>Vegetation has very high NIR reflectance and low red reflectance → enables NDVI = (NIR − R)/(NIR + R) for healthy-vegetation mapping.</li>
+      <li>Water is dark in NIR/SWIR → easily masked using band ratios (NDWI).</li>
+      <li>Built-up areas reflect strongly in SWIR with low NIR → detected via NDBI.</li>
+      <li>Soils, snow, minerals each show distinct curves enabling supervised classification.</li>
+    </ul>
+
+    <h3>(b) Spatial, spectral and temporal resolution &mdash; importance for an urbanisation study [4]</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Resolution</th><th>Definition</th><th>Typical examples</th><th>Importance for urbanisation study</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Spatial</strong></td>
+            <td>The ground size of one pixel — i.e. the smallest object the sensor can resolve.</td>
+            <td>Landsat 8: 30 m; Sentinel-2: 10–20 m; WorldView-3: 0.31 m.</td>
+            <td>Urban features (buildings, roads, individual plots) are small. <em>High</em> spatial resolution (≤5 m) is needed to map roof footprints, road networks, and impervious surfaces accurately.</td>
+          </tr>
+          <tr>
+            <td><strong>Spectral</strong></td>
+            <td>Number and width of wavelength bands recorded.</td>
+            <td>Landsat 8: 11 bands; Sentinel-2: 13 bands; Hyperion: 220 bands.</td>
+            <td>More and narrower bands separate land-cover classes that look similar in colour: concrete vs asphalt vs metal roofs, vegetated vs bare soil. SWIR and thermal bands help map heat-island intensity (LST).</td>
+          </tr>
+          <tr>
+            <td><strong>Temporal</strong></td>
+            <td>Revisit interval — how often the same area is re-imaged.</td>
+            <td>Landsat: 16 days; Sentinel-2: 5 days; PlanetScope: ~1 day.</td>
+            <td>Urban growth is dynamic. Frequent revisits enable change-detection on a yearly basis, monitoring of new construction, illegal encroachments, and cloud-free imagery during the dry season.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Combined importance:</strong> An ideal urbanisation study uses <em>multi-sensor fusion</em> &mdash; high-resolution commercial imagery (e.g. WorldView at 0.5 m) for one-time detailed mapping, plus Sentinel-2 (10 m, 5-day, 13 bands) for periodic change monitoring. Trade-offs: increasing spatial detail usually means smaller swath and less frequent coverage, so the GIS analyst chooses a sensor mix that satisfies all three resolutions for the given urban question.</p>
+
+    <!-- ════════════════════════════════════════════════════════════ -->
+    <h2 id="q10">Question 10: Choropleth Maps &amp; Misleading Design <span class="exam-ref">[4 Marks]</span></h2>
+
+    <p><strong>Definition:</strong> A <strong>choropleth map</strong> is a thematic map in which predefined geographical units (countries, districts, wards, census tracts) are shaded or coloured in proportion to the value of a statistical variable measured for each unit (e.g. population density, literacy rate, COVID cases per 100 000 population). It is the most common technique for visualising area-aggregated quantitative data.</p>
+
+    <p><strong>Essential design rules:</strong></p>
+    <ul>
+      <li>Map only <em>derived/normalised</em> values (rates, densities, percentages) &mdash; not raw counts.</li>
+      <li>Choose an appropriate <em>classification</em> scheme (equal-interval, quantile, natural breaks, standard deviation) and number of classes (typically 4–7).</li>
+      <li>Use a logical <em>colour scheme</em>: sequential for ordered data, diverging when data has a meaningful midpoint, qualitative only for nominal data.</li>
+      <li>Provide a clear <em>legend</em>, <em>scale bar</em>, <em>north arrow</em>, <em>title</em> and <em>data source</em>.</li>
+    </ul>
+
+    <h3>How poor design misleads planners &amp; decision-makers</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Design flaw</th><th>How it misleads</th><th>Real-world consequence</th></tr></thead>
+        <tbody>
+          <tr><td>Mapping <strong>raw counts</strong> instead of rates</td><td>Larger districts always look "worse" simply because they have more people / more area &mdash; this is the classic <em>area-bias problem</em>.</td><td>Planners may divert resources to large but actually safe districts.</td></tr>
+          <tr><td>Inappropriate <strong>classification</strong> (e.g. equal interval on skewed data)</td><td>Almost every polygon falls into one or two classes; spatial pattern is invisible or exaggerated. Different breaks &mdash; same data &mdash; tell different stories.</td><td>Politicians choose breaks that "show" their preferred narrative (e.g. underplaying poverty).</td></tr>
+          <tr><td><strong>Modifiable Areal Unit Problem (MAUP)</strong> &mdash; choice of unit (ward vs district)</td><td>The same phenomenon may appear strongly clustered or perfectly random depending on aggregation level.</td><td>Wrong scale of intervention (district-level subsidy vs ward-level service delivery).</td></tr>
+          <tr><td>Misleading <strong>colour ramp</strong> (e.g. red→green for ordinal data, or rainbow palette)</td><td>Suggests qualitative differences where order exists, or hides true magnitude. Colour-blind viewers may not perceive critical thresholds.</td><td>Resource priorities are misread by some readers.</td></tr>
+          <tr><td><strong>Too few / too many classes</strong></td><td>Few classes hide variability; too many overwhelm and create visual noise.</td><td>Subtle hotspots are missed.</td></tr>
+          <tr><td>Missing or distorted <strong>legend / scale</strong></td><td>Reader cannot interpret values; decisions are based on colour intuition rather than data.</td><td>Mis-allocation of budgets.</td></tr>
+          <tr><td><strong>Unsuitable projection</strong> for global maps</td><td>Mercator inflates polar areas, exaggerating their apparent importance.</td><td>Distorted perception of regional priorities.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Critical takeaway:</strong> A choropleth map is <em>persuasive</em>; planners therefore must look at the legend, classification, normalisation and source before making a decision. A well-designed choropleth turns data into insight; a poorly-designed one turns the same data into propaganda. Best practice is to publish maps together with an interactive version that lets users change classification and colour ramps to verify that the conclusion is robust.</p>
+
+    <p class="footer-note">— End of Solved Paper, 2082 Chaitra (CE 78501) —</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>
