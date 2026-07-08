@@ -484,7 +484,7 @@
   if (document.querySelector('.dw-btn') || document.querySelector('.dw-cv')) return;
 
   var on = false, drawing = false, erasing = false;
-  var COLORS = ['#e63946','#1a365d','#2d6a4f','#e67e22','#7c3aed','#000000','#ffffff','#f0f8ff','#0ea5e9','#ec4899','#14b8a6','#d97706','#dc2626','#059669','#4f46e5','#f43f5e','#84cc16','#c0c0c0','#fffffe','#fff8dc','#b9f2ff','#ffd700'];
+  var COLORS = ['#e63946','#e67e22','#2d6a4f','#0ea5e9','#1a365d','#7c3aed','#ec4899','#000000'];
   var GLOW_COLORS = {'#b9f2ff':true,'#ffd700':true};
   var color = COLORS[0], penW = 3;
   var strokes = [];
