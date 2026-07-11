@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCC Solutions &mdash; Slabs &amp; Staircase</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="ch-nav">
+    <a href="solutions_beam.html">&larr; Beam</a>
+    <span class="nav-title">Solutions: Slabs &amp; Staircase (Ch 7)</span>
+    <a href="solutions_column.html">Column &rarr;</a>
+</nav>
+<button onclick="window.print()" class="print-btn">PRINT</button>
+<main>
+    <div class="ch-header">
+        <div class="meta">Design of RCC Structures (ENCE 352) &mdash; Solved Past Questions</div>
+        <h1>SOLUTIONS &mdash; SLABS &amp; STAIRCASE</h1>
+        <div class="author">One-way &amp; two-way slabs; longitudinally loaded stairs</div>
+    </div>
+    <div class="callout">
+        Every Chapter 7 past question is written out <strong>in full</strong> with a <strong>complete solution and figures</strong>.
+        Two-way slab moments use the IS 456 (Annex D) coefficients M<sub>x</sub> = &alpha;<sub>x</sub>w<sub>u</sub>l<sub>x</sub>&sup2;, M<sub>y</sub> = &alpha;<sub>y</sub>w<sub>u</sub>l<sub>x</sub>&sup2;.
+    </div>
+    <nav class="toc-card">
+        <h3>Table of Contents</h3>
+        <div class="toc-grid">
+            <a href="#method">7.1 &mdash; Slab design method</a>
+            <a href="#worked">7.1 &mdash; Two-way slab (worked in full)</a>
+            <a href="#list">7.1 &mdash; All slab panels solved</a>
+            <a href="#stair">7.3 &mdash; Staircase</a>
+        </div>
+    </nav>
+    <div class="content">
+        <section id="method">
+            <h2>CHAPTER 7 &mdash; SLABS &amp; STAIRCASE</h2>
+
+            <p class="note">Every past-exam question of this chapter is stated in full &mdash; with its exam sitting (year &amp; session), question number and marks &mdash; and answered below.</p>            <div class="svg-wrap">
+                <svg width="320" height="220" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="60" y="30" width="200" height="150" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+                    <line x1="60" y1="30" x2="260" y2="30" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 3"/>
+                    <line x1="70" y1="70" x2="250" y2="70" stroke="#16a34a" stroke-width="1"/>
+                    <line x1="70" y1="105" x2="250" y2="105" stroke="#16a34a" stroke-width="1"/>
+                    <line x1="70" y1="140" x2="250" y2="140" stroke="#16a34a" stroke-width="1"/>
+                    <text x="160" y="200" font-size="9" text-anchor="middle" font-family="Times New Roman">l<tspan baseline-shift="sub">x</tspan> (short span, main steel)</text>
+                    <text x="40" y="110" font-size="9" text-anchor="middle" font-family="Times New Roman" transform="rotate(-90 40 110)">l<tspan baseline-shift="sub">y</tspan> (long span)</text>
+                    <rect x="60" y="150" width="30" height="30" fill="none" stroke="#b45309" stroke-width="1.2" stroke-dasharray="3 2"/>
+                    <rect x="230" y="150" width="30" height="30" fill="none" stroke="#b45309" stroke-width="1.2" stroke-dasharray="3 2"/>
+                    <text x="160" y="25" font-size="8" text-anchor="middle" fill="#dc2626" font-family="Times New Roman">discontinuous edge</text>
+                    <text x="160" y="215" font-size="8" text-anchor="middle" fill="#b45309" font-family="Times New Roman">corner torsion mesh (corners held down)</text>
+                </svg>
+                <div class="figcaption">Two-way restrained panel: main steel spans the short direction l<sub>x</sub>; torsion mesh is provided at corners that are held down; a discontinuous edge carries about half the mid-span steel as top steel.</div>
+            </div>
+            <div class="callout">
+                <strong>Classify:</strong> <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span> &gt; 2 &rarr; one-way; &le; 2 &rarr; two-way.<br>
+                <strong>Depth:</strong> d = <span class="frac"><span class="fn">l<sub>x</sub></span><span class="fd">basic <span class="frac"><span class="fn">L</span><span class="fd">d</span></span> &times; MF</span></span>, basic = 20 (SS), 26 (continuous), &times; ~1.3&ndash;1.5 modification.<br>
+                <strong>Load:</strong> w<sub>u</sub> = 1.5(self-wt + floor finish + live load) per m&sup2;.<br>
+                <strong>One-way:</strong> M<sub>u</sub> = <span class="frac"><span class="fn">w<sub>u</sub>l<sub>x</sub>&sup2;</span><span class="fd">8</span></span> (or IS 456 Table 12 coefficients); design a 1 m strip.<br>
+                <strong>Two-way:</strong> M<sub>x</sub> = &alpha;<sub>x</sub>w<sub>u</sub>l<sub>x</sub>&sup2;, M<sub>y</sub> = &alpha;<sub>y</sub>w<sub>u</sub>l<sub>x</sub>&sup2; (Table 26 restrained / Table 27 simply supported).<br>
+                <strong>Steel:</strong> A<sub>st</sub> from M<sub>u</sub>; min 0.12% (HYSD); spacing &le; 3d, 300 mm. Distribution steel 0.12%. Corner torsion steel = &frac34;&middot;mid-span steel over <span class="frac"><span class="fn">l<sub>x</sub></span><span class="fd">5</span></span> (restrained, corners held).
+            </div>
+        </section>
+        <section id="worked">
+            <h3>1. &nbsp;Design a RC slab for an interior panel supported on RCC beams on all sides, clear dimensions 4&times;5 m, carrying superimposed live load 3 kN/m&sup2; and floor finish 2 <span class="frac"><span class="fn">kN</span><span class="fd">m&sup2;.</span></span> Use M20 and Fe415, with the necessary checks and drawings. <span class="year-tag">2081 Baishakh &middot; Q3a</span> <span class="year-tag">[15 marks]</span></h3>
+            <p><span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span> = <span class="frac"><span class="fn">5</span><span class="fd">4</span></span> = 1.25 &rarr; two-way. Assume D = 150 mm, d = 125 mm. Self-wt = 0.15&times;25 = 3.75; w<sub>u</sub> = 1.5(3.75 + 2 + 3) = <strong>13.13 kN/m&sup2;</strong>.</p>
+            <p>Interior panel coefficients (Table 26, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span> = 1.25): &alpha;<sub>x</sub> = 0.037 (&minus;ve), 0.028 (+ve); &alpha;<sub>y</sub> = 0.032 (&minus;ve), 0.024 (+ve).</p>
+            <p>M<sub>x</sub> = 0.037&times;13.13&times;4&sup2; = <strong>7.77 kN-m</strong> (support), 5.88 (mid); M<sub>y</sub> = 0.032&times;13.13&times;16 = 6.72 (support), 5.04 (mid).</p>
+            <p>A<sub>st</sub> from M<sub>u</sub> (per m): for M<sub>x</sub>=7.77, A<sub>st</sub> &asymp; <span class="frac"><span class="fn">M<sub>u</sub></span><span class="fd">0.87f<sub>y</sub>&middot;0.9d</span></span> &asymp; 190 mm&sup2;/m &lt; A<sub>st,min</sub> = 0.12%&times;1000&times;150 = 180 mm&sup2; &rArr; nominal steel: <strong>8 mm @ 200 mm c/c both ways</strong>. Provide corner torsion mesh; check deflection (<span class="frac"><span class="fn">L</span><span class="fd">d</span></span> = <span class="frac"><span class="fn">4000</span><span class="fd">125</span></span> = 32 &le; 26&times;MF).</p>
+        </section>
+        <section id="list">
+            <p>Each panel: classify (<span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>), find w<sub>u</sub>, read <span class="frac"><span class="fn">&alpha;<sub>x</sub></span><span class="fd">&alpha;<sub>y</sub></span></span> (Table 26 restrained / 27 simply supported) for the edge condition, compute <span class="frac"><span class="fn">M<sub>x</sub></span><span class="fd">M<sub>y</sub></span></span>, design a 1 m strip (D assumed, d = D&minus;20). Distribution steel 0.12%; corner torsion mesh where corners are held; deflection (<span class="frac"><span class="fn">L</span><span class="fd">d</span></span>) checked.</p>
+            <h3>2. &nbsp;5&times;4 m, one long edge discontinuous, imposed 4 + FF 2.8, M20/Fe500 <span class="year-tag">2082 Bhadra &middot; Q3b</span> <span class="year-tag">[12 marks]</span></h3>
+<p><span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25 &rarr; two-way (case 3). D=175, d=155; w<sub>u</sub>=1.5(4.38+2.8+4)=16.76 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=14.62, M<sub>x</sub>&#8314;=11.13, M<sub>y</sub>&#8315;=9.92 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=225 mm²/m &rarr; <strong>8 mm @ 220</strong>; distribution 8 mm @ 250.</p>
+            <h3>3. &nbsp;5&times;4 m, one short edge discontinuous, LL 5 + FF 1.2, M20/Fe415 <span class="year-tag">2081 Bhadra &middot; Q3b</span> <span class="year-tag">[13 marks]</span></h3>
+<p><span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25 &rarr; two-way (case 2). D=175, d=155; w<sub>u</sub>=15.86 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=12.56, M<sub>x</sub>&#8314;=9.52, M<sub>y</sub>&#8315;=9.39 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=232 mm²/m &rarr; <strong>8 mm @ 210</strong>.</p>
+            <h3>4. &nbsp;6&times;4 m, simply supported all edges, corners not held, superimposed 4, M25/Fe415 <span class="year-tag">2080 Bhadra &middot; Q4b</span> <span class="year-tag">[14 marks]</span></h3>
+<p><span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.5 &rarr; two-way, Table 27. D=175, d=155; w<sub>u</sub>=12.56 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>=&alpha;<sub>x</sub>w<sub>u</sub>l<sub>x</sub>²=20.9, M<sub>y</sub>=12.46 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=390 mm²/m &rarr; <strong>8 mm @ 120</strong> (no corner steel; simply supported).</p>
+            <h3>5. &nbsp;4&times;5 m, two adjacent edges discontinuous, LL 4 + FF 1, M20/Fe415 <span class="year-tag">2080 Baishakh &middot; Q3a</span> <span class="year-tag">[12 marks]</span></h3>
+<p><span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25 &rarr; two-way (case 4). D=160, d=140; w<sub>u</sub>=13.5 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=13.5, M<sub>x</sub>&#8314;=10.15, M<sub>y</sub>&#8315;=10.15 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=279 mm²/m &rarr; <strong>8 mm @ 180</strong>.</p>
+            <h3>6. &nbsp;5&times;4 m, one short edge discontinuous, LL 4 + FF 1.5, M20/Fe415 <span class="year-tag">2079 Bhadra &middot; Q3a</span> <span class="year-tag">[10 marks]</span></h3>
+<p>case 2, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25. D=160, d=140; w<sub>u</sub>=14.25 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=11.29, M<sub>y</sub>&#8315;=8.44 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=231 mm²/m &rarr; <strong>8 mm @ 210</strong>.</p>
+            <h3>7. &nbsp;4&times;4.5 m, two adjacent edges discontinuous, LL 4 + FF 1.6, M20/Fe415 <span class="year-tag">2078 Bhadra &middot; Q2b</span> <span class="year-tag">[15 marks]</span></h3>
+<p>case 4, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.12. D=150, d=130; w<sub>u</sub>=14.02 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=12.29, M<sub>y</sub>&#8315;=10.55 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=274 mm²/m &rarr; <strong>8 mm @ 180</strong>.</p>
+            <h3>8. &nbsp;5&times;4 m, two adjacent edges discontinuous, LL 4 + FF 1.2, M20/Fe415 <span class="year-tag">2076 Ashwin &middot; Q3</span> <span class="year-tag">[16 marks]</span></h3>
+<p>case 4, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25. D=160, d=140; w<sub>u</sub>=13.8 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=13.8, M<sub>y</sub>&#8315;=10.38 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=285 mm²/m &rarr; <strong>8 mm @ 170</strong>.</p>
+            <h3>9. &nbsp;5&times;6 m, restrained (corners held), LL 3 + FF 1.5, M20/Fe415 <span class="year-tag">2076 Chaitra &middot; Q5b</span> <span class="year-tag">[14 marks]</span></h3>
+<p>l<sub>x</sub>=5, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.2, case 1. D=175, d=155; w<sub>u</sub>=13.31 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=14.31, M<sub>y</sub>&#8315;=10.65 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=265 mm²/m &rarr; <strong>8 mm @ 180</strong>; corner torsion mesh over <span class="frac"><span class="fn">l<sub>x</sub></span><span class="fd">5.</span></span></p>
+            <h3>10. &nbsp;6&times;4 m, one short edge discontinuous, LL 4 + FF 1.2, M20/Fe415 <span class="year-tag">2075 Chaitra &middot; Q4</span> <span class="year-tag">[16 marks]</span></h3>
+<p>case 2, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.5. D=160, d=140; w<sub>u</sub>=13.8 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=12.59, M<sub>y</sub>&#8315;=8.17 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=259 mm²/m &rarr; <strong>8 mm @ 190</strong>.</p>
+            <h3>11. &nbsp;5&times;4 m, one short edge discontinuous, LL 4 + FF 1.2, M20/Fe415 <span class="year-tag">2075 Ashwin &middot; Q3b</span> <span class="year-tag">[14 marks]</span></h3>
+<p>case 2, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25. D=160, d=140; w<sub>u</sub>=13.8 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=10.93, M<sub>y</sub>&#8315;=8.17 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=224 mm²/m &rarr; <strong>8 mm @ 220</strong>.</p>
+            <h3>12. &nbsp;4&times;5 m, two adjacent edges discontinuous, LL 5, M20/Fe415 <span class="year-tag">2074 Chaitra &middot; Q3b</span> <span class="year-tag">[15 marks]</span></h3>
+<p>case 4, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25. D=160, d=140; w<sub>u</sub>=13.5 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=13.5, M<sub>y</sub>&#8315;=10.15 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=279 mm²/m &rarr; <strong>8 mm @ 180</strong>.</p>
+            <h3>13. &nbsp;4.5&times;6.5 m interior panel, LL 4 + FF 2.5, M20/Fe415 <span class="year-tag">2073 Shrawan &middot; Q2a</span> <span class="year-tag">[15 marks]</span></h3>
+<p>case 1, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.44. D=175, d=155; w<sub>u</sub>=16.31 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=17.14, M<sub>y</sub>&#8315;=10.57 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=320 mm²/m &rarr; <strong>8 mm @ 150</strong>.</p>
+            <h3>14. &nbsp;5.5&times;4 m, one short edge discontinuous, LL 5 + FF 1, M20/Fe415 <span class="year-tag">2072 Chaitra &middot; Q2a</span> <span class="year-tag">[15 marks]</span></h3>
+<p>l<sub>x</sub>=4, case 2, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.38. D=175, d=155; w<sub>u</sub>=15.56 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=13.45, M<sub>y</sub>&#8315;=9.21 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=249 mm²/m &rarr; <strong>8 mm @ 200</strong>.</p>
+            <h3>15. &nbsp;3.6&times;4.2 m restrained (uplift prevented), LL 3 + FF 1, M20/Fe415 <span class="year-tag">2072 Kartik &middot; Q2b</span> <span class="year-tag">[16 marks]</span></h3>
+<p>case 1, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.17. D=130, d=110; w<sub>u</sub>=10.88 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=5.78, M<sub>y</sub>&#8315;=4.51 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>&asymp;A<sub>st,min</sub>=150 mm²/m &rarr; <strong>8 mm @ 300</strong>.</p>
+            <h3>16. &nbsp;6.5&times;4 m rigidly fixed, LL 4.5 + FF 1, M20/Fe500 (TMT) <span class="year-tag">2071 Chaitra &middot; Q2b</span> <span class="year-tag">[16 marks]</span></h3>
+<p>l<sub>x</sub>=4, case 1, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.62. D=175, d=155; w<sub>u</sub>=14.81 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=13.39, M<sub>y</sub>&#8315;=7.58 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=206 mm²/m &rarr; <strong>8 mm @ 230</strong>.</p>
+            <h3>17. &nbsp;Interior floor panel (≈4&times;5 m), LL 3 + FF 1, M20/Fe415 <span class="year-tag">2069 Chaitra &middot; Q3b</span> <span class="year-tag">[14 marks]</span></h3>
+<p>case 1, <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span>=1.25. D=150, d=130; w<sub>u</sub>=11.62 <span class="frac"><span class="fn">kN</span><span class="fd">m².</span></span> M<sub>x</sub>&#8315;=8.37, M<sub>y</sub>&#8315;=5.95 kN-<span class="frac"><span class="fn">m</span><span class="fd">m.</span></span> A<sub>st,main</sub>=184 mm²/m &rarr; <strong>8 mm @ 270</strong>.</p>
+            <div class="note">Slabs are lightly loaded, so the design steel is at or near the 0.12% minimum &mdash; nominal 8 mm bars at 120&ndash;300 mm c/c; the deflection (<span class="frac"><span class="fn">L</span><span class="fd">d</span></span>) check governs the thickness. Provide corner torsion steel (¾&middot;midspan A<sub>st</sub> over <span class="frac"><span class="fn">l<sub>x</sub></span><span class="fd">5</span></span>) where corners are held down.</div>
+        </section>
+        <section id="stair">
+            <h3>18. &nbsp;Explain the design and detailing of a RCC (longitudinally spanning) staircase and define its effective span; show the detailing of a straight flight in plan and section. <span class="year-tag">2074 Ashwin &middot; Q4b</span> <span class="year-tag">2068 Baishakh &middot; Q3a</span> <span class="year-tag">2056 Bhadra &middot; Q3a</span> <span class="year-tag">[5+1 marks]</span></h3>
+            <p>A <strong>longitudinally spanning</strong> stair is designed as a <strong>one-way slab</strong> spanning between the supports (landings/beams). Steps:</p>
+            <p>(1) <strong>Effective span</strong> (IS 456 cl.33): the going plus half of each landing (or centre-to-centre of supports). (2) <strong>Loads</strong> on the horizontal plan: waist-slab self-weight (on the slope, projected to plan) + step self-weight (&frac12;&middot;rise&middot;&gamma;) + floor finish + live load. (3) M<sub>u</sub> = <span class="frac"><span class="fn">w<sub>u</sub>l<sub>eff</sub>&sup2;</span><span class="fd">8</span></span> &rarr; main steel along the span. (4) Distribution steel across the width (0.12%). (5) Detail so bars are anchored into the landings and the tension bars are kept on the correct face at the kink to avoid bursting.</p>
+            <div class="svg-wrap">
+                <svg width="380" height="170" viewBox="0 0 380 170" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="120" width="52" height="16" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.2"/>
+                    <rect x="300" y="44" width="58" height="16" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.2"/>
+                    <polygon points="72,120 300,44 300,60 72,136" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.2"/>
+                    <path d="M72 120 L72 104 L110 104 L110 88 L148 88 L148 72 L186 72 L186 56 L224 56 L224 40 L262 40 L262 24 L300 24 L300 44" fill="none" stroke="#94a3b8" stroke-width="1.2"/>
+                    <line x1="78" y1="130" x2="298" y2="54" stroke="#dc2626" stroke-width="1.6"/>
+                    <text x="38" y="115" font-size="8" font-family="Times New Roman">landing</text>
+                    <text x="320" y="40" font-size="8" font-family="Times New Roman">landing</text>
+                    <text x="150" y="120" font-size="8" fill="#dc2626" font-family="Times New Roman">main bars along span</text>
+                    <text x="185" y="18" font-size="8" font-family="Times New Roman">steps (going + rise)</text>
+                </svg>
+                <div class="figcaption">Section of a longitudinally spanning flight: the inclined waist slab carries the main tension bars; the effective span runs between the landing supports.</div>
+            </div>
+        </section>
+    </div>
+</main>
+<div class="mnemonics-panel"><button class="mnemonics-toggle" id="mnToggle" title="My Mnemonics"></button></div>
+<div class="mnemonics-drawer" id="mnDrawer">
+    <div class="mnemonics-drawer-header"><h4>My Mnemonics</h4><button id="mnClose">&times;</button></div>
+    <div class="mnemonics-body"><ul class="mnemonics-list" id="mnList"></ul></div>
+    <div class="mnemonics-add"><input type="text" id="mnInput" placeholder="Add a mnemonic…" maxlength="500"><button id="mnAdd">Add</button></div>
+</div>
+<script src="../../common.js"></script>
+<script>
+(function(){var KEY='rcc-mnemonics';var list=JSON.parse(localStorage.getItem(KEY)||'[]');var ul=document.getElementById('mnList');var inp=document.getElementById('mnInput');function render(){ul.innerHTML='';if(!list.length){ul.innerHTML='<li class="mnemonics-empty">No mnemonics yet. Add one below!</li>';return;}list.forEach(function(t,i){var li=document.createElement('li');var sp=document.createElement('span');sp.className='mn-text';sp.textContent=t;var btn=document.createElement('button');btn.className='mn-del';btn.textContent='\u2715';btn.title='Delete';btn.onclick=function(){list.splice(i,1);localStorage.setItem(KEY,JSON.stringify(list));render();};li.appendChild(sp);li.appendChild(btn);ul.appendChild(li);});}render();document.getElementById('mnToggle').onclick=function(){document.getElementById('mnDrawer').classList.toggle('open');};document.getElementById('mnClose').onclick=function(){document.getElementById('mnDrawer').classList.remove('open');};document.getElementById('mnAdd').onclick=addMn;inp.addEventListener('keydown',function(e){if(e.key==='Enter')addMn();});function addMn(){var v=inp.value.trim();if(!v)return;list.push(v);localStorage.setItem(KEY,JSON.stringify(list));inp.value='';render();}})();
+</script>
+</body>
+</html>

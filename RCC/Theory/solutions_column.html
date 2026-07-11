@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCC Solutions &mdash; Columns</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="ch-nav">
+    <a href="solutions_slab.html">&larr; Slab</a>
+    <span class="nav-title">Solutions: Columns (Ch 8)</span>
+    <a href="solutions_footing.html">Footing &rarr;</a>
+</nav>
+<button onclick="window.print()" class="print-btn">PRINT</button>
+<main>
+    <div class="ch-header">
+        <div class="meta">Design of RCC Structures (ENCE 352) &mdash; Solved Past Questions</div>
+        <h1>SOLUTIONS &mdash; COLUMNS</h1>
+        <div class="author">Short &amp; long columns; uniaxial &amp; biaxial bending (SP-16)</div>
+    </div>
+    <div class="callout">
+        Every Chapter 8 past question is written out <strong>in full</strong> with a <strong>complete SP-16 solution and figures</strong>.
+        The biaxial check uses (<span class="frac"><span class="fn">M<sub>ux</sub></span><span class="fd">M<sub>ux1</sub></span></span>)<sup>&alpha;n</sup> + (<span class="frac"><span class="fn">M<sub>uy</sub></span><span class="fd">M<sub>uy1</sub></span></span>)<sup>&alpha;n</sup> &le; 1.
+    </div>
+    <nav class="toc-card">
+        <h3>Table of Contents</h3>
+        <div class="toc-grid">
+            <a href="#axial">8.2 &mdash; Interaction diagram &amp; axial capacity</a>
+            <a href="#method">8.3 &mdash; Biaxial design method</a>
+            <a href="#worked">8.3 &mdash; Worked example</a>
+            <a href="#list">8.3 &mdash; All short-column questions</a>
+            <a href="#slender">8.4 &mdash; Slender columns</a>
+        </div>
+    </nav>
+    <div class="content">
+        <section id="axial">
+            <h2>CHAPTER 8 &mdash; DESIGN OF COMPRESSION MEMBERS (COLUMNS)</h2>
+
+            <p class="note">Every past-exam question of this chapter is stated in full &mdash; with its exam sitting (year &amp; session), question number and marks &mdash; and answered below.</p>
+            <h3>1. &nbsp;Define the interaction diagram with its features and sketches. Discuss the failure modes in eccentric compression within the interaction diagram. <span class="year-tag">2080 Bhadra &middot; Q3a</span> <span class="year-tag">[6 marks]</span></h3>
+            <p>The <strong>P&ndash;M interaction diagram</strong> is the locus of all combinations of axial load P<sub>u</sub> and moment M<sub>u</sub> that cause a given column section to just reach its ultimate strength. Any (P<sub>u</sub>, M<sub>u</sub>) point <em>inside</em> the curve is safe; a point on or outside it means failure.</p>
+            <p>Key points: <strong>P<sub>uz</sub></strong> (pure axial, top), <strong>M<sub>u</sub></strong> (pure bending, bottom), and the <strong>balanced point (P<sub>b</sub>, M<sub>b</sub>)</strong> where the concrete reaches 0.0035 as the tension steel yields. Above the balanced point the failure is by <strong>compression</strong> (concrete crushes, small eccentricity &mdash; brittle); below it the failure is by <strong>tension</strong> (steel yields first, large eccentricity &mdash; more ductile). Note that adding moment actually <em>reduces</em> the axial capacity above the balanced point and <em>increases</em> it slightly below.</p>
+            <div class="svg-wrap">
+                <svg width="320" height="240" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="55" y1="20" x2="55" y2="205" stroke="#666" stroke-width="1.5"/>
+                    <line x1="55" y1="205" x2="290" y2="205" stroke="#666" stroke-width="1.5"/>
+                    <path d="M55 40 Q68 130 150 158 Q215 178 250 205" fill="none" stroke="#4f46e5" stroke-width="2"/>
+                    <circle cx="55" cy="40" r="3.5" fill="#16a34a"/><text x="62" y="38" font-size="8" font-family="Times New Roman">P<tspan baseline-shift="sub">uz</tspan> (pure axial)</text>
+                    <circle cx="150" cy="158" r="4" fill="#dc2626"/><text x="158" y="156" font-size="8" font-family="Times New Roman">balanced point (P<tspan baseline-shift="sub">b</tspan>, M<tspan baseline-shift="sub">b</tspan>)</text>
+                    <circle cx="250" cy="205" r="3.5" fill="#16a34a"/><text x="205" y="222" font-size="8" font-family="Times New Roman">M<tspan baseline-shift="sub">u</tspan> (pure bending)</text>
+                    <text x="95" y="95" font-size="8" fill="#4f46e5" font-family="Times New Roman">compression failure</text>
+                    <text x="165" y="192" font-size="8" fill="#4f46e5" font-family="Times New Roman">tension failure</text>
+                    <text x="33" y="115" font-size="9" font-family="Times New Roman" transform="rotate(-90 33 115)">P<tspan baseline-shift="sub">u</tspan></text>
+                    <text x="165" y="235" font-size="9" font-family="Times New Roman">M<tspan baseline-shift="sub">u</tspan></text>
+                </svg>
+                <div class="figcaption">P&ndash;M interaction diagram: the envelope of safe (P<sub>u</sub>, M<sub>u</sub>) combinations, with the balanced point dividing compression-controlled from tension-controlled failure.</div>
+            </div>
+
+            <div class="def-box">
+                <div class="dt">P<sub>u</sub> = 0.4f<sub>ck</sub>A<sub>c</sub> + 0.67f<sub>y</sub>A<sub>sc</sub></div>
+                e.g. 400&times;500 with 1% steel, M25/Fe500: A<sub>sc</sub> = 2000 mm&sup2; &rarr; P<sub>u</sub> = <strong>2650 kN</strong>, P<sub>uz</sub> = 0.45f<sub>ck</sub>A<sub>c</sub> + 0.75f<sub>y</sub>A<sub>sc</sub> = <strong>2977 kN</strong>.<br>
+                300&times;400 with 2%, M20/Fe500: A<sub>sc</sub> = 2400 &rarr; P<sub>u</sub> = <strong>1745 kN</strong>, P<sub>uz</sub> = <strong>1958 kN</strong>.
+            </div>
+            <p>Minimum eccentricity e<sub>min</sub> = <span class="frac"><span class="fn">l</span><span class="fd">500</span></span> + <span class="frac"><span class="fn">D</span><span class="fd">30</span></span> &ge; 20 mm; if actual e &le; 0.05D the column is designed as axially loaded.</p>
+        </section>
+        <section id="method">
+            <div class="svg-wrap">
+                <svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="45" y="30" width="90" height="120" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.3"/>
+                    <rect x="55" y="40" width="70" height="100" fill="none" stroke="#16a34a" stroke-width="1.3"/>
+                    <circle cx="60" cy="45" r="4" fill="#dc2626"/><circle cx="90" cy="45" r="4" fill="#dc2626"/><circle cx="120" cy="45" r="4" fill="#dc2626"/>
+                    <circle cx="60" cy="90" r="4" fill="#dc2626"/><circle cx="120" cy="90" r="4" fill="#dc2626"/>
+                    <circle cx="60" cy="135" r="4" fill="#dc2626"/><circle cx="90" cy="135" r="4" fill="#dc2626"/><circle cx="120" cy="135" r="4" fill="#dc2626"/>
+                    <text x="90" y="168" font-size="8" text-anchor="middle" font-family="Times New Roman">longitudinal bars + lateral ties</text>
+                </svg>
+                <div class="figcaption">Typical biaxially-loaded column: longitudinal bars distributed on all four faces, enclosed by lateral ties.</div>
+            </div>
+            <div class="callout">
+                <strong>1.</strong> Factored P<sub>u</sub>, M<sub>ux</sub>, M<sub>uy</sub> (add minimum eccentricity moments).<br>
+                <strong>2.</strong> Assume steel p = <span class="frac"><span class="fn">100A<sub>sc</sub></span><span class="fd">bD</span></span> and <span class="frac"><span class="fn">d&prime;</span><span class="fd">D</span></span>; compute <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span>, <span class="frac"><span class="fn">M<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD&sup2;</span></span>.<br>
+                <strong>3.</strong> From the SP-16 chart read the uniaxial capacities M<sub>ux1</sub>, M<sub>uy1</sub> for that P<sub>u</sub>.<br>
+                <strong>4.</strong> P<sub>uz</sub> = 0.45f<sub>ck</sub>A<sub>c</sub> + 0.75f<sub>y</sub>A<sub>sc</sub>; &alpha;<sub>n</sub> = 1.0 at <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span> = 0.2, = 2.0 at 0.8 (linear between).<br>
+                <strong>5.</strong> Check (<span class="frac"><span class="fn">M<sub>ux</sub></span><span class="fd">M<sub>ux1</sub></span></span>)<sup>&alpha;n</sup> + (<span class="frac"><span class="fn">M<sub>uy</sub></span><span class="fd">M<sub>uy1</sub></span></span>)<sup>&alpha;n</sup> &le; 1.0. Increase steel and repeat if not satisfied; detail longitudinal bars (0.8&ndash;6%) and ties.
+            </div>
+        </section>
+        <section id="worked">
+            <h3>2. &nbsp;Design a short column 400&times;500 mm, unsupported length 4.0 m, both ends held and restrained against rotation at one end, carrying a factored axial load of 1600 kN with factored moments of 150 kN-m and 50 kN-m about the two axes. Use M25 and Fe500. <span class="year-tag">2080 Baishakh &middot; Q2b</span> <span class="year-tag">[10 marks]</span></h3>
+            <p>Try p = 2% &rarr; A<sub>sc</sub> = 4000 mm&sup2;. P<sub>uz</sub> = 0.45&times;25&times;(200000&minus;4000) + 0.75&times;500&times;4000 = 2205 + 1500 = <strong>3705 kN</strong>; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span> = 0.43 &rarr; &alpha;<sub>n</sub> = 1.39.</p>
+            <p><span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span> = <span class="frac"><span class="fn">1600&times;10&sup3;</span><span class="fd">25&times;400&times;500</span></span> = 0.32; <span class="frac"><span class="fn">d&prime;</span><span class="fd">D</span></span> = 0.1. From SP-16: <span class="frac"><span class="fn">M<sub>ux1</sub></span><span class="fd">f<sub>ck</sub>bD&sup2;</span></span> &asymp; 0.15 &rarr; M<sub>ux1</sub> &asymp; 375 kN-m; M<sub>uy1</sub> (about minor, b=400) &asymp; 0.15&times;25&times;500&times;400&sup2; = 300 kN-m.</p>
+            <p>Check: (<span class="frac"><span class="fn">150</span><span class="fd">375</span></span>)<sup>1.39</sup> + (<span class="frac"><span class="fn">50</span><span class="fd">300</span></span>)<sup>1.39</sup> = 0.28 + 0.08 = <strong>0.36 &le; 1.0 &rArr; safe</strong> (2% could even be reduced). Provide 8&minus;25 mm with ties.</p>
+        </section>
+        <section id="list">
+            <p>Each: assume steel p, A<sub>sc</sub>=<span class="frac"><span class="fn">p&middot;bD</span><span class="fd">100</span></span> &rarr; P<sub>uz</sub>=0.45f<sub>ck</sub>A<sub>c</sub>+0.75f<sub>y</sub>A<sub>sc</sub> &rarr; &alpha;<sub>n</sub> (1.0 at <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.2, 2.0 at 0.8) &rarr; read M<sub>ux1</sub>, M<sub>uy1</sub> from SP-16 (<span class="frac"><span class="fn">d&prime;</span><span class="fd">D</span></span>=0.1) &rarr; check (<span class="frac"><span class="fn">M<sub>ux</sub></span><span class="fd">M<sub>ux1</sub></span></span>)<sup>&alpha;n</sup>+(<span class="frac"><span class="fn">M<sub>uy</sub></span><span class="fd">M<sub>uy1</sub></span></span>)<sup>&alpha;n</sup>&le;1.</p>
+            <h3>3. &nbsp;Design a column 350&times;550 mm carrying a factored axial load of 900 kN plus a moment of 200 kN-m about the major axis; unsupported 3 m, effective 3.6 m. Use M25 and Fe415. <span class="year-tag">2081 Baishakh &middot; Q3b</span> <span class="year-tag">[10 marks]</span></h3>
+<p>p=0.8% &rarr; A<sub>sc</sub>=1540 mm². P<sub>uz</sub>=2628 kN; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.34 &rarr; &alpha;<sub>n</sub>=1.24. M<sub>ux1</sub>&asymp;225 kN-m. (<span class="frac"><span class="fn">200</span><span class="fd">225</span></span>)<sup>1.24</sup>=<strong>0.86 &le; 1</strong> &rArr; safe. Provide <strong>8&minus;16&phi;</strong> + ties.</p>
+            <h3>4. &nbsp;Design a column 350&times;350 mm carrying a factored axial load of 1440 kN with M<sub>ux</sub> 195 and M<sub>uy</sub> 180 kN-m; unsupported 3.50 m. Use M20 and Fe500 (TMT) and provide ductile detailing of the transverse reinforcement. <span class="year-tag">2076 Chaitra &middot; Q2b</span> <span class="year-tag">[12 marks]</span></h3>
+<p><span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span>=0.59 (very high axial) with large biaxial moments &rArr; even at p=4% the interaction &gt; 1. <strong>Enlarge to 400&times;400 (or p&asymp;6%)</strong>, then interaction &le; 1. Provide IS 13920 confining hoops at ends.</p>
+            <h3>5. &nbsp;Design a short column 300&times;400 mm carrying a factored axial load of 1400 kN with M<sub>ux</sub> 200 and M<sub>uy</sub> 110 kN-m; unsupported 3 m. Use M20 and Fe500 (TMT) with ductile detailing. <span class="year-tag">2076 Ashwin &middot; Q4a</span> <span class="year-tag">[10 marks]</span></h3>
+<p><span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span>=0.58 is high; with M<sub>ux</sub>=200 the section is over-utilised at p=4% &rArr; <strong>enlarge to 350&times;450</strong> (or p&asymp;6%). Then design biaxially + ductile hoops.</p>
+            <h3>6. &nbsp;Design a biaxially loaded short square column 400&times;400 mm carrying an ultimate axial load of 800 kN (including live load) at an eccentricity of 80 mm in both directions. Use M20 and Fe415. <span class="year-tag">2078 Bhadra &middot; Q3a</span> <span class="year-tag">[8 marks]</span></h3>
+<p>M<sub>ux</sub>=M<sub>uy</sub>=P<sub>u</sub>&middot;e=800&times;0.08=64 kN-m. p=0.8% &rarr; A<sub>sc</sub>=1280; P<sub>uz</sub>=1827 kN; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.44 &rarr; &alpha;<sub>n</sub>=1.40. M<sub>u1</sub>&asymp;109. 2&times;(<span class="frac"><span class="fn">64</span><span class="fd">109</span></span>)<sup>1.4</sup>=<strong>0.95 &le; 1</strong> &rArr; safe. <strong>8&minus;16&phi;</strong>.</p>
+            <h3>7. &nbsp;Design a short column 350&times;500 mm, unsupported 3.30 m, carrying a factored axial load of 1500 kN with moments 130 and 80 kN-m. Use M30 and Fe500. Sketch the detailing. <span class="year-tag">2075 Chaitra &middot; Q3b</span> <span class="year-tag">[14 marks]</span></h3>
+<p>p=0.8% &rarr; A<sub>sc</sub>=1400; P<sub>uz</sub>=2869; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.52 &rarr; &alpha;<sub>n</sub>=1.54. M<sub>ux1</sub>&asymp;223, M<sub>uy1</sub>&asymp;156. interaction=<strong>0.79 &le; 1</strong> &rArr; safe. <strong>8&minus;16&phi;</strong>.</p>
+            <h3>8. &nbsp;Design a biaxially loaded column 500&times;600 mm, unsupported 3.10 m, with M<sub>ux</sub> 125, P<sub>u</sub> 1300 and M<sub>uy</sub> 200 kN-m, bars on four sides. Use M25 and Fe500. Sketch. <span class="year-tag">2075 Ashwin &middot; Q4a</span> <span class="year-tag">[15 marks]</span></h3>
+<p>p=0.8% &rarr; A<sub>sc</sub>=2400; P<sub>uz</sub>=4248; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.31 &rarr; &alpha;<sub>n</sub>=1.18. M<sub>ux1</sub>&asymp;382, M<sub>uy1</sub>&asymp;319. interaction=<strong>0.85 &le; 1</strong> &rArr; safe. <strong>8&minus;20&phi;</strong>.</p>
+            <h3>9. &nbsp;Design a short column 300&times;450 mm, unsupported 3.0 m, carrying a factored load of 1550 kN with M<sub>ux</sub> 130 and M<sub>uy</sub> 90 kN-m. Provide ductile detailing of the transverse reinforcement. Use M20 and Fe500. <span class="year-tag">2074 Chaitra &middot; Q2b</span> <span class="year-tag">[14 marks]</span></h3>
+<p>p=2.5% &rarr; A<sub>sc</sub>=3375; P<sub>uz</sub>=2450; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.63 &rarr; &alpha;<sub>n</sub>=1.72. M<sub>ux1</sub>&asymp;207, M<sub>uy1</sub>&asymp;138. interaction=<strong>0.93 &le; 1</strong> &rArr; safe. <strong>8&minus;25&phi;</strong> + ductile hoops.</p>
+            <h3>10. &nbsp;Design a column carrying a factored axial load of 1500 kN with M<sub>ux</sub> 120 and M<sub>uy</sub> 88 kN-m; ends held in position but not restrained against rotation. Design the longitudinal and transverse reinforcement and sketch. Use M25 and Fe415. <span class="year-tag">2074 Ashwin &middot; Q3b</span> <span class="year-tag">[15 marks]</span></h3>
+<p>p=0.8% &rarr; A<sub>sc</sub>=1600; P<sub>uz</sub>=2730; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.55 &rarr; &alpha;<sub>n</sub>=1.58. M<sub>ux1</sub>&asymp;212, M<sub>uy1</sub>&asymp;170. interaction=<strong>0.76 &le; 1</strong> &rArr; safe. <strong>8&minus;16&phi;</strong>.</p>
+            <h3>11. &nbsp;Design the longitudinal reinforcement for a short column 400&times;500 mm with P<sub>u</sub> 1600 kN, M<sub>ux</sub> 20.0 and M<sub>uy</sub> 150 kN-m. Use M25 and Fe415. <span class="year-tag">2073 Shrawan &middot; Q2a</span> <span class="year-tag">[5 marks]</span></h3>
+<p>p=0.8% &rarr; A<sub>sc</sub>=1600; P<sub>uz</sub>=2730; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.59 &rarr; &alpha;<sub>n</sub>=1.64. M<sub>uy1</sub>&asymp;170. interaction=<strong>0.83 &le; 1</strong> &rArr; safe. <strong>8&minus;16&phi;</strong>.</p>
+            <h3>12. &nbsp;Design a short column 55&times;45 cm carrying a factored axial load of 1800 kN with M<sub>ux</sub> 175 kN-m on two sides; unsupported 3.1 m. Use M25 and Fe500. <span class="year-tag">2072 Chaitra &middot; Q3a</span> <span class="year-tag">[15 marks]</span></h3>
+<p>p=1.0% &rarr; A<sub>sc</sub>=2475; P<sub>uz</sub>=3685; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.49 &rarr; &alpha;<sub>n</sub>=1.48. M<sub>ux1</sub>&asymp;265, M<sub>uy1</sub>&asymp;323. interaction=<strong>0.95 &le; 1</strong> &rArr; safe. <strong>8&minus;20&phi;</strong>.</p>
+            <h3>13. &nbsp;Design a short rectangular column 300&times;500 mm carrying a factored axial load of 2000 kN with M<sub>ux</sub> 190 and M<sub>uy</sub> 95 kN-m; unsupported 3 m. Use M30 and Fe500. <span class="year-tag">2072 Kartik &middot; Q3a</span> <span class="year-tag">[16 marks]</span></h3>
+<p>p=1.5% &rarr; A<sub>sc</sub>=2250; P<sub>uz</sub>=2838; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.70 &rarr; &alpha;<sub>n</sub>=1.84. M<sub>ux1</sub>&asymp;270, M<sub>uy1</sub>&asymp;162. interaction=<strong>0.90 &le; 1</strong> &rArr; safe. <strong>8&minus;20&phi;</strong>.</p>
+            <h3>14. &nbsp;Design a short column 450&times;300 mm, unsupported 3 m, carrying an ultimate axial load of 1500 kN with moments 150 and 80 kN-m. Use M30 and Fe500. Sketch. <span class="year-tag">2071 Chaitra &middot; Q2a</span> <span class="year-tag">[14 marks]</span></h3>
+<p>p=2.0% &rarr; A<sub>sc</sub>=2700; P<sub>uz</sub>=2799; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.54 &rarr; &alpha;<sub>n</sub>=1.56. M<sub>ux1</sub>&asymp;176, M<sub>uy1</sub>&asymp;264. interaction=<strong>0.93 &le; 1</strong> &rArr; safe. <strong>6&minus;25&phi;</strong>.</p>
+            <h3>15. &nbsp;Design a column of 4 m with both ends fixed and held, carrying a design axial load of 1000 kN plus a factored bending moment of 100 kN-m. Design the longitudinal and transverse reinforcement. Use M20 and Fe415. <span class="year-tag">2069 Chaitra &middot; Q1b</span> <span class="year-tag">[14 marks]</span></h3>
+<p>p=0.8% &rarr; A<sub>sc</sub>=1280; P<sub>uz</sub>=1827; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.55 &rarr; &alpha;<sub>n</sub>=1.58. M<sub>u1</sub>&asymp;109. (<span class="frac"><span class="fn">100</span><span class="fd">109</span></span>)<sup>1.58</sup>=<strong>0.88 &le; 1</strong> &rArr; safe. <strong>8&minus;16&phi;</strong>.</p>
+            <h3>16. &nbsp;Design a square RC column carrying an ultimate factored load of 800 kN (including live load) at an eccentricity of 80 mm in both the X and Y directions. Use M20 and Fe415. <span class="year-tag">2069 Chaitra &middot; Q4c</span> <span class="year-tag">[8 marks]</span></h3>
+<p>Same as 2078 Bhadra: M<sub>ux</sub>=M<sub>uy</sub>=64 kN-m; interaction=<strong>0.95 &le; 1</strong> &rArr; safe with <strong>8&minus;16&phi;</strong>.</p>
+            <h3>17. &nbsp;Check the safety of a column 600&times;400 mm with 8 bars of 28 mm, carrying M<sub>ux</sub> 350, M<sub>uy</sub> 50 and P<sub>u</sub> 2000 kN. Use M20 and Fe415, cover 60 mm. <span class="year-tag">2065 Kartik &middot; Q1b</span> <span class="year-tag">[10 marks]</span></h3>
+<p>A<sub>sc</sub>=4926 mm² (p=2.05%). P<sub>uz</sub>=3649; <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>=0.55 &rarr; &alpha;<sub>n</sub>=1.58. M<sub>ux1</sub>&asymp;425, M<sub>uy1</sub>&asymp;283. (<span class="frac"><span class="fn">350</span><span class="fd">425</span></span>)<sup>1.58</sup>+(<span class="frac"><span class="fn">50</span><span class="fd">283</span></span>)<sup>1.58</sup>=<strong>0.80 &le; 1</strong> &rArr; <strong>section is safe</strong>.</p>
+            <div class="note">For &ldquo;also do ductile detailing&rdquo; questions (2076 Chaitra/Ashwin, 2074 Chaitra), add IS 13920 special confining hoops over l<sub>o</sub> at each end (spacing &le; ¼ min-dimension and 100 mm) &mdash; see the Detailing/EQ solutions.</div>
+        </section>
+        <section id="slender">
+            <p>When <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">D</span></span> (or <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">b</span></span>) &ge; 12 the column is slender: add the additional moment M<sub>a</sub>=P<sub>u</sub>D(<span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">D</span></span>)<span class="frac"><span class="fn">&sup2;</span><span class="fd">2000</span></span> (&times; reduction k=<span class="frac"><span class="fn">P<sub>uz</sub>&minus;P<sub>u</sub></span><span class="fd">P<sub>uz</sub>&minus;P<sub>b</sub></span></span>) to the primary moment, then design biaxially as in D.</p>
+            <h3>18. &nbsp;Design a column 650&times;450 mm carrying a factored axial load of 1600 kN; moments 90 and 55 (top), 35 and 30 (bottom) about the major/minor axes; effective lengths 7 and 6.5 m; double curvature. Use M30 and Fe500 (TMT). Provide construction drawings. <span class="year-tag">2082 Bhadra &middot; Q4a</span> <span class="year-tag">[12 marks]</span></h3>
+<p><span class="frac"><span class="fn">l<sub>ex</sub></span><span class="fd">D</span></span>=10.8 (&lt;12, short about major); <span class="frac"><span class="fn">l<sub>ey</sub></span><span class="fd">b</span></span>=14.4 (&gt;12, slender about minor). M<sub>ay</sub>=P<sub>u</sub>b(<span class="frac"><span class="fn">l<sub>ey</sub></span><span class="fd">b</span></span>)<span class="frac"><span class="fn">²</span><span class="fd">2000</span></span>=<strong>75.1 kN-m</strong> (×k) added to primary M<sub>uy</sub>; then biaxial design.</p>
+            <h3>19. &nbsp;Design a slender column 400&times;500 mm, L<sub>ex</sub> 7.0 m, L<sub>ey</sub> 6.0 m, carrying a factored axial load of 1600 kN; top M<sub>ux</sub> 180, M<sub>uy</sub> 110; bottom M<sub>ux</sub> 100, M<sub>uy</sub> 50; single curvature. Use M20 and Fe415. <span class="year-tag">2081 Bhadra &middot; Q4b</span> <span class="year-tag">[12 marks]</span></h3>
+<p><span class="frac"><span class="fn">l<sub>ex</sub></span><span class="fd">D</span></span>=14.0, <span class="frac"><span class="fn">l<sub>ey</sub></span><span class="fd">b</span></span>=15.0 (both &ge;12). M<sub>ax</sub>=<strong>78.4</strong>, M<sub>ay</sub>=<strong>72.0 kN-m</strong> (×k) added to the primary top moments; then biaxial design + ties.</p>
+            <h3>20. &nbsp;Design a braced column 450&times;350 mm, clear height 4.0 m, carrying an axial load of 700 kN with BM 100 (major) and 80 (minor) kN-m; held at both ends and restrained against rotation at one end. Use M25 and Fe415. <span class="year-tag">2080 Bhadra &middot; Q3b</span> <span class="year-tag">[12 marks]</span></h3>
+<p>l<sub>e</sub>&asymp;0.85&times;4.0=3.4 m; <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">D</span></span>=7.6, <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">b</span></span>=9.7 (both &lt;12) &rArr; <strong>short column</strong> &mdash; no additional moment. Design biaxially for (700; 100, 80).</p>
+            <h3>21. &nbsp;Design an unbraced column 400&times;350 mm, clear height 6.0 m, carrying an axial load of 600 kN with BM 100 (major) and 50 (minor) kN-m. Use M20 and Fe415. <span class="year-tag">2079 Bhadra &middot; Q3b</span> <span class="year-tag">[14 marks]</span></h3>
+<p>Unbraced l<sub>e</sub>&asymp;1.2&times;6.0=7.2 m; <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">D</span></span>=18, <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">b</span></span>=20.6 (slender). M<sub>ax</sub>=<strong>38.9</strong>, M<sub>ay</sub>=<strong>44.4 kN-m</strong> (×k) added to primary moments; then biaxial design.</p>
+        </section>
+    </div>
+</main>
+<div class="mnemonics-panel"><button class="mnemonics-toggle" id="mnToggle" title="My Mnemonics"></button></div>
+<div class="mnemonics-drawer" id="mnDrawer">
+    <div class="mnemonics-drawer-header"><h4>My Mnemonics</h4><button id="mnClose">&times;</button></div>
+    <div class="mnemonics-body"><ul class="mnemonics-list" id="mnList"></ul></div>
+    <div class="mnemonics-add"><input type="text" id="mnInput" placeholder="Add a mnemonic…" maxlength="500"><button id="mnAdd">Add</button></div>
+</div>
+<script src="../../common.js"></script>
+<script>
+(function(){var KEY='rcc-mnemonics';var list=JSON.parse(localStorage.getItem(KEY)||'[]');var ul=document.getElementById('mnList');var inp=document.getElementById('mnInput');function render(){ul.innerHTML='';if(!list.length){ul.innerHTML='<li class="mnemonics-empty">No mnemonics yet. Add one below!</li>';return;}list.forEach(function(t,i){var li=document.createElement('li');var sp=document.createElement('span');sp.className='mn-text';sp.textContent=t;var btn=document.createElement('button');btn.className='mn-del';btn.textContent='\u2715';btn.title='Delete';btn.onclick=function(){list.splice(i,1);localStorage.setItem(KEY,JSON.stringify(list));render();};li.appendChild(sp);li.appendChild(btn);ul.appendChild(li);});}render();document.getElementById('mnToggle').onclick=function(){document.getElementById('mnDrawer').classList.toggle('open');};document.getElementById('mnClose').onclick=function(){document.getElementById('mnDrawer').classList.remove('open');};document.getElementById('mnAdd').onclick=addMn;inp.addEventListener('keydown',function(e){if(e.key==='Enter')addMn();});function addMn(){var v=inp.value.trim();if(!v)return;list.push(v);localStorage.setItem(KEY,JSON.stringify(list));inp.value='';render();}})();
+</script>
+</body>
+</html>

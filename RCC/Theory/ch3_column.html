@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCC Manual &mdash; Ch 3: Column</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="ch-nav">
+    <a href="ch2_beam.html">&larr; Ch 2</a>
+    <span class="nav-title">Ch 3: Column (Compression Members)</span>
+    <a href="ch4_footing.html">Ch 4: Footing &rarr;</a>
+</nav>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<main>
+
+    <div class="ch-header">
+        <div class="meta">Design of RCC Structures (ENCE 352) &mdash; Digital Manual</div>
+        <h1>CHAPTER 3: COLUMN</h1>
+        <div class="author">Compression Members &mdash; Short &amp; Long, Uniaxial &amp; Biaxial (IS 456:2000, SP-16)</div>
+    </div>
+
+    <div class="callout">
+        Covers effective length and classification of columns, interaction diagrams, and the design of
+        short and long (slender) columns under axial load and uniaxial/biaxial bending, with reinforcement
+        detailing.
+    </div>
+
+    <nav class="toc-card">
+        <h3>Table of Contents</h3>
+        <div class="toc-grid">
+            <a href="#s3-1">3.1 Introduction &amp; Classification</a>
+            <a href="#s3-2">3.2 Effective Length of Columns</a>
+            <a href="#s3-3">3.3 Short Axially-Loaded Columns</a>
+            <a href="#s3-4">3.4 Interaction Diagrams</a>
+            <a href="#s3-5">3.5 Short Columns with Uniaxial Bending</a>
+            <a href="#s3-6">3.6 Short Columns with Biaxial Bending</a>
+            <a href="#s3-7">3.7 Long (Slender) Columns</a>
+            <a href="#s3-8">3.8 Reinforcement Detailing</a>
+        </div>
+    </nav>
+
+    <div class="content">
+
+        <section id="s3-1">
+            <h2>3.1 INTRODUCTION &amp; CLASSIFICATION</h2>
+            <p>A <strong>column</strong> is a compression member whose effective length exceeds 3 times its least lateral dimension, carrying primarily axial load (often with moments). Classification:</p>
+            <ul>
+                <li><strong>By slenderness:</strong> <em>short</em> if both slenderness ratios <span class="frac"><span class="fn">l<sub>ex</sub></span><span class="fd">D</span></span> and <span class="frac"><span class="fn">l<sub>ey</sub></span><span class="fd">b</span></span> &lt; 12, otherwise <em>long / slender</em>.</li>
+                <li><strong>By loading:</strong> axially loaded; axial + uniaxial moment; axial + biaxial moment.</li>
+                <li><strong>By lateral reinforcement:</strong> tied or spirally reinforced.</li>
+                <li><strong>By shape:</strong> rectangular, square, circular, etc.</li>
+            </ul>
+            <div class="note"><strong>Minimum eccentricity</strong> (IS 456): e<sub>min</sub> = <span class="frac"><span class="fn">l</span><span class="fd">500</span></span> + <span class="frac"><span class="fn">D</span><span class="fd">30</span></span> &ge; 20 mm. If the actual eccentricity does not exceed 0.05D, the column may be designed as axially loaded.</div>
+        </section>
+
+        <section id="s3-2">
+            <h2>3.2 EFFECTIVE LENGTH OF COLUMNS</h2>
+            <p>The <strong>effective length</strong> l<sub>e</sub> = k&middot;l depends on the end conditions (l = unsupported length, k = effective-length factor, IS 456 Table 28):</p>
+            <table>
+                <thead><tr><th>End condition</th><th>Theoretical k</th><th>Recommended (braced)</th></tr></thead>
+                <tbody>
+                    <tr><td>Both ends fixed</td><td>0.50</td><td>0.65</td></tr>
+                    <tr><td>One fixed, one hinged</td><td>0.70</td><td>0.80</td></tr>
+                    <tr><td>Both ends hinged (pinned)</td><td>1.00</td><td>1.00</td></tr>
+                    <tr><td>Fixed &amp; free (cantilever, unbraced)</td><td>2.00</td><td>2.00+</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="s3-3">
+            <h2>3.3 SHORT AXIALLY-LOADED COLUMNS</h2>
+            <div class="def-box">
+                <div class="dt">Ultimate axial capacity (short tied column)</div>
+                P<sub>u</sub> = 0.4&middot;f<sub>ck</sub>&middot;A<sub>c</sub> + 0.67&middot;f<sub>y</sub>&middot;A<sub>sc</sub><br>
+                (A<sub>c</sub> = net concrete area; A<sub>sc</sub> = area of longitudinal steel.) Includes an allowance for the minimum eccentricity up to 0.05D.
+            </div>
+            <p>For spirally reinforced short columns, the capacity may be increased by 5%: P<sub>u</sub> = 1.05(0.4f<sub>ck</sub>A<sub>c</sub> + 0.67f<sub>y</sub>A<sub>sc</sub>), provided the spiral satisfies the volumetric ratio requirement.</p>
+        </section>
+
+        <section id="s3-4">
+            <h2>3.4 INTERACTION DIAGRAMS</h2>
+            <p>An <strong>interaction diagram</strong> is the locus of all (P<sub>u</sub>, M<sub>u</sub>) combinations that cause failure of a given column section &mdash; a plot of axial capacity vs moment capacity.</p>
+            <div class="svg-wrap">
+                <svg width="420" height="300" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="60" y1="20" x2="60" y2="260" stroke="#666" stroke-width="1.5"/>
+                    <line x1="60" y1="260" x2="380" y2="260" stroke="#666" stroke-width="1.5"/>
+                    <path d="M60 40 Q75 150 210 190 Q330 215 340 260" fill="none" stroke="#4f46e5" stroke-width="2"/>
+                    <circle cx="60" cy="40" r="4" fill="#16a34a"/>
+                    <text x="70" y="38" font-size="9" font-family="Times New Roman">Pure axial (P<tspan baseline-shift="sub">o</tspan>)</text>
+                    <circle cx="210" cy="190" r="4" fill="#d97706"/>
+                    <text x="220" y="185" font-size="9" font-family="Times New Roman">Balanced point (P<tspan baseline-shift="sub">b</tspan>, M<tspan baseline-shift="sub">b</tspan>)</text>
+                    <circle cx="340" cy="260" r="4" fill="#dc2626"/>
+                    <text x="300" y="278" font-size="9" font-family="Times New Roman">Pure bending (M<tspan baseline-shift="sub">o</tspan>)</text>
+                    <text x="30" y="150" font-size="10" font-family="Times New Roman" transform="rotate(-90 30 150)">P<tspan baseline-shift="sub">u</tspan></text>
+                    <text x="220" y="292" font-size="10" font-family="Times New Roman">M<tspan baseline-shift="sub">u</tspan></text>
+                    <text x="120" y="110" font-size="8" fill="#16a34a" font-family="Times New Roman">compression failure</text>
+                    <text x="255" y="235" font-size="8" fill="#dc2626" font-family="Times New Roman">tension failure</text>
+                </svg>
+                <div class="figcaption">Figure 3.1: Column interaction diagram &mdash; above the balanced point failure is by concrete crushing (compression), below it by steel yielding (tension)</div>
+            </div>
+            <p>Design charts in <strong>SP-16</strong> plot <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span> against <span class="frac"><span class="fn">M<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD&sup2;</span></span> for various <span class="frac"><span class="fn">p</span><span class="fd">f<sub>ck</sub></span></span> and <span class="frac"><span class="fn">d&prime;</span><span class="fd">D</span></span>, allowing direct selection of the steel ratio p = <span class="frac"><span class="fn">100A<sub>sc</sub></span><span class="fd">bD</span></span>.</p>
+        </section>
+
+        <section id="s3-5">
+            <h2>3.5 SHORT COLUMNS WITH UNIAXIAL BENDING</h2>
+            <ol>
+                <li>Compute factored P<sub>u</sub> and M<sub>u</sub> (include minimum eccentricity).</li>
+                <li>Assume a section (b&times;D) and <span class="frac"><span class="fn">d&prime;</span><span class="fd">D</span></span>; compute <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span> and <span class="frac"><span class="fn">M<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD&sup2;</span></span>.</li>
+                <li>From the SP-16 chart, read <span class="frac"><span class="fn">p</span><span class="fd">f<sub>ck</sub></span></span> &rarr; steel p = (<span class="frac"><span class="fn">p</span><span class="fd">f<sub>ck</sub></span></span>)&times;f<sub>ck</sub> &rarr; A<sub>sc</sub> = <span class="frac"><span class="fn">pbD</span><span class="fd">100.</span></span></li>
+                <li>Provide bars (&ge; 0.8% and &le; 6% of gross area); design ties.</li>
+            </ol>
+        </section>
+
+        <section id="s3-6">
+            <h2>3.6 SHORT COLUMNS WITH BIAXIAL BENDING</h2>
+            <div class="def-box">
+                <div class="dt">Biaxial interaction (IS 456 cl. 39.6)</div>
+                (<span class="frac"><span class="fn">M<sub>ux</sub></span><span class="fd">M<sub>ux1</sub></span></span>)<sup>&alpha;<sub>n</sub></sup> + (<span class="frac"><span class="fn">M<sub>uy</sub></span><span class="fd">M<sub>uy1</sub></span></span>)<sup>&alpha;<sub>n</sub></sup> &le; 1.0
+            </div>
+            <p>M<sub>ux1</sub>, M<sub>uy1</sub> are the uniaxial moment capacities about each axis for the given P<sub>u</sub> (from SP-16). The exponent &alpha;<sub>n</sub> varies from 1.0 to 2.0 with <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span> (0.2 &rarr; 1.0, 0.8 &rarr; 2.0), where P<sub>uz</sub> = 0.45f<sub>ck</sub>A<sub>c</sub> + 0.75f<sub>y</sub>A<sub>sc</sub>. Iterate the steel until the interaction check &le; 1.0.</p>
+        </section>
+
+        <section id="s3-7">
+            <h2>3.7 LONG (SLENDER) COLUMNS</h2>
+            <p>When <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">D</span></span> or <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">b</span></span> &ge; 12, the column is <strong>slender</strong> and additional moments from lateral deflection must be added:</p>
+            <div class="callout">
+                Additional moment: <strong>M<sub>ax</sub> = P<sub>u</sub>D(<span class="frac"><span class="fn">l<sub>ex</sub></span><span class="fd">D</span></span>)<span class="frac"><span class="fn">&sup2;</span><span class="fd">2000</span></span></strong> and <strong>M<sub>ay</sub> = P<sub>u</sub>b(<span class="frac"><span class="fn">l<sub>ey</sub></span><span class="fd">b</span></span>)<span class="frac"><span class="fn">&sup2;</span><span class="fd">2000</span></span></strong> (IS 456 cl. 39.7), multiplied by a reduction factor k = <span class="frac"><span class="fn">P<sub>uz</sub> &minus; P<sub>u</sub></span><span class="fd">P<sub>uz</sub> &minus; P<sub>b</sub></span></span> &le; 1. These are added to the primary moments before designing as a column with bending.
+            </div>
+        </section>
+
+        <section id="s3-8">
+            <h2>3.8 REINFORCEMENT DETAILING</h2>
+            <ul>
+                <li><strong>Longitudinal steel:</strong> minimum 0.8%, maximum 6% of gross area (4% practical); minimum 4 bars (rectangular), 6 bars (circular); bar diameter &ge; 12 mm.</li>
+                <li><strong>Ties (lateral):</strong> diameter &ge; &frac14; of the largest longitudinal bar and &ge; 6 mm; spacing &le; least lateral dimension, 16&times; smallest longitudinal bar diameter, and 300 mm.</li>
+                <li><strong>Cover:</strong> &ge; 40 mm (or bar diameter).</li>
+                <li>Every corner and alternate bar restrained by a tie corner; no bar farther than 150 mm from a restrained bar.</li>
+            </ul>
+        </section>
+
+    </div><!-- .content -->
+
+</main>
+
+<!-- Mnemonics Holder -->
+<div class="mnemonics-panel">
+    <button class="mnemonics-toggle" id="mnToggle" title="My Mnemonics"></button>
+</div>
+<div class="mnemonics-drawer" id="mnDrawer">
+    <div class="mnemonics-drawer-header">
+        <h4>My Mnemonics</h4>
+        <button id="mnClose">&times;</button>
+    </div>
+    <div class="mnemonics-body">
+        <ul class="mnemonics-list" id="mnList"></ul>
+    </div>
+    <div class="mnemonics-add">
+        <input type="text" id="mnInput" placeholder="Add a mnemonic…" maxlength="500">
+        <button id="mnAdd">Add</button>
+    </div>
+</div>
+
+<script src="../../common.js"></script>
+<script>
+(function(){
+  var KEY='rcc-mnemonics';
+  var list=JSON.parse(localStorage.getItem(KEY)||'[]');
+  var ul=document.getElementById('mnList');
+  var inp=document.getElementById('mnInput');
+  function render(){
+    ul.innerHTML='';
+    if(!list.length){ul.innerHTML='<li class="mnemonics-empty">No mnemonics yet. Add one below!</li>';return;}
+    list.forEach(function(t,i){
+      var li=document.createElement('li');
+      var sp=document.createElement('span');sp.className='mn-text';sp.textContent=t;
+      var btn=document.createElement('button');btn.className='mn-del';btn.textContent='\u2715';btn.title='Delete';
+      btn.onclick=function(){list.splice(i,1);localStorage.setItem(KEY,JSON.stringify(list));render();};
+      li.appendChild(sp);li.appendChild(btn);ul.appendChild(li);
+    });
+  }
+  render();
+  document.getElementById('mnToggle').onclick=function(){document.getElementById('mnDrawer').classList.toggle('open');};
+  document.getElementById('mnClose').onclick=function(){document.getElementById('mnDrawer').classList.remove('open');};
+  document.getElementById('mnAdd').onclick=addMn;
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')addMn();});
+  function addMn(){var v=inp.value.trim();if(!v)return;list.push(v);localStorage.setItem(KEY,JSON.stringify(list));inp.value='';render();}
+})();
+</script>
+
+</body>
+</html>

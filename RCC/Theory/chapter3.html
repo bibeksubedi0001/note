@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3 &ndash; Limit State Method</title>
+  <link rel="stylesheet" href="tes.css">
+  <style id="dark-mode-styles">
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .2em;line-height:1.08}
+    .frac>.fn{padding:0 .4em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .4em}
+    .frac .frac{font-size:.92em}
+    .qa{margin:1.7rem 0;padding:.95rem 1.15rem 1rem;border:1px solid var(--line);border-left:4px solid #2d6a4f;border-radius:8px;background:var(--paper)}
+    .qa .q{font-weight:700;color:var(--ink);margin:0 0 .8rem;line-height:1.55}
+    .qa .ref{display:inline-block;background:#2d6a4f;color:#fff;font-weight:700;font-size:.76em;letter-spacing:.02em;padding:2px 10px;border-radius:5px;margin-left:.45em;white-space:nowrap;vertical-align:middle}
+    .step{margin:.5rem 0;line-height:1.62}
+    .qa .step>strong:first-child{color:#2d6a4f}
+    .qa ol,.qa ul{margin:.5rem 0 .5rem 1.2rem}
+    .qa li{margin:.3rem 0;line-height:1.6}
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 3</div>
+    <h1>Limit State Method</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">5 Hours</span>
+      <span class="meta-badge exam">16 Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ 3.1 ═══ -->
+    <h2>3.1 Safety &amp; Serviceability Requirements; Limit States <span class="year-tag">2075</span><span class="year-tag">2074</span><span class="year-tag">2072</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>State all safety and serviceability requirements of the limit state method; define the limit state of strength and the limit state of serviceability. [6] <em>(2072 Kartik, Q1a)</em></li>
+        <li>Explain the different categories of limit state design. [6] <em>(2075 Ashwin, Q4a)</em></li>
+        <li>What are the serviceability requirements in the limit state method? Explain briefly. [4] <em>(2075 Chaitra, Q1b)</em></li>
+        <li>Explain the limit state of serviceability and its requirements. List the types of splicing. [1+4] <em>(2074 Ashwin, Q3a)</em></li>
+      </ol>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q1. State all safety and serviceability requirements of the limit state method; define the limit state of strength and the limit state of serviceability. <span class="ref">[6] &middot; 2072 Kartik, Q1a</span></p>
+      <p>A <strong>limit state</strong> is the state beyond which a structure (or part of it) becomes <strong>unfit for its intended use</strong>. In the limit state method the member is designed so that it does not reach any relevant limit state under the appropriate loads. These are grouped into two:</p>
+      <p><strong>(a) Limit states of collapse &mdash; safety requirements.</strong> Under the <em>factored (ultimate) loads</em> the structure must have adequate strength and stability against:</p>
+      <ul>
+        <li>flexure (bending)</li>
+        <li>shear</li>
+        <li>torsion</li>
+        <li>compression / buckling</li>
+        <li>tension</li>
+        <li>overall stability &mdash; overturning and sliding.</li>
+      </ul>
+      <p><strong>(b) Limit states of serviceability requirements.</strong> Under the <em>service (working) loads</em> the structure must stay fit for use with respect to:</p>
+      <ul>
+        <li><strong>deflection</strong> &mdash; final &le; span/250, and &le; span/350 or 20 mm after finishes/partitions;</li>
+        <li><strong>cracking</strong> &mdash; surface crack width &le; 0.3 mm (mild exposure);</li>
+        <li><strong>vibration</strong>, and <strong>durability &amp; fire resistance</strong>.</li>
+      </ul>
+      <p><strong>Limit state of strength (collapse)</strong> &mdash; the state at which the structure or member reaches its <em>maximum load-carrying capacity</em> and collapse is imminent (rupture of a section, crushing of concrete, buckling, or loss of overall equilibrium).</p>
+      <p><strong>Limit state of serviceability</strong> &mdash; the state at which the structure, although it has <em>not</em> collapsed, becomes <em>unfit for normal use</em> because of excessive deflection, cracking or vibration.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q2. Explain the different categories of limit state design. <span class="ref">[6] &middot; 2075 Ashwin, Q4a</span></p>
+      <p>There are <strong>two categories</strong>:</p>
+      <p><strong>1. Limit state of collapse (strength).</strong> It safeguards against collapse and is checked for flexure, shear, torsion, compression, tension and stability. It uses <em>factored loads</em> F<sub>d</sub> = &gamma;<sub>f</sub>&middot;F (e.g. 1.5(DL+LL)) and <em>design strengths</em> f/&gamma;<sub>m</sub> &mdash; 0.446f<sub>ck</sub> for concrete (&gamma;<sub>m</sub> = 1.5) and 0.87f<sub>y</sub> for steel (&gamma;<sub>m</sub> = 1.15). Because it endangers life, its probability of occurrence is kept very low.</p>
+      <p><strong>2. Limit state of serviceability.</strong> It keeps the structure usable and comfortable under everyday loads and is checked for deflection, cracking and vibration (with durability and fire). It uses <em>service (unfactored) loads</em> (&gamma;<sub>f</sub> = 1.0) and the <em>full elastic</em> material properties.</p>
+      <p>In short, the collapse limit state deals with <em>strength at ultimate load</em>, the serviceability limit state with <em>performance at working load</em>.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q3. What are the serviceability requirements in the limit state method? Explain briefly. <span class="ref">[4] &middot; 2075 Chaitra, Q1b</span></p>
+      <p>Under service loads the structure must remain fit for use; IS 456 lays down:</p>
+      <ul>
+        <li><strong>Deflection</strong> &mdash; final deflection &le; span/250; the part after partitions/finishes &le; span/350 or 20 mm (whichever is less). Controlled through the span/effective-depth ratio.</li>
+        <li><strong>Cracking</strong> &mdash; surface crack width &le; 0.3 mm (mild), 0.2/0.1 mm (severe). Controlled by bar spacing, bar diameter, minimum steel and cover.</li>
+        <li><strong>Vibration</strong> &mdash; kept within limits comfortable to the occupants.</li>
+        <li><strong>Durability &amp; fire resistance</strong> &mdash; adequate cover, concrete grade and detailing for the design life.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q4. Explain the limit state of serviceability and its requirements. List the types of splicing. <span class="ref">[1+4] &middot; 2074 Ashwin, Q3a</span></p>
+      <p>The <strong>limit state of serviceability</strong> is the condition beyond which the structure, though it has not collapsed, becomes <strong>unfit for normal use</strong> due to excessive deflection, cracking or vibration. Its <strong>requirements</strong> are: deflection &le; span/250 (and &le; span/350 or 20 mm after finishes); crack width &le; 0.3 mm (mild exposure); acceptable vibration; and adequate durability and fire resistance.</p>
+      <p><strong>Types of splicing of reinforcement:</strong></p>
+      <ol>
+        <li><strong>Lap splice</strong> &mdash; the two bars overlap by the development length L<sub>d</sub> (&asymp; 30&phi;) and transfer force through the concrete; used for &phi; &le; 36 mm, staggered and placed in low-stress zones.</li>
+        <li><strong>Welded splice</strong> &mdash; the bars are butt- or lap-welded; used for large bars where lapping would congest the section (weldable steel required).</li>
+        <li><strong>Mechanical splice (coupler)</strong> &mdash; a threaded/swaged sleeve joins the bars (parallel-thread, taper-thread or cold-swaged) and develops the full bar strength independently of the concrete.</li>
+      </ol>
+    </div>
+
+    <!-- ═══ 3.2 ═══ -->
+    <h2>3.2 Design Strength of Materials &amp; Design Loads <span class="year-tag">2081</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Define the design strength and the design load for the limit state method. [4] <em>(2081 Baishakh, Q1c)</em></li>
+      </ol>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q1. Define the design strength and the design load for the limit state method. <span class="ref">[4] &middot; 2081 Baishakh, Q1c</span></p>
+      <p>LSM starts from <em>characteristic</em> values and applies <strong>partial safety factors</strong> to obtain design values.</p>
+      <p><strong>Design strength</strong> f<sub>d</sub> = <span class="frac"><span class="fn">characteristic strength</span><span class="fd">&gamma;<sub>m</sub></span></span> = <span class="frac"><span class="fn">f</span><span class="fd">&gamma;<sub>m</sub></span></span>. The material factor &gamma;<sub>m</sub> allows for the difference between the strength of the material in the structure and in a test specimen, and for the seriousness of the limit state.</p>
+      <ul>
+        <li><strong>Concrete:</strong> f<sub>cd</sub> = <span class="frac"><span class="fn">f<sub>ck</sub></span><span class="fd">1.5</span></span>; with the 0.67 cube-to-flexure factor the peak design stress is 0.67f<sub>ck</sub>/1.5 = <strong>0.446f<sub>ck</sub></strong> (&gamma;<sub>m</sub> = 1.5).</li>
+        <li><strong>Steel:</strong> f<sub>yd</sub> = <span class="frac"><span class="fn">f<sub>y</sub></span><span class="fd">1.15</span></span> = <strong>0.87f<sub>y</sub></strong> (&gamma;<sub>m</sub> = 1.15).</li>
+      </ul>
+      <p><strong>Design load</strong> F<sub>d</sub> = &gamma;<sub>f</sub> &times; characteristic load. The load factor &gamma;<sub>f</sub> allows for possible overloading and inaccuracy in the assumed loads. For the limit state of collapse (IS 456 Table 18): 1.5(DL+LL); 1.5(DL&plusmn;WL/EL); 1.2(DL+LL&plusmn;WL/EL); and 0.9DL&plusmn;1.5WL/EL (checks reversal/uplift). For serviceability, &gamma;<sub>f</sub> = 1.0.</p>
+    </div>
+
+    <!-- ═══ 3.3 ═══ -->
+    <h2>3.3 Idealized Stress&ndash;Strain Diagram of Concrete &amp; Steel <span class="year-tag">2078</span><span class="year-tag">2073</span><span class="year-tag">2067</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Draw the idealized stress-strain diagrams of concrete and steel bars. Define characteristic strength. [2+2+2] <em>(2073 Shrawan, Q4b)</em></li>
+        <li>Define characteristic loads and strength. Discuss the stress-strain relation for steel and concrete in LSM and WSM. [1+1+2+2] <em>(2078 Bhadra, Q1a)</em></li>
+        <li>Draw the idealized stress-strain curve for steel and concrete; discuss the design values of stresses. [5] <em>(2067 Ashadh, Q3a)</em></li>
+      </ol>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q1. Draw the idealized stress-strain diagrams of concrete and steel bars. Define characteristic strength. <span class="ref">[2+2+2] &middot; 2073 Shrawan, Q4b</span></p>
+      <p><strong>Concrete (LSM):</strong> the design curve rises as a <em>parabola</em> from the origin to a strain of <strong>0.002</strong>, where it reaches the design stress <strong>0.446f<sub>ck</sub></strong> (= 0.67f<sub>ck</sub>/1.5), and then stays <em>constant</em> up to the ultimate strain <strong>0.0035</strong> at which the concrete crushes.</p>
+      <p><strong>Steel:</strong> the curve is <em>linear</em> (slope E<sub>s</sub> = 2&times;10<sup>5</sup> N/mm&sup2;) up to the design yield <strong>0.87f<sub>y</sub></strong>. Mild steel (Fe250) has a sharp yield point and a flat plateau; cold-worked HYSD bars (Fe415/500) have no sharp yield, so a curved branch runs to 0.87f<sub>y</sub> and f<sub>y</sub> is taken as the 0.2% proof stress.</p>
+      <p><strong>Characteristic strength</strong> = the strength below which not more than <strong>5%</strong> of test results are expected to fall (the 5% fractile). Assuming a normal distribution, f<sub>ck</sub> = f<sub>m</sub> &minus; 1.65&sigma;, where f<sub>m</sub> = mean strength and &sigma; = standard deviation. The diagrams are shown below.</p>
+    </div>
+
+    <div class="figure">
+      <figure>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 250" width="660" height="250">
+          <line x1="55" y1="30" x2="55" y2="205" stroke="var(--svg-line)" stroke-width="1.5"/>
+          <line x1="55" y1="205" x2="300" y2="205" stroke="var(--svg-line)" stroke-width="1.5"/>
+          <path d="M55 205 Q130 75 200 65 L285 65" fill="none" stroke="var(--svg-hub)" stroke-width="2.4"/>
+          <line x1="200" y1="65" x2="200" y2="205" stroke="var(--svg-hub)" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="176" y="220" font-size="11" fill="var(--svg-sub)">0.002</text>
+          <text x="270" y="220" font-size="11" fill="var(--svg-sub)">0.0035</text>
+          <text x="150" y="240" font-size="11" fill="var(--svg-text)" text-anchor="middle">Strain</text>
+          <text x="20" y="60" font-size="11" fill="var(--svg-text)">0.446f&#8339;&#8342;</text>
+          <text x="175" y="22" font-size="12" font-weight="bold" fill="var(--svg-text)" text-anchor="middle">Concrete (LSM)</text>
+          <line x1="390" y1="30" x2="390" y2="205" stroke="var(--svg-line)" stroke-width="1.5"/>
+          <line x1="390" y1="205" x2="640" y2="205" stroke="var(--svg-line)" stroke-width="1.5"/>
+          <path d="M390 205 L452 85 L628 75" fill="none" stroke="var(--svg-green-s)" stroke-width="2.4"/>
+          <line x1="390" y1="85" x2="452" y2="85" stroke="var(--svg-green-s)" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="352" y="89" font-size="11" fill="var(--svg-text)">0.87f&#8339;</text>
+          <text x="520" y="240" font-size="11" fill="var(--svg-text)" text-anchor="middle">Strain</text>
+          <text x="515" y="22" font-size="12" font-weight="bold" fill="var(--svg-text)" text-anchor="middle">Steel (Fe 250 / Fe 415)</text>
+        </svg>
+        <figcaption>Idealized design stress&ndash;strain curves used in LSM (partial safety factors &gamma;<sub>m</sub> already applied): concrete peak 0.446f<sub>ck</sub>, steel design yield 0.87f<sub>y</sub>.</figcaption>
+      </figure>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q2. Define characteristic loads and strength. Discuss the stress-strain relation for steel and concrete in LSM and WSM. <span class="ref">[1+1+2+2] &middot; 2078 Bhadra, Q1a</span></p>
+      <p><strong>Characteristic load</strong> = the load with a <strong>95%</strong> probability of not being exceeded during the design life (the IS 875 values). <strong>Characteristic strength</strong> = the strength below which not more than 5% of results fall, f<sub>ck</sub> = f<sub>m</sub> &minus; 1.65&sigma;.</p>
+      <p><strong>Stress-strain in LSM</strong> (design curves, &gamma;<sub>m</sub> applied): concrete parabolic to 0.002 at 0.446f<sub>ck</sub> then constant to 0.0035; steel linear to 0.87f<sub>y</sub> then a yield plateau / proof-stress branch (the figure above).</p>
+      <p><strong>Stress-strain in WSM:</strong> both materials are assumed to remain <em>linearly elastic</em> throughout. The concrete stress is kept &le; the permissible &sigma;<sub>cbc</sub> and the steel stress &le; &sigma;<sub>st</sub>, and the two are tied by the <em>modular ratio</em> m = <span class="frac"><span class="fn">280</span><span class="fd">3&sigma;<sub>cbc</sub></span></span>. There is no plastic branch &mdash; the concrete stress diagram is triangular.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q3. Draw the idealized stress-strain curve for steel and concrete; discuss the design values of stresses. <span class="ref">[5] &middot; 2067 Ashadh, Q3a</span></p>
+      <p>The curves are as in the figure above. The <strong>design values</strong> follow from dividing the characteristic strengths by the material partial safety factors &gamma;<sub>m</sub>:</p>
+      <ul>
+        <li><strong>Concrete:</strong> f<sub>ck</sub> is reduced by &gamma;<sub>m</sub> = 1.5 and by the 0.67 cube-to-flexure factor &rArr; peak <strong>design stress 0.67f<sub>ck</sub>/1.5 = 0.446f<sub>ck</sub></strong>, reached at strain 0.002 and held to 0.0035.</li>
+        <li><strong>Steel:</strong> f<sub>y</sub> is reduced by &gamma;<sub>m</sub> = 1.15 &rArr; <strong>design stress f<sub>y</sub>/1.15 = 0.87f<sub>y</sub></strong>.</li>
+      </ul>
+      <p>The larger &gamma;<sub>m</sub> for concrete (1.5) reflects its greater variability and brittleness; the smaller value for steel (1.15) reflects its more reliable, ductile behaviour.</p>
+    </div>
+
+    <!-- ═══ 3.6 ═══ -->
+    <h2>3.6 Balanced, Under- &amp; Over-Reinforced Sections <span class="year-tag">2081</span><span class="year-tag">2080</span><span class="year-tag">2076</span><span class="year-tag">2075</span><span class="year-tag">2074</span><span class="year-tag">2069</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>What are balanced, under- and over-reinforced sections? Sketch the stress distributions and give the MOR expressions. [6] <em>(2080 Baishakh, Q1a)</em></li>
+        <li>Describe the failure modes in under-reinforced, balanced and over-reinforced sections. [4] <em>(2081 Bhadra, Q1b)</em></li>
+        <li>Describe under-, over- and balanced reinforced sections. [7] <em>(2081 Baishakh, Q1a)</em></li>
+        <li>Discuss flexural sections by the amount of reinforcement; failure modes. [8] <em>(2080 Bhadra, Q1a)</em></li>
+        <li>Explain under-, balanced and over-reinforced sections in LSM. [6] <em>(2074 Ashwin, Q1a)</em></li>
+        <li>Explain, with sketches, under-, over- and balanced sections. [4] <em>(2075 Chaitra, Q1a)</em></li>
+        <li>Define balanced, under- and over-reinforced sections. [3] <em>(2076 Chaitra, Q4a)</em></li>
+        <li>Differentiate balanced/under/over-reinforced sections (LSM) with a strain diagram. [8] <em>(2069 Chaitra, Q5b)</em></li>
+      </ol>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q1. What are balanced, under- and over-reinforced sections? Sketch the stress distributions and give the MOR expressions. <span class="ref">[6] &middot; 2080 Baishakh, Q1a</span></p>
+      <p>At collapse the extreme concrete fibre strain is 0.0035 and the strain varies linearly to the steel. The type is fixed by the neutral-axis depth x<sub>u</sub> relative to the <strong>limiting depth x<sub>u,max</sub></strong> (at which the steel just reaches its design strain as the concrete reaches 0.0035): <span class="frac"><span class="fn">x<sub>u,max</sub></span><span class="fd">d</span></span> = 0.53, 0.48, 0.46 for Fe250, Fe415, Fe500.</p>
+      <p>In the rectangular stress block the compression is <strong>C = 0.36f<sub>ck</sub>b&middot;x<sub>u</sub></strong> at 0.42x<sub>u</sub> from the top, the tension is <strong>T = 0.87f<sub>y</sub>A<sub>st</sub></strong>, and the lever arm is z = d &minus; 0.42x<sub>u</sub> (see the figure below).</p>
+      <ul>
+        <li><strong>Balanced</strong> (x<sub>u</sub> = x<sub>u,max</sub>): concrete and steel reach their limits together. M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>) = 0.87f<sub>y</sub>A<sub>st,lim</sub>(d &minus; 0.42x<sub>u,max</sub>) = 0.138f<sub>ck</sub>bd&sup2; (Fe415).</li>
+        <li><strong>Under-reinforced</strong> (x<sub>u</sub> &lt; x<sub>u,max</sub>): from C = T, x<sub>u</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>st</sub></span><span class="fd">0.36f<sub>ck</sub>b</span></span>, and M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>(d &minus; 0.42x<sub>u</sub>) = 0.87f<sub>y</sub>A<sub>st</sub>d[1 &minus; <span class="frac"><span class="fn">A<sub>st</sub>f<sub>y</sub></span><span class="fd">bd&middot;f<sub>ck</sub></span></span>].</li>
+        <li><strong>Over-reinforced</strong> (x<sub>u</sub> &gt; x<sub>u,max</sub>): the concrete would crush before the steel yields; IS 456 does not permit it &mdash; the usable moment is capped at M<sub>u,lim</sub> (make the section doubly-reinforced or deeper).</li>
+      </ul>
+    </div>
+
+    <div class="figure">
+      <figure>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 230" width="680" height="230">
+          <rect x="40" y="30" width="90" height="150" fill="var(--svg-blue)" stroke="var(--svg-blue-s)" stroke-width="1.3"/>
+          <line x1="40" y1="95" x2="130" y2="95" stroke="var(--svg-hub)" stroke-dasharray="4 3"/>
+          <text x="85" y="24" font-size="10" text-anchor="middle" fill="var(--svg-sub)">b</text>
+          <text x="136" y="70" font-size="10" fill="var(--svg-sub)">x&#8341;</text>
+          <circle cx="60" cy="165" r="4" fill="var(--svg-red-s)"/><circle cx="85" cy="165" r="4" fill="var(--svg-red-s)"/><circle cx="110" cy="165" r="4" fill="var(--svg-red-s)"/>
+          <text x="85" y="200" font-size="10" text-anchor="middle" fill="var(--svg-sub)">(a) section</text>
+          <line x1="230" y1="30" x2="230" y2="180" stroke="var(--svg-line)"/>
+          <path d="M230 95 L300 30" stroke="var(--svg-green-s)" stroke-width="1.8" fill="none"/>
+          <path d="M230 95 L285 180" stroke="var(--svg-green-s)" stroke-width="1.8" fill="none"/>
+          <text x="305" y="32" font-size="10" fill="var(--svg-sub)">0.0035</text>
+          <text x="288" y="192" font-size="10" fill="var(--svg-sub)">&epsilon;&#8347;&#8348;</text>
+          <text x="270" y="212" font-size="10" text-anchor="middle" fill="var(--svg-sub)">(b) strain</text>
+          <line x1="430" y1="30" x2="430" y2="180" stroke="var(--svg-line)"/>
+          <path d="M430 30 L520 30 L520 95 L430 95 Z" fill="var(--svg-purple)" stroke="var(--svg-purple-s)"/>
+          <line x1="430" y1="95" x2="600" y2="95" stroke="var(--svg-line)" stroke-dasharray="4 3"/>
+          <text x="498" y="24" font-size="10" fill="var(--svg-sub)">0.446f&#8339;&#8342;</text>
+          <text x="533" y="70" font-size="10" fill="var(--svg-text-green)">C = 0.36f&#8339;&#8342;bx&#8341;</text>
+          <text x="533" y="130" font-size="10" fill="var(--svg-text-red)">T = 0.87f&#8339;A&#8347;&#8348;</text>
+          <text x="435" y="60" font-size="9" fill="var(--svg-sub)">0.42x&#8341;</text>
+          <text x="500" y="212" font-size="10" text-anchor="middle" fill="var(--svg-sub)">(c) stress block</text>
+        </svg>
+        <figcaption>Section, linear strain (0.0035 at top) and the rectangular stress block at collapse: C = 0.36f<sub>ck</sub>bx<sub>u</sub> at 0.42x<sub>u</sub>, lever arm z = d &minus; 0.42x<sub>u</sub>.</figcaption>
+      </figure>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q2. Describe the failure modes in under-reinforced, balanced and over-reinforced sections. <span class="ref">[4] &middot; 2081 Bhadra, Q1b</span></p>
+      <ul>
+        <li><strong>Under-reinforced</strong> &rarr; <em>tension (ductile) failure</em>: the steel reaches its yield strain first and stretches, giving wide cracks and large deflection &mdash; ample <strong>warning</strong> before the concrete finally crushes. Safe and preferred.</li>
+        <li><strong>Balanced</strong> &rarr; the steel yields and the concrete crushes <em>simultaneously</em> (x<sub>u</sub> = x<sub>u,max</sub>) &mdash; a theoretical boundary case.</li>
+        <li><strong>Over-reinforced</strong> &rarr; <em>compression (brittle) failure</em>: the concrete reaches 0.0035 and crushes suddenly while the steel is still elastic &mdash; little or no warning; prohibited by IS 456.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q3. Describe under-, over- and balanced reinforced sections. <span class="ref">[7] &middot; 2081 Baishakh, Q1a</span></p>
+      <p>A <strong>balanced</strong> section has exactly the steel (A<sub>st,lim</sub>) needed so that the steel reaches its design stress 0.87f<sub>y</sub> at the very instant the extreme concrete fibre reaches 0.0035 &mdash; the neutral axis is at x<sub>u</sub> = x<sub>u,max</sub>, and its moment of resistance is the limiting value M<sub>u,lim</sub> = 0.138f<sub>ck</sub>bd&sup2; (Fe415).</p>
+      <p>An <strong>under-reinforced</strong> section has <em>less</em> steel than balanced, so x<sub>u</sub> &lt; x<sub>u,max</sub>: the steel yields and undergoes large strain before the concrete crushes, so failure is gradual and ductile with plenty of warning. This is the basis of all IS 456 flexural design; M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>(d &minus; 0.42x<sub>u</sub>).</p>
+      <p>An <strong>over-reinforced</strong> section has <em>more</em> steel than balanced, so x<sub>u</sub> &gt; x<sub>u,max</sub>: the concrete crushes while the steel is still elastic, giving a sudden brittle failure. IS 456 does not allow it &mdash; if the moment exceeds M<sub>u,lim</sub> a doubly-reinforced or deeper section is used instead.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q4. Discuss the flexural sections by the amount of reinforcement; describe the failure modes. <span class="ref">[8] &middot; 2080 Bhadra, Q1a</span></p>
+      <p>By the <em>amount of tension steel</em> a singly-reinforced section is <strong>balanced</strong>, <strong>under-reinforced</strong> or <strong>over-reinforced</strong>, decided by x<sub>u</sub> against x<sub>u,max</sub> (= 0.53d/0.48d/0.46d for Fe250/415/500):</p>
+      <ul>
+        <li><strong>Balanced</strong> (x<sub>u</sub> = x<sub>u,max</sub>): steel and concrete reach their limits together; MOR = M<sub>u,lim</sub> = 0.138f<sub>ck</sub>bd&sup2; (Fe415).</li>
+        <li><strong>Under-reinforced</strong> (x<sub>u</sub> &lt; x<sub>u,max</sub>): steel governs; ductile; M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>(d &minus; 0.42x<sub>u</sub>).</li>
+        <li><strong>Over-reinforced</strong> (x<sub>u</sub> &gt; x<sub>u,max</sub>): concrete governs; brittle, not permitted (cap at M<sub>u,lim</sub>).</li>
+      </ul>
+      <p><strong>Failure modes:</strong> under-reinforced &rarr; ductile <em>tension</em> failure (steel yields first, wide cracks/large deflection give warning); balanced &rarr; simultaneous yielding and crushing; over-reinforced &rarr; brittle <em>compression</em> failure (concrete crushes suddenly). Codes keep sections under-reinforced (x<sub>u</sub> &le; x<sub>u,max</sub>) so that failure is always ductile.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q5. Explain under-, balanced and over-reinforced sections in LSM. <span class="ref">[6] &middot; 2074 Ashwin, Q1a</span></p>
+      <p>The three types are distinguished by the neutral-axis depth at collapse:</p>
+      <ul>
+        <li><strong>Under-reinforced</strong> (x<sub>u</sub> &lt; x<sub>u,max</sub>): steel reaches 0.87f<sub>y</sub> and yields before the concrete crushes &rArr; ductile; M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>(d &minus; 0.42x<sub>u</sub>).</li>
+        <li><strong>Balanced</strong> (x<sub>u</sub> = x<sub>u,max</sub>): both reach their limits together &rArr; M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>).</li>
+        <li><strong>Over-reinforced</strong> (x<sub>u</sub> &gt; x<sub>u,max</sub>): concrete crushes first &rArr; brittle; not permitted, M capped at M<sub>u,lim</sub>.</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q6. Explain, with sketches, under-, over- and balanced sections. <span class="ref">[4] &middot; 2075 Chaitra, Q1a</span></p>
+      <p>The three cases differ only in the neutral-axis (and hence strain) position at collapse. In every case the top concrete strain is fixed at 0.0035; the steel strain grows as x<sub>u</sub> becomes smaller:</p>
+      <ul>
+        <li><strong>Under</strong> &mdash; x<sub>u</sub> &lt; x<sub>u,max</sub>, large steel strain (well past yield) &rArr; ductile.</li>
+        <li><strong>Balanced</strong> &mdash; x<sub>u</sub> = x<sub>u,max</sub>, steel just at its design strain.</li>
+        <li><strong>Over</strong> &mdash; x<sub>u</sub> &gt; x<sub>u,max</sub>, small steel strain (still elastic) &rArr; brittle.</li>
+      </ul>
+      <div class="figure">
+        <figure>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 200" width="660" height="200">
+            <text x="110" y="18" font-size="11" font-weight="bold" fill="var(--svg-text-green)" text-anchor="middle">Under-reinforced</text>
+            <line x1="60" y1="30" x2="60" y2="165" stroke="var(--svg-line)" stroke-width="1.4"/>
+            <polygon points="60,30 150,30 60,68" fill="var(--svg-green)" stroke="var(--svg-green-s)"/>
+            <line x1="60" y1="68" x2="162" y2="68" stroke="var(--svg-hub)" stroke-dasharray="4 3"/>
+            <text x="120" y="27" font-size="8" fill="var(--svg-sub)">0.0035</text>
+            <text x="164" y="72" font-size="8" fill="var(--svg-sub)">NA</text>
+            <text x="60" y="182" font-size="8" fill="var(--svg-text-green)">steel strain: large</text>
+            <text x="330" y="18" font-size="11" font-weight="bold" fill="var(--svg-text)" text-anchor="middle">Balanced</text>
+            <line x1="280" y1="30" x2="280" y2="165" stroke="var(--svg-line)" stroke-width="1.4"/>
+            <polygon points="280,30 370,30 280,95" fill="var(--svg-blue)" stroke="var(--svg-blue-s)"/>
+            <line x1="280" y1="95" x2="382" y2="95" stroke="var(--svg-hub)" stroke-dasharray="4 3"/>
+            <text x="340" y="27" font-size="8" fill="var(--svg-sub)">0.0035</text>
+            <text x="384" y="99" font-size="8" fill="var(--svg-sub)">x = x<tspan baseline-shift="sub" font-size="6">u,max</tspan></text>
+            <text x="280" y="182" font-size="8" fill="var(--svg-sub)">steel just yields</text>
+            <text x="550" y="18" font-size="11" font-weight="bold" fill="var(--svg-text-red)" text-anchor="middle">Over-reinforced</text>
+            <line x1="500" y1="30" x2="500" y2="165" stroke="var(--svg-line)" stroke-width="1.4"/>
+            <polygon points="500,30 590,30 500,120" fill="var(--svg-red)" stroke="var(--svg-red-s)"/>
+            <line x1="500" y1="120" x2="602" y2="120" stroke="var(--svg-hub)" stroke-dasharray="4 3"/>
+            <text x="560" y="27" font-size="8" fill="var(--svg-sub)">0.0035</text>
+            <text x="500" y="182" font-size="8" fill="var(--svg-text-red)">steel strain: small</text>
+          </svg>
+          <figcaption>Strain diagrams at collapse (top concrete strain fixed at 0.0035): the neutral axis deepens and the steel strain shrinks from under-reinforced (ductile) to over-reinforced (brittle).</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q7. Define balanced, under- and over-reinforced sections. <span class="ref">[3] &middot; 2076 Chaitra, Q4a</span></p>
+      <ul>
+        <li><strong>Balanced section</strong> &mdash; the steel reaches its design stress 0.87f<sub>y</sub> exactly as the concrete reaches 0.0035 (x<sub>u</sub> = x<sub>u,max</sub>).</li>
+        <li><strong>Under-reinforced section</strong> &mdash; less steel than balanced (x<sub>u</sub> &lt; x<sub>u,max</sub>); the steel yields first, giving ductile failure.</li>
+        <li><strong>Over-reinforced section</strong> &mdash; more steel than balanced (x<sub>u</sub> &gt; x<sub>u,max</sub>); the concrete crushes first, giving sudden brittle failure (not permitted).</li>
+      </ul>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q8. Differentiate balanced, under- and over-reinforced sections (LSM) with the help of a strain diagram. <span class="ref">[8] &middot; 2069 Chaitra, Q5b</span></p>
+      <table>
+        <thead><tr><th>Basis</th><th>Under-reinforced</th><th>Balanced</th><th>Over-reinforced</th></tr></thead>
+        <tbody>
+          <tr><td>Steel provided</td><td>&lt; balanced</td><td>= balanced (A<sub>st,lim</sub>)</td><td>&gt; balanced</td></tr>
+          <tr><td>Neutral axis x<sub>u</sub></td><td>&lt; x<sub>u,max</sub></td><td>= x<sub>u,max</sub></td><td>&gt; x<sub>u,max</sub></td></tr>
+          <tr><td>Reaches limit first</td><td>steel yields first</td><td>steel &amp; concrete together</td><td>concrete crushes first</td></tr>
+          <tr><td>Failure</td><td>ductile (tension), warning</td><td>simultaneous</td><td>brittle (compression), sudden</td></tr>
+          <tr><td>IS 456</td><td>preferred / used</td><td>boundary, MOR = M<sub>u,lim</sub></td><td>not permitted</td></tr>
+        </tbody>
+      </table>
+      <p>The strain diagrams in Q6 above show the three cases: as x<sub>u</sub> deepens (more steel) the steel strain shrinks from large (ductile, under-reinforced), to the design strain (balanced), to small (elastic, over-reinforced) &mdash; while the top concrete strain stays at 0.0035.</p>
+    </div>
+
+  </main>
+</div>
+
+<script src="../../common.js"></script>
+</body>
+</html>

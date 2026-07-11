@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 8 &ndash; Columns (Compression Members)</title>
+  <link rel="stylesheet" href="tes.css">
+  <style id="dark-mode-styles">
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .2em;line-height:1.08}
+    .frac>.fn{padding:0 .4em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .4em}
+    .frac .frac{font-size:.92em}
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 8</div>
+    <h1>Columns (Compression Members)</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">8 Hours</span>
+      <span class="meta-badge exam">22 Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ 8.2 ═══ -->
+    <h2>8.2 Interaction Diagrams for Columns <span class="year-tag">2080</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Define the interaction diagram with its features and sketches. Discuss the failure modes in eccentric compression within the interaction diagram. [6] <em>(2080 Bhadra, Q3a)</em></li>
+      </ol>
+    </div>
+
+    <p>A column carries an axial load P together with a moment M = P&middot;e. The <strong>interaction diagram</strong> is the failure envelope plotting every (P<sub>u</sub>, M<sub>u</sub>) pair the section can just resist; any point <em>inside</em> is safe, on the curve is at failure, outside is unsafe.</p>
+    <p>Key features:</p>
+    <ul>
+      <li><strong>Top (P<sub>uz</sub>, pure axial):</strong> the maximum squash load, M = 0.</li>
+      <li><strong>Balanced point:</strong> concrete crushing (0.0035) and steel yielding occur together &mdash; the <em>maximum moment</em> capacity.</li>
+      <li><strong>Bottom (pure moment):</strong> P = 0, the section acts as a beam.</li>
+      <li><strong>Above the balanced point</strong> &rarr; <em>compression-controlled</em> (brittle) failure &mdash; adding axial load <em>reduces</em> the moment capacity; <strong>below</strong> &rarr; <em>tension-controlled</em> (ductile) failure &mdash; adding axial load <em>increases</em> the moment capacity.</li>
+    </ul>
+
+    <div class="figure">
+      <figure>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 320" width="420" height="320">
+          <line x1="70" y1="40" x2="70" y2="280" stroke="var(--svg-line)" stroke-width="1.5"/>
+          <line x1="70" y1="280" x2="380" y2="280" stroke="var(--svg-line)" stroke-width="1.5"/>
+          <path d="M70 60 Q250 90 250 165 Q250 250 90 280" fill="none" stroke="var(--svg-hub)" stroke-width="2.4"/>
+          <circle cx="70" cy="60" r="4" fill="var(--svg-red-s)"/><text x="80" y="58" font-size="10" fill="var(--svg-text)">P&#8340;&#8382; (pure axial)</text>
+          <circle cx="250" cy="165" r="4" fill="var(--svg-green-s)"/><text x="258" y="162" font-size="10" fill="var(--svg-text-green)">balanced (M max)</text>
+          <circle cx="90" cy="280" r="4" fill="var(--svg-red-s)"/><text x="98" y="298" font-size="10" fill="var(--svg-text)">pure moment (P=0)</text>
+          <text x="150" y="120" font-size="9" fill="var(--svg-sub)">compression-</text><text x="150" y="132" font-size="9" fill="var(--svg-sub)">controlled</text>
+          <text x="140" y="240" font-size="9" fill="var(--svg-sub)">tension-controlled</text>
+          <text x="40" y="160" font-size="11" fill="var(--svg-text)" transform="rotate(-90 40 160)">P&#8341;</text>
+          <text x="225" y="300" font-size="11" fill="var(--svg-text)">M&#8341;</text>
+        </svg>
+        <figcaption>P&ndash;M interaction envelope: P<sub>uz</sub> at the top, the balanced point (maximum moment), and pure bending at the bottom.</figcaption>
+      </figure>
+    </div>
+
+    <!-- ═══ 8.3 ═══ -->
+    <h2>8.3 Design of Short Columns (Uniaxial &amp; Biaxial) <span class="year-tag">2081</span><span class="year-tag">2080</span><span class="year-tag">2078</span><span class="year-tag">2076</span><span class="year-tag">2075</span><span class="year-tag">2074</span><span class="year-tag">2073</span><span class="year-tag">2072</span><span class="year-tag">2071</span><span class="year-tag">2069</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS (representative &mdash; 15 in this topic):</h4>
+      <ol>
+        <li>Column 400&times;500, unsupported 4.0 m; factored axial 1600 kN, moments 150 &amp; 50 kN-m. M25/Fe500. [10] <em>(2080 Baishakh, Q2b)</em></li>
+        <li>Column 350&times;550, factored axial 900 kN + moment 200 (major); eff 3.6 m. M25/Fe415. [10] <em>(2081 Baishakh, Q3b)</em></li>
+        <li>Column 350&times;350, factored axial 1440 kN, M<sub>ux</sub> 195, M<sub>uy</sub> 180; ductile transverse. M20/Fe500. [12] <em>(2076 Chaitra, Q2b)</em></li>
+        <li>Biaxial short square column 400&times;400, ultimate 800 kN at e = 80 mm both ways. M20/Fe415. [8] <em>(2078 Bhadra, Q3a; 2069 Chaitra, Q4c)</em></li>
+        <li>Short column 350&times;500, factored axial 1500 kN, moments 130 &amp; 80. M30/Fe500. [14] <em>(2075 Chaitra, Q3b)</em></li>
+        <li>Biaxial column 500&times;600, M<sub>ux</sub> 125, P<sub>u</sub> 1300, M<sub>uy</sub> 200. M25/Fe500. [15] <em>(2075 Ashwin, Q4a)</em></li>
+        <li>Short column 300&times;450, factored 1550 kN, M<sub>ux</sub> 130, M<sub>uy</sub> 90; ductile detailing. [14] <em>(2074 Chaitra, Q2b)</em></li>
+        <li>&hellip; plus 2074 Ashwin (Q3b), 2073 Shrawan (Q2a), 2072 Chaitra (Q3a), 2072 Kartik (Q3a), 2071 Chaitra (Q2a), 2069 Chaitra (Q1b), 2076 Ashwin (Q4a).</li>
+      </ol>
+    </div>
+
+    <h3>Design method (SP-16 biaxial)</h3>
+    <ol>
+      <li><strong>Squash load:</strong> P<sub>uz</sub> = 0.45f<sub>ck</sub>A<sub>c</sub> + 0.75f<sub>y</sub>A<sub>sc</sub> (assume a steel ratio p = 0.8&ndash;4%, A<sub>sc</sub> = <span class="frac"><span class="fn">p&middot;bD</span><span class="fd">100</span></span>).</li>
+      <li><strong>Uniaxial capacities</strong> M<sub>ux1</sub>, M<sub>uy1</sub> for the given <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span> and <span class="frac"><span class="fn">d&prime;</span><span class="fd">D</span></span> from the SP-16 interaction charts.</li>
+      <li><strong>Exponent</strong> &alpha;<sub>n</sub> = 1.0 at <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span> = 0.2 &rarr; 2.0 at 0.8 (linear between).</li>
+      <li><strong>Biaxial check:</strong> (<span class="frac"><span class="fn">M<sub>ux</sub></span><span class="fd">M<sub>ux1</sub></span></span>)<sup>&alpha;<sub>n</sub></sup> + (<span class="frac"><span class="fn">M<sub>uy</sub></span><span class="fd">M<sub>uy1</sub></span></span>)<sup>&alpha;<sub>n</sub></sup> &le; 1.0 &mdash; if not, increase steel or size.</li>
+      <li>Provide <strong>lateral ties</strong>: &phi;<sub>tie</sub> &ge; &frac14;&phi;<sub>main</sub> (&ge; 6 mm), spacing &le; least of 16&phi;<sub>main</sub>, b, 300 mm.</li>
+    </ol>
+    <p style="font-size:.92em"><em>Sample:</em> 400&times;400, P<sub>u</sub> 800, e 80 &rArr; M = 64 kN-m each way; with p = 0.8% (A<sub>sc</sub> 1280), P<sub>uz</sub> = 1827 kN, P<sub>u</sub>/P<sub>uz</sub> = 0.44, &alpha;<sub>n</sub> = 1.40, M<sub>u1</sub> &asymp; 109 &rArr; 2(64/109)<sup>1.4</sup> = 0.95 &le; 1 &rArr; <strong>safe, 8&minus;16 mm &phi;</strong>.</p>
+
+    <!-- ═══ 8.4 ═══ -->
+    <h2>8.4 Design of Long / Slender Columns <span class="year-tag">2082</span><span class="year-tag">2081</span><span class="year-tag">2080</span><span class="year-tag">2079</span><span class="year-tag">2065</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Column 650&times;450, factored 1600 kN; moments 90/55 (top), 35/30 (bottom); eff lengths 7 &amp; 6.5 m; double curvature. M30/Fe500 TMT. Drawings. [12] <em>(2082 Bhadra, Q4a)</em></li>
+        <li>Slender column 400&times;500, L<sub>ex</sub> 7.0, L<sub>ey</sub> 6.0; factored 1600 kN; top M<sub>ux</sub> 180, M<sub>uy</sub> 110; single curvature. M20/Fe415. [12] <em>(2081 Bhadra, Q4b)</em></li>
+        <li>Braced column 450&times;350, clear 4.0 m, axial 700 kN, BM 100 (major) &amp; 80 (minor). M25/Fe415. [12] <em>(2080 Bhadra, Q3b)</em></li>
+        <li>Unbraced column 400&times;350, clear 6.0 m, axial 600 kN, BM 100 (major) &amp; 50 (minor). M20/Fe415. [14] <em>(2079 Bhadra, Q3b)</em></li>
+        <li>Design steps for a RC long column of an unbraced frame. [10] <em>(2065 Kartik, Q5b)</em></li>
+      </ol>
+    </div>
+
+    <p>A column is <strong>slender</strong> if the slenderness ratio <span class="frac"><span class="fn">l<sub>e</sub></span><span class="fd">D</span></span> &gt; 12 (braced) about either axis (l<sub>e</sub> = effective length = k&middot;l<sub>0</sub>, k from IS 456 Table 28 depending on the end restraints and whether the frame is braced). Slender columns fail by <strong>buckling</strong>, so an <strong>additional moment</strong> from the P-&Delta; effect is added:</p>
+    <p style="text-align:center">M<sub>ax</sub> = <span class="frac"><span class="fn">P<sub>u</sub>&middot;D</span><span class="fd">2000</span></span>(<span class="frac"><span class="fn">l<sub>ex</sub></span><span class="fd">D</span></span>)&sup2; &nbsp;&nbsp;(&times; a reduction factor k = <span class="frac"><span class="fn">P<sub>uz</sub> &minus; P<sub>u</sub></span><span class="fd">P<sub>uz</sub> &minus; P<sub>bal</sub></span></span> &le; 1)</p>
+    <p>The column is then designed for the <strong>total moment</strong> M<sub>u</sub> = initial moment (including the minimum eccentricity moment) + M<sub>a</sub>, using the same SP-16 biaxial procedure as a short column.</p>
+
+    <!-- ═══ 8.5 ═══ -->
+    <h2>8.5 Reinforcement Detailing / Capacity Check <span class="year-tag">2065</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Column 600&times;400 with 8&minus;28 mm, M<sub>ux</sub> 350, M<sub>uy</sub> 50, P<sub>u</sub> 2000. Check safety. M20/Fe415, cover 60. [10] <em>(2065 Kartik, Q1b)</em></li>
+      </ol>
+    </div>
+
+    <p>To <strong>check</strong> an existing column: compute P<sub>uz</sub> from the provided steel, read M<sub>ux1</sub> and M<sub>uy1</sub> from SP-16 for the actual <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">f<sub>ck</sub>bD</span></span>, find &alpha;<sub>n</sub> from <span class="frac"><span class="fn">P<sub>u</sub></span><span class="fd">P<sub>uz</sub></span></span>, then verify (<span class="frac"><span class="fn">M<sub>ux</sub></span><span class="fd">M<sub>ux1</sub></span></span>)<sup>&alpha;<sub>n</sub></sup> + (<span class="frac"><span class="fn">M<sub>uy</sub></span><span class="fd">M<sub>uy1</sub></span></span>)<sup>&alpha;<sub>n</sub></sup> &le; 1.0. <strong>Detailing:</strong> longitudinal steel 0.8&ndash;6% of the gross area (&ge; 4 bars, &ge; 12 mm), lateral ties as in 8.3, and for earthquake resistance <strong>special confining hoops</strong> over a length l<sub>0</sub> at each end (see Ch 11).</p>
+
+  </main>
+</div>
+
+<script src="../../common.js"></script>
+</body>
+</html>

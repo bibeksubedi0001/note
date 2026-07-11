@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCC Manual &mdash; Ch 4: Footing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="ch-nav">
+    <a href="ch3_column.html">&larr; Ch 3</a>
+    <span class="nav-title">Ch 4: Footing (Foundations)</span>
+    <a href="ch5_slab.html">Ch 5: Slab &rarr;</a>
+</nav>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<main>
+
+    <div class="ch-header">
+        <div class="meta">Design of RCC Structures (ENCE 352) &mdash; Digital Manual</div>
+        <h1>CHAPTER 4: FOOTING</h1>
+        <div class="author">Isolated, Combined &amp; Mat Foundations; Pile Caps (IS 456:2000)</div>
+    </div>
+
+    <div class="callout">
+        Covers the types of foundation and the design of spread/isolated footings (axial and with moment),
+        combined footings and mat foundations, plus an introduction to pile caps &mdash; including the two
+        governing shear checks (one-way and punching).
+    </div>
+
+    <nav class="toc-card">
+        <h3>Table of Contents</h3>
+        <div class="toc-grid">
+            <a href="#s4-1">4.1 Introduction &amp; Types</a>
+            <a href="#s4-2">4.2 Design of Isolated Footing (Axial)</a>
+            <a href="#s4-3">4.3 Isolated Footing with Moment</a>
+            <a href="#s4-4">4.4 Combined Footing</a>
+            <a href="#s4-5">4.5 Mat (Raft) Foundation</a>
+            <a href="#s4-6">4.6 Pile Caps (Introduction)</a>
+        </div>
+    </nav>
+
+    <div class="content">
+
+        <section id="s4-1">
+            <h2>4.1 INTRODUCTION &amp; TYPES</h2>
+            <p>A <strong>footing</strong> transfers column/wall loads to the soil, spreading them so the bearing pressure stays within the safe bearing capacity (SBC). Types:</p>
+            <ul>
+                <li><strong>Isolated / spread footing</strong> &mdash; one column (square, rectangular, circular).</li>
+                <li><strong>Combined footing</strong> &mdash; two or more columns on one footing (rectangular or trapezoidal).</li>
+                <li><strong>Strap footing</strong> &mdash; two isolated footings joined by a rigid beam.</li>
+                <li><strong>Mat / raft foundation</strong> &mdash; a single slab under the whole building (weak soil / heavy loads).</li>
+                <li><strong>Pile foundation with pile cap</strong> &mdash; deep foundation transferring load to firm strata.</li>
+            </ul>
+        </section>
+
+        <section id="s4-2">
+            <h2>4.2 DESIGN OF ISOLATED FOOTING (AXIAL)</h2>
+            <ol>
+                <li><strong>Plan area:</strong> A = (P + self-weight, ~10% of P)/SBC (service load). Choose L&times;B.</li>
+                <li><strong>Net upward pressure</strong> (factored): p<sub>u</sub> = 1.5P / (L&times;B).</li>
+                <li><strong>Bending moment</strong> at the column face: M<sub>u</sub> = p<sub>u</sub>&middot;B&middot;(cantilever)<span class="frac"><span class="fn">&sup2;</span><span class="fd">2</span></span>, where cantilever = <span class="frac"><span class="fn">L &minus; column size</span><span class="fd">2.</span></span> Find effective depth from M<sub>u</sub> = 0.138f<sub>ck</sub>Bd&sup2;, then A<sub>st</sub>.</li>
+                <li><strong>One-way (wide-beam) shear</strong> at distance d from the column face: &tau;<sub>v</sub> = <span class="frac"><span class="fn">V<sub>u</sub></span><span class="fd">Bd</span></span> &le; &tau;<sub>c</sub>.</li>
+                <li><strong>Two-way (punching) shear</strong> on a perimeter <span class="frac"><span class="fn">d</span><span class="fd">2</span></span> from the column face: &tau;<sub>v</sub> = <span class="frac"><span class="fn">V<sub>u</sub></span><span class="fd">b<sub>o</sub>d</span></span> &le; k<sub>s</sub>&middot;0.25&radic;f<sub>ck</sub> (k<sub>s</sub> = 0.5 + &beta;<sub>c</sub> &le; 1). Punching usually governs the depth.</li>
+                <li><strong>Check</strong> development length of bars and bearing stress at the column-footing interface.</li>
+            </ol>
+            <div class="svg-wrap">
+                <svg width="440" height="230" viewBox="0 0 440 230" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="60" y="40" width="320" height="150" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.4"/>
+                    <rect x="185" y="95" width="70" height="40" fill="#c7d2fe" stroke="#4f46e5" stroke-width="1.4"/>
+                    <text x="220" y="120" font-size="9" text-anchor="middle" font-family="Times New Roman">column</text>
+                    <rect x="150" y="60" width="140" height="110" fill="none" stroke="#dc2626" stroke-width="1.2" stroke-dasharray="5 3"/>
+                    <text x="300" y="55" font-size="8" fill="#dc2626" font-family="Times New Roman">punching perimeter (d/2)</text>
+                    <line x1="60" y1="205" x2="380" y2="205" stroke="#16a34a"/>
+                    <text x="220" y="222" font-size="9" text-anchor="middle" font-family="Times New Roman">net upward soil pressure p<tspan baseline-shift="sub">u</tspan></text>
+                    <line x1="65" y1="40" x2="65" y2="200" stroke="#16a34a"/>
+                    <line x1="375" y1="40" x2="375" y2="200" stroke="#16a34a"/>
+                </svg>
+                <div class="figcaption">Figure 4.1: Isolated footing &mdash; bending at the column face, one-way shear at d, punching shear on the <span class="frac"><span class="fn">d</span><span class="fd">2</span></span> perimeter</div>
+            </div>
+        </section>
+
+        <section id="s4-3">
+            <h2>4.3 ISOLATED FOOTING WITH MOMENT (ECCENTRIC LOAD)</h2>
+            <p>When the column transmits a moment M (or the load is eccentric, e = <span class="frac"><span class="fn">M</span><span class="fd">P</span></span>), the soil pressure is non-uniform:</p>
+            <div class="callout">p<sub>max/min</sub> = <span class="frac"><span class="fn">P</span><span class="fd">A</span></span> &pm; <span class="frac"><span class="fn">M</span><span class="fd">Z</span></span> = (<span class="frac"><span class="fn">P</span><span class="fd">LB</span></span>)(1 &pm; <span class="frac"><span class="fn">6e</span><span class="fd">L</span></span>). For no tension (uplift), keep <strong>e &le; <span class="frac"><span class="fn">L</span><span class="fd">6</span></span></strong> (load within the middle third). If e &gt; <span class="frac"><span class="fn">L</span><span class="fd">6</span></span>, only part of the base is in contact and p<sub>max</sub> = <span class="frac"><span class="fn">2P</span><span class="fd">3B&middot;(<span class="frac"><span class="fn">L</span><span class="fd">2</span></span> &minus; e)</span></span>.</p>
+            <p>Design the critical section for the larger pressure; provide steel for the maximum bending moment and check both shear conditions using the varying pressure.</p>
+        </section>
+
+        <section id="s4-4">
+            <h2>4.4 COMBINED FOOTING</h2>
+            <p>Used when columns are close together or near a property line. The footing is proportioned so the <strong>centroid of the base coincides with the resultant of the column loads</strong>, giving uniform pressure. Shape is rectangular (loads similar) or trapezoidal (loads unequal with a space constraint). It is analysed as a beam spanning between the columns (longitudinal bending, with the soil pressure acting upward) and as a slab in the transverse direction under each column.</p>
+        </section>
+
+        <section id="s4-5">
+            <h2>4.5 MAT (RAFT) FOUNDATION</h2>
+            <p>A <strong>mat</strong> covers the entire building footprint and is used when: (i) the SBC is low, (ii) column loads are heavy and footings would overlap (&gt; ~50% of area), or (iii) differential settlement must be reduced. Design procedure:</p>
+            <ol>
+                <li>Check net upward pressure = &Sigma;loads/area &le; SBC.</li>
+                <li>Analyse by the <em>conventional (rigid)</em> method &mdash; treat as an inverted floor loaded by soil pressure, divide into strips, find moments and shears &mdash; or by the <em>flexible (beam-on-elastic-foundation)</em> method.</li>
+                <li>Design the slab for the resulting moments and check punching shear at each column.</li>
+            </ol>
+        </section>
+
+        <section id="s4-6">
+            <h2>4.6 PILE CAPS (INTRODUCTION)</h2>
+            <p>A <strong>pile cap</strong> is a thick RC slab that ties a group of piles together and distributes the column load to them. It is designed by the <strong>truss (strut-and-tie)</strong> analogy or the bending-theory method, with checks for bending, one-way shear and punching shear around the column and around individual piles. Minimum edge distance from a pile to the cap edge is typically 100&ndash;150 mm.</p>
+        </section>
+
+    </div><!-- .content -->
+
+</main>
+
+<div class="mnemonics-panel">
+    <button class="mnemonics-toggle" id="mnToggle" title="My Mnemonics"></button>
+</div>
+<div class="mnemonics-drawer" id="mnDrawer">
+    <div class="mnemonics-drawer-header">
+        <h4>My Mnemonics</h4>
+        <button id="mnClose">&times;</button>
+    </div>
+    <div class="mnemonics-body">
+        <ul class="mnemonics-list" id="mnList"></ul>
+    </div>
+    <div class="mnemonics-add">
+        <input type="text" id="mnInput" placeholder="Add a mnemonic…" maxlength="500">
+        <button id="mnAdd">Add</button>
+    </div>
+</div>
+
+<script src="../../common.js"></script>
+<script>
+(function(){
+  var KEY='rcc-mnemonics';
+  var list=JSON.parse(localStorage.getItem(KEY)||'[]');
+  var ul=document.getElementById('mnList');
+  var inp=document.getElementById('mnInput');
+  function render(){
+    ul.innerHTML='';
+    if(!list.length){ul.innerHTML='<li class="mnemonics-empty">No mnemonics yet. Add one below!</li>';return;}
+    list.forEach(function(t,i){
+      var li=document.createElement('li');
+      var sp=document.createElement('span');sp.className='mn-text';sp.textContent=t;
+      var btn=document.createElement('button');btn.className='mn-del';btn.textContent='\u2715';btn.title='Delete';
+      btn.onclick=function(){list.splice(i,1);localStorage.setItem(KEY,JSON.stringify(list));render();};
+      li.appendChild(sp);li.appendChild(btn);ul.appendChild(li);
+    });
+  }
+  render();
+  document.getElementById('mnToggle').onclick=function(){document.getElementById('mnDrawer').classList.toggle('open');};
+  document.getElementById('mnClose').onclick=function(){document.getElementById('mnDrawer').classList.remove('open');};
+  document.getElementById('mnAdd').onclick=addMn;
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')addMn();});
+  function addMn(){var v=inp.value.trim();if(!v)return;list.push(v);localStorage.setItem(KEY,JSON.stringify(list));inp.value='';render();}
+})();
+</script>
+
+</body>
+</html>

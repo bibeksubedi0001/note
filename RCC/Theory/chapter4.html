@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 4 &ndash; Design for Flexure</title>
+  <link rel="stylesheet" href="tes.css">
+  <style id="dark-mode-styles">
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .2em;line-height:1.08}
+    .frac>.fn{padding:0 .4em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .4em}
+    .frac .frac{font-size:.92em}
+    .qa{margin:1.7rem 0;padding:.95rem 1.15rem 1rem;border:1px solid var(--line);border-left:4px solid #2d6a4f;border-radius:8px;background:var(--paper)}
+    .qa .q{font-weight:700;color:var(--ink);margin:0 0 .8rem;line-height:1.55}
+    .qa .ref{display:inline-block;background:#2d6a4f;color:#fff;font-weight:700;font-size:.76em;letter-spacing:.02em;padding:2px 10px;border-radius:5px;margin-left:.45em;white-space:nowrap;vertical-align:middle}
+    .step{margin:.55rem 0;line-height:1.66}
+    .qa .step>strong:first-child{color:var(--green)}
+    .qa ol,.qa ul{margin:.5rem 0 .5rem 1.2rem}
+    .qa li{margin:.3rem 0;line-height:1.6}
+    .qa .given{background:var(--green-lt);border-left:3px solid var(--green);border-radius:5px;padding:.5rem .8rem;margin:0 0 .9rem;font-size:.93em;line-height:1.7}
+    .qa .given .lbl{color:var(--green);font-weight:700}
+    .qa .ans{margin:1rem 0 .1rem;padding:.55rem .85rem;background:var(--green-lt);border:1px solid var(--green);border-radius:6px;line-height:1.6;color:var(--ink)}
+    .qa .ans .lbl{color:var(--green);font-weight:800;text-transform:uppercase;font-size:.76em;letter-spacing:.06em;margin-right:.5em}
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 4</div>
+    <h1>Design for Flexure</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">8 Hours</span>
+      <span class="meta-badge exam">19 Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ 4.2 ═══ -->
+    <h2>4.2 Design of Rectangular Beams (Singly &amp; Doubly Reinforced, LSM) <span class="year-tag">2081</span><span class="year-tag">2079</span><span class="year-tag">2074</span><span class="year-tag">2073</span><span class="year-tag">2072</span><span class="year-tag">2071</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Design a simply supported RCC beam of effective span 4 m and overall cross-section 250&times;475 mm to carry a superimposed load of 45 kN/m together with a concentrated load of 75 kN at mid-span, for the limit state of collapse in flexure, and check the beam for deflection. Take clear cover 45 mm, M25 concrete and Fe500 TMT steel. [10] <em>(2079 Bhadra, Q1c)</em></li>
+        <li>A simply supported RCC beam of width 300 mm and effective depth 500 mm (to the centre of the tensile steel) spans 7 m and carries a dead load of 45 kN/m excluding its self-weight. Determine the reinforcement required at mid-span by the limit state method. Take compression cover 40 mm, M20 concrete and Fe415 steel. [15] <em>(2074 Chaitra, Q1b)</em></li>
+        <li>Design a simply supported RCC beam of effective span 5.5 m and overall cross-section 230&times;550 mm to carry a superimposed load of 30 kN/m (excluding self-weight) for the limit state of collapse in flexure, and check it for deflection. Assume mild exposure, Fe415 steel and clear cover 50 mm. [14] <em>(2072 Chaitra, Q1b)</em></li>
+        <li>A simply supported RCC beam of cross-section 250&times;300 mm rests on 300 mm thick walls spaced 4 m apart and carries a live load of 8 kN/m and a dead load of 10 kN/m (including self-weight). Design the beam in flexure using M20 concrete and Fe415 steel. [8] <em>(2081 Bhadra, Q2a)</em></li>
+        <li>Explain the moment of resistance of a doubly reinforced section and derive the formula for it. [2+2+4] <em>(2076 Chaitra, Q1a)</em></li>
+        <li>Derive an expression for the bending-moment capacity of a doubly-reinforced rectangular section as per IS 456:2000. [6] <em>(2079 Bhadra, Q1b)</em></li>
+        <li>Explain, with neat sketches, the step-by-step design procedure of a doubly reinforced rectangular section. [6] <em>(2080 Baishakh, Q1c)</em></li>
+        <li>A rectangular beam of cross-section 300&times;500 mm is reinforced with 5&minus;25 mm bars in tension and 5&minus;12 mm bars in compression, both at a cover of 25 mm, over a simply supported span of 4.30 m. Determine the ultimate moment of resistance of the section. Use M25 concrete and Fe415 steel. [12] <em>(2071 Chaitra, Q4b)</em></li>
+        <li>Determine the ultimate moment of resistance of a rectangular beam of effective section 250&times;450 mm reinforced with 4&minus;25 mm bars in tension. Use M20 concrete and Fe415 steel. [14] <em>(2073 Shrawan, Q1b)</em></li>
+      </ol>
+    </div>
+
+    <p class="note" style="font-size:.92em;color:var(--muted)"><strong>Key relations (LSM, IS 456:2000):</strong> x<sub>u,max</sub>/d = 0.53, 0.48, 0.46 for Fe250/415/500; limiting moment M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>) = 0.148, 0.138, 0.133 f<sub>ck</sub>bd&sup2;. If M<sub>u</sub> &le; M<sub>u,lim</sub> the section is singly-reinforced; if M<sub>u</sub> &gt; M<sub>u,lim</sub> it must be doubly-reinforced (or made deeper).</p>
+
+    <div class="qa">
+      <p class="q">Q1. Design a SS beam of effective span 4 m and section 250&times;475 mm carrying a superimposed load 45 kN/m plus a point load 75 kN at mid-span, for the limit state of collapse in flexure; check deflection. Cover 45, M25, Fe500 (TMT). <span class="ref">[10] &middot; 2079 Bhadra, Q1c</span></p>
+      <p class="given"><span class="lbl">Given:</span> b = 250 mm, D = 475 mm, clear cover = 45 mm, span L = 4 m, superimposed UDL = 45 kN/m, point load P = 75 kN at mid-span, M25 (f<sub>ck</sub> = 25), Fe500 (f<sub>y</sub> = 500). &nbsp;<span class="lbl">Required:</span> flexural steel + deflection check.</p>
+      <p class="step"><strong>Step 1 &mdash; Effective depth.</strong> Assuming 20 mm bars, d = D &minus; cover &minus; &frac12;&phi; = 475 &minus; 45 &minus; 10 = <strong>420 mm</strong>; effective cover to compression steel d&prime; = 50 mm.</p>
+      <p class="step"><strong>Step 2 &mdash; Loads.</strong> Self-weight = 0.25&times;0.475&times;25 = 2.97 kN/m &rArr; total UDL w = 45 + 2.97 = 47.97 kN/m.</p>
+      <p class="step"><strong>Step 3 &mdash; Factored moment.</strong> M = <span class="frac"><span class="fn">wL&sup2;</span><span class="fd">8</span></span> + <span class="frac"><span class="fn">PL</span><span class="fd">4</span></span> = <span class="frac"><span class="fn">47.97&times;4&sup2;</span><span class="fd">8</span></span> + <span class="frac"><span class="fn">75&times;4</span><span class="fd">4</span></span> = 95.9 + 75 = 170.9 kN&middot;m. With &gamma;<sub>f</sub> = 1.5 (IS 456 Cl 36.4.2): <strong>M<sub>u</sub> = 1.5&times;170.9 = 256.4 kN&middot;m</strong>.</p>
+      <p class="step"><strong>Step 4 &mdash; Limiting moment (IS 456 Cl 38.1, Annex G).</strong> For Fe500, x<sub>u,max</sub>/d = 0.46 &rArr; x<sub>u,max</sub> = 0.46&times;420 = 193.2 mm. M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>) = 0.36&times;25&times;250&times;193.2&times;(420 &minus; 81.1) = <strong>147.3 kN&middot;m</strong>. Since M<sub>u</sub> = 256.4 &gt; 147.3 &rArr; <strong>doubly-reinforced</strong>.</p>
+      <p class="step"><strong>Step 5 &mdash; Tension steel for the balanced couple.</strong> A<sub>st1</sub> = <span class="frac"><span class="fn">M<sub>u,lim</sub></span><span class="fd">0.87f<sub>y</sub>(d &minus; 0.42x<sub>u,max</sub>)</span></span> = <span class="frac"><span class="fn">147.3&times;10<sup>6</sup></span><span class="fd">0.87&times;500&times;338.9</span></span> = <strong>999 mm&sup2;</strong>.</p>
+      <p class="step"><strong>Step 6 &mdash; Compression-steel stress.</strong> Extra moment M<sub>2</sub> = M<sub>u</sub> &minus; M<sub>u,lim</sub> = 256.4 &minus; 147.3 = 109.1 kN&middot;m. Strain &epsilon;<sub>sc</sub> = 0.0035(1 &minus; d&prime;/x<sub>u,max</sub>) = 0.0035(1 &minus; 50/193.2) = 0.00259. From the IS 456 design stress&ndash;strain curve for Fe500 (interpolating between &epsilon; = 0.00226&rarr;391.3 and 0.00277&rarr;413.0 N/mm&sup2;): <strong>f<sub>sc</sub> = 405 N/mm&sup2;</strong>.</p>
+      <p class="step"><strong>Step 7 &mdash; Compression steel.</strong> A<sub>sc</sub> = <span class="frac"><span class="fn">M<sub>2</sub></span><span class="fd">(f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)(d &minus; d&prime;)</span></span> = <span class="frac"><span class="fn">109.1&times;10<sup>6</sup></span><span class="fd">(405 &minus; 11.15)&times;370</span></span> = <strong>748 mm&sup2;</strong> &rarr; 4&minus;16 &phi; (804 mm&sup2;).</p>
+      <p class="step"><strong>Step 8 &mdash; Total tension steel.</strong> A<sub>st2</sub> = <span class="frac"><span class="fn">(f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub></span><span class="fd">0.87f<sub>y</sub></span></span> = <span class="frac"><span class="fn">393.85&times;748</span><span class="fd">435</span></span> = 678 mm&sup2;. A<sub>st</sub> = A<sub>st1</sub> + A<sub>st2</sub> = 999 + 678 = <strong>1677 mm&sup2;</strong> &rarr; 6&minus;20 &phi; (1885 mm&sup2;).</p>
+      <p class="step"><strong>Step 9 &mdash; Deflection check (IS 456 Cl 23.2.1).</strong> Basic span/depth for a simply-supported beam = 20. Actual L/d = 4000/420 = 9.5 &lt; 20 &rArr; <strong>safe</strong> (even before the tension-steel modification factor).</p>
+      <p class="ans"><span class="lbl">Answer</span> Tension 6&minus;20 &phi; (1885 mm&sup2;) + compression 4&minus;16 &phi; (804 mm&sup2;); deflection safe.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q2. A beam 300 mm wide with effective depth 500 mm carries a dead load 45 kN/m (excluding self-weight) over a span of 7 m. Find the mid-span steel (LSM). Compression cover 40, M20/Fe415. <span class="ref">[15] &middot; 2074 Chaitra, Q1b</span></p>
+      <p class="given"><span class="lbl">Given:</span> b = 300 mm, d = 500 mm, DL = 45 kN/m (excl. self-wt), L = 7 m, d&prime; = 40 mm, M20 (f<sub>ck</sub> = 20), Fe415 (f<sub>y</sub> = 415). &nbsp;<span class="lbl">Required:</span> mid-span steel.</p>
+      <p class="step"><strong>Step 1 &mdash; Loads.</strong> Taking overall depth D &asymp; 540 mm, self-weight = 0.3&times;0.54&times;25 = 4.05 kN/m &rArr; w = 45 + 4.05 = 49.05 kN/m.</p>
+      <p class="step"><strong>Step 2 &mdash; Factored moment.</strong> M = <span class="frac"><span class="fn">wL&sup2;</span><span class="fd">8</span></span> = <span class="frac"><span class="fn">49.05&times;7&sup2;</span><span class="fd">8</span></span> = 300.4 kN&middot;m &rArr; <strong>M<sub>u</sub> = 1.5&times;300.4 = 450.6 kN&middot;m</strong>.</p>
+      <p class="step"><strong>Step 3 &mdash; Limiting moment.</strong> M<sub>u,lim</sub> = 0.138f<sub>ck</sub>bd&sup2; = 0.138&times;20&times;300&times;500&sup2; = <strong>206.9 kN&middot;m</strong> &lt; M<sub>u</sub> &rArr; <strong>doubly-reinforced</strong>. x<sub>u,max</sub> = 0.48&times;500 = 240 mm.</p>
+      <p class="step"><strong>Step 4 &mdash; Balanced couple.</strong> A<sub>st1</sub> = <span class="frac"><span class="fn">M<sub>u,lim</sub></span><span class="fd">0.87f<sub>y</sub>(d &minus; 0.42x<sub>u,max</sub>)</span></span> = <span class="frac"><span class="fn">206.9&times;10<sup>6</sup></span><span class="fd">0.87&times;415&times;399.2</span></span> = <strong>1436 mm&sup2;</strong>.</p>
+      <p class="step"><strong>Step 5 &mdash; Compression-steel stress.</strong> M<sub>2</sub> = 450.6 &minus; 206.9 = 243.7 kN&middot;m. &epsilon;<sub>sc</sub> = 0.0035(1 &minus; 40/240) = 0.00292 &rArr; from the Fe415 design curve (interpolating 0.00276&rarr;351.8 and 0.00380&rarr;360.9): <strong>f<sub>sc</sub> = 353 N/mm&sup2;</strong>.</p>
+      <p class="step"><strong>Step 6 &mdash; Compression steel.</strong> A<sub>sc</sub> = <span class="frac"><span class="fn">M<sub>2</sub></span><span class="fd">(f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)(d &minus; d&prime;)</span></span> = <span class="frac"><span class="fn">243.7&times;10<sup>6</sup></span><span class="fd">(353 &minus; 8.92)&times;460</span></span> = <strong>1539 mm&sup2;</strong> &rarr; 5&minus;20 &phi; (1571 mm&sup2;).</p>
+      <p class="step"><strong>Step 7 &mdash; Total tension steel.</strong> A<sub>st2</sub> = <span class="frac"><span class="fn">(f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub></span><span class="fd">0.87f<sub>y</sub></span></span> = 1467 mm&sup2;. A<sub>st</sub> = 1436 + 1467 = <strong>2903 mm&sup2;</strong> &rarr; 6&minus;25 &phi; (2945 mm&sup2;).</p>
+      <p class="ans"><span class="lbl">Answer</span> Tension 6&minus;25 &phi; (2945 mm&sup2;) + compression 5&minus;20 &phi; (1571 mm&sup2;).</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q3. Design a SS beam of effective span 5.5 m, overall 230&times;550 mm, carrying a superimposed load 30 kN/m (excluding self-weight); check deflection. Mild exposure, Fe415, cover 50. <span class="ref">[14] &middot; 2072 Chaitra, Q1b</span></p>
+      <p class="given"><span class="lbl">Given:</span> b = 230 mm, D = 550 mm, d = 500 mm, superimposed = 30 kN/m, L = 5.5 m, cover 50, Fe415, mild exposure. &nbsp;<span class="lbl">Required:</span> flexural steel + deflection check.</p>
+      <p class="step"><strong>Step 1 &mdash; Loads.</strong> Self-weight = 0.23&times;0.55&times;25 = 3.16 kN/m &rArr; w = 30 + 3.16 = 33.16 kN/m.</p>
+      <p class="step"><strong>Step 2 &mdash; Factored moment.</strong> M = <span class="frac"><span class="fn">33.16&times;5.5&sup2;</span><span class="fd">8</span></span> = 125.4 kN&middot;m &rArr; <strong>M<sub>u</sub> = 1.5&times;125.4 = 188.1 kN&middot;m</strong>.</p>
+      <p class="step"><strong>Step 3 &mdash; Choose grade / check M<sub>u,lim</sub>.</strong> Using <strong>M25</strong>: M<sub>u,lim</sub> = 0.138&times;25&times;230&times;500&sup2; = 198.3 kN&middot;m &gt; M<sub>u</sub> &rArr; <strong>singly-reinforced</strong>. (With M20, M<sub>u,lim</sub> = 158.7 &lt; 188.1 &rArr; compression steel would be needed.)</p>
+      <p class="step"><strong>Step 4 &mdash; Tension steel.</strong> A<sub>st</sub> = <span class="frac"><span class="fn">0.5f<sub>ck</sub></span><span class="fd">f<sub>y</sub></span></span>&#91;1 &minus; &radic;(1 &minus; <span class="frac"><span class="fn">4.6M<sub>u</sub></span><span class="fd">f<sub>ck</sub>bd&sup2;</span></span>)&#93;bd = <strong>1278 mm&sup2;</strong> &rarr; 3&minus;25 &phi; (1473 mm&sup2;).</p>
+      <p class="step"><strong>Step 5 &mdash; Deflection check (IS 456 Cl 23.2.1).</strong> L/d = 5500/500 = 11 &lt; 20 &rArr; <strong>safe</strong>.</p>
+      <p class="ans"><span class="lbl">Answer</span> M25 concrete; tension 3&minus;25 &phi; (1473 mm&sup2;), singly-reinforced; deflection safe. (With M20: A<sub>sc</sub> &asymp; 190 mm&sup2; + A<sub>st</sub> &asymp; 1282 mm&sup2;.)</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q4. Design in flexure a 250&times;300 mm beam simply supported on 300 mm walls 4 m apart, carrying LL 8 kN/m + DL 10 kN/m (including self-weight). M20/Fe415. <span class="ref">[8] &middot; 2081 Bhadra, Q2a</span></p>
+      <p class="given"><span class="lbl">Given:</span> b = 250 mm, D = 300 mm, wall width = 300 mm, walls 4 m apart, w = 8 + 10 = 18 kN/m (incl. self-wt), M20, Fe415, cover 40 (d = 260 mm). &nbsp;<span class="lbl">Required:</span> flexural steel.</p>
+      <p class="step"><strong>Step 1 &mdash; Effective span (IS 456 Cl 22.2).</strong> Least of (clear span + d) = (4 &minus; 0.3) + 0.26 = 3.96 m and c/c of supports = 4.0 m &rArr; L<sub>eff</sub> = <strong>3.96 m</strong>.</p>
+      <p class="step"><strong>Step 2 &mdash; Factored moment.</strong> M = <span class="frac"><span class="fn">18&times;3.96&sup2;</span><span class="fd">8</span></span> = 35.3 kN&middot;m &rArr; <strong>M<sub>u</sub> = 1.5&times;35.3 = 52.9 kN&middot;m</strong>.</p>
+      <p class="step"><strong>Step 3 &mdash; Limiting moment.</strong> M<sub>u,lim</sub> = 0.138&times;20&times;250&times;260&sup2; = <strong>46.6 kN&middot;m</strong>. M<sub>u</sub> = 52.9 is only slightly &gt; 46.6 &rArr; the given section is marginally over-limit.</p>
+      <p class="step"><strong>Step 4 &mdash; Preferred: deepen the section.</strong> Increasing D to &asymp; 350 mm (d &asymp; 310 mm) gives M<sub>u,lim</sub> = 66.3 &gt; 52.9 &rArr; <strong>singly-reinforced</strong>: A<sub>st</sub> = <span class="frac"><span class="fn">0.5f<sub>ck</sub></span><span class="fd">f<sub>y</sub></span></span>&#91;1 &minus; &radic;(1 &minus; 4.6M<sub>u</sub>/f<sub>ck</sub>bd&sup2;)&#93;bd &asymp; <strong>555 mm&sup2;</strong> &rarr; 2&minus;20 &phi; (628 mm&sup2;).</p>
+      <p class="step"><strong>Step 5 &mdash; Alternative: keep 250&times;300 (doubly).</strong> A<sub>st1</sub> = 622 mm&sup2; (at M<sub>u,lim</sub>); M<sub>2</sub> = 6.3 kN&middot;m; x<sub>u,max</sub> = 124.8; &epsilon;<sub>sc</sub> = 0.0035(1 &minus; 40/124.8) = 0.00238 &rArr; f<sub>sc</sub> = 342 N/mm&sup2;; A<sub>sc</sub> = 86 mm&sup2; (nominal 2&minus;12), A<sub>st2</sub> = 79 &rArr; A<sub>st</sub> = <strong>701 mm&sup2;</strong> &rarr; 3&minus;20 &phi; (942 mm&sup2;).</p>
+      <p class="ans"><span class="lbl">Answer</span> Deepen to 250&times;350 &rarr; singly, 2&minus;20 &phi;; or keep 250&times;300 &rarr; doubly, 3&minus;20 &phi; tension + 2&minus;12 &phi; compression.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q5. Explain the moment of resistance of a doubly-reinforced section and derive the formula. <span class="ref">[2+2+4] &middot; 2076 Chaitra, Q1a</span></p>
+      <p>A <strong>doubly-reinforced</strong> section carries steel in both the tension and the compression zone. It is used when the applied moment exceeds the limiting (balanced) capacity M<sub>u,lim</sub> of a singly-reinforced section but the size cannot be increased. The moment is split into <strong>two couples</strong> (superposition):</p>
+      <ul>
+        <li><strong>Balanced couple</strong> &mdash; the concrete stress block (with tension steel A<sub>st1</sub>) gives M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>).</li>
+        <li><strong>Steel couple</strong> &mdash; the compression steel A<sub>sc</sub> (stress f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>, the concrete it displaces) with matching tension steel A<sub>st2</sub> gives M<sub>2</sub> = (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub>(d &minus; d&prime;).</li>
+      </ul>
+      <p>Adding, the <strong>moment of resistance</strong> is:</p>
+      <p style="text-align:center"><strong>M<sub>u</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>) + (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub>(d &minus; d&prime;)</strong></p>
+      <div class="figure">
+        <figure>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 220" width="680" height="220">
+            <rect x="40" y="30" width="90" height="150" fill="var(--svg-blue)" stroke="var(--svg-blue-s)"/>
+            <circle cx="55" cy="45" r="3.5" fill="var(--svg-purple-s)"/><circle cx="115" cy="45" r="3.5" fill="var(--svg-purple-s)"/>
+            <circle cx="55" cy="165" r="4" fill="var(--svg-red-s)"/><circle cx="85" cy="165" r="4" fill="var(--svg-red-s)"/><circle cx="115" cy="165" r="4" fill="var(--svg-red-s)"/>
+            <text x="136" y="48" font-size="9" fill="var(--svg-sub)">A'sc, d'</text>
+            <text x="85" y="200" font-size="10" text-anchor="middle" fill="var(--svg-sub)">(a) section</text>
+            <line x1="230" y1="30" x2="230" y2="180" stroke="var(--svg-line)"/>
+            <path d="M230 90 L300 30" stroke="var(--svg-green-s)" stroke-width="1.6" fill="none"/>
+            <path d="M230 90 L288 180" stroke="var(--svg-green-s)" stroke-width="1.6" fill="none"/>
+            <text x="303" y="32" font-size="9" fill="var(--svg-sub)">0.0035</text>
+            <text x="270" y="200" font-size="10" text-anchor="middle" fill="var(--svg-sub)">(b) strain</text>
+            <line x1="430" y1="30" x2="430" y2="180" stroke="var(--svg-line)"/>
+            <path d="M430 30 L520 30 L520 90 L430 90 Z" fill="var(--svg-purple)" stroke="var(--svg-purple-s)"/>
+            <text x="525" y="46" font-size="8.5" fill="var(--svg-text-purple)">C&#8322; = (f&#8347;&#8331; &minus; 0.446f&#8331;&#8342;)A'&#8347;&#8331;</text>
+            <text x="525" y="74" font-size="8.5" fill="var(--svg-text-green)">C&#8321; = 0.36f&#8331;&#8342;bx&#8341;</text>
+            <text x="525" y="150" font-size="8.5" fill="var(--svg-text-red)">T = 0.87f&#8342;A&#8347;&#8348;</text>
+            <text x="500" y="200" font-size="10" text-anchor="middle" fill="var(--svg-sub)">(c) two couples</text>
+          </svg>
+          <figcaption>Doubly-reinforced section: moment of resistance = balanced (concrete) couple + compression-steel couple.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q6. Derive the bending-moment capacity of a doubly-reinforced rectangular section using the assumptions of IS 456:2000. <span class="ref">[6] &middot; 2079 Bhadra, Q1b</span></p>
+      <p><strong>Assumptions:</strong> plane sections remain plane; maximum concrete strain 0.0035; concrete tension neglected; the rectangular-parabolic stress block gives C = 0.36f<sub>ck</sub>b&middot;x<sub>u</sub> at 0.42x<sub>u</sub>; steel stresses from the design curve.</p>
+      <p><strong>Equilibrium</strong> (C = T): 0.36f<sub>ck</sub>b&middot;x<sub>u</sub> + (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub> = 0.87f<sub>y</sub>A<sub>st</sub> &rArr; solve for x<sub>u</sub> (with f<sub>sc</sub> read for &epsilon;<sub>sc</sub> = 0.0035(1 &minus; d&prime;/x<sub>u</sub>)).</p>
+      <p><strong>Taking moments</strong> of the two compressive forces about the tension steel:</p>
+      <p style="text-align:center"><strong>M<sub>u</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u</sub>(d &minus; 0.42x<sub>u</sub>) + (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub>(d &minus; d&prime;)</strong></p>
+      <p>&mdash; the balanced-couple term plus the compression-steel couple (see the figure in Q5).</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q7. Explain the design steps of a doubly-reinforced section with sketches. <span class="ref">[6] &middot; 2080 Baishakh, Q1c</span></p>
+      <ol>
+        <li>Compute M<sub>u</sub> and M<sub>u,lim</sub> = 0.138f<sub>ck</sub>bd&sup2; (Fe415). If M<sub>u</sub> &le; M<sub>u,lim</sub> &rarr; singly; else doubly.</li>
+        <li>Tension steel for the balanced couple: A<sub>st1</sub> = <span class="frac"><span class="fn">M<sub>u,lim</sub></span><span class="fd">0.87f<sub>y</sub>(d &minus; 0.42x<sub>u,max</sub>)</span></span>.</li>
+        <li>Extra moment M<sub>2</sub> = M<sub>u</sub> &minus; M<sub>u,lim</sub>; find f<sub>sc</sub> from &epsilon;<sub>sc</sub> = 0.0035(1 &minus; d&prime;/x<sub>u,max</sub>).</li>
+        <li>Compression steel A<sub>sc</sub> = <span class="frac"><span class="fn">M<sub>2</sub></span><span class="fd">(f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)(d &minus; d&prime;)</span></span>; matching tension A<sub>st2</sub> = <span class="frac"><span class="fn">(f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub></span><span class="fd">0.87f<sub>y</sub></span></span>.</li>
+        <li>Total A<sub>st</sub> = A<sub>st1</sub> + A<sub>st2</sub>; choose bars, check spacing/cover, and detail the compression bars with ties (see Q5 sketch).</li>
+      </ol>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q8. A beam 300&times;500 mm has 5&minus;25 mm tension + 5&minus;12 mm compression bars at 25 mm cover. Find its moment of resistance at the ultimate limit state. M25/Fe415. <span class="ref">[12] &middot; 2071 Chaitra, Q4b</span></p>
+      <p class="given"><span class="lbl">Given:</span> b = 300 mm, D = 500 mm, cover = 25 mm, A<sub>st</sub> = 5&minus;25 &phi;, A<sub>sc</sub> = 5&minus;12 &phi;, M25, Fe415. &nbsp;<span class="lbl">Required:</span> ultimate M.O.R.</p>
+      <p class="step"><strong>Step 1 &mdash; Section properties.</strong> d = 500 &minus; 25 &minus; &frac12;(25) = 462.5 mm; d&prime; = 25 + 6 = 31 mm. A<sub>st</sub> = 5&times;490.9 = 2454 mm&sup2;; A<sub>sc</sub> = 5&times;113.1 = 565 mm&sup2;.</p>
+      <p class="step"><strong>Step 2 &mdash; Depth of neutral axis</strong> (assume both steels yield). x<sub>u</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>st</sub> &minus; (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub></span><span class="fd">0.36f<sub>ck</sub>b</span></span> = 254.9 mm.</p>
+      <p class="step"><strong>Step 3 &mdash; Check ductility (IS 456 Cl 38.1).</strong> x<sub>u,max</sub> = 0.48&times;462.5 = 222 mm. x<sub>u</sub> = 255 &gt; 222 &rArr; the section is <strong>over-reinforced</strong>; the tension steel does not reach 0.87f<sub>y</sub>, so the usable depth is restricted to x<sub>u,max</sub>.</p>
+      <p class="step"><strong>Step 4 &mdash; Limiting M.O.R.</strong> (at x<sub>u</sub> = x<sub>u,max</sub>). &epsilon;<sub>sc</sub> = 0.0035(1 &minus; 31/222) = 0.00301 &rArr; f<sub>sc</sub> = 354 N/mm&sup2;. M<sub>u</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>) + (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub>(d &minus; d&prime;) = 221.4 + 83.6 = <strong>305 kN&middot;m</strong>.</p>
+      <p class="ans"><span class="lbl">Answer</span> M.O.R. &asymp; 305 kN&middot;m (over-reinforced &mdash; excess tension steel above the balanced value is not fully utilised).</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q9. Find the ultimate moment of resistance of a beam of effective section 250&times;450 mm reinforced with 4&minus;25 mm bars in tension. M20/Fe415. <span class="ref">[14] &middot; 2073 Shrawan, Q1b</span></p>
+      <p class="given"><span class="lbl">Given:</span> b = 250 mm, d = 450 mm, A<sub>st</sub> = 4&minus;25 &phi;, M20, Fe415. &nbsp;<span class="lbl">Required:</span> ultimate M.O.R.</p>
+      <p class="step"><strong>Step 1 &mdash; Tension steel.</strong> A<sub>st</sub> = 4&times;490.9 = 1963 mm&sup2;.</p>
+      <p class="step"><strong>Step 2 &mdash; Depth of neutral axis</strong> (assume steel yields). x<sub>u</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>st</sub></span><span class="fd">0.36f<sub>ck</sub>b</span></span> = <span class="frac"><span class="fn">0.87&times;415&times;1963</span><span class="fd">0.36&times;20&times;250</span></span> = 393.8 mm.</p>
+      <p class="step"><strong>Step 3 &mdash; Check ductility.</strong> x<sub>u,max</sub> = 0.48&times;450 = 216 mm. x<sub>u</sub> = 393.8 &gt; 216 &rArr; <strong>over-reinforced</strong> &mdash; the concrete crushes before the steel yields (a brittle, non-permitted section).</p>
+      <p class="step"><strong>Step 4 &mdash; Usable M.O.R.</strong> IS 456 caps it at M<sub>u,lim</sub> = 0.138f<sub>ck</sub>bd&sup2; = 0.138&times;20&times;250&times;450&sup2; = <strong>139.7 kN&middot;m</strong>.</p>
+      <p class="ans"><span class="lbl">Answer</span> Usable M.O.R. = M<sub>u,lim</sub> = 139.7 kN&middot;m. Increase the depth or add compression steel to make it under-reinforced.</p>
+    </div>
+
+    <!-- ═══ 4.3 ═══ -->
+    <h2>4.3 Flanged Beams (T- and L-Beams) <span class="year-tag">2082</span><span class="year-tag">2081</span><span class="year-tag">2078</span><span class="year-tag">2076</span><span class="year-tag">2074</span><span class="year-tag">2072</span><span class="year-tag">2065</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>What is the concept behind the typical (effective) flange width in T- and L-beams? Explain it with neat sketches. [2+2] <em>(2082 Bhadra, Q2a)</em></li>
+        <li>Describe the step-by-step design procedure for flanged (T- and L-) beam sections. [4] <em>(2081 Baishakh, Q2a)</em> &nbsp;&middot;&nbsp; [5] <em>(2078 Bhadra, Q3c)</em></li>
+        <li>How would you design the shear reinforcement for flanged (T- and L-) beam sections? Explain. [5] <em>(2074 Chaitra, Q1a)</em></li>
+        <li>Determine the limiting moment of resistance and the limiting area of tension steel (A<sub>st</sub>) for a T-beam having flange width 1500 mm, effective depth 590 mm, flange thickness 150 mm and web width 240 mm. Use M20 concrete and Fe415 steel. [6] <em>(2081 Baishakh, Q2a)</em></li>
+        <li>A T-beam has a flange width of 1600 mm, flange thickness 110 mm, web width 300 mm and overall depth 460 mm, and is reinforced with 4&minus;20 mm bars in tension at an effective cover of 40 mm. Determine its moment of resistance by the limit state method. Use M20 concrete and Fe415 steel. [8] <em>(2076 Ashwin, Q1b)</em></li>
+        <li>An L-beam has a flange width of 925 mm, effective depth 450 mm, flange thickness 100 mm and rib (web) width 250 mm, and is reinforced with 4&minus;20 mm bars in tension and 3&minus;16 mm bars in compression. Determine its ultimate moment of resistance. Use M20 concrete and Fe415 steel. [10] <em>(2074 Chaitra, Q4b)</em></li>
+        <li>An L-beam has a flange of 900&times;100 mm and a web of 250&times;500 mm. Determine the reinforcement required to resist a factored bending moment of 615 kN&middot;m and a factored shear force of 50 kN. Use M20 concrete and Fe500 steel. [14] <em>(2072 Kartik, Q4b)</em></li>
+        <li>Design a T-beam floor in which the beams are spaced 4 m centre-to-centre over a clear span of 6 m with a 150 mm thick slab and carry a live load of 3 kN/m&sup2;. (Design of shear reinforcement is not required.) Use M20 concrete and Fe415 steel. [13] <em>(2065 Shrawan, Q2b)</em></li>
+      </ol>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q1. What is the concept behind the typical flange width in T- and L-beams? Explain with sketches. <span class="ref">[2+2] &middot; 2082 Bhadra, Q2a</span></p>
+      <p>When a slab is cast <strong>monolithically</strong> with the beam, a portion of the slab acts as the beam's compression <strong>flange</strong> &mdash; an interior beam becomes a <strong>T-beam</strong>, an edge beam an <strong>L-beam</strong>. The compressive stress in the flange is <em>not uniform</em> (it falls off away from the web &mdash; &ldquo;shear lag&rdquo;), so only a limited <strong>effective width b<sub>f</sub></strong> is assumed to carry the compression at a uniform stress. IS 456 gives:</p>
+      <p style="text-align:center">T-beam: b<sub>f</sub> = <span class="frac"><span class="fn">l<sub>0</sub></span><span class="fd">6</span></span> + b<sub>w</sub> + 6D<sub>f</sub> &nbsp;&nbsp;&middot;&nbsp;&nbsp; L-beam: b<sub>f</sub> = <span class="frac"><span class="fn">l<sub>0</sub></span><span class="fd">12</span></span> + b<sub>w</sub> + 3D<sub>f</sub></p>
+      <p>where l<sub>0</sub> = distance between points of zero moment, b<sub>w</sub> = web width, D<sub>f</sub> = flange (slab) thickness; b<sub>f</sub> must not exceed the actual available slab width (beam spacing).</p>
+      <div class="figure">
+        <figure>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 210" width="620" height="210">
+            <rect x="40" y="45" width="230" height="34" fill="var(--svg-blue)" stroke="var(--svg-hub)"/>
+            <rect x="125" y="79" width="60" height="110" fill="var(--svg-blue)" stroke="var(--svg-hub)"/>
+            <line x1="40" y1="35" x2="270" y2="35" stroke="var(--svg-sub)"/><text x="155" y="28" font-size="10" text-anchor="middle" fill="var(--svg-sub)">b&#8332;</text>
+            <text x="200" y="66" font-size="9" fill="var(--svg-sub)">D&#8332;</text>
+            <text x="155" y="140" font-size="9" text-anchor="middle" fill="var(--svg-sub)">b&#8355;</text>
+            <text x="155" y="205" font-size="11" text-anchor="middle" fill="var(--svg-text)">T-beam (interior)</text>
+            <rect x="370" y="45" width="150" height="34" fill="var(--svg-green)" stroke="var(--svg-hub)"/>
+            <rect x="370" y="79" width="58" height="110" fill="var(--svg-green)" stroke="var(--svg-hub)"/>
+            <line x1="370" y1="35" x2="520" y2="35" stroke="var(--svg-sub)"/><text x="445" y="28" font-size="10" text-anchor="middle" fill="var(--svg-sub)">b&#8332;</text>
+            <text x="445" y="205" font-size="11" text-anchor="middle" fill="var(--svg-text)">L-beam (edge)</text>
+          </svg>
+          <figcaption>The slab acts as the compression flange: interior beams form symmetric T-sections, edge beams form L-sections.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q2. Describe the design steps of flanged beam sections. <span class="ref">[4] &middot; 2081 Baishakh, Q2a &nbsp;&middot;&nbsp; [5] 2078 Bhadra, Q3c</span></p>
+      <ol>
+        <li>Find the effective flange width b<sub>f</sub> and the factored moment M<sub>u</sub>.</li>
+        <li><strong>Assume the NA in the flange:</strong> x<sub>u</sub> from 0.36f<sub>ck</sub>b<sub>f</sub>x<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>. If x<sub>u</sub> &le; D<sub>f</sub> the section behaves as a <em>rectangular</em> beam of width b<sub>f</sub>: M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>(d &minus; 0.42x<sub>u</sub>).</li>
+        <li><strong>If x<sub>u</sub> &gt; D<sub>f</sub></strong> the NA is in the web &mdash; split into a flange couple and a web couple, using the equivalent flange depth y<sub>f</sub> = min(0.15x<sub>u</sub> + 0.65D<sub>f</sub>, D<sub>f</sub>): M<sub>u</sub> = 0.36f<sub>ck</sub>b<sub>w</sub>x<sub>u</sub>(d &minus; 0.42x<sub>u</sub>) + 0.45f<sub>ck</sub>(b<sub>f</sub> &minus; b<sub>w</sub>)y<sub>f</sub>(d &minus; y<sub>f</sub>/2).</li>
+        <li>Find A<sub>st</sub> from equilibrium; check A<sub>st,min</sub>; design <strong>shear on the web</strong>; check deflection.</li>
+      </ol>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q3. Explain how you would design shear reinforcement for flanged beam sections. <span class="ref">[5] &middot; 2074 Chaitra, Q1a</span></p>
+      <p>In a flanged beam the shear is resisted essentially by the <strong>web</strong> only (the thin flange contributes little). Hence the nominal shear stress uses the web width: &tau;<sub>v</sub> = <span class="frac"><span class="fn">V<sub>u</sub></span><span class="fd">b<sub>w</sub>&middot;d</span></span>. Compute the concrete capacity &tau;<sub>c</sub> from the web steel ratio p<sub>t</sub> = 100A<sub>st</sub>/(b<sub>w</sub>d). If &tau;<sub>v</sub> &le; &tau;<sub>c</sub> provide nominal stirrups; if &tau;<sub>c</sub> &lt; &tau;<sub>v</sub> &le; &tau;<sub>c,max</sub> the excess V<sub>us</sub> = V<sub>u</sub> &minus; &tau;<sub>c</sub>b<sub>w</sub>d is carried by vertical stirrups, spacing s<sub>v</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>sv</sub>d</span><span class="fd">V<sub>us</sub></span></span> (&le; 0.75d, 300 mm). &tau;<sub>v</sub> must not exceed &tau;<sub>c,max</sub>.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q4. Determine the limiting moment of resistance and the limiting A<sub>st</sub> for a T-beam of flange width 1500, effective depth 590, flange 150 and web 240 mm. M20/Fe415. <span class="ref">[6] &middot; 2081 Baishakh, Q2a</span></p>
+      <p class="given"><span class="lbl">Given:</span> b<sub>f</sub> = 1500 mm, d = 590 mm, D<sub>f</sub> = 150 mm, b<sub>w</sub> = 240 mm, M20, Fe415. &nbsp;<span class="lbl">Required:</span> M<sub>u,lim</sub> and A<sub>st,lim</sub>.</p>
+      <p class="step"><strong>Step 1 &mdash; Neutral-axis position.</strong> x<sub>u,max</sub> = 0.48&times;590 = 283.2 mm &gt; D<sub>f</sub> = 150 &rArr; <strong>NA in the web</strong>. Also D<sub>f</sub>/d = 150/590 = 0.25 &gt; 0.2 &rArr; use the equivalent flange depth (IS 456 Cl G-2.2.1).</p>
+      <p class="step"><strong>Step 2 &mdash; Equivalent flange depth.</strong> y<sub>f</sub> = min(0.15x<sub>u,max</sub> + 0.65D<sub>f</sub>, D<sub>f</sub>) = min(0.15&times;283.2 + 0.65&times;150, 150) = min(140, 150) = <strong>140 mm</strong>.</p>
+      <p class="step"><strong>Step 3 &mdash; Limiting moment</strong> (web couple + flange couple). M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b<sub>w</sub>x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>) + 0.45f<sub>ck</sub>(b<sub>f</sub> &minus; b<sub>w</sub>)y<sub>f</sub>(d &minus; y<sub>f</sub>/2)</p>
+      <p class="step">= 0.36&times;20&times;240&times;283.2&times;(590 &minus; 118.9) + 0.45&times;20&times;1260&times;140&times;(590 &minus; 70) = 230.5 + 825.6 = <strong>1056 kN&middot;m</strong>.</p>
+      <p class="step"><strong>Step 4 &mdash; Limiting tension steel</strong> (from C = T). A<sub>st,lim</sub> = <span class="frac"><span class="fn">0.36f<sub>ck</sub>b<sub>w</sub>x<sub>u,max</sub> + 0.45f<sub>ck</sub>(b<sub>f</sub> &minus; b<sub>w</sub>)y<sub>f</sub></span><span class="fd">0.87f<sub>y</sub></span></span> = <span class="frac"><span class="fn">489370 + 1587600</span><span class="fd">361.1</span></span> = <strong>5752 mm&sup2;</strong>.</p>
+      <p class="ans"><span class="lbl">Answer</span> M<sub>u,lim</sub> &asymp; 1056 kN&middot;m; A<sub>st,lim</sub> &asymp; 5752 mm&sup2;.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q5. A T-beam of flange width 1600, flange depth 110, web 300 and overall depth 460 mm is reinforced with 4&minus;20 mm bars in tension at 40 mm cover. Find its moment of resistance (LSM). M20/Fe415. <span class="ref">[8] &middot; 2076 Ashwin, Q1b</span></p>
+      <p class="given"><span class="lbl">Given:</span> b<sub>f</sub> = 1600 mm, D<sub>f</sub> = 110 mm, b<sub>w</sub> = 300 mm, D = 460 mm, A<sub>st</sub> = 4&minus;20 &phi;, cover 40, M20, Fe415. &nbsp;<span class="lbl">Required:</span> M.O.R.</p>
+      <p class="step"><strong>Step 1 &mdash; Section properties.</strong> d = 460 &minus; 40 = 420 mm; A<sub>st</sub> = 4&times;314.2 = 1257 mm&sup2;.</p>
+      <p class="step"><strong>Step 2 &mdash; Assume NA in the flange</strong> (rectangular beam of width b<sub>f</sub>). x<sub>u</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>st</sub></span><span class="fd">0.36f<sub>ck</sub>b<sub>f</sub></span></span> = <span class="frac"><span class="fn">0.87&times;415&times;1257</span><span class="fd">0.36&times;20&times;1600</span></span> = 39.4 mm.</p>
+      <p class="step"><strong>Step 3 &mdash; Verify.</strong> x<sub>u</sub> = 39.4 &lt; D<sub>f</sub> = 110 &rArr; NA indeed in the flange; the section acts as a rectangular beam b<sub>f</sub>&times;d.</p>
+      <p class="step"><strong>Step 4 &mdash; Moment of resistance.</strong> M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>(d &minus; 0.42x<sub>u</sub>) = 0.87&times;415&times;1257&times;(420 &minus; 16.5) = <strong>183.1 kN&middot;m</strong>.</p>
+      <p class="ans"><span class="lbl">Answer</span> M.O.R. &asymp; 183.1 kN&middot;m (under-reinforced, NA in flange).</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q6. An L-beam of flange 925, effective depth 450, flange 100 and rib 250 mm is reinforced with 4&minus;20 mm in tension and 3&minus;16 mm in compression. Find the ultimate moment of resistance. M20/Fe415. <span class="ref">[10] &middot; 2074 Chaitra, Q4b</span></p>
+      <p class="given"><span class="lbl">Given:</span> b<sub>f</sub> = 925 mm, d = 450 mm, D<sub>f</sub> = 100 mm, b<sub>w</sub> = 250 mm, A<sub>st</sub> = 4&minus;20 &phi;, A<sub>sc</sub> = 3&minus;16 &phi;, d&prime; = 40 mm, M20, Fe415. &nbsp;<span class="lbl">Required:</span> ultimate M.O.R.</p>
+      <p class="step"><strong>Step 1 &mdash; Steel areas.</strong> A<sub>st</sub> = 4&times;314.2 = 1257 mm&sup2;; A<sub>sc</sub> = 3&times;201.1 = 603 mm&sup2;.</p>
+      <p class="step"><strong>Step 2 &mdash; Neutral axis</strong> (with compression steel). From C = T: 0.36f<sub>ck</sub>b<sub>f</sub>x<sub>u</sub> + (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub> = 0.87f<sub>y</sub>A<sub>st</sub>. Solving iteratively (f<sub>sc</sub> from &epsilon;<sub>sc</sub> = 0.0035(1 &minus; d&prime;/x<sub>u</sub>)) gives x<sub>u</sub> &asymp; 53.2 mm.</p>
+      <p class="step"><strong>Step 3 &mdash; Compression-steel stress.</strong> &epsilon;<sub>sc</sub> = 0.0035(1 &minus; 40/53.2) = 0.00087 &lt; yield strain &rArr; steel is elastic: f<sub>sc</sub> = E<sub>s</sub>&epsilon;<sub>sc</sub> = 2&times;10<sup>5</sup>&times;0.00087 = <strong>174 N/mm&sup2;</strong>.</p>
+      <p class="step"><strong>Step 4 &mdash; Verify.</strong> x<sub>u</sub> = 53.2 &lt; D<sub>f</sub> = 100 &rArr; NA in the flange (rectangular b<sub>f</sub>).</p>
+      <p class="step"><strong>Step 5 &mdash; Moment of resistance.</strong> M<sub>u</sub> = 0.36f<sub>ck</sub>b<sub>f</sub>x<sub>u</sub>(d &minus; 0.42x<sub>u</sub>) + (f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)A<sub>sc</sub>(d &minus; d&prime;) = 151.5 + 40.9 = <strong>192.4 kN&middot;m</strong>.</p>
+      <p class="ans"><span class="lbl">Answer</span> M.O.R. &asymp; 192.4 kN&middot;m.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q7. Design the reinforcement for an L-beam (flange 900&times;100, web 250&times;500 mm) to carry a factored bending moment 615 kN-m and shear 50 kN. M20/Fe500. <span class="ref">[14] &middot; 2072 Kartik, Q4b</span></p>
+      <p class="given"><span class="lbl">Given:</span> b<sub>f</sub> = 900 mm, D<sub>f</sub> = 100 mm, b<sub>w</sub> = 250 mm, D = 500 mm, M<sub>u</sub> = 615 kN&middot;m, V<sub>u</sub> = 50 kN, M20, Fe500, d&prime; = 40 (d = 460 mm). &nbsp;<span class="lbl">Required:</span> flexural + shear steel.</p>
+      <p class="step"><strong>Step 1 &mdash; Limiting (flanged) moment.</strong> x<sub>u,max</sub> = 0.46&times;460 = 211.6 mm; y<sub>f</sub> = min(0.15&times;211.6 + 65, 100) = 96.7 mm. M<sub>u,lim</sub> = 0.36&times;20&times;250&times;211.6&times;(460 &minus; 88.9) + 0.45&times;20&times;650&times;96.7&times;(460 &minus; 48.4) = 141.3 + 232.9 = <strong>374.3 kN&middot;m</strong>.</p>
+      <p class="step"><strong>Step 2 &mdash; Classify.</strong> M<sub>u</sub> = 615 &gt; 374.3 &rArr; <strong>doubly-reinforced flanged section</strong>.</p>
+      <p class="step"><strong>Step 3 &mdash; Steel for the limiting couple.</strong> A<sub>st1</sub> = <span class="frac"><span class="fn">0.36f<sub>ck</sub>b<sub>w</sub>x<sub>u,max</sub> + 0.45f<sub>ck</sub>(b<sub>f</sub> &minus; b<sub>w</sub>)y<sub>f</sub></span><span class="fd">0.87f<sub>y</sub></span></span> = 2177 mm&sup2;.</p>
+      <p class="step"><strong>Step 4 &mdash; Compression steel.</strong> M<sub>2</sub> = 615 &minus; 374.3 = 240.7 kN&middot;m; &epsilon;<sub>sc</sub> = 0.0035(1 &minus; 40/211.6) = 0.00284 &rArr; f<sub>sc</sub> = 415 N/mm&sup2;. A<sub>sc</sub> = <span class="frac"><span class="fn">240.7&times;10<sup>6</sup></span><span class="fd">(415 &minus; 8.92)&times;420</span></span> = <strong>1411 mm&sup2;</strong> &rarr; 3&minus;25 &phi; (1473 mm&sup2;).</p>
+      <p class="step"><strong>Step 5 &mdash; Total tension steel.</strong> A<sub>st2</sub> = 1317 mm&sup2; &rArr; A<sub>st</sub> = 2177 + 1317 = <strong>3494 mm&sup2;</strong> &rarr; 8&minus;25 &phi; (3927 mm&sup2;).</p>
+      <p class="step"><strong>Step 6 &mdash; Shear (IS 456 Cl 40).</strong> &tau;<sub>v</sub> = <span class="frac"><span class="fn">V<sub>u</sub></span><span class="fd">b<sub>w</sub>d</span></span> = <span class="frac"><span class="fn">50000</span><span class="fd">250&times;460</span></span> = 0.43 N/mm&sup2; &mdash; low &rArr; provide nominal stirrups 8 mm &phi; 2-legged @ 300 mm.</p>
+      <p class="ans"><span class="lbl">Answer</span> Tension 8&minus;25 &phi; (3927 mm&sup2;) + compression 3&minus;25 &phi; (1473 mm&sup2;); nominal 8 mm 2-legged stirrups.</p>
+    </div>
+
+    <div class="qa">
+      <p class="q">Q8. Design a T-beam simply supported on 250 mm walls with a clear span 6 m, supporting a 150 mm slab, spaced 4 m centre-to-centre, carrying a live load 3 kN/m&sup2;. M20/Fe415 (shear not required). <span class="ref">[13] &middot; 2065 Shrawan, Q2b</span></p>
+      <p class="given"><span class="lbl">Given:</span> clear span = 6 m, wall = 250 mm, slab D<sub>f</sub> = 150 mm, spacing = 4 m c/c, LL = 3 kN/m&sup2;, M20, Fe415. Assume web 300&times;500 mm (d = 460 mm). &nbsp;<span class="lbl">Required:</span> flexural steel.</p>
+      <p class="step"><strong>Step 1 &mdash; Slab load (per m&sup2;).</strong> = 0.15&times;25 (slab) + 1.0 (finishes) + 3.0 (LL) = <strong>7.75 kN/m&sup2;</strong>.</p>
+      <p class="step"><strong>Step 2 &mdash; Load on the beam.</strong> Tributary width = 4 m &rArr; w = 7.75&times;4 + web self-wt (0.3&times;0.35&times;25 = 2.6) = <strong>33.6 kN/m</strong>. L<sub>eff</sub> = 6 + 0.25 = 6.25 m.</p>
+      <p class="step"><strong>Step 3 &mdash; Factored moment.</strong> M = <span class="frac"><span class="fn">33.6&times;6.25&sup2;</span><span class="fd">8</span></span> = 164.2 kN&middot;m &rArr; <strong>M<sub>u</sub> = 1.5&times;164.2 = 246.3 kN&middot;m</strong>.</p>
+      <p class="step"><strong>Step 4 &mdash; Effective flange width (IS 456 Cl 23.1.2).</strong> b<sub>f</sub> = <span class="frac"><span class="fn">l<sub>0</sub></span><span class="fd">6</span></span> + b<sub>w</sub> + 6D<sub>f</sub> = <span class="frac"><span class="fn">6250</span><span class="fd">6</span></span> + 300 + 900 = <strong>2242 mm</strong> (&lt; spacing 4000 mm, OK).</p>
+      <p class="step"><strong>Step 5 &mdash; Tension steel.</strong> A<sub>st</sub> = <span class="frac"><span class="fn">0.5f<sub>ck</sub></span><span class="fd">f<sub>y</sub></span></span>[1 &minus; &radic;(1 &minus; <span class="frac"><span class="fn">4.6M<sub>u</sub></span><span class="fd">f<sub>ck</sub>b<sub>f</sub>d&sup2;</span></span>)]b<sub>f</sub>d = <strong>1531 mm&sup2;</strong> &rarr; 5&minus;20 &phi; (1571 mm&sup2;).</p>
+      <p class="step"><strong>Step 6 &mdash; Check NA.</strong> x<sub>u</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>st</sub></span><span class="fd">0.36f<sub>ck</sub>b<sub>f</sub></span></span> = 34.2 mm &lt; D<sub>f</sub> = 150 &rArr; NA in flange, section OK.</p>
+      <p class="ans"><span class="lbl">Answer</span> Web 300&times;500 mm, b<sub>f</sub> = 2242 mm, tension steel 5&minus;20 &phi; (1571 mm&sup2;).</p>
+    </div>
+
+  </main>
+</div>
+
+<script src="../../common.js"></script>
+</body>
+</html>

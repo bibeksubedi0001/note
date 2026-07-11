@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCC Manual &mdash; Ch 2: Beam</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="ch-nav">
+    <a href="ch1_intro.html">&larr; Ch 1</a>
+    <span class="nav-title">Ch 2: Beam (Flexure, Shear, Torsion, Bond)</span>
+    <a href="ch3_column.html">Ch 3: Column &rarr;</a>
+</nav>
+
+<button onclick="window.print()" class="print-btn">PRINT CHAPTER</button>
+
+<main>
+
+    <div class="ch-header">
+        <div class="meta">Design of RCC Structures (ENCE 352) &mdash; Digital Manual</div>
+        <h1>CHAPTER 2: BEAM</h1>
+        <div class="author">Flexure &bull; Shear &bull; Torsion &bull; Bond &mdash; Limit State Method (IS 456:2000)</div>
+    </div>
+
+    <div class="callout">
+        Covers the beam design theory (limit state of collapse in flexure), analysis and design of
+        singly- and doubly-reinforced rectangular beams and flanged (<span class="frac"><span class="fn">T</span><span class="fd">L</span></span>) beams, followed by shear,
+        torsion and bond/development length, with worked examples.
+    </div>
+
+    <nav class="toc-card">
+        <h3>Table of Contents</h3>
+        <div class="toc-grid">
+            <a href="#s2-1">2.1 Introduction &amp; Types of Beam</a>
+            <a href="#s2-2">2.2 Assumptions in Flexure (IS 456 cl. 38.1)</a>
+            <a href="#s2-3">2.3 Stress Block Parameters</a>
+            <a href="#s2-4">2.4 Balanced, Under- &amp; Over-Reinforced Sections</a>
+            <a href="#s2-5">2.5 Analysis of Singly-Reinforced Beams</a>
+            <a href="#s2-6">2.6 Design of Singly-Reinforced Beams</a>
+            <a href="#s2-7">2.7 Doubly-Reinforced Beams</a>
+            <a href="#s2-8">2.8 Flanged (T- and L-) Beams</a>
+            <a href="#s2-9">2.9 Shear in Beams</a>
+            <a href="#s2-10">2.10 Torsion</a>
+            <a href="#s2-11">2.11 Bond &amp; Development Length</a>
+            <a href="#s2-ex">Solved Examples</a>
+        </div>
+    </nav>
+
+    <div class="content">
+
+        <section id="s2-1">
+            <h2>2.1 INTRODUCTION &amp; TYPES OF BEAM</h2>
+            <p>A <strong>beam</strong> is a member primarily subjected to flexure (bending); it supports the loads applied by slabs and its own weight through internal moments and shears.</p>
+            <ul>
+                <li><strong>Singly-reinforced beam:</strong> reinforcement only in the tension zone.</li>
+                <li><strong>Doubly-reinforced beam:</strong> reinforcement in both tension and compression zones (used when the section size is limited).</li>
+                <li><strong>T-/L-beams (flanged / spandrel beams):</strong> a portion of the slab acts with the beam in resisting compression at mid-span &mdash; T at an interior beam, L at an edge beam. At supports (negative moment) the flange is in tension, so they are designed as rectangular beams.</li>
+            </ul>
+            <p>Two problems arise: <strong>analysis</strong> (geometry and steel known &rarr; find capacity) and <strong>design</strong> (loads known &rarr; find depth, width and steel).</p>
+        </section>
+
+        <section id="s2-2">
+            <h2>2.2 ASSUMPTIONS IN FLEXURE (IS 456:2000, CL. 38.1)</h2>
+            <ol>
+                <li>Plane sections normal to the axis remain plane after bending (strain varies linearly across the depth).</li>
+                <li>Maximum strain in concrete at the outermost compression fibre = <strong>0.0035</strong>.</li>
+                <li>The design compressive stress of concrete = <span class="frac"><span class="fn">0.67f<sub>ck</sub></span><span class="fd">&gamma;<sub>m</sub></span></span> = <span class="frac"><span class="fn">0.67</span><span class="fd">1.5</span></span> &middot; f<sub>ck</sub> = <strong>0.446f<sub>ck</sub></strong> (&asymp; 0.45f<sub>ck</sub>).</li>
+                <li>The tensile strength of concrete is ignored.</li>
+                <li>Design stress in steel is limited to <span class="frac"><span class="fn">f<sub>y</sub></span><span class="fd">1.15</span></span> = <strong>0.87f<sub>y</sub></strong>.</li>
+                <li>The maximum strain in tension steel at failure &ge; <span class="frac"><span class="fn">0.87f<sub>y</sub></span><span class="fd">E<sub>s</sub></span></span> + 0.002.</li>
+            </ol>
+        </section>
+
+        <section id="s2-3">
+            <h2>2.3 STRESS BLOCK PARAMETERS</h2>
+            <div class="svg-wrap">
+                <svg width="680" height="230" viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg">
+                    <!-- section -->
+                    <rect x="40" y="30" width="90" height="150" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.3"/>
+                    <line x1="40" y1="95" x2="130" y2="95" stroke="#4f46e5" stroke-dasharray="4 3"/>
+                    <text x="85" y="24" font-size="9" text-anchor="middle" font-family="Times New Roman">b</text>
+                    <text x="138" y="70" font-size="9" font-family="Times New Roman">x<tspan baseline-shift="sub">u</tspan></text>
+                    <circle cx="60" cy="165" r="4" fill="#dc2626"/><circle cx="85" cy="165" r="4" fill="#dc2626"/><circle cx="110" cy="165" r="4" fill="#dc2626"/>
+                    <text x="85" y="200" font-size="9" text-anchor="middle" font-family="Times New Roman">(a) section</text>
+                    <!-- strain -->
+                    <line x1="230" y1="30" x2="230" y2="180" stroke="#666"/>
+                    <path d="M230 95 L300 30" stroke="#16a34a" stroke-width="1.6" fill="none"/>
+                    <path d="M230 95 L285 180" stroke="#16a34a" stroke-width="1.6" fill="none"/>
+                    <text x="305" y="30" font-size="9" font-family="Times New Roman">0.0035</text>
+                    <text x="290" y="192" font-size="9" font-family="Times New Roman">&epsilon;<tspan baseline-shift="sub">st</tspan></text>
+                    <text x="270" y="215" font-size="9" text-anchor="middle" font-family="Times New Roman">(b) strain</text>
+                    <!-- stress block -->
+                    <line x1="430" y1="30" x2="430" y2="180" stroke="#666"/>
+                    <path d="M430 30 L520 30 L520 95 L430 95" fill="#c7d2fe" stroke="#4f46e5"/>
+                    <path d="M430 95 Q470 95 490 60 L490 30" fill="none" stroke="#4f46e5" stroke-width="1.4"/>
+                    <line x1="430" y1="95" x2="600" y2="95" stroke="#666" stroke-dasharray="4 3"/>
+                    <text x="500" y="24" font-size="9" font-family="Times New Roman">0.446f<tspan baseline-shift="sub">ck</tspan></text>
+                    <text x="540" y="70" font-size="9" fill="#16a34a" font-family="Times New Roman">C = 0.36f<tspan baseline-shift="sub">ck</tspan>bx<tspan baseline-shift="sub">u</tspan></text>
+                    <text x="540" y="130" font-size="9" fill="#dc2626" font-family="Times New Roman">T = 0.87f<tspan baseline-shift="sub">y</tspan>A<tspan baseline-shift="sub">st</tspan></text>
+                    <text x="435" y="60" font-size="8" font-family="Times New Roman">0.42x<tspan baseline-shift="sub">u</tspan></text>
+                    <text x="500" y="215" font-size="9" text-anchor="middle" font-family="Times New Roman">(c) stress block</text>
+                </svg>
+                <div class="figcaption">Figure 2.1: Section, strain diagram and rectangular-parabolic stress block</div>
+            </div>
+            <p>The compressive stress block is parabolic over <span class="frac"><span class="fn">4</span><span class="fd">7&middot;x<sub>u</sub></span></span> and constant (0.446f<sub>ck</sub>) over <span class="frac"><span class="fn">3</span><span class="fd">7&middot;x<sub>u</sub>.</span></span> This gives:</p>
+            <ul>
+                <li>Total compressive force <strong>C = 0.36f<sub>ck</sub>&middot;b&middot;x<sub>u</sub></strong> (average stress 0.36f<sub>ck</sub>).</li>
+                <li>Centroid of compression at <strong>0.42x<sub>u</sub></strong> from the extreme compression fibre.</li>
+                <li>Lever arm <strong>Z = d &minus; 0.42x<sub>u</sub></strong>.</li>
+            </ul>
+        </section>
+
+        <section id="s2-4">
+            <h2>2.4 BALANCED, UNDER- &amp; OVER-REINFORCED SECTIONS</h2>
+            <p>By strain compatibility, &epsilon;<sub>st</sub> = 0.0035(<span class="frac"><span class="fn">d</span><span class="fd">x<sub>u</sub></span></span> &minus; 1). The <strong>limiting</strong> depth of the neutral axis (balanced) is <span class="frac"><span class="fn">x<sub>u,max</sub></span><span class="fd">d</span></span> = <span class="frac"><span class="fn">0.0035</span><span class="fd"><span class="frac"><span class="fn">0.87f<sub>y</sub></span><span class="fd">E<sub>s</sub></span></span> + 0.0055</span></span>:</p>
+            <table>
+                <thead><tr><th>Steel</th><th>f<sub>y</sub> (N/mm&sup2;)</th><th><span class="frac"><span class="fn">x<sub>u,max</sub></span><span class="fd">d</span></span></th><th>M<sub>u,lim</sub></th></tr></thead>
+                <tbody>
+                    <tr><td>Fe 250</td><td>250</td><td>0.53</td><td>0.148 f<sub>ck</sub>bd&sup2;</td></tr>
+                    <tr><td>Fe 415</td><td>415</td><td>0.48</td><td>0.138 f<sub>ck</sub>bd&sup2;</td></tr>
+                    <tr><td>Fe 500</td><td>500</td><td>0.46</td><td>0.133 f<sub>ck</sub>bd&sup2;</td></tr>
+                </tbody>
+            </table>
+            <ul>
+                <li><strong>Balanced</strong> (x<sub>u</sub> = x<sub>u,max</sub>): steel yields as concrete crushes.</li>
+                <li><strong>Under-reinforced</strong> (x<sub>u</sub> &lt; x<sub>u,max</sub>): steel yields first &rarr; ductile failure with warning (preferred by IS 456).</li>
+                <li><strong>Over-reinforced</strong> (x<sub>u</sub> &gt; x<sub>u,max</sub>): concrete crushes first &rarr; brittle failure, avoided.</li>
+            </ul>
+        </section>
+
+        <section id="s2-5">
+            <h2>2.5 ANALYSIS OF SINGLY-REINFORCED BEAMS</h2>
+            <p><strong>Steps:</strong> (I) find A<sub>st</sub>; (II) depth of NA from C = T: 0.36f<sub>ck</sub>bx<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub> &rarr; x<sub>u</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>st</sub></span><span class="fd">0.36f<sub>ck</sub>b</span></span>; (III) x<sub>u,max</sub>; (IV) compare; (V) MOR.</p>
+            <div class="callout">
+                <strong>Moment of resistance:</strong><br>
+                Under-reinforced / balanced: M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>&middot;d[1 &minus; <span class="frac"><span class="fn">A<sub>st</sub>f<sub>y</sub></span><span class="fd">bd&middot;f<sub>ck</sub></span></span>]<br>
+                Over-reinforced: M<sub>u</sub> = M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d &minus; 0.42x<sub>u,max</sub>)
+            </div>
+            <div class="example">
+                <div class="ex-title">Example 2.1 &mdash; MOR of a singly-reinforced beam</div>
+                <div class="ex-q">
+                    <p><strong>b = 250, d = 360 mm, M20, Fe415, 3&minus;16 mm &phi; bars.</strong></p>
+                    <p>A<sub>st</sub> = 3&times;(<span class="frac"><span class="fn">&pi;</span><span class="fd">4</span></span>)&times;16&sup2; = 602.88 mm&sup2;.</p>
+                    <p>x<sub>u</sub> = <span class="frac"><span class="fn">0.87&times;415&times;602.88</span><span class="fd">0.36&times;20&times;250</span></span> = <strong>120.93 mm</strong>.</p>
+                    <p>x<sub>u,max</sub> = 0.48&times;360 = 172.8 mm &rarr; x<sub>u</sub> &lt; x<sub>u,max</sub> &rArr; <strong>under-reinforced</strong>.</p>
+                    <p>M<sub>u</sub> = 0.87&times;415&times;602.88&times;360&times;[1 &minus; <span class="frac"><span class="fn">602.88</span><span class="fd">250&times;360</span></span><span class="frac"><span class="fn">&times;415</span><span class="fd">20</span></span>] = <strong>67.47 kN-m</strong>.</p>
+                </div>
+            </div>
+            <div class="note"><strong>Over-reinforced sections</strong> need the <strong>strain-compatibility method</strong> to find the steel stress f<sub>st</sub>: assume x<sub>u</sub> &rarr; &epsilon;<sub>st</sub> = 0.0035(<span class="frac"><span class="fn">d</span><span class="fd">x<sub>u</sub></span></span> &minus; 1) &rarr; read f<sub>st</sub> from SP-16 (Table A) &rarr; check C = T (0.36f<sub>ck</sub>bx<sub>u</sub> = f<sub>st</sub>A<sub>st</sub>).</div>
+        </section>
+
+        <section id="s2-6">
+            <h2>2.6 DESIGN OF SINGLY-REINFORCED BEAMS</h2>
+            <ol>
+                <li>Compute factored moment M<sub>u</sub> (= 1.5&times; service moment).</li>
+                <li>Fix b and D; take d = D &minus; effective cover.</li>
+                <li>Check M<sub>u</sub> &le; M<sub>u,lim</sub> (0.138f<sub>ck</sub>bd&sup2; for Fe415). If not, design as doubly-reinforced or increase depth.</li>
+                <li>Find A<sub>st</sub> from M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>d[1 &minus; <span class="frac"><span class="fn">A<sub>st</sub>f<sub>y</sub></span><span class="fd">bd f<sub>ck</sub></span></span>] (quadratic in A<sub>st</sub>).</li>
+                <li>Check A<sub>st,min</sub> = <span class="frac"><span class="fn">0.85bd</span><span class="fd">f<sub>y</sub></span></span> and A<sub>st,max</sub> = 0.04bD; detail the bars.</li>
+            </ol>
+        </section>
+
+        <section id="s2-7">
+            <h2>2.7 DOUBLY-REINFORCED BEAMS</h2>
+            <p>Used when M<sub>u</sub> &gt; M<sub>u,lim</sub> but the section size is restricted. The moment is split:</p>
+            <ul>
+                <li><strong>Balanced part:</strong> M<sub>u,lim</sub> resisted by concrete + tension steel A<sub>st1</sub> = <span class="frac"><span class="fn">M<sub>u,lim</sub></span><span class="fd">0.87f<sub>y</sub>(d &minus; 0.42x<sub>u,max</sub>)</span></span>.</li>
+                <li><strong>Extra part:</strong> M<sub>u2</sub> = M<sub>u</sub> &minus; M<sub>u,lim</sub> resisted by compression steel A<sub>sc</sub> and extra tension steel A<sub>st2</sub>:<br>
+                A<sub>sc</sub> = <span class="frac"><span class="fn">M<sub>u2</sub></span><span class="fd">(f<sub>sc</sub> &minus; 0.446f<sub>ck</sub>)(d &minus; d&prime;)</span></span>; &nbsp; A<sub>st2</sub> = A<sub>sc</sub><span class="frac"><span class="fn">f<sub>sc</sub> &minus; 0.446f<sub>ck</sub></span><span class="fd">0.87f<sub>y</sub>.</span></span></li>
+                <li>Total A<sub>st</sub> = A<sub>st1</sub> + A<sub>st2</sub>. The compression-steel stress f<sub>sc</sub> depends on strain &epsilon;<sub>sc</sub> = 0.0035(1 &minus; <span class="frac"><span class="fn">d&prime;</span><span class="fd">x<sub>u,max</sub></span></span>) (from SP-16).</li>
+            </ul>
+            <div class="example">
+                <div class="ex-title">Example 2.3 &mdash; Doubly-reinforced design (from the manual)</div>
+                <div class="ex-q">
+                    <p><strong>b = 230, d = 500, d&prime; = 50 mm, factored w<sub>u</sub> = 55.44 kN/m over 5.5 m, M20, Fe415.</strong></p>
+                    <p>M<sub>u</sub> = <span class="frac"><span class="fn">55.44&times;5.5&sup2;</span><span class="fd">8</span></span> = 209.65 kN-m; x<sub>u,max</sub> = 240 mm; M<sub>u,lim</sub> = 0.36&times;20&times;230&times;240(500&minus;100.8) = 158.66 kN-m &lt; M<sub>u</sub> &rArr; doubly-reinforced.</p>
+                    <p>A<sub>st1</sub> = <span class="frac"><span class="fn">158.66&times;10<sup>6</sup></span><span class="fd">0.87&times;415&times;399.2</span></span> = 1100.8 mm&sup2;; M<sub>u2</sub> = 50.99 kN-m; A<sub>st2</sub> = <span class="frac"><span class="fn">50.99&times;10<sup>6</sup></span><span class="fd">0.87&times;415&times;450</span></span> = 313.8 mm&sup2; &rarr; A<sub>st</sub> = 1414.6 mm&sup2; (<strong>5&minus;20 mm</strong>).</p>
+                    <p>&epsilon;<sub>sc</sub> = 0.0035<span class="frac"><span class="fn">240&minus;50</span><span class="fd">240</span></span> = 0.00276 &rarr; f<sub>sc</sub> = 351.8 (SP-16); A<sub>sc</sub> = <span class="frac"><span class="fn">M<sub>u2</sub></span><span class="fd">(f<sub>sc</sub>&minus;8.92)(450)</span></span> &rarr; compression bars.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="s2-8">
+            <h2>2.8 FLANGED (T- AND L-) BEAMS</h2>
+            <p><strong>Effective flange width</strong> b<sub>f</sub> (IS 456): for a T-beam, b<sub>f</sub> = <span class="frac"><span class="fn">L<sub>0</sub></span><span class="fd">6</span></span> + b<sub>w</sub> + 6D<sub>f</sub>; for an L-beam, b<sub>f</sub> = <span class="frac"><span class="fn">L<sub>0</sub></span><span class="fd">12</span></span> + b<sub>w</sub> + 3D<sub>f</sub> (L<sub>0</sub> = distance between points of zero moment; b<sub>w</sub> = web width; D<sub>f</sub> = flange depth).</p>
+            <p><strong>Design cases:</strong></p>
+            <ul>
+                <li><strong>NA within flange</strong> (x<sub>u</sub> &le; D<sub>f</sub>): design as a rectangular beam of width b<sub>f</sub> &mdash; M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>(d &minus; 0.42x<sub>u</sub>).</li>
+                <li><strong>NA in web</strong> (x<sub>u</sub> &gt; D<sub>f</sub>): M<sub>u</sub> = 0.36f<sub>ck</sub>b<sub>w</sub>x<sub>u</sub>(d &minus; 0.42x<sub>u</sub>) + 0.446f<sub>ck</sub>(b<sub>f</sub> &minus; b<sub>w</sub>)y<sub>f</sub>(d &minus; <span class="frac"><span class="fn">y<sub>f</sub></span><span class="fd">2</span></span>), where y<sub>f</sub> = min(D<sub>f</sub>, 0.15x<sub>u</sub> + 0.65D<sub>f</sub>).</li>
+            </ul>
+        </section>
+
+        <section id="s2-9">
+            <h2>2.9 SHEAR IN BEAMS</h2>
+            <p>Nominal shear stress <strong>&tau;<sub>v</sub> = <span class="frac"><span class="fn">V<sub>u</sub></span><span class="fd">b&middot;d</span></span></strong>. Design shear strength of concrete <strong>&tau;<sub>c</sub></strong> depends on grade and the tension-steel percentage p<sub>t</sub> = <span class="frac"><span class="fn">100A<sub>st</sub></span><span class="fd">bd</span></span> (IS 456 Table 19). Maximum &tau;<sub>c,max</sub> (Table 20) must not be exceeded.</p>
+            <ul>
+                <li>If &tau;<sub>v</sub> &le; &tau;<sub>c</sub>: provide only minimum stirrups &mdash; <span class="frac"><span class="fn">A<sub>sv</sub></span><span class="fd">b&middot;s<sub>v</sub></span></span> = <span class="frac"><span class="fn">0.4</span><span class="fd">0.87f<sub>y</sub></span></span>.</li>
+                <li>If &tau;<sub>c</sub> &lt; &tau;<sub>v</sub> &le; &tau;<sub>c,max</sub>: design shear reinforcement for V<sub>us</sub> = V<sub>u</sub> &minus; &tau;<sub>c</sub>bd.</li>
+            </ul>
+            <div class="callout"><strong>Vertical stirrups:</strong> V<sub>us</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>sv</sub>d</span><span class="fd">s<sub>v</sub></span></span> &rArr; spacing s<sub>v</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>sv</sub>d</span><span class="fd">V<sub>us</sub>.</span></span> <strong>Bent-up bars:</strong> V<sub>us</sub> = 0.87f<sub>y</sub>A<sub>sv</sub>&middot;sin&alpha; (&alpha; = 45&deg; typically). Max spacing = 0.75d (vertical) and 300 mm.</div>
+            <div class="example">
+                <div class="ex-title">Example 2.4 &mdash; Shear reinforcement design (from the manual)</div>
+                <div class="ex-q">
+                    <p><strong>b<sub>w</sub> = 250, d = 450 mm, V<sub>u</sub> = 250 kN, M25, Fe415, &tau;<sub>c</sub> = 0.668 <span class="frac"><span class="fn">N</span><span class="fd">mm&sup2;.</span></span></strong></p>
+                    <p>&tau;<sub>c,max</sub>(M25) = 3.1 &gt; &tau;<sub>v</sub>; V<sub>us</sub> = V<sub>u</sub> &minus; &tau;<sub>c</sub>b<sub>w</sub>d = 250000 &minus; 0.668&times;250&times;450 = 174.87 kN.</p>
+                    <p>2-legged 8 mm stirrups: A<sub>sv</sub> = 100.5 mm&sup2;; s<sub>v</sub> = <span class="frac"><span class="fn">0.87&times;415&times;100.5&times;450</span><span class="fd">174870</span></span> = 93.4 mm &rarr; <strong>provide 8 mm 2-legged @ 90 mm c/c</strong> (&le; 300 mm).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="s2-10">
+            <h2>2.10 TORSION</h2>
+            <p>Torsion is combined with bending and shear using <strong>equivalent</strong> actions (IS 456):</p>
+            <ul>
+                <li>Equivalent shear: <strong>V<sub>e</sub> = V<sub>u</sub> + <span class="frac"><span class="fn">1.6&middot;T<sub>u</sub></span><span class="fd">b</span></span></strong>.</li>
+                <li>Equivalent moment: <strong>M<sub>e1</sub> = M<sub>u</sub> + M<sub>t</sub></strong>, where M<sub>t</sub> = T<sub>u</sub>(1 + <span class="frac"><span class="fn">D</span><span class="fd">b</span></span><span class="frac"><span class="fn">1 + <span class="frac"><span class="fn">D</span><span class="fd">b</span></span></span><span class="fd">1.7.</span></span> If M<sub>t</sub> &gt; M<sub>u</sub>, provide compression-side steel for M<sub>e2</sub> = M<sub>t</sub> &minus; M<sub>u</sub>.</li>
+                <li>Longitudinal steel is designed for M<sub>e1</sub>; transverse (closed) stirrups for the torsional/shear demand.</li>
+            </ul>
+        </section>
+
+        <section id="s2-11">
+            <h2>2.11 BOND &amp; DEVELOPMENT LENGTH</h2>
+            <div class="def-box">
+                <div class="dt">Development length</div>
+                L<sub>d</sub> = <span class="frac"><span class="fn">&phi;&middot;&sigma;<sub>s</sub></span><span class="fd">4&middot;&tau;<sub>bd</sub></span></span>, where &phi; = bar diameter, &sigma;<sub>s</sub> = 0.87f<sub>y</sub>, &tau;<sub>bd</sub> = design bond stress (increased 60% for deformed bars, 25% in compression).
+            </div>
+            <p><strong>Anchorage / flexural bond:</strong> at a simply supported end the code check is <strong>L<sub>d</sub> &le; <span class="frac"><span class="fn">1.3&middot;M<sub>1</sub></span><span class="fd">V<sub>u</sub></span></span> + L<sub>o</sub></strong>, where M<sub>1</sub> = moment of resistance of the bars continued, V<sub>u</sub> = shear at support, L<sub>o</sub> = anchorage beyond the support centre. <strong>Anchorage bond</strong> resists pull-out along the bar length; <strong>flexural (local) bond</strong> arises from the change of bar force due to the change of bending moment along the span.</p>
+        </section>
+
+        <section id="s2-ex">
+            <h2>SOLVED EXAMPLES</h2>
+            <div class="example">
+                <div class="ex-title">Example 2.2 &mdash; Under-reinforced check &amp; MOR (from the manual)</div>
+                <div class="ex-q"><p>See Example 2.1 above &mdash; a 250&times;360 mm, M20/Fe415 beam with 3&minus;16 mm bars is under-reinforced with M<sub>u</sub> = 67.47 kN-m. The same five-step procedure applies to all analysis problems (2073 Shrawan, 2075 Chaitra, 2081 Bhadra, etc.).</p></div>
+            </div>
+            <div class="note"><strong>More worked examples</strong> for flexure (design), doubly-reinforced sections, T-beams, shear, torsion and development length &mdash; keyed to the actual IOE past questions &mdash; are collected in the <a href="../solved_past_questions.html">Solved Past Questions</a> page.</div>
+        </section>
+
+    </div><!-- .content -->
+
+</main>
+
+<!-- Mnemonics Holder -->
+<div class="mnemonics-panel">
+    <button class="mnemonics-toggle" id="mnToggle" title="My Mnemonics"></button>
+</div>
+<div class="mnemonics-drawer" id="mnDrawer">
+    <div class="mnemonics-drawer-header">
+        <h4>My Mnemonics</h4>
+        <button id="mnClose">&times;</button>
+    </div>
+    <div class="mnemonics-body">
+        <ul class="mnemonics-list" id="mnList"></ul>
+    </div>
+    <div class="mnemonics-add">
+        <input type="text" id="mnInput" placeholder="Add a mnemonic…" maxlength="500">
+        <button id="mnAdd">Add</button>
+    </div>
+</div>
+
+<script src="../../common.js"></script>
+<script>
+(function(){
+  var KEY='rcc-mnemonics';
+  var list=JSON.parse(localStorage.getItem(KEY)||'[]');
+  var ul=document.getElementById('mnList');
+  var inp=document.getElementById('mnInput');
+  function render(){
+    ul.innerHTML='';
+    if(!list.length){ul.innerHTML='<li class="mnemonics-empty">No mnemonics yet. Add one below!</li>';return;}
+    list.forEach(function(t,i){
+      var li=document.createElement('li');
+      var sp=document.createElement('span');sp.className='mn-text';sp.textContent=t;
+      var btn=document.createElement('button');btn.className='mn-del';btn.textContent='\u2715';btn.title='Delete';
+      btn.onclick=function(){list.splice(i,1);localStorage.setItem(KEY,JSON.stringify(list));render();};
+      li.appendChild(sp);li.appendChild(btn);ul.appendChild(li);
+    });
+  }
+  render();
+  document.getElementById('mnToggle').onclick=function(){document.getElementById('mnDrawer').classList.toggle('open');};
+  document.getElementById('mnClose').onclick=function(){document.getElementById('mnDrawer').classList.remove('open');};
+  document.getElementById('mnAdd').onclick=addMn;
+  inp.addEventListener('keydown',function(e){if(e.key==='Enter')addMn();});
+  function addMn(){var v=inp.value.trim();if(!v)return;list.push(v);localStorage.setItem(KEY,JSON.stringify(list));inp.value='';render();}
+})();
+</script>
+
+</body>
+</html>

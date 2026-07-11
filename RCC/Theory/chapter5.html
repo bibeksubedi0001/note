@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 5 &ndash; Shear, Torsion &amp; Bond</title>
+  <link rel="stylesheet" href="tes.css">
+  <style id="dark-mode-styles">
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .2em;line-height:1.08}
+    .frac>.fn{padding:0 .4em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .4em}
+    .frac .frac{font-size:.92em}
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 5</div>
+    <h1>Shear, Torsion &amp; Bond</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">6 Hours</span>
+      <span class="meta-badge exam">22 Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ 5.1 & 5.2 ═══ -->
+    <h2>5.1 &amp; 5.2 Shear Stress &amp; Behaviour of Concrete under Shear <span class="year-tag">2080</span><span class="year-tag">2078</span><span class="year-tag">2076</span><span class="year-tag">2075</span><span class="year-tag">2072</span><span class="year-tag">2069</span><span class="year-tag">2065</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Explain the behaviour of concrete under shear with sketches; different conditions. [4] <em>(2078 Bhadra, Q2a)</em></li>
+        <li>How do bent-up bars contribute to the shear strength of a beam? [4] <em>(2065 Shrawan, Q3a)</em></li>
+        <li>Explain how a RC member under bending, shear and torsion is designed by the IS code method. [5] <em>(2076 Ashwin, Q5a; 2072 Chaitra, Q4a)</em></li>
+        <li>Step-by-step design of a RC beam under shear, moment and torsion. [6] <em>(2075 Ashwin, Q3a)</em> &middot; [4] <em>(2071 Chaitra, Q2b)</em></li>
+        <li>Beam d 550, b 400, 5&minus;25 (2 bent-up 45&deg;), factored UDL 100 kN/m over 6 m. Bent-up + stirrup design. M20/Fe415. [8] <em>(2080 Baishakh, Q1d)</em></li>
+        <li>Beam 500&times;300, 5&minus;25 T + 3&minus;16 C. Shear reinforcement for factored SF 370 kN. M20/Fe415. [8] <em>(2075 Chaitra, Q2a)</em></li>
+        <li>Shear reinforcement for a beam (span 7200 mm), SF 250 kN. M25/Fe500. [6] <em>(2072 Chaitra, Q1a)</em></li>
+        <li>Shear resisting capacity of a rectangular beam 300&times;500 at the bent-up bar section (45&deg;). M20/Fe415. [10] <em>(2069 Chaitra, Q2b)</em></li>
+      </ol>
+    </div>
+
+    <p>A beam develops <strong>diagonal tension</strong> from the combination of flexural and shear stresses. Near supports (high shear, low moment) <em>web-shear</em> cracks form at about 45&deg;; in the shear span <em>flexure-shear</em> cracks start as vertical flexural cracks that turn diagonal. Because concrete is weak in tension, this diagonal tension must be carried by <strong>shear reinforcement</strong> (vertical stirrups and/or bent-up bars).</p>
+    <p>The nominal shear stress is &tau;<sub>v</sub> = <span class="frac"><span class="fn">V<sub>u</sub></span><span class="fd">b&middot;d</span></span>. The concrete alone resists &tau;<sub>c</sub> (IS 456 Table 19, a function of the steel ratio p<sub>t</sub> = <span class="frac"><span class="fn">100A<sub>st</sub></span><span class="fd">b&middot;d</span></span>). If &tau;<sub>v</sub> &le; &tau;<sub>c</sub> only nominal stirrups are needed; if &tau;<sub>c</sub> &lt; &tau;<sub>v</sub> &le; &tau;<sub>c,max</sub> the excess V<sub>us</sub> = V<sub>u</sub> &minus; &tau;<sub>c</sub>bd is carried by steel; &tau;<sub>v</sub> must never exceed &tau;<sub>c,max</sub> (2.8/3.1/3.5 for M20/M25/M30).</p>
+
+    <div class="figure">
+      <figure>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 210" width="560" height="210">
+          <rect x="40" y="40" width="480" height="110" fill="none" stroke="var(--svg-line)" stroke-width="1.5"/>
+          <polygon points="40,150 60,150 50,130" fill="var(--svg-sub)"/><polygon points="500,150 520,150 510,130" fill="var(--svg-sub)"/>
+          <line x1="120" y1="150" x2="180" y2="40" stroke="var(--svg-red-s)" stroke-width="2"/>
+          <line x1="170" y1="150" x2="230" y2="40" stroke="var(--svg-red-s)" stroke-width="2"/>
+          <line x1="220" y1="150" x2="280" y2="60" stroke="var(--svg-red-s)" stroke-width="1.6"/>
+          <text x="150" y="30" font-size="10" fill="var(--svg-text-red)">diagonal (shear) cracks</text>
+          <line x1="150" y1="40" x2="150" y2="150" stroke="var(--svg-hub)" stroke-dasharray="4 3"/>
+          <line x1="300" y1="40" x2="300" y2="150" stroke="var(--svg-hub)" stroke-dasharray="4 3"/>
+          <text x="145" y="170" font-size="10" fill="var(--svg-sub)">vertical stirrup</text>
+          <line x1="360" y1="150" x2="430" y2="70" stroke="var(--svg-green-s)" stroke-width="2.4"/>
+          <text x="395" y="60" font-size="10" fill="var(--svg-text-green)">bent-up bar 45&deg;</text>
+          <text x="280" y="200" font-size="10" fill="var(--svg-sub)" text-anchor="middle">Shear reinforcement crossing the diagonal crack</text>
+        </svg>
+        <figcaption>Diagonal-tension cracking; vertical stirrups and 45&deg; bent-up bars cross the crack and carry the shear across it.</figcaption>
+      </figure>
+    </div>
+
+    <h3>Shear reinforcement design</h3>
+    <p><strong>Vertical stirrups:</strong> V<sub>us</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>sv</sub>d</span><span class="fd">s<sub>v</sub></span></span> &rArr; spacing s<sub>v</sub> = <span class="frac"><span class="fn">0.87f<sub>y</sub>A<sub>sv</sub>d</span><span class="fd">V<sub>us</sub></span></span> (&le; 0.75d and 300 mm). <strong>Bent-up bars</strong> (single or a group at angle &alpha;): V<sub>us</sub> = 0.87f<sub>y</sub>A<sub>sv</sub>&middot;sin&alpha; (may carry at most half the shear demand, the rest by stirrups).</p>
+
+    <table>
+      <thead><tr><th>Exam</th><th>Data</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>2075 Chaitra</td><td>300&times;500, d 450, V<sub>u</sub> 370, 5&minus;25, M20</td><td>&tau;<sub>v</sub>=2.74, p<sub>t</sub>=1.82, &tau;<sub>c</sub>=0.76 &rArr; V<sub>us</sub>=267 kN; 8&nbsp;mm 2-legged @ <strong>60 mm</strong></td></tr>
+        <tr><td>2072 Chaitra</td><td>230&times;550, d 500, V<sub>u</sub> 250, 4&minus;20, M25</td><td>&tau;<sub>v</sub>=2.17, p<sub>t</sub>=1.09, &tau;<sub>c</sub>=0.66 &rArr; V<sub>us</sub>=174 kN; 8&nbsp;mm 2-legged @ <strong>100 mm</strong></td></tr>
+      </tbody>
+    </table>
+
+    <!-- ═══ 5.3 ═══ -->
+    <h2>5.3 Behaviour &amp; Design Strength in Torsion <span class="year-tag">2082</span><span class="year-tag">2081</span><span class="year-tag">2080</span><span class="year-tag">2079</span><span class="year-tag">2075</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Section 400&times;750, ultimate twisting 150 kN-m + hogging BM 400 + shear 110 kN. Reinforcement. M25/Fe500 TMT, mild exposure. [8] <em>(2082 Bhadra, Q2b)</em></li>
+        <li>Beam 250&times;500 eff, factored SF 110 + torsion 20 kN-m, 3&minus;20 tension. Shear reinforcement. M20/Fe500. [8] <em>(2081 Bhadra, Q3a)</em></li>
+        <li>Beam 425&times;550, factored BM 100 + twisting 28 + shear 100 kN, mild exposure. M20/Fe415. [10] <em>(2081 Baishakh, Q2a)</em></li>
+        <li>Beam 200&times;400, design BM 100 + shear 80 + torsion 15. M25/Fe415. [10] <em>(2080 Bhadra, Q2b)</em></li>
+        <li>SS beam 300&times;400 eff, 4&minus;20, SF 130 + torsion 45 kN-m at service. Shear reinforcement. M25/TOR. [10] <em>(2079 Bhadra, Q2b)</em></li>
+        <li>Beam 650&times;300 overall, factored BM 85 + SF 110 + twisting 25. Longitudinal &amp; transverse reinforcement. M25/Fe415. [8] <em>(2075 Chaitra, Q3a)</em></li>
+      </ol>
+    </div>
+
+    <p>IS 456 replaces torsion T<sub>u</sub> by <strong>equivalent</strong> bending and shear on the section:</p>
+    <p style="text-align:center">Equivalent moment M<sub>e1</sub> = M<sub>u</sub> + M<sub>t</sub>, &nbsp; M<sub>t</sub> = T<sub>u</sub>&middot;<span class="frac"><span class="fn">1 + D/b</span><span class="fd">1.7</span></span> &nbsp;&middot;&nbsp; Equivalent shear V<sub>e</sub> = V<sub>u</sub> + <span class="frac"><span class="fn">1.6&thinsp;T<sub>u</sub></span><span class="fd">b</span></span></p>
+    <p>Longitudinal steel is designed for M<sub>e1</sub> (and M<sub>e2</sub> = M<sub>t</sub> &minus; M<sub>u</sub> on the opposite face if it is positive). The equivalent shear stress &tau;<sub>ve</sub> = <span class="frac"><span class="fn">V<sub>e</sub></span><span class="fd">b&middot;d</span></span> is resisted by <strong>closed stirrups</strong> designed for both shear and torsion.</p>
+
+    <table>
+      <thead><tr><th>Exam</th><th>M<sub>u</sub>, T<sub>u</sub>, V<sub>u</sub></th><th>M<sub>e1</sub></th><th>V<sub>e</sub></th><th>&tau;<sub>ve</sub></th></tr></thead>
+      <tbody>
+        <tr><td>2081 Baishakh</td><td>100 / 28 / 100</td><td>137.8 kN&middot;m</td><td>205.4 kN</td><td>0.95</td></tr>
+        <tr><td>2082 Bhadra</td><td>400 / 150 / 110</td><td>653.7 kN&middot;m</td><td>710 kN</td><td>2.50</td></tr>
+        <tr><td>2080 Bhadra</td><td>100 / 15 / 80</td><td>126.5 kN&middot;m</td><td>200 kN</td><td>2.78</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ═══ 5.4 ═══ -->
+    <h2>5.4 Development Length <span class="year-tag">2082</span><span class="year-tag">2081</span><span class="year-tag">2079</span><span class="year-tag">2076</span><span class="year-tag">2072</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Derive the formula for development length (L<sub>d</sub>). Explain its use in RCC construction. [3+4] <em>(2082 Bhadra, Q3a)</em></li>
+        <li>Derive an expression for development length. [3] <em>(2081 Bhadra, Q3a)</em></li>
+        <li>Define development length and lap splice. Derive L<sub>d</sub> &le; 1.3 M/V<sub>u</sub> + L<sub>o</sub> at a SS end. [2+4] <em>(2079 Bhadra, Q3a)</em></li>
+        <li>Derive L<sub>d</sub> &le; 1.3 M/V<sub>u</sub> + L<sub>o</sub>. [6] <em>(2076 Ashwin, Q2a; 2072 Kartik, Q3a)</em></li>
+        <li>Define development length. Why are splices required? [4] <em>(2076 Ashwin, Q4b)</em></li>
+      </ol>
+    </div>
+
+    <p><strong>Development length</strong> is the embedment needed to transfer a bar&rsquo;s full force to the concrete by bond, so the bar does not pull out. Equating the bar tension to the bond resistance over length L<sub>d</sub>:</p>
+    <p style="text-align:center"><span class="frac"><span class="fn">&pi;</span><span class="fd">4</span></span>&phi;&sup2;&middot;0.87f<sub>y</sub> = (&pi;&phi;L<sub>d</sub>)&middot;&tau;<sub>bd</sub> &nbsp;&rArr;&nbsp; <strong>L<sub>d</sub> = <span class="frac"><span class="fn">&phi;&middot;0.87f<sub>y</sub></span><span class="fd">4&tau;<sub>bd</sub></span></span></strong></p>
+    <p>where &tau;<sub>bd</sub> is the design bond stress (1.2, 1.4, 1.5 N/mm&sup2; for M20/M25/M30, &times;1.6 for deformed bars). For Fe415 in M20 this gives L<sub>d</sub> &asymp; <strong>47&phi;</strong> (e.g. 940 mm for 20 mm, 752 mm for 16 mm, 1175 mm for 25 mm). At a simple support the code also requires L<sub>d</sub> &le; 1.3<span class="frac"><span class="fn">M<sub>1</sub></span><span class="fd">V<sub>u</sub></span></span> + L<sub>o</sub>, where M<sub>1</sub> is the MOR of the bars continued and L<sub>o</sub> the end anchorage.</p>
+
+    <!-- ═══ 5.5 & 5.6 ═══ -->
+    <h2>5.5 &amp; 5.6 Anchorage Bond &amp; Flexural Bond <span class="year-tag">2080</span><span class="year-tag">2078</span><span class="year-tag">2075</span><span class="year-tag">2074</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Describe anchorage and flexural bond stress. Derive the equations for development length and bond stress. [8] <em>(2080 Bhadra, Q2a)</em></li>
+        <li>Define anchorage and flexural bond stress. Prove flexural bond stress is a function of V; L<sub>d</sub> &le; 1.3 M/V<sub>u</sub> + L<sub>o</sub>. [7] <em>(2075 Ashwin, Q1b)</em></li>
+        <li>Explain bond and development length with formula derivation. [5] <em>(2078 Bhadra, Q3b)</em></li>
+        <li>What is anchorage bond? Derive L<sub>d</sub> &le; 1.3 M/V<sub>u</sub> + L<sub>o</sub>. [7] <em>(2074 Ashwin, Q2b)</em></li>
+      </ol>
+    </div>
+
+    <p><strong>Anchorage (development) bond</strong> is the <em>average</em> bond over the anchorage length that develops the bar force &mdash; it governs L<sub>d</sub> above. <strong>Flexural (local) bond</strong> is the <em>local</em> bond arising from the rate of change of bar force along the beam; from the flexural equation it is proportional to the shear:</p>
+    <p style="text-align:center">&tau;<sub>bd,flexural</sub> = <span class="frac"><span class="fn">V</span><span class="fd">&Sigma;o&middot;z</span></span></p>
+    <p>where &Sigma;o is the total bar perimeter and z the lever arm. Because it depends on V, flexural bond peaks where the shear is large (near supports and at bar cut-off points); the code controls it through the L<sub>d</sub> &le; 1.3M/V<sub>u</sub> + L<sub>o</sub> rule rather than a separate stress check.</p>
+
+  </main>
+</div>
+
+<script src="../../common.js"></script>
+</body>
+</html>

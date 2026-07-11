@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 2 &ndash; Working Stress Method</title>
+  <link rel="stylesheet" href="tes.css">
+  <style id="dark-mode-styles">
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .2em;line-height:1.08}
+    .frac>.fn{padding:0 .4em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .4em}
+    .frac .frac{font-size:.92em}
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 2</div>
+    <h1>Working Stress Method</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">4 Hours</span>
+      <span class="meta-badge exam">14 Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ 2.2 ═══ -->
+    <h2>2.2 Working Load &amp; Permissible Stresses <span class="year-tag">2071</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Using the working stress method, design a rectangular section 300&times;450 mm carrying a uniformly distributed load of 30 kN/m over an effective span of 3.6 m. Use mild steel and M20 concrete. [4] <em>(2071 Chaitra, Q1a)</em></li>
+      </ol>
+    </div>
+
+    <p>The <strong>Working Stress Method (WSM)</strong> assumes both concrete and steel are <strong>linearly elastic</strong>. Plane sections remain plane, concrete resists <em>no</em> tension, and the two materials are tied through the <strong>modular ratio</strong> m = <span class="frac"><span class="fn">280</span><span class="fd">3&sigma;<sub>cbc</sub></span></span>. Members are proportioned so that the stresses under <em>service (working)</em> loads stay within permissible limits.</p>
+
+    <table>
+      <thead><tr><th>Grade</th><th>&sigma;<sub>cbc</sub> (N/mm&sup2;)</th><th>Steel</th><th>&sigma;<sub>st</sub> (N/mm&sup2;)</th><th>m</th></tr></thead>
+      <tbody>
+        <tr><td>M15</td><td>5.0</td><td>Fe250</td><td>140</td><td>18.67</td></tr>
+        <tr><td>M20</td><td>7.0</td><td>Fe415</td><td>230</td><td>13.33</td></tr>
+        <tr><td>M25</td><td>8.5</td><td>Fe500</td><td>275</td><td>10.98</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Worked example &mdash; WSM design (2071 Chaitra)</h3>
+    <p>b = 300, D = 450, cover 50 &rArr; d = 400 mm; M20 &rArr; &sigma;<sub>cbc</sub> = 7, mild steel &sigma;<sub>st</sub> = 140. Service moment M = <span class="frac"><span class="fn">wL&sup2;</span><span class="fd">8</span></span> = <span class="frac"><span class="fn">30&times;3.6&sup2;</span><span class="fd">8</span></span> = <strong>48.6 kN&middot;m</strong>.</p>
+    <p>From the balanced (elastic) moment &frac12;&sigma;<sub>cbc</sub>bx(d &minus; <span class="frac"><span class="fn">x</span><span class="fd">3</span></span>) = M &rArr; 350x&sup2; &minus; 420000x + 48.6&times;10<sup>6</sup> = 0 &rArr; x = 129.7 mm. Then A<sub>st</sub> = <span class="frac"><span class="fn">M</span><span class="fd">&sigma;<sub>st</sub>(d &minus; x/3)</span></span> = <span class="frac"><span class="fn">48.6&times;10<sup>6</sup></span><span class="fd">140&times;356.75</span></span> = 973 mm&sup2; &rArr; provide <strong>4 &minus; 20 mm &phi;</strong> bars in tension.</p>
+
+    <!-- ═══ 2.4 ═══ -->
+    <h2>2.4 Types of RC Beam &amp; RC Sections <span class="year-tag">2082</span><span class="year-tag">2080</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>What are the different types of RCC section of a rectangular beam? Explain with neat sketches. [4] <em>(2082 Bhadra, Q1a)</em></li>
+        <li>Discuss the different types of flexural sections by amount of tension reinforcement. Describe the failure modes. [8] <em>(2080 Bhadra, Q1a)</em></li>
+      </ol>
+    </div>
+
+    <p>By the <strong>amount of tension steel</strong> a rectangular RC section is classified by comparing the actual neutral axis x with the <strong>critical (balanced) neutral axis</strong> X<sub>c</sub>:</p>
+    <ul>
+      <li><strong>Balanced section</strong> (x = X<sub>c</sub>) &mdash; concrete and steel reach their permissible stresses <em>simultaneously</em>.</li>
+      <li><strong>Under-reinforced</strong> (x &lt; X<sub>c</sub>) &mdash; less steel than balanced; the <strong>steel reaches its permissible stress first</strong> &rArr; large deflection/cracking give warning &rArr; <strong>ductile</strong> (preferred).</li>
+      <li><strong>Over-reinforced</strong> (x &gt; X<sub>c</sub>) &mdash; more steel; the <strong>concrete reaches its permissible stress first</strong> &rArr; sudden, brittle failure (avoided).</li>
+    </ul>
+    <p>By <strong>reinforcement arrangement</strong>: <strong>singly-reinforced</strong> (tension steel only) and <strong>doubly-reinforced</strong> (tension + compression steel, used when the moment exceeds the balanced capacity or the depth is restricted).</p>
+
+    <div class="figure">
+      <figure>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 200" width="660" height="200">
+          <text x="110" y="20" font-size="12" font-weight="bold" fill="var(--svg-text-green)" text-anchor="middle">Balanced</text>
+          <rect x="60" y="34" width="100" height="120" fill="var(--svg-blue)" stroke="var(--svg-blue-s)" stroke-width="1.3"/>
+          <line x1="60" y1="80" x2="160" y2="80" stroke="var(--svg-hub)" stroke-width="1" stroke-dasharray="4 2"/>
+          <text x="165" y="72" font-size="10" fill="var(--svg-sub)">x = X&#8339;</text>
+          <circle cx="80" cy="142" r="4" fill="var(--svg-red-s)"/><circle cx="110" cy="142" r="4" fill="var(--svg-red-s)"/><circle cx="140" cy="142" r="4" fill="var(--svg-red-s)"/>
+          <text x="110" y="180" font-size="10" fill="var(--svg-sub)" text-anchor="middle">simultaneous</text>
+          <text x="340" y="20" font-size="12" font-weight="bold" fill="var(--svg-text-blue)" text-anchor="middle">Under-reinforced</text>
+          <rect x="290" y="34" width="100" height="120" fill="var(--svg-green)" stroke="var(--svg-green-s)" stroke-width="1.3"/>
+          <line x1="290" y1="66" x2="390" y2="66" stroke="var(--svg-green-s)" stroke-width="1" stroke-dasharray="4 2"/>
+          <text x="395" y="60" font-size="10" fill="var(--svg-sub)">x &lt; X&#8339;</text>
+          <circle cx="320" cy="142" r="4" fill="var(--svg-red-s)"/><circle cx="360" cy="142" r="4" fill="var(--svg-red-s)"/>
+          <text x="340" y="180" font-size="10" fill="var(--svg-sub)" text-anchor="middle">ductile &mdash; steel yields</text>
+          <text x="570" y="20" font-size="12" font-weight="bold" fill="var(--svg-text-red)" text-anchor="middle">Over-reinforced</text>
+          <rect x="520" y="34" width="100" height="120" fill="var(--svg-red)" stroke="var(--svg-red-s)" stroke-width="1.3"/>
+          <line x1="520" y1="100" x2="620" y2="100" stroke="var(--svg-red-s)" stroke-width="1" stroke-dasharray="4 2"/>
+          <text x="625" y="94" font-size="10" fill="var(--svg-sub)">x &gt; X&#8339;</text>
+          <circle cx="545" cy="142" r="4" fill="var(--svg-red-s)"/><circle cx="570" cy="142" r="4" fill="var(--svg-red-s)"/><circle cx="595" cy="142" r="4" fill="var(--svg-red-s)"/><circle cx="558" cy="130" r="4" fill="var(--svg-red-s)"/><circle cx="582" cy="130" r="4" fill="var(--svg-red-s)"/>
+          <text x="570" y="180" font-size="10" fill="var(--svg-sub)" text-anchor="middle">brittle &mdash; concrete crushes</text>
+        </svg>
+        <figcaption>Types of section by the position of the neutral axis x relative to the critical (balanced) depth X<sub>c</sub>.</figcaption>
+      </figure>
+    </div>
+
+    <p><strong>Failure modes:</strong> an <em>under-reinforced</em> section fails by <strong>tension (ductile)</strong> failure &mdash; the steel yields, giving wide cracks and large deflection as warning before the concrete finally crushes. A <em>balanced</em> section fails by simultaneous yielding and crushing. An <em>over-reinforced</em> section fails by <strong>compression (brittle)</strong> failure &mdash; the concrete crushes suddenly with little warning. Hence codes deliberately keep sections under-reinforced.</p>
+
+    <!-- ═══ 2.5 ═══ -->
+    <h2>2.5 Moment of Resistance of a Singly-Reinforced Beam (WSM) <span class="year-tag">2082</span><span class="year-tag">2081</span><span class="year-tag">2080</span><span class="year-tag">2078</span><span class="year-tag">2076</span><span class="year-tag">2075</span><span class="year-tag">2073</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>RC beam 230 wide, 400 deep (eff 380), A<sub>st</sub> 580 mm&sup2;, permissible 5 &amp; 140 N/mm&sup2;. Find the MOR and actual stresses. [6] <em>(2080 Baishakh, Q1b)</em></li>
+        <li>Beam 350 wide, 650 eff depth, five 25 mm tension bars; service moment 150 kN-m. Check safety and find stresses at working load (WSM). M25/Fe415. [8] <em>(2082 Bhadra, Q1b)</em></li>
+        <li>Beam 300 wide, 550 eff depth, 4&minus;12 mm bars. Determine the MOR (WSM). M20/Fe415. [8] <em>(2081 Bhadra, Q2a)</em></li>
+        <li>Beam 300&times;550 eff depth, 4&minus;16 mm tension. Stress in top concrete fibre and tension steel for a moment 50 kN-m; permissible 5 &amp; 140 MPa. M20/Fe415. [9] <em>(2081 Baishakh, Q1b)</em></li>
+        <li>Determine A<sub>st</sub> and MOR for a RC beam 250&times;450. M15 concrete, mild steel (WSM). [8] <em>(2080 Bhadra, Q1b)</em></li>
+        <li>RCC beam 25 cm wide, 60 cm deep, 4&minus;20 mm tension (5 cm above bottom). Determine the UDL over a span 6.10 m; permissible 7 &amp; 230 MPa. [10] <em>(2078 Bhadra, Q1b)</em></li>
+        <li>Calculate the tensile reinforcement for a RC beam 230&times;425 overall to carry 64 kN-m at service. M20/Fe500 (WSM). [8] <em>(2076 Chaitra, Q1b)</em></li>
+        <li>Beam 300&times;500, 4&minus;25 mm tension at 50 cover, span 5 m. Total UDL incl. self-weight (WSM). M20/Fe415 TOR. [8] <em>(2076 Ashwin, Q1a)</em></li>
+        <li>Beam 250&times;450, 4&minus;16 mm tension at 40 cover. MOR (WSM). M20/Fe415. [8] <em>(2075 Chaitra, Q1c)</em></li>
+        <li>Beam 230&times;350 overall, 4&minus;16 mm tension. MOR if permissible 7.0 &amp; 140 MPa; cover 25, m = 13.33. [7] <em>(2075 Ashwin, Q1a)</em></li>
+        <li>Find the MOR of a RCC beam 250 wide, 500 eff depth, 3&minus;16 mm. Permissible 7 &amp; 230 MPa; m = 13.33. [6] <em>(2073 Shrawan, Q1a)</em></li>
+      </ol>
+    </div>
+
+    <h3>Analysis method (used for every numerical)</h3>
+    <ol>
+      <li><strong>Steel &amp; modular ratio:</strong> A<sub>st</sub> = &Sigma;n&middot;<span class="frac"><span class="fn">&pi;</span><span class="fd">4</span></span>&phi;&sup2;; &nbsp; m = <span class="frac"><span class="fn">280</span><span class="fd">3&sigma;<sub>cbc</sub></span></span>.</li>
+      <li><strong>Critical NA:</strong> X<sub>c</sub> = k<sub>c</sub>d, where k<sub>c</sub> = <span class="frac"><span class="fn">m&sigma;<sub>cbc</sub></span><span class="fd">m&sigma;<sub>cbc</sub> + &sigma;<sub>st</sub></span></span>.</li>
+      <li><strong>Actual NA</strong> (transformed area about the NA): <span class="frac"><span class="fn">b</span><span class="fd">2</span></span>x&sup2; = mA<sub>st</sub>(d &minus; x) &rArr; solve the quadratic.</li>
+      <li><strong>Compare:</strong> x &le; X<sub>c</sub> &rarr; under-reinforced (steel governs); x &gt; X<sub>c</sub> &rarr; over-reinforced (concrete governs).</li>
+      <li><strong>MOR:</strong> under-reinforced &rarr; M = &sigma;<sub>st</sub>A<sub>st</sub>(d &minus; <span class="frac"><span class="fn">x</span><span class="fd">3</span></span>); over-reinforced &rarr; M = &frac12;&sigma;<sub>cbc</sub>b&middot;x(d &minus; <span class="frac"><span class="fn">x</span><span class="fd">3</span></span>).</li>
+    </ol>
+
+    <h3>Results of all past numericals</h3>
+    <table>
+      <thead><tr><th>Exam</th><th>Section &amp; steel</th><th>Type</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>2080 Baishakh</td><td>230&times;380, A<sub>st</sub> 580, M15/mild</td><td>under (x=147.9&lt;X<sub>c</sub>=152)</td><td>MOR = <strong>26.85 kN&middot;m</strong>; f<sub>c</sub>=4.78&lt;5 &check;</td></tr>
+        <tr><td>2082 Bhadra</td><td>350&times;650, 5&minus;25, M25/Fe415</td><td>over</td><td>capacity 209.7&gt;150 &rArr; <strong>safe</strong>; f<sub>c</sub>=6.08, f<sub>st</sub>=107.8</td></tr>
+        <tr><td>2081 Bhadra</td><td>300&times;550, 4&minus;12, M20/Fe415</td><td>under</td><td>MOR = <strong>52.72 kN&middot;m</strong></td></tr>
+        <tr><td>2081 Baishakh</td><td>300&times;550, 4&minus;16, M @ 50</td><td>&mdash;</td><td>f<sub>c</sub> = <strong>4.07</strong>, f<sub>st</sub> = <strong>125.7</strong> (both safe)</td></tr>
+        <tr><td>2080 Bhadra</td><td>250&times;450, M15/mild, balanced</td><td>balanced</td><td>A<sub>st</sub> = <strong>803.6 mm&sup2;</strong>, MOR = <strong>43.88</strong></td></tr>
+        <tr><td>2078 Bhadra</td><td>250&times;550, 4&minus;20, span 6.10</td><td>over</td><td>MOR 89.15 &rArr; UDL = <strong>19.17 kN/m</strong></td></tr>
+        <tr><td>2076 Chaitra</td><td>230&times;392, M = 64, M20/Fe500</td><td>design</td><td>A<sub>st</sub> &asymp; <strong>648 mm&sup2;</strong> (deepen if singly over-stressed)</td></tr>
+        <tr><td>2076 Ashwin</td><td>300&times;450, 4&minus;25, span 5</td><td>over</td><td>MOR 82.57 &rArr; UDL = <strong>26.42 kN/m</strong></td></tr>
+        <tr><td>2075 Chaitra</td><td>250&times;410, 4&minus;16, M20/Fe415</td><td>over</td><td>MOR = <strong>47.11 kN&middot;m</strong></td></tr>
+        <tr><td>2075 Ashwin</td><td>230&times;317, 4&minus;16, 7 &amp; 140</td><td>over</td><td>MOR = <strong>28.92 kN&middot;m</strong></td></tr>
+        <tr><td>2073 Shrawan</td><td>250&times;500, 3&minus;16, 7 &amp; 230</td><td>over</td><td>MOR = <strong>59.08 kN&middot;m</strong></td></tr>
+      </tbody>
+    </table>
+    <p><em>Note:</em> a <strong>balanced</strong> section gives A<sub>st,bal</sub> = <span class="frac"><span class="fn">&frac12;&sigma;<sub>cbc</sub>b&middot;X<sub>c</sub></span><span class="fd">&sigma;<sub>st</sub></span></span>; if the actual steel exceeds this the section is over-reinforced and the concrete stress governs the MOR.</p>
+
+  </main>
+</div>
+
+<script src="../../common.js"></script>
+</body>
+</html>

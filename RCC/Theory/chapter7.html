@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7 &ndash; Slabs &amp; Staircase</title>
+  <link rel="stylesheet" href="tes.css">
+  <style id="dark-mode-styles">
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .2em;line-height:1.08}
+    .frac>.fn{padding:0 .4em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .4em}
+    .frac .frac{font-size:.92em}
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 7</div>
+    <h1>Slabs &amp; Staircase</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">8 Hours</span>
+      <span class="meta-badge exam">20 Past Questions</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ═══ 7.1 ═══ -->
+    <h2>7.1 Design of One-Way &amp; Two-Way Slabs <span class="year-tag">2082</span><span class="year-tag">2081</span><span class="year-tag">2080</span><span class="year-tag">2079</span><span class="year-tag">2078</span><span class="year-tag">2076</span><span class="year-tag">2075</span><span class="year-tag">2074</span><span class="year-tag">2073</span><span class="year-tag">2072</span><span class="year-tag">2071</span><span class="year-tag">2069</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS (representative &mdash; 17 in this topic):</h4>
+      <ol>
+        <li>Slab panel clear 5.0&times;4.0 m, continuous 3 edges / 1 long edge discontinuous, on 230 mm beam; imposed 4 + FF 1.3 + partition 1.5 kN/m&sup2;. Design; check shear, deflection, development length. Fe500 TMT. [12] <em>(2082 Bhadra, Q3b)</em></li>
+        <li>Slab 5&times;4 m clear, continuous 3 edges / 1 short edge discontinuous, on 230 mm beam; LL 5 + FF 1.2. Design; check deflection; sketch. M20/Fe415. [13] <em>(2081 Bhadra, Q3b)</em></li>
+        <li>Interior panel on RCC beams all sides, clear 4&times;5 m; superimposed LL 3 + FF 2. M20/Fe415. [15] <em>(2081 Baishakh, Q3a)</em></li>
+        <li>Two-way slab SS all four edges, room 6&times;4 m clear, on 230 mm walls; superimposed 4, corners not held down. M25/Fe415. [14] <em>(2080 Bhadra, Q4b)</em></li>
+        <li>Two-adjacent-edges-discontinuous slab 4.0&times;5.0 m, imposed 4 + FF 1, on 275 mm beam. Check shear &amp; deflection. M20/Fe415. [12] <em>(2080 Baishakh, Q3a)</em></li>
+        <li>Slab 5&times;4 m, LL 4 + FF 1.5, on 250 mm beam, 1 short edge discontinuous. Sketch with torsional bars. [10] <em>(2079 Bhadra, Q3a)</em></li>
+        <li>Two-adjacent-sides-discontinuous slab 4&times;4.5 m on 250 mm beam; FF 25 mm, LL 4 + partition 1. M20/Fe415. Plan &amp; section. [15] <em>(2078 Bhadra, Q2b)</em></li>
+        <li>&hellip; and 10 further two-way restrained-panel designs: 2076 Ashwin (Q3), 2076 Chaitra (Q5b), 2075 Chaitra (Q4), 2075 Ashwin (Q3b), 2074 Chaitra (Q3b), 2073 Shrawan (Q2a), 2072 Chaitra (Q2a), 2072 Kartik (Q2b), 2071 Chaitra (Q2b), 2069 Chaitra (Q3b).</li>
+      </ol>
+    </div>
+
+    <p>A slab is <strong>one-way</strong> when the longer-to-shorter clear span ratio <span class="frac"><span class="fn">l<sub>y</sub></span><span class="fd">l<sub>x</sub></span></span> &gt; 2 (it bends essentially in one direction); otherwise it is <strong>two-way</strong> and bends in both directions. Almost all IOE questions are <strong>two-way restrained panels</strong> with various edge continuities.</p>
+
+    <h3>Design method (two-way restrained slab)</h3>
+    <ol>
+      <li><strong>Depth:</strong> pick D from <span class="frac"><span class="fn">l<sub>x</sub></span><span class="fd">d</span></span> &asymp; 28&ndash;32 (continuous), then d = D &minus; cover &minus; &phi;/2.</li>
+      <li><strong>Loads:</strong> w = 1.5(DL + FF + LL); DL = 25&times;D kN/m&sup2; per metre width.</li>
+      <li><strong>Moments:</strong> M<sub>x</sub> = &alpha;<sub>x</sub>w&middot;l<sub>x</sub>&sup2;, M<sub>y</sub> = &alpha;<sub>y</sub>w&middot;l<sub>x</sub>&sup2; using the IS 456 Table 26 coefficients for the given edge condition (separate &minus;ve support and +ve mid-span values).</li>
+      <li><strong>Steel:</strong> A<sub>st</sub> = <span class="frac"><span class="fn">0.5f<sub>ck</sub></span><span class="fd">f<sub>y</sub></span></span>[1 &minus; &radic;(1 &minus; <span class="frac"><span class="fn">4.6M<sub>u</sub></span><span class="fd">f<sub>ck</sub>bd&sup2;</span></span>)]bd &ge; 0.12% bD (min); spacing &le; 3d or 300 mm.</li>
+      <li><strong>Checks:</strong> shear (&tau;<sub>v</sub> &le; k&middot;&tau;<sub>c</sub>, usually safe), deflection (span/d with modification factor), development length at supports.</li>
+      <li><strong>Torsion steel</strong> at corners where the slab is discontinuous and held down = &frac34; of the mid-span steel, over <span class="frac"><span class="fn">l<sub>x</sub></span><span class="fd">5</span></span> in each direction, in the top and bottom.</li>
+    </ol>
+
+    <div class="figure">
+      <figure>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" width="420" height="300">
+          <rect x="60" y="40" width="300" height="220" fill="var(--svg-blue)" stroke="var(--svg-hub)" stroke-width="2"/>
+          <text x="210" y="30" font-size="11" fill="var(--svg-sub)" text-anchor="middle">l&#8347; (long)</text>
+          <text x="42" y="155" font-size="11" fill="var(--svg-sub)" text-anchor="middle" transform="rotate(-90 42 155)">l&#8339; (short)</text>
+          <line x1="60" y1="150" x2="360" y2="150" stroke="var(--svg-hub)" stroke-dasharray="5 4"/>
+          <line x1="210" y1="40" x2="210" y2="260" stroke="var(--svg-hub)" stroke-dasharray="5 4"/>
+          <rect x="60" y="40" width="60" height="44" fill="var(--svg-yellow)" opacity=".7"/>
+          <rect x="300" y="40" width="60" height="44" fill="var(--svg-yellow)" opacity=".7"/>
+          <rect x="60" y="216" width="60" height="44" fill="var(--svg-yellow)" opacity=".7"/>
+          <rect x="300" y="216" width="60" height="44" fill="var(--svg-yellow)" opacity=".7"/>
+          <text x="210" y="285" font-size="10" fill="var(--svg-text-yellow)" text-anchor="middle">corner torsion mesh = &frac34; A&#8347;&#8348; over l&#8339;/5</text>
+        </svg>
+        <figcaption>Two-way panel: main steel both ways (short-span bars in the bottom layer), with corner torsion mesh where corners are held down.</figcaption>
+      </figure>
+    </div>
+
+    <p><strong>Typical result:</strong> for a 5&times;4 m two-way panel the design steel is at or near the 0.12% minimum &mdash; nominal <strong>8 mm bars at 120&ndash;300 mm c/c</strong> both ways &mdash; and the <em>deflection (span/d)</em> check usually governs the slab thickness rather than the moment.</p>
+
+    <!-- ═══ 7.3 ═══ -->
+    <h2>7.3 Design &amp; Detailing of Longitudinally Loaded Stairs <span class="year-tag">2074</span><span class="year-tag">2068</span><span class="year-tag">2056</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS:</h4>
+      <ol>
+        <li>Concept of design of a staircase. Detailing of a straight flight in plan and section. [5] <em>(2056 Bhadra, Q3a)</em></li>
+        <li>Design and detailing of a RCC staircase. Define the effective span for a staircase. [5+1] <em>(2074 Ashwin, Q4b)</em></li>
+        <li>Explain the detailing of reinforcement in staircases. [5] <em>(2068 Baishakh, Q3a)</em></li>
+      </ol>
+    </div>
+
+    <p>A <strong>longitudinally-spanning stair</strong> (flight spanning between supports at the two landings) is designed as a <strong>one-way inclined slab</strong> of width equal to the flight. The <strong>waist slab</strong> carries the load; the steps are non-structural.</p>
+    <ul>
+      <li><strong>Effective span</strong> = the going + half of each landing (or the centre-to-centre of supports); IS 456 gives specific rules depending on how the landing spans.</li>
+      <li><strong>Loads</strong> (on plan, per metre width): self-weight of the waist (25&times;t&middot;<span class="frac"><span class="fn">&radic;(R&sup2;+T&sup2;)</span><span class="fd">T</span></span> for the slope), steps (&frac12;&times;25&times;R), finishes and LL (3&ndash;5 kN/m&sup2;). The landing carries a UDL over its length.</li>
+      <li><strong>Design:</strong> M = <span class="frac"><span class="fn">wl&sup2;</span><span class="fd">8</span></span> (SS) &rarr; main bars along the span in the <em>bottom</em> of the waist; distribution steel across.</li>
+    </ul>
+    <p><strong>Detailing:</strong> main bars run along the flight in the bottom face; at the junction of flight and landing the tension bars are on the <em>inside</em> of the re-entrant corner (a bar detailed around the outside would tend to straighten and spall the cover). Provide distribution steel (0.12%) transversely and adequate anchorage of the main bars into the supports.</p>
+
+  </main>
+</div>
+
+<script src="../../common.js"></script>
+</body>
+</html>

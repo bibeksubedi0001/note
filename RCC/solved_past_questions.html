@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design of RCC Structures &mdash; Solved Past Questions</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Answer Key</div>
+    <h1>Solved Past Questions</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">Theory Answers</span>
+      <span class="meta-badge exam">One Worked Example per Numerical Type</span>
+    </div>
+  </header>
+  <main>
+
+    <div class="intro-note">
+      <p>This answer key follows the class manual. <strong>Theory questions</strong> are answered concisely
+      (with pointers to the relevant <a href="index.html">digital-manual chapter</a>), and each
+      <strong>numerical type</strong> in the exam papers is shown with one fully worked example that you can
+      copy for any year with the same pattern. Design basis: IS 456:2000, SP-16, IS 13920.</p>
+    </div>
+
+    <nav class="toc">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#theory">A. Theory Answers (by chapter)</a></li>
+        <li><a href="#n1">B1. WSM &mdash; Moment of Resistance</a></li>
+        <li><a href="#n2">B2. WSM &mdash; Design of a Beam</a></li>
+        <li><a href="#n3">B3. LSM &mdash; MOR of a Singly-Reinforced Beam</a></li>
+        <li><a href="#n4">B4. LSM &mdash; Design of a Beam in Flexure</a></li>
+        <li><a href="#n5">B5. Shear Reinforcement Design</a></li>
+        <li><a href="#n6">B6. Development Length</a></li>
+        <li><a href="#n7">B7. Column (Biaxial Bending)</a></li>
+        <li><a href="#n8">B8. Isolated Footing</a></li>
+        <li><a href="#n9">B9. Two-Way Slab</a></li>
+      </ol>
+    </nav>
+
+    <!-- THEORY -->
+    <h2 id="theory">A. Theory Answers (by chapter) <span class="exam-ref">concise</span></h2>
+    <h3>Ch 1 &mdash; Design methods &amp; sections</h3>
+    <ul>
+      <li><strong>WSM vs LSM / why LSM is better:</strong> WSM is deterministic, governed by elastic theory with a single factor of safety on the material and does not give a realistic factor of safety; LSM is probabilistic, uses separate partial safety factors for loads (&gamma;<sub>f</sub>) and materials (&gamma;<sub>m</sub>), checks both strength and serviceability, and gives more economical sections. <em>(See Ch 1 &sect;1.5&ndash;1.6.)</em></li>
+      <li><strong>Characteristic strength/load:</strong> strength below which &le; 5% of results fall; load with 95% probability of not being exceeded. Design: f<sub>d</sub> = f/&gamma;<sub>m</sub>, F<sub>d</sub> = F&gamma;<sub>f</sub>.</li>
+      <li><strong>Balanced / under- / over-reinforced:</strong> defined by x<sub>u</sub> vs x<sub>u,max</sub> (= 0.53d/0.48d/0.46d for Fe250/415/500). Under-reinforced = ductile (preferred); over-reinforced = brittle (avoided). <em>(Ch 1 &sect;1.8, Ch 2 &sect;2.4.)</em></li>
+      <li><strong>Idealized stress-strain / modular ratio:</strong> m = 280/(3&sigma;<sub>cbc</sub>). <em>(Ch 1 &sect;1.7.)</em></li>
+      <li><strong>Mechanical splices:</strong> parallel-thread couplers, taper-cut-thread couplers, cold-swaged sleeve with threaded end.</li>
+    </ul>
+    <h3>Ch 5/6 &mdash; Shear, torsion, bond, serviceability</h3>
+    <ul>
+      <li><strong>Behaviour of concrete under shear / bent-up bars:</strong> diagonal tension cracks form; stirrups and bent-up bars carry the shear beyond &tau;<sub>c</sub>. <em>(Ch 2 &sect;2.9.)</em></li>
+      <li><strong>Anchorage vs flexural bond:</strong> anchorage bond resists pull-out along the embedded length; flexural (local) bond arises from the rate of change of bar force along the span. Code check L<sub>d</sub> &le; 1.3M<sub>1</sub>/V<sub>u</sub> + L<sub>o</sub>. <em>(Ch 2 &sect;2.11.)</em></li>
+      <li><strong>Deflection &amp; crack control:</strong> limit span/depth ratio (deflection); limit bar spacing/diameter and provide minimum steel (cracking); IS 456 surface crack-width formula. <em>(Ch 5, IS 456 Annex.)</em></li>
+      <li><strong>Splicing:</strong> required to join bars where lengths are limited; lap, welded or mechanical; stagger laps, avoid at high-stress zones.</li>
+    </ul>
+    <h3>Ch 3/4/7&ndash;11 &mdash; Columns, footings, slabs, detailing, EQ</h3>
+    <ul>
+      <li><strong>Interaction diagram / short vs long column:</strong> see Ch 3 &sect;3.4, &sect;3.7.</li>
+      <li><strong>Mat foundation / why no shear steel in footings:</strong> footings are kept thick enough that concrete alone carries the shear (economical, avoids congestion). <em>(Ch 4.)</em></li>
+      <li><strong>Ductility &amp; ductile detailing (beam/column/joint):</strong> ability to deform inelastically without collapse; IS 13920 confining hoops, strong-column/weak-beam, joint confinement. <em>(Ch 6 &sect;6.3, &sect;6.5.)</em></li>
+      <li><strong>Philosophy of EQ design:</strong> no damage in minor, repairable in moderate, no collapse in major shaking. <em>(Ch 6 &sect;6.2.)</em></li>
+    </ul>
+
+    <!-- B1 -->
+    <h2 id="n1">B1. WSM &mdash; Moment of Resistance <span class="exam-ref">2071 Shrawan, 2073 Shrawan, 2075 Chaitra, 2081 Bhadra</span></h2>
+    <p><strong>Beam 250 mm &times; 300 mm, 3&minus;25 mm &phi; tension bars; &sigma;<sub>cbc</sub> = 7, &sigma;<sub>st</sub> = 140 N/mm&sup2;.</strong></p>
+    <ol>
+      <li>A<sub>st</sub> = 3&times;(&pi;/4)&times;25&sup2; = 1471.9 mm&sup2;; m = 280/(3&times;7) = 13.33.</li>
+      <li>Critical NA: &sigma;<sub>cbc</sub>/(&sigma;<sub>st</sub>/m) = X<sub>c</sub>/(d&minus;X<sub>c</sub>) &rArr; X<sub>c</sub> = 120 mm.</li>
+      <li>Actual NA (b&middot;x&middot;x/2 = m&middot;A<sub>st</sub>(d&minus;x)): 125x&sup2; + 19620x &minus; 5.886&times;10<sup>6</sup> = 0 &rArr; x = 152.3 mm.</li>
+      <li>x &gt; X<sub>c</sub> &rArr; <strong>over-reinforced</strong>. MOR = b&middot;x&middot;(&sigma;<sub>cbc</sub>/2)(d&minus;x/3) = 250&times;152.3&times;3.5&times;(300&minus;50.8) = <strong>33.21 kN-m</strong>.</li>
+    </ol>
+    <div class="intro-note"><p><em>If x &lt; X<sub>c</sub> (under-reinforced), instead use MOR = A<sub>st</sub>&sigma;<sub>st</sub>(d &minus; x/3).</em></p></div>
+
+    <!-- B2 -->
+    <h2 id="n2">B2. WSM &mdash; Design of a Beam <span class="exam-ref">2071 Chaitra</span></h2>
+    <p><strong>Design a 300 &times; 450 mm section carrying 30 kN/m over 3.6 m; M20, mild steel.</strong></p>
+    <ol>
+      <li>d = 450 &minus; 50 = 400 mm; &sigma;<sub>cbc</sub> = 7, &sigma;<sub>st</sub> = 140 N/mm&sup2;.</li>
+      <li>M = wL&sup2;/8 = 30&times;3.6&sup2;/8 = 48.6 kN-m.</li>
+      <li>&frac12;&sigma;<sub>cbc</sub>b&middot;x(d&minus;x/3) = M &rArr; 350x&sup2; &minus; 420000x + 48.6&times;10<sup>6</sup> = 0 &rArr; x = 129.74 mm.</li>
+      <li>A<sub>st</sub> = M/[&sigma;<sub>st</sub>(d&minus;x/3)] = 48.6&times;10<sup>6</sup>/(140&times;356.75) = 973 mm&sup2; &rArr; <strong>4&minus;20 mm &phi; bars</strong>.</li>
+    </ol>
+
+    <!-- B3 -->
+    <h2 id="n3">B3. LSM &mdash; MOR of a Singly-Reinforced Beam <span class="exam-ref">2073 Shrawan, 2074/75/81</span></h2>
+    <p><strong>b = 250, d = 360 mm, M20, Fe415, 3&minus;16 mm &phi; bars.</strong></p>
+    <ol>
+      <li>A<sub>st</sub> = 602.88 mm&sup2;; x<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>/(0.36f<sub>ck</sub>b) = 120.93 mm.</li>
+      <li>x<sub>u,max</sub> = 0.48&times;360 = 172.8 mm &rArr; x<sub>u</sub> &lt; x<sub>u,max</sub> (<strong>under-reinforced</strong>).</li>
+      <li>M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>d[1 &minus; A<sub>st</sub>f<sub>y</sub>/(bd f<sub>ck</sub>)] = <strong>67.47 kN-m</strong>.</li>
+    </ol>
+
+    <!-- B4 -->
+    <h2 id="n4">B4. LSM &mdash; Design of a Beam in Flexure (Doubly-Reinforced + Deflection) <span class="exam-ref">2072 Chaitra</span></h2>
+    <p><strong>SS beam, effective span 5.5 m, overall 230 &times; 550 mm, superimposed load 50 kN/m (excl. self-weight); design for LS collapse in flexure and check deflection. Fe415, mild exposure, effective cover 50 mm.</strong> <em>(worked exactly as in the manual)</em></p>
+    <ol>
+      <li>d = 550 &minus; 50 = 500 mm; assume M20. Self-weight = 25&times;0.23&times;0.55 = 3.16 kN/m &rarr; total = 53.16 kN/m &rarr; w<sub>u</sub> = 1.5&times;53.16 = 79.74 kN/m.</li>
+      <li>M<sub>u</sub> = w<sub>u</sub>l&sup2;/8 = 79.74&times;5.5&sup2;/8 = <strong>301.53 kN-m</strong>.</li>
+      <li>x<sub>u,max</sub> = 0.48&times;500 = 240 mm; M<sub>u,lim</sub> = 0.36f<sub>ck</sub>b&middot;x<sub>u,max</sub>(d&minus;0.42x<sub>u,max</sub>) = <strong>158.66 kN-m</strong>. M<sub>u</sub> &gt; M<sub>u,lim</sub> &rArr; <strong>doubly-reinforced</strong>.</li>
+      <li>A<sub>st1</sub> = M<sub>u,lim</sub>/[0.87f<sub>y</sub>(d&minus;0.42x<sub>u,max</sub>)] = 1100.79 mm&sup2;; M<sub>u2</sub> = 142.87 kN-m; A<sub>st2</sub> = M<sub>u2</sub>/[0.87f<sub>y</sub>(d&minus;d&prime;)] = 879.36 mm&sup2;. A<sub>st</sub> = 1980.15 mm&sup2; &rarr; <strong>5&minus;25 mm &phi; (2453 mm&sup2;)</strong>.</li>
+      <li>Compression steel: &epsilon;<sub>sc</sub> = 0.0035(x<sub>u,max</sub>&minus;d&prime;)/x<sub>u,max</sub> = 0.00276 &rarr; f<sub>sc</sub> = 351.8 (SP-16), f<sub>cc</sub> = 0.446f<sub>ck</sub> = 8.92. A<sub>sc</sub> = M<sub>u2</sub>/[(f<sub>sc</sub>&minus;f<sub>cc</sub>)(d&minus;d&prime;)] = 925.96 mm&sup2; &rarr; <strong>3&minus;20 mm &phi; (942 mm&sup2;)</strong>.</li>
+      <li><strong>Deflection:</strong> f<sub>s</sub> = 0.58f<sub>y</sub>(A<sub>st,req</sub>/A<sub>st,prov</sub>) = 194.3 N/mm&sup2;; p<sub>t</sub> = 2.13 &rarr; k<sub>2</sub> = 0.98; p<sub>c</sub> = 0.82 &rarr; k<sub>3</sub> = 1.21. (L/d)<sub>max</sub> = 1&times;0.98&times;1.21&times;20 = 23.7 &gt; (L/d)<sub>prov</sub> = 5500/500 = 11 &rArr; <strong>safe in deflection</strong>.</li>
+    </ol>
+    <div class="intro-note"><p><em>Singly-reinforced case: if M<sub>u</sub> &le; M<sub>u,lim</sub> = 0.138f<sub>ck</sub>bd&sup2;, solve M<sub>u</sub> = 0.87f<sub>y</sub>A<sub>st</sub>d[1 &minus; A<sub>st</sub>f<sub>y</sub>/(bd f<sub>ck</sub>)] directly for a single layer of tension steel.</em></p></div>
+
+    <!-- B5 -->
+    <h2 id="n5">B5. Shear Reinforcement Design <span class="exam-ref">2075 Chaitra, 2078/79/81</span></h2>
+    <p><strong>Beam 300 &times; 500 mm (d = 450), V<sub>u</sub> = 200 kN, M20, Fe415, A<sub>st</sub> = 4&minus;20 mm.</strong></p>
+    <ol>
+      <li>&tau;<sub>v</sub> = V<sub>u</sub>/(bd) = 200000/(300&times;450) = 1.48 N/mm&sup2;.</li>
+      <li>p<sub>t</sub> = 100&times;1257/(300&times;450) = 0.93% &rArr; &tau;<sub>c</sub> &asymp; 0.60 N/mm&sup2; (IS 456 Table 19); &tau;<sub>c,max</sub> = 2.8 &gt; &tau;<sub>v</sub> OK.</li>
+      <li>&tau;<sub>c</sub> &lt; &tau;<sub>v</sub> &rArr; design stirrups. V<sub>us</sub> = V<sub>u</sub> &minus; &tau;<sub>c</sub>bd = 200000 &minus; 81000 = 119000 N.</li>
+      <li>2-legged 8 mm stirrups: A<sub>sv</sub> = 100.5 mm&sup2;. s<sub>v</sub> = 0.87f<sub>y</sub>A<sub>sv</sub>d/V<sub>us</sub> = 361&times;100.5&times;450/119000 = 137 mm.</li>
+      <li>Provide <strong>8 mm 2-legged stirrups @ 135 mm c/c</strong> (&le; 0.75d = 337 and 300 mm).</li>
+    </ol>
+    <p style="margin-top:16px"><strong>Variant &mdash; bent-up bars (2070 Chaitra, worked as in the manual):</strong> beam d = 450, b = 250, V<sub>u</sub> = 125 kN, M20, 4&minus;20 mm TOR with 2 bars bent up at 30&deg;.</p>
+    <ol>
+      <li>At the support (2 bars remain): A<sub>st</sub> = 2&times;(&pi;/4)&times;20&sup2; = 628 mm&sup2;; p<sub>t</sub> = 0.56% &rarr; &tau;<sub>c</sub> = 0.50 N/mm&sup2;; &tau;<sub>v</sub> = 125000/(250&times;450) = 1.11 N/mm&sup2;.</li>
+      <li>Shear resistance of the two bent-up bars = 2&times;0.87f<sub>y</sub>A<sub>sv</sub>sin30&deg; = 2&times;113.37 = 226.7 kN.</li>
+      <li>V&prime;<sub>us</sub> = V<sub>u</sub> &minus; &tau;<sub>c</sub>bd = 125 &minus; 56.25 = 68.75 kN. <strong>IS 456 caps the bent-up contribution at 50%</strong> &rArr; bent-up bars carry 34.375 kN and stirrups carry the other 34.375 kN.</li>
+      <li>Stirrups: s<sub>v</sub> = 0.87f<sub>y</sub>A<sub>sv</sub>d/V<sub>us</sub> = 474.9 mm, but &le; 0.75d = 337.5 and 300 &rArr; <strong>provide 8 mm 2-legged @ 300 mm c/c</strong>.</li>
+    </ol>
+
+    <!-- B6 -->
+    <h2 id="n6">B6. Development Length <span class="exam-ref">2076/79/81/82 (derivation)</span></h2>
+    <p><strong>L<sub>d</sub> = &phi;&middot;&sigma;<sub>s</sub>/(4&tau;<sub>bd</sub>).</strong> For a 20 mm Fe415 bar in M20:</p>
+    <ol>
+      <li>&sigma;<sub>s</sub> = 0.87&times;415 = 361 N/mm&sup2;; &tau;<sub>bd</sub> = 1.2 (M20) &times; 1.6 (deformed) = 1.92 N/mm&sup2;.</li>
+      <li>L<sub>d</sub> = 20&times;361/(4&times;1.92) = <strong>940 mm &asymp; 47&phi;</strong>.</li>
+      <li>At a simply supported end also check <strong>L<sub>d</sub> &le; 1.3M<sub>1</sub>/V<sub>u</sub> + L<sub>o</sub></strong>.</li>
+    </ol>
+
+    <!-- B7 -->
+    <h2 id="n7">B7. Column with Biaxial Bending <span class="exam-ref">2072/74/75/76/78 &hellip;</span></h2>
+    <p><strong>Method (SP-16):</strong> given P<sub>u</sub>, M<sub>ux</sub>, M<sub>uy</sub>, size b&times;D, grades.</p>
+    <ol>
+      <li>Assume steel p = 100A<sub>sc</sub>/(bD) (start ~1&ndash;2%); pick d&prime;/D.</li>
+      <li>From SP-16 charts read the uniaxial capacities M<sub>ux1</sub>, M<sub>uy1</sub> for the given P<sub>u</sub>/(f<sub>ck</sub>bD).</li>
+      <li>Compute P<sub>uz</sub> = 0.45f<sub>ck</sub>A<sub>c</sub> + 0.75f<sub>y</sub>A<sub>sc</sub> &rarr; &alpha;<sub>n</sub> (1.0 at P<sub>u</sub>/P<sub>uz</sub> = 0.2, 2.0 at 0.8).</li>
+      <li>Check <strong>(M<sub>ux</sub>/M<sub>ux1</sub>)<sup>&alpha;<sub>n</sub></sup> + (M<sub>uy</sub>/M<sub>uy1</sub>)<sup>&alpha;<sub>n</sub></sup> &le; 1.0</strong>. Increase steel and repeat until satisfied; detail bars and ties. <em>(Ch 3 &sect;3.6.)</em></li>
+    </ol>
+
+    <!-- B8 -->
+    <h2 id="n8">B8. Isolated Footing <span class="exam-ref">2073/74/76/78/80/81/82</span></h2>
+    <p><strong>Column 400 &times; 400 mm, service P = 1200 kN, SBC = 200 kN/m&sup2;, M20/Fe415.</strong></p>
+    <ol>
+      <li>Area = 1.1&times;1200/200 = 6.6 m&sup2; &rarr; <strong>2.6 m &times; 2.6 m</strong>.</li>
+      <li>Net factored pressure p<sub>u</sub> = 1.5&times;1200/6.76 = 266.3 kN/m&sup2;.</li>
+      <li>Cantilever a = (2600 &minus; 400)/2 = 1100 mm; M<sub>u</sub> = p<sub>u</sub>&middot;B&middot;a&sup2;/2 = 266.3&times;2.6&times;1.1&sup2;/2 = 418.9 kN-m.</li>
+      <li>Depth for flexure d = &radic;(M<sub>u</sub>/(0.138f<sub>ck</sub>B)) = 242 mm; <strong>punching shear</strong> (perimeter d/2, &tau;<sub>v</sub> &le; 0.25&radic;f<sub>ck</sub> = 1.12) governs &rarr; take D &asymp; 550, d &asymp; 500 mm.</li>
+      <li>Find A<sub>st</sub> from M<sub>u</sub> (per m width), check one-way shear at d and development length. <em>(Ch 4 &sect;4.2.)</em></li>
+    </ol>
+
+    <!-- B9 -->
+    <h2 id="n9">B9. Two-Way Slab <span class="exam-ref">2073/75/78/79/80/81/82</span></h2>
+    <p><strong>Method (IS 456 Annex D):</strong> restrained panel l<sub>y</sub>/l<sub>x</sub> &le; 2.</p>
+    <ol>
+      <li>Assume depth from L/d (short span, basic 26&times; for continuous &times; modification); compute w<sub>u</sub> = 1.5(DL + LL + FF).</li>
+      <li>Read moment coefficients &alpha;<sub>x</sub>, &alpha;<sub>y</sub> (Table 26) for the panel type &amp; aspect ratio.</li>
+      <li>M<sub>x</sub> = &alpha;<sub>x</sub>w<sub>u</sub>l<sub>x</sub>&sup2;, M<sub>y</sub> = &alpha;<sub>y</sub>w<sub>u</sub>l<sub>x</sub>&sup2; (mid-span &amp; support).</li>
+      <li>Design steel both directions (short-span bars in the lower layer); provide <strong>corner torsion reinforcement</strong> = &frac34; of mid-span steel over l<sub>x</sub>/5 where corners are held down.</li>
+      <li>Check shear and deflection. <em>(Ch 5 &sect;5.3.)</em></li>
+    </ol>
+
+  </main>
+  <footer>
+    <p class="footer-note">Solved Past Questions &mdash; Design of RCC Structures (ENCE 352) &mdash; theory answers + one worked example per type</p>
+  </footer>
+</div>
+
+<script src="../common.js"></script>
+</body>
+</html>
