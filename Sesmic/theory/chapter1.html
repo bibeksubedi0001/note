@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 1 &ndash; Earthquakes and Seismic Ground Motion</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- id="dark-mode-styles" stops common.js from flattening the dark palette; also holds page-local rules -->
+  <style id="dark-mode-styles">
+    .year-tag{display:inline-block;font-size:.62em;font-weight:700;letter-spacing:.03em;
+      color:var(--accent);background:var(--accent-light);border:1px solid var(--line);
+      border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+    .figure svg{max-width:100%;height:auto}
+    /* raster figures taken from the lecture slides */
+    .figure img{max-width:100%;max-height:620px;height:auto;display:block;margin:0 auto;
+      background:#fff;padding:6px;border:1px solid var(--line);border-radius:6px}
+    [data-theme="dark"] .figure img{filter:brightness(.9) contrast(1.02)}
+    .figure-row{align-items:flex-start}
+    .figure-row .figure{flex:1 1 260px;max-width:420px}
+    .fig-src{display:block;font-style:normal;font-size:.86em;opacity:.8;margin-top:4px}
+    table.cmp td:first-child{font-weight:600}
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 1</div>
+    <h1>Earthquakes and Seismic Ground Motion</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">6 Hours &middot; 8 Marks</span>
+      <span class="meta-badge exam">6 Past Questions &middot; 46 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ══════════════ Syllabus & Marks Distribution ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Syllabus &amp; Marks Distribution</h2>
+      <table class="marks-table">
+        <thead>
+          <tr><th>Detail</th><th>Information</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Course</td><td>Seismic Resistant Design of Masonry Structures &mdash; ENCE 367 (Elective I)</td></tr>
+          <tr><td>Chapter</td><td>1 &mdash; Earthquakes and Seismic Ground Motion</td></tr>
+          <tr><td>Teaching Hours</td><td>6 hours</td></tr>
+          <tr class="highlight-row"><td>Marks Allocation</td><td>8 marks</td></tr>
+          <tr><td>Total Course Marks</td><td>60 marks (final exam) &middot; 45 teaching hours</td></tr>
+          <tr><td>Weight</td><td>13.3% of the final paper</td></tr>
+          <tr><td>Codes commonly allowed</td><td>IS 1905&ndash;1987, IS 1893 (Part 1), NBC 105</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Syllabus Topics</h3>
+      <ul class="syllabus-topics">
+        <li>1.1 &nbsp;Origin of earthquake</li>
+        <li>1.2 &nbsp;Seismic waves, earthquake ground motion, magnitude and intensity</li>
+        <li>1.3 &nbsp;Occurrence of earthquakes; loss and damages</li>
+        <li>1.4 &nbsp;Time history, frequency spectra, and response spectra of earthquake force</li>
+        <li>1.5 &nbsp;Effects of earthquake on building</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Note on syllabus versions.</strong> The past papers in this folder are from the older course
+        <em>CE 72502 &mdash; Seismic Resistant Design of Masonry Structures (Elective I), BE/BCE IV/I, 80 marks</em>,
+        where Chapter 1 was called <em>&ldquo;Fundamentals of Earthquake Engineering&rdquo; (8 hours)</em> and also carried
+        <em>Nature of earthquake force</em>, <em>Earthquake force parameters</em> and <em>Earthquake as a lateral force in
+        buildings</em>. Those three topics were asked directly in 2081 Bhadra, so they are retained here inside
+        sections 1.4 and 1.5. The new ENCE 367 numbering (III/II, 60 marks) is used for the headings.
+      </div>
+    </div>
+
+    <!-- ══════════════ Importance & Frequently Asked Topics ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>Importance &amp; Frequently Asked Topics <span class="importance-high">HIGH</span></h2>
+
+      <p class="importance-summary">Question 1 of the paper has come from this chapter in <strong>4 of the last 6 papers</strong>.
+      Total <strong>46 marks</strong> across those papers, i.e. an average of <strong>~8 marks per paper</strong> &mdash;
+      exactly the weight the new syllabus assigns. It is a pure theory chapter: <strong>no numericals have ever been
+      asked from it</strong>, so it is the cheapest chapter in the course to score full marks in.</p>
+
+      <h3>Marks Distribution by Each Exam</h3>
+      <div class="table-wrap">
+        <table class="marks-dist-table">
+          <thead>
+            <tr><th>Exam</th><th>Marks</th><th>Questions asked</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2075 Chaitra</td><td class="dim-cell">&mdash;</td><td class="dim-cell">Whole paper was masonry design</td></tr>
+            <tr><td>2076 Chaitra</td><td class="dim-cell">&mdash;</td><td class="dim-cell">Whole paper was Ch 2&ndash;4</td></tr>
+            <tr><td>2078 Bhadra</td><td>6</td><td>Q1a &mdash; Richter scale and MMI scale</td></tr>
+            <tr><td>2079 Bhadra</td><td>16</td><td>Q1a &mdash; elastic rebound + origin in Himalayas; Q1b &mdash; magnitude vs intensity</td></tr>
+            <tr><td>2080 Bhadra</td><td>8</td><td>Q1a &mdash; define earthquake, source, factors influencing shaking</td></tr>
+            <tr><td>2081 Bhadra</td><td>16</td><td>Q1a &mdash; earthquake as lateral force; Q1b &mdash; earthquake force parameters</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Frequently Asked Topics</h3>
+      <div class="table-wrap">
+        <table class="freq-topics-table">
+          <thead>
+            <tr><th>Topic</th><th>Times Asked</th><th>Frequency</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Origin of earthquake &mdash; elastic rebound, source, Himalayan seismotectonics</td><td>2</td><td><div class="freq-bar" style="width:100%"></div></td></tr>
+            <tr><td>Magnitude &amp; intensity &mdash; Richter vs MMI scale</td><td>2</td><td><div class="freq-bar" style="width:100%"></div></td></tr>
+            <tr><td>Earthquake as a lateral (inertia) force in a building</td><td>1</td><td><div class="freq-bar" style="width:50%"></div></td></tr>
+            <tr><td>Earthquake force parameters</td><td>1</td><td><div class="freq-bar" style="width:50%"></div></td></tr>
+            <tr><td>Factors influencing the shaking at a site</td><td>1</td><td><div class="freq-bar" style="width:50%"></div></td></tr>
+            <tr><td>Seismic waves (P, S, Love, Rayleigh)</td><td class="dim-cell">0 direct</td><td><div class="freq-bar" style="width:25%"></div></td></tr>
+            <tr><td>Time history, frequency spectra, response spectra</td><td class="dim-cell">0 direct</td><td><div class="freq-bar" style="width:25%"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Topic-wise Importance &amp; Exam Tips</h3>
+      <div class="table-wrap">
+        <table class="importance-table">
+          <thead>
+            <tr><th>Topic</th><th>Importance</th><th>Key Points / Exam Tips</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Elastic rebound theory &amp; origin of Himalayan earthquakes</td><td><span class="importance-badge importance-high">High</span></td><td>Always draw the 4-stage elastic rebound sketch. For Nepal, mention India&ndash;Eurasia convergence at ~2&ndash;5&nbsp;cm/yr, the MFT&ndash;MBT&ndash;MCT&ndash;MHT thrust system and the locked Main Himalayan Thrust.</td></tr>
+            <tr><td>Magnitude vs Intensity (Richter vs MMI)</td><td><span class="importance-badge importance-high">High</span></td><td>Present as a <em>comparison table</em>. Give the numbers: 1 unit of magnitude = 10&times; wave amplitude and ~31.6&times; energy. Mention MMI has 12 grades (I&ndash;XII) and is drawn as an isoseismal map.</td></tr>
+            <tr><td>Earthquake as a lateral force in a building</td><td><span class="importance-badge importance-high">High</span></td><td>Start with <em>F<sub>I</sub> = m&nbsp;&times;&nbsp;a</em>, draw the base-moves/mass-lags sketch, then show the load path: slab &rarr; walls &rarr; foundation &rarr; soil. Add why horizontal shaking governs.</td></tr>
+            <tr><td>Earthquake force parameters</td><td><span class="importance-badge importance-high">High</span></td><td>Split into <em>ground parameters</em> (PGA, PGV, PGD, duration, frequency content) and <em>structure parameters</em> (mass, stiffness, natural period, damping, ductility). Add code parameters Z, I, R, S<sub>a</sub>/g.</td></tr>
+            <tr><td>Factors influencing shaking at a site</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Group into <strong>source &ndash; path &ndash; site</strong>: magnitude &amp; focal depth; epicentral distance &amp; travel path; local soil, topography and basin effects.</td></tr>
+            <tr><td>Seismic waves and their effects</td><td><span class="importance-badge importance-medium">Medium</span></td><td>A wave comparison table (P / S / Love / Rayleigh) with velocity, particle motion and damage potential answers most sub-parts. Note S and Love waves are the most damaging to masonry.</td></tr>
+            <tr><td>Effects of earthquake on buildings</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Overlaps with Chapter 3. Keep the six classic masonry damage patterns ready: corner separation, in-plane diagonal (X) shear cracks, out-of-plane overturning, roof/floor separation, delamination, pounding.</td></tr>
+            <tr><td>Time history, frequency spectra, response spectra</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Not yet asked directly, but it is explicitly in the new syllabus. Learn the 3-line definition of each plus the response-spectrum construction sketch and the 5% damping convention.</td></tr>
+            <tr><td>Occurrence, loss and damage / seismic hazards</td><td><span class="importance-badge importance-low">Low</span></td><td>Usually a sub-part. Keep the 7-item hazard list and 3&ndash;4 Nepali earthquakes (1934, 1988, 2015 Gorkha, 2080 Jajarkot) with dates, magnitudes and death tolls.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════ 1.1 ══════════════ -->
+    <h2>1.1 &nbsp;Origin of Earthquake <span class="year-tag">2079 Bhadra</span><span class="year-tag">2080 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Define elastic rebound theory. Explain the origin of earthquakes in Himalayas. [8] <em>(2079 Bhadra, Q1a)</em></li>
+        <li>Define earthquake, its source and influencing factor of shaking in the location. [8] <em>(2080 Bhadra, Q1a)</em></li>
+      </ol>
+    </div>
+
+    <h3>1.1.1 &nbsp;What is an Earthquake?</h3>
+    <p class="lead"><span class="key-term">Earthquake</span> is the sudden shaking or trembling of the earth's surface caused
+    by the rapid release of strain energy accumulated in elastically strained rocks of the earth's crust. The released
+    energy radiates in all directions from its source in the form of <span class="key-term">seismic waves</span>, and
+    when these waves reach the ground surface they set the ground &mdash; and everything standing on it &mdash; into motion.</p>
+
+    <div class="formula">
+      <b>One-line definition for the exam:</b><br>
+      &ldquo;An earthquake is the vibration of the earth produced by the rapid release of accumulated strain energy in
+      elastically strained rocks, usually associated with the sudden rupture (faulting) of rock along a plane of weakness.&rdquo;
+    </div>
+
+    <h3>1.1.2 &nbsp;Source of an Earthquake &mdash; Focus and Epicentre</h3>
+    <ul>
+      <li><span class="key-term">Focus (Hypocentre)</span> &mdash; the point <em>inside</em> the earth where the rupture
+        begins and from where the seismic energy is first released. This is the <strong>source</strong> of the earthquake.</li>
+      <li><span class="key-term">Epicentre</span> &mdash; the point on the ground surface vertically above the focus.
+        Shaking is generally strongest here.</li>
+      <li><span class="key-term">Focal depth</span> &mdash; the vertical depth of the focus below the epicentre.</li>
+      <li><span class="key-term">Epicentral distance</span> &mdash; horizontal distance from the epicentre to the site;
+        <span class="key-term">hypocentral distance</span> is the slant distance from the focus to the site.</li>
+      <li><span class="key-term">Fault</span> &mdash; a fracture (crack) in the earth's crust along which the two sides
+        have moved relative to each other, parallel to the fracture surface.</li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 520 300" width="520" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="ar1" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-line)"/></marker>
+        </defs>
+        <!-- ground -->
+        <rect x="20" y="60" width="480" height="24" fill="var(--svg-green)" stroke="var(--svg-green-s)"/>
+        <rect x="20" y="84" width="480" height="196" fill="var(--svg-bg)" stroke="var(--svg-line)"/>
+        <text x="30" y="77" font-size="12" fill="var(--svg-text-green)">Ground surface</text>
+        <!-- building -->
+        <rect x="238" y="34" width="34" height="26" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.2"/>
+        <polygon points="234,34 276,34 255,20" fill="var(--svg-red)" stroke="var(--svg-red-s)"/>
+        <!-- site building -->
+        <rect x="405" y="38" width="26" height="22" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.2"/>
+        <text x="418" y="33" font-size="11" text-anchor="middle" fill="var(--svg-text)">Site</text>
+        <!-- fault plane -->
+        <line x1="150" y1="280" x2="330" y2="84" stroke="var(--svg-orange-s)" stroke-width="2.5"/>
+        <text x="120" y="272" font-size="12" fill="var(--svg-text-orange)">Fault plane</text>
+        <!-- focus -->
+        <circle cx="230" cy="188" r="7" fill="var(--svg-red-s)"/>
+        <text x="243" y="192" font-size="12" fill="var(--svg-text-red)">Focus / Hypocentre</text>
+        <!-- epicentre -->
+        <circle cx="230" cy="72" r="5.5" fill="var(--svg-hub)"/>
+        <text x="150" y="106" font-size="12" fill="var(--svg-text-blue)">Epicentre</text>
+        <line x1="205" y1="100" x2="226" y2="78" stroke="var(--svg-line)" stroke-width="1" marker-end="url(#ar1)"/>
+        <!-- focal depth -->
+        <line x1="230" y1="78" x2="230" y2="181" stroke="var(--svg-line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="236" y="140" font-size="11.5" fill="var(--svg-sub)">Focal depth</text>
+        <!-- epicentral distance -->
+        <line x1="232" y1="66" x2="416" y2="66" stroke="var(--svg-hub)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="300" y="60" font-size="11.5" fill="var(--svg-text-blue)">Epicentral distance</text>
+        <!-- hypocentral distance -->
+        <line x1="236" y1="184" x2="414" y2="70" stroke="var(--svg-purple-s)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="300" y="145" font-size="11.5" fill="var(--svg-text-purple)" transform="rotate(-27 300 145)">Hypocentral distance</text>
+        <!-- seismic waves -->
+        <circle cx="230" cy="188" r="34" fill="none" stroke="var(--svg-red-s)" stroke-width="1" opacity=".7"/>
+        <circle cx="230" cy="188" r="56" fill="none" stroke="var(--svg-red-s)" stroke-width="1" opacity=".5"/>
+        <circle cx="230" cy="188" r="78" fill="none" stroke="var(--svg-red-s)" stroke-width="1" opacity=".33"/>
+        <text x="60" y="230" font-size="11.5" fill="var(--svg-sub)">Seismic waves radiate in all directions</text>
+      </svg>
+      <figcaption><b>Fig. 1.1</b> Focus, epicentre, fault plane and the distances used in seismic design.</figcaption>
+    </figure>
+
+    <h4>Classification by focal depth</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Focal depth</th><th>Remark</th></tr></thead>
+        <tbody>
+          <tr><td>Shallow</td><td>&lt; 70 km</td><td>Most destructive &mdash; energy is released close to the surface. Almost all Nepali earthquakes are of this type.</td></tr>
+          <tr><td>Intermediate</td><td>70 &ndash; 300 km</td><td>Felt over a wide area but with lower surface acceleration.</td></tr>
+          <tr><td>Deep</td><td>300 &ndash; 700 km</td><td>Rarely damaging at the surface.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>About <strong>90% of earthquake foci are shallower than 100 km</strong>, large earthquakes are mostly at less than
+    60 km depth, and <strong>no earthquake occurs deeper than about 700 km</strong> because below that the rock is too
+    ductile to store elastic strain.</p>
+
+    <h3>1.1.3 &nbsp;Causes of Earthquakes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Cause</th></tr></thead>
+        <tbody>
+          <tr><td>Tectonic (most important)</td><td>Sudden slip of tectonic plates along faults; accounts for over 90% of all earthquakes and virtually all damaging ones.</td></tr>
+          <tr><td>Volcanic</td><td>Movement of magma and gas explosions beneath a volcano.</td></tr>
+          <tr><td>Collapse</td><td>Roof collapse of underground caverns, mines or karst caves.</td></tr>
+          <tr><td>Explosion</td><td>Chemical or nuclear detonations.</td></tr>
+          <tr><td>Reservoir-induced</td><td>Impounding of very large reservoirs increases pore water pressure and triggers slip on nearby faults.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.1.4 &nbsp;Interior of the Earth</h3>
+    <p>Understanding why plates move needs a quick look at the earth's layers, because it is the temperature difference
+    between the core and crust that drives convection in the mantle and therefore plate motion.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>Approx. thickness</th><th>Nature</th></tr></thead>
+        <tbody>
+          <tr><td>Crust</td><td>Continental 25&ndash;40 km; oceanic ~6 km</td><td>Cold, rocky and <strong>brittle</strong> &mdash; this is where earthquakes rupture.</td></tr>
+          <tr><td>Upper mantle</td><td>~650 km</td><td>Solid but deforms plastically; convection currents here drag the plates.</td></tr>
+          <tr><td>Lower mantle</td><td>~2235 km</td><td>Solid silicates of Fe, Mg, Al, Si and O at over 1000&nbsp;&deg;C.</td></tr>
+          <tr><td>Outer core</td><td>~2270 km</td><td><strong>Liquid</strong> iron with ~10% sulphur &mdash; S-waves cannot pass through it.</td></tr>
+          <tr><td>Inner core</td><td>~1216 km</td><td>Solid iron, kept solid by immense pressure.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The rigid outermost shell &mdash; the crust plus the uppermost mantle, about 80&ndash;100 km thick &mdash; is called
+    the <span class="key-term">lithosphere</span>, and it is broken into the tectonic plates.</p>
+
+    <figure class="figure">
+      <img src="../photo/earth-layers.png" alt="Cutaway section through the earth showing crust, mantle, outer core and inner core with their thicknesses">
+      <figcaption><b>Fig. 1.2</b> A section through the earth. The brittle crust is where earthquakes rupture; convection
+      in the plastic mantle drives the plates.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>1.1.5 &nbsp;Theory of Plate Tectonics</h3>
+    <p>Proposed in the 1960s and developed from Alfred Wegener's 1915 theory of <span class="key-term">continental
+    drift</span>, plate tectonics is the unifying theory that explains the formation and deformation of the earth's surface.
+    According to it the lithosphere is divided into about <strong>12 major plates</strong> that float on the plastic upper
+    mantle and move relative to one another at a few centimetres per year. Earthquakes, volcanoes and mountain ranges
+    are concentrated at the boundaries of these plates.</p>
+
+    <h4>Evidence for continental drift</h4>
+    <ul>
+      <li>Matching coastlines (South America and Africa fit like jigsaw pieces).</li>
+      <li>Matching mountain ranges across the Atlantic (Appalachians &ndash; Caledonides).</li>
+      <li>Matching rock types and radiometric rock ages on facing coasts.</li>
+      <li>Matching glacial deposits of ~300 million years ago in now-tropical continents.</li>
+      <li>Matching fossils &mdash; e.g. <em>Mesosaurus</em>, a freshwater reptile, found on both sides of the Atlantic.</li>
+    </ul>
+
+    <h4>Types of plate boundary</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Boundary</th><th>Relative motion</th><th>Features</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Divergent (constructive)</td><td>Plates move apart</td><td>New crust forms; shallow, moderate earthquakes; volcanoes</td><td>Mid-Atlantic Ridge</td></tr>
+          <tr><td>Convergent &mdash; oceanic/continental</td><td>Plates move together, denser oceanic plate subducts</td><td>Deep-focus earthquakes along the inclined <em>Benioff zone</em>; volcanic arcs; trenches</td><td>Andes, Japan trench</td></tr>
+          <tr><td>Convergent &mdash; continental/continental</td><td>Plates collide, neither subducts</td><td>Crust thickens and thrusts upward; very large shallow earthquakes; <strong>no volcanoes</strong></td><td><strong>Himalaya</strong></td></tr>
+          <tr><td>Transform (conservative)</td><td>Plates slide past each other</td><td>Strike-slip faulting; shallow earthquakes; crust neither created nor destroyed</td><td>San Andreas Fault</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/plate-boundaries.png" alt="Block diagram of a subduction zone showing oceanic crust descending beneath continental crust, trench, volcanic arc and earthquake foci">
+      <figcaption><b>Fig. 1.3</b> Block diagram of a convergent (subduction) margin &mdash; trench, descending slab, volcanic
+      arc and the inclined belt of earthquake foci.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>1.1.6 &nbsp;Elastic Rebound Theory <span class="year-tag">2079 Bhadra, Q1a</span></h3>
+    <p>Proposed by H. F. Reid after studying the 1906 San Francisco earthquake, the elastic rebound theory is the standard
+    explanation of how an earthquake is generated:</p>
+    <div class="formula">
+      <b>Elastic rebound theory.</b> Rocks on either side of a fault are slowly deformed (bent) by tectonic forces and
+      store <em>elastic strain energy</em>. When the accumulated strain exceeds the strength of the rock (or the frictional
+      resistance of the fault), the rock suddenly ruptures and the two blocks &ldquo;snap back&rdquo; &mdash; <em>rebound</em>
+      &mdash; to a new, unstrained position. The stored elastic energy is released in a few seconds as heat, fracturing and
+      <strong>seismic waves</strong>; those waves are the earthquake.
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 190" width="620" height="190" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <!-- Stage 1 -->
+        <g>
+          <rect x="14" y="26" width="130" height="104" fill="var(--svg-bg)" stroke="var(--svg-line)"/>
+          <line x1="79" y1="26" x2="79" y2="130" stroke="var(--svg-orange-s)" stroke-width="2.2"/>
+          <line x1="24" y1="52" x2="134" y2="52" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <line x1="24" y1="104" x2="134" y2="104" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <text x="79" y="18" font-size="12" text-anchor="middle" fill="var(--svg-text)">(a) Original state</text>
+          <text x="79" y="148" font-size="11" text-anchor="middle" fill="var(--svg-sub)">No strain</text>
+          <text x="79" y="163" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Fence / road straight</text>
+        </g>
+        <!-- Stage 2 -->
+        <g>
+          <rect x="164" y="26" width="130" height="104" fill="var(--svg-bg)" stroke="var(--svg-line)"/>
+          <line x1="229" y1="26" x2="229" y2="130" stroke="var(--svg-orange-s)" stroke-width="2.2"/>
+          <path d="M174 52 Q214 52 229 44 Q244 36 284 36" fill="none" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <path d="M174 104 Q214 104 229 112 Q244 120 284 120" fill="none" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <text x="229" y="18" font-size="12" text-anchor="middle" fill="var(--svg-text)">(b) Strain build-up</text>
+          <text x="229" y="148" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Elastic energy stored</text>
+          <text x="229" y="163" font-size="11" text-anchor="middle" fill="var(--svg-sub)">over tens of years</text>
+        </g>
+        <!-- Stage 3 -->
+        <g>
+          <rect x="314" y="26" width="130" height="104" fill="var(--svg-red)" stroke="var(--svg-red-s)"/>
+          <line x1="379" y1="26" x2="379" y2="130" stroke="var(--svg-red-s)" stroke-width="3"/>
+          <path d="M324 52 Q364 52 379 42" fill="none" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <path d="M379 30 Q394 30 434 30" fill="none" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <path d="M324 104 Q364 104 379 114" fill="none" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <path d="M379 126 Q394 126 434 126" fill="none" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <text x="379" y="18" font-size="12" text-anchor="middle" fill="var(--svg-text)">(c) Rupture</text>
+          <text x="379" y="148" font-size="11" text-anchor="middle" fill="var(--svg-text-red)">Strength exceeded &rarr;</text>
+          <text x="379" y="163" font-size="11" text-anchor="middle" fill="var(--svg-text-red)">sudden slip = EARTHQUAKE</text>
+        </g>
+        <!-- Stage 4 -->
+        <g>
+          <rect x="464" y="26" width="140" height="104" fill="var(--svg-green)" stroke="var(--svg-green-s)"/>
+          <line x1="534" y1="26" x2="534" y2="130" stroke="var(--svg-orange-s)" stroke-width="2.2"/>
+          <line x1="474" y1="60" x2="534" y2="60" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <line x1="534" y1="44" x2="594" y2="44" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <line x1="474" y1="96" x2="534" y2="96" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <line x1="534" y1="112" x2="594" y2="112" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <text x="534" y="18" font-size="12" text-anchor="middle" fill="var(--svg-text)">(d) Rebound</text>
+          <text x="534" y="148" font-size="11" text-anchor="middle" fill="var(--svg-text-green)">Blocks snap back, straight</text>
+          <text x="534" y="163" font-size="11" text-anchor="middle" fill="var(--svg-text-green)">again but offset &mdash; cycle restarts</text>
+        </g>
+      </svg>
+      <figcaption><b>Fig. 1.4</b> The four stages of the elastic rebound theory. A road or fence crossing the fault is
+      first bent, then snaps back straight but permanently offset.</figcaption>
+    </figure>
+
+    <h4>Foreshocks and aftershocks</h4>
+    <ul>
+      <li><span class="key-term">Foreshocks</span> &mdash; smaller earthquakes that <em>precede</em> the main shock by
+        days or sometimes years, as the rock progressively fails.</li>
+      <li><span class="key-term">Aftershocks</span> &mdash; smaller earthquakes that <em>follow</em> the main shock as the
+        crust readjusts to the new stress state. They are the biggest danger to already-cracked masonry buildings, which
+        is why damaged buildings must be shored immediately.</li>
+      <li>Whether a tremor was a foreshock or an aftershock is only known <em>after</em> the main shock has occurred.</li>
+    </ul>
+
+    <h3>1.1.7 &nbsp;Faults and Fault Types</h3>
+    <p>A <span class="key-term">fault</span> is a fracture in the crust along which the two blocks have moved relative to
+    each other. The block resting <em>above</em> the inclined fault plane is the <span class="key-term">hanging wall</span>
+    and the one below is the <span class="key-term">footwall</span>. The orientation of a fault is described by its
+    <em>strike</em> (compass direction of the fault line on the surface) and its <em>dip</em> (angle of the fault plane
+    from horizontal).</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 170" width="620" height="170" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arF" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-text-red)"/></marker>
+        </defs>
+        <!-- Normal -->
+        <g>
+          <polygon points="14,40 100,40 66,124 14,124" fill="var(--svg-blue)" stroke="var(--svg-blue-s)"/>
+          <polygon points="112,52 190,52 190,124 78,124" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <text x="100" y="32" font-size="12.5" text-anchor="middle" fill="var(--svg-text)">Normal (dip-slip)</text>
+          <line x1="150" y1="72" x2="150" y2="100" stroke="var(--svg-text-red)" stroke-width="1.8" marker-end="url(#arF)"/>
+          <text x="102" y="146" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Hanging wall moves DOWN</text>
+          <text x="102" y="160" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Tension &mdash; crust extends</text>
+        </g>
+        <!-- Reverse -->
+        <g transform="translate(210,0)">
+          <polygon points="14,40 100,40 66,124 14,124" fill="var(--svg-blue)" stroke="var(--svg-blue-s)"/>
+          <polygon points="112,28 190,28 190,124 78,124" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <text x="100" y="20" font-size="12.5" text-anchor="middle" fill="var(--svg-text)">Reverse / Thrust</text>
+          <line x1="150" y1="100" x2="150" y2="60" stroke="var(--svg-text-red)" stroke-width="1.8" marker-end="url(#arF)"/>
+          <text x="102" y="146" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Hanging wall moves UP</text>
+          <text x="102" y="160" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Compression &mdash; Himalayan type</text>
+        </g>
+        <!-- Strike slip -->
+        <g transform="translate(420,0)">
+          <rect x="14" y="40" width="176" height="40" fill="var(--svg-green)" stroke="var(--svg-green-s)"/>
+          <rect x="14" y="84" width="176" height="40" fill="var(--svg-purple)" stroke="var(--svg-purple-s)"/>
+          <text x="102" y="32" font-size="12.5" text-anchor="middle" fill="var(--svg-text)">Strike-slip</text>
+          <line x1="60" y1="60" x2="120" y2="60" stroke="var(--svg-text-red)" stroke-width="1.8" marker-end="url(#arF)"/>
+          <line x1="144" y1="104" x2="84" y2="104" stroke="var(--svg-text-red)" stroke-width="1.8" marker-end="url(#arF)"/>
+          <text x="102" y="146" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Horizontal sliding</text>
+          <text x="102" y="160" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Left- or right-lateral</text>
+        </g>
+      </svg>
+      <figcaption><b>Fig. 1.5</b> The three basic fault types. An <em>oblique-slip</em> fault combines dip-slip and
+      strike-slip motion; a <em>blind (hidden) fault</em> is one that does not reach the ground surface.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>Why this matters for masonry.</strong> Thrust (reverse) faults such as those in the Himalaya produce
+      strong <em>vertical</em> as well as horizontal ground acceleration and high near-field accelerations at short
+      epicentral distance. Vertical acceleration momentarily reduces the compressive pre-load on a masonry wall, which
+      in turn reduces its friction-based shear capacity &mdash; one reason unreinforced masonry performs so badly in
+      Nepali earthquakes.
+    </div>
+
+    <h3>1.1.8 &nbsp;Origin of Earthquakes in the Himalayas <span class="year-tag">2079 Bhadra, Q1a</span></h3>
+    <p>The Himalaya is the classic <strong>continent&ndash;continent convergent margin</strong>:</p>
+    <ol>
+      <li>About 225 million years ago the Indian plate, carrying the Indian landmass, separated from Gondwanaland and
+        began drifting northwards at roughly 10&nbsp;cm per year, with the intervening <em>Tethys</em> oceanic crust
+        subducting beneath the Eurasian plate.</li>
+      <li>Around <strong>55 million years ago the Tethys closed and India collided with Asia</strong>. Because both are
+        continental crust of about the same low density, neither could subduct beneath the other.</li>
+      <li>The only way the collision pressure could be relieved was by <strong>crustal thickening and thrusting upward</strong>,
+        contorting the collision zone and raising the Himalayan range. This is why the Himalaya has great earthquakes
+        but <em>no volcanoes</em>.</li>
+      <li>Convergence continues today at about <strong>2 cm/yr (India&ndash;Eurasia ~4&ndash;5 cm/yr, of which about
+        2 cm/yr is absorbed across the Himalaya)</strong>. Nepal therefore shortens by roughly 2 m per century.</li>
+      <li>This shortening is taken up on a system of north-dipping thrust faults that all sole into one gently
+        north-dipping detachment, the <span class="key-term">Main Himalayan Thrust (MHT)</span>:
+        <ul>
+          <li><strong>MFT</strong> &mdash; Main Frontal Thrust (southernmost, active, at the Terai&ndash;Siwalik front)</li>
+          <li><strong>MBT</strong> &mdash; Main Boundary Thrust (Siwalik&ndash;Lesser Himalaya)</li>
+          <li><strong>MCT</strong> &mdash; Main Central Thrust (Lesser&ndash;Higher Himalaya)</li>
+          <li><strong>STDS</strong> &mdash; South Tibetan Detachment System (northernmost, normal fault)</li>
+        </ul>
+      </li>
+      <li>The shallow part of the MHT is <strong>locked</strong> by friction between earthquakes. Strain accumulates for
+        decades to centuries and is then released suddenly as a great earthquake &mdash; exactly the elastic rebound
+        mechanism. The 2015 Gorkha earthquake (M<sub>w</sub> 7.8) was a rupture of the locked MHT that propagated
+        eastward from Barpak, Gorkha, at a focal depth of about 15 km.</li>
+    </ol>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/india-drift.png" alt="Series of maps showing the Indian plate drifting northwards from 71 million years ago to the present day">
+        <figcaption><b>Fig. 1.6a</b> Northward drift of the Indian plate towards Asia.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/himalaya-collision.png" alt="Before and after sections showing the Indian plate colliding with Asia and the Himalaya rising">
+        <figcaption><b>Fig. 1.6b</b> Before and after the collision &mdash; neither plate can subduct, so the crust thickens
+        and the Himalaya rises.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 240" width="560" height="240" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arH" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--svg-text-red)"/></marker>
+        </defs>
+        <!-- Eurasian block -->
+        <path d="M300 60 L540 60 L540 210 L300 210 Z" fill="var(--svg-purple)" stroke="var(--svg-purple-s)"/>
+        <text x="440" y="90" font-size="13" text-anchor="middle" fill="var(--svg-text-purple)">Eurasian Plate</text>
+        <text x="440" y="106" font-size="11" text-anchor="middle" fill="var(--svg-sub)">(Tibetan Plateau)</text>
+        <!-- Indian plate underthrusting -->
+        <path d="M20 150 L300 150 L300 210 L20 210 Z" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+        <text x="150" y="188" font-size="13" text-anchor="middle" fill="var(--svg-text-yellow)">Indian Plate</text>
+        <!-- Himalayan wedge -->
+        <path d="M20 150 L300 60 L300 150 Z" fill="var(--svg-green)" stroke="var(--svg-green-s)"/>
+        <!-- topography -->
+        <polyline points="20,150 90,138 130,120 175,104 215,88 260,70 300,60" fill="none" stroke="var(--svg-text)" stroke-width="1.6"/>
+        <text x="60" y="132" font-size="11" fill="var(--svg-sub)">Terai</text>
+        <text x="118" y="112" font-size="11" fill="var(--svg-sub)">Siwalik</text>
+        <text x="176" y="96" font-size="11" fill="var(--svg-sub)">Lesser Him.</text>
+        <text x="248" y="60" font-size="11" fill="var(--svg-sub)">Higher Him.</text>
+        <!-- MHT -->
+        <line x1="24" y1="150" x2="300" y2="92" stroke="var(--svg-red-s)" stroke-width="2.6"/>
+        <text x="152" y="140" font-size="12" fill="var(--svg-text-red)">Main Himalayan Thrust (MHT) &mdash; locked</text>
+        <!-- splays -->
+        <line x1="52" y1="144" x2="30" y2="150" stroke="var(--svg-orange-s)" stroke-width="2"/>
+        <text x="30" y="166" font-size="10.5" fill="var(--svg-text-orange)">MFT</text>
+        <line x1="132" y1="120" x2="106" y2="137" stroke="var(--svg-orange-s)" stroke-width="2"/>
+        <text x="100" y="152" font-size="10.5" fill="var(--svg-text-orange)">MBT</text>
+        <line x1="216" y1="88" x2="188" y2="112" stroke="var(--svg-orange-s)" stroke-width="2"/>
+        <text x="188" y="126" font-size="10.5" fill="var(--svg-text-orange)">MCT</text>
+        <!-- convergence arrow -->
+        <line x1="30" y1="226" x2="140" y2="226" stroke="var(--svg-text-red)" stroke-width="2.4" marker-end="url(#arH)"/>
+        <text x="150" y="230" font-size="11.5" fill="var(--svg-text-red)">Convergence ~2 cm/yr absorbed across the Himalaya</text>
+        <!-- focus star -->
+        <circle cx="150" cy="119" r="6" fill="var(--svg-red-s)"/>
+        <text x="160" y="118" font-size="11" fill="var(--svg-text-red)">Typical focus, ~10&ndash;20 km deep</text>
+      </svg>
+      <figcaption><b>Fig. 1.7</b> Simplified north&ndash;south section of the Nepal Himalaya. All the thrusts sole into the
+      Main Himalayan Thrust, whose locked shallow portion is the source of great Himalayan earthquakes.</figcaption>
+    </figure>
+
+    <h3>1.1.9 &nbsp;Factors Influencing the Shaking at a Location <span class="year-tag">2080 Bhadra, Q1a</span></h3>
+    <p>The severity of shaking at a particular site is <strong>not</strong> governed by magnitude alone. It is best
+    remembered under three headings &mdash; <strong>source, path and site</strong>:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Group</th><th>Factor</th><th>Effect on shaking</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="4">Source</td><td>Magnitude (energy released)</td><td>Larger magnitude &rarr; larger amplitude and longer duration.</td></tr>
+          <tr><td>Focal depth</td><td>Shallow focus &rarr; much stronger surface shaking for the same magnitude.</td></tr>
+          <tr><td>Fault mechanism &amp; rupture directivity</td><td>Thrust faults give large vertical components; shaking is amplified in the direction the rupture propagates.</td></tr>
+          <tr><td>Length &amp; area of rupture</td><td>Longer rupture &rarr; longer duration of strong shaking.</td></tr>
+          <tr><td rowspan="2">Path</td><td>Epicentral / hypocentral distance</td><td>Amplitude attenuates rapidly with distance.</td></tr>
+          <tr><td>Geology along the travel path</td><td>Reflection and refraction at layer boundaries change amplitude and frequency content.</td></tr>
+          <tr><td rowspan="4">Site</td><td>Local soil type &amp; depth</td><td>Soft, deep, unconsolidated soil (e.g. the Kathmandu Valley lake deposits) <strong>amplifies</strong> shaking and lengthens its period; rock sites shake less.</td></tr>
+          <tr><td>Topography</td><td>Ridges, hill tops and steep slopes amplify base-rock acceleration by resonance &mdash; the &ldquo;ridge effect&rdquo;.</td></tr>
+          <tr><td>Basin geometry</td><td>Sediment-filled basins trap surface waves and prolong shaking.</td></tr>
+          <tr><td>Ground water table / liquefiable soil</td><td>Saturated loose sand may liquefy, changing shaking and causing settlement.</td></tr>
+          <tr><td>Structure</td><td>Nature of the structure</td><td>Damage also depends on the building's own period, mass, stiffness, ductility, configuration and construction quality &mdash; resonance greatly increases response.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <b>Model answer skeleton for &ldquo;Define earthquake, its source and influencing factor of shaking&rdquo; [8 marks]</b>
+      <ol>
+        <li>Definition (2 lines) + one sentence on rapid release of strain energy.</li>
+        <li>Source: focus/hypocentre, epicentre, focal depth &mdash; with <em>Fig. 1.1</em>.</li>
+        <li>Cause of the source: plate tectonics &rarr; faulting &rarr; elastic rebound (2 lines).</li>
+        <li>Influencing factors in the source&ndash;path&ndash;site table above (list at least 8).</li>
+        <li>Close with one line on Kathmandu Valley soft-soil amplification &mdash; it earns the extra mark.</li>
+      </ol>
+    </div>
+
+    <!-- ══════════════ 1.2 ══════════════ -->
+    <h2>1.2 &nbsp;Seismic Waves, Earthquake Ground Motion, Magnitude and Intensity <span class="year-tag">2078 Bhadra</span><span class="year-tag">2079 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Explain the magnitude and intensity of the earthquake. Compare the MMI scale with the Richter scale. [8] <em>(2079 Bhadra, Q1b)</em></li>
+        <li>Explain Richter scale and MMI scale. [6] <em>(2078 Bhadra, Q1a)</em></li>
+      </ol>
+    </div>
+
+    <h3>1.2.1 &nbsp;Sequence of Events</h3>
+    <div class="formula">
+      Tectonic loading of faults &nbsp;&rarr;&nbsp; Earthquake (rupture) &nbsp;&rarr;&nbsp; Seismic waves
+      &nbsp;&rarr;&nbsp; Ground shaking &nbsp;&rarr;&nbsp; Inertia forces in the structure &nbsp;&rarr;&nbsp; Structural damage / failure
+    </div>
+
+    <h3>1.2.2 &nbsp;Seismic Waves</h3>
+    <p>The energy released at the focus travels through and over the earth as <span class="key-term">seismic waves</span>.
+    They are of two broad classes:</p>
+
+    <h4>(A) Body waves &mdash; travel through the earth's interior</h4>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Feature</th><th>Primary (P) wave</th><th>Secondary (S) wave</th></tr></thead>
+        <tbody>
+          <tr><td>Other name</td><td>Compressional / longitudinal / push-pull wave</td><td>Shear / transverse / distortional wave</td></tr>
+          <tr><td>Particle motion</td><td><strong>Parallel</strong> to the direction of wave travel &mdash; alternate compression and dilation (like a slinky)</td><td><strong>Perpendicular</strong> (at right angles) to the direction of travel &mdash; shearing (like a rope flick)</td></tr>
+          <tr><td>Velocity in the crust</td><td>Fastest &mdash; about 6 km/s (range 1.5&ndash;8 km/s)</td><td>About 3 km/s, roughly 0.5&ndash;0.6 times the P-wave speed</td></tr>
+          <tr><td>Medium</td><td>Travels through <strong>solids, liquids and gases</strong></td><td>Travels through <strong>solids only</strong> &mdash; velocity drops to zero at the core&ndash;mantle (Gutenberg) discontinuity, proving the outer core is liquid</td></tr>
+          <tr><td>Arrival on a seismogram</td><td>First</td><td>Second</td></tr>
+          <tr><td>Damage potential</td><td>Low &mdash; small amplitude; felt as a bump that rattles windows, like a sonic boom</td><td><strong>High</strong> &mdash; causes severe shearing and stretching; the vertical and horizontal shaking is very damaging to structures</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>(B) Surface waves &mdash; travel along or just below the ground surface</h4>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Feature</th><th>Love (L) wave</th><th>Rayleigh (R) wave</th></tr></thead>
+        <tbody>
+          <tr><td>Particle motion</td><td>Horizontal shearing side-to-side, at right angles to the direction of travel, with <strong>no vertical component</strong></td><td>Elliptical, rolling &mdash; vertical <em>plus</em> back-and-forth horizontal motion in a vertical plane, like an ocean swell</td></tr>
+          <tr><td>Velocity</td><td>Less than the S wave, but faster than Rayleigh waves</td><td>About 0.9 times the S-wave velocity &mdash; the slowest</td></tr>
+          <tr><td>Arrival</td><td>After the S wave</td><td>Last</td></tr>
+          <tr><td>Effect</td><td>Horizontal shaking is <strong>particularly damaging to the foundations and walls</strong> of buildings; does not propagate through water</td><td>Rolling motion; long duration; especially damaging to <strong>tall/long-period structures</strong>; can affect lakes</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Surface waves are generated when the body waves reach the free surface. They decay more slowly with distance than
+    body waves, so at large epicentral distances the surface waves dominate the record. In general, <strong>high-frequency
+    body waves shake low-rise (stiff) buildings more, while low-frequency surface waves shake tall (flexible) buildings
+    more</strong>. Whenever a P or S wave is reflected or refracted at an interface, part of its energy is converted into
+    the other wave type.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 600 300" width="600" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arW" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-text-red)"/></marker>
+        </defs>
+        <!-- P wave -->
+        <text x="10" y="22" font-size="13" font-weight="bold" fill="var(--svg-text)">P wave &mdash; compression / dilation</text>
+        <g>
+          <g fill="var(--svg-blue-s)">
+            <rect x="20" y="34" width="4" height="26"/><rect x="30" y="34" width="4" height="26"/><rect x="42" y="34" width="4" height="26"/>
+            <rect x="58" y="34" width="4" height="26"/><rect x="78" y="34" width="4" height="26"/><rect x="100" y="34" width="4" height="26"/>
+            <rect x="116" y="34" width="4" height="26"/><rect x="126" y="34" width="4" height="26"/><rect x="134" y="34" width="4" height="26"/>
+            <rect x="144" y="34" width="4" height="26"/><rect x="160" y="34" width="4" height="26"/><rect x="180" y="34" width="4" height="26"/>
+            <rect x="202" y="34" width="4" height="26"/><rect x="218" y="34" width="4" height="26"/><rect x="228" y="34" width="4" height="26"/>
+            <rect x="236" y="34" width="4" height="26"/><rect x="246" y="34" width="4" height="26"/><rect x="262" y="34" width="4" height="26"/>
+          </g>
+          <line x1="290" y1="47" x2="330" y2="47" stroke="var(--svg-text-red)" stroke-width="2" marker-end="url(#arW)"/>
+          <text x="336" y="51" font-size="11.5" fill="var(--svg-sub)">wave travel &amp; particle motion in the SAME direction</text>
+        </g>
+        <!-- S wave -->
+        <text x="10" y="94" font-size="13" font-weight="bold" fill="var(--svg-text)">S wave &mdash; shear</text>
+        <g>
+          <path d="M20 132 Q45 106 70 132 Q95 158 120 132 Q145 106 170 132 Q195 158 220 132 Q245 106 270 132"
+                fill="none" stroke="var(--svg-green-s)" stroke-width="2.4"/>
+          <line x1="70" y1="132" x2="70" y2="108" stroke="var(--svg-text-green)" stroke-width="1.2"/>
+          <line x1="120" y1="132" x2="120" y2="156" stroke="var(--svg-text-green)" stroke-width="1.2"/>
+          <line x1="290" y1="132" x2="330" y2="132" stroke="var(--svg-text-red)" stroke-width="2" marker-end="url(#arW)"/>
+          <text x="336" y="136" font-size="11.5" fill="var(--svg-sub)">particle motion PERPENDICULAR to travel</text>
+        </g>
+        <!-- Love wave -->
+        <text x="10" y="184" font-size="13" font-weight="bold" fill="var(--svg-text)">Love wave &mdash; horizontal shear at the surface</text>
+        <g>
+          <rect x="20" y="196" width="250" height="26" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <path d="M20 209 Q45 197 70 209 Q95 221 120 209 Q145 197 170 209 Q195 221 220 209 Q245 197 270 209"
+                fill="none" stroke="var(--svg-text-yellow)" stroke-width="2"/>
+          <line x1="290" y1="209" x2="330" y2="209" stroke="var(--svg-text-red)" stroke-width="2" marker-end="url(#arW)"/>
+          <text x="336" y="213" font-size="11.5" fill="var(--svg-sub)">side-to-side in plan; no vertical motion</text>
+        </g>
+        <!-- Rayleigh wave -->
+        <text x="10" y="252" font-size="13" font-weight="bold" fill="var(--svg-text)">Rayleigh wave &mdash; rolling</text>
+        <g>
+          <path d="M20 282 Q45 258 70 282 Q95 306 120 282 Q145 258 170 282 Q195 306 220 282 Q245 258 270 282"
+                fill="none" stroke="var(--svg-purple-s)" stroke-width="2.4"/>
+          <ellipse cx="70" cy="272" rx="9" ry="6" fill="none" stroke="var(--svg-text-purple)" stroke-width="1.2"/>
+          <ellipse cx="170" cy="272" rx="9" ry="6" fill="none" stroke="var(--svg-text-purple)" stroke-width="1.2"/>
+          <line x1="290" y1="278" x2="330" y2="278" stroke="var(--svg-text-red)" stroke-width="2" marker-end="url(#arW)"/>
+          <text x="336" y="282" font-size="11.5" fill="var(--svg-sub)">elliptical, vertical + horizontal, like ocean swell</text>
+        </g>
+      </svg>
+      <figcaption><b>Fig. 1.8</b> Particle motion of the four types of seismic wave.</figcaption>
+    </figure>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/body-waves-demo.png" alt="Slinky spring demonstrating compressional P-wave motion and a rope demonstrating transverse S-wave motion">
+        <figcaption><b>Fig. 1.9</b> Classroom analogy &mdash; the slinky (compression, P wave) and the rope
+        (shear, S wave).<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/surface-waves.png" alt="Block diagrams of Love wave horizontal shearing motion and Rayleigh wave rolling elliptical motion at the ground surface">
+      <figcaption><b>Fig. 1.10</b> Surface waves. <em>(a)</em> The <b>Love wave</b> shakes the ground from side to side in a
+      horizontal plane; <em>(b)</em> the <b>Rayleigh wave</b> rolls the ground in a vertical ellipse, like an ocean swell.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>1.2.3 &nbsp;Recording and Locating an Earthquake</h3>
+    <ul>
+      <li>A <span class="key-term">seismograph</span> records ground motion using a mass with such large inertia that it
+        stays effectively at rest while the frame and ground move around it; the relative movement is recorded.</li>
+      <li>The record it produces is a <span class="key-term">seismogram</span>, showing the P, S and surface wave arrivals.</li>
+      <li>A <span class="key-term">strong-motion accelerograph</span> records three orthogonal components of ground
+        <em>acceleration</em> (two horizontal &mdash; usually N&ndash;S and E&ndash;W &mdash; and one vertical) and is the
+        instrument used for engineering design data.</li>
+    </ul>
+    <p><strong>Locating the epicentre.</strong> Because the P wave is faster than the S wave, the <em>time gap between the
+    P and S arrivals</em> increases with distance from the epicentre. Each station converts its S&ndash;P time interval
+    into a distance <em>D</em> and draws a circle of radius <em>D</em> around itself on a map. <strong>Three or more
+    stations</strong> are required; the single point where the three circles intersect is the epicentre
+    (<em>triangulation</em>). About 95% of major earthquakes occur within a few narrow belts that mark the plate boundaries.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 210" width="560" height="210" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <line x1="40" y1="110" x2="530" y2="110" stroke="var(--svg-line)" stroke-width="1"/>
+        <!-- noise -->
+        <path d="M40 110 l6 -2 l6 3 l6 -2 l6 2 l6 -3 l6 3 l6 -2 l6 2 l6 -2 l6 2 l6 -2 l6 2"
+              fill="none" stroke="var(--svg-sub)" stroke-width="1.2"/>
+        <!-- P arrival -->
+        <path d="M112 110 l4 -20 l4 24 l4 -18 l4 16 l4 -13 l5 12 l5 -9 l5 8 l5 -6 l6 6 l6 -4 l6 4"
+              fill="none" stroke="var(--svg-blue-s)" stroke-width="1.5"/>
+        <!-- S arrival -->
+        <path d="M180 110 l4 -40 l4 52 l4 -46 l5 40 l5 -34 l5 30 l5 -24 l5 22 l6 -18 l6 16 l6 -12 l6 12"
+              fill="none" stroke="var(--svg-green-s)" stroke-width="1.6"/>
+        <!-- surface -->
+        <path d="M262 110 q10 -56 20 0 q10 56 20 0 q10 -50 20 0 q10 50 20 0 q10 -40 20 0 q10 40 20 0 q10 -30 20 0 q10 30 20 0 q10 -20 20 0 q10 20 20 0 q10 -12 20 0 q10 12 20 0"
+              fill="none" stroke="var(--svg-purple-s)" stroke-width="1.6"/>
+        <!-- markers -->
+        <line x1="112" y1="34" x2="112" y2="186" stroke="var(--svg-text-blue)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <line x1="180" y1="34" x2="180" y2="186" stroke="var(--svg-text-green)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <line x1="262" y1="34" x2="262" y2="186" stroke="var(--svg-text-purple)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="112" y="28" font-size="12" text-anchor="middle" fill="var(--svg-text-blue)">P</text>
+        <text x="180" y="28" font-size="12" text-anchor="middle" fill="var(--svg-text-green)">S</text>
+        <text x="290" y="28" font-size="12" text-anchor="middle" fill="var(--svg-text-purple)">Surface waves (L, R)</text>
+        <!-- S-P interval -->
+        <line x1="112" y1="196" x2="180" y2="196" stroke="var(--svg-text-red)" stroke-width="1.4"/>
+        <text x="146" y="208" font-size="11" text-anchor="middle" fill="var(--svg-text-red)">S&ndash;P interval &rarr; distance D</text>
+        <text x="44" y="96" font-size="11" fill="var(--svg-sub)">background noise</text>
+        <text x="400" y="180" font-size="11" fill="var(--svg-sub)">Largest amplitude &rarr; used for Richter magnitude</text>
+      </svg>
+      <figcaption><b>Fig. 1.11</b> A typical seismogram. The S&ndash;P time interval gives the distance to the epicentre;
+      the maximum trace amplitude gives the Richter magnitude.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <img src="../photo/seismogram.png" alt="Real seismogram trace labelled with background noise, arrival of P-wave, S-wave and L-wave, and the P minus S time interval">
+      <figcaption><b>Fig. 1.12</b> The same information on a real record: the body waves (P then S) arrive first and the
+      larger, slower surface waves follow. The <em>P&ndash;S time interval</em> is measured to obtain the distance from the
+      seismograph to the epicentre.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>1.2.4 &nbsp;Earthquake Ground Motion Parameters</h3>
+    <p>An accelerogram can be integrated once to obtain the ground <em>velocity</em> time history and twice to obtain the
+    ground <em>displacement</em> time history. Three quantities describe the destructiveness of the record:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parameter</th><th>Symbol</th><th>Meaning &amp; engineering significance</th></tr></thead>
+        <tbody>
+          <tr><td>Amplitude</td><td>PGA, PGV, PGD</td><td><strong>Peak Ground Acceleration</strong> is the largest absolute acceleration in the record. It directly fixes the inertia force (<em>F = m&thinsp;a</em>) and is the parameter used in codes. <strong>PGV</strong> correlates better with damage to medium-period structures and <strong>PGD</strong> with long-period structures and lifelines.</td></tr>
+          <tr><td>Duration</td><td>t<sub>d</sub></td><td>Length of strong shaking. Long duration means many cycles of load reversal, which progressively degrades masonry &mdash; a M7.8 event shaking for 50 s is far more destructive than a M6 event shaking for 5 s at the same PGA.</td></tr>
+          <tr><td>Frequency content</td><td>&mdash;</td><td>Distribution of energy over frequency. If the dominant ground period matches the building's natural period, <strong>resonance</strong> occurs and response is greatly magnified.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula">
+      PGA is expressed in three equivalent ways:<br>
+      &bull; as a fraction of <em>g</em> &mdash; e.g. 0.36&thinsp;g &nbsp;&bull; in m/s<sup>2</sup> &mdash; 1&thinsp;g = 9.81 m/s<sup>2</sup>
+      &nbsp;&bull; in Gal &mdash; 1 Gal = 0.01 m/s<sup>2</sup>, so 1&thinsp;g = 981 Gal.
+    </div>
+    <p>PGA varies enormously over a few kilometres because of ground type, so a moderate earthquake on soft soil can
+    produce a larger PGA than a bigger earthquake on rock. The spatial variation is plotted as a <em>shake map</em>.
+    In each record the peaks of the two horizontal components (H1, H2) and the vertical component (V) are reported; the
+    <em>peak horizontal ground acceleration</em> is taken as the larger component, the mean of the two, or their vector sum.</p>
+
+    <h3>1.2.5 &nbsp;Magnitude <span class="year-tag">2078 Bhadra</span><span class="year-tag">2079 Bhadra</span></h3>
+    <p><span class="key-term">Magnitude</span> is a <strong>quantitative, instrumental</strong> measure of the size of an
+    earthquake &mdash; that is, of the total energy released at the source. It is a single number for a given earthquake,
+    independent of where it is measured.</p>
+
+    <h4>(a) Richter scale (local magnitude, M<sub>L</sub>)</h4>
+    <ul>
+      <li>Devised by Charles F. Richter in 1935. It is based on the <strong>logarithm (base 10) of the maximum trace
+        amplitude</strong> recorded by a standard Wood&ndash;Anderson seismograph, corrected to a standard epicentral
+        distance of 100 km.</li>
+      <li>Because it is logarithmic, an increase of <strong>one unit of magnitude means 10 times larger wave amplitude</strong>
+        and about <strong>31.6 (&asymp;32) times more energy released</strong>.</li>
+      <li>Hence an M7.7 earthquake releases about 31 times the energy of an M6.7, and about
+        31&times;31 &asymp; <strong>1000 times</strong> that of an M5.7.</li>
+      <li>The scale is open-ended and can be negative for very small tremors, but it <strong>saturates</strong> &mdash;
+        it does not adequately distinguish the size of very large earthquakes (above about M7).</li>
+    </ul>
+    <div class="formula">
+      M<sub>L</sub> = log<sub>10</sub> A &minus; log<sub>10</sub> A<sub>0</sub> &nbsp;&nbsp;
+      (A = maximum trace amplitude in &micro;m; A<sub>0</sub> = reference amplitude at the same distance)<br><br>
+      Energy&ndash;magnitude relation (Gutenberg&ndash;Richter):
+      &nbsp; log<sub>10</sub> E = 11.8 + 1.5&thinsp;M &nbsp; (E in ergs)
+    </div>
+
+    <h4>(b) Moment magnitude (M<sub>w</sub>)</h4>
+    <p>Derived from the <em>seismic moment</em> M<sub>0</sub> = &micro;&thinsp;A&thinsp;D, where &micro; is the rigidity of
+    the rock, A the ruptured fault area and D the average slip. Because it is calculated from the physical size of the
+    rupture rather than from one instrument trace, it <strong>does not saturate</strong> and is the scale now used for all
+    large earthquakes &mdash; the 2015 Gorkha earthquake is quoted as M<sub>w</sub> 7.8.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Magnitude</th><th>Class</th><th>Approximate effects &amp; frequency</th></tr></thead>
+        <tbody>
+          <tr><td>&lt; 3.0</td><td>Micro / minor</td><td>Not felt; recorded only by instruments. Many thousands per day worldwide.</td></tr>
+          <tr><td>3.0 &ndash; 3.9</td><td>Minor</td><td>Often felt indoors, rarely causes damage.</td></tr>
+          <tr><td>4.0 &ndash; 4.9</td><td>Light</td><td>Noticeable shaking, negligible damage.</td></tr>
+          <tr><td>5.0 &ndash; 5.9</td><td>Moderate</td><td>Damage to poorly built (unreinforced masonry) structures.</td></tr>
+          <tr><td>6.0 &ndash; 6.9</td><td>Strong</td><td>Destructive up to ~100 km across; ~100&ndash;150 per year.</td></tr>
+          <tr><td>7.0 &ndash; 7.9</td><td>Major</td><td>Serious damage over large areas; ~10&ndash;20 per year.</td></tr>
+          <tr><td>&ge; 8.0</td><td>Great</td><td>Devastation over several hundred kilometres; about 1 per year.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.2.6 &nbsp;Intensity</h3>
+    <p><span class="key-term">Intensity</span> is a <strong>qualitative, observational</strong> measure of the actual
+    <em>effects</em> of an earthquake at a particular place &mdash; on people, objects, buildings and the ground. Because
+    the effects change from place to place, <strong>one earthquake has many intensity values but only one magnitude</strong>.
+    Intensity is highest near the epicentre and decreases outward; lines joining points of equal intensity are called
+    <span class="key-term">isoseismals</span>, and their map is used to identify the epicentre of historic (pre-instrumental)
+    earthquakes and to prepare seismic hazard maps.</p>
+    <p>The scale used is the <span class="key-term">Modified Mercalli Intensity (MMI)</span> scale, which has
+    <strong>12 grades written in Roman numerals I to XII</strong>. Other scales in use are the MSK-64 (Europe, also 12
+    grades) and the JMA scale (Japan).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>MMI</th><th>Description of observed effects</th></tr></thead>
+        <tbody>
+          <tr><td>I</td><td>Not felt except by a very few under especially favourable conditions.</td></tr>
+          <tr><td>II &ndash; III</td><td>Felt by a few people at rest, especially on upper floors; standing motor cars may rock.</td></tr>
+          <tr><td>IV</td><td>Felt indoors by many; windows, doors and dishes rattle; hanging objects swing.</td></tr>
+          <tr><td>V</td><td>Felt by nearly everyone; some crockery broken; unstable objects overturned.</td></tr>
+          <tr><td>VI</td><td>Felt by all, many frightened; slight damage; plaster falls.</td></tr>
+          <tr><td>VII</td><td>Negligible damage in well-built structures; <strong>considerable damage in poorly built masonry</strong>; difficulty in standing.</td></tr>
+          <tr><td>VIII</td><td>Great damage in poorly built structures; partial collapse of ordinary masonry; chimneys and monuments fall.</td></tr>
+          <tr><td>IX</td><td>Considerable damage even in well-designed structures; buildings shifted off foundations; ground cracks conspicuously.</td></tr>
+          <tr><td>X</td><td>Most masonry and frame structures destroyed with their foundations; rails bent; landslides.</td></tr>
+          <tr><td>XI</td><td>Few structures remain standing; bridges destroyed; broad fissures in ground.</td></tr>
+          <tr><td>XII</td><td>Total damage; lines of sight distorted; objects thrown into the air.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.2.7 &nbsp;Comparison of Magnitude (Richter) and Intensity (MMI) <span class="year-tag">2079 Bhadra, Q1b</span></h3>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Magnitude &mdash; Richter scale</th><th>Intensity &mdash; MMI scale</th></tr></thead>
+        <tbody>
+          <tr><td>What it measures</td><td>Energy released at the source (size of the earthquake)</td><td>Effect / severity of shaking at a particular place</td></tr>
+          <tr><td>Nature</td><td>Quantitative and objective</td><td>Qualitative and subjective (based on observation)</td></tr>
+          <tr><td>How obtained</td><td>Measured instrumentally from a seismogram</td><td>Assessed from damage surveys and human reports; no instrument</td></tr>
+          <tr><td>Number of values</td><td><strong>One value</strong> per earthquake</td><td><strong>Many values</strong> &mdash; different at every location</td></tr>
+          <tr><td>Depends on distance?</td><td>No &mdash; independent of the observer's position</td><td>Yes &mdash; decreases with epicentral distance</td></tr>
+          <tr><td>Depends on local soil / building type?</td><td>No</td><td>Yes &mdash; strongly</td></tr>
+          <tr><td>Notation</td><td>Arabic numerals with decimals (e.g. 7.8)</td><td>Roman numerals, I to XII (e.g. IX)</td></tr>
+          <tr><td>Scale type</td><td>Logarithmic, open-ended (can be negative)</td><td>Descriptive, bounded I&ndash;XII</td></tr>
+          <tr><td>Represented by</td><td>A single point &mdash; the epicentre</td><td>Isoseismal map (contours of equal intensity)</td></tr>
+          <tr><td>Use in engineering</td><td>Source characterisation, energy, magnitude&ndash;frequency (recurrence) relations</td><td>Damage assessment, seismic zoning, vulnerability studies, historic earthquake catalogues</td></tr>
+          <tr><td>Applicable for old earthquakes?</td><td>No &mdash; needs instruments (post-1900)</td><td>Yes &mdash; can be inferred from historical records</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Approximate correlation between Richter magnitude and MMI</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Magnitude (Richter)</th><th>MMI at the epicentre</th><th>Perceived intensity / effects</th></tr></thead>
+        <tbody>
+          <tr><td>&lt; 2.0</td><td>I</td><td>Not felt except by a very few under special conditions.</td></tr>
+          <tr><td>2.0 &ndash; 2.9</td><td>II &ndash; III</td><td>Felt only by a few people at rest, especially on upper floors.</td></tr>
+          <tr><td>3.0 &ndash; 3.9</td><td>III &ndash; IV</td><td>Often felt indoors; may cause hanging objects to swing.</td></tr>
+          <tr><td>4.0 &ndash; 4.9</td><td>IV &ndash; V</td><td>Felt by most people indoors; windows and doors rattle.</td></tr>
+          <tr><td>5.0 &ndash; 5.9</td><td>V &ndash; VI</td><td>Felt by everyone; small objects fall; minor damage possible.</td></tr>
+          <tr><td>6.0 &ndash; 6.9</td><td>VI &ndash; VII</td><td>Damage to poorly built structures; people have difficulty standing.</td></tr>
+          <tr><td>7.0 &ndash; 7.9</td><td>VII &ndash; IX</td><td>Moderate to heavy damage in populated areas; cracks in buildings.</td></tr>
+          <tr><td>8.0 &ndash; 8.9</td><td>IX &ndash; X</td><td>Heavy damage; some buildings collapse; ground may crack.</td></tr>
+          <tr><td>9.0 and above</td><td>X &ndash; XII</td><td>Devastating; major destruction, ground waves, landslides, tsunamis.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <b>Model answer skeleton for &ldquo;Explain magnitude and intensity. Compare MMI with Richter&rdquo; [8 marks]</b>
+      <ol>
+        <li>Define magnitude (2 lines) + Richter definition + the 10&times; amplitude / 32&times; energy fact + energy formula.</li>
+        <li>Define intensity (2 lines) + MMI I&ndash;XII + isoseismal map.</li>
+        <li><strong>The comparison table above</strong> &mdash; at least 8 rows. This carries most of the marks.</li>
+        <li>Finish with the Richter&ndash;MMI correlation table or a small isoseismal sketch.</li>
+      </ol>
+    </div>
+
+    <!-- ══════════════ 1.3 ══════════════ -->
+    <h2>1.3 &nbsp;Occurrence of Earthquakes; Loss and Damages</h2>
+
+    <h3>1.3.1 &nbsp;Where do Earthquakes Occur?</h3>
+    <p>Earthquakes are not scattered at random. About <strong>95% of all major earthquakes occur in a few narrow belts</strong>
+    that coincide with the boundaries of the tectonic plates:</p>
+    <ul>
+      <li><strong>Circum-Pacific belt (&ldquo;Ring of Fire&rdquo;)</strong> &mdash; about 80% of all earthquakes; associated
+        with subduction around the Pacific.</li>
+      <li><strong>Alpide (Mediterranean&ndash;Himalayan) belt</strong> &mdash; about 15%; runs from the Mediterranean
+        through Iran and the Himalaya to Indonesia. <strong>Nepal lies in this belt.</strong></li>
+      <li><strong>Mid-oceanic ridge belt</strong> &mdash; the remaining ~5%; shallow and mostly moderate earthquakes.</li>
+      <li>A small number of <em>intraplate</em> earthquakes occur far from any boundary.</li>
+    </ul>
+
+    <figure class="figure">
+      <img src="../photo/global-eq-map.png" alt="World map showing the global distribution of earthquake epicentres concentrated along plate boundaries, coloured by focal depth">
+      <figcaption><b>Fig. 1.13</b> Global distribution of earthquakes. The epicentres trace out the plate boundaries;
+      deep-focus events occur only along subduction zones.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>1.3.2 &nbsp;Seismic Hazards</h3>
+    <p>Ground shaking is the primary hazard, and it is what causes all the others:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Hazard</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Ground shaking</td><td>The primary hazard. Its severity depends on source (size, mechanism), path (depth, distance, rock type) and site (soil layering, topography, basin) conditions. Great events can shake catastrophically for several minutes.</td></tr>
+          <tr><td>2</td><td>Structural hazards</td><td>Collapse or damage of buildings, especially unreinforced masonry &mdash; the single largest cause of death.</td></tr>
+          <tr><td>3</td><td>Liquefaction</td><td>Loose, saturated, cohesionless soil temporarily behaves as a fluid: bearing capacity is lost, buildings sink or tilt, buried tanks float up, sand boils erupt, and lateral spreading cracks roads and embankments.</td></tr>
+          <tr><td>4</td><td>Landslides &amp; rockfall</td><td>Triggered by the vibration, particularly on the steep slopes of Nepal &mdash; frequently the greatest cause of damage and of blocked access after a Himalayan earthquake.</td></tr>
+          <tr><td>5</td><td>Retaining structure failure</td><td>Liquefied or shaken soil exerts much higher pressure on retaining walls and quay walls, which tilt, slide or overturn.</td></tr>
+          <tr><td>6</td><td>Lifeline hazards</td><td>Failure of water supply, sewers, electricity, gas, roads, bridges and communications &mdash; this also prevents fire fighting and rescue.</td></tr>
+          <tr><td>7</td><td>Tsunami and seiche</td><td>Tsunamis are long sea waves generated by the sudden vertical displacement of the sea floor or by submarine landslides; a seiche is the sloshing of a closed water body such as a lake or reservoir.</td></tr>
+          <tr><td>8</td><td>Fire following earthquake</td><td>An indirect but devastating effect &mdash; broken gas and electrical lines ignite fires while the water mains are broken and roads blocked (San Francisco 1906, Kobe 1995).</td></tr>
+          <tr><td>9</td><td>Ground displacement</td><td>Surface fault rupture producing fault scarps; anything built across the fault is torn apart.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/liquefaction-sandboil.jpg" alt="Photograph of a sand boil where liquefied soil and groundwater have erupted at the ground surface">
+      <figcaption><b>Fig. 1.14</b> Sand boil &mdash; groundwater and sand ejected at the surface because the saturated loose
+      soil below has liquefied and lost its shear strength.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <h3>1.3.3 &nbsp;Factors Governing the Extent of Damage</h3>
+    <p>Damage is a <strong>site-specific</strong> parameter &mdash; it depends not only on the size of the earthquake but on:</p>
+    <ol>
+      <li>The <strong>distance</strong> between the source (focus/hypocentre) and the site.</li>
+      <li>The <strong>magnitude</strong> of the earthquake &mdash; the amount of energy released.</li>
+      <li>The <strong>type of soil or rock</strong> at the site &mdash; unconsolidated materials amplify shaking far more
+        than rock, and fine-grained sensitive soils may lose strength altogether by liquefaction.</li>
+      <li>The <strong>nature of the structures</strong> &mdash; their period, mass, stiffness, ductility, configuration,
+        material and construction quality. Timber is flexible and performs well; earthen and unreinforced masonry
+        construction is highly vulnerable.</li>
+      <li>The <strong>duration</strong> of shaking and the number of load reversals.</li>
+      <li>Time of day, population density and preparedness &mdash; which govern the human loss for a given physical damage.</li>
+    </ol>
+    <div class="callout">
+      <strong>&ldquo;Earthquakes do not kill people &mdash; badly built structures do.&rdquo;</strong> This is the
+      central idea of the whole course, and a good closing line for any Chapter 1 answer.
+    </div>
+
+    <h3>1.3.4 &nbsp;Major Historic Earthquakes of the World</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Year</th><th>Location</th><th>Magnitude</th><th>Deaths (approx.)</th></tr></thead>
+        <tbody>
+          <tr><td>1556</td><td>Shaanxi, China</td><td>8.0</td><td>830,000</td></tr>
+          <tr><td>1906</td><td>San Francisco, USA</td><td>7.9</td><td>700 (most loss from the fire)</td></tr>
+          <tr><td>1960</td><td>Southern Chile</td><td>9.5 &mdash; largest ever recorded</td><td>2,230</td></tr>
+          <tr><td>1964</td><td>Alaska, USA</td><td>9.2</td><td>131</td></tr>
+          <tr><td>1976</td><td>Tangshan, China</td><td>7.8</td><td>~700,000</td></tr>
+          <tr><td>1985</td><td>Mexico City, Mexico</td><td>8.1</td><td>9,500 &mdash; classic soft-soil resonance case</td></tr>
+          <tr><td>1989</td><td>Loma Prieta, California</td><td>7.1</td><td>62</td></tr>
+          <tr><td>1995</td><td>Kobe, Japan</td><td>6.9</td><td>5,472</td></tr>
+          <tr><td>2001</td><td>Bhuj, Gujarat, India</td><td>6.9 (M<sub>w</sub> 7.7)</td><td>~20,000</td></tr>
+          <tr><td>2015</td><td>Gorkha, Nepal</td><td>7.8</td><td>~9,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>1.3.5 &nbsp;Earthquake History of Nepal</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Year (AD / BS)</th><th>Event and losses</th></tr></thead>
+        <tbody>
+          <tr><td>1255 AD (1310 BS)</td><td>The <strong>first recorded earthquake in Nepal</strong>. About one third of the population of Kathmandu Valley was killed, including King Abhaya Malla.</td></tr>
+          <tr><td>1408, 1681, 1810, 1823, 1834 AD</td><td>Series of damaging historical earthquakes recorded in the chronicles.</td></tr>
+          <tr><td>1833 AD (1890 BS)</td><td>Major earthquake during the reign of King Rajendra Bikram Shah; heavy damage in the Valley.</td></tr>
+          <tr><td><strong>1934 AD (1990 BS)</strong></td><td>The <strong>Nepal&ndash;Bihar Earthquake</strong>, popularly &ldquo;Navau Sal ko Bhukampa&rdquo;. Magnitude <strong>8.4</strong>. About 8,519 people killed in Nepal, 80,893 buildings destroyed and 126,355 damaged in the Kathmandu Valley. Dharahara collapsed (rebuilt 1956).</td></tr>
+          <tr><td>1980 AD (2037 BS)</td><td>Bajhang earthquake, M 6.5 &mdash; far-western Nepal.</td></tr>
+          <tr><td>1988 AD (2045 BS)</td><td><strong>Udayapur earthquake</strong>, M 6.6. About 721 deaths and heavy damage to masonry buildings in eastern Nepal, including Bhaktapur.</td></tr>
+          <tr><td>2011 AD (2068 BS)</td><td>Nepal&ndash;Sikkim earthquake, M 6.9.</td></tr>
+          <tr><td><strong>2015 AD (2072 BS)</strong></td><td><strong>Gorkha earthquake</strong>, M<sub>w</sub> <strong>7.8</strong>, epicentre Barpak (Gorkha), focal depth ~15 km, on 25 April, followed by a M<sub>w</sub> 7.3 aftershock on 12 May. About 9,000 deaths, ~22,000 injured, about 800,000 houses damaged or destroyed (the great majority unreinforced masonry), several UNESCO monuments destroyed including Dharahara. Losses estimated at about one-third of GDP.</td></tr>
+          <tr><td><strong>2023 AD (2080 BS)</strong></td><td><strong>Jajarkot earthquake</strong>, M 6.4, 3 November. About 154 deaths; almost all the collapsed buildings were <strong>random rubble stone masonry in mud mortar</strong> &mdash; the failure mechanisms of these buildings were asked directly in 2081 Bhadra, Q2a.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>Seismic gap.</strong> No great earthquake has ruptured the segment of the Main Himalayan Thrust in
+      <em>western</em> Nepal since 1505. Strain equivalent to more than five centuries of convergence is stored there, and
+      the 2015 Gorkha earthquake did <em>not</em> release it &mdash; it ruptured only the shallow part of the central
+      segment. This is the technical justification for enforcing NBC 105 in every new building.
+    </div>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/eq1934-dharahara.jpg" alt="Historic photograph of Dharahara tower standing in Kathmandu before the 1934 earthquake">
+        <figcaption><b>Fig. 1.15a</b> Dharahara before the 1934 earthquake.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/eq1934-bhaktapur.jpg" alt="Historic photograph of the 1934 earthquake damage in Bhaktapur showing the 55 Window Palace, Hari Shankar Temple and Chyasilin Mandap in ruins">
+        <figcaption><b>Fig. 1.15b</b> 1934 (1990 BS) Nepal&ndash;Bihar earthquake &mdash; collapse of the 55 Window Palace,
+        Hari Shankar Temple and Chyasilin Mandap, Bhaktapur.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/eq1988-damage.jpg" alt="Photograph of collapsed brick masonry buildings after the 1988 Udayapur earthquake">
+        <figcaption><b>Fig. 1.15c</b> 1988 (2045 BS) Udayapur earthquake &mdash; collapse of unreinforced brick masonry
+        buildings.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- ══════════════ 1.4 ══════════════ -->
+    <h2>1.4 &nbsp;Time History, Frequency Spectra and Response Spectra of Earthquake Force</h2>
+
+    <h3>1.4.1 &nbsp;Accelerogram and Time History</h3>
+    <p>The most direct description of an earthquake motion in the <strong>time domain</strong> is the
+    <span class="key-term">accelerogram</span>, recorded by a <em>strong-motion accelerograph</em>. It records three
+    orthogonal components of ground acceleration &mdash; two horizontal and one vertical &mdash; at a given location.</p>
+    <div class="formula">
+      <b>Time history</b> is the sequence of values of any time-varying quantity (such as ground acceleration)
+      measured at a set of fixed instants of time. It is also called a <em>time series</em>.
+    </div>
+    <ul>
+      <li>From a single accelerogram we can read directly the <strong>peak ground acceleration</strong>, the
+        <strong>duration</strong> and (after processing) the <strong>frequency content</strong> of the shaking.</li>
+      <li>Integrating the acceleration record once gives the <strong>ground velocity</strong> time history, and integrating
+        again gives the <strong>ground displacement</strong> time history.</li>
+      <li>Nepal's own records &mdash; for example the Kantipath record of the 2015 Gorkha earthquake &mdash; are used as
+        input for time-history analysis of buildings in the Kathmandu Valley.</li>
+    </ul>
+
+    <figure class="figure">
+      <img src="../photo/time-history-kantipath.png" alt="Three-component acceleration time history records from the Kantipath station for the 2015 Gorkha earthquake">
+      <figcaption><b>Fig. 1.16</b> Acceleration time history (accelerogram) recorded at Kantipath, Kathmandu, during the
+      2015 Gorkha earthquake &mdash; the main shock and the succeeding aftershocks on the three orthogonal components.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h4>Time-history analysis</h4>
+    <p>Time-history analysis evaluates the <em>linear or nonlinear</em> dynamic response of a structure to a loading that
+    varies with time. The dynamic equilibrium equation is solved step by step:</p>
+    <div class="formula">
+      M&thinsp;&uuml;(t) &nbsp;+&nbsp; C&thinsp;u&#775;(t) &nbsp;+&nbsp; K&thinsp;u(t) &nbsp;=&nbsp; &minus;M&thinsp;&uuml;<sub>g</sub>(t)<br><br>
+      where <em>M</em> = mass matrix, <em>C</em> = damping matrix, <em>K</em> = stiffness matrix,
+      <em>u</em> = relative displacement and <em>&uuml;<sub>g</sub></em> = ground acceleration.
+    </div>
+    <p>It is solved either by <em>modal superposition</em> or by <em>direct integration</em>. Direct integration is
+    sensitive to the time-step size, which must be reduced until the results stop changing. It is the most sophisticated
+    and most expensive level of analysis, and is reserved for irregular, very tall or critically important structures.</p>
+
+    <h3>1.4.2 &nbsp;Frequency Spectra</h3>
+    <div class="formula">
+      The <b>frequency spectrum</b> of a time-domain signal is the representation of that signal in the
+      <b>frequency domain</b>. It is generated by taking the <b>Fourier transform</b> of the signal, and the results are
+      usually plotted as <em>amplitude versus frequency</em> and <em>phase versus frequency</em>.
+    </div>
+    <ul>
+      <li>An earthquake record is not a single sine wave &mdash; it is the sum of a large number of harmonic components
+        of different frequencies. The frequency spectrum shows how much energy is carried at each frequency.</li>
+      <li>The frequency at which the amplitude is largest is the <span class="key-term">predominant frequency</span>
+        (its inverse being the predominant period) of the ground motion.</li>
+      <li>Longer wavelength &rarr; smaller frequency; shorter wavelength &rarr; larger frequency.</li>
+      <li><strong>Engineering use:</strong> if the predominant period of the ground motion is close to the fundamental
+        natural period of the building, <strong>resonance</strong> occurs and the response is greatly magnified. Soft
+        deep soils have long predominant periods and therefore endanger tall flexible buildings; rock sites have short
+        predominant periods and endanger low, stiff buildings such as ordinary masonry houses.</li>
+    </ul>
+
+    <h3>1.4.3 &nbsp;Response Spectra</h3>
+    <div class="formula">
+      A <b>response spectrum</b> is a plot of the <b>peak response</b> (displacement, velocity or acceleration) of a
+      series of single-degree-of-freedom (SDOF) oscillators of <b>varying natural period (or frequency)</b> but the same
+      damping, all subjected to the <b>same base motion</b>, plotted against that natural period (or frequency).
+    </div>
+
+    <h4>How it is constructed</h4>
+    <ol>
+      <li>Take a set of SDOF oscillators (a mass on a spring) with natural periods covering, say, 0 to 4 seconds, all
+        with the same damping ratio &mdash; conventionally <strong>5% of critical damping</strong>.</li>
+      <li>Apply the same recorded ground acceleration time history to the base of every oscillator.</li>
+      <li>Carry out a time-history analysis of each oscillator and note only the <strong>single maximum absolute
+        response</strong> reached during the shaking.</li>
+      <li>Plot those maxima against the corresponding natural periods. The resulting curve is the response spectrum of
+        that ground motion.</li>
+    </ol>
+
+    <figure class="figure">
+      <img src="../photo/oscillators.png" alt="A row of single-degree-of-freedom oscillators (masses on springs) of natural frequency 0.5, 1, 2, 5, 10, 20 and 40 Hz">
+      <figcaption><b>Fig. 1.17</b> A series of mixed oscillators of natural frequency 0.5 Hz to 40 Hz. All are shaken by the
+      same base motion and only the maximum response of each is retained.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 300" width="620" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arR" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-line)"/></marker>
+        </defs>
+        <!-- oscillators -->
+        <text x="14" y="20" font-size="12.5" font-weight="bold" fill="var(--svg-text)">SDOF oscillators of increasing period</text>
+        <g stroke="var(--svg-text)" stroke-width="1.4" fill="none">
+          <line x1="34" y1="118" x2="34" y2="80"/><line x1="76" y1="118" x2="76" y2="66"/>
+          <line x1="118" y1="118" x2="118" y2="50"/><line x1="160" y1="118" x2="160" y2="38"/>
+          <line x1="202" y1="118" x2="202" y2="30"/>
+        </g>
+        <g fill="var(--svg-hub)">
+          <rect x="24" y="70" width="20" height="12" rx="2"/><rect x="66" y="56" width="20" height="12" rx="2"/>
+          <rect x="108" y="40" width="20" height="12" rx="2"/><rect x="150" y="28" width="20" height="12" rx="2"/>
+          <rect x="192" y="20" width="20" height="12" rx="2"/>
+        </g>
+        <rect x="14" y="118" width="210" height="14" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+        <text x="34" y="146" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">T&#8321;</text>
+        <text x="76" y="146" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">T&#8322;</text>
+        <text x="118" y="146" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">T&#8323;</text>
+        <text x="160" y="146" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">T&#8324;</text>
+        <text x="202" y="146" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">T&#8325;</text>
+        <!-- ground motion -->
+        <text x="14" y="176" font-size="12" fill="var(--svg-text)">Same base motion &uuml;<tspan baseline-shift="sub" font-size="9">g</tspan>(t) applied to all</text>
+        <path d="M14 210 l8 -14 l8 20 l8 -22 l8 26 l8 -18 l8 14 l8 -20 l8 16 l8 -10 l8 12 l8 -8 l8 8 l8 -6 l8 6 l8 -4 l8 4 l8 -3 l8 3 l8 -2 l8 2"
+              fill="none" stroke="var(--svg-red-s)" stroke-width="1.5"/>
+        <text x="14" y="248" font-size="11" fill="var(--svg-sub)">Record only the PEAK response of each oscillator</text>
+        <!-- arrow -->
+        <line x1="240" y1="150" x2="290" y2="150" stroke="var(--svg-line)" stroke-width="2" marker-end="url(#arR)"/>
+        <!-- spectrum -->
+        <g transform="translate(310,0)">
+          <line x1="40" y1="240" x2="290" y2="240" stroke="var(--svg-text)" stroke-width="1.4"/>
+          <line x1="40" y1="240" x2="40" y2="30" stroke="var(--svg-text)" stroke-width="1.4"/>
+          <text x="165" y="266" font-size="12" text-anchor="middle" fill="var(--svg-text)">Natural period T (s)</text>
+          <text x="18" y="130" font-size="12" text-anchor="middle" fill="var(--svg-text)" transform="rotate(-90 18 130)">Peak response S<tspan baseline-shift="sub" font-size="9">a</tspan></text>
+          <path d="M40 226 C60 226 66 60 96 60 L150 60 C190 60 200 150 240 186 C258 202 272 212 286 218"
+                fill="none" stroke="var(--svg-hub)" stroke-width="2.4"/>
+          <!-- plateau markers -->
+          <line x1="96" y1="60" x2="96" y2="240" stroke="var(--svg-line)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="150" y1="60" x2="150" y2="240" stroke="var(--svg-line)" stroke-width="1" stroke-dasharray="3 3"/>
+          <text x="123" y="52" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">constant-acceleration plateau</text>
+          <text x="66" y="230" font-size="10.5" fill="var(--svg-sub)">stiff</text>
+          <text x="248" y="234" font-size="10.5" fill="var(--svg-sub)">flexible</text>
+          <text x="60" y="26" font-size="11.5" fill="var(--svg-text-blue)">Response spectrum (5% damping)</text>
+        </g>
+      </svg>
+      <figcaption><b>Fig. 1.18</b> Construction of a response spectrum: many SDOF oscillators of different period are
+      shaken by the same ground motion and their peak responses are plotted against period.</figcaption>
+    </figure>
+
+    <h4>Key points about response spectra</h4>
+    <ul>
+      <li>For a <strong>transient</strong> input such as an earthquake, the peak response is reported. For a
+        <strong>steady-state periodic</strong> input the steady-state response is reported, and in that case damping
+        <em>must</em> be present or the response would be infinite.</li>
+      <li>The <span class="key-term">ground response spectrum</span> is the spectrum computed from a record measured at
+        the free surface of the ground. If the natural frequency of a structure is known, its peak response can simply
+        be read off this curve &mdash; this is the basis of the seismic force calculation in almost every building code.</li>
+      <li>Response spectra can also handle multi-degree-of-freedom systems: modal analysis gives the modes, the peak
+        response of each mode is read from the spectrum, and the modal responses are combined, typically by the
+        <strong>SRSS</strong> (square root of the sum of the squares) rule when the modal frequencies are well separated
+        (CQC is used when they are close).</li>
+      <li>Because phase information is lost in forming the spectrum, the combined result differs from a direct
+        time-history result.</li>
+      <li><strong>Main limitation:</strong> response spectra are universally valid only for <em>linear</em> systems. They
+        can be generated for nonlinear systems but are then applicable only to systems with the same nonlinearity, and
+        the results cannot be directly combined for multi-mode response.</li>
+      <li><strong>Resonance case study:</strong> in the <strong>1985 Mexico City earthquake</strong> the oscillation
+        period of the deep soft lake-bed deposits matched the natural period of mid-rise concrete buildings; those
+        buildings were destroyed while shorter (stiffer) and taller (more flexible) buildings suffered far less damage.</li>
+      <li>George W. Housner began publishing response spectra at Caltech in 1941; Newmark and Hall later developed the
+        idealised spectrum (EERI Monograph, 1982) that became the modern <strong>design response spectrum</strong>.</li>
+    </ul>
+
+    <h4>Design response spectrum in codes</h4>
+    <p>A code spectrum is a smoothed, idealised envelope of many recorded spectra, given for each soil type and a
+    nominal 5% damping. In IS 1893 (Part 1) it appears as the <strong>average response acceleration coefficient
+    S<sub>a</sub>/g</strong>, plotted against the fundamental period T for hard, medium and soft soil. The design
+    horizontal seismic coefficient and base shear then follow:</p>
+    <div class="formula">
+      A<sub>h</sub> &nbsp;=&nbsp; (Z / 2) &times; (I / R) &times; (S<sub>a</sub> / g) &nbsp;&nbsp;&nbsp;&nbsp;
+      V<sub>B</sub> &nbsp;=&nbsp; A<sub>h</sub> &times; W<br><br>
+      <span style="font-size:.95em">
+      Z = zone factor (0.36 for Zone V) &mdash; the Z/2 converts MCE to DBE for economical design<br>
+      I = importance factor (function of occupancy, post-earthquake need, historical and economic value)<br>
+      R = response reduction factor (ductility of the system); the ratio I/R shall not exceed 1.0<br>
+      S<sub>a</sub>/g = spectral acceleration coefficient read from the design spectrum for the period T<br>
+      W = seismic weight = full dead load + the appropriate percentage of imposed load (roof live load is not included)
+      </span>
+    </div>
+    <p>For a moment-resisting frame with brick infill panels IS 1893 gives T<sub>a</sub> = 0.09&thinsp;h/&radic;d, and without
+    infill T<sub>a</sub> = 0.075&thinsp;h<sup>0.75</sup>. Detailed application to masonry buildings, and the NBC 105
+    equivalents, are covered in Chapter 4.</p>
+
+    <figure class="figure">
+      <img src="../photo/design-spectrum.png" alt="IS 1893 design response spectrum curves of spectral acceleration coefficient Sa over g against period for rock, medium soil and soft soil">
+      <figcaption><b>Fig. 1.19</b> Design response spectrum of IS 1893 (Part 1) at 5% damping &mdash; spectral acceleration
+      coefficient S<sub>a</sub>/g against period for Type I (rock/hard), Type II (medium) and Type III (soft) soil. Note
+      the constant plateau of 2.5 at short period and how soft soil holds a higher S<sub>a</sub>/g at long period.
+      <span class="fig-src">Source: IS 1893 (Part 1), reproduced in the course lecture slides.</span></figcaption>
+    </figure>
+
+    <h3>1.4.4 &nbsp;Methods of Seismic Analysis &mdash; Summary</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Basis</th><th>When used</th></tr></thead>
+        <tbody>
+          <tr><td>Equivalent lateral force (seismic coefficient) method</td><td>Total base shear from the code spectrum for the first mode only, distributed up the height</td><td>Regular, low- to medium-rise buildings that are relatively insensitive to earthquake characteristics &mdash; the normal method for masonry buildings</td></tr>
+          <tr><td>Response spectrum (modal superposition) method</td><td>Elastic dynamic analysis; peak modal responses read from the design spectrum and combined by SRSS/CQC</td><td>Taller or moderately irregular buildings where higher modes matter</td></tr>
+          <tr><td>Linear time-history analysis</td><td>Step-by-step solution of the equation of motion for a recorded or simulated accelerogram</td><td>Important structures; when the actual sequence of response is needed</td></tr>
+          <tr><td>Nonlinear static (pushover) analysis</td><td>Monotonically increasing lateral load until a target displacement; gives the capacity curve</td><td>Performance-based assessment and retrofitting studies (Chapter 6)</td></tr>
+          <tr><td>Nonlinear dynamic (inelastic time-history) analysis</td><td>Full nonlinear step-by-step solution</td><td>Most sophisticated; very irregular, very tall or critical structures</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════ 1.5 ══════════════ -->
+    <h2>1.5 &nbsp;Effects of Earthquake on Building <span class="year-tag">2081 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Explain an earthquake as a lateral force in a building. [8] <em>(2081 Bhadra, Q1a)</em></li>
+        <li>Describe the earthquake force parameters. [8] <em>(2081 Bhadra, Q1b)</em></li>
+      </ol>
+    </div>
+
+    <h3>1.5.1 &nbsp;Nature of Earthquake Force &mdash; Earthquake as a Lateral Force <span class="year-tag">2081 Bhadra, Q1a</span></h3>
+    <p>An earthquake does <strong>not</strong> apply a force to a building in the way that wind or a live load does.
+    The ground simply moves; the building is dragged along with it, and the force is generated <em>inside</em> the
+    building itself:</p>
+    <div class="formula">
+      <b>Earthquake force is an INERTIA force</b> developed in the building because of ground shaking:<br><br>
+      F<sub>I</sub> &nbsp;=&nbsp; mass &times; acceleration &nbsp;=&nbsp; m &times; a &nbsp;=&nbsp; (W/g) &times; a<br><br>
+      Since the acceleration is imposed by the ground, and it is largest in the horizontal direction, the resulting
+      inertia force acts essentially <b>horizontally &mdash; that is, laterally</b> on the building.
+    </div>
+
+    <h4>Why a lateral force develops</h4>
+    <ol>
+      <li>When the ground shakes, the <strong>foundation of the building moves with the ground</strong>.</li>
+      <li>The mass of the roof and floors, by <strong>inertia (Newton's first law)</strong>, resists this motion and tends
+        to stay where it was, so the upper part <strong>lags behind</strong> the base.</li>
+      <li>This relative displacement between the base and the mass distorts the walls and columns and sets up
+        <strong>internal forces</strong> in them.</li>
+      <li>Because the ground reverses direction many times a second, the building swings back and forth and the lateral
+        force <strong>reverses in sign</strong> for every cycle &mdash; unlike gravity load, which is one-directional.</li>
+      <li>If the building were perfectly rigid, every point would move exactly with the ground and the inertia force
+        would simply be <em>m &times; PGA</em>. Real buildings are flexible, so different parts move by different amounts
+        and the force depends on the building's own dynamic properties as well.</li>
+    </ol>
+
+    <figure class="figure">
+      <svg viewBox="0 0 600 270" width="600" height="270" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arI" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--svg-text-red)"/></marker>
+          <marker id="arG" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--svg-hub)"/></marker>
+        </defs>
+        <!-- Left: undeformed -->
+        <g>
+          <rect x="40" y="200" width="180" height="16" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <rect x="86" y="72" width="88" height="128" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <rect x="80" y="60" width="100" height="14" fill="var(--svg-blue)" stroke="var(--svg-blue-s)"/>
+          <text x="130" y="48" font-size="12" text-anchor="middle" fill="var(--svg-text)">Mass m (roof + walls)</text>
+          <text x="130" y="240" font-size="12.5" text-anchor="middle" fill="var(--svg-text)">(a) At rest</text>
+          <text x="130" y="256" font-size="11" text-anchor="middle" fill="var(--svg-sub)">No inertia force</text>
+        </g>
+        <!-- Right: deformed -->
+        <g transform="translate(300,0)">
+          <rect x="40" y="200" width="180" height="16" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <!-- ground arrow -->
+          <line x1="96" y1="228" x2="150" y2="228" stroke="var(--svg-hub)" stroke-width="2.4" marker-end="url(#arG)"/>
+          <text x="126" y="244" font-size="11.5" text-anchor="middle" fill="var(--svg-text-blue)">Ground moves &rarr;</text>
+          <!-- deformed building -->
+          <path d="M86 200 C86 160 68 120 62 74 L74 74 C80 120 98 160 98 200 Z" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.4"/>
+          <path d="M162 200 C162 160 144 120 138 74 L150 74 C156 120 174 160 174 200 Z" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.4"/>
+          <rect x="56" y="60" width="100" height="14" fill="var(--svg-red)" stroke="var(--svg-red-s)"/>
+          <!-- inertia force arrow -->
+          <line x1="106" y1="52" x2="46" y2="52" stroke="var(--svg-text-red)" stroke-width="2.6" marker-end="url(#arI)"/>
+          <text x="106" y="42" font-size="12" text-anchor="middle" fill="var(--svg-text-red)">F&#8305; = m&thinsp;a &nbsp;(&larr; opposite to ground)</text>
+          <text x="130" y="240" font-size="12.5" text-anchor="middle" fill="var(--svg-text)">(b) During shaking</text>
+          <text x="130" y="256" font-size="11" text-anchor="middle" fill="var(--svg-sub)">Base moves, mass lags behind &rarr; lateral inertia force</text>
+        </g>
+      </svg>
+      <figcaption><b>Fig. 1.20</b> Generation of the lateral inertia force: the base follows the ground while the mass
+      lags behind, so the building is effectively pushed sideways.</figcaption>
+    </figure>
+
+    <h4>Flow of the inertia force &mdash; the seismic load path</h4>
+    <p>The inertia force is generated wherever there is mass, and it must be carried to the ground through a
+    <strong>continuous and complete load path</strong>. In a masonry building it is:</p>
+    <div class="formula">
+      Mass of roof / floor slab &nbsp;&rarr;&nbsp; Roof / floor diaphragm &nbsp;&rarr;&nbsp; Walls parallel to the shaking
+      (shear walls, acting <b>in-plane</b>) &nbsp;&rarr;&nbsp; Plinth / bands &nbsp;&rarr;&nbsp; Foundation
+      &nbsp;&rarr;&nbsp; Soil
+    </div>
+    <ul>
+      <li>Walls <strong>parallel</strong> to the direction of shaking act as <span class="key-term">shear walls</span> and
+        carry the force efficiently by in-plane shear &mdash; they are strong and stiff in that direction.</li>
+      <li>Walls <strong>perpendicular</strong> to the shaking are loaded <span class="key-term">out-of-plane</span>, i.e.
+        as vertical slabs spanning between floor and roof. Unreinforced masonry is very weak in this mode and
+        overturns &mdash; this is the classic cause of collapse of Nepali masonry houses.</li>
+      <li>If any link in the path is missing or discontinuous (no band, no wall-to-roof anchorage, no corner
+        interlocking), the building loses <span class="key-term">box action</span> and the walls fail individually.</li>
+    </ul>
+
+    <h4>Horizontal versus vertical shaking</h4>
+    <ul>
+      <li>Ground shaking has three components; the <strong>two horizontal components generally govern design</strong>,
+        because buildings are designed with a large factor of safety against vertical (gravity) load but have little
+        inherent resistance to horizontal load.</li>
+      <li>The vertical component is normally taken as about two-thirds of the horizontal, and is important for
+        cantilevers, long spans and for masonry, where it momentarily reduces the compressive pre-load and hence the
+        frictional shear capacity of the wall.</li>
+      <li>Because vertical inertia force adds to and subtracts from gravity load, the axial force in piers fluctuates
+        &mdash; combined with overturning this is why piers must be checked for the increase in axial load (Chapter 4).</li>
+    </ul>
+
+    <h3>1.5.2 &nbsp;Earthquake Force Parameters <span class="year-tag">2081 Bhadra, Q1b</span></h3>
+    <p>The magnitude of the seismic force that a building must resist depends on three families of parameters &mdash;
+    those of the <strong>ground motion</strong>, those of the <strong>structure</strong>, and the
+    <strong>code coefficients</strong> that combine them.</p>
+
+    <h4>(A) Ground motion parameters</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parameter</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Peak ground acceleration (PGA)</td><td>Directly fixes the inertia force, F = m&thinsp;a. Reported in g, m/s<sup>2</sup> or Gal.</td></tr>
+          <tr><td>Peak ground velocity (PGV)</td><td>Best single indicator of damage to medium-period structures; governs energy input.</td></tr>
+          <tr><td>Peak ground displacement (PGD)</td><td>Governs long-period structures, bridges, pipelines and separation-gap requirements.</td></tr>
+          <tr><td>Duration of strong motion</td><td>Number of load reversals &mdash; masonry degrades cumulatively, so long duration is very damaging.</td></tr>
+          <tr><td>Frequency content / predominant period</td><td>Determines whether resonance with the building will occur.</td></tr>
+          <tr><td>Magnitude and focal depth</td><td>Control the energy released and how much of it reaches the surface.</td></tr>
+          <tr><td>Epicentral / hypocentral distance</td><td>Amplitude attenuates with distance; near-field records contain damaging velocity pulses.</td></tr>
+          <tr><td>Directionality</td><td>Amplification along the direction of rupture propagation.</td></tr>
+          <tr><td>Local soil stiffness</td><td>Acceleration is <strong>amplified in soft soil</strong>; also lengthens the predominant period.</td></tr>
+          <tr><td>Geographical / topographic amplification</td><td>Steep ridges and hill tops amplify base-rock accelerations by resonance.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>(B) Structural parameters</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parameter</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Seismic weight / mass W</td><td>Force is proportional to mass &mdash; heavy masonry and heavy roofs attract large forces. Reducing mass is the cheapest seismic improvement.</td></tr>
+          <tr><td>Stiffness</td><td>Governs the distribution of force among walls and the drift; stiff walls attract more force.</td></tr>
+          <tr><td>Fundamental natural period T<sub>a</sub></td><td>Sets the value of S<sub>a</sub>/g read from the spectrum. It is an inherent property: more flexibility &rarr; longer T; more mass &rarr; longer T. Values range from about 0.05 s to 2.0 s for 1- to 20-storey buildings; T &lt; 0.4 s for low- to medium-rise, T &asymp; 2 s for high-rise.</td></tr>
+          <tr><td>Damping</td><td>Energy dissipation; codes assume 5% of critical damping. Higher damping reduces the response.</td></tr>
+          <tr><td>Ductility</td><td>Ability to undergo large inelastic deformation without collapse; allows the design force to be reduced by the factor R.</td></tr>
+          <tr><td>Configuration &amp; regularity</td><td>Plan and vertical irregularity, torsion, soft/weak storey and mass irregularity all increase demand locally.</td></tr>
+          <tr><td>Foundation and soil&ndash;structure interaction</td><td>Type of foundation and the supporting soil modify the motion transmitted to the building.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>(C) Code parameters (IS 1893 / NBC 105)</h4>
+    <p>These are simply the design shorthand for the parameters above: the <strong>zone factor Z</strong> (regional
+    seismicity), the <strong>importance factor I</strong> (consequence of failure), the <strong>response reduction
+    factor R</strong> (ductility and redundancy), the <strong>soil/site factor</strong> and the <strong>spectral
+    acceleration coefficient S<sub>a</sub>/g</strong> (period and soil). Together they give A<sub>h</sub> and hence the
+    design base shear V<sub>B</sub> = A<sub>h</sub>W, as set out in &sect;1.4.3.</p>
+
+    <h3>1.5.3 &nbsp;Effects of Earthquake on Buildings</h3>
+    <p>The deformation imposed by the ground produces the following effects, which for masonry appear as characteristic
+    damage patterns:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Effect</th><th>Description &amp; typical damage</th></tr></thead>
+        <tbody>
+          <tr><td>Inertia force &amp; base shear</td><td>Horizontal force at every floor level accumulating to a maximum at the base.</td></tr>
+          <tr><td>Overturning</td><td>The lateral force acting at a height produces an overturning moment, which increases the axial compression in the leeward piers and can cause tension (uplift) in the windward piers.</td></tr>
+          <tr><td>Sliding</td><td>Horizontal sliding of a wall along a bed joint or at the plinth when the shear demand exceeds the friction available.</td></tr>
+          <tr><td>In-plane shear</td><td>Diagonal tension produces the classic <strong>X-shaped (cross) diagonal cracks</strong> in piers and spandrels between openings.</td></tr>
+          <tr><td>Out-of-plane bending</td><td>Walls perpendicular to shaking bend and overturn like vertical cantilevers/slabs &mdash; the most common collapse mechanism of unreinforced masonry.</td></tr>
+          <tr><td>Corner separation</td><td>Vertical cracks and separation at wall intersections because the in-plane and out-of-plane walls deform incompatibly; damage in masonry buildings typically <strong>starts at the corners</strong>.</td></tr>
+          <tr><td>Roof / floor separation</td><td>Poorly anchored roofs slide off the walls; heavy roofs then collapse onto the occupants.</td></tr>
+          <tr><td>Delamination</td><td>Multi-wythe stone-in-mud walls split through their thickness and the leaves collapse outward &mdash; the dominant mechanism in the 2080 Jajarkot earthquake.</td></tr>
+          <tr><td>Torsion</td><td>Eccentricity between the centre of mass and the centre of rigidity twists the building in plan, adding shear to the far walls.</td></tr>
+          <tr><td>Soft / weak storey</td><td>An open ground storey concentrates all the drift in one level and collapses.</td></tr>
+          <tr><td>Pounding</td><td>Adjacent buildings of different height/period hammer each other; spalling occurs at floor-beam level.</td></tr>
+          <tr><td>Short column effect</td><td>Partial-height infill or mezzanines shorten a column, increasing its stiffness and attracting shear until it fails in brittle shear.</td></tr>
+          <tr><td>Non-structural damage</td><td>Failure of parapets, gable walls, chimneys, cornices and heavy overhangs &mdash; a major cause of casualties in the street.</td></tr>
+          <tr><td>Foundation effects</td><td>Differential settlement (doming and dishing), liquefaction-induced tilting, and diagonal tension cracks caused by differential settlement.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/masonry-deformation.png" alt="Isometric drawing of a simple masonry box building showing out-of-plane bending of the wall perpendicular to shaking, shear cracking in the walls parallel to shaking and flexure at the wall base">
+      <figcaption><b>Fig. 1.21</b> Deformation and typical damage of a simple masonry building. Walls parallel to the
+      seismic action crack in <em>shear</em> and <em>flexure</em>; the wall perpendicular to it bends
+      <em>out-of-plane</em>.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 280" width="560" height="280" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arD" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-text-red)"/></marker>
+        </defs>
+        <!-- ground -->
+        <rect x="30" y="228" width="500" height="14" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+        <!-- front wall (in plane) -->
+        <polygon points="90,90 330,60 330,228 90,228" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6"/>
+        <!-- side wall (out of plane) -->
+        <polygon points="330,60 450,96 450,228 330,228" fill="var(--svg-bg)" stroke="var(--svg-text)" stroke-width="1.6"/>
+        <!-- roof -->
+        <polygon points="84,90 336,54 456,90 204,126" fill="var(--svg-blue)" stroke="var(--svg-blue-s)" stroke-width="1.4"/>
+        <!-- openings -->
+        <rect x="130" y="140" width="42" height="52" fill="var(--svg-bg)" stroke="var(--svg-line)"/>
+        <rect x="216" y="130" width="42" height="52" fill="var(--svg-bg)" stroke="var(--svg-line)"/>
+        <!-- diagonal X cracks in piers -->
+        <g stroke="var(--svg-red-s)" stroke-width="2" fill="none">
+          <path d="M182 132 l26 46"/><path d="M208 132 l-26 46"/>
+          <path d="M272 124 l26 46"/><path d="M298 124 l-26 46"/>
+        </g>
+        <text x="196" y="206" font-size="10.5" text-anchor="middle" fill="var(--svg-text-red)">In-plane diagonal</text>
+        <text x="196" y="219" font-size="10.5" text-anchor="middle" fill="var(--svg-text-red)">(X) shear cracks</text>
+        <!-- corner separation -->
+        <path d="M330 60 l0 168" stroke="var(--svg-red-s)" stroke-width="2.6" stroke-dasharray="7 4"/>
+        <text x="352" y="176" font-size="10.5" fill="var(--svg-text-red)">Corner separation</text>
+        <!-- out of plane arrow -->
+        <line x1="424" y1="150" x2="470" y2="164" stroke="var(--svg-text-red)" stroke-width="2.2" marker-end="url(#arD)"/>
+        <text x="440" y="196" font-size="10.5" fill="var(--svg-text-red)">Out-of-plane</text>
+        <text x="440" y="209" font-size="10.5" fill="var(--svg-text-red)">overturning</text>
+        <!-- roof separation -->
+        <path d="M84 90 l252 -36" stroke="var(--svg-red-s)" stroke-width="2.2" stroke-dasharray="6 4"/>
+        <text x="120" y="46" font-size="10.5" fill="var(--svg-text-red)">Roof separates from wall</text>
+        <!-- vertical crack -->
+        <path d="M112 96 l6 40 l-6 40 l6 46" stroke="var(--svg-red-s)" stroke-width="1.8" fill="none"/>
+        <text x="34" y="120" font-size="10.5" fill="var(--svg-text-red)">Vertical</text>
+        <text x="34" y="133" font-size="10.5" fill="var(--svg-text-red)">crack</text>
+        <!-- shaking arrow -->
+        <line x1="60" y1="258" x2="150" y2="258" stroke="var(--svg-hub)" stroke-width="2.4" marker-end="url(#arD)"/>
+        <text x="160" y="262" font-size="11.5" fill="var(--svg-text-blue)">Direction of ground shaking</text>
+      </svg>
+      <figcaption><b>Fig. 1.22</b> Typical damage suffered by a simple unreinforced masonry building subjected to
+      earthquake ground motion.</figcaption>
+    </figure>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/adobe-failure-modes.png" alt="Three dimensional drawing of an adobe house marked with the five common failure modes: vertical cracking at corners, diagonal cracking, out-of-plane collapse, roof separation and gable failure">
+        <figcaption><b>Fig. 1.23</b> Common failure modes of adobe and low-strength masonry buildings &mdash;
+        (i) vertical cracking at wall intersections, (ii) diagonal shear cracking, (iii) separation of the roof,
+        (iv) out-of-plane collapse, (v) cracking around openings.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/wall-flexure-nepal.jpg" alt="Photograph of a Nepali stone-in-mud-mortar house with a CGI sheet roof showing large horizontal and diagonal out-of-plane flexural cracks in the wall">
+        <figcaption><b>Fig. 1.24</b> Out-of-plane wall flexure in a Nepali stone-in-mud-mortar house with a light CGI
+        sheet roof &mdash; the flexible roof gives no diaphragm action, so the wall spans vertically on its own and
+        cracks.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <h3>1.5.4 &nbsp;Seismic Design Philosophy</h3>
+    <p>Designing a building to remain undamaged in the strongest possible shaking is prohibitively expensive, while
+    ignoring earthquake effects leads to disaster. The accepted philosophy therefore lies between the two extremes:</p>
+    <div class="formula">
+      (a) Under <b>minor but frequent</b> shaking &mdash; the main load-carrying members shall <b>not be damaged</b>;
+      non-load-bearing parts may suffer repairable damage.<br><br>
+      (b) Under <b>moderate but occasional</b> shaking &mdash; main members may sustain <b>repairable damage</b>; other
+      parts may be damaged so badly that they must be replaced.<br><br>
+      (c) Under <b>strong but rare</b> shaking &mdash; main members may sustain <b>severe, even irreparable damage</b>,
+      but <b>the building shall not collapse</b>, so that life is saved.
+    </div>
+    <p>In other words, damage is unavoidable and is deliberately permitted; the engineer's task is to
+    <strong>control where the damage occurs and keep it to an acceptable level at a reasonable cost</strong> &mdash; much
+    like an electrical fuse, some pre-determined parts are allowed to yield in a ductile way so that the rest survives.
+    This is the basis of <span class="key-term">capacity design</span>.</p>
+
+    <h3>1.5.5 &nbsp;The Four Virtues of an Earthquake-Resistant Building</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Virtue</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>(a) Good structural configuration</td><td>Its size, shape and structural system are such that they ensure a <strong>direct and smooth flow of inertia forces to the ground</strong> &mdash; simple, regular, symmetric plan and elevation.</td></tr>
+          <tr><td>(b) Adequate lateral strength</td><td>The maximum lateral force it can resist is such that the damage induced does not result in collapse.</td></tr>
+          <tr><td>(c) Adequate stiffness</td><td>Its lateral load resisting system limits the earthquake-induced deformation so that contents and non-structural elements are not damaged under low to moderate shaking.</td></tr>
+          <tr><td>(d) Good ductility</td><td>Its capacity to undergo large deformation after yielding without losing strength, improved by favourable design and detailing.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Principles of ductility:</strong> avoid shear failure, avoid compression failure, ensure continuity, and
+    confine the critical regions where plastic hinges may form. <strong>Configuration-related parameters</strong> to check
+    are: load path, geometry, redundancy, weak storey, soft storey, vertical discontinuities, mass irregularity, torsion
+    and short columns.</p>
+    <div class="callout">
+      <strong>Quality control matters more for masonry than for any other material.</strong> The strength of brittle
+      materials such as masonry and concrete is a <em>minimum assured value</em> and is highly sensitive to the quality
+      of the material, the workmanship, the supervision and the construction method. A perfect design built badly will
+      still collapse.
+    </div>
+
+    <!-- ══════════════ Quick revision ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Quick Revision &mdash; Facts and Formulae to Memorise</h2>
+      <ul>
+        <li><strong>Inertia force:</strong> F = m&thinsp;a = (W/g)&thinsp;a &mdash; the whole of earthquake engineering starts here.</li>
+        <li><strong>Base shear:</strong> V<sub>B</sub> = A<sub>h</sub>W with A<sub>h</sub> = (Z/2)(I/R)(S<sub>a</sub>/g); I/R &le; 1.0.</li>
+        <li><strong>Energy&ndash;magnitude:</strong> log<sub>10</sub>E = 11.8 + 1.5M; +1 magnitude = 10&times; amplitude = ~31.6&times; energy.</li>
+        <li><strong>Wave speeds:</strong> P &asymp; 6 km/s &gt; S &asymp; 3 km/s &gt; Love &gt; Rayleigh (&asymp; 0.9&thinsp;V<sub>S</sub>). Order of arrival P &rarr; S &rarr; L &rarr; R.</li>
+        <li><strong>S waves do not travel through liquids</strong> &mdash; proof that the outer core is molten.</li>
+        <li><strong>Focal depth classes:</strong> shallow &lt; 70 km, intermediate 70&ndash;300 km, deep 300&ndash;700 km.</li>
+        <li><strong>Units of PGA:</strong> 1 g = 9.81 m/s<sup>2</sup> = 981 Gal.</li>
+        <li><strong>MMI</strong> has 12 grades (I&ndash;XII), Roman numerals, many values per earthquake;
+          <strong>Richter</strong> is a single logarithmic number per earthquake.</li>
+        <li><strong>Damping</strong> assumed in code design spectra: <strong>5% of critical</strong>.</li>
+        <li><strong>Natural period range:</strong> 0.05&ndash;2.0 s for 1&ndash;20 storeys; T &lt; 0.4 s for low/medium-rise masonry.</li>
+        <li><strong>Nepal convergence:</strong> ~2 cm/yr absorbed across the Himalaya; MHT is locked and stores the strain.</li>
+        <li><strong>Key Nepali earthquakes:</strong> 1255 (first recorded), 1934 M8.4 (Nepal&ndash;Bihar), 1988 M6.6 (Udayapur),
+          2015 M<sub>w</sub>7.8 (Gorkha), 2080 BS M6.4 (Jajarkot).</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════ Summary ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Chapter Summary</h2>
+      <p>An earthquake is the vibration of the earth caused by the rapid release of elastic strain energy stored in
+      rocks, usually by sudden slip on a fault. The driving mechanism is plate tectonics; the release mechanism is
+      described by the elastic rebound theory. The point of rupture is the focus and the point above it on the surface
+      the epicentre. Nepal's earthquakes originate from the continued northward convergence of the Indian plate beneath
+      Eurasia at about 2 cm/yr, taken up on the locked Main Himalayan Thrust and its splays MFT, MBT and MCT &mdash; a
+      continent&ndash;continent collision that produces very large shallow earthquakes but no volcanoes.</p>
+      <p>The released energy travels as body waves (P &mdash; compressional, fastest, through any medium; S &mdash; shear,
+      solids only, most damaging) and surface waves (Love &mdash; horizontal shear; Rayleigh &mdash; rolling), which are
+      recorded on a seismogram; the S&ndash;P interval at three or more stations locates the epicentre. The size of an
+      earthquake is given quantitatively by its magnitude (Richter, moment magnitude), where one unit means ten times the
+      amplitude and about 32 times the energy, while its effect at a place is given qualitatively by intensity on the
+      12-grade Modified Mercalli scale, mapped as isoseismals. The destructiveness of a record is described by its
+      amplitude (PGA, PGV, PGD), duration and frequency content; damage at a site depends on source, path and site
+      conditions, especially soft-soil amplification.</p>
+      <p>In the time domain the motion is described by the accelerogram (time history), in the frequency domain by the
+      Fourier/frequency spectrum, and for design by the response spectrum &mdash; the plot of peak response of SDOF
+      oscillators of varying period at 5% damping, which codes smooth into the design spectrum S<sub>a</sub>/g used to
+      compute A<sub>h</sub> and the base shear V<sub>B</sub> = A<sub>h</sub>W. Finally, earthquake force on a building is
+      an inertia force, F = ma, acting essentially laterally because the base moves while the mass lags behind. It must
+      flow from the floor and roof diaphragms through the in-plane walls to the foundation. In unreinforced masonry it
+      produces sliding, overturning, in-plane diagonal (X) cracking, out-of-plane collapse, corner separation, roof
+      separation, delamination, torsion and pounding. The design philosophy accepts damage but not collapse, and an
+      earthquake-resistant building must possess four virtues: good configuration, adequate lateral strength, adequate
+      stiffness and good ductility.</p>
+    </div>
+
+    <!-- ══════════════ All past questions ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>All Past Exam Questions from this Chapter</h2>
+      <div class="exam-note">
+        <h4>CHAPTER 1 &mdash; COMPLETE LIST (CE 72502 / ENCE 367)</h4>
+        <ol>
+          <li>Explain an earthquake as a lateral force in a building. [8] <em>(2081 Bhadra, Q1a)</em> &rarr; &sect;1.5.1</li>
+          <li>Describe the earthquake force parameters. [8] <em>(2081 Bhadra, Q1b)</em> &rarr; &sect;1.5.2</li>
+          <li>Define earthquake, its source and influencing factor of shaking in the location. [8] <em>(2080 Bhadra, Q1a)</em> &rarr; &sect;1.1.1, &sect;1.1.2, &sect;1.1.9</li>
+          <li>Define elastic rebound theory. Explain the origin of earthquakes in Himalayas. [8] <em>(2079 Bhadra, Q1a)</em> &rarr; &sect;1.1.6, &sect;1.1.8</li>
+          <li>Explain the magnitude and intensity of the earthquake. Compare the MMI scale with the Richter scale. [8] <em>(2079 Bhadra, Q1b)</em> &rarr; &sect;1.2.5&ndash;1.2.7</li>
+          <li>Explain Richter scale and MMI scale. [6] <em>(2078 Bhadra, Q1a)</em> &rarr; &sect;1.2.5, &sect;1.2.6</li>
+        </ol>
+      </div>
+      <p class="importance-summary">Closely related questions that belong to <strong>Chapter 3</strong> but are usually
+      answered using Chapter 1 material: &ldquo;Describe failure mechanism of masonry building during earthquake&rdquo;
+      (2080 Bhadra Q1b, 12 marks), &ldquo;major failure mechanism during Gorkha earthquake&rdquo; (2078 Bhadra Q1b, 6 marks)
+      and &ldquo;failure mechanisms of stone masonry with mud mortar during the 2080 Jajarkot earthquake&rdquo;
+      (2081 Bhadra Q2a, 8 marks). Use &sect;1.5.3 and Figs. 1.21&ndash;1.24 as the base of those answers.</p>
+    </div>
+
+    <p class="footer-note">End of Chapter 1 &ndash; Earthquakes and Seismic Ground Motion</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

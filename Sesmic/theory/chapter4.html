@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 4 &ndash; Seismic Analysis and Design of Masonry Buildings</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- id="dark-mode-styles" stops common.js from flattening the dark palette; also holds page-local rules -->
+  <style id="dark-mode-styles">
+    .year-tag{display:inline-block;font-size:.62em;font-weight:700;letter-spacing:.03em;
+      color:var(--accent);background:var(--accent-light);border:1px solid var(--line);
+      border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+    .figure svg{max-width:100%;height:auto}
+    .figure img{max-width:100%;max-height:620px;height:auto;display:block;margin:0 auto;
+      background:#fff;padding:6px;border:1px solid var(--line);border-radius:6px}
+    [data-theme="dark"] .figure img{filter:brightness(.9) contrast(1.02)}
+    .figure-row{align-items:flex-start}
+    .figure-row .figure{flex:1 1 260px;max-width:420px}
+    .fig-src{display:block;font-style:normal;font-size:.86em;opacity:.8;margin-top:4px}
+    table.cmp td:first-child{font-weight:600}
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .22em;line-height:1.08}
+    .frac>.fn{padding:0 .45em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .45em}
+    .frac .frac{font-size:.92em}
+    .steps{counter-reset:stp;list-style:none;padding-left:0}
+    .steps>li{counter-increment:stp;position:relative;padding-left:44px;margin:14px 0}
+    .steps>li::before{content:"STEP " counter(stp);position:absolute;left:0;top:2px;
+      font-size:.62em;font-weight:800;letter-spacing:.04em;color:var(--accent);
+      background:var(--accent-light);border:1px solid var(--line);border-radius:4px;padding:2px 5px;line-height:1.1}
+    /* worked-example block (replaces an illegible scanned slide) */
+    .wex{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;
+      background:var(--accent-light);padding:16px 18px;margin:22px 0}
+    .wex>h4{margin:0 0 4px;font-size:.98rem;color:var(--accent);letter-spacing:.01em}
+    .wex .wex-sub{margin:0 0 12px;font-size:.9rem;opacity:.85}
+    .calc{font-family:"Consolas","Courier New",Courier,monospace;font-size:.86rem;line-height:1.6;
+      white-space:pre-wrap;overflow-x:auto;background:var(--bg,#fff);border:1px solid var(--line);
+      border-radius:6px;padding:12px 14px;margin:10px 0}
+    [data-theme="dark"] .calc{background:rgba(0,0,0,.28)}
+    .wex .wex-ans{margin-top:12px;padding:10px 14px;border-radius:6px;font-weight:600;
+      background:var(--bg,#fff);border:1px solid var(--line);border-left:4px solid var(--accent)}
+    [data-theme="dark"] .wex .wex-ans{background:rgba(0,0,0,.28)}
+    @media(max-width:620px){.calc{font-size:.74rem}}
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 4</div>
+    <h1>Seismic Analysis and Design of Masonry Buildings</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">12 Hours &middot; 18 Marks</span>
+      <span class="meta-badge exam">13 Past Questions &middot; 150+ Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ══════════════ Syllabus & Marks Distribution ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Syllabus &amp; Marks Distribution</h2>
+      <table class="marks-table">
+        <thead>
+          <tr><th>Detail</th><th>Information</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Course</td><td>Seismic Resistant Design of Masonry Structures &mdash; ENCE 367 (Elective I)</td></tr>
+          <tr><td>Chapter</td><td>4 &mdash; Seismic Analysis and Design of Masonry Buildings</td></tr>
+          <tr><td>Teaching Hours</td><td>12 hours</td></tr>
+          <tr class="highlight-row"><td>Marks Allocation</td><td>18 marks &mdash; <strong>the largest chapter</strong></td></tr>
+          <tr><td>Total Course Marks</td><td>60 marks (final exam) &middot; 45 teaching hours</td></tr>
+          <tr><td>Weight</td><td>30% of the final paper</td></tr>
+          <tr><td>Codes required</td><td>IS 1905&ndash;1987, IS 1893 (Part 1), NBC 105: 2020, IS 875</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Syllabus Topics</h3>
+      <ul class="syllabus-topics">
+        <li>4.1 &nbsp;Principle of seismic design of masonry structures</li>
+        <li>4.2 &nbsp;Historical perspective on seismic design of masonry structures</li>
+        <li>4.3 &nbsp;Code provisions and calculation of seismic forces</li>
+        <li>4.4 &nbsp;Determination and distribution of lateral forces based on flexibility of diaphragms (IS 1893: 2016 or NBC 105: 2020)</li>
+        <li>4.5 &nbsp;Rigidity of shear wall considering opening effects</li>
+        <li>4.6 &nbsp;Direct and torsional shear force in shear walls</li>
+        <li>4.7 &nbsp;Increase in axial load in piers due to overturning</li>
+        <li>4.8 &nbsp;Wall subjected to out-of-plane bending</li>
+        <li>4.9 &nbsp;Stability check of flexural wall for out-of-plane forces</li>
+        <li>4.10 &nbsp;Additional forces due to arching action (rigid and gapped arching)</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Notice the structure of the syllabus.</strong> Items 4.3 to 4.9 are not seven unrelated topics &mdash; they
+        are the <strong>six consecutive steps of one procedure</strong>, the lateral load analysis of a masonry building.
+        Learn them as a single flow-chart (&sect;4.3.4) and the whole chapter falls into place.
+      </div>
+    </div>
+
+    <!-- ══════════════ Importance & Frequently Asked Topics ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>Importance &amp; Frequently Asked Topics <span class="importance-high">VERY HIGH</span></h2>
+
+      <p class="importance-summary">This chapter is where the <strong>numericals</strong> live. Across the last six
+      papers it accounts for <strong>13 questions and over 150 marks</strong> in the 80-mark format &mdash; typically
+      <strong>two to three 12&ndash;14 mark design numericals per paper</strong>. Together with Chapter 3 it carries
+      <strong>32 of the 60 final marks</strong>. Chapters 1&ndash;3 can be revised; this one has to be
+      <em>practised</em>.</p>
+
+      <h3>Marks Distribution by Each Exam</h3>
+      <div class="table-wrap">
+        <table class="marks-dist-table">
+          <thead>
+            <tr><th>Exam</th><th>Marks</th><th>Questions asked</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2075 Chaitra</td><td>10</td><td>Q1 &mdash; design criteria and design steps for masonry shear walls</td></tr>
+            <tr><td>2076 Chaitra</td><td>24</td><td>Q1b &mdash; lintel band design (a<sub>h</sub> = 0.36); Q4a &mdash; seismic coefficient and storey forces, Kathmandu</td></tr>
+            <tr><td>2078 Bhadra</td><td>28</td><td>Q5 &mdash; exterior wall for wind (transverse); Q6 &mdash; shear wall, 0.3 g</td></tr>
+            <tr><td>2079 Bhadra</td><td>12</td><td>Q5b &mdash; shear wall 4.2 &times; 3.3 m, 0.1 g</td></tr>
+            <tr><td>2080 Bhadra</td><td>30</td><td>Q3b &mdash; wall for wind 850 N/m&sup2;; Q4a &mdash; floor level shear at Surkhet; Q4b &mdash; lintel band load</td></tr>
+            <tr><td>2081 Bhadra</td><td>24</td><td>Q4b &mdash; shear wall 4 &times; 3 m, 0.2 g; Q5b &mdash; centre of mass, centre of stiffness and eccentricities</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Frequently Asked Topics</h3>
+      <div class="table-wrap">
+        <table class="freq-topics-table">
+          <thead>
+            <tr><th>Topic</th><th>Times Asked</th><th>Frequency</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Design of a shear wall for in-plane seismic force</strong></td><td>4</td><td><div class="freq-bar" style="width:100%"></div></td></tr>
+            <tr><td><strong>Design of a wall for out-of-plane (wind/transverse) load</strong></td><td>3</td><td><div class="freq-bar" style="width:75%"></div></td></tr>
+            <tr><td>Seismic coefficient, base shear and storey force distribution</td><td>2</td><td><div class="freq-bar" style="width:50%"></div></td></tr>
+            <tr><td>Lintel / horizontal band design and band load</td><td>2</td><td><div class="freq-bar" style="width:50%"></div></td></tr>
+            <tr><td>Centre of mass, centre of rigidity and eccentricity</td><td>1</td><td><div class="freq-bar" style="width:25%"></div></td></tr>
+            <tr><td>Design criteria and steps for shear walls (theory)</td><td>1</td><td><div class="freq-bar" style="width:25%"></div></td></tr>
+            <tr><td>Rigidity with openings, torsional shear, overturning</td><td class="dim-cell">0 direct</td><td><div class="freq-bar" style="width:20%"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Topic-wise Importance &amp; Exam Tips</h3>
+      <div class="table-wrap">
+        <table class="importance-table">
+          <thead>
+            <tr><th>Topic</th><th>Importance</th><th>Key Points / Exam Tips</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Shear wall design (in-plane)</td><td><span class="importance-badge importance-high">High</span></td><td>The single most repeated numerical &mdash; four papers running. Memorise the 10-step sequence of &sect;4.6.6. The lateral force is almost always given as a fraction of <em>g</em> times the wall self-weight.</td></tr>
+            <tr><td>Out-of-plane / transverse wall design</td><td><span class="importance-badge importance-high">High</span></td><td>Use M = pH&sup2;/10 for a wall anchored top and bottom. Check <strong>compressive</strong> stress at the base and <strong>tensile</strong> stress at mid-height. Remember the 25% overstress allowance for wind/seismic.</td></tr>
+            <tr><td>Base shear &amp; storey force distribution</td><td><span class="importance-badge importance-high">High</span></td><td>V<sub>B</sub> = A<sub>h</sub>W with A<sub>h</sub> = (Z/2)(I/R)(S<sub>a</sub>/g); distribute as Q<sub>i</sub> = V<sub>B</sub> W<sub>i</sub>h<sub>i</sub>&sup2;/&Sigma;W<sub>j</sub>h<sub>j</sub>&sup2;. Do not forget: <strong>roof live load is excluded</strong> from seismic weight.</td></tr>
+            <tr><td>Centre of mass &amp; centre of rigidity</td><td><span class="importance-badge importance-high">High</span></td><td>Tabulate. CM from <em>weights</em>, CR from <em>rigidities</em>. Then e = X&#772;<sub>m</sub> &minus; X&#772;<sub>r</sub>, and <strong>add 5% accidental eccentricity</strong>.</td></tr>
+            <tr><td>Direct and torsional shear</td><td><span class="importance-badge importance-high">High</span></td><td>V<sub>d</sub> in proportion to R; V<sub>t</sub> = R d / &Sigma;Rd&sup2; &times; T. <strong>Torsional shear is taken as always additive</strong> (plus sign) because the load reverses.</td></tr>
+            <tr><td>Rigidity of a shear wall with openings</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Piers in a row (side by side) &rarr; <strong>add rigidities</strong>; piers stacked one above another &rarr; <strong>add deflections</strong>. Use the solid-wall-minus-strip method.</td></tr>
+            <tr><td>Increase in axial load due to overturning</td><td><span class="importance-badge importance-medium">Medium</span></td><td>P<sub>ovt</sub> = M<sub>ovt</sub> l<sub>i</sub>A<sub>i</sub>/I<sub>n</sub> &mdash; treat the row of piers as one composite section.</td></tr>
+            <tr><td>Design criteria / steps (theory)</td><td><span class="importance-badge importance-medium">Medium</span></td><td>2075 asked this as pure theory for 10 marks. Give the four force actions (vertical, shear, bending, overturning) plus the three design checks.</td></tr>
+            <tr><td>Arching action</td><td><span class="importance-badge importance-low">Low</span></td><td>Not yet asked but explicitly in the new syllabus. Two distinct things: <em>arching over an opening</em> (reduces lintel load) and <em>out-of-plane rigid/gapped arching</em> (increases wall capacity).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════ 4.1 ══════════════ -->
+    <h2>4.1 &nbsp;Principle of Seismic Design of Masonry Structures <span class="year-tag">2075 Chaitra, Q1</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Discuss the design criteria and design steps in the design of masonry shear walls. [10] <em>(2075 Chaitra, Q1)</em></li>
+      </ol>
+    </div>
+
+    <h3>4.1.1 &nbsp;The force resisting mechanism</h3>
+    <p class="lead">In a load-bearing masonry building the <strong>walls that carry the gravity loads also act as the shear
+    walls that resist the lateral load</strong>. There is no separate lateral-load-resisting system. The mechanism is:</p>
+    <div class="formula">
+      Lateral load &nbsp;&rarr;&nbsp; <b>Diaphragm</b> (floor/roof &mdash; distributes the force according to its own
+      rigidity) &nbsp;&rarr;&nbsp; <b>Shear walls</b> (walls parallel to the force &mdash; resist the <em>total</em>
+      lateral force in-plane) &nbsp;&rarr;&nbsp; foundation.<br><br>
+      Meanwhile the <b>flexural walls</b> (walls perpendicular to the force) must be separately
+      <b>checked for the out-of-plane lateral force</b> acting on them.
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch4-force-resisting-mech.png" alt="Isometric diagram showing lateral load entering a masonry building, distributed by the diaphragm according to rigidity, resisted in-plane by the shear wall, while the flexural wall is checked for out-of-plane force">
+      <figcaption><b>Fig. 4.1</b> Force resisting mechanism in masonry buildings &mdash; diaphragm, shear wall and
+      flexural wall.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>4.1.2 &nbsp;Design principles</h3>
+    <ol>
+      <li><strong>Working (allowable) stress design.</strong> IS 1905 designs masonry so that the actual stress stays
+        within a permissible stress: f<sub>c</sub> &le; f<sub>per</sub> = f<sub>b</sub>k<sub>s</sub>k<sub>a</sub>k<sub>p</sub>
+        (Chapter 2, &sect;2.6).</li>
+      <li><strong>No tension is permitted.</strong> The wall is designed as a vertical cantilever for compression and
+        shear; the resultant should stay within the middle third (e &le; t/6).</li>
+      <li><strong>Strength and ductility, and structural integrity</strong> &mdash; the two aims of every seismic code
+        (Chapter 3, &sect;3.1.3); the objective is prevention of collapse, not prevention of damage.</li>
+      <li><strong>Both principal directions</strong> must be checked independently, and the force reverses.</li>
+      <li><strong>Increase in permissible stress:</strong> permissible stresses and loads may be increased by
+        <strong>one-third</strong> when wind or earthquake is included &mdash; equivalently, use 0.75&times; the load
+        combination and the full permissible stress.</li>
+      <li>The compressive stress may additionally exceed the permissible value by <strong>25%</strong> when the excess is
+        <em>solely due to bending</em>.</li>
+    </ol>
+
+    <h3>4.1.3 &nbsp;Design criteria for a masonry shear wall <span class="year-tag">2075 Chaitra, Q1</span></h3>
+    <p>A shear wall carries a horizontal load acting <em>parallel to its own plane</em>, arising from:</p>
+    <ul>
+      <li><strong>Seismic loading</strong>, horizontal and in the plane of the wall;</li>
+      <li><strong>Wind loading</strong> on the exterior (facade) wall, transmitted through the diaphragm to the cross
+        wall that supports it.</li>
+    </ul>
+    <p>The cross wall and the stiffening wall act as shear walls; in an earthquake the cross wall is what transmits the
+    seismic load down to the foundation. The shear wall must be designed to resist <strong>four actions</strong>:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Action</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Vertical load</strong></td><td>Direct compressive stress f<sub>ca</sub> = W/A</td></tr>
+          <tr><td>2</td><td><strong>Shear force</strong></td><td>Shear between adjacent courses, resisted by the horizontal mortar bed joint or by diagonal tension in the masonry</td></tr>
+          <tr><td>3</td><td><strong>Bending moment</strong></td><td>Flexural stress f<sub>cb</sub> = M/Z, maximum at the base of the wall</td></tr>
+          <tr><td>4</td><td><strong>Overturning moment</strong></td><td>Tends to rotate the wall about its toe; resisted by the stabilising moment of the vertical load</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>The three design checks</h4>
+    <div class="formula">
+      <b>1. Shear stress</b><br>
+      &tau; = <span class="frac"><span class="fn">F</span><span class="fd">A</span></span> &nbsp;&le;&nbsp;
+      &tau;<sub>per</sub> = &tau;<sub>a</sub> + &mu;&thinsp;<span class="frac"><span class="fn">f<sub>ca</sub></span><span class="fd">FS</span></span>
+      &nbsp;&nbsp;=&nbsp;&nbsp; 0.1 + <span class="frac"><span class="fn">f<sub>d</sub></span><span class="fd">6</span></span>
+      &nbsp;&nbsp;(&le; 0.5 N/mm&sup2;)<br>
+      <span style="font-size:.95em">&tau;<sub>a</sub> = allowable shear stress on plain mortar, usually 0.1 N/mm&sup2;;
+      &mu; = coefficient of friction; FS = factor of safety; &mu;/FS is usually taken as 1/6; f<sub>ca</sub> (= f<sub>d</sub>)
+      is the compressive stress due to the axial (dead) load. &nbsp;IS 1905 cl. 5.4.3.</span><br><br>
+
+      <b>2. Maximum compressive stress</b><br>
+      f<sub>c</sub> = f<sub>ca</sub> + f<sub>cb</sub> &nbsp;&le;&nbsp; 1.25 &times; f<sub>per</sub>
+      &nbsp;&nbsp;(the 25% increase applies only where the excess is due to bending)<br><br>
+
+      <b>3. Maximum tensile stress</b><br>
+      f<sub>t</sub> = f<sub>cb</sub> &minus; f<sub>ca</sub> &nbsp;&le;&nbsp; f<sub>at</sub>
+      &nbsp;&nbsp;(masonry can resist only marginal tension &mdash; ideally f<sub>t</sub> should be zero or negative)
+    </div>
+    <div class="formula">
+      <b>Supporting relations</b><br>
+      Bending moment &nbsp; M<sub>f</sub> = &Sigma; F<sub>i</sub> h<sub>i</sub> &nbsp;&nbsp;(F<sub>i</sub> = i-th lateral force at height h<sub>i</sub>)<br>
+      Flexural stress &nbsp; f<sub>cb</sub> = <span class="frac"><span class="fn">M<sub>f</sub></span><span class="fd">Z</span></span>
+      = <span class="frac"><span class="fn">M<sub>f</sub> &middot; (L/2)</span><span class="fd">I</span></span>
+      = <span class="frac"><span class="fn">6 M<sub>f</sub></span><span class="fd">t L&sup2;</span></span>
+      &nbsp;&nbsp;&nbsp;&nbsp; Z = <span class="frac"><span class="fn">t L&sup2;</span><span class="fd">6</span></span><br>
+      Overturning moment at the toe &nbsp; M<sub>o</sub> = &Sigma; F<sub>i</sub> h<sub>i</sub><br>
+      Stabilising moment at the toe &nbsp; M<sub>s</sub> = &Sigma; W<sub>i</sub> &middot; <span class="frac"><span class="fn">L</span><span class="fd">2</span></span>
+      &nbsp;&nbsp;&nbsp;&nbsp; Factor of safety against overturning = M<sub>s</sub>/M<sub>o</sub> (should be &ge; 1.5&ndash;2)
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch4-shearwall-stresses.png" alt="Diagram of a shear wall with openings showing deflections and cracks, and the twelve types of stress caused - earthquake force, spandrel, sill, pier, critical sections, vertical load, horizontal moment, overturning moment, axial stress, stress due to moment, bending stress and shearing stress">
+      <figcaption><b>Fig. 4.2</b> Deformation of a shear wall with openings: (a) deflections and cracks, (b) the types of
+      stress caused. 1 earthquake force, 2 spandrel masonry, 3 sill masonry, 4 pier (critical section for shear cracks),
+      5 critical section for bending cracks, 6 vertical load, 7 horizontal force, 8 overturning moment, 9 axial stress
+      due to vertical load, 10 stress due to overturning moment, 11 bending stress, 12 shearing stress.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <!-- ══════════════ 4.2 ══════════════ -->
+    <h2>4.2 &nbsp;Historical Perspective on Seismic Design of Masonry Structures</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Period</th><th>Development</th></tr></thead>
+        <tbody>
+          <tr><td>Antiquity &ndash; 19th century</td><td><strong>Empirical &ldquo;rules of thumb&rdquo;</strong> only. Wall thickness fixed as a fraction of height or number of storeys; stability judged by the middle-third rule and by experience. Earthquake resistance came incidentally from mass, symmetry, small openings and timber lacing.</td></tr>
+          <tr><td>1755 Lisbon</td><td>After the earthquake the Portuguese introduced the <em>gaiola pombalina</em> &mdash; a braced timber cage inside masonry walls: the first deliberate, codified anti-seismic construction system.</td></tr>
+          <tr><td>1783 Calabria, 1908 Messina</td><td>Italian regulations introduced the <em>casa baraccata</em> timber-frame system and, after Messina, the first <strong>equivalent static lateral force coefficient</strong> (a fraction of the building weight applied horizontally).</td></tr>
+          <tr><td>1920s&ndash;1930s</td><td>Japan (1924) and the USA (Field Act, 1933, after Long Beach) adopt <strong>seismic coefficient</strong> design. Unreinforced masonry is progressively banned for schools and public buildings in California.</td></tr>
+          <tr><td>1934 Nepal&ndash;Bihar</td><td>The first systematic damage survey in this region; led to reconstruction guidance in the Kathmandu Valley.</td></tr>
+          <tr><td>1960s&ndash;1970s</td><td>Move from empirical to <strong>engineered masonry</strong>: allowable stress design codified (IS 1905 first published 1961, revised 1969, 1980, 1987). <strong>Reinforced masonry</strong> and <strong>confined masonry</strong> spread.</td></tr>
+          <tr><td>1962 &ndash; 1993 India</td><td>IS 1893 (criteria for earthquake resistant design), IS 4326 (earthquake resistant design and construction of buildings) and IS 13828 (low-strength masonry) codify bands, vertical bars and opening limits.</td></tr>
+          <tr><td>1994 Nepal</td><td><strong>Nepal National Building Code</strong> published &mdash; NBC 105 (seismic design), NBC 109 (masonry), NBC 202 (mandatory rules of thumb for load-bearing masonry), NBC 203 (low-strength masonry), NBC 204 (earthen buildings). NBC 105 revised <strong>2020</strong>.</td></tr>
+          <tr><td>1990s&ndash;present</td><td>Shift towards <strong>performance-based</strong> and <strong>displacement-based</strong> design; capacity design concepts; refined out-of-plane and diaphragm-flexibility models; post-2015 large-scale reconstruction in Nepal using banded and confined masonry.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════ 4.3 ══════════════ -->
+    <h2>4.3 &nbsp;Code Provisions and Calculation of Seismic Forces
+      <span class="year-tag">2076 Chaitra, Q4a</span><span class="year-tag">2080 Bhadra, Q4a</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Calculate the floor level shear and earthquake force for a double storey health post building located at Surkhet&hellip; [14] <em>(2080 Bhadra, Q4a)</em></li>
+        <li>Determine the seismic coefficient and storey seismic forces for a single room double storey health post building&hellip; located at Kathmandu. [12] <em>(2076 Chaitra, Q4a)</em></li>
+      </ol>
+    </div>
+
+    <h3>4.3.1 &nbsp;Methods of seismic analysis</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Method</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Seismic coefficient (equivalent static / equivalent lateral force) method</strong></td><td><strong>The method for masonry buildings.</strong> Regular, low-rise, first-mode dominated structures.</td></tr>
+          <tr><td>Response spectrum (modal) method</td><td>Taller or moderately irregular buildings where higher modes matter.</td></tr>
+          <tr><td>Time history method</td><td>Important or very irregular structures; step-by-step solution for a real accelerogram.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.3.2 &nbsp;Seismic weight</h3>
+    <div class="formula">
+      <b>W = seismic weight of the building = DL + n% of LL</b><br><br>
+      &bull; The full <b>dead load</b> of slabs, walls, finishes and permanent fixtures.<br>
+      &bull; The appropriate <b>percentage of imposed (live) load</b> per IS 1893 cl. 7.3.1 / Table 8 &mdash;
+      commonly <b>25%</b> for LL &le; 3 kN/m&sup2; and <b>50%</b> for LL &gt; 3 kN/m&sup2;.<br>
+      &bull; <b>Live load on the roof need NOT be considered</b> at all (IS 1893 cl. 7.3.2). This is the most common
+      mistake in the exam.<br>
+      &bull; Walls are lumped half to the floor above and half to the floor below; the bottom half of the ground-storey
+      wall goes to the foundation and is not part of the seismic weight of storey 1.
+    </div>
+
+    <h3>4.3.3 &nbsp;Design base shear</h3>
+    <div class="formula">
+      <b>V<sub>B</sub> = A<sub>h</sub> &times; W</b> &nbsp;&nbsp;&nbsp;&nbsp;[IS 1893 (Part 1), cl. 7.5.3]<br><br>
+      <b>A<sub>h</sub> = <span class="frac"><span class="fn">Z</span><span class="fd">2</span></span> &middot;
+      <span class="frac"><span class="fn">I</span><span class="fd">R</span></span> &middot;
+      <span class="frac"><span class="fn">S<sub>a</sub></span><span class="fd">g</span></span></b>
+      &nbsp;&nbsp;&nbsp;&nbsp;[cl. 6.4.2]
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Meaning and typical value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Z</strong> &mdash; zone factor</td><td>Regional seismicity, IS 1893 Table 2. <strong>Z = 0.36 for Zone V</strong> (all of Nepal is comparable to Zone V). The Table gives Z for the <em>Maximum Considered Earthquake</em>; dividing by 2 converts it to the <em>Design Basis Earthquake</em>, which is why the formula contains Z/2 &mdash; this makes the design economical.</td></tr>
+          <tr><td><strong>I</strong> &mdash; importance factor</td><td>IS 1893 Table 6. Depends on the functional use of the structure, the hazardous consequences of its failure, post-earthquake functional need, historical value and economic importance. I = 1.0 for ordinary buildings, <strong>1.5 for important buildings</strong> (hospitals, health posts, schools, monuments).</td></tr>
+          <tr><td><strong>R</strong> &mdash; response reduction factor</td><td>IS 1893 Table 7. Depends on the perceived seismic damage performance of the structure, characterised by its ductile or brittle deformations. <strong>R = 1.5&ndash;3 for unreinforced masonry</strong> (low ductility). <strong>The ratio I/R shall not be greater than 1.0.</strong></td></tr>
+          <tr><td><strong>S<sub>a</sub>/g</strong> &mdash; spectral acceleration coefficient</td><td>Read from the design response spectrum (Chapter 1, Fig. 1.19) for the fundamental period T and the soil type. For medium soil: 1 + 15T for 0 &le; T &le; 0.10; <strong>2.50</strong> for 0.10 &le; T &le; 0.55; 1.36/T for 0.55 &le; T &le; 4.00. <strong>A low masonry building almost always falls on the 2.50 plateau.</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula">
+      <b>Fundamental natural period T<sub>a</sub></b> &nbsp;&nbsp;[IS 1893 cl. 7.6]<br><br>
+      Moment-resisting frame <em>with</em> brick infill: &nbsp; T<sub>a</sub> = <span class="frac"><span class="fn">0.09 h</span><span class="fd">&radic;d</span></span>
+      &nbsp;&nbsp;&nbsp; (h = height in m, d = base dimension in the direction considered)<br>
+      Moment-resisting frame <em>without</em> infill: &nbsp; T<sub>a</sub> = 0.075 h<sup>0.75</sup> (RC), 0.085 h<sup>0.75</sup> (steel)<br><br>
+      A load-bearing masonry building is treated like the infilled case; T is short (typically 0.1&ndash;0.3 s), so
+      S<sub>a</sub>/g = 2.5.
+    </div>
+    <div class="callout">
+      <strong>Typical masonry values, worth memorising:</strong> Z = 0.36, I = 1.0 (or 1.5 for a health post/school),
+      R = 3.0, S<sub>a</sub>/g = 2.5 &nbsp;&rarr;&nbsp;
+      A<sub>h</sub> = (0.36/2)(1.0/3.0)(2.5) = <strong>0.15</strong>.
+      With I = 1.5, A<sub>h</sub> = (0.18)(0.5)(2.5) = <strong>0.225</strong>. In the 2076 paper the design coefficient
+      was given directly as 0.36 for the band question, so <em>read the question carefully</em> &mdash; sometimes
+      A<sub>h</sub> is handed to you.
+    </div>
+
+    <h4>NBC 105: 2020 (the Nepali alternative)</h4>
+    <div class="formula">
+      Equivalent static method: &nbsp; <b>V = C<sub>d</sub>(T<sub>1</sub>) &middot; W<sub>t</sub></b><br><br>
+      C<sub>d</sub>(T<sub>1</sub>) = <span class="frac"><span class="fn">C(T<sub>1</sub>) &middot; I<sub>e</sub></span><span class="fd">R<sub>&mu;</sub> &middot; &Omega;<sub>u</sub></span></span>
+      &nbsp;&nbsp;&nbsp;&nbsp; C(T<sub>1</sub>) = C<sub>h</sub>(T<sub>1</sub>) &middot; Z &middot; I<sub>e</sub><br><br>
+      <span style="font-size:.95em">C<sub>h</sub>(T<sub>1</sub>) = spectral shape factor (soil type A/B/C/D);
+      Z = seismic zoning factor (0.35 for Kathmandu, 0.25&ndash;0.40 across Nepal);
+      I<sub>e</sub> = importance factor (1.0 / 1.25 / 1.5);
+      R<sub>&mu;</sub> = ductility factor; &Omega;<sub>u</sub> = overstrength factor.</span><br><br>
+      NBC 105 also allows the simpler approach of <b>NBC 202</b> &mdash; mandatory rules of thumb &mdash; for ordinary
+      one- to three-storey load-bearing masonry buildings, which requires <em>no calculation at all</em>, only compliance
+      with prescriptive detailing.
+    </div>
+
+    <h4>Load combinations (working stress)</h4>
+    <div class="formula">
+      DL + IL &nbsp;&nbsp;|&nbsp;&nbsp; DL + IL + (WL or EL) &nbsp;&nbsp;|&nbsp;&nbsp; DL + (WL or EL)
+      &nbsp;&nbsp;|&nbsp;&nbsp; 0.9 DL + (WL or EL)<br><br>
+      With wind or earthquake the permissible stress may be increased by <b>1/3</b>; equivalently, use
+      <b>0.75 &times;</b> the combination with the full permissible stress. <b>Reversal of force must be considered.</b><br><br>
+      (For limit state work IS 1893 gives 1.5(DL+IL); 1.2(DL+IL&plusmn;EL); 1.5(DL&plusmn;EL); 0.9DL&plusmn;1.5EL.)
+    </div>
+
+    <h3>4.3.4 &nbsp;Vertical distribution of base shear</h3>
+    <div class="formula">
+      <b>Q<sub>i</sub> = V<sub>B</sub> &middot;
+      <span class="frac"><span class="fn">W<sub>i</sub> h<sub>i</sub><sup>2</sup></span><span class="fd">&Sigma;<sub>j=1</sub><sup>n</sup> W<sub>j</sub> h<sub>j</sub><sup>2</sup></span></span></b>
+      &nbsp;&nbsp;&nbsp;&nbsp;[IS 1893 cl. 7.7.1]<br><br>
+      <span style="font-size:.95em">Q<sub>i</sub> = design lateral force at floor i; W<sub>i</sub> = seismic weight of
+      floor i; h<sub>i</sub> = height of floor i measured from the base.</span><br><br>
+      The <b>storey shear</b> at any level is the sum of all the floor forces above it:
+      &nbsp; V<sub>i</sub> = &Sigma;<sub>j &ge; i</sub> Q<sub>j</sub> &nbsp;&mdash; so the shear is largest at the base
+      (= V<sub>B</sub>) and smallest at the roof.
+    </div>
+    <div class="exam-box">
+      <b>Worked pattern for &ldquo;calculate the floor level shear and earthquake force&rdquo; [12&ndash;14 marks]</b>
+      <ol>
+        <li>Compute the <strong>seismic weight of each floor</strong>: slab + finishes + half the wall above + half the
+          wall below + n% of the floor live load. Roof: slab + finishes + half the wall below, <strong>no live load</strong>.</li>
+        <li>Total W = &Sigma;W<sub>i</sub>.</li>
+        <li>Find T<sub>a</sub> (or note that the building is stiff, so S<sub>a</sub>/g = 2.5).</li>
+        <li>Pick Z, I, R for the location and occupancy &rarr; compute A<sub>h</sub>.</li>
+        <li>V<sub>B</sub> = A<sub>h</sub>W.</li>
+        <li>Tabulate W<sub>i</sub>, h<sub>i</sub>, h<sub>i</sub><sup>2</sup>, W<sub>i</sub>h<sub>i</sub><sup>2</sup>, and
+          &Sigma;W<sub>j</sub>h<sub>j</sub><sup>2</sup>.</li>
+        <li>Q<sub>i</sub> for each floor, then the storey shear V<sub>i</sub> by accumulating downwards.</li>
+        <li>Present the answer as a table &mdash; markers award marks per row.</li>
+      </ol>
+    </div>
+
+    <h3>4.3.5 &nbsp;The six-step lateral load analysis procedure</h3>
+    <p>This is the backbone of the whole chapter. Syllabus items 4.4 to 4.9 are exactly these steps:</p>
+    <ol class="steps">
+      <li><strong>Determination of the lateral load</strong> based on IS 1893 (Part 1) or NBC 105 &mdash; base shear and
+        its vertical distribution. <em>(&sect;4.3)</em></li>
+      <li><strong>Distribution of the lateral force to the walls</strong> on the basis of the <strong>flexibility of the
+        diaphragm</strong>. <em>(&sect;4.4)</em></li>
+      <li><strong>Determination of the rigidity of each shear wall</strong>, considering the openings.
+        <em>(&sect;4.5)</em></li>
+      <li><strong>Determination of the direct shear force and the torsional shear force</strong> in each shear wall.
+        <em>(&sect;4.6)</em></li>
+      <li><strong>Determination of the increase in axial load in the piers due to overturning.</strong>
+        <em>(&sect;4.7)</em></li>
+      <li><strong>Check the stability of the flexural wall for out-of-plane forces.</strong>
+        <em>(&sect;4.8, &sect;4.9)</em></li>
+    </ol>
+
+    <!-- ══════════════ 4.4 ══════════════ -->
+    <h2>4.4 &nbsp;Determination and Distribution of Lateral Forces Based on Flexibility of Diaphragms</h2>
+
+    <h3>4.4.1 &nbsp;Classifying the diaphragm</h3>
+    <div class="formula">
+      A diaphragm is classified by comparing its own in-plane deflection with the drift of the walls supporting it:<br><br>
+      &bull; <b>RIGID</b> &mdash; the <em>midpoint</em> in-plane displacement of the diaphragm under lateral load is
+      <b>less than twice</b> the average displacement of its end supports (the walls).<br>
+      &bull; <b>FLEXIBLE</b> &mdash; the midpoint displacement is <b>more than twice</b> the average end displacement.
+    </div>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Rigid diaphragm</th><th>Flexible diaphragm</th></tr></thead>
+        <tbody>
+          <tr><td>Typical construction</td><td>Cast-in-situ RC slab; precast planks with structural topping</td><td>Timber joists with plank flooring; CGI sheet roof; unbraced trusses; jack-arch floors</td></tr>
+          <tr><td><strong>Distribution of storey shear</strong></td><td>In proportion to the <strong>relative rigidity (stiffness) of the walls</strong>: &nbsp; V<sub>i</sub> = V &times; R<sub>i</sub>/&Sigma;R</td><td>In proportion to the <strong>tributary area (tributary width)</strong> of each wall &mdash; the diaphragm behaves as a series of simply-supported beams spanning between walls</td></tr>
+          <tr><td>Torsion</td><td><strong>Transmitted</strong> &mdash; torsional shear must be computed (&sect;4.6)</td><td><strong>Not transmitted</strong> &mdash; no torsional analysis is possible or required</td></tr>
+          <tr><td>Analogy</td><td>A rigid plate on springs of different stiffness</td><td>A flexible beam on rigid supports</td></tr>
+          <tr><td>Out-of-plane support</td><td>Provides real support to the top of the transverse wall</td><td>Very little &mdash; the wall spans the full storey height unaided</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.4.2 &nbsp;Worked comparison</h3>
+    <p>Take a single-storey building with a storey shear V, resisted by three parallel walls A, B and C at spacings such
+    that the tributary widths are L/4, L/2 and L/4, and with rigidities R<sub>A</sub>, R<sub>B</sub>, R<sub>C</sub>.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Wall</th><th>Flexible diaphragm &mdash; by tributary width</th><th>Rigid diaphragm &mdash; by rigidity</th></tr></thead>
+        <tbody>
+          <tr><td>A (end)</td><td>V/4</td><td>V &middot; R<sub>A</sub>/(R<sub>A</sub>+R<sub>B</sub>+R<sub>C</sub>)</td></tr>
+          <tr><td>B (centre)</td><td>V/2</td><td>V &middot; R<sub>B</sub>/(R<sub>A</sub>+R<sub>B</sub>+R<sub>C</sub>)</td></tr>
+          <tr><td>C (end)</td><td>V/4</td><td>V &middot; R<sub>C</sub>/(R<sub>A</sub>+R<sub>B</sub>+R<sub>C</sub>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The two answers can differ enormously. A long, stiff wall attracts most of the force under a rigid diaphragm even
+    if it has a small tributary area &mdash; and a short, flexible wall with a large tributary area is overloaded under a
+    flexible diaphragm. <strong>Always state which assumption you are using.</strong> Where the classification is
+    genuinely uncertain, the conservative approach is to <strong>envelope</strong> both.</p>
+    <div class="callout">
+      <strong>Nepali reality check.</strong> Most traditional and rural masonry buildings have <em>flexible</em>
+      diaphragms (timber joists, CGI roofs) &mdash; so tributary-area distribution governs, no torsional relief is
+      available, and the out-of-plane walls are unsupported at the top. Modern RC-slab masonry buildings have
+      <em>rigid</em> diaphragms.
+    </div>
+
+    <!-- ══════════════ 4.5 ══════════════ -->
+    <h2>4.5 &nbsp;Rigidity of Shear Wall Considering Opening Effects</h2>
+
+    <h3>4.5.1 &nbsp;Deflection of a pier under in-plane load</h3>
+    <p>A masonry pier deflects under horizontal load by a combination of <strong>flexural (bending)</strong> and
+    <strong>shear</strong> deformation. Both must be included, because for masonry piers the shear component is far from
+    negligible.</p>
+
+    <figure class="figure">
+      <img src="../photo/ch4-wall-deformation.png" alt="Three diagrams of a wall under horizontal load showing shear deformation only, flexural deformation only, and combined shear and flexural deformation">
+      <figcaption><b>Fig. 4.3</b> A wall deflects under in-plane load by <em>shear</em> deformation, by <em>flexural</em>
+      deformation, or (in reality) by both together.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="formula">
+      <b>Cantilever pier</b> (fixed at the base, free to rotate at the top):<br><br>
+      &Delta;<sub>c</sub> = &Delta;<sub>flexure</sub> + &Delta;<sub>shear</sub>
+      = <span class="frac"><span class="fn">P h&sup3;</span><span class="fd">3 E<sub>m</sub> I</span></span>
+      + <span class="frac"><span class="fn">1.2 P h</span><span class="fd">A G<sub>m</sub></span></span>
+      &nbsp;&nbsp;&rarr;&nbsp;&nbsp;
+      <b>&Delta;<sub>c</sub> = <span class="frac"><span class="fn">P</span><span class="fd">E<sub>m</sub> t</span></span>
+      &#91; 4(h/d)&sup3; + 3(h/d) &#93;</b><br><br>
+
+      <b>Fixed pier</b> (restrained against rotation at both top and base):<br><br>
+      &Delta;<sub>f</sub> = <span class="frac"><span class="fn">P h&sup3;</span><span class="fd">12 E<sub>m</sub> I</span></span>
+      + <span class="frac"><span class="fn">1.2 P h</span><span class="fd">A G<sub>m</sub></span></span>
+      &nbsp;&nbsp;&rarr;&nbsp;&nbsp;
+      <b>&Delta;<sub>f</sub> = <span class="frac"><span class="fn">P</span><span class="fd">E<sub>m</sub> t</span></span>
+      &#91; (h/d)&sup3; + 3(h/d) &#93;</b><br><br>
+
+      <span style="font-size:.95em">with &nbsp; I = t&thinsp;d&sup3;/12, &nbsp; A = d&thinsp;t, &nbsp;
+      G<sub>m</sub> = 0.4 E<sub>m</sub>, &nbsp; h = height of the pier, &nbsp; d (or L) = length of the pier,
+      &nbsp; t = thickness.</span>
+    </div>
+    <div class="formula">
+      <b>Rigidity R = 1/&Delta;</b> &mdash; the force required to produce unit deflection:<br><br>
+      <b>R<sub>c</sub> =
+      <span class="frac"><span class="fn">E<sub>m</sub> t</span><span class="fd">4(h/d)&sup3; + 3(h/d)</span></span></b>
+      &nbsp;&nbsp;(cantilever) &nbsp;&nbsp;&nbsp;&nbsp;
+      <b>R<sub>f</sub> =
+      <span class="frac"><span class="fn">E<sub>m</sub> t</span><span class="fd">(h/d)&sup3; + 3(h/d)</span></span></b>
+      &nbsp;&nbsp;(fixed)<br><br>
+      In practice only <b>relative</b> rigidity matters, so E<sub>m</sub>t is common to all piers of the same material
+      and thickness and may simply be carried along as &ldquo;Et&rdquo;.
+    </div>
+
+    <h4>Effect of aspect ratio h/d</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspect ratio h/d</th><th>Which deformation dominates</th><th>Practical consequence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>h/d &lt; 0.25</strong> (very squat)</td><td>Almost entirely <strong>shear</strong></td><td>Rigidity based on shear deformation alone is reasonably accurate.</td></tr>
+          <tr><td><strong>0.25 &le; h/d &le; 4</strong> (intermediate &mdash; nearly all real piers)</td><td><strong>Both</strong> components matter</td><td><strong>Both terms must be kept.</strong></td></tr>
+          <tr><td><strong>h/d &gt; 4</strong> (slender)</td><td>Almost entirely <strong>flexure</strong></td><td>Rigidity based on flexural stiffness alone is relatively accurate.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Because the ratio changes over the height of a building, the relative rigidity of a wall also varies from storey
+    to storey.</p>
+
+    <h3>4.5.2 &nbsp;Combining piers &mdash; the two rules</h3>
+    <div class="formula">
+      <b>Piers side by side (HORIZONTAL combination)</b> &mdash; they deflect by the same amount, so
+      <b>ADD THE RIGIDITIES</b>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; R = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub> + &hellip;<br><br>
+      <b>Piers stacked one above another (VERTICAL combination)</b> &mdash; they carry the same force and their
+      deflections add, so <b>ADD THE DEFLECTIONS</b>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; &Delta; = &Delta;<sub>1</sub> + &Delta;<sub>2</sub> + &Delta;<sub>3</sub> + &hellip;
+      &nbsp;&nbsp;&rarr;&nbsp;&nbsp;
+      R = <span class="frac"><span class="fn">1</span><span class="fd">1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub></span></span>
+    </div>
+    <div class="callout">
+      Think of it as springs: <strong>side-by-side piers are springs in parallel</strong> (stiffnesses add);
+      <strong>stacked piers are springs in series</strong> (flexibilities add). Everything in &sect;4.5 is just repeated
+      application of these two rules.
+    </div>
+
+    <h3>4.5.3 &nbsp;Method for a wall with openings &mdash; &ldquo;solid wall minus strip&rdquo;</h3>
+    <p>Openings destroy the coupling between the wall segments, so a perforated wall must be treated as a system of
+    piers. The standard procedure (Drysdale, Hamid &amp; Baker) is:</p>
+    <ol class="steps">
+      <li>Calculate the deflection of the <strong>solid wall</strong> as a cantilever over its full height,
+        &Delta;<sub>solid(c)</sub>.</li>
+      <li><strong>Subtract</strong> the deflection of the horizontal <strong>strip</strong> that contains the openings,
+        computed as a cantilever over the strip height, &Delta;<sub>strip(c)</sub>. This removes that band of wall.</li>
+      <li><strong>Add back</strong> the deflection of the <strong>piers within that strip</strong>, computed as
+        <em>fixed</em> piers and combined <em>horizontally</em> (rigidities added), &Delta;<sub>piers(f)</sub>.</li>
+      <li>Repeat for every strip of openings.</li>
+      <li>Invert the total deflection to get the wall rigidity: R<sub>wall</sub> = 1/&Delta;<sub>wall</sub>.</li>
+    </ol>
+    <div class="formula">
+      <b>&Delta;<sub>wall</sub> = &Delta;<sub>solid(c)</sub> &minus; &Delta;<sub>strip(c)</sub> + &Delta;<sub>piers(f)</sub></b>
+      &nbsp;&nbsp;&nbsp;&nbsp; and &nbsp; R<sub>wall</sub> = 1 / &Delta;<sub>wall</sub><br><br>
+      <span style="font-size:.95em">Piers inside a strip are taken as <b>fixed</b> because the spandrel above and the
+      sill/floor below restrain their rotation; the overall wall is taken as a <b>cantilever</b>.</span>
+    </div>
+    <p><em>Note on accuracy:</em> the method ignores the rotations that occur at the tops of the individual segments and
+    therefore <strong>overestimates the rigidity</strong> of the wall; it is also strictly valid only for load applied at
+    the top level.</p>
+
+    <figure class="figure">
+      <img src="../photo/ch4-rigidity-example.png" alt="Elevation of a brick shear wall with four openings, the piers numbered 1 to 7 and the opening strips A and B marked, with all dimensions">
+      <figcaption><b>Fig. 4.4</b> A shear wall with openings decomposed into numbered piers 1&ndash;7, with the
+      opening strips A and B marked. The worked calculation for this wall follows below.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="wex">
+      <h4>Worked Example &mdash; rigidity of the shear wall of Fig. 4.4, in terms of Et</h4>
+      <p class="wex-sub">Overall wall 10.0 m long &times; 4.8 m high (1.2 m spandrel + 3.6 m opening zone).
+      Strip A = the full-height opening strip (3.6 m); strip B = the upper opening band (1.2 m).
+      Subscript <b>(c)</b> = cantilever, subscript <b>(f)</b> = fixed.</p>
+
+      <div class="calc">Governing expression for the whole wall
+
+    &Delta;_wall = &Delta;_solid wall(c) &minus; &Delta;_strip A(c) + &Delta;_2,3,4,5,6,7(f)</div>
+
+      <p><b>1 &nbsp;Solid wall and strip A &mdash; cantilever, so use 4(h/d)&sup3; + 3(h/d)</b></p>
+      <div class="calc">&Delta;_solid(c)   = (1/Et)[ 4(h/d)&sup3; + 3(h/d) ]      for h/d = (3.6+1.2)/10 = 0.48
+              = (1/Et)[ 4(0.48)&sup3; + 3(0.48) ]
+              = (1/Et)[ 0.442 + 1.440 ]        = 1.882 / Et
+
+&Delta;_strip A(c) = (1/Et)[ 4(h/d)&sup3; + 3(h/d) ]      for h/d = 3.6/10 = 0.36
+              = (1/Et)[ 4(0.36)&sup3; + 3(0.36) ]
+              = (1/Et)[ 0.187 + 1.080 ]        = 1.266 / Et</div>
+
+      <p><b>2 &nbsp;Piers 3, 4, 5 &mdash; fixed, side by side, so ADD their rigidities</b></p>
+      <div class="calc">R_3(f) = R_4(f) = R_5(f)
+       = Et / [ (h/d)&sup3; + 3(h/d) ]              for h/d = 1.2/1.0 = 1.2
+       = Et / [ 1.728 + 3.600 ]
+       = Et / 5.328                          = 0.187 Et
+
+&Delta;_3,4,5(f) = 1 / (R_3 + R_4 + R_5)
+           = 1 / (3 &times; 0.187 Et)               = 1.782 / Et</div>
+
+      <p><b>3 &nbsp;Sub-assembly 3,4,5,6 &mdash; solid minus strip B plus the piers</b></p>
+      <div class="calc">&Delta;_solid 3,4,5,6(f) = (1/Et)[ (h/d)&sup3; + 3(h/d) ]   for h/d = 3.6/5.4 = 0.67
+                  = (1/Et)[ 0.301 + 2.010 ]  = 2.311 / Et
+
+&Delta;_strip B(f)     = (1/Et)[ (h/d)&sup3; + 3(h/d) ]   for h/d = 1.2/5.4 = 0.22
+                  = (1/Et)[ 0.011 + 0.660 ]  = 0.671 / Et
+
+&Delta;_3,4,5,6(f) = &Delta;_solid 3,4,5,6(f) &minus; &Delta;_strip B(f) + &Delta;_3,4,5(f)
+              = 2.311/Et &minus; 0.671/Et + 1.782/Et
+                                             = 3.422 / Et
+
+R_3,4,5,6(f) = 1 / &Delta;_3,4,5,6(f) = 1 / 3.422       = 0.292 Et</div>
+
+      <p><b>4 &nbsp;End piers 2 and 7 &mdash; fixed</b></p>
+      <div class="calc">R_2(f) = Et / [ (h/d)&sup3; + 3(h/d) ]           for h/d = 3.6/1.0 = 3.6
+       = Et / [ 46.656 + 10.800 ] = Et/57.456   = 0.017 Et
+
+R_7(f) = Et / [ (h/d)&sup3; + 3(h/d) ]           for h/d = 3.6/1.2 = 3.0
+       = Et / [ 27.000 + 9.000 ]  = Et/36.000   = 0.028 Et</div>
+
+      <p><b>5 &nbsp;Combine piers 2, 3-4-5-6 and 7 &mdash; side by side, so ADD rigidities</b></p>
+      <div class="calc">R_2,3,4,5,6,7(f) = 0.017 Et + 0.292 Et + 0.028 Et  = 0.337 Et
+
+&Delta;_2,3,4,5,6,7(f) = 1 / 0.337 Et                    = 2.967 / Et</div>
+
+      <p><b>6 &nbsp;Assemble the whole wall</b></p>
+      <div class="calc">&Delta;_wall = &Delta;_solid(c) &minus; &Delta;_strip A(c) + &Delta;_2,3,4,5,6,7(f)
+       = 1.882/Et &minus; 1.266/Et + 2.967/Et       = 3.583 / Et
+
+R_wall = 1 / &Delta;_wall = 1 / 3.583                  = 0.279 Et</div>
+
+      <div class="wex-ans">Rigidity of the shear wall &nbsp;R<sub>wall</sub> = <b>0.279 Et</b>
+        &nbsp;(deflection &Delta;<sub>wall</sub> = 3.583/Et).</div>
+
+      <p style="margin-bottom:0"><b>Note the alternation</b> that this example is designed to teach:
+      elements <em>stacked vertically</em> (solid &minus; strip + piers) have their
+      <b>deflections added</b>, while elements standing <em>side by side</em> (piers 3, 4, 5, or piers
+      2 + 3456 + 7) have their <b>rigidities added</b>. Getting this the wrong way round is the commonest
+      error in the whole method.</p>
+    </div>
+
+    <h3>4.5.4 &nbsp;Distribution of force among the piers</h3>
+    <div class="formula">
+      Once the pier rigidities are known, the storey shear V carried by that wall is shared among the piers in
+      proportion to their rigidity:<br><br>
+      <b>V<sub>i</sub> = V &middot; <span class="frac"><span class="fn">R<sub>i</sub></span><span class="fd">&Sigma; R</span></span></b>
+      &nbsp;&nbsp;&mdash; the <b>stiffest pier attracts the most force</b>, which is why a short, squat pier next to a
+      slender one is the first to crack.
+    </div>
+
+    <!-- ══════════════ 4.6 ══════════════ -->
+    <h2>4.6 &nbsp;Direct and Torsional Shear Force in Shear Walls
+      <span class="year-tag">2081 Bhadra, Q4b</span><span class="year-tag">2081 Bhadra, Q5b</span><span class="year-tag">2079 Bhadra, Q5b</span><span class="year-tag">2078 Bhadra, Q6</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Calculate the centre of mass, centre of stiffness and eccentricities for the given single-storey masonry building. [12] <em>(2081 Bhadra, Q5b)</em></li>
+        <li>Design a shear wall 4 m long and 3 m high to resist a horizontal earthquake force in its plane&hellip; seismic load 0.2 g uniformly distributed across the entire height of the wall. [12] <em>(2081 Bhadra, Q4b)</em></li>
+        <li>Design a shear wall 4.2 m long and 3.3 m high&hellip; earthquake acceleration = 0.1 g. [12] <em>(2079 Bhadra, Q5b)</em></li>
+        <li>Design a shear wall 5 m long and 4 m high&hellip; 0.3 g&hellip; Neglect load from floor. [14] <em>(2078 Bhadra, Q6)</em></li>
+      </ol>
+    </div>
+
+    <h3>4.6.1 &nbsp;Centre of mass (CM) <span class="year-tag">2081 Bhadra, Q5b</span></h3>
+    <div class="formula">
+      The centre of mass is found by taking <b>statical moments of the lumped weights</b> about a convenient point,
+      usually the <b>south-west corner</b> of the plan:<br><br>
+      <b>X&#772;<sub>m</sub> =
+      <span class="frac"><span class="fn">&Sigma; W<sub>i</sub> x<sub>i</sub></span><span class="fd">&Sigma; W<sub>i</sub></span></span></b>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <b>Y&#772;<sub>m</sub> =
+      <span class="frac"><span class="fn">&Sigma; W<sub>i</sub> y<sub>i</sub></span><span class="fd">&Sigma; W<sub>i</sub></span></span></b><br><br>
+      where W<sub>i</sub> are the weights of the roof/floor slab and of each wall, and x<sub>i</sub>, y<sub>i</sub> are
+      the coordinates of their own centroids. Typically<br>
+      &nbsp;&nbsp;&Sigma;W = W<sub>Roof</sub> + W<sub>N</sub> + W<sub>S</sub> + W<sub>E</sub> + W<sub>W</sub>.
+    </div>
+    <p><em>Practical points.</em> The slab acts at the centre of the plan. A wall running in the x-direction acts at the
+    mid-length of the building in x, and at its own y-coordinate. Only <strong>half</strong> the wall height belongs to
+    the storey being considered (the other half goes to the storey below).</p>
+
+    <h3>4.6.2 &nbsp;Centre of rigidity (CR) / centre of stiffness</h3>
+    <div class="formula">
+      The centre of rigidity is found by taking <b>statical moments of the wall rigidities</b>:<br><br>
+      <b>X&#772;<sub>r</sub> =
+      <span class="frac"><span class="fn">&Sigma; R<sub>y</sub> x</span><span class="fd">&Sigma; R<sub>y</sub></span></span></b>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <b>Y&#772;<sub>r</sub> =
+      <span class="frac"><span class="fn">&Sigma; R<sub>x</sub> y</span><span class="fd">&Sigma; R<sub>x</sub></span></span></b><br><br>
+      <span style="font-size:.95em">R<sub>x</sub> = in-plane rigidity of a wall running in the <em>x</em>-direction;
+      R<sub>y</sub> = in-plane rigidity of a wall running in the <em>y</em>-direction.</span>
+    </div>
+    <div class="callout">
+      <strong>The rule that catches everybody:</strong> walls parallel to the <em>x</em>-direction do not contribute
+      significantly to lateral resistance in the <em>y</em>-direction, so <strong>only the R<sub>x</sub> terms appear in
+      Y&#772;<sub>r</sub>, and only the R<sub>y</sub> terms appear in X&#772;<sub>r</sub></strong>. Out-of-plane wall
+      stiffness is neglected.
+    </div>
+
+    <h3>4.6.3 &nbsp;Torsional eccentricity</h3>
+    <div class="formula">
+      <b>e<sub>x</sub> = X&#772;<sub>m</sub> &minus; X&#772;<sub>r</sub></b> &nbsp;&nbsp;&nbsp;&nbsp;
+      <b>e<sub>y</sub> = Y&#772;<sub>m</sub> &minus; Y&#772;<sub>r</sub></b><br><br>
+      To this <b>calculated (static) eccentricity</b> a <b>minimum accidental eccentricity</b> must be added to allow for
+      unmodelled variation of mass and stiffness and for rotational ground motion:<br><br>
+      <b>e<sub>a</sub> = 0.05 &times; (plan dimension perpendicular to the direction of the force)</b><br><br>
+      <b>Design eccentricity &nbsp; e<sub>d</sub> = e<sub>calculated</sub> + e<sub>a</sub></b><br><br>
+      <span style="font-size:.95em">Example: with e<sub>y</sub> = 4.06 &minus; 1.60 = 2.46 m and a 10 m plan dimension,
+      e<sub>a</sub> = 0.05 &times; 10 = 0.50 m, so the total eccentricity is 2.96 m.</span>
+    </div>
+    <p><strong>Codal limit:</strong> the distance between the storey centre of mass and the storey centre of rigidity
+    should be less than about <strong>20&ndash;30% of the plan dimension</strong> in either direction; beyond that the
+    building is torsionally irregular and needs a dynamic analysis or a change of layout.</p>
+
+    <h3>4.6.4 &nbsp;Torsional moment and torsional shear</h3>
+    <div class="formula">
+      <b>Torsional moment &nbsp; T = P<sub>y</sub> (e<sub>x</sub> + e<sub>a</sub>)</b>
+      &nbsp;&nbsp;(and similarly T = P<sub>x</sub>(e<sub>y</sub> + e<sub>a</sub>) for the other direction)<br><br>
+
+      <b>Direct shear</b> in a wall parallel to the applied force:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; <b>P<sub>d</sub> = P<sub>y</sub> &middot;
+      <span class="frac"><span class="fn">R<sub>i</sub></span><span class="fd">&Sigma; R</span></span></b>
+      &nbsp;&nbsp;&nbsp;&nbsp;&mdash; e.g. P<sub>d</sub> = R<sub>W</sub>P<sub>y</sub>/(R<sub>W</sub> + R<sub>E</sub>)<br><br>
+
+      <b>Torsional shear</b> in <em>any</em> wall (parallel or perpendicular to the force):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; <b>P<sub>T</sub> =
+      <span class="frac"><span class="fn">R<sub>i</sub> d<sub>i</sub></span><span class="fd">J<sub>r</sub></span></span>
+      &middot; T
+      = <span class="frac"><span class="fn">R<sub>i</sub> d<sub>i</sub></span><span class="fd">&Sigma;(R<sub>x</sub>d<sub>y</sub>&sup2;) + &Sigma;(R<sub>y</sub>d<sub>x</sub>&sup2;)</span></span>
+      &middot; P (e + e<sub>a</sub>)</b><br><br>
+      <span style="font-size:.95em">d<sub>i</sub> = perpendicular distance of the wall from the <b>centre of
+      rigidity</b>; &nbsp; J<sub>r</sub> = polar moment of rigidity = &Sigma;R d&sup2; taken over <b>all</b> walls in
+      both directions.</span><br><br>
+
+      <b>Total shear in the wall &nbsp; P = P<sub>d</sub> + P<sub>T</sub></b>
+    </div>
+    <div class="callout">
+      <strong>Sign convention &mdash; a favourite exam trap.</strong> The torsional force is always taken with a
+      <strong>plus sign</strong>. Because the horizontal load P is <em>reversible</em>, the codes state that the effect of
+      the torsional moment shall be considered <strong>only when it increases the direct stress</strong> &mdash; i.e. the
+      relief it gives on the other side is ignored. So always <em>add</em> |P<sub>T</sub>| to P<sub>d</sub>.
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch4-torsion-diagram.png" alt="Plan of a building showing the centre of rigidity and centre of mass, the torsional moment T equal to Py times the sum of ex and the accidental eccentricity, and the direct and torsional shear expressions for the west and east walls">
+      <figcaption><b>Fig. 4.5</b> Torsion in plan: the force P<sub>y</sub> acts through the centre of mass while the
+      resistance acts through the centre of rigidity, so a torsional moment T = P<sub>y</sub>(e<sub>x</sub> + e<sub>a</sub>)
+      is applied in addition to the direct shear.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 340" width="620" height="340" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arT" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--svg-hub)"/></marker>
+          <marker id="arR" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-text-red)"/></marker>
+          <marker id="arD" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-line)"/></marker>
+        </defs>
+        <!-- plan outline -->
+        <rect x="90" y="70" width="400" height="190" fill="var(--svg-bg)" stroke="var(--svg-line)" stroke-width="1.4"/>
+        <!-- walls (thick lines) : W and E run in y, N and S run in x -->
+        <rect x="86" y="70" width="9" height="190" fill="var(--svg-hub)"/>
+        <rect x="485" y="70" width="9" height="190" fill="var(--svg-hub)"/>
+        <rect x="90" y="66" width="400" height="8" fill="var(--svg-green-s)"/>
+        <rect x="90" y="256" width="400" height="8" fill="var(--svg-green-s)"/>
+        <text x="72" y="168" font-size="12" text-anchor="middle" fill="var(--svg-text-blue)" transform="rotate(-90 72 168)">Wall W (R&#8341;)</text>
+        <text x="510" y="168" font-size="12" text-anchor="middle" fill="var(--svg-text-blue)" transform="rotate(-90 510 168)">Wall E (R&#8337;)</text>
+        <text x="290" y="58" font-size="12" text-anchor="middle" fill="var(--svg-text-green)">Wall N (R&#8345;)</text>
+        <text x="290" y="282" font-size="12" text-anchor="middle" fill="var(--svg-text-green)">Wall S (R&#8347;)</text>
+        <!-- CR and CM -->
+        <g stroke="var(--svg-text-red)" stroke-width="2">
+          <line x1="196" y1="155" x2="216" y2="155"/><line x1="206" y1="145" x2="206" y2="165"/>
+        </g>
+        <text x="206" y="138" font-size="12.5" text-anchor="middle" fill="var(--svg-text-red)">CR</text>
+        <g stroke="var(--svg-text-purple)" stroke-width="2">
+          <line x1="300" y1="155" x2="320" y2="155"/><line x1="310" y1="145" x2="310" y2="165"/>
+        </g>
+        <text x="310" y="138" font-size="12.5" text-anchor="middle" fill="var(--svg-text-purple)">CM</text>
+        <!-- eccentricity -->
+        <line x1="206" y1="196" x2="310" y2="196" stroke="var(--svg-text)" stroke-width="1.2"/>
+        <line x1="206" y1="190" x2="206" y2="202" stroke="var(--svg-text)" stroke-width="1.2"/>
+        <line x1="310" y1="190" x2="310" y2="202" stroke="var(--svg-text)" stroke-width="1.2"/>
+        <text x="258" y="212" font-size="12" text-anchor="middle" fill="var(--svg-text)">e&#8339;</text>
+        <!-- applied force through CM -->
+        <line x1="310" y1="120" x2="310" y2="70" stroke="var(--svg-hub)" stroke-width="2.6" marker-end="url(#arT)"/>
+        <text x="322" y="98" font-size="12.5" fill="var(--svg-text-blue)">P&#8340; acts through CM</text>
+        <!-- torsional rotation -->
+        <path d="M170 155 a36 36 0 1 1 12 26" fill="none" stroke="var(--svg-text-red)" stroke-width="2" marker-end="url(#arR)"/>
+        <text x="140" y="118" font-size="12" fill="var(--svg-text-red)">T = P&#8340;(e&#8339;+e&#8336;)</text>
+        <!-- d distances -->
+        <line x1="206" y1="238" x2="92" y2="238" stroke="var(--svg-line)" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arD)"/>
+        <line x1="206" y1="238" x2="488" y2="238" stroke="var(--svg-line)" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arD)"/>
+        <text x="146" y="252" font-size="11.5" text-anchor="middle" fill="var(--svg-sub)">d&#8341;</text>
+        <text x="350" y="252" font-size="11.5" text-anchor="middle" fill="var(--svg-sub)">d&#8337;</text>
+        <!-- resulting shears -->
+        <text x="20" y="308" font-size="12" fill="var(--svg-text)">Wall W: &nbsp;P = P&#8324; + P&#8348; = P&#8340;&middot;R&#8341;/&Sigma;R &nbsp;+&nbsp; T&middot;R&#8341;d&#8341;/J&#8341;</text>
+        <text x="20" y="326" font-size="12" fill="var(--svg-text)">Wall E: &nbsp;P = P&#8324; + P&#8348; = P&#8340;&middot;R&#8337;/&Sigma;R &nbsp;+&nbsp; T&middot;R&#8337;d&#8337;/J&#8341;
+          &nbsp;&nbsp;<tspan fill="var(--svg-text-red)">(torsional term always ADDED)</tspan></text>
+      </svg>
+      <figcaption><b>Fig. 4.6</b> Direct and torsional shear in plan. The N and S walls (running in x) contribute
+      nothing to X&#772;<sub>r</sub> and take no direct shear from P<sub>y</sub>, but they <em>do</em> appear in the polar
+      moment of rigidity J<sub>r</sub> and do receive a torsional shear.</figcaption>
+    </figure>
+
+    <h3>4.6.5 &nbsp;Worked pattern &mdash; centre of mass and centre of rigidity</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Weight (kN)</th><th>X (m)</th><th>Y (m)</th><th>WX (kN&middot;m)</th><th>WY (kN&middot;m)</th></tr></thead>
+        <tbody>
+          <tr><td>Roof slab</td><td>450</td><td>7.5</td><td>5.0</td><td>3375</td><td>2250</td></tr>
+          <tr><td>N-wall</td><td>125</td><td>7.5</td><td>10.0</td><td>937.5</td><td>1250</td></tr>
+          <tr><td>S-wall</td><td>375</td><td>7.5</td><td>0.0</td><td>2812.5</td><td>0</td></tr>
+          <tr><td>E-wall</td><td>125</td><td>15.0</td><td>5.0</td><td>1875</td><td>625</td></tr>
+          <tr><td>W-wall</td><td>250</td><td>0.0</td><td>5.0</td><td>0</td><td>1250</td></tr>
+          <tr class="highlight-row"><td><strong>&Sigma;</strong></td><td><strong>1325</strong></td><td></td><td></td><td><strong>9000</strong></td><td><strong>5375</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula">
+      X&#772;<sub>CM</sub> = 9000/1325 = <b>6.79 m</b> from the west wall &nbsp;&nbsp;&nbsp;&nbsp;
+      Y&#772;<sub>CM</sub> = 5375/1325 = <b>4.06 m</b> from the south wall<br><br>
+      With, say, R<sub>N</sub> = 0.16 and R<sub>S</sub> = 0.84 and B = 10 m:<br>
+      Y&#772;<sub>r</sub> = (R<sub>N</sub>&times;B + R<sub>S</sub>&times;0)/(R<sub>N</sub>+R<sub>S</sub>) = (0.16&times;10)/(1.00) = <b>1.60 m</b><br>
+      &rarr; e<sub>y</sub> = 4.06 &minus; 1.60 = 2.46 m; &nbsp; e<sub>a</sub> = 0.05&times;10 = 0.50 m; &nbsp;
+      <b>total e<sub>y</sub> = 2.96 m</b><br>
+      Similarly if X&#772;<sub>r</sub> = 3.69 m and L = 15 m: e<sub>x</sub> = 6.79 &minus; 3.69 = 3.10 m;
+      e<sub>a</sub> = 0.75 m; <b>total e<sub>x</sub> = 3.85 m</b>
+    </div>
+    <p>The forces then follow, tabulating R, d, Rd and Rd&sup2; for every wall:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Wall</th><th>R<sub>x</sub></th><th>d<sub>y</sub> (m)</th><th>R<sub>x</sub>d<sub>y</sub></th><th>R<sub>x</sub>d<sub>y</sub>&sup2;</th><th>Direct shear (kN)</th><th>Torsional shear (kN)</th><th>Total (kN)</th></tr></thead>
+        <tbody>
+          <tr><td>N-wall</td><td>0.16</td><td>8.4</td><td>1.344</td><td>11.28</td><td>48</td><td>+89</td><td><strong>137</strong></td></tr>
+          <tr><td>S-wall</td><td>0.84</td><td>1.6</td><td>1.344</td><td>2.15</td><td>252</td><td>&minus;89 &rarr; taken as +89</td><td><strong>252</strong></td></tr>
+          <tr class="highlight-row"><td colspan="4"><strong>&Sigma; R d&sup2; = J<sub>r</sub> =</strong></td><td colspan="4"><strong>13.40</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula">
+      Torsional shear in the N-wall =
+      <span class="frac"><span class="fn">R<sub>x</sub> d<sub>y</sub></span><span class="fd">&Sigma;R<sub>x</sub>d<sub>y</sub>&sup2;</span></span>
+      &middot; V<sub>x</sub> e<sub>y</sub>
+      = <span class="frac"><span class="fn">1.344</span><span class="fd">13.40</span></span> &times; 888 = <b>89 kN</b>
+      <br><br>
+      <span style="font-size:.95em">The S-wall gets the same magnitude with the opposite sign; because the load reverses,
+      it is taken as +89 there too when checking, but the governing total for the S-wall is its (much larger) direct
+      shear.</span>
+    </div>
+
+    <h3>4.6.6 &nbsp;Design of a shear wall for in-plane seismic force &mdash; the 10-step method
+      <span class="year-tag">2078 Q6</span><span class="year-tag">2079 Q5b</span><span class="year-tag">2081 Q4b</span></h3>
+    <div class="exam-box">
+      <b>This exact numerical has been set four papers running. Learn the sequence.</b>
+      <ol>
+        <li><strong>Assume a wall thickness</strong> t (usually 230 mm, one brick).</li>
+        <li><strong>Section properties:</strong> A = L &times; t &nbsp;&nbsp; Z = tL&sup2;/6.</li>
+        <li><strong>Self weight</strong> W = L &times; H &times; t &times; &gamma; &nbsp;(&gamma; = 20 kN/m&sup3;),
+          plus any floor/roof load if the question gives it.</li>
+        <li><strong>Lateral force</strong> F = (seismic coefficient) &times; W &mdash; e.g. F = 0.2&thinsp;W for 0.2 g.</li>
+        <li><strong>Shear check:</strong> &tau; = F/A &nbsp;&le;&nbsp; &tau;<sub>per</sub> = 0.1 + f<sub>d</sub>/6,
+          with f<sub>d</sub> = W/A.</li>
+        <li><strong>Axial compressive stress</strong> f<sub>ca</sub> = W/A.</li>
+        <li><strong>Bending moment.</strong> For a load uniformly distributed over the height, the resultant acts at
+          mid-height, so <strong>M = F &times; H/2</strong>. (If the force is concentrated at roof level, M = F &times; H.)</li>
+        <li><strong>Flexural stress</strong> f<sub>cb</sub> = M/Z.</li>
+        <li><strong>Slenderness and eccentricity:</strong> t<sub>eff</sub> = t, SR = h<sub>eff</sub>/t<sub>eff</sub>;
+          equivalent eccentricity e = M/W; eccentricity ratio e/L. Read k<sub>s</sub> from IS 1905 Table 9
+          (interpolating), pick the unit strength and mortar grade, read f<sub>b</sub> from Table 8.</li>
+        <li><strong>Compare:</strong>
+          <ul>
+            <li>axial: f<sub>ca</sub> &le; f<sub>ac</sub> = k<sub>s</sub>f<sub>b</sub></li>
+            <li>combined: f<sub>ca</sub> + f<sub>cb</sub> &le; f<sub>acb</sub> = 1.25 k<sub>s</sub>f<sub>b</sub></li>
+            <li>tension: f<sub>t</sub> = f<sub>cb</sub> &minus; f<sub>ca</sub> &le; f<sub>at</sub></li>
+          </ul>
+          If all three pass &mdash; <strong>HENCE SAFE</strong>. If not, increase t, or the unit/mortar strength.</li>
+      </ol>
+    </div>
+
+    <div class="callout">
+      <strong>Worked check &mdash; 2079 Bhadra Q5b (4.2 m &times; 3.3 m, 0.1 g, t = 230 mm).</strong><br>
+      A = 4200&times;230 = 9.66&times;10<sup>5</sup> mm&sup2;; &nbsp; Z = 230&times;4200&sup2;/6 = 6.76&times;10<sup>8</sup> mm&sup3;<br>
+      W = 4.2&times;3.3&times;0.23&times;20 = 63.76 kN; &nbsp; F = 0.1&times;63.76 = 6.37 kN<br>
+      &tau; = 6370/9.66&times;10<sup>5</sup> = 0.006 N/mm&sup2; &nbsp;&lt;&nbsp; &tau;<sub>per</sub> = 0.1 + (63760/9.66&times;10<sup>5</sup>)/6 = 0.11 N/mm&sup2; &check;<br>
+      f<sub>ca</sub> = 63760/9.66&times;10<sup>5</sup> = 0.066 N/mm&sup2;<br>
+      M = 6370&times;3300/2 = 10.51&times;10<sup>6</sup> N&middot;mm; &nbsp; f<sub>cb</sub> = M/Z = 0.015 N/mm&sup2;<br>
+      SR = 3300/230 = 14.35; &nbsp; e = M/W = 10.51&times;10<sup>6</sup>/63760 = 165 mm; &nbsp; e/L = 165/4200 = 1/25 &asymp; 1/24<br>
+      From Table 9 (SR 14.35, e/t = 1/24): k<sub>s</sub> = 0.76 &minus; (0.76&minus;0.71)(14.35&minus;14)/(16&minus;14) = <strong>0.751</strong><br>
+      Take unit 5 N/mm&sup2; with M1 mortar &rarr; f<sub>b</sub> = 0.50 N/mm&sup2; (Table 8)<br>
+      f<sub>ac</sub> = 0.751&times;0.50 = 0.375 &gt; 0.066 &check; &nbsp;&nbsp;
+      f<sub>acb</sub> = 1.25&times;0.375 = 0.469 &gt; 0.081 &check; &nbsp;&rarr;&nbsp; <strong>SAFE.</strong>
+    </div>
+
+    <!-- ══════════════ 4.7 ══════════════ -->
+    <h2>4.7 &nbsp;Increase in Axial Load in Piers due to Overturning</h2>
+
+    <p>The storey shear applied above a level produces an <strong>overturning moment</strong> at that level. In a
+    perforated wall this moment is resisted by the row of piers acting together as one composite section: the piers on
+    the leeward side gain axial compression and those on the windward side lose it (and may go into tension).</p>
+
+    <div class="formula">
+      <b>Overturning moment</b> at the level considered:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; M<sub>ovt</sub> = &Sigma; V<sub>j</sub> h<sub>j</sub>
+      &nbsp;&nbsp;(sum of every storey force above the level, times its height above that level)<br><br>
+
+      <b>Increase in axial load on an individual pier:</b><br><br>
+      <b>P<sub>ovt</sub> = M<sub>ovt</sub> &middot;
+      <span class="frac"><span class="fn">l<sub>i</sub> A<sub>i</sub></span><span class="fd">I<sub>n</sub></span></span></b><br><br>
+      <span style="font-size:.95em">
+      A<sub>i</sub> &nbsp;= cross-sectional area of the pier in question<br>
+      l<sub>i</sub> &nbsp;= distance from the <b>centroid of the net wall section</b> in the storey to the centroid of
+      that pier, &nbsp; l&#772; = &Sigma;l<sub>i</sub>A<sub>i</sub> / &Sigma;A<sub>i</sub><br>
+      I<sub>n</sub> = moment of inertia of the <b>net wall section</b> = &Sigma;(A<sub>i</sub>l<sub>i</sub>&sup2; + I<sub>i</sub>),
+      with I<sub>i</sub> = t&thinsp;d<sub>i</sub>&sup3;/12 the pier's own second moment of area
+      </span>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch4-overturning-pier.png" alt="Elevation of a multi-storey wall with storey shears V2 V3 Vr and heights h2 h3, showing the overturning moment at a critical level, three numbered piers in cross section and the resulting linear stress distribution producing pier axial loads P1 P2 P3">
+      <figcaption><b>Fig. 4.7</b> Axial load on a pier due to overturning. The storey forces above the critical level
+      produce M<sub>ovt</sub>; the resulting linear stress distribution across the net wall section gives each pier its
+      share P<sub>1</sub>, P<sub>2</sub>, P<sub>3</sub>.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>Worked pattern</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pier</th><th>A<sub>i</sub> (m&sup2;)</th><th>Distance from left edge (m)</th><th>A<sub>i</sub>l (m&sup3;)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>0.50</td><td>1.0</td><td>0.500</td></tr>
+          <tr><td>2</td><td>0.75</td><td>4.5</td><td>3.375</td></tr>
+          <tr><td>3</td><td>0.75</td><td>8.5</td><td>6.375</td></tr>
+          <tr class="highlight-row"><td><strong>&Sigma;</strong></td><td><strong>2.00</strong></td><td></td><td><strong>10.25</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Centroid of the net section from the left edge = 10.25 / 2.00 = <strong>5.125 m</strong>. Then, taking
+    l<sub>i</sub> as the distance of each pier from that centroid:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Pier</th><th>A<sub>i</sub> (m&sup2;)</th><th>l<sub>i</sub> (m)</th><th>A<sub>i</sub>l<sub>i</sub>&sup2; (m&#8308;)</th><th>I<sub>i</sub> = td&sup3;/12 (m&#8308;)</th><th>I<sub>n</sub> = A<sub>i</sub>l<sub>i</sub>&sup2; + I<sub>i</sub></th><th>A<sub>i</sub>l<sub>i</sub></th><th>P<sub>ovt</sub> (kN)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>0.50</td><td>4.125</td><td>8.50</td><td>0.167</td><td>8.667</td><td>2.06</td><td>365.07</td></tr>
+          <tr><td>2</td><td>0.75</td><td>0.625</td><td>0.290</td><td>0.562</td><td>0.852</td><td>0.47</td><td>83.29</td></tr>
+          <tr><td>3</td><td>0.75</td><td>3.375</td><td>8.54</td><td>0.562</td><td>9.102</td><td>2.53</td><td>448.36</td></tr>
+          <tr class="highlight-row"><td colspan="5"><strong>&Sigma; I<sub>n</sub> =</strong></td><td><strong>18.621</strong></td><td colspan="2"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula">
+      P<sub>ovt</sub> = M<sub>ovt</sub> &middot;
+      <span class="frac"><span class="fn">l<sub>i</sub>A<sub>i</sub></span><span class="fd">I<sub>n</sub></span></span>
+      = <span class="frac"><span class="fn">3300</span><span class="fd">18.621</span></span> l<sub>i</sub>A<sub>i</sub>
+      = 177.22 &thinsp; l<sub>i</sub>A<sub>i</sub> &nbsp;&nbsp;(kN, for M<sub>ovt</sub> = 3300 kN&middot;m)
+    </div>
+    <div class="callout">
+      <strong>Why this matters.</strong> The pier that gains axial load must be re-checked for
+      <em>compressive</em> stress (with the increased load), and the pier that loses it must be checked for
+      <em>tension</em> and for reduced <em>shear friction</em> &mdash; the shear capacity
+      &tau;<sub>per</sub> = 0.1 + f<sub>d</sub>/6 falls when f<sub>d</sub> falls. Because the earthquake reverses, every
+      pier must be checked for <strong>both</strong> the increase and the decrease.
+    </div>
+
+    <!-- ══════════════ 4.8 ══════════════ -->
+    <h2>4.8 &nbsp;Wall Subjected to Out-of-Plane Bending
+      <span class="year-tag">2078 Bhadra, Q5</span><span class="year-tag">2080 Bhadra, Q3b</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Design a wall of a basketball sports building of height 6 m. Roof 150 mm thick RCC slab, wind load 850 N/m&sup2;. Wall connected by metal anchor with the roof structure. [10] <em>(2080 Bhadra, Q3b)</em></li>
+        <li>Design an exterior wall of a single storey workshop of height 4 m. Load on wall: 30 kN/m from roof and wind load 750 N/m&sup2;. Wall connected by metal anchor with roof structure. [14] <em>(2078 Bhadra, Q5)</em></li>
+      </ol>
+    </div>
+
+    <h3>4.8.1 &nbsp;The action</h3>
+    <p>A wall loaded perpendicular to its plane by wind or by out-of-plane seismic inertia behaves as a
+    <strong>vertical strip spanning between the floor and the roof</strong>. The lateral pressure produces a bending
+    moment, which combines with the vertical load to give a resultant acting at an eccentricity e = M/W.</p>
+    <div class="formula">
+      <b>Design moment for a wall anchored top and bottom (partially restrained):</b><br><br>
+      <b>M = <span class="frac"><span class="fn">p H&sup2;</span><span class="fd">10</span></span></b>
+      &nbsp;&nbsp;per metre run &nbsp;&nbsp;(p = lateral pressure in N/m&sup2;, H = wall height in m)<br><br>
+      <span style="font-size:.95em">
+      For a simply-supported strip the value would be pH&sup2;/8 and for a propped cantilever pH&sup2;/8 at the base;
+      IS 1905/SP 20 practice for a wall <em>partially constrained</em> at both ends is <b>pH&sup2;/10</b>, with the moment
+      taken as critical at the base <em>and</em> at mid-height. If the wall is free at the top (parapet), use the
+      cantilever value pH&sup2;/2.</span><br><br>
+      <b>Section properties per metre run:</b> &nbsp; A = 1000&thinsp;t &nbsp;mm&sup2; &nbsp;&nbsp;
+      Z = <span class="frac"><span class="fn">b t&sup2;</span><span class="fd">6</span></span>
+      = <span class="frac"><span class="fn">1000 t&sup2;</span><span class="fd">6</span></span> &nbsp;mm&sup3;
+    </div>
+
+    <h3>4.8.2 &nbsp;The two critical checks</h3>
+    <div class="formula">
+      <b>At the BASE &mdash; compression governs</b> (largest vertical load):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; f<sub>c</sub> = <span class="frac"><span class="fn">W</span><span class="fd">A</span></span>
+      + <span class="frac"><span class="fn">M</span><span class="fd">Z</span></span>
+      &nbsp;&nbsp;&le;&nbsp;&nbsp; 1.25 &times; k<sub>s</sub> f<sub>b</sub><br><br>
+
+      <b>At MID-HEIGHT &mdash; tension governs</b> (only half the wall self-weight acts, so the stabilising
+      precompression is least):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp; f<sub>t</sub> = <span class="frac"><span class="fn">M</span><span class="fd">Z</span></span>
+      &minus; <span class="frac"><span class="fn">W</span><span class="fd">A</span></span>
+      &nbsp;&nbsp;&le;&nbsp;&nbsp; f<sub>at</sub> &nbsp;&nbsp;(and ideally &le; 0, i.e. no tension at all)
+    </div>
+    <div class="callout">
+      <strong>The single most important idea in out-of-plane design:</strong> the wall is held up by its own
+      <em>precompression</em>. Tension appears when M/Z exceeds W/A, i.e. when the eccentricity e = M/W exceeds t/6 &mdash;
+      the middle-third rule again. That is why upper-storey walls, gables and parapets (little vertical load) are the
+      most vulnerable, exactly as observed in the field (Chapter 3, &sect;3.6.4).
+    </div>
+
+    <h3>4.8.3 &nbsp;Nominal out-of-plane load capacity</h3>
+    <div class="formula">
+      <b>Allowable axial compressive stress</b> allowing for slenderness:<br>
+      &nbsp;&nbsp; F<sub>a</sub> = 0.25 f&prime;<sub>m</sub> &#91; 1 &minus; (h/140r)&sup2; &#93;
+      &nbsp;&nbsp;&nbsp; for h/r &le; 99<br>
+      &nbsp;&nbsp; F<sub>a</sub> = 0.25 f&prime;<sub>m</sub> (70r/h)&sup2;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for h/r &gt; 99<br>
+      <span style="font-size:.95em">h/r = slenderness ratio of the wall (r = radius of gyration),
+      f&prime;<sub>m</sub> = design compressive strength of masonry.</span><br><br>
+
+      <b>Nominal allowable load carrying capacity in out-of-plane, P<sub>n</sub>:</b><br>
+      &nbsp;&nbsp; P<sub>n</sub> = f&prime;<sub>m</sub> b t &#91; 1/(1 + 6e/t) &#93;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for 0 &lt; e &lt; t/6<br>
+      &nbsp;&nbsp; P<sub>n</sub> = b t f&prime;<sub>m</sub> &middot;
+      <span class="frac"><span class="fn">3</span><span class="fd">4</span></span>
+      &#91; 1 &minus; 2e/t &#93;
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for e &gt; t/6
+    </div>
+
+    <h3>4.8.4 &nbsp;Axial force&ndash;moment interaction</h3>
+    <p>A wall carrying axial load <em>and</em> out-of-plane moment is checked on an interaction diagram. If
+    P<sub>0</sub> = F<sub>m</sub>&middot;A is the section capacity at zero eccentricity, and M<sub>0</sub> =
+    F<sub>m</sub>&middot;S is the moment that can be carried at zero axial load, then the linear interaction is:</p>
+    <div class="formula">
+      <b><span class="frac"><span class="fn">P</span><span class="fd">P<sub>0</sub></span></span>
+      + <span class="frac"><span class="fn">M</span><span class="fd">M<sub>0</sub></span></span>
+      &nbsp;=&nbsp; 1</b>
+      &nbsp;&nbsp;&nbsp;&nbsp;(the &ldquo;unity equation&rdquo;) &mdash; the design point (P, M) must lie
+      <em>inside</em> this line.
+    </div>
+    <figure class="figure">
+      <img src="../photo/ch4-interaction-diagram.png" alt="Diagram of a masonry wall subjected to combined axial load and out-of-plane moment, shown as an equivalent eccentric load, with the corresponding linear axial load versus moment interaction diagram">
+      <figcaption><b>Fig. 4.8</b> (a) A wall subjected to axial and out-of-plane loads, replaced by an equivalent load at
+      eccentricity e; (b) the linear interaction diagram P/P<sub>0</sub> + M/M<sub>0</sub> = 1 (Drysdale, Hamid &amp;
+      Baker, 1994).<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>4.8.5 &nbsp;Worked pattern &mdash; transverse (wind) wall design</h3>
+    <div class="exam-box">
+      <b>Design steps (2078 Q5 / 2080 Q3b)</b>
+      <ol>
+        <li>Assume t (say 230 mm). Take a <strong>1 m run</strong> of wall.</li>
+        <li>Vertical load W = roof load + self weight = w<sub>roof</sub> + t&times;&gamma;&times;H.</li>
+        <li>A = 1000t mm&sup2;; Z = 1000t&sup2;/6 mm&sup3;.</li>
+        <li>M = pH&sup2;/10 (in N&middot;mm per metre run).</li>
+        <li>Compressive stress at the base f<sub>c</sub> = W/A + M/Z.</li>
+        <li>Tensile stress at mid-height f<sub>t</sub> = M/Z &minus; W<sub>mid</sub>/A, using only the load present at
+          mid-height.</li>
+        <li>SR = h<sub>eff</sub>/t<sub>eff</sub>; e = M/W; e/t &rarr; k<sub>s</sub> from Table 9.</li>
+        <li>Choose unit and mortar &rarr; f<sub>b</sub> from Table 8; f<sub>per</sub> = k<sub>s</sub>f<sub>b</sub>
+          (&times;1.25 where the excess is due to bending, and the whole thing may be raised by 1/3 for wind/seismic).</li>
+        <li>Verify f<sub>c</sub> &le; permissible and f<sub>t</sub> &le; f<sub>at</sub>. If tension is excessive,
+          increase t, add piers/buttresses (reducing the span), or provide vertical reinforcement.</li>
+      </ol>
+      <b>Illustration &mdash; 3.5 m wall, 30 kN/m roof load, p = 1000 N/m&sup2;, t = 230 mm:</b><br>
+      Self weight = 0.23&times;20&times;3.5 = 16.10 kN/m &rarr; W = 46.10 kN/m<br>
+      A = 230&times;1000 = 230&thinsp;000 mm&sup2;; &nbsp; Z = 1000&times;230&sup2;/6 = 8.817&times;10<sup>6</sup> mm&sup3;<br>
+      M = 1000&times;3.5&sup2;/10 = 1225 N&middot;m = 1.225&times;10<sup>6</sup> N&middot;mm per metre run<br>
+      f<sub>c</sub> = 46100/230000 + 1.225&times;10<sup>6</sup>/8.817&times;10<sup>6</sup> = 0.20 + 0.14 =
+      <strong>0.34 N/mm&sup2;</strong> (compression at the base)<br>
+      f<sub>t</sub> = M/Z &minus; W/A = 0.14 &minus; 0.165 = <strong>&minus;0.025 N/mm&sup2;</strong> &mdash; still
+      compressive, so <strong>no tension develops</strong>. &check;
+    </div>
+
+    <!-- ══════════════ 4.9 ══════════════ -->
+    <h2>4.9 &nbsp;Stability Check of a Flexural Wall for Out-of-Plane Forces</h2>
+    <p>Stability is a separate question from stress: even if the stresses are acceptable, a slender wall can become
+    unstable. The checks are:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Check</th><th>Criterion</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Slenderness</strong></td><td>SR = h<sub>eff</sub>/t<sub>eff</sub> &le; the limiting value: <strong>27</strong> for load-bearing walls in cement mortar, 20/13 in lime mortar, 30 for panel and curtain walls, <strong>10 for free-standing walls and parapets</strong>.</td></tr>
+          <tr><td>2</td><td><strong>Height-to-thickness (h/t) ratio</strong></td><td>Governs out-of-plane rocking stability. Typical limits used in assessment: h/t &le; 20 for a wall in a one-storey building, &le; 14&ndash;16 for the top storey of a multi-storey building, &le; 9 for a parapet.</td></tr>
+          <tr><td>3</td><td><strong>No tension / middle third</strong></td><td>e = M/W &le; t/6 at every section, so the resultant stays within the middle third and the whole section remains in compression.</td></tr>
+          <tr><td>4</td><td><strong>Overturning of the strip</strong></td><td>Restoring moment from the vertical load, W&middot;t/2, must exceed the overturning moment from the lateral pressure with a factor of safety (typically 1.5&ndash;2): &nbsp; FS = (W t/2) / (p H&sup2;/8) &ge; 1.5.</td></tr>
+          <tr><td>5</td><td><strong>Support / anchorage</strong></td><td>The assumed restraint must actually exist &mdash; metal anchors to the roof, bands, and cross walls at the assumed spacing. <em>This is why the exam questions always say &ldquo;the wall is tied with metal anchors&rdquo;.</em></td></tr>
+          <tr><td>6</td><td><strong>Span direction</strong></td><td>Vertical span (floor to roof), horizontal span (between cross walls), or two-way &mdash; take the smaller effective span and use the corresponding moment coefficient.</td></tr>
+          <tr><td>7</td><td><strong>Shear at the supports</strong></td><td>The reaction pH/2 must be transferable to the diaphragm and the foundation through the anchors and bed joint.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>If the wall fails the stability check</strong> the remedies, in order of cost, are: reduce the span by
+      adding cross walls, buttresses or pilasters; add a lintel/roof band; increase the thickness; add vertical
+      reinforcement in the wall (containment reinforcement); or add a confining tie-column.
+    </div>
+
+    <!-- ══════════════ 4.10 ══════════════ -->
+    <h2>4.10 &nbsp;Additional Forces due to Arching Action (Rigid and Gapped Arching)</h2>
+
+    <h3>4.10.1 &nbsp;Arching over an opening (vertical load dispersion)</h3>
+    <div class="formula">
+      <b>Arching</b> is the phenomenon by which part of the load over an opening in a wall gets <b>transferred to the
+      sides of the opening</b>, so that the lintel below carries only a fraction of the wall above it. IS 1905
+      cl. 5.3.2 permits account to be taken of the arching action of well-bonded masonry walls supported on lintels and
+      beams, in accordance with established practice.
+    </div>
+    <p><strong>Conditions required for arching action to develop:</strong></p>
+    <ul>
+      <li>The masonry units must have <strong>good shear strength</strong> and <strong>good bond</strong>, laid in proper
+        masonry bond with a <strong>good quality mortar</strong>.</li>
+      <li>The wall on <strong>both sides of the opening must be long enough</strong> to act as effective
+        <strong>abutments</strong> for the arched masonry above &mdash; the horizontal thrust of the arch has to be
+        provided by the shear resistance of the masonry at springing level on both sides. If an opening is too close to
+        the end of a wall, the shear stress at the springing becomes excessive and the arch cannot form.</li>
+      <li>There must be sufficient <strong>height of masonry above the opening</strong> to contain the arch.</li>
+    </ul>
+    <p><strong>Design consequence.</strong> The self weight of the wall and any load from the floor above the
+    <em>equilateral triangle</em> over the opening are transferred to the sides; only the masonry <em>within</em> the
+    triangle, plus any load applied below a horizontal plane 250 mm above the apex, is carried by the lintel. Two
+    important limits follow:</p>
+    <ol>
+      <li>The <strong>increased axial stresses</strong> in the masonry beside the opening, associated with the arching
+        action, <strong>shall not exceed the permissible stresses</strong> of IS 1905 cl. 5.4. This is the
+        &ldquo;additional force due to arching action&rdquo; of the syllabus and the tutorial list.</li>
+      <li>The <strong>bearing area of the lintel</strong> at each end must be sufficient to transfer the lintel reaction
+        <em>and</em> the load due to arching action without exceeding the permissible stress. The bearing length shall be
+        not less than 90 mm nor less than one-tenth of the span.</li>
+    </ol>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 300" width="620" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arA" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-text-red)"/></marker>
+          <pattern id="brick" width="26" height="14" patternUnits="userSpaceOnUse">
+            <rect width="26" height="14" fill="var(--svg-orange)"/>
+            <path d="M0 14 H26 M13 0 V14" stroke="var(--svg-orange-s)" stroke-width="0.8" fill="none"/>
+          </pattern>
+        </defs>
+        <!-- wall -->
+        <rect x="60" y="40" width="500" height="200" fill="url(#brick)" stroke="var(--svg-text)" stroke-width="1.4"/>
+        <!-- opening -->
+        <rect x="230" y="170" width="160" height="70" fill="var(--svg-bg)" stroke="var(--svg-text)" stroke-width="1.4"/>
+        <text x="310" y="212" font-size="12.5" text-anchor="middle" fill="var(--svg-sub)">opening, span L</text>
+        <!-- lintel -->
+        <rect x="214" y="158" width="192" height="12" fill="var(--svg-hub)"/>
+        <text x="180" y="168" font-size="11.5" text-anchor="end" fill="var(--svg-text-blue)">lintel</text>
+        <!-- equilateral triangle load -->
+        <polygon points="230,158 390,158 310,20" fill="var(--svg-red)" opacity=".38" stroke="var(--svg-red-s)" stroke-width="1.6"/>
+        <text x="310" y="120" font-size="12" text-anchor="middle" fill="var(--svg-text-red)">load carried</text>
+        <text x="310" y="136" font-size="12" text-anchor="middle" fill="var(--svg-text-red)">by the LINTEL</text>
+        <text x="310" y="152" font-size="11" text-anchor="middle" fill="var(--svg-sub)">(60&deg; equilateral triangle)</text>
+        <!-- arch thrust lines -->
+        <path d="M230 158 Q310 44 390 158" fill="none" stroke="var(--svg-text-green)" stroke-width="2.4" stroke-dasharray="7 4"/>
+        <text x="452" y="70" font-size="12" fill="var(--svg-text-green)">arch (line of thrust)</text>
+        <!-- thrust arrows into abutments -->
+        <line x1="226" y1="158" x2="176" y2="176" stroke="var(--svg-text-red)" stroke-width="2.2" marker-end="url(#arA)"/>
+        <line x1="394" y1="158" x2="444" y2="176" stroke="var(--svg-text-red)" stroke-width="2.2" marker-end="url(#arA)"/>
+        <text x="140" y="200" font-size="11.5" text-anchor="middle" fill="var(--svg-text-red)">thrust into</text>
+        <text x="140" y="215" font-size="11.5" text-anchor="middle" fill="var(--svg-text-red)">the abutment</text>
+        <text x="480" y="200" font-size="11.5" text-anchor="middle" fill="var(--svg-text-red)">thrust into</text>
+        <text x="480" y="215" font-size="11.5" text-anchor="middle" fill="var(--svg-text-red)">the abutment</text>
+        <!-- load above -->
+        <text x="310" y="34" font-size="11.5" text-anchor="middle" fill="var(--svg-sub)">load above the triangle goes to the sides &mdash; NOT to the lintel</text>
+        <!-- ground -->
+        <rect x="40" y="240" width="540" height="10" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+        <text x="60" y="272" font-size="11.5" fill="var(--svg-sub)">The wall beside the opening must be long enough, and strong enough in shear at springing level, to act as an abutment.</text>
+      </svg>
+      <figcaption><b>Fig. 4.9</b> Arching action over an opening. Only the masonry inside the 60&deg; equilateral triangle
+      is carried by the lintel; the rest arches over and is delivered as an inclined thrust into the wall on either side,
+      raising the axial stress there.</figcaption>
+    </figure>
+
+    <h3>4.10.2 &nbsp;Out-of-plane arching &mdash; rigid and gapped</h3>
+    <p>A second, quite different arching mechanism greatly increases the <em>out-of-plane</em> capacity of a wall panel
+    that is built <strong>tightly between stiff supports</strong> &mdash; for example a wall panel between two RC floor
+    slabs, or an infill panel within a stiff frame.</p>
+    <div class="formula">
+      <b>The mechanism.</b> When the panel bends out-of-plane it cracks at mid-height and at the two supports, forming a
+      <b>three-hinge mechanism</b>. Because the supports prevent the panel from lengthening, the two halves of the panel
+      jam against them and a <b>compressive membrane (arch) thrust</b> develops <em>within the thickness of the wall</em>.
+      The resistance is then supplied by the couple between the thrust at the hinges, not by the (almost non-existent)
+      flexural tensile strength of the masonry. Out-of-plane capacities several times the cracked flexural capacity are
+      obtained.
+    </div>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Rigid arching</th><th>Gapped arching</th></tr></thead>
+        <tbody>
+          <tr><td>Condition at the supports</td><td>The panel is built <strong>tight</strong> against supports that are effectively rigid and can take the thrust &mdash; <strong>no gap</strong>.</td><td>There is an initial <strong>gap g</strong> at the top of the panel &mdash; from shrinkage or creep of the slab above, construction tolerance, or a deliberate soft joint.</td></tr>
+          <tr><td>When the arch develops</td><td><strong>Immediately</strong>, as soon as the panel starts to deflect.</td><td>Only <strong>after</strong> the panel has rotated enough to close the gap.</td></tr>
+          <tr><td>Effective lever arm</td><td>Full &mdash; approximately (t &minus; a &minus; &delta;), where a is the depth of the compressive contact zone at the hinge and &delta; the mid-height deflection.</td><td>Reduced to approximately (t &minus; a &minus; &delta; &minus; g) &mdash; every millimetre of gap is taken straight off the lever arm.</td></tr>
+          <tr><td>Capacity</td><td><strong>Highest.</strong> Classical three-hinge model: thrust T &asymp; 0.85 f&prime;<sub>m</sub> a b; arch moment M<sub>arch</sub> = T &times; (lever arm); uniform pressure q = 8 M<sub>arch</sub>/H&sup2;.</td><td><strong>Reduced</strong>, and falls rapidly as g grows. Beyond a certain gap the arch never forms and the wall reverts to simple (cracked flexural) behaviour.</td></tr>
+          <tr><td>Sensitivity</td><td>Sensitive to support <em>stiffness</em> &mdash; a flexible support spreads and the thrust relaxes.</td><td>Very sensitive to the <em>gap</em>, which is a construction-quality issue, not a design one.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 300" width="620" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arG" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-text-red)"/></marker>
+          <marker id="arP" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-hub)"/></marker>
+        </defs>
+        <!-- (a) RIGID arching -->
+        <text x="150" y="22" font-size="13" font-weight="bold" text-anchor="middle" fill="var(--svg-text-green)">(a) RIGID arching &mdash; no gap</text>
+        <g>
+          <rect x="70" y="36" width="160" height="16" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <rect x="70" y="228" width="160" height="16" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <text x="150" y="48" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">rigid support (RC slab)</text>
+          <!-- deflected wall halves -->
+          <polygon points="126,52 150,52 168,140 144,140" fill="var(--svg-orange)" stroke="var(--svg-orange-s)" stroke-width="1.4"/>
+          <polygon points="144,140 168,140 150,228 126,228" fill="var(--svg-orange)" stroke="var(--svg-orange-s)" stroke-width="1.4"/>
+          <!-- hinges -->
+          <circle cx="128" cy="54" r="4.5" fill="var(--svg-red-s)"/>
+          <circle cx="166" cy="140" r="4.5" fill="var(--svg-red-s)"/>
+          <circle cx="128" cy="226" r="4.5" fill="var(--svg-red-s)"/>
+          <text x="112" y="74" font-size="10.5" text-anchor="end" fill="var(--svg-text-red)">hinge</text>
+          <text x="190" y="144" font-size="10.5" fill="var(--svg-text-red)">hinge</text>
+          <text x="112" y="214" font-size="10.5" text-anchor="end" fill="var(--svg-text-red)">hinge</text>
+          <!-- thrust line -->
+          <path d="M128 54 L166 140 L128 226" fill="none" stroke="var(--svg-text-green)" stroke-width="2.4" stroke-dasharray="6 4"/>
+          <text x="196" y="188" font-size="11" fill="var(--svg-text-green)">arch thrust T</text>
+          <!-- lateral pressure -->
+          <line x1="46" y1="80" x2="112" y2="80" stroke="var(--svg-hub)" stroke-width="2" marker-end="url(#arP)"/>
+          <line x1="46" y1="140" x2="130" y2="140" stroke="var(--svg-hub)" stroke-width="2" marker-end="url(#arP)"/>
+          <line x1="46" y1="200" x2="112" y2="200" stroke="var(--svg-hub)" stroke-width="2" marker-end="url(#arP)"/>
+          <text x="42" y="118" font-size="11.5" text-anchor="end" fill="var(--svg-text-blue)">q</text>
+          <text x="150" y="268" font-size="11" text-anchor="middle" fill="var(--svg-text-green)">Full lever arm &rarr; HIGH capacity</text>
+        </g>
+        <!-- divider -->
+        <line x1="310" y1="30" x2="310" y2="280" stroke="var(--svg-line)" stroke-width="1" stroke-dasharray="5 4"/>
+        <!-- (b) GAPPED arching -->
+        <text x="470" y="22" font-size="13" font-weight="bold" text-anchor="middle" fill="var(--svg-text-orange)">(b) GAPPED arching &mdash; initial gap g</text>
+        <g transform="translate(320,0)">
+          <rect x="70" y="36" width="160" height="16" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <rect x="70" y="228" width="160" height="16" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <!-- gap -->
+          <rect x="120" y="52" width="52" height="10" fill="var(--svg-red)" stroke="var(--svg-red-s)" stroke-width="1.2"/>
+          <line x1="182" y1="57" x2="212" y2="57" stroke="var(--svg-text-red)" stroke-width="1.4" marker-end="url(#arG)"/>
+          <text x="216" y="61" font-size="11.5" fill="var(--svg-text-red)">gap g</text>
+          <!-- wall halves -->
+          <polygon points="126,62 150,62 172,146 148,146" fill="var(--svg-orange)" stroke="var(--svg-orange-s)" stroke-width="1.4"/>
+          <polygon points="148,146 172,146 150,228 126,228" fill="var(--svg-orange)" stroke="var(--svg-orange-s)" stroke-width="1.4"/>
+          <circle cx="128" cy="64" r="4.5" fill="var(--svg-red-s)"/>
+          <circle cx="170" cy="146" r="4.5" fill="var(--svg-red-s)"/>
+          <circle cx="128" cy="226" r="4.5" fill="var(--svg-red-s)"/>
+          <path d="M128 64 L170 146 L128 226" fill="none" stroke="var(--svg-text-orange)" stroke-width="2.4" stroke-dasharray="6 4"/>
+          <line x1="46" y1="90" x2="112" y2="90" stroke="var(--svg-hub)" stroke-width="2" marker-end="url(#arP)"/>
+          <line x1="46" y1="146" x2="134" y2="146" stroke="var(--svg-hub)" stroke-width="2" marker-end="url(#arP)"/>
+          <line x1="46" y1="200" x2="112" y2="200" stroke="var(--svg-hub)" stroke-width="2" marker-end="url(#arP)"/>
+          <text x="42" y="124" font-size="11.5" text-anchor="end" fill="var(--svg-text-blue)">q</text>
+          <text x="150" y="268" font-size="11" text-anchor="middle" fill="var(--svg-text-orange)">Lever arm reduced by g &rarr; LOWER capacity</text>
+          <text x="150" y="284" font-size="10.5" text-anchor="middle" fill="var(--svg-sub)">large g &rarr; no arch at all</text>
+        </g>
+      </svg>
+      <figcaption><b>Fig. 4.10</b> Out-of-plane arching. In (a) the panel is built tight between rigid supports, three
+      hinges form and a compressive thrust arches through the wall thickness. In (b) an initial gap g at the top must be
+      closed before the arch can develop, so the lever arm and hence the capacity are reduced.</figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>Where this matters in practice.</strong> Arching is why a tightly built infill panel between RC slabs
+      survives out-of-plane shaking far better than the same panel with a shrinkage gap at the top; and why a soft joint
+      deliberately provided to isolate the infill from the frame <em>removes</em> the arching benefit. In assessment
+      codes, walls subject to significant arching action from a stiff top support (e.g. a concrete ring beam) are
+      explicitly excluded from the ordinary out-of-plane slenderness checks, because those checks would be far too
+      conservative. Use the exact coefficients given in your textbook or code &mdash; the three-hinge relation above is
+      the classical model and different codes calibrate it differently.
+    </div>
+
+    <!-- ══════════════ Quick revision ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Quick Revision &mdash; Formula Sheet</h2>
+      <ul>
+        <li><strong>Base shear:</strong> V<sub>B</sub> = A<sub>h</sub>W, A<sub>h</sub> = (Z/2)(I/R)(S<sub>a</sub>/g); I/R &le; 1.0.
+          Masonry typical: 0.36/2 &times; 1/3 &times; 2.5 = <strong>0.15</strong>.</li>
+        <li><strong>Seismic weight:</strong> DL + n%LL; <strong>roof live load excluded</strong>; walls split half up, half down.</li>
+        <li><strong>Storey force:</strong> Q<sub>i</sub> = V<sub>B</sub> W<sub>i</sub>h<sub>i</sub>&sup2; / &Sigma;W<sub>j</sub>h<sub>j</sub>&sup2;.
+          <strong>Storey shear</strong> = sum of forces above.</li>
+        <li><strong>Diaphragm:</strong> rigid &rarr; distribute by <em>rigidity</em>, torsion transmitted;
+          flexible &rarr; distribute by <em>tributary area</em>, no torsion. Rigid if midpoint deflection &lt; 2&times; average end deflection.</li>
+        <li><strong>Pier rigidity:</strong> cantilever R = Et/[4(h/d)&sup3;+3(h/d)]; fixed R = Et/[(h/d)&sup3;+3(h/d)].
+          G = 0.4E.</li>
+        <li><strong>Combining piers:</strong> side by side &rarr; add R; stacked &rarr; add &Delta;.</li>
+        <li><strong>Wall with openings:</strong> &Delta;<sub>wall</sub> = &Delta;<sub>solid(c)</sub> &minus; &Delta;<sub>strip(c)</sub> + &Delta;<sub>piers(f)</sub>.</li>
+        <li><strong>CM:</strong> X&#772;<sub>m</sub> = &Sigma;Wx/&Sigma;W. <strong>CR:</strong> X&#772;<sub>r</sub> = &Sigma;R<sub>y</sub>x/&Sigma;R<sub>y</sub> (only walls in that direction).</li>
+        <li><strong>Eccentricity:</strong> e = X&#772;<sub>m</sub> &minus; X&#772;<sub>r</sub>, <strong>plus 5% accidental</strong>. Limit ~20&ndash;30% of the plan dimension.</li>
+        <li><strong>Direct shear:</strong> P<sub>d</sub> = P R<sub>i</sub>/&Sigma;R. <strong>Torsional shear:</strong>
+          P<sub>T</sub> = T R<sub>i</sub>d<sub>i</sub>/&Sigma;Rd&sup2;, with T = P(e + e<sub>a</sub>).
+          <strong>Always added, never subtracted.</strong></li>
+        <li><strong>Shear wall checks:</strong> &tau; = F/A &le; 0.1 + f<sub>d</sub>/6;
+          f<sub>ca</sub> + f<sub>cb</sub> &le; 1.25 k<sub>s</sub>f<sub>b</sub>;
+          f<sub>t</sub> = f<sub>cb</sub> &minus; f<sub>ca</sub> &le; f<sub>at</sub>.</li>
+        <li><strong>Moments:</strong> in-plane, UDL over height &rarr; M = FH/2; concentrated at roof &rarr; M = FH.
+          Out-of-plane, anchored top and bottom &rarr; M = pH&sup2;/10; free at top &rarr; pH&sup2;/2.</li>
+        <li><strong>Section moduli:</strong> in-plane Z = tL&sup2;/6; out-of-plane Z = bt&sup2;/6.</li>
+        <li><strong>Overturning:</strong> P<sub>ovt</sub> = M<sub>ovt</sub> l<sub>i</sub>A<sub>i</sub>/I<sub>n</sub>,
+          I<sub>n</sub> = &Sigma;(A<sub>i</sub>l<sub>i</sub>&sup2; + I<sub>i</sub>).</li>
+        <li><strong>Interaction:</strong> P/P<sub>0</sub> + M/M<sub>0</sub> = 1.</li>
+        <li><strong>Permissible stress</strong> may be raised by <strong>1/3</strong> for wind/EQ, and by
+          <strong>25%</strong> where the excess is due to bending.</li>
+        <li><strong>Arching over an opening:</strong> lintel carries only the 60&deg; equilateral triangle; the rest
+          thrusts into the abutments and raises their axial stress.</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════ Summary ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Chapter Summary</h2>
+      <p>In a load-bearing masonry building the gravity walls are also the shear walls, so the lateral force is collected
+      by the diaphragm, delivered to the walls parallel to the shaking, and taken to the foundation, while the walls
+      perpendicular to the shaking are separately checked for out-of-plane force. Design is by working stress: the actual
+      stress must stay within f<sub>per</sub> = f<sub>b</sub>k<sub>s</sub>k<sub>a</sub>k<sub>p</sub>, no tension is
+      permitted, and the permissible stress may be raised by one third when wind or earthquake is included and by a
+      further 25% where the excess is caused by bending. A shear wall must be designed for four actions &mdash; vertical
+      load, shear force, bending moment and overturning moment &mdash; and checked for shear stress, maximum compressive
+      stress and maximum tensile stress.</p>
+      <p>The seismic force follows from V<sub>B</sub> = A<sub>h</sub>W with A<sub>h</sub> = (Z/2)(I/R)(S<sub>a</sub>/g),
+      the seismic weight being the dead load plus a percentage of the live load with the roof live load excluded, and is
+      distributed up the height in proportion to W<sub>i</sub>h<sub>i</sub>&sup2;. It is then shared among the walls
+      according to the diaphragm: by relative rigidity if the diaphragm is rigid, by tributary area if it is flexible.
+      Wall rigidity is computed from R = Et/[4(h/d)&sup3;+3(h/d)] for a cantilever pier or Et/[(h/d)&sup3;+3(h/d)] for a
+      fixed pier, with piers side by side adding rigidities and piers stacked adding deflections; a wall with openings is
+      analysed as the solid wall minus the opening strip plus the piers within it.</p>
+      <p>Because the centre of mass rarely coincides with the centre of rigidity, a torsional moment
+      T = P(e + e<sub>a</sub>) acts in addition to the direct shear, and the resulting torsional shear
+      T R d /&Sigma;Rd&sup2; is always taken as additive because the load reverses. The overturning moment increases the
+      axial load on the leeward piers by M<sub>ovt</sub>l<sub>i</sub>A<sub>i</sub>/I<sub>n</sub> and relieves the
+      windward ones, which reduces their shear friction. Finally the flexural walls are designed for out-of-plane
+      bending, with M = pH&sup2;/10 for a wall anchored top and bottom, compression checked at the base and tension at
+      mid-height, stability checked through slenderness, h/t ratio, the middle-third rule and overturning; and arching
+      action is accounted for both over openings, where it relieves the lintel but raises the axial stress in the
+      abutments, and out-of-plane, where rigid arching between stiff supports greatly increases capacity but any
+      construction gap reduces it.</p>
+    </div>
+
+    <!-- ══════════════ All past questions ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>All Past Exam Questions from this Chapter</h2>
+      <div class="exam-note">
+        <h4>CHAPTER 4 &mdash; COMPLETE LIST (CE 72502 / ENCE 367)</h4>
+        <ol>
+          <li>Design a shear wall 4 m long and 3 m high to resist a horizontal earthquake force in its plane; seismic load 0.2 g uniformly distributed across the entire height. [12] <em>(2081 Bhadra, Q4b)</em> &rarr; &sect;4.6.6</li>
+          <li>Calculate the centre of mass, centre of stiffness and eccentricities for the given single-storey masonry building. [12] <em>(2081 Bhadra, Q5b)</em> &rarr; &sect;4.6.1&ndash;4.6.3</li>
+          <li>Calculate the floor level shear and earthquake force for a double storey health post building at Surkhet. [14] <em>(2080 Bhadra, Q4a)</em> &rarr; &sect;4.3</li>
+          <li>Calculate the load on the horizontal band at lintel level due to earthquake and dead load. [6] <em>(2080 Bhadra, Q4b)</em> &rarr; &sect;4.3 + Chapter 2 &sect;2.5.4</li>
+          <li>Design a wall of a basketball sports building of height 6 m; wind load 850 N/m&sup2;. [10] <em>(2080 Bhadra, Q3b)</em> &rarr; &sect;4.8.5</li>
+          <li>Design an exterior solid wall with pier of the ground floor of a double storey brick masonry building. [10] <em>(2080 Bhadra, Q3a)</em> &rarr; Chapter 2 &sect;2.6.8</li>
+          <li>Design a shear wall 4.2 m long and 3.3 m high; earthquake acceleration = 0.1 g. [12] <em>(2079 Bhadra, Q5b)</em> &rarr; &sect;4.6.6</li>
+          <li>Design a shear wall 5 m long and 4 m high; 0.3 g; neglect load from floor. [14] <em>(2078 Bhadra, Q6)</em> &rarr; &sect;4.6.6</li>
+          <li>Design an exterior wall of a single storey workshop of height 4 m; 30 kN/m from roof and wind load 750 N/m&sup2;. [14] <em>(2078 Bhadra, Q5)</em> &rarr; &sect;4.8.5</li>
+          <li>Design an interior cavity wall of a two-storeyed building. [14] <em>(2078 Bhadra, Q4)</em> &rarr; Chapter 2 &sect;2.6</li>
+          <li>Determine the seismic coefficient and storey seismic forces for a single room double storey health post at Kathmandu. [12] <em>(2076 Chaitra, Q4a)</em> &rarr; &sect;4.3</li>
+          <li>Design a lintel band for a single room one storey building; design earthquake coefficient 0.36. [12] <em>(2076 Chaitra, Q1b)</em> &rarr; &sect;4.3 + Chapter 2 &sect;2.5.4</li>
+          <li>Discuss the design criteria and design steps in the design of masonry shear walls. [10] <em>(2075 Chaitra, Q1)</em> &rarr; &sect;4.1.3, &sect;4.6.6</li>
+        </ol>
+      </div>
+      <p class="importance-summary">Practice tip: the four shear-wall questions (2078 Q6, 2079 Q5b, 2081 Q4b, plus the
+      2075 theory version) are <strong>the same problem with different numbers</strong> &mdash; only L, H and the seismic
+      coefficient change. Work all three numerically until the 10-step sequence of &sect;4.6.6 is automatic; that alone is
+      worth 12&ndash;14 marks in almost every paper.</p>
+    </div>
+
+    <p class="footer-note">End of Chapter 4 &ndash; Seismic Analysis and Design of Masonry Buildings</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 5 &ndash; Reinforced Masonry</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- id="dark-mode-styles" stops common.js from flattening the dark palette; also holds page-local rules -->
+  <style id="dark-mode-styles">
+    .year-tag{display:inline-block;font-size:.62em;font-weight:700;letter-spacing:.03em;
+      color:var(--accent);background:var(--accent-light);border:1px solid var(--line);
+      border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+    .figure svg{max-width:100%;height:auto}
+    .figure img{max-width:100%;max-height:620px;height:auto;display:block;margin:0 auto;
+      background:#fff;padding:6px;border:1px solid var(--line);border-radius:6px}
+    [data-theme="dark"] .figure img{filter:brightness(.9) contrast(1.02)}
+    .figure-row{align-items:flex-start}
+    .figure-row .figure{flex:1 1 260px;max-width:420px}
+    .fig-src{display:block;font-style:normal;font-size:.86em;opacity:.8;margin-top:4px}
+    table.cmp td:first-child{font-weight:600}
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .22em;line-height:1.08}
+    .frac>.fn{padding:0 .45em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .45em}
+    .frac .frac{font-size:.92em}
+    .steps{counter-reset:stp;list-style:none;padding-left:0}
+    .steps>li{counter-increment:stp;position:relative;padding-left:44px;margin:14px 0}
+    .steps>li::before{content:"STEP " counter(stp);position:absolute;left:0;top:2px;
+      font-size:.62em;font-weight:800;letter-spacing:.04em;color:var(--accent);
+      background:var(--accent-light);border:1px solid var(--line);border-radius:4px;padding:2px 5px;line-height:1.1}
+    .calc{font-family:"Consolas","Courier New",Courier,monospace;font-size:.86rem;line-height:1.6;
+      white-space:pre-wrap;overflow-x:auto;background:var(--bg,#fff);border:1px solid var(--line);
+      border-radius:6px;padding:12px 14px;margin:10px 0}
+    [data-theme="dark"] .calc{background:rgba(0,0,0,.28)}
+    @media(max-width:620px){.calc{font-size:.74rem}}
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 5</div>
+    <h1>Reinforced Masonry</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">5 Hours &middot; 6 Marks</span>
+      <span class="meta-badge exam">5 Past Questions &middot; 50 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ══════════════ Syllabus & Marks Distribution ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Syllabus &amp; Marks Distribution</h2>
+      <table class="marks-table">
+        <thead>
+          <tr><th>Detail</th><th>Information</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Course</td><td>Seismic Resistant Design of Masonry Structures &mdash; ENCE 367 (Elective I)</td></tr>
+          <tr><td>Chapter</td><td>5 &mdash; Reinforced Masonry</td></tr>
+          <tr><td>Teaching Hours</td><td>5 hours</td></tr>
+          <tr class="highlight-row"><td>Marks Allocation</td><td>6 marks in the 60-mark final</td></tr>
+          <tr><td>Total Course Marks</td><td>60 marks (final exam) &middot; 45 teaching hours</td></tr>
+          <tr><td>Weight</td><td>10% of the final paper</td></tr>
+          <tr><td>Codes required</td><td>IITK-GSDMA Guidelines for Structural Use of Reinforced Masonry, IS 1905&ndash;1987, IS 4326, NBC 202</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Syllabus Topics</h3>
+      <ul class="syllabus-topics">
+        <li>5.1 &nbsp;Basic concept</li>
+        <li>5.2 &nbsp;Vertical and horizontal one-way flexural behaviour</li>
+        <li>5.3 &nbsp;Two-way flexural behaviour</li>
+        <li>5.4 &nbsp;Flexural and shear strength</li>
+        <li>5.5 &nbsp;Reinforced masonry column, beam, and bands</li>
+      </ul>
+
+      <div class="callout">
+        <strong>The one idea that unlocks this chapter.</strong> Everything in Chapters 2 and 4 rested on the
+        assumption that <em>masonry cannot be relied on in tension</em>, so we designed by making sure tension never
+        appeared. Reinforced masonry throws that constraint away: we <strong>allow the masonry to crack</strong> and
+        put <strong>steel where the tension is</strong>, exactly as in reinforced concrete. Every provision in this
+        chapter follows from that single change.
+      </div>
+    </div>
+
+    <!-- ══════════════ Importance & Frequently Asked Topics ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>Importance &amp; Frequently Asked Topics <span class="importance-high">HIGH</span></h2>
+
+      <p class="importance-summary">On paper this chapter is only <strong>6 of 60 marks</strong>, and the theory part is
+      indeed small &mdash; &ldquo;<em>Explain reinforced masonry</em>&rdquo; for 4 marks has appeared repeatedly and is
+      almost guaranteed. But the chapter is <strong>much more valuable than 6 marks suggests</strong>, because the
+      <strong>reinforced brick lintel</strong> and the <strong>seismic band</strong> are reinforced-masonry elements,
+      and those have carried <strong>12&ndash;18 mark numericals</strong> in three of the last six papers.
+      Across the last six papers this chapter accounts for <strong>5 questions and about 50 marks</strong> in the
+      80-mark format.</p>
+
+      <h3>Marks Distribution by Each Exam</h3>
+      <div class="table-wrap">
+        <table class="marks-dist-table">
+          <thead>
+            <tr><th>Exam</th><th>Marks</th><th>Questions asked</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2075 Chaitra</td><td>18</td><td>Q5 &mdash; design a reinforced brick masonry lintel over a 1.5 m window opening</td></tr>
+            <tr><td>2076 Chaitra</td><td>24</td><td>Q1b &mdash; design a lintel band [12]; Q2b &mdash; reinforced brick masonry lintel under triangular loading [12]</td></tr>
+            <tr><td class="dim-cell">2078 Bhadra</td><td class="dim-cell">&mdash;</td><td class="dim-cell">Not asked directly</td></tr>
+            <tr><td>2079 Bhadra</td><td>4</td><td>Q5a &mdash; what is reinforced masonry? Explain</td></tr>
+            <tr class="highlight-row"><td>2080 Bhadra</td><td>6</td><td>Q4b &mdash; load on the horizontal band at lintel level (band design)</td></tr>
+            <tr><td>2081 Bhadra</td><td>4</td><td>Q5a &mdash; explain reinforced masonry</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Most Frequently Asked Topics</h3>
+      <div class="table-wrap">
+        <table class="freq-topics-table">
+          <thead>
+            <tr><th>Topic</th><th>Times asked</th><th>Frequency</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Definition and explanation of reinforced masonry</strong> (&sect;5.1)</td>
+              <td>3</td>
+              <td><span class="freq-bar" style="width:100%"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Reinforced brick masonry lintel design</strong> (&sect;5.5.3)</td>
+              <td>2</td>
+              <td><span class="freq-bar" style="width:67%"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Seismic band &mdash; design and detailing</strong> (&sect;5.5.4)</td>
+              <td>2</td>
+              <td><span class="freq-bar" style="width:67%"></span></td>
+            </tr>
+            <tr>
+              <td>Flexural and shear strength provisions (&sect;5.4)</td>
+              <td>1</td>
+              <td><span class="freq-bar" style="width:33%"></span></td>
+            </tr>
+            <tr>
+              <td>Reinforced masonry columns and lateral ties (&sect;5.5.2)</td>
+              <td>1</td>
+              <td><span class="freq-bar" style="width:33%"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Topic-wise Importance</h3>
+      <div class="table-wrap">
+        <table class="importance-table">
+          <thead>
+            <tr><th>Section</th><th>Topic</th><th>Importance</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>5.1</td><td>Basic concept, forms of reinforced masonry, permissible stresses</td><td><span class="importance-badge importance-high">Very High</span></td></tr>
+            <tr><td>5.2</td><td>One-way flexural behaviour, vertical vs horizontal span</td><td><span class="importance-badge importance-medium">Medium</span></td></tr>
+            <tr><td>5.3</td><td>Two-way flexural behaviour, yield-line coefficients</td><td><span class="importance-badge importance-medium">Medium</span></td></tr>
+            <tr><td>5.4</td><td>Flexural and shear strength, failure mechanisms</td><td><span class="importance-badge importance-high">High</span></td></tr>
+            <tr><td>5.5</td><td>Columns, beams (lintels) and bands</td><td><span class="importance-badge importance-high">Very High</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exam-note">
+        <strong>Exam strategy for this chapter.</strong> Prepare <strong>&sect;5.1 as a guaranteed 4-marker</strong>
+        &mdash; learn the formal definition word for word, then the six forms of reinforced masonry, the advantages, and
+        the applications. Then prepare <strong>&sect;5.5.3 (lintel) and &sect;5.5.4 (band) as numericals</strong>,
+        because that is where the 12&ndash;18 mark questions come from. &sect;5.2&ndash;5.4 are worth reading for the
+        6-mark theory slots but are rarely examined as numericals.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════ 5.1 ══════════════════════════ -->
+    <h2>5.1 &nbsp;Basic Concept</h2>
+
+    <div class="exam-note">
+      <strong>Past exam questions on this topic</strong>
+      <ol>
+        <li>Explain reinforced masonry. <span class="year-tag">2081 Bhadra &middot; Q5a</span> <span class="year-tag">[4 marks]</span></li>
+        <li>What is reinforced masonry? Explain. <span class="year-tag">2079 Bhadra &middot; Q5a</span> <span class="year-tag">[4 marks]</span></li>
+      </ol>
+    </div>
+
+    <h3>5.1.1 &nbsp;Definition</h3>
+
+    <div class="formula">
+      <b>Reinforced masonry</b> is masonry designed on the assumption that the <b>flexural tensile stresses cannot be
+      resisted by the masonry</b> and are resisted by <b>reinforcement only</b>. Shear stresses may be resisted by the
+      masonry or by the reinforcement, singly or in combination.
+    </div>
+
+    <p>The contrast with unreinforced masonry must be stated carefully, because it is the point of the definition:</p>
+
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Unreinforced masonry (URM)</th><th>Reinforced masonry (RM)</th></tr></thead>
+        <tbody>
+          <tr><td>Design assumption about tension</td>
+            <td>The flexural tensile stress <strong>is</strong> resisted by the masonry, within a small permissible value
+              (0.07 / 0.14 N/mm&sup2;)</td>
+            <td>The masonry is assumed to carry <strong>no tension at all</strong>; all tension goes to the steel</td></tr>
+          <tr><td>Reinforcement</td>
+            <td>May actually be present, but is <strong>neglected</strong> in the calculation</td>
+            <td>Provided by design and fully accounted for</td></tr>
+          <tr><td>State of the section</td>
+            <td>Designed to remain <strong>uncracked</strong>; linear elastic throughout</td>
+            <td>The tension zone is <strong>allowed to crack</strong>; a cracked transformed section is used</td></tr>
+          <tr><td>Governing check</td>
+            <td>Keep f<sub>cb</sub> &minus; f<sub>ca</sub> below the permissible tension</td>
+            <td>Provide A<sub>st</sub> to carry the whole tensile force T = M/(jd)</td></tr>
+          <tr><td>Ductility</td><td>Brittle &mdash; fails suddenly once it cracks</td><td>Ductile &mdash; the steel yields first and absorbs energy</td></tr>
+          <tr><td>Slenderness limit for a column</td><td>15</td><td>Higher, because buckling is restrained by the steel</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>The examiner's favourite trap.</strong> &ldquo;Unreinforced masonry&rdquo; does <em>not</em> mean masonry
+      with no steel in it &mdash; it describes the <strong>design assumption</strong>, not the physical contents of the
+      wall. A wall can contain bars and still be designed, quite legitimately, as unreinforced.
+    </div>
+
+    <h3>5.1.2 &nbsp;Why masonry is reinforced</h3>
+    <ol>
+      <li><strong>Masonry is strong in compression but almost useless in tension.</strong> Its flexural tensile strength
+        is only 0.1&ndash;0.4 N/mm&sup2; and the permissible value is 0.07&ndash;0.14 N/mm&sup2; &mdash; roughly a
+        <strong>hundredth</strong> of its compressive strength, and effectively <em>zero</em> in mud or weak lime mortar.</li>
+      <li><strong>Earthquake and wind produce reversible tension</strong> in walls, both in-plane (at the heel of a shear
+        wall) and out-of-plane (at mid-height of a wall spanning between floor and roof). Unreinforced masonry has no
+        answer to this except mass and precompression.</li>
+      <li><strong>Unreinforced masonry fails in a brittle manner</strong> once flexural or shear cracking starts, with
+        very little warning and almost no energy dissipation &mdash; the very worst property in an earthquake.</li>
+      <li><strong>The scope of URM is limited.</strong> It cannot economically produce tall walls, large openings,
+        slender piers, retaining walls or tanks. Reinforcement removes those limits.</li>
+      <li><strong>Reinforcement supplies ductility</strong>, which is what modern seismic codes actually reward: the
+        response reduction factor R rises from about 1.5&ndash;2.25 for URM to <strong>3.0&ndash;4.0</strong> for
+        reinforced masonry (see &sect;5.5.6), which directly reduces the design earthquake force.</li>
+    </ol>
+
+    <h3>5.1.3 &nbsp;Forms of reinforced masonry &mdash; where the steel goes</h3>
+
+    <figure class="figure">
+      <img src="../photo/ch5-reinforcement-details.png" alt="Six construction forms of reinforced masonry: reinforced hollow blockwork wall, wall with vertical and bed joint reinforcement, pocket type wall, reinforcing pockets formed by Quetta bond, concrete filled cavity wall, beam unit, reinforcement placed in the bed joints of grooved units, and units with bed joint reinforcement">
+      <figcaption><b>Fig. 5.1</b> The recognised forms of reinforced masonry. Reinforcement must be located so that it
+      <strong>acts compositely with the masonry</strong>.<span class="fig-src">Source: IITK-GSDMA Guidelines for
+      Structural Use of Reinforced Masonry, Fig. 2.</span></figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Form</th><th>How it is built</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reinforced hollow blockwork</strong></td>
+            <td>Vertical bars threaded through the aligned hollow cores of concrete blocks; the cores are then grouted</td>
+            <td>The standard modern system for reinforced masonry shear walls</td></tr>
+          <tr><td><strong>Wall with vertical and bed-joint reinforcement</strong></td>
+            <td>Vertical bars in grouted cavities plus ladder/truss mesh laid in the horizontal mortar beds</td>
+            <td>Walls needing resistance in both directions</td></tr>
+          <tr><td><strong>Pocket type wall</strong></td>
+            <td>Bars placed in deep pockets formed on one face of the wall and then concreted</td>
+            <td>Retaining walls, tall single-storey walls</td></tr>
+          <tr><td><strong>Quetta bond</strong></td>
+            <td>A special bonding arrangement that leaves a continuous vertical pocket inside a 1&frac12;-brick wall,
+              which is then reinforced and grouted</td>
+            <td>The traditional Indian/Pakistani seismic brickwork &mdash; developed after the 1935 Quetta earthquake</td></tr>
+          <tr><td><strong>Concrete-filled cavity wall</strong></td>
+            <td>Two leaves of masonry with the cavity reinforced and filled with concrete &mdash; effectively permanent
+              formwork</td>
+            <td>Heavily loaded walls, basement and retaining walls</td></tr>
+          <tr><td><strong>Beam unit / bond beam</strong></td>
+            <td>Channel-shaped units laid to form a trough, reinforced and grouted to make a beam within the wall</td>
+            <td>Lintels, bands, and the tie-beams of confined masonry</td></tr>
+          <tr><td><strong>Bed-joint reinforcement in grooved units</strong></td>
+            <td>Small-diameter wires or mesh laid in the bed joints, sometimes in units grooved to receive them</td>
+            <td><strong>Enhances the capacity of walls to resist lateral loading</strong>; crack control</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.1.4 &nbsp;Advantages of reinforced masonry</h3>
+    <ul>
+      <li>Real <strong>flexural and shear capacity</strong> &mdash; walls can carry out-of-plane pressure and in-plane shear
+        far beyond the cracking load.</li>
+      <li>Genuine <strong>ductility and energy dissipation</strong>; the failure is preceded by visible cracking, giving
+        warning.</li>
+      <li><strong>Better out-of-plane performance</strong>, which is what actually kills people in masonry buildings.</li>
+      <li><strong>Taller walls, thinner walls, larger openings</strong> and higher slenderness ratios become possible.</li>
+      <li><strong>Higher R value</strong> in seismic design &rarr; lower design base shear.</li>
+      <li>Uses the <strong>same materials and trades</strong> as ordinary masonry &mdash; no expensive plant, unlike RC frames.</li>
+      <li>Cracks are <strong>distributed and fine</strong> rather than few and wide, which improves both repairability and
+        durability.</li>
+    </ul>
+
+    <h3>5.1.5 &nbsp;Applications</h3>
+    <p>Shear walls; load-bearing walls of multi-storey buildings; <strong>retaining walls</strong>; water tanks and
+    reservoirs; footbridges; <strong>reinforced masonry columns, beams and lintels</strong>; <strong>seismic bands</strong>
+    and vertical reinforcement at corners and openings; and, as a strengthening measure, jacketing of existing
+    unreinforced walls. <strong>Prestressed (post-tensioned) masonry</strong> is the further step, in which vertical
+    tendons apply artificial precompression so that tension never develops at all.</p>
+
+    <div class="callout">
+      <strong>Historical note worth one line in the answer.</strong> Reinforced masonry has been used in India and Japan
+      since shortly after the First World War, and in the United States since after the Second. Quetta bond dates from
+      the reconstruction after the 1935 Quetta earthquake.
+    </div>
+
+    <h3>5.1.6 &nbsp;Materials and permissible stresses</h3>
+
+    <p>Design follows the <strong>working stress (permissible stress) method</strong>, with stresses computed on a
+    <strong>transformed section</strong> using the modular ratio, and stiffness computed on the
+    <strong>uncracked section</strong> for analysis purposes.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Steel</th><th>Permissible tensile stress F<sub>s</sub></th><th>Permissible compressive stress</th></tr></thead>
+        <tbody>
+          <tr><td>Mild steel to IS 432 (Part I), &phi; &le; 20 mm</td><td>140 MPa</td><td rowspan="2">130 MPa</td></tr>
+          <tr><td>Mild steel to IS 432 (Part I), &phi; &gt; 20 mm</td><td>130 MPa</td></tr>
+          <tr class="highlight-row"><td>HYSD bars to IS 1786 (Fe 415 etc.)</td><td><strong>230 MPa</strong></td><td><strong>190 MPa</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Size, spacing, cover and anchorage &mdash; the detailing rules</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Requirement</th></tr></thead>
+        <tbody>
+          <tr><td>Maximum bar size</td><td><strong>25 mm</strong> diameter</td></tr>
+          <tr><td>Minimum bar size</td><td><strong>5 mm</strong> diameter</td></tr>
+          <tr><td>Bar size vs cell</td><td>&le; one-half the least clear dimension of the cell, bond beam or collar joint</td></tr>
+          <tr><td>Bar size vs wall (shear walls)</td><td>&le; one-tenth of the wall thickness</td></tr>
+          <tr><td>Clear distance between parallel bars</td><td>&ge; the bar diameter, and &ge; 25 mm</td></tr>
+          <tr><td>Clear distance in columns and pilasters</td><td>&ge; 1.5 times the bar diameter, and &ge; 35 mm</td></tr>
+          <tr><td>Cover &mdash; bars in filled cavity or pocket</td><td>&ge; 10 mm in mortar; &ge; 15 mm or the bar diameter (whichever is more) in grout</td></tr>
+          <tr><td>Cover &mdash; bars in a bed joint</td><td>&ge; 15 mm from the face of the masonry; &ge; 2 mm of mortar above and below</td></tr>
+          <tr><td>Corrosion protection</td><td>Stainless, hot-dip galvanised or epoxy-coated steel; or a 1 mm austenitic stainless coating</td></tr>
+          <tr><td>Lap splice</td><td>Straight lap &ge; 45 bar diameters or 200 mm</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula">
+      <b>Development length</b> &nbsp; L<sub>d</sub> = 0.25 d<sub>b</sub> F<sub>s</sub> &nbsp;&nbsp; but not less than
+      <b>300 mm</b><br><br>
+      where d<sub>b</sub> = nominal bar diameter (mm) and F<sub>s</sub> = permissible stress in the steel (MPa).<br><br>
+      <span style="font-size:.95em">It is derived from an allowable bond stress of <b>u = 1.0 MPa</b>:
+      T = &pi;d<sub>b</sub>&thinsp;u&thinsp;L<sub>d</sub> = (&pi;d<sub>b</sub><sup>2</sup>/4)F<sub>s</sub>
+      &nbsp;&rArr;&nbsp; L<sub>d</sub> = d<sub>b</sub>F<sub>s</sub>/(4u) = 0.25 d<sub>b</sub>F<sub>s</sub>.<br>
+      For <b>mild steel and epoxy-coated bars, increase L<sub>d</sub> by 60%</b> (plain bars have no ribs to develop
+      mechanical bond).</span>
+    </div>
+
+    <p><strong>Standard hooks</strong> may be used to make up any deficiency in development length:
+    a <strong>180&deg;</strong> turn plus an extension of at least 4 bar diameters (minimum 64 mm);
+    a <strong>90&deg;</strong> turn plus an extension of at least 12 bar diameters; and for
+    <strong>stirrups and ties only</strong>, a 90&deg; or <strong>135&deg;</strong> turn plus an extension of at least
+    5 bar diameters.</p>
+
+    <figure class="figure">
+      <img src="../photo/ch5-lateral-systems.png" alt="Four lateral load resisting systems: rigid frame action, shear wall action, shear wall to frame interaction, and tube action, each shown with its deflected shape and plan">
+      <figcaption><b>Fig. 5.2</b> Where reinforced masonry sits among the lateral-load resisting systems. A reinforced
+      masonry building relies on <strong>(b) shear wall action</strong> &mdash; a flexural cantilever from the foundation
+      &mdash; not on frame action.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="exam-box">
+      <strong>Model answer skeleton &mdash; &ldquo;Explain reinforced masonry&rdquo; [4 marks]</strong>
+      <ol>
+        <li><strong>Definition</strong> (write the boxed sentence in &sect;5.1.1 verbatim).</li>
+        <li><strong>Why</strong> &mdash; masonry has negligible tensile strength; steel is introduced to carry the tension,
+          exactly as in reinforced concrete.</li>
+        <li><strong>Where the steel goes</strong> &mdash; vertical bars in grouted cores/pockets/Quetta bond, and horizontal
+          bed-joint reinforcement; name three or four forms from Fig. 5.1.</li>
+        <li><strong>Contrast with URM</strong> &mdash; in URM the tensile stress is assumed resisted by the masonry and any
+          steel present is neglected; the term describes the <em>design assumption</em>, not the absence of bars.</li>
+        <li><strong>Benefits</strong> &mdash; flexural and shear capacity, ductility and energy dissipation, better
+          out-of-plane behaviour, taller walls and larger openings, higher R value.</li>
+        <li><strong>Applications</strong> &mdash; shear walls, retaining walls, tanks, lintels, bands, columns and beams.</li>
+      </ol>
+    </div>
+
+    <!-- ══════════════════════════ 5.2 ══════════════════════════ -->
+    <h2>5.2 &nbsp;Vertical and Horizontal One-Way Flexural Behaviour</h2>
+
+    <p class="lead">A wall loaded <strong>normal to its plane</strong> &mdash; by wind, by earth pressure, or by its own
+    out-of-plane inertia in an earthquake &mdash; behaves as a <em>slab</em>. If it is supported on only two opposite
+    edges it spans <strong>one way</strong>, and the direction of that span decides everything about how it must be
+    reinforced.</p>
+
+    <h3>5.2.1 &nbsp;The two one-way cases</h3>
+
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Vertical one-way span</th><th>Horizontal one-way span</th></tr></thead>
+        <tbody>
+          <tr><td>Supported on</td><td>The floor below and the roof/floor above</td><td>Two cross walls, piers or columns</td></tr>
+          <tr><td>The wall spans</td><td>Vertically, over the storey height H</td><td>Horizontally, over the spacing L of the cross walls</td></tr>
+          <tr><td>Bending is about</td><td>A horizontal axis</td><td>A vertical axis</td></tr>
+          <tr><td>Cracks form</td><td><strong>Horizontally</strong>, along a bed joint at mid-height</td><td><strong>Vertically</strong>, up the perpends near mid-span</td></tr>
+          <tr><td>Tension acts</td><td><strong>Normal to the bed joints</strong> &mdash; it pulls the bed joint apart</td><td><strong>Parallel to the bed joints</strong> &mdash; it must break through the units or step round them</td></tr>
+          <tr><td>Flexural strength of URM</td><td><strong>Weak</strong> &mdash; permissible 0.07 N/mm&sup2;</td><td><strong>About twice as strong</strong> &mdash; permissible 0.14 N/mm&sup2;</td></tr>
+          <tr><td>Reinforcement needed</td><td><strong>Vertical bars</strong> in cores, pockets or Quetta-bond cavities</td><td><strong>Horizontal bed-joint reinforcement</strong> or bond beams</td></tr>
+          <tr><td>Helped by gravity load?</td><td><strong>Yes</strong> &mdash; precompression directly offsets the flexural tension</td><td><strong>No</strong> &mdash; vertical load does nothing for horizontal bending</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula">
+      <b>Orthogonal strength ratio</b> &nbsp; &mu; =
+      <span class="frac"><span class="fn">flexural strength normal to the bed joints</span><span class="fd">flexural strength parallel to the bed joints</span></span>
+      &nbsp;&asymp; <b>0.3 to 0.5</b> for unreinforced masonry.<br><br>
+      <span style="font-size:.95em">This is why the two directions are treated separately, and why a wall will always
+      try to span <em>horizontally</em> if it is given the chance.</span>
+    </div>
+
+    <h3>5.2.2 &nbsp;Design moments for the one-way strip</h3>
+    <p>Take a strip of unit width and analyse it as a beam. The coefficient depends entirely on the edge restraint,
+    and stating it is worth marks:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Support condition</th><th>Design moment</th><th>Where it occurs</th></tr></thead>
+        <tbody>
+          <tr><td>Simply supported top and bottom</td><td>M = wH&sup2;/8</td><td>Mid-height</td></tr>
+          <tr class="highlight-row"><td>Partial restraint &mdash; e.g. anchored to the roof with metal anchors</td><td><strong>M = wH&sup2;/10</strong></td><td>Mid-height and support</td></tr>
+          <tr><td>Fully continuous / built in at both ends</td><td>M = wH&sup2;/12</td><td>Support (and wH&sup2;/24 at mid-span)</td></tr>
+          <tr><td>Free at the top (parapet, free-standing wall)</td><td><strong>M = wH&sup2;/2</strong></td><td>Base &mdash; the worst case by a factor of 5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The out-of-plane pressure itself is w = the wind pressure, or for earthquake
+    w = A<sub>h</sub> &times; (weight of wall per unit area) = A<sub>h</sub>&thinsp;&gamma;&thinsp;t.</p>
+
+    <h3>5.2.3 &nbsp;Effective span and effective compressive width</h3>
+    <p>The <strong>effective span</strong> of a one-way member is taken as the lesser of the centre-to-centre distance
+    between supports and the clear span plus the effective depth.</p>
+
+    <figure class="figure">
+      <img src="../photo/ch5-effective-width.png" alt="Diagram showing that the effective compressive width of a reinforced masonry section is limited to three times the wall thickness for each vertical bar, with the spacing of reinforcement marked">
+      <figcaption><b>Fig. 5.3</b> Effective compressive width for locally concentrated reinforcement. Each vertical bar
+      can only mobilise a limited width of masonry in compression.<span class="fig-src">Source: IITK-GSDMA Guidelines,
+      Fig. 4.</span></figcaption>
+    </figure>
+
+    <div class="formula">
+      When the reinforcement is <b>concentrated locally</b> so that the section cannot be treated as a flanged member,
+      the width of masonry assumed to work with each bar is limited to the <b>least</b> of:<br><br>
+      &nbsp;&nbsp;(a) the <b>centre-to-centre bar spacing</b><br>
+      &nbsp;&nbsp;(b) <b>6 times the wall thickness</b><br>
+      &nbsp;&nbsp;(c) <b>3t</b> &mdash; the effective compressive width shown in Fig. 5.3
+    </div>
+
+    <p>This is the reinforced-masonry equivalent of the effective flange width of a T-beam: it stops the designer from
+    assuming that one bar can mobilise the whole wall.</p>
+
+    <!-- ══════════════════════════ 5.3 ══════════════════════════ -->
+    <h2>5.3 &nbsp;Two-Way Flexural Behaviour</h2>
+
+    <p class="lead">A wall panel supported on <strong>three or four edges</strong> &mdash; by the floor, the roof and one
+    or two cross walls &mdash; does not span one way. It bends about both axes at once, and the load finds its way to
+    the supports along the <strong>stiffest and strongest path</strong>. Because the horizontal direction is roughly
+    twice as strong, a two-way panel sheds a disproportionate share of the load sideways.</p>
+
+    <h3>5.3.1 &nbsp;Why two-way action matters</h3>
+    <ul>
+      <li>The design moment falls dramatically &mdash; often to <strong>a third or a quarter</strong> of the equivalent
+        one-way value &mdash; simply because the panel is supported on more edges.</li>
+      <li>It is <strong>the reason cross walls, piers and buttresses are so effective</strong>: adding a vertical support
+        converts a weak one-way vertical span into a strong two-way panel.</li>
+      <li>It explains the observed crack patterns in earthquakes: a two-way panel cracks along
+        <strong>diagonal &ldquo;yield lines&rdquo;</strong> running from the corners, plus a horizontal crack at
+        mid-height and a vertical crack at mid-span &mdash; not the single clean horizontal crack of a one-way wall.</li>
+    </ul>
+
+    <h3>5.3.2 &nbsp;Analysis by the yield-line (fracture-line) method</h3>
+    <p>Masonry has no plastic plateau, so the lines are properly called <strong>fracture lines</strong>, but the
+    algebra is the same as for a concrete slab. The design moment per unit width is written with a coefficient:</p>
+
+    <div class="formula">
+      <b>M = &alpha; &middot; w &middot; L<sup>2</sup></b><br><br>
+      where &nbsp;w = out-of-plane pressure, &nbsp;L = the <b>shorter</b> span of the panel,<br>
+      and &nbsp;<b>&alpha;</b> = a bending-moment coefficient that depends on the
+      <b>edge conditions</b> (how many edges are supported, and whether they are simply supported or continuous),
+      the <b>aspect ratio h/L</b> of the panel, and the <b>orthogonal strength ratio &mu;</b>.
+    </div>
+
+    <div class="callout">
+      <strong>Do not invent the coefficients.</strong> The &alpha; values are tabulated (BS 5628 Table 9 and its
+      equivalents) for nine standard edge conditions, and they must be read from the table for the actual h/L and &mu;.
+      In an exam, <em>state the method, quote the formula, name the three things &alpha; depends on, and say that the
+      coefficient is taken from the code table</em> &mdash; that is what earns the marks.
+    </div>
+
+    <h3>5.3.3 &nbsp;Design consequences</h3>
+    <ol>
+      <li>Reinforce in <strong>both directions</strong> &mdash; vertical bars for the vertical span, bed-joint
+        reinforcement or bond beams for the horizontal span.</li>
+      <li>The <strong>corners</strong> attract the largest moments and are where the fracture lines start, so corner
+        reinforcement and proper interlocking of the return walls are essential.</li>
+      <li>Two-way action only develops if the <strong>edges are genuinely restrained</strong> &mdash; the wall must be
+        properly tied to the diaphragm and bonded into the cross walls. An unanchored wall reverts to a one-way
+        cantilever with five times the moment.</li>
+      <li>Because it is stronger, two-way action allows <strong>thinner walls and larger panels</strong> for the same
+        pressure.</li>
+    </ol>
+
+    <!-- ══════════════════════════ 5.4 ══════════════════════════ -->
+    <h2>5.4 &nbsp;Flexural and Shear Strength</h2>
+
+    <h3>5.4.1 &nbsp;Flexural strength &mdash; working stress design of a reinforced section</h3>
+
+    <p>The section is analysed exactly like a singly reinforced concrete beam, using the
+    <strong>cracked transformed section</strong>: the masonry below the neutral axis is ignored, and the steel area is
+    transformed by the modular ratio n = E<sub>s</sub>/E<sub>m</sub>.</p>
+
+    <div class="formula">
+      Neutral axis depth factor &nbsp;
+      <b>k =
+        <span class="frac"><span class="fn">1</span><span class="fd">1 + F<sub>s</sub> / (n F<sub>b</sub>)</span></span>
+      </b>
+      &nbsp;&nbsp;&nbsp; Lever-arm factor &nbsp; <b>j = 1 &minus; k/3</b><br><br>
+      Moment of resistance, masonry governing &nbsp;
+      <b>M<sub>m</sub> = &frac12; F<sub>b</sub> k j b d<sup>2</sup> = R b d<sup>2</sup></b><br><br>
+      Moment of resistance, steel governing &nbsp;
+      <b>M<sub>s</sub> = F<sub>s</sub> A<sub>st</sub> j d</b><br><br>
+      Required steel &nbsp;
+      <b>A<sub>st</sub> =
+        <span class="frac"><span class="fn">M</span><span class="fd">F<sub>s</sub> j d</span></span></b>
+      &nbsp;&nbsp;&nbsp; Required depth &nbsp;
+      <b>d = &radic;( M / R b )</b>
+    </div>
+
+    <p>Where F<sub>b</sub> is the permissible bending compressive stress in the masonry (commonly taken as
+    f<sub>m</sub>/4 for reinforced brickwork) and F<sub>s</sub> is the permissible steel stress from &sect;5.1.6.
+    The section should be kept <strong>under-reinforced</strong>, so that the steel reaches its permissible stress
+    first and the failure is ductile.</p>
+
+    <h3>5.4.2 &nbsp;Permissible compressive force</h3>
+
+    <div class="formula">
+      <b>P<sub>o</sub> = ( 0.25 f<sub>m</sub> A<sub>n</sub> + 0.65 A<sub>st</sub> F<sub>s</sub> ) k<sub>s</sub></b><br><br>
+      A<sub>n</sub> = net area &nbsp;&middot;&nbsp; A<sub>st</sub> = area of steel &nbsp;&middot;&nbsp;
+      F<sub>s</sub> = permissible steel stress &nbsp;&middot;&nbsp;
+      k<sub>s</sub> = stress reduction factor, <b>IS 1905 Table 9</b> (the same table as Chapter 2).
+    </div>
+
+    <p>The coefficient <strong>0.25 gives a factor of safety of about 4.0</strong> against crushing of the masonry; the
+    coefficient <strong>0.65 on the steel term was determined from tests</strong>. Note that both the masonry and the
+    steel contribute in compression &mdash; unlike shear, where they are <em>not</em> added.</p>
+
+    <div class="callout">
+      <strong>Combined axial and flexural compression.</strong> For a reinforced member the compressive stress due to
+      the combined action of axial load and bending must not exceed <strong>1.25 F<sub>a</sub></strong>, and the
+      compressive stress due to <em>axial load alone</em> must not exceed <strong>F<sub>a</sub></strong>.
+      <em>The unreinforced interaction equation (P/P<sub>a</sub> + M/M<sub>a</sub> &le; 1) does not apply to reinforced
+      sections.</em>
+    </div>
+
+    <h3>5.4.3 &nbsp;Shear strength</h3>
+
+    <div class="formula">
+      Shear stress in a reinforced flexural member &nbsp;&nbsp;
+      <b>f<sub>v</sub> =
+        <span class="frac"><span class="fn">V</span><span class="fd">b j d</span></span></b>
+      &nbsp;&nbsp;or approximately&nbsp;&nbsp;
+      <b>f<sub>v</sub> =
+        <span class="frac"><span class="fn">V</span><span class="fd">b d</span></span></b>
+    </div>
+
+    <p><strong>If there is tension in any part of a section, that area must be ignored when working out the shear
+    stress</strong> &mdash; a cracked zone cannot be relied on to carry shear.</p>
+
+    <h4>Permissible shear stress F<sub>v</sub> &mdash; flexural members</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Case</th><th>Permissible shear stress F<sub>v</sub></th><th>Upper limit</th></tr></thead>
+        <tbody>
+          <tr><td>Without web reinforcement</td><td>0.083 &radic;f<sub>m</sub></td><td><strong>0.25 MPa</strong></td></tr>
+          <tr class="highlight-row"><td>With web reinforcement</td><td>0.25 &radic;f<sub>m</sub></td><td><strong>0.75 MPa</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Permissible shear stress F<sub>v</sub> &mdash; walls</h4>
+    <p>For walls the permissible shear depends on the <strong>aspect ratio, expressed as M/Vd</strong> &mdash; the ratio
+    of moment to shear times depth, which is essentially the height-to-length ratio of the wall:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Web reinforcement</th><th>M/Vd</th><th>F<sub>v</sub> (MPa)</th><th>Maximum allowable (MPa)</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">Without</td><td>&lt; 1</td>
+            <td><span class="frac"><span class="fn">1</span><span class="fd">36</span></span>(4 &minus; M/Vd)&radic;f<sub>m</sub></td>
+            <td>0.4 &minus; 0.2 (M/Vd)</td></tr>
+          <tr><td>&ge; 1</td><td>0.083 &radic;f<sub>m</sub></td><td>0.2</td></tr>
+          <tr class="highlight-row"><td rowspan="2">With</td><td>&lt; 1</td>
+            <td><span class="frac"><span class="fn">1</span><span class="fd">24</span></span>(4 &minus; M/Vd)&radic;f<sub>m</sub></td>
+            <td>0.6 &minus; 0.2 (M/Vd)</td></tr>
+          <tr><td>&ge; 1</td><td>0.125 &radic;f<sub>m</sub></td><td>0.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch5-allowable-shear.png" alt="Graph of allowable shear stress against M over Vd ratio, showing two curves: reinforcement resists the entire shear, higher; and masonry resists the entire shear, lower; both flatten beyond an M over Vd ratio of 1">
+      <figcaption><b>Fig. 5.4</b> Allowable shear for reinforced walls. <strong>Squat walls (low M/Vd) are allowed much
+      more shear stress</strong>, and the benefit of web reinforcement is greatest exactly where the wall is squat.
+      Beyond M/Vd = 1 both curves flatten out.<span class="fig-src">Source: IITK-GSDMA Guidelines, Fig. C5.</span></figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>The single most important rule in reinforced masonry shear design &mdash; the contributions are NOT
+      added.</strong> Unlike reinforced concrete, this document does not permit V<sub>masonry</sub> +
+      V<sub>steel</sub>. Either the <strong>masonry resists the entire shear</strong> (if f<sub>v</sub> &le;
+      F<sub>v</sub>), or, if the calculated shear stress exceeds the allowable value, the
+      <strong>reinforcement must be designed to carry the FULL shear load on its own</strong>. This follows from
+      experiments by Priestley and Bridgeman, and it is why Fig. 5.4 shows two separate curves rather than a sum.
+    </div>
+
+    <div class="formula">
+      Where the shear reinforcement is designed to carry the shear, the minimum area is<br><br>
+      <b>A<sub>v,min</sub> =
+        <span class="frac"><span class="fn">V s</span><span class="fd">F<sub>s</sub> d</span></span></b>
+      <br><br>
+      V = total applied shear &nbsp;&middot;&nbsp; s = spacing of the shear reinforcement &nbsp;&middot;&nbsp;
+      d = distance from the extreme compression fibre to the centroid of the tension steel.<br><br>
+      <b>Maximum spacing of shear reinforcement = the lesser of 0.5d and 1.2 m</b>, so that any 45&deg; shear crack is
+      crossed by at least one bar.
+    </div>
+
+    <p>In a <strong>cantilever beam</strong> the maximum shear at the support must be used. For a member under a
+    uniformly distributed load, the maximum shear may be taken at <strong>0.5d from the face of the support</strong>,
+    provided the support reaction causes compression in the end region and there is no concentrated load within that
+    distance.</p>
+
+    <h3>5.4.4 &nbsp;Behaviour and failure mechanisms of reinforced masonry shear walls</h3>
+
+    <p>The behaviour under combined shear, axial load and moment depends on the <strong>level of axial compression</strong>,
+    the <strong>amount of horizontal and vertical reinforcement</strong>, the <strong>wall aspect ratio</strong>, and the
+    <strong>material properties</strong>. There are two families of failure, each with sub-modes (FEMA 306):</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Family</th><th>Mode</th><th>When it occurs</th><th>Character</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3"><strong>A. Flexural failure</strong></td>
+            <td><strong>Ductile flexural failure</strong></td>
+            <td>Aspect ratio h/L &ge; 1.0 with a <em>moderate</em> axial stress</td>
+            <td>Tensile <strong>yielding of the vertical steel</strong> at one end, with cracking and spalling of the
+              masonry at the compression toe; damage concentrated in the <strong>plastic hinge zone</strong>.
+              <strong>This is the preferred mode</strong> &mdash; ductile and good at dissipating energy.</td></tr>
+          <tr><td>Flexure / <strong>lap splice slip</strong></td>
+            <td>Starter bars from the foundation have insufficient lap length, or the bar is too large for the wall
+              thickness (e.g. 25 mm bars in a 200 mm wall)</td>
+            <td>Vertical cracks appear at the splices, then spalling at the toes; the wall rocks on its foundation.
+              Fairly ductile but causes <strong>severe strength degradation and little energy dissipation</strong>.</td></tr>
+          <tr><td>Flexure / <strong>out-of-plane instability</strong></td>
+            <td>Very high ductility levels, after large tensile strains have opened the tension zone</td>
+            <td>On load reversal the previously stretched zone goes into compression and buckles out of plane. Seen in
+              laboratory tests but <strong>not yet in any post-earthquake field survey</strong>. Prevented by ensuring
+              the stability of the compression zone.</td></tr>
+          <tr><td rowspan="2"><strong>B. Shear failure</strong></td>
+            <td><strong>Diagonal tension failure</strong></td>
+            <td>Inadequate or badly anchored horizontal reinforcement</td>
+            <td>The first diagonal cracks widen into a major <strong>X-shaped crack pair</strong> &mdash; sudden and
+              brittle. With adequate, properly anchored horizontal steel the cracks instead become numerous, fine and
+              well distributed, and failure is gradual (&ldquo;<strong>ductile shear failure</strong>&rdquo;), which in a
+              very squat wall may be the only ductile option available.</td></tr>
+          <tr><td><strong>Sliding shear failure</strong></td>
+            <td><strong>Low gravity load</strong> with high seismic shear &mdash; at the base of low-rise buildings, or at
+              upper storeys of medium-rise buildings</td>
+            <td>A horizontal crack forms at the base and the wall slides; there may be very little other damage. The
+              frictional resistance is only restored once the vertical bars yield in tension and supply a
+              <strong>clamping force</strong>. Premature sliding <strong>prevents the wall from ever developing its full
+              flexural capacity</strong>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch5-plastic-hinge-wall.png" alt="Diagram of a shear or flexural wall under earthquake loading, showing the deflected shape and the plastic hinge forming at the base of the wall">
+      <figcaption><b>Fig. 5.5</b> Formation of the <strong>plastic hinge at the base</strong> of a ductile flexural wall.
+      Design and detailing aim to force the yielding to happen here &mdash; and nowhere else &mdash; so that the energy is
+      dissipated in a controlled location and the foundation stays undamaged.<span class="fig-src">Source: course lecture
+      slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="callout">
+      <strong>Capacity design in one sentence.</strong> The whole point of reinforced masonry seismic design is to make
+      the <em>ductile</em> mode (flexural yielding at the base) happen <em>before</em> any of the brittle modes
+      (diagonal tension, sliding, lap-splice slip). <strong>Ductility</strong> is the capacity to deform well beyond
+      yield while retaining most of the load-carrying capacity &mdash; it is the property the R factor pays for.
+    </div>
+
+    <!-- ══════════════════════════ 5.5 ══════════════════════════ -->
+    <h2>5.5 &nbsp;Reinforced Masonry Column, Beam and Bands</h2>
+
+    <div class="exam-note">
+      <strong>Past exam questions on this topic</strong>
+      <ol>
+        <li>Design a lintel band for a single room one storey building of 4 m breadth, 6 m length and 3 m ceiling height
+          &hellip; show design details in sketch. <span class="year-tag">2076 Chaitra &middot; Q1b</span> <span class="year-tag">[12 marks]</span></li>
+        <li>Design a reinforced brick masonry lintel subjected to triangular loading for a window opening of span 1.6 m.
+          <span class="year-tag">2076 Chaitra &middot; Q2b</span> <span class="year-tag">[12 marks]</span></li>
+        <li>Design a reinforced brick masonry lintel over a window opening of span 1.5 m &hellip; brick masonry
+          characteristic strength 10 N/mm&sup2;, Fe 415. <span class="year-tag">2075 Chaitra &middot; Q5</span> <span class="year-tag">[18 marks]</span></li>
+        <li>Calculate the load on the horizontal band at lintel level due to earthquake and dead load.
+          <span class="year-tag">2080 Bhadra &middot; Q4b</span> <span class="year-tag">[6 marks]</span></li>
+      </ol>
+    </div>
+
+    <h3>5.5.1 &nbsp;General</h3>
+    <p>A reinforced masonry <strong>column</strong> is an isolated vertical compression member whose width does not
+    exceed <strong>4 times its thickness</strong>; anything longer is a wall. A <strong>beam</strong> in masonry is
+    usually a lintel spanning an opening. A <strong>band</strong> is a horizontal reinforced beam cast within the
+    thickness of the wall and running continuously around the whole building.</p>
+
+    <h3>5.5.2 &nbsp;Reinforced masonry columns</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Requirement</th><th>Provision</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td>Vertical reinforcement</td>
+            <td><strong>&ge; 0.25% and &le; 4%</strong> of the net cross-sectional area of the column</td></tr>
+          <tr><td>Minimum number of bars</td><td><strong>4</strong> &mdash; so that ties can form a confined core</td></tr>
+          <tr><td>Lateral ties &mdash; diameter</td><td><strong>&ge; 6 mm</strong></td></tr>
+          <tr><td>Lateral ties &mdash; vertical spacing</td>
+            <td>The <strong>least</strong> of &nbsp;(i) 16 &times; diameter of the longitudinal bar,
+              &nbsp;(ii) 48 &times; diameter of the tie, &nbsp;(iii) the least dimension of the column</td></tr>
+          <tr><td>Tie arrangement</td>
+            <td>Every corner bar and every alternate longitudinal bar must be held by the corner of a tie with an
+              included angle <strong>not more than 135&deg;</strong></td></tr>
+          <tr><td>Clear distance between vertical bars</td><td>&ge; 1.5 &times; bar diameter and &ge; 35 mm</td></tr>
+          <tr><td>Minimum eccentricity</td><td>Columns must be designed for a minimum eccentricity &mdash; perfectly axial loading never occurs</td></tr>
+          <tr><td>Slenderness ratio</td><td>The <strong>greater</strong> of h<sub>eff</sub>/t<sub>eff</sub> in the two principal
+            directions (a column can buckle about either axis; a wall about only one). Limit <strong>15</strong> for an
+            unreinforced load-bearing column, and 12 by IS 1905</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Why ties matter:</strong> they provide lateral support to the longitudinal bars to prevent them buckling
+    (the critical unsupported length is about 16 bar diameters), and they resist diagonal tension when the column acts
+    in shear. They may be placed in the mortar joints.</p>
+
+    <h3>5.5.3 &nbsp;Reinforced masonry beams &mdash; the reinforced brick lintel</h3>
+
+    <p>This is the element the exam actually asks you to design. The full worked solutions are on the solved-paper
+    pages; here is the method.</p>
+
+    <ol class="steps">
+      <li><strong>Decide whether arching action develops.</strong> If the wall on <em>either side</em> of the opening
+        extends beyond the springing by at least half the span, <em>and</em> the masonry above the lintel is at least as
+        deep as the load triangle, the masonry arches over the opening and the lintel carries only the
+        <strong>45&deg; triangle</strong> of masonry (height L/2). Otherwise it carries the <strong>full rectangle</strong>
+        of masonry above it, plus any floor or roof load landing in that zone.</li>
+      <li><strong>Compute the load.</strong> Triangle: W = &frac12; &times; L &times; (L/2) &times; t &times; &gamma;.
+        Add the self weight of the lintel as a UDL.</li>
+      <li><strong>Compute the moment and shear.</strong> For a triangular load of total magnitude W on a simply supported
+        span L: <strong>M = WL/6</strong> and <strong>V = W/2</strong>. For the UDL self weight: M = wL&sup2;/8, V = wL/2.</li>
+      <li><strong>Set the working-stress constants.</strong> &sigma;<sub>cbc</sub> = f<sub>m</sub>/4;
+        &sigma;<sub>st</sub> = 230 MPa for Fe 415; m = 280/(3&sigma;<sub>cbc</sub>);
+        k = m&sigma;<sub>cbc</sub>/(m&sigma;<sub>cbc</sub> + &sigma;<sub>st</sub>); j = 1 &minus; k/3;
+        R = &frac12;&sigma;<sub>cbc</sub>kj.</li>
+      <li><strong>Find the required depth</strong> d = &radic;(M/Rb) and provide an overall depth in whole brick courses
+        (typically three courses &asymp; 230 mm), then compute the effective depth d = D &minus; cover &minus; &phi;/2.</li>
+      <li><strong>Find the steel</strong> A<sub>st</sub> = M/(&sigma;<sub>st</sub> j d). This is almost always far below
+        the practical minimum, so provide <strong>2 bars of 10&ndash;12 mm</strong> laid in the vertical joints of the
+        bottom course and fully grouted with 1:3 cement mortar.</li>
+      <li><strong>Check shear</strong> &tau;<sub>v</sub> = V/(bjd) against about 0.10 N/mm&sup2; for reinforced brickwork,
+        and provide nominal 6 mm links at 150 mm centres to hold the bars.</li>
+      <li><strong>Check bearing and anchorage.</strong> Minimum bearing 200 mm each end; the bars run the full length
+        with a 90&deg; hook, giving anchorage well beyond L<sub>d</sub> = 0.25 d<sub>b</sub>F<sub>s</sub>.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>Curtailment rule worth quoting.</strong> Reinforcement should not be curtailed in a tension zone, and in
+      all cases <strong>at least one quarter of the reinforcement required at mid-span must be carried through to the
+      support</strong> and properly anchored there.
+    </div>
+
+    <div class="exam-box">
+      <strong>Worked examples of this exact design</strong> are on
+      <a href="../solutions/2075-chaitra.html">2075 Chaitra Q5</a> (1.5 m span, 230 mm wall, f<sub>m</sub> = 10 N/mm&sup2;,
+      Fe 415) and <a href="../solutions/2076-chaitra.html">2076 Chaitra Q2b</a> (1.6 m span, 220 mm wall). Both come out
+      hugely under-stressed &mdash; the section is governed by detailing, not by strength &mdash; which is itself a point
+      worth stating in the answer.
+    </div>
+
+    <h3>5.5.4 &nbsp;Seismic bands</h3>
+
+    <p class="lead">A band is a <strong>horizontal reinforced beam cast within the wall thickness and running
+    continuously around the entire building at one level</strong>. Bands are the single most cost-effective seismic
+    measure available for masonry construction &mdash; in the 2015 Gorkha earthquake, buildings with even one lintel band
+    frequently survived with repairable damage while identical unbanded neighbours collapsed.</p>
+
+    <h4>The six bands and what each does</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Band</th><th>Location</th><th>Function</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Plinth band</strong></td><td>At plinth level, above the foundation</td>
+            <td>Ties the foundation together and distributes differential settlement; the first defence against soil
+              failure</td></tr>
+          <tr><td><strong>Sill band</strong></td><td>At window sill level</td>
+            <td>Controls cracking at the bottom corners of window openings</td></tr>
+          <tr class="highlight-row"><td><strong>Lintel band</strong></td><td>At the top of doors and windows</td>
+            <td><strong>The most important band.</strong> Carries the wall above the openings, ties all the walls
+              together at opening head level, and provides the out-of-plane support that stops walls overturning</td></tr>
+          <tr><td><strong>Floor band</strong></td><td>At each intermediate floor level</td>
+            <td>Ties the walls to the diaphragm and transfers the floor inertia into the shear walls</td></tr>
+          <tr><td><strong>Roof band</strong></td><td>At roof level</td>
+            <td>Ties the wall tops together and anchors the roof; essential with a flexible or pitched roof</td></tr>
+          <tr><td><strong>Gable band</strong></td><td>Along the slope of a gable wall</td>
+            <td>Restrains the free-standing triangle of the gable, which otherwise behaves as a cantilever</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>How a band is loaded &mdash; biaxial bending</h4>
+    <div class="formula">
+      A band is a <b>horizontal beam bent about TWO axes at once</b>:<br><br>
+      &bull; <b>Vertically</b>, by the weight of the masonry it supports (lintel action) &mdash; the section is
+      <em>b</em> = wall thickness, <em>D</em> = band depth.<br>
+      &bull; <b>Horizontally</b>, by the <b>out-of-plane inertia of the wall strip tributary to it</b> &mdash; here the
+      band bends <em>in its own plane</em>, so the <b>wall thickness becomes the depth</b>, which is why the band is
+      strong in this direction.<br><br>
+      Seismic load per metre run &nbsp; w<sub>EQ</sub> = &alpha;<sub>h</sub> &times; (tributary wall height) &times; t &times; &gamma;<br>
+      Design moment (continuous with the cross walls) &nbsp; <b>M = wL&sup2;/12</b>
+    </div>
+
+    <h4>Detailing rules &mdash; IS 4326 cl. 8.4 / NBC 202</h4>
+    <ul>
+      <li>Minimum band depth <strong>75 mm</strong>, full thickness of the wall, concrete not leaner than
+        <strong>M15</strong>.</li>
+      <li>Minimum <strong>2 longitudinal bars of 8 mm &phi;</strong> with <strong>6 mm &phi; links at 150 mm</strong>
+        centres. For longer spans and higher seismic zones the bars increase to 12 or 16 mm.</li>
+      <li>The band must be <strong>continuous around the whole building and at the same level all round</strong> &mdash;
+        it must never be interrupted at a door or window.</li>
+      <li>At every corner and T-junction, provide <strong>L-shaped bars of the same diameter lapped 60&phi;</strong>.</li>
+      <li>The lintel band may be <strong>combined with the roof band</strong> if the two are within 300 mm of each other.</li>
+      <li>Bands must be combined with <strong>vertical reinforcement at all corners, T-junctions and the jambs of large
+        openings</strong> &mdash; horizontal bands alone cannot resist out-of-plane overturning.</li>
+    </ul>
+
+    <div class="exam-box">
+      <strong>Worked example.</strong> <a href="../solutions/2076-chaitra.html">2076 Chaitra Q1b</a> designs a lintel
+      band for a 4 m &times; 6 m room with &alpha;<sub>h</sub> = 0.36, and shows that the IS 4326 <em>minimum</em> 75 mm
+      band is <strong>not sufficient for a 6 m span</strong> &mdash; a 150 mm deep band with 4 nos 12 mm bars is needed.
+      <a href="../solutions/2080-bhadra.html">2080 Bhadra Q4b</a> computes the band loading for a two-storey health post.
+    </div>
+
+    <h3>5.5.5 &nbsp;Minimum reinforcement for seismic performance</h3>
+
+    <figure class="figure">
+      <img src="../photo/ch5-min-reinforcement.png" alt="Elevation of a masonry wall showing the required minimum reinforcement: vertical bars of at least 100 square millimetres at corners, within 400 mm of each side of openings and within 200 mm of wall ends, at 3 m maximum spacing, plus bond beam reinforcement at floor and roof levels and above and below openings extending 500 mm or 40 bar diameters past them">
+      <figcaption><b>Fig. 5.6</b> Minimum reinforcement layout for a seismic masonry shear wall. Note the three
+      controlling dimensions: <strong>200 mm</strong> from a wall end, <strong>400 mm</strong> each side of an opening,
+      and a maximum spacing of <strong>3 m</strong>.<span class="fig-src">Source: IITK-GSDMA Guidelines, Fig. C7.</span></figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Requirement</th><th>Provision</th></tr></thead>
+        <tbody>
+          <tr><td>Vertical reinforcement</td>
+            <td>At least <strong>100 mm&sup2;</strong> in cross-sectional area at a maximum spacing of
+              <strong>3 m</strong>, and at these critical sections:
+              <strong>(a)</strong> corners, <strong>(b)</strong> within 400 mm of each side of an opening,
+              <strong>(c)</strong> within 200 mm of the end of a wall</td></tr>
+          <tr><td>Small openings</td><td>Reinforcement around openings is <strong>not needed for openings smaller than
+            400 mm</strong> in either direction &mdash; the diagonal strut is not disrupted</td></tr>
+          <tr><td>Horizontal reinforcement</td>
+            <td>At least <strong>2 bars of 6 mm at not more than 400 mm</strong> spacing; or bond-beam reinforcement of at
+              least <strong>100 mm&sup2;</strong> at not more than 3 m spacing</td></tr>
+          <tr><td>Where horizontal reinforcement must go</td>
+            <td>At the <strong>top and bottom of every wall opening</strong>, extending at least <strong>500 mm or 40 bar
+              diameters</strong> past the opening; continuously at structurally connected floor and roof levels; and
+              within 400 mm of the top of the wall</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>5.5.6 &nbsp;The three wall types and their R values</h3>
+
+    <figure class="figure">
+      <img src="../photo/ch5-wall-types-table.png" alt="Table listing three wall types: Type A, unreinforced masonry with minimum reinforcement, seismic zones II and III, R equals 2.25; Type B, reinforced masonry with minimum reinforcement, zones IV and V, R equals 3.0; Type C, reinforced masonry with minimum and special reinforcement, zones IV and V, R equals 4.0">
+      <figcaption><b>Fig. 5.7</b> Reinforcement requirements and response reduction factors for the three wall types.
+      <strong>More reinforcement buys a higher R, and a higher R directly reduces the design base shear</strong>
+      (A<sub>h</sub> = (Z/2)(I/R)(S<sub>a</sub>/g)).<span class="fig-src">Source: IITK-GSDMA Guidelines, Table 3;
+      R values as per IS 1893.</span></figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Description</th><th>Zone</th><th>R</th><th>Key requirement</th></tr></thead>
+        <tbody>
+          <tr><td><strong>A</strong></td><td><strong>Detailed unreinforced</strong> masonry shear wall &mdash; designed as
+            URM but containing the minimum reinforcement of &sect;5.5.5</td><td>II &amp; III</td><td>2.25</td>
+            <td>Improved inelastic response and energy dissipation; can accommodate larger deformation than plain URM.
+              Low to moderate seismic risk only.</td></tr>
+          <tr><td><strong>B</strong></td><td><strong>Ordinary reinforced</strong> masonry shear wall</td>
+            <td>IV &amp; V</td><td>3.0</td>
+            <td>Designed as reinforced masonry <em>and</em> meeting the minimum reinforcement of &sect;5.5.5. Adequate
+              safety in moderate to high seismic zones.</td></tr>
+          <tr class="highlight-row"><td><strong>C</strong></td><td><strong>Special reinforced</strong> masonry shear wall</td>
+            <td>IV &amp; V</td><td><strong>4.0</strong></td>
+            <td>The most restrictive requirements &mdash; intended for regions of intense seismic activity. See below.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula">
+      <b>Additional requirements for a SPECIAL reinforced masonry shear wall (Type C)</b><br><br>
+      1. &nbsp;Uniformly reinforced in both directions, with the <b>sum of the reinforcement in the two directions
+      &ge; 0.2%</b> of the gross cross-sectional area, and the reinforcement in <b>each direction &ge; 0.07%</b>.<br>
+      2. &nbsp;Maximum spacing of horizontal and vertical reinforcement = the <b>lesser</b> of
+      &nbsp;(a) one-third the length of the shear wall, &nbsp;(b) one-third the height of the shear wall,
+      &nbsp;(c) <b>1.2 m</b>.<br>
+      3. &nbsp;The reinforcement in the vertical direction &ge; <b>one-third</b> of the required shear reinforcement.<br>
+      4. &nbsp;Shear reinforcement must be <b>anchored around the vertical bars with a 135&deg; or 180&deg; standard
+      hook</b>.
+    </div>
+
+    <h3>5.5.7 &nbsp;Detailing of reinforced masonry shear walls</h3>
+    <ul>
+      <li>Wall thickness preferably <strong>not less than 150 mm</strong>.</li>
+      <li><strong>Bar diameter &le; one-tenth of the wall thickness</strong>; bar spacing in either direction limited so
+        the reinforcement is well distributed.</li>
+      <li>The effective flange width of a flanged wall is restricted to the lesser of <strong>half the distance to an
+        adjacent web</strong> and a fraction of the total wall height.</li>
+      <li>Vertical reinforcement comprises both <strong>distributed</strong> reinforcement and
+        <strong>concentrated</strong> reinforcement near each end.</li>
+      <li>A minimum of <strong>4 nos 12 mm bars in at least two layers near each end</strong> of the wall.</li>
+      <li>Where the extreme-fibre compressive stress exceeds <strong>0.2 f<sub>ck</sub></strong>,
+        <strong>boundary elements</strong> must be provided along the vertical edges &mdash; a locally thickened,
+        heavily tied zone that confines the compression toe and prevents the crushing and out-of-plane instability
+        described in &sect;5.4.4.</li>
+    </ul>
+
+    <!-- ══════════════════════════ Quick Revision ══════════════════════════ -->
+    <h2>Quick Revision</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Value / rule</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td>Definition of reinforced masonry</td>
+            <td>Flexural tension resisted by <strong>reinforcement only</strong>; masonry assumed to carry no tension</td></tr>
+          <tr><td>Permissible steel stress, HYSD</td><td>230 MPa tension &middot; 190 MPa compression</td></tr>
+          <tr><td>Permissible steel stress, MS</td><td>140 MPa (&phi; &le; 20), 130 MPa (&phi; &gt; 20) tension &middot; 130 MPa compression</td></tr>
+          <tr><td>Bar size limits</td><td>5 mm &le; &phi; &le; 25 mm; &le; &frac12; the least clear cell dimension; &le; t/10 in a shear wall</td></tr>
+          <tr><td>Development length</td><td>L<sub>d</sub> = 0.25 d<sub>b</sub>F<sub>s</sub> &ge; 300 mm; <strong>+60% for MS and epoxy-coated</strong></td></tr>
+          <tr><td>Lap splice</td><td>&ge; 45 d<sub>b</sub> or 200 mm</td></tr>
+          <tr><td>Cover</td><td>10 mm in mortar-filled cavity; 15 mm or d<sub>b</sub> in grout; 15 mm from face for bed-joint steel</td></tr>
+          <tr><td>Orthogonal strength ratio &mu;</td><td>0.3&ndash;0.5 &mdash; horizontal span is about twice as strong as vertical</td></tr>
+          <tr><td>Permissible flexural tension (URM)</td><td>0.07 N/mm&sup2; vertical bending &middot; 0.14 N/mm&sup2; horizontal bending</td></tr>
+          <tr><td>Two-way moment</td><td>M = &alpha;wL&sup2;; &alpha; from code tables, depends on edge conditions, h/L and &mu;</td></tr>
+          <tr><td>Section constants</td><td>k = 1/(1 + F<sub>s</sub>/nF<sub>b</sub>) &middot; j = 1 &minus; k/3 &middot; R = &frac12;F<sub>b</sub>kj</td></tr>
+          <tr class="highlight-row"><td>Permissible compressive force</td>
+            <td>P<sub>o</sub> = (0.25 f<sub>m</sub>A<sub>n</sub> + 0.65 A<sub>st</sub>F<sub>s</sub>) k<sub>s</sub></td></tr>
+          <tr><td>Combined axial + flexure</td><td>&le; 1.25 F<sub>a</sub>; axial alone &le; F<sub>a</sub></td></tr>
+          <tr><td>Shear stress</td><td>f<sub>v</sub> = V/(bjd); ignore any area in tension</td></tr>
+          <tr><td>F<sub>v</sub>, flexural member</td><td>0.083&radic;f<sub>m</sub> &le; 0.25 MPa (no web steel) &middot; 0.25&radic;f<sub>m</sub> &le; 0.75 MPa (with web steel)</td></tr>
+          <tr class="highlight-row"><td><strong>Shear contributions are NOT additive</strong></td>
+            <td>Either the masonry takes all the shear, or the steel is designed for the <strong>full</strong> shear</td></tr>
+          <tr><td>Shear reinforcement</td><td>A<sub>v,min</sub> = Vs/(F<sub>s</sub>d); spacing &le; 0.5d or 1.2 m</td></tr>
+          <tr><td>Column steel</td><td>0.25% to 4% of net area, minimum 4 bars</td></tr>
+          <tr><td>Column ties</td><td>&ge; 6 mm; spacing = least of 16 d<sub>b</sub>, 48 d<sub>tie</sub>, least column dimension; 135&deg; max included angle</td></tr>
+          <tr><td>Lintel &mdash; arching</td><td>45&deg; triangle of height L/2; <strong>M = WL/6</strong>, V = W/2</td></tr>
+          <tr><td>Band &mdash; minimum</td><td>75 mm deep, full wall thickness, M15, 2 nos 8 mm &phi; + 6 mm links @ 150 mm, corner lap 60&phi;</td></tr>
+          <tr><td>Minimum seismic vertical steel</td><td>100 mm&sup2; at corners, within 400 mm of openings, within 200 mm of wall ends, max spacing 3 m</td></tr>
+          <tr><td>Special RM wall (Type C)</td><td>&Sigma;&rho; &ge; 0.2%, each direction &ge; 0.07%, spacing &le; min(L/3, H/3, 1.2 m), R = 4.0</td></tr>
+          <tr><td>Boundary elements</td><td>Required where the extreme-fibre compressive stress exceeds 0.2 f<sub>ck</sub></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════ Chapter Summary ══════════════════════════ -->
+    <h2>Chapter Summary</h2>
+
+    <ol>
+      <li><strong>&sect;5.1 &mdash; Basic concept.</strong> Reinforced masonry is masonry designed on the assumption that
+        flexural tension is carried by <em>reinforcement only</em>. It exists because masonry has essentially no tensile
+        strength and fails in a brittle way. The steel can be placed in grouted hollow cores, in pockets, in Quetta-bond
+        cavities, in filled cavity walls, in beam units, or in the bed joints. The reward is flexural and shear capacity,
+        ductility, better out-of-plane behaviour and a higher R factor. Design is by working stress with permissible
+        steel stresses of 230/190 MPa (HYSD) and 140-130/130 MPa (MS), and
+        L<sub>d</sub> = 0.25 d<sub>b</sub>F<sub>s</sub> &ge; 300 mm.</li>
+
+      <li><strong>&sect;5.2 &mdash; One-way flexure.</strong> A wall spanning <em>vertically</em> cracks along a bed joint
+        and is weak (0.07 N/mm&sup2;), and needs <em>vertical</em> bars; a wall spanning <em>horizontally</em> must break
+        through the units and is about twice as strong (0.14 N/mm&sup2;), and needs <em>bed-joint</em> reinforcement.
+        The moment coefficient depends on the restraint: wH&sup2;/8, /10, /12, or /2 for a free top. Effective
+        compressive width per bar is limited to 3t (also &le; the bar spacing and &le; 6t).</li>
+
+      <li><strong>&sect;5.3 &mdash; Two-way flexure.</strong> A panel supported on three or four edges spans both ways and
+        its design moment falls to a fraction of the one-way value: M = &alpha;wL&sup2;, with &alpha; taken from code
+        tables as a function of the edge conditions, the aspect ratio and the orthogonal strength ratio. This is precisely
+        why cross walls, piers and buttresses are so effective, and it produces the diagonal fracture-line crack patterns
+        seen after earthquakes.</li>
+
+      <li><strong>&sect;5.4 &mdash; Flexural and shear strength.</strong> Flexure uses the cracked transformed section with
+        k, j and R exactly as in RC. Compression uses
+        P<sub>o</sub> = (0.25 f<sub>m</sub>A<sub>n</sub> + 0.65 A<sub>st</sub>F<sub>s</sub>)k<sub>s</sub>, with combined
+        stress limited to 1.25 F<sub>a</sub>. In shear the crucial rule is that <strong>masonry and steel contributions
+        are not added</strong> &mdash; if f<sub>v</sub> exceeds F<sub>v</sub>, the steel must carry the whole shear. The
+        permissible shear rises sharply for squat walls (low M/Vd). Failure is either flexural (ductile yielding, lap
+        splice slip, out-of-plane instability) or shear (diagonal tension, sliding shear); the ductile flexural mode with
+        a plastic hinge at the base is the one the design must deliberately produce.</li>
+
+      <li><strong>&sect;5.5 &mdash; Columns, beams and bands.</strong> Columns take 0.25&ndash;4% vertical steel with at
+        least 4 bars and ties at the least of 16d<sub>b</sub>, 48d<sub>tie</sub> and the least dimension. Reinforced brick
+        lintels are designed for the 45&deg; arching triangle with M = WL/6, and in practice come out governed by detailing
+        rather than strength. Bands &mdash; plinth, sill, lintel, floor, roof and gable &mdash; are horizontal beams cast in
+        the wall, bent about two axes at once, and must be continuous all round with 60&phi; corner laps; they are the
+        cheapest and most effective seismic measure in masonry. Minimum seismic steel is 100 mm&sup2; at corners, beside
+        openings and at wall ends at 3 m maximum spacing, and the three wall types A, B and C earn
+        R = 2.25, 3.0 and 4.0 respectively.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>How this chapter connects to the rest of the course.</strong> Chapter 2 gave the permissible-stress design
+      of <em>unreinforced</em> masonry; Chapter 4 gave the seismic analysis that produces the forces. Chapter 5 is what
+      you do when Chapter 2's tension check <em>fails</em> &mdash; instead of thickening the wall indefinitely, you put
+      steel where the tension is. Chapter 6 then applies the same reinforcement ideas to buildings that already exist.
+    </div>
+
+    <!-- ══════════════════════════ Past Questions ══════════════════════════ -->
+    <h2>All Past Questions on This Chapter</h2>
+
+    <div class="exam-note">
+      <ol>
+        <li>Explain reinforced masonry. <span class="year-tag">2081 Bhadra &middot; Q5a</span> <span class="year-tag">[4]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2081-bhadra.html">solved</a></li>
+        <li>Calculate the load on the horizontal band at lintel level due to earthquake and dead load.
+          <span class="year-tag">2080 Bhadra &middot; Q4b</span> <span class="year-tag">[6]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2080-bhadra.html">solved</a></li>
+        <li>What is reinforced masonry? Explain. <span class="year-tag">2079 Bhadra &middot; Q5a</span> <span class="year-tag">[4]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2079-bhadra.html">solved</a></li>
+        <li>Design a lintel band for a single room one storey building of 4 m breadth, 6 m length and 3 m ceiling height.
+          Show the design details in a sketch. <span class="year-tag">2076 Chaitra &middot; Q1b</span> <span class="year-tag">[12]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2076-chaitra.html">solved</a></li>
+        <li>Design a reinforced brick masonry lintel subjected to triangular loading for a window opening of span 1.6 m.
+          <span class="year-tag">2076 Chaitra &middot; Q2b</span> <span class="year-tag">[12]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2076-chaitra.html">solved</a></li>
+        <li>Design a reinforced brick masonry lintel over a window opening of span 1.5 m. Brick masonry characteristic
+          strength 10 N/mm&sup2;, Fe 415. <span class="year-tag">2075 Chaitra &middot; Q5</span> <span class="year-tag">[18]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2075-chaitra.html">solved</a></li>
+      </ol>
+    </div>
+
+    <p class="footer-note">Chapter 5 &mdash; Reinforced Masonry &middot; 5 hours &middot; 6 marks &middot;
+    ENCE 367 Seismic Resistant Design of Masonry Structures</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

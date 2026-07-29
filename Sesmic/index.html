@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seismic Resistant Design of Masonry Structures &mdash; Study Guide</title>
+  <style id="dark-mode-styles">
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f8f9fb;--surface:#fff;--surface-2:#f1f3f6;--ink:#1a1a2e;--muted:#6b7280;
+      --border:#e5e7eb;--accent:#4f46e5;--accent-light:#eef2ff;--accent-text:#4338ca;
+      --radius:12px;--radius-sm:8px;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.1);
+      --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+      --num-accent:#0ea5e9;--num-light:#f0f9ff;
+      --sum-accent:#8b5cf6;--sum-light:#f5f3ff;
+      --exam-accent:#f59e0b;--exam-light:#fffbeb;
+    }
+    [data-theme="dark"]{
+      --bg:#0f1117;--surface:#1a1b26;--surface-2:#21222e;--ink:#e5e7eb;--muted:#9ca3af;
+      --border:#2d2f3d;--accent:#818cf8;--accent-light:#1e1b4b;--accent-text:#a5b4fc;
+      --num-accent:#38bdf8;--num-light:#0c1929;
+      --sum-accent:#a78bfa;--sum-light:#1a1530;
+      --exam-accent:#fbbf24;--exam-light:#1a1708;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.15);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.3);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh}
+    .container{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 12px;border-radius:var(--radius-sm);transition:all .2s;border:1px solid transparent}
+    .back-link:hover{color:var(--accent);background:var(--accent-light);border-color:var(--border)}
+    .back-link svg{width:16px;height:16px}
+    .page-header{text-align:center;padding:40px 0 32px}
+    .page-header h1{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+    .page-header .course-code{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);background:var(--accent-light);border:1px solid var(--border);padding:3px 10px;border-radius:999px;margin-bottom:10px}
+    .page-header .subtitle{color:var(--muted);font-size:.95rem;max-width:540px;margin:0 auto 20px}
+    .stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+    .stats div{text-align:center}
+    .stats span{display:block;font-size:1.4rem;font-weight:800;color:var(--accent)}
+    .stats small{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+    .theme-toggle{position:fixed;top:16px;right:16px;z-index:100;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow-sm)}
+    .theme-toggle:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .search-wrap{margin:0 auto 32px;max-width:480px}
+    .search-input{width:100%;padding:10px 16px 10px 40px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--ink);font-size:.9rem;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+    .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+    .section-label{display:flex;align-items:center;gap:10px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:36px 0 14px;padding:0 4px}
+    .section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+    .section-label .section-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+    .section-label .icon-theory{background:var(--accent-light);color:var(--accent)}
+    .section-label .icon-summary{background:var(--sum-light);color:var(--sum-accent)}
+    .section-label .icon-exam{background:var(--exam-light);color:var(--exam-accent)}
+    .section-label .icon-num{background:var(--num-light);color:var(--num-accent)}
+    .chapter-list{list-style:none;display:flex;flex-direction:column;gap:0}
+    .chapter-list li{border-bottom:1px solid var(--border)}
+    .chapter-list li:first-child{border-top:1px solid var(--border)}
+    .chapter-item{display:flex;align-items:center;gap:14px;padding:14px 8px;text-decoration:none;color:var(--ink);transition:all .15s}
+    .chapter-item:hover{padding-left:14px;background:var(--accent-light)}
+    .chapter-item.pending{cursor:default;opacity:.6}
+    .chapter-item.pending:hover{padding-left:8px;background:transparent}
+    .ch-num{font-size:.82rem;font-weight:800;color:var(--accent-text);width:28px;text-align:center;flex-shrink:0}
+    .ch-title{flex:1;font-weight:600;font-size:.92rem;line-height:1.35}
+    .ch-info{display:flex;flex-direction:column;flex:1}
+    .ch-desc{font-size:.78rem;color:var(--muted);line-height:1.4;margin-top:2px}
+    .ch-badge{font-size:.72rem;font-weight:700;color:var(--muted);flex-shrink:0}
+    .badge-theory{color:var(--accent-text)}
+    .badge-summary{color:var(--sum-accent)}
+    .badge-exam{color:var(--exam-accent)}
+    .badge-num{color:var(--num-accent)}
+    .num-list{list-style:none;display:flex;flex-direction:column;gap:0}
+    .num-list li{border-bottom:1px solid var(--border)}
+    .num-list li:first-child{border-top:1px solid var(--border)}
+    .num-item{display:flex;align-items:center;gap:14px;padding:14px 8px;text-decoration:none;color:var(--ink);transition:all .15s}
+    .num-item:hover{padding-left:14px;background:var(--num-light)}
+    .num-item .ch-num{color:var(--num-accent)}
+    .num-item .ch-badge{color:var(--num-accent)}
+    .info-row{display:flex;align-items:flex-start;gap:12px;padding:10px 8px;font-size:.85rem;color:var(--muted)}
+    .info-row .info-icon{font-size:1rem;flex-shrink:0}
+    .marks-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;margin-top:6px}
+    .marks-cell{border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 8px;text-align:center;background:var(--surface)}
+    .marks-cell b{display:block;font-size:1.15rem;font-weight:800;color:var(--accent)}
+    .marks-cell small{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+    .page-footer{text-align:center;margin-top:48px;padding:20px 0;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem}
+    @media(max-width:600px){
+      .container{padding:16px 14px 40px}
+      .page-header h1{font-size:1.5rem}
+      .stats{gap:16px}
+      .chapter-item,.num-item{padding:10px 6px;gap:10px}
+    }
+  </style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<div class="container">
+  <a href="../index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    All Subjects
+  </a>
+  <header class="page-header">
+    <span class="course-code">ENCE 367 &middot; Elective I</span>
+    <h1>Seismic Resistant Design of Masonry Structures</h1>
+    <p class="subtitle">Earthquakes and ground motion, masonry behaviour, seismic analysis &amp; design of masonry buildings, reinforced masonry, repair and retrofitting.</p>
+    <div class="stats">
+      <div><span>6</span><small>Chapters</small></div>
+      <div><span>45</span><small>Teaching Hours</small></div>
+      <div><span>60</span><small>Final Marks</small></div>
+      <div><span>6</span><small>Past Papers</small></div>
+    </div>
+  </header>
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="globalSearch" placeholder="Search chapters, topics, past questions..." autocomplete="off">
+  </div>
+
+  <div class="section-label"><span class="section-icon icon-theory">&#9670;</span> Theory Chapters</div>
+  <ul class="chapter-list" id="theoryList">
+    <li><a href="theory/chapter1.html" class="chapter-item" data-search="earthquake seismic ground motion origin plate tectonics elastic rebound fault seismic waves magnitude intensity richter mmi time history response spectra effects on building lateral force inertia">
+      <span class="ch-num">01</span>
+      <div class="ch-info"><span class="ch-title">Earthquakes and Seismic Ground Motion</span><span class="ch-desc">Origin, faults, seismic waves, magnitude &amp; intensity, time history &amp; response spectra, effects on buildings</span></div>
+      <span class="ch-badge badge-theory">6 hr &middot; 8 M</span>
+    </a></li>
+    <li><a href="theory/chapter2.html" class="chapter-item" data-search="masonry structures history nature properties units mortar walls load bearing confined infill piers arches emerging materials slenderness ratio stress reduction factor shape modification area reduction is 1905 bonds english flemish rat trap">
+      <span class="ch-num">02</span>
+      <div class="ch-info"><span class="ch-title">Masonry Structures</span><span class="ch-desc">Units &amp; mortar, strength factors, load-bearing / confined / infill, walls &amp; piers, IS 1905 design review</span></div>
+      <span class="ch-badge badge-theory">8 hr &middot; 8 M</span>
+    </a></li>
+    <li><a href="theory/chapter3.html" class="chapter-item" data-search="seismic behavior masonry failure mechanism in-plane out-of-plane box action modes of failure damages irregularities diaphragm bands rocking sliding diagonal shear toe crushing overturning delamination corner separation gorkha jajarkot mitigation remedial">
+      <span class="ch-num">03</span>
+      <div class="ch-info"><span class="ch-title">Seismic Behavior of Masonry Structures</span><span class="ch-desc">Failure mechanisms &amp; modes, in-plane vs out-of-plane, box action, damage patterns, mitigation, Gorkha &amp; Jajarkot</span></div>
+      <span class="ch-badge badge-theory">10 hr &middot; 14 M</span>
+    </a></li>
+    <li><a href="theory/chapter4.html" class="chapter-item" data-search="seismic analysis design masonry buildings code provisions IS 1893 NBC 105 base shear storey force lateral force distribution rigid flexible diaphragm rigidity shear wall opening piers direct torsional shear centre of mass rigidity eccentricity overturning axial load out of plane bending stability arching action rigid gapped">
+      <span class="ch-num">04</span>
+      <div class="ch-info"><span class="ch-title">Seismic Analysis and Design of Masonry Buildings</span><span class="ch-desc">Base shear &amp; storey forces, diaphragm distribution, pier rigidity, direct &amp; torsional shear, overturning, out-of-plane, arching</span></div>
+      <span class="ch-badge badge-theory">12 hr &middot; 18 M</span>
+    </a></li>
+    <li><a href="theory/chapter5.html" class="chapter-item" data-search="reinforced masonry basic concept flexural behaviour one way two way vertical horizontal bed joint reinforcement quetta bond hollow blockwork pocket wall flexural shear strength permissible stress development length column lateral ties beam lintel arching bands plinth sill lintel roof gable minimum reinforcement wall types R value">
+      <span class="ch-num">05</span>
+      <div class="ch-info"><span class="ch-title">Reinforced Masonry</span><span class="ch-desc">One-way and two-way flexure, flexural &amp; shear strength, reinforced columns, beams and bands</span></div>
+      <span class="ch-badge badge-theory">5 hr &middot; 6 M</span>
+    </a></li>
+    <li><a href="theory/chapter6.html" class="chapter-item" data-search="repair rehabilitation retrofitting restoration strengthening vulnerability assessment screening evaluation FEMA 154 GNDT UN-HABITAT compliance index NDT rebound hammer UPV core test retrofitting materials FRP grouting wire mesh jacketing ferrocement splint bandage seismic belt containment reinforcement crack stitching sewing prestressing buttress nepal practice gorkha">
+      <span class="ch-num">06</span>
+      <div class="ch-info"><span class="ch-title">Repair and Strengthening of Existing Masonry Buildings</span><span class="ch-desc">Repair vs rehabilitation vs retrofitting, vulnerability assessment, retrofitting materials &amp; techniques</span></div>
+      <span class="ch-badge badge-theory">4 hr &middot; 6 M</span>
+    </a></li>
+  </ul>
+
+  <div class="section-label"><span class="section-icon icon-exam">&#9998;</span> Marks Distribution (Final Exam &mdash; 60 Marks)</div>
+  <div class="marks-strip">
+    <div class="marks-cell"><b>8</b><small>Ch 1 &middot; 6 hr</small></div>
+    <div class="marks-cell"><b>8</b><small>Ch 2 &middot; 8 hr</small></div>
+    <div class="marks-cell"><b>14</b><small>Ch 3 &middot; 10 hr</small></div>
+    <div class="marks-cell"><b>18</b><small>Ch 4 &middot; 12 hr</small></div>
+    <div class="marks-cell"><b>6</b><small>Ch 5 &middot; 5 hr</small></div>
+    <div class="marks-cell"><b>6</b><small>Ch 6 &middot; 4 hr</small></div>
+  </div>
+  <div class="info-row"><span class="info-icon">&#9432;</span><span>Chapters 3 and 4 together carry <strong>32 of 60 marks</strong> &mdash; more than half the paper. There may be minor deviation in the marks distribution.</span></div>
+
+  <div class="section-label"><span class="section-icon icon-exam">&#9998;</span> Past Question Papers</div>
+  <ul class="num-list">
+    <li><a href="old questions/f2c94b45-bffb-4444-927c-5f92a8d92e74.jpg" class="num-item" data-search="2081 bhadra past question paper lateral force earthquake parameters jajarkot strengthening brick column shear wall centre of mass rigidity">
+      <span class="ch-num">01</span>
+      <div class="ch-info"><span class="ch-title">2081 Bhadra &mdash; Regular</span><span class="ch-desc">EQ as lateral force &middot; Jajarkot failures &middot; brick column &middot; shear wall &middot; centre of mass &amp; rigidity</span></div>
+      <span class="ch-badge badge-num">80 M</span>
+    </a></li>
+    <li><a href="old questions/f74897c5-1807-4343-ac5b-d64af42dcbb8.jpg" class="num-item" data-search="2080 bhadra past question paper earthquake source slenderness ratio effective height pier basketball surkhet lintel band">
+      <span class="ch-num">02</span>
+      <div class="ch-info"><span class="ch-title">2080 Bhadra &mdash; Regular</span><span class="ch-desc">EQ source &middot; slenderness ratio of walls &middot; solid wall with pier &middot; storey shear at Surkhet &middot; lintel band</span></div>
+      <span class="ch-badge badge-num">80 M</span>
+    </a></li>
+    <li><a href="old questions/Scannable-Document-on-Jul-13-2023-4_49_51-PM.pdf" class="num-item" data-search="2079 bhadra 2078 bhadra 2076 chaitra 2075 chaitra past question papers scanned pdf elastic rebound richter mmi cavity wall lintel eccentricity">
+      <span class="ch-num">03</span>
+      <div class="ch-info"><span class="ch-title">2079 &amp; 2078 Bhadra, 2076 &amp; 2075 Chaitra</span><span class="ch-desc">Scanned PDF &mdash; 4 papers: elastic rebound, Richter/MMI, wall &amp; pier design, cavity wall, RB lintel, eccentricity</span></div>
+      <span class="ch-badge badge-num">4 papers</span>
+    </a></li>
+  </ul>
+
+  <div class="section-label"><span class="section-icon icon-num">&Sigma;</span> Solved Past Questions</div>
+  <div class="info-row"><span class="info-icon">&#10003;</span><span><strong>All six papers fully solved</strong> &mdash; every theory answer written out and every numerical worked step by step following the same procedure as the lecture examples, with IS 1905 table references at each step.</span></div>
+  <ul class="num-list">
+    <li><a href="solutions/2081-bhadra.html" class="num-item" data-search="2081 bhadra solved solutions earthquake lateral force parameters jajarkot strengthening brick column shear wall centre of mass rigidity eccentricity">
+      <span class="ch-num">01</span>
+      <div class="ch-info"><span class="ch-title">2081 Bhadra &mdash; Solved</span><span class="ch-desc">EQ as lateral force &middot; Jajarkot &middot; brick column 100 kN &middot; shear wall 0.2 g &middot; centre of mass &amp; rigidity</span></div>
+      <span class="ch-badge badge-num">3 numericals</span>
+    </a></li>
+    <li><a href="solutions/2080-bhadra.html" class="num-item" data-search="2080 bhadra solved solutions earthquake source slenderness ratio effective height thickness pier basketball hall wind surkhet storey shear lintel band">
+      <span class="ch-num">02</span>
+      <div class="ch-info"><span class="ch-title">2080 Bhadra &mdash; Solved</span><span class="ch-desc">SR of walls A/C/G/P &middot; solid wall with pier &middot; basketball hall wind wall &middot; Surkhet storey shear &middot; lintel band</span></div>
+      <span class="ch-badge badge-num">4 numericals</span>
+    </a></li>
+    <li><a href="solutions/2079-bhadra.html" class="num-item" data-search="2079 bhadra solved solutions elastic rebound himalaya magnitude intensity richter mmi load bearing infill confined workshop wall modular brick shear wall">
+      <span class="ch-num">03</span>
+      <div class="ch-info"><span class="ch-title">2079 Bhadra &mdash; Solved</span><span class="ch-desc">Elastic rebound &middot; Richter vs MMI &middot; workshop wall 5.4 m &middot; modular brick wall e/t = 1/12 &middot; shear wall 0.1 g</span></div>
+      <span class="ch-badge badge-num">3 numericals</span>
+    </a></li>
+    <li><a href="solutions/2078-bhadra.html" class="num-item" data-search="2078 bhadra solved solutions richter mmi gorkha failure mechanism masonry types unit mortar strength solid wall pier cavity wall exterior wind wall shear wall">
+      <span class="ch-num">04</span>
+      <div class="ch-info"><span class="ch-title">2078 Bhadra &mdash; Solved</span><span class="ch-desc">Gorkha failures &middot; solid wall with pier &middot; <strong>cavity wall</strong> &middot; exterior wind wall &middot; shear wall 0.3 g</span></div>
+      <span class="ch-badge badge-num">4 numericals</span>
+    </a></li>
+    <li><a href="solutions/2076-chaitra.html" class="num-item" data-search="2076 chaitra solved solutions compressive strength factors lintel band design transverse loading reinforced brick masonry lintel triangular arching kathmandu seismic coefficient stress reduction factor confined masonry">
+      <span class="ch-num">05</span>
+      <div class="ch-info"><span class="ch-title">2076 Chaitra &mdash; Solved</span><span class="ch-desc"><strong>Lintel band design</strong> &middot; <strong>RB lintel</strong> with sketches &middot; interior wall &middot; Kathmandu seismic coefficient</span></div>
+      <span class="ch-badge badge-num">4 numericals</span>
+    </a></li>
+    <li><a href="solutions/2075-chaitra.html" class="num-item" data-search="2075 chaitra solved solutions shear wall design criteria steps modes of failure static earthquake slenderness ratio shape modification factor interior wall reinforced brick lintel equivalent eccentricity ratio">
+      <span class="ch-num">06</span>
+      <div class="ch-info"><span class="ch-title">2075 Chaitra &mdash; Solved</span><span class="ch-desc">Shear wall criteria &middot; static + seismic failure modes &middot; SR &amp; k<sub>p</sub> &middot; RB lintel &middot; equivalent eccentricity</span></div>
+      <span class="ch-badge badge-num">3 numericals</span>
+    </a></li>
+  </ul>
+
+  <div class="section-label"><span class="section-icon icon-summary">&#9635;</span> Codes &amp; References</div>
+  <div class="info-row"><span class="info-icon">&#128220;</span><span><strong>Codes allowed in the exam:</strong> IS 1905&ndash;1987 (unreinforced masonry), IS 1893 (Part 1): 2016, NBC 105: 2020, NBC 109, NBC 203, SP 20 Handbook. Check the instruction line on each paper &mdash; it varies year to year.</span></div>
+  <div class="info-row"><span class="info-icon">&#128218;</span><span><strong>Main texts:</strong> Tomazevic &mdash; <em>Earthquake-Resistant Design of Masonry Buildings</em>; Drysdale &amp; Hamid &mdash; <em>Masonry Structures: Behavior and Design</em>; Paulay &amp; Priestley &mdash; <em>Seismic Design of Reinforced Concrete and Masonry Buildings</em>; Hendry, Sinha &amp; Davies &mdash; <em>Design of Masonry Structures</em>.</span></div>
+
+  <footer class="page-footer">
+    <p>Seismic Resistant Design of Masonry Structures (ENCE 367) &mdash; Final Year 2026</p>
+  </footer>
+</div>
+<script>
+(function(){
+  var t=document.getElementById('themeToggle'),root=document.documentElement;
+  var saved=localStorage.getItem('theme');
+  if(saved)root.setAttribute('data-theme',saved);
+  else if(matchMedia('(prefers-color-scheme:dark)').matches)root.setAttribute('data-theme','dark');
+  t.textContent=root.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  t.addEventListener('click',function(){
+    var d=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',d);localStorage.setItem('theme',d);
+    t.textContent=d==='dark'?'\u2600':'\u263E';
+  });
+})();
+var search=document.getElementById('globalSearch');
+search.addEventListener('input',function(){
+  var q=search.value.toLowerCase();
+  document.querySelectorAll('.chapter-item,.num-item').forEach(function(el){
+    var text=((el.dataset.search||'')+' '+el.textContent).toLowerCase();
+    var li=el.closest('li')||el;
+    li.style.display=text.indexOf(q)!==-1?'':'none';
+  });
+});
+</script>
+<script src="../common.js"></script>
+</body>
+</html>

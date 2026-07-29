@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 2 &ndash; Masonry Structures</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- id="dark-mode-styles" stops common.js from flattening the dark palette; also holds page-local rules -->
+  <style id="dark-mode-styles">
+    .year-tag{display:inline-block;font-size:.62em;font-weight:700;letter-spacing:.03em;
+      color:var(--accent);background:var(--accent-light);border:1px solid var(--line);
+      border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+    .figure svg{max-width:100%;height:auto}
+    .figure img{max-width:100%;max-height:620px;height:auto;display:block;margin:0 auto;
+      background:#fff;padding:6px;border:1px solid var(--line);border-radius:6px}
+    [data-theme="dark"] .figure img{filter:brightness(.9) contrast(1.02)}
+    .figure-row{align-items:flex-start}
+    .figure-row .figure{flex:1 1 260px;max-width:420px}
+    .fig-src{display:block;font-style:normal;font-size:.86em;opacity:.8;margin-top:4px}
+    table.cmp td:first-child{font-weight:600}
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .2em;line-height:1.08}
+    .frac>.fn{padding:0 .4em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .4em}
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 2</div>
+    <h1>Masonry Structures</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">8 Hours &middot; 8 Marks</span>
+      <span class="meta-badge exam">9 Past Questions &middot; 58 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ══════════════ Syllabus & Marks Distribution ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Syllabus &amp; Marks Distribution</h2>
+      <table class="marks-table">
+        <thead>
+          <tr><th>Detail</th><th>Information</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Course</td><td>Seismic Resistant Design of Masonry Structures &mdash; ENCE 367 (Elective I)</td></tr>
+          <tr><td>Chapter</td><td>2 &mdash; Masonry Structures</td></tr>
+          <tr><td>Teaching Hours</td><td>8 hours</td></tr>
+          <tr class="highlight-row"><td>Marks Allocation</td><td>8 marks</td></tr>
+          <tr><td>Total Course Marks</td><td>60 marks (final exam) &middot; 45 teaching hours</td></tr>
+          <tr><td>Weight</td><td>13.3% of the final paper</td></tr>
+          <tr><td>Key codes</td><td>IS 1905&ndash;1987, IS 1077, NBC 101, NBC 109, NS 1:2035, SP 20</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Syllabus Topics</h3>
+      <ul class="syllabus-topics">
+        <li>2.1 &nbsp;History of masonry structures in ancient and modern times</li>
+        <li>2.2 &nbsp;Nature of masonry structures</li>
+        <li>2.3 &nbsp;Mechanical and physical properties of masonry; masonry materials (units, mortar and walls)</li>
+        <li>2.4 &nbsp;Types of masonry structures (load bearing, confined and infill masonry); types of walls</li>
+        <li>2.5 &nbsp;Lateral force resisting elements (walls, piers and arches)</li>
+        <li>2.6 &nbsp;Structural system of historical masonry structures; review on design of masonry walls for static force</li>
+        <li>2.7 &nbsp;Emerging materials and technologies in masonry structures</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Why this chapter matters more than its 8 marks suggest.</strong> Section 2.6 &mdash; the review of
+        masonry wall design for static force &mdash; supplies the <em>slenderness ratio, effective height/length/thickness,
+        stress reduction factor, area reduction factor, shape modification factor</em> and <em>permissible compressive
+        stress</em> that every 12&ndash;18 mark wall/pier/column design numerical in the paper is built on. Learn this
+        chapter properly and Chapters 4 and 5 become mostly arithmetic.
+      </div>
+    </div>
+
+    <!-- ══════════════ Importance & Frequently Asked Topics ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>Importance &amp; Frequently Asked Topics <span class="importance-high">HIGH</span></h2>
+
+      <p class="importance-summary">Theory from this chapter has appeared in <strong>all 6 of the last 6 papers</strong>
+      &mdash; a total of <strong>58 theory marks</strong>, i.e. about <strong>10 marks per paper</strong>. On top of that,
+      the design factors defined in &sect;2.6 are used in essentially <strong>every numerical</strong> in the paper. It is
+      the single most reliable chapter to prepare.</p>
+
+      <h3>Marks Distribution by Each Exam</h3>
+      <div class="table-wrap">
+        <table class="marks-dist-table">
+          <thead>
+            <tr><th>Exam</th><th>Theory marks</th><th>Questions asked</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2075 Chaitra</td><td>12</td><td>Q3 &mdash; slenderness ratio &amp; shape modification factor, and their influence on wall strength</td></tr>
+            <tr><td>2076 Chaitra</td><td>16</td><td>Q1a &mdash; factors affecting compressive strength of brick masonry; Q4b &mdash; stress reduction factor &amp; confined masonry</td></tr>
+            <tr><td>2078 Bhadra</td><td>12</td><td>Q2a &mdash; masonry types by material with merits/demerits; Q2b &mdash; unit&ndash;mortar relation on strength</td></tr>
+            <tr><td>2079 Bhadra</td><td>8</td><td>Q2a &mdash; load-bearing, infill and confined masonry</td></tr>
+            <tr><td>2080 Bhadra</td><td>8</td><td>Q2a &mdash; properties &amp; strength of brick masonry, affecting factors, unit&ndash;mortar relation</td></tr>
+            <tr><td>2081 Bhadra</td><td>8</td><td>Q3a &mdash; physical properties of bricks; Q4a &mdash; nature of masonry structure</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Frequently Asked Topics</h3>
+      <div class="table-wrap">
+        <table class="freq-topics-table">
+          <thead>
+            <tr><th>Topic</th><th>Times Asked</th><th>Frequency</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Factors affecting strength of masonry &amp; the unit&ndash;mortar relationship</td><td>3</td><td><div class="freq-bar" style="width:100%"></div></td></tr>
+            <tr><td>Types of masonry &mdash; load bearing, confined, infill (and by material)</td><td>3</td><td><div class="freq-bar" style="width:100%"></div></td></tr>
+            <tr><td>Properties of bricks / of brick masonry</td><td>2</td><td><div class="freq-bar" style="width:67%"></div></td></tr>
+            <tr><td>Slenderness ratio, stress reduction factor, shape modification factor</td><td>2</td><td><div class="freq-bar" style="width:67%"></div></td></tr>
+            <tr><td>Nature of masonry structures</td><td>1</td><td><div class="freq-bar" style="width:33%"></div></td></tr>
+            <tr><td>Types of walls; lateral force resisting elements</td><td class="dim-cell">indirect</td><td><div class="freq-bar" style="width:25%"></div></td></tr>
+            <tr><td>History &amp; emerging materials</td><td class="dim-cell">0 direct</td><td><div class="freq-bar" style="width:15%"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Topic-wise Importance &amp; Exam Tips</h3>
+      <div class="table-wrap">
+        <table class="importance-table">
+          <thead>
+            <tr><th>Topic</th><th>Importance</th><th>Key Points / Exam Tips</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Factors affecting compressive strength of masonry</td><td><span class="importance-badge importance-high">High</span></td><td>Group into <em>unit &ndash; mortar &ndash; geometry &ndash; workmanship</em>. Always state the key rule: <strong>masonry strength is only 25&ndash;50% of unit strength</strong>, and mortar must be <strong>weaker</strong> than the unit. Draw the prism failure sketch.</td></tr>
+            <tr><td>Relation between unit and mortar strength</td><td><span class="importance-badge importance-high">High</span></td><td>Explain the lateral-tension mechanism: mortar is softer, tries to spread sideways, and puts the <em>unit</em> into lateral tension. Then quote the optimum-mortar rule from IS 1905/SP 20.</td></tr>
+            <tr><td>Load bearing vs confined vs infill masonry</td><td><span class="importance-badge importance-high">High</span></td><td>Answer with a <strong>load-path sentence + sketch for each</strong>, then a comparison table. Confined masonry: walls built first, tie-columns cast against them &mdash; that is what distinguishes it from an RC frame with infill.</td></tr>
+            <tr><td>Physical &amp; mechanical properties of bricks</td><td><span class="importance-badge importance-high">High</span></td><td>Split clearly: <em>physical</em> (size, shape, colour, texture, density, water absorption, efflorescence, soundness, hardness) vs <em>mechanical</em> (compressive strength, modulus, tensile/flexural). Quote NS 1:2035 size 240&times;115&times;57 mm and water absorption &le; 15%.</td></tr>
+            <tr><td>Slenderness ratio &amp; its effect on strength</td><td><span class="importance-badge importance-high">High</span></td><td>SR = effective height/effective thickness (or effective length/effective thickness &mdash; take the <em>lesser</em>). Show the failure-stress vs SR curve: crushing at low SR, buckling at high SR. Quote the limiting values table.</td></tr>
+            <tr><td>Stress reduction factor k<sub>s</sub></td><td><span class="importance-badge importance-high">High</span></td><td>Table 9 of IS 1905, function of SR <em>and</em> e/t. State that it is 1.0 for SR &le; 6 and e = 0.</td></tr>
+            <tr><td>Shape modification factor k<sub>p</sub></td><td><span class="importance-badge importance-medium">Medium</span></td><td>Table 10, function of height/width ratio of the unit as laid; applies only to units of crushing strength up to 15 N/mm&sup2;. Taller units &rarr; fewer bed joints &rarr; higher strength.</td></tr>
+            <tr><td>Nature of masonry structures</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Six words to build the answer around: <em>composite, heterogeneous, anisotropic, brittle, heavy, workmanship-sensitive</em>.</td></tr>
+            <tr><td>Types of walls; piers, spandrels, arches, bands</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Learn the URM element diagram (pier / spandrel / in-plane wall / out-of-plane wall / diaphragm / parapet) &mdash; it also answers Chapter 3 and 4 questions.</td></tr>
+            <tr><td>Mortar types and grades</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Memorise the H1/H2/M1/M2/M3/L1/L2 idea and 3&ndash;4 mix proportions. Note cement mortar richer than 1:3 is never used and leaner than 1:5&ndash;1:6 becomes harsh.</td></tr>
+            <tr><td>History; emerging materials &amp; technologies</td><td><span class="importance-badge importance-low">Low</span></td><td>Not yet asked directly, but both are explicitly in the new syllabus. Keep a 6-point timeline and a 6-item list of modern materials ready.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════ 2.1 ══════════════ -->
+    <h2>2.1 &nbsp;History of Masonry Structures in Ancient and Modern Times</h2>
+
+    <p class="lead">Masonry is the oldest structural material still in everyday use. It has been employed for at least
+    <strong>10,000 years</strong> in houses, private and public buildings and historical monuments. The masonry of ancient
+    times involved two major materials: <strong>brick</strong> manufactured from sun-dried mud or burned clay and shale,
+    and <strong>natural stone</strong>.</p>
+
+    <h3>2.1.1 &nbsp;Ancient masonry</h3>
+    <ul>
+      <li>The first masonry structures were <strong>unreinforced</strong> and intended to carry mainly <strong>gravity
+        loads</strong>. Their sheer weight, and the resulting friction, is what stabilised them against lateral loads
+        from wind and earthquakes.</li>
+      <li>Bricks were first fired around <strong>3500 BC in Mesopotamia</strong> (present-day Iraq), itself a high seismic
+        risk area. The ziggurat temples at Eridu have withstood not only earthquakes but wars and invasions.</li>
+      <li>Design was entirely empirical &mdash; by <em>&ldquo;rules of thumb&rdquo;</em> handed down by master masons.</li>
+      <li>Landmark structures: the Egyptian pyramids, the Great Wall of China, Roman aqueducts and the Pantheon dome,
+        the domes and arches of Islamic architecture, and Gothic cathedrals with their flying buttresses.</li>
+    </ul>
+
+    <h3>2.1.2 &nbsp;Masonry in Nepal</h3>
+    <ul>
+      <li>The Kathmandu Valley has an unbroken tradition of <strong>brick-and-timber Newari architecture</strong> &mdash;
+        multi-tiered pagoda temples, palace complexes and the courtyard <em>bahal</em>.</li>
+      <li>Characteristic features are thick <strong>three-leaf (three-wythe) walls</strong> with a rubble-and-mud core,
+        <em>ma appa</em> and the wedge-shaped facing brick <em>dachi appa</em> laid in mud mortar, and timber floors,
+        joists, struts and elaborately carved windows.</li>
+      <li>Outside the Valley, rural Nepal is dominated by <strong>random rubble stone masonry in mud mortar</strong>
+        and by adobe, which is precisely the building stock that collapsed in 1934, 1988, 2015 and 2080 BS.</li>
+      <li>Dharahara (1832, rebuilt 1934 and 2015) is the best-known Nepali masonry monument.</li>
+    </ul>
+
+    <h3>2.1.3 &nbsp;Modern masonry</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Period</th><th>Development</th></tr></thead>
+        <tbody>
+          <tr><td>Mid-1800s</td><td>Fired clay brick becomes the principal building material of industrialised countries.</td></tr>
+          <tr><td>1891</td><td>The 16-storey <strong>Monadnock Building</strong>, Chicago &mdash; the tallest load-bearing masonry building ever built, with 1.8 m thick walls at the base. It shows the limit of empirical design.</td></tr>
+          <tr><td>Early 1900s</td><td><strong>Concrete masonry</strong> is introduced and, along with clay masonry, expands into all types of structure.</td></tr>
+          <tr><td>After WW I / WW II</td><td><strong>Reinforced brickwork</strong> is used in India and Japan from after the First World War, and in America from after the Second.</td></tr>
+          <tr><td>Last ~50 years</td><td>Introduction of <strong>engineered (calculated) masonry</strong> and <strong>reinforced masonry</strong>, producing structures that are much stronger and more stable against wind and seismic loads. Codes such as IS 1905, NBC 109 and Eurocode 6 replace the rules of thumb.</td></tr>
+          <tr><td>Recent decades</td><td><strong>Confined masonry</strong> emerges worldwide as an economical middle path between unreinforced masonry and RC frames; prestressed masonry, thin-joint systems and industrial blocks appear.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════ 2.2 ══════════════ -->
+    <h2>2.2 &nbsp;Nature of Masonry Structures <span class="year-tag">2081 Bhadra, Q4a</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Describe the nature of the masonry structure. [4] <em>(2081 Bhadra, Q4a)</em></li>
+        <li>Define masonry structure type based on materials with its advantages and disadvantages. [6] <em>(2078 Bhadra, Q2a)</em></li>
+      </ol>
+    </div>
+
+    <h3>2.2.1 &nbsp;What is masonry?</h3>
+    <div class="formula">
+      <b>Masonry</b> is a composite structural material formed by bonding together individual <b>masonry units</b>
+      (clay brick, dried earth, stone, concrete block, etc.) with layers of <b>mortar</b> (cement, lime, cement&ndash;lime
+      or mud), together with metal ties, reinforcement and accessories where required, to form walls, columns, arches,
+      domes and other structural elements.
+    </div>
+    <p><span class="key-term">Unreinforced masonry (URM)</span> is construction made of masonry units set in mortar
+    <em>without any reinforcement</em>. It has no tension-resisting elements and relies on gravity load for its lateral
+    resistance. It is this building type &mdash; not engineered masonry &mdash; that is responsible for the great majority of
+    earthquake deaths worldwide.</p>
+
+    <h3>2.2.2 &nbsp;Nature (essential character) of masonry &mdash; the exam answer</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Characteristic</th><th>Explanation and structural consequence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Composite / two-phase</strong></td><td>It is not one material but two &mdash; stiff, strong units bedded in a softer, weaker mortar. Behaviour is governed by the <em>interaction</em> between them and by the unit&ndash;mortar bond, not by either alone.</td></tr>
+          <tr><td><strong>Heterogeneous &amp; highly variable</strong></td><td>Properties scatter significantly from point to point in the same wall. Design values are therefore conservative &ldquo;minimum assured&rdquo; values.</td></tr>
+          <tr><td><strong>Anisotropic (directional)</strong></td><td>Because the bed joints and head joints form continuous planes of weakness, strength and stiffness depend on the direction of loading relative to the joints. A masonry wall is far stronger loaded perpendicular to the bed joints than parallel to them.</td></tr>
+          <tr><td><strong>Strong in compression, very weak in tension and shear</strong></td><td>Compressive strength is high, so masonry suits walls, columns, arches and domes. Tensile strength is almost negligible, so masonry cannot be used for beams or slabs, and cracks as soon as flexural tension appears.</td></tr>
+          <tr><td><strong>Brittle, with little ductility</strong></td><td>It fails suddenly with little warning and dissipates very little energy &mdash; the opposite of what is wanted under cyclic earthquake loading.</td></tr>
+          <tr><td><strong>Heavy &mdash; large mass</strong></td><td>Self weight is large, so the inertia force F = m&thinsp;a attracted in an earthquake is large, and heavy foundations are needed. Mass is both its stabiliser (gravity friction) and its enemy (seismic demand).</td></tr>
+          <tr><td><strong>Modular</strong></td><td>The unit fixes the module; wall thicknesses, lengths and opening sizes are all multiples of the unit dimension plus a joint.</td></tr>
+          <tr><td><strong>Extremely sensitive to workmanship</strong></td><td>Full and even bed joints, proper vertical joint filling, correct bond and corner interlocking, and curing govern the actual strength far more than the nominal design.</td></tr>
+          <tr><td><strong>Non-engineered by tradition</strong></td><td>Most masonry worldwide is still built by artisans without any structural calculation &mdash; the definition of &ldquo;non-engineered construction&rdquo;.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.2.3 &nbsp;Where masonry is used</h3>
+    <p>Masonry is normally used for components subjected to <strong>compressive loading</strong>: <strong>(1) walls,
+    (2) columns, (3) arches, (4) domes</strong>. Masonry walls also have a limited capacity to carry horizontal loads and
+    bending moments. Masonry is used not only for pure masonry buildings but also, very successfully, in
+    <em>mixed structures</em> &mdash; for example masonry infill in RC or steel frames.</p>
+
+    <h3>2.2.4 &nbsp;Advantages and Disadvantages of Masonry <span class="year-tag">2078 Bhadra, Q2a</span></h3>
+    <div class="figure-row" style="max-width:none">
+      <div class="figure" style="flex:1 1 320px;max-width:none;text-align:left">
+        <h4 style="margin-top:0">Advantages</h4>
+        <ol>
+          <li><strong>High compressive strength</strong> &mdash; ideal for walls, columns and arches, which are in pure compression.</li>
+          <li><strong>Durable</strong> &mdash; usually no finish is required.</li>
+          <li>Made from <strong>raw materials that are locally available at low cost</strong>.</li>
+          <li><strong>No complicated plant or skilled machinery</strong> is required; labour-intensive, so it suits developing economies.</li>
+          <li><strong>Attractive appearance</strong> and design flexibility &mdash; units can be combined to form complex shapes.</li>
+          <li>Good <strong>fire resistance</strong> and good <strong>thermal and acoustic</strong> properties; increases the thermal mass of the building.</li>
+          <li>Brick usually needs no painting, giving <strong>low life-cycle cost</strong>.</li>
+          <li>Masonry built in compression with lime mortar can last <strong>more than 500 years</strong>, against 30&ndash;100 years for steel or RC.</li>
+        </ol>
+      </div>
+      <div class="figure" style="flex:1 1 320px;max-width:none;text-align:left">
+        <h4 style="margin-top:0">Disadvantages</h4>
+        <ol>
+          <li><strong>Very low tensile strength</strong> &mdash; cannot be used for flexural elements such as beams or slabs.</li>
+          <li><strong>Heavy</strong> compared with timber &mdash; larger foundations are needed and transport costs are higher; it also attracts large seismic inertia forces.</li>
+          <li><strong>Brittle</strong> &mdash; poor ductility and energy dissipation, so it performs badly in earthquakes.</li>
+          <li>Frost and chemical (sulphate) attack cause <strong>spalling</strong> of brickwork.</li>
+          <li><strong>Efflorescence</strong> &mdash; chalky, unsightly (but harmless) salt deposits after cycles of wetting and drying.</li>
+          <li>Extreme weather degrades wall surfaces.</li>
+          <li>Demands a <strong>strong foundation</strong> (e.g. RC) to avoid settlement and cracking.</li>
+          <li>Not well suited to tropical climates with heavy heat and rain; construction is <strong>slow and weather-dependent</strong>.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ══════════════ 2.3 ══════════════ -->
+    <h2>2.3 &nbsp;Mechanical and Physical Properties of Masonry; Masonry Materials
+      <span class="year-tag">2076 Chaitra</span><span class="year-tag">2078 Bhadra</span><span class="year-tag">2080 Bhadra</span><span class="year-tag">2081 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>What are the physical properties of bricks? [4] <em>(2081 Bhadra, Q3a)</em></li>
+        <li>Define properties and strength of brick masonry, affecting factors and relation of unit and mortar on strength of masonry. [8] <em>(2080 Bhadra, Q2a)</em></li>
+        <li>Describe affecting factors and relation between unit and mortar on strength of brick masonry. [6] <em>(2078 Bhadra, Q2b)</em></li>
+        <li>State and explain briefly the factors affecting the compressive strength of brick masonry. [8] <em>(2076 Chaitra, Q1a)</em></li>
+      </ol>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/masonry-materials.png" alt="Slide listing masonry units (clay brick, calcium silicate brick, concrete block, stone, compressed earth) and mortars, with sketches of a stock brick, Fletton brick and the frog, stretcher and perpend of a brick">
+      <figcaption><b>Fig. 2.1</b> The two constituents of masonry &mdash; the <em>units</em> and the <em>mortar</em> &mdash;
+      together with the standard terminology of a brick (frog, stretcher face, perpend).
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>2.3.1 &nbsp;Masonry Units</h3>
+    <p>A <span class="key-term">masonry unit</span> is a brick, tile, stone, glass block or concrete block conforming to
+    the requirements of the relevant code. The main families are:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Unit</th><th>Description</th><th>Typical use / remark</th></tr></thead>
+        <tbody>
+          <tr><td>Burnt clay brick</td><td>Moulded clay fired in a kiln</td><td>The standard structural unit in Nepal; strength 3.5&ndash;35 N/mm&sup2;</td></tr>
+          <tr><td>Sun-dried earth / adobe</td><td>Mud blocks dried in the sun</td><td>Cheapest; very weak, water-sensitive, extremely vulnerable in earthquakes (NBC 204)</td></tr>
+          <tr><td>Stone</td><td>Random rubble, coursed rubble, squared/dressed stone, ashlar</td><td>Dominant in hill and mountain Nepal; strong units but very weak wall because of poor bond (NBC 203)</td></tr>
+          <tr><td>Concrete block (CMU)</td><td>Cement + aggregate blocks larger than 305&times;102&times;102 mm</td><td>Fast, dimensionally accurate; hollow or solid</td></tr>
+          <tr><td>Calcium silicate / sand-lime brick</td><td>Lime + sand, autoclaved</td><td>Accurate size, uniform colour</td></tr>
+          <tr><td>Compressed earth block (CEB)</td><td>Soil, sometimes stabilised with 5&ndash;8% cement, compressed in a press</td><td>Low energy, low cost, growing use in Nepal</td></tr>
+          <tr><td>Hollow / perforated units, partition tiles</td><td>Units with voids</td><td>Lighter, better insulation; voids improve mortar keying</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula">
+      <b>Hollow unit</b> &mdash; net cross-sectional area in <em>any</em> plane parallel to the bearing surface is
+      <b>less than 75%</b> of the gross area in that plane.<br>
+      <b>Solid unit</b> &mdash; net area in <em>every</em> such plane is <b>75% or more</b> of the gross area.
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/masonry-unit-types.png" alt="Illustration of masonry unit types: brick wall with mortar, firebrick, perforated brick, hollow brick, partition tile and solid brick">
+      <figcaption><b>Fig. 2.2</b> Common types of masonry unit.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h4>Physical properties of bricks <span class="year-tag">2081 Bhadra, Q3a</span></h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Requirement / typical value</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Size (Nepal Standard NS 1:2035)</strong></td><td><strong>240 &times; 115 &times; 57 mm</strong> with a 10 mm mortar joint. Note the modular rule: <em>length of brick = 2 &times; width + 1 vertical mortar joint</em>. (Modular brick in IS 1077 is 190&times;90&times;90 mm, nominal 200&times;100&times;100 mm; the common Nepali site brick is often quoted as 230&times;110&times;55 mm.)</td></tr>
+          <tr><td><strong>Shape</strong></td><td>Regular, truly rectangular with sharp, square edges and parallel faces; free from warpage, distortion and bowing.</td></tr>
+          <tr><td><strong>Colour and texture</strong></td><td>Deep cherry red or copper colour, uniform throughout; even, fine-grained, compact texture free from grit or lumps.</td></tr>
+          <tr><td><strong>Soundness</strong></td><td>Should emit a <strong>clear ringing (metallic) sound</strong> when two bricks are struck together, and should not break when dropped flat from about 1 m.</td></tr>
+          <tr><td><strong>Hardness</strong></td><td>No impression should be left when scratched with a finger nail.</td></tr>
+          <tr><td><strong>Water absorption</strong></td><td>Not more than <strong>15% of its weight</strong> after 24 hours immersion in water at normal temperature. Hand-made bricks with keys (frogs) may absorb up to 25%.</td></tr>
+          <tr><td><strong>Efflorescence</strong></td><td>Should be nil to slight &mdash; no white salt deposit after immersion and drying.</td></tr>
+          <tr><td><strong>Density / unit weight</strong></td><td>About 1800&ndash;2000 kg/m&sup3; for brick; brick masonry is usually taken as <strong>19&ndash;20 kN/m&sup3;</strong>.</td></tr>
+          <tr><td><strong>Structural quality</strong></td><td>Thoroughly burnt, free from cracks, flaws, nodules of lime and organic matter.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Mechanical properties</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Typical value / relationship</th></tr></thead>
+        <tbody>
+          <tr><td>Compressive strength of the <em>unit</em></td><td>3.5&ndash;40 N/mm&sup2; (IS 1905 Table 8 covers 3.5 to 40). Ordinary Nepali kiln brick is 5&ndash;12 N/mm&sup2;.</td></tr>
+          <tr><td>Compressive strength of the <em>masonry</em></td><td>Only about <strong>25&ndash;50% of the unit strength</strong> &mdash; the joints, not the bricks, govern.</td></tr>
+          <tr><td>Tensile / flexural (bond) strength</td><td>Very low, typically 0.1&ndash;0.4 N/mm&sup2; and effectively <strong>zero for mud mortar</strong>. IS 1905 allows a permissible flexural tensile stress of only 0.07&ndash;0.14 N/mm&sup2;.</td></tr>
+          <tr><td>Shear strength</td><td>Governed by cohesion + friction. IS 1905: permissible shear stress f<sub>s</sub> = 0.1 + f<sub>d</sub>/6, subject to a maximum of 0.5 N/mm&sup2;, where f<sub>d</sub> is the compressive stress due to dead load.</td></tr>
+          <tr><td>Modulus of elasticity E<sub>m</sub></td><td>Commonly taken as <strong>E<sub>m</sub> &asymp; 550 to 1100 f<sub>m</sub></strong> (often 750 f<sub>m</sub>); i.e. a few thousand N/mm&sup2;. Much lower than concrete.</td></tr>
+          <tr><td>Poisson's ratio</td><td>About 0.15&ndash;0.20</td></tr>
+          <tr><td>Modulus of rigidity G</td><td>About 0.4 E<sub>m</sub></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.3.2 &nbsp;Mortar</h3>
+    <div class="formula">
+      <b>Mortar</b> is a plastic mixture of approved cementitious material, fine aggregate and water that <b>bonds</b>
+      masonry units together, <b>compensates for dimensional variations</b> in the units, seals the joints against rain
+      and distributes the load uniformly over the bed.
+    </div>
+
+    <h4>Requirements of a good mortar</h4>
+    <ul>
+      <li><strong>Strength</strong> &mdash; adequate crushing strength together with adequate tensile and shear strength;
+        it must gain strength within a reasonable period so the masonry can take load early.</li>
+      <li><strong>Workability</strong> &mdash; must set early enough to let work proceed at a reasonable pace, while
+        remaining plastic long enough to lay the units to line and level.</li>
+      <li><strong>Water retentivity</strong> &mdash; must not lose its water immediately to an absorbent brick and stiffen.
+        Good water retentivity is what allows the mortar to develop a good <em>bond</em> and to fill the voids, giving
+        resistance to rain penetration.</li>
+      <li><strong>Low drying shrinkage</strong> &mdash; to avoid cracking of the joints.</li>
+      <li><strong>Durability</strong> &mdash; resistance to sulphate and other chemical attack, and to frost.</li>
+      <li><strong>Accommodation of movement</strong> and of irregularities in unit size; good appearance; cost effective.</li>
+    </ul>
+
+    <h4>Types of mortar</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Proportions</th><th>Characteristics</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cement mortar</strong></td><td>Cement : sand, 1:3 to 1:8</td><td>Sets early and gains strength quickly; can set and harden in wet locations. <strong>Richer than 1:3 is never used</strong> in masonry &mdash; it causes high shrinkage and does not increase masonry strength. <strong>Leaner than about 1:5&ndash;1:6 becomes harsh, unworkable and prone to segregation</strong>, and lean mortars do not fill the voids in the sand so they are not impervious.</td></tr>
+          <tr><td><strong>Lime mortar</strong></td><td>Lime : sand (or surkhi/cinder), 1:2 to 1:3</td><td>Gains strength slowly and has low ultimate strength; fat-lime mortar does not harden at all in wet locations. Its great merits are <strong>good workability, good water retentivity and low shrinkage</strong>, so lime masonry resists rain penetration well and is less liable to crack. Hydraulic lime is better than fat lime; with fat lime a pozzolana (surkhi, cinder, fly ash) must be added.</td></tr>
+          <tr><td><strong>Cement&ndash;lime mortar</strong></td><td>Cement : lime : sand, 1:1:6, 1:2:9, 1:3:12</td><td>Combines the good qualities of both &mdash; medium strength with good workability, good water retentivity, freedom from cracks and good rain resistance. Keeping binder : sand = 1:3 gives a very dense mortar because the sand voids are fully filled.</td></tr>
+          <tr><td><strong>Mud mortar</strong></td><td>Clayey soil + water</td><td>Attains some strength on drying but <strong>readily absorbs moisture and loses its strength when wet</strong>, and has poor bonding quality. Used only for temporary and low-cost single-storey rural houses. <strong>It is the main reason stone-in-mud houses collapse in Nepali earthquakes.</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Mortar grades (NBC 101 / IS 1905)</h4>
+    <p>Mortars are classified for design convenience as <strong>H</strong> (high strength), <strong>M</strong> (medium) and
+    <strong>L</strong> (low). The mortar type must be matched to the strength of the masonry unit:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>S.No.</th><th>Cement</th><th>Lime</th><th>Sand</th><th>Min. 28-day compressive strength (N/mm&sup2;)</th><th>Mortar type</th><th>Suitable unit strength (N/mm&sup2;)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>1</td><td>0 to 0.25 C</td><td>3</td><td>10.0</td><td><strong>H1</strong></td><td>25 or above</td></tr>
+          <tr><td>2(a)</td><td>1</td><td>0</td><td>4</td><td>7.5</td><td><strong>H2</strong></td><td rowspan="2">15 to 24.9</td></tr>
+          <tr><td>2(b)</td><td>1</td><td>0.5 C</td><td>4.5</td><td>6.0</td><td><strong>H2</strong></td></tr>
+          <tr><td>3(a)</td><td>1</td><td>0</td><td>5</td><td>5.0</td><td><strong>M1</strong></td><td rowspan="2">5 to 14.9</td></tr>
+          <tr><td>3(b)</td><td>1</td><td>1 C</td><td>6</td><td>3.0</td><td><strong>M1</strong></td></tr>
+          <tr><td>4(a)</td><td>1</td><td>0</td><td>6</td><td>3.0</td><td><strong>M2</strong></td><td rowspan="3">Below 5</td></tr>
+          <tr><td>4(b)</td><td>1</td><td>2 C</td><td>9</td><td>2.0</td><td><strong>M2</strong></td></tr>
+          <tr><td>4(c)</td><td>0</td><td>1 A</td><td>2 to 3</td><td>2.0</td><td><strong>M2</strong></td></tr>
+          <tr><td>5(a)</td><td>1</td><td>0</td><td>8</td><td>0.7</td><td><strong>L1</strong></td><td rowspan="2">&mdash;</td></tr>
+          <tr><td>5(b)</td><td>1</td><td>3 C</td><td>12</td><td>0.7</td><td><strong>L1</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><em>Notes.</em> A, B and C denote eminently hydraulic, semi-hydraulic and fat lime respectively. Mortar strength
+    varies appreciably with the angularity, grading and fineness of the sand, so the sand content may be reduced where
+    necessary. With plain cement&ndash;sand mortars a plasticiser should be added to improve workability.
+    1 N/mm&sup2; = 1 MPa = 10.2 kg/cm&sup2;. For first-class brickwork the mortar should be H1 or H2.</p>
+
+    <figure class="figure">
+      <img src="../photo/mortar-mixes.png" alt="Table of recommended mortar mixes by construction category, giving cement-sand and cement-lime-sand proportions from 1:4 to 1:7">
+      <figcaption><b>Fig. 2.3</b> Recommended mortar mixes by category of construction. Note how the richer mix is
+      demanded for the more critical category.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>2.3.3 &nbsp;Bonds and Brick-laying Terminology</h3>
+    <p>A <span class="key-term">bond</span> is the pattern in which units are laid. In a single-thickness wall the bond
+    is largely decorative, but in <strong>double-thickness walls the bond is structural</strong> &mdash; it ties the leaves
+    together and prevents continuous vertical joints, which would otherwise split the wall.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>How the brick is laid</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Stretcher</strong></td><td>Horizontally, flat, with the <em>long</em> side exposed on the wall face</td></tr>
+          <tr><td><strong>Header</strong></td><td>Horizontally, flat, with the <em>short</em> end exposed</td></tr>
+          <tr><td><strong>Soldier</strong></td><td>Vertically, with the narrow (stretcher) side exposed</td></tr>
+          <tr><td><strong>Sailor</strong></td><td>Vertically, with the broad side exposed</td></tr>
+          <tr><td><strong>Rowlock (bull header)</strong></td><td>On the long narrow side, with the header face exposed</td></tr>
+          <tr><td><strong>Shiner</strong></td><td>On the long narrow side, with the broad face exposed</td></tr>
+          <tr><td><strong>Queen closer</strong></td><td>A brick cut lengthwise to half width, used next to the quoin header to create the face lap</td></tr>
+          <tr><td><strong>Perpend</strong></td><td>The vertical (head) joint between two units in the same course</td></tr>
+          <tr><td><strong>Frog</strong></td><td>The indentation in the bed face of a brick that keys the mortar</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/brick-laying-positions.png" alt="Diagram naming the brick laying positions: stretcher, header, soldier, sailor, shiner and rowlock">
+        <figcaption><b>Fig. 2.4</b> Brick-laying positions.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/header-stretcher-closer.png" alt="Isometric drawing of a brick wall corner with header, stretcher and closer bricks labelled">
+        <figcaption><b>Fig. 2.5</b> Header, stretcher and closer in a wall.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bond</th><th>Description</th><th>Remark</th></tr></thead>
+        <tbody>
+          <tr><td><strong>English bond</strong></td><td>Alternate courses of all headers and all stretchers on both faces. Each header course starts with a quoin header followed by a queen closer; stretchers lap a minimum of a quarter brick over the headers.</td><td><strong>Strongest bond</strong> &mdash; no continuous vertical joints. Adopted for most load-bearing masonry that is to be plastered. Header joints must be kept thin or the face lap disappears.</td></tr>
+          <tr><td><strong>Flemish (Dutch) bond</strong></td><td>Alternate headers and stretchers <em>within each course</em>; the header of one course sits centrally over the stretcher of the course below.</td><td><strong>Most decorative</strong>; needs the perpends to line up vertically, which is hard to achieve. Slightly weaker than English bond, but wastes fewer good-quality face bricks.</td></tr>
+          <tr><td><strong>Rat-trap bond</strong></td><td>Bricks laid <em>on edge</em> so that shiners and rowlocks show on the face, creating an internal cavity bridged by the rowlocks.</td><td>Uses about <strong>25&ndash;35% fewer bricks</strong> and gives good thermal insulation. Popularised in India by Laurie Baker. It is a <em>modular</em> technique &mdash; wall and opening dimensions are set by the brick size.</td></tr>
+          <tr><td><strong>Stretcher (running) bond</strong></td><td>All stretchers, each lapping half a brick</td><td>Only for half-brick partitions and veneers &mdash; not load bearing.</td></tr>
+          <tr><td><strong>Header bond</strong></td><td>All headers</td><td>Used for curved walls and footings.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/bond-corners.png" alt="Isometric drawings of two brick bond corners showing alternating Course A and Course B">
+        <figcaption><b>Fig. 2.6</b> Alternating courses A and B at a corner &mdash; this is what breaks the vertical joints
+        and gives the bond its strength.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/rat-trap-bond.png" alt="Photographs and isometric drawing of a rat-trap bond wall corner with bricks laid on edge forming internal cavities">
+        <figcaption><b>Fig. 2.7</b> Rat-trap bond &mdash; bricks on edge with an internal cavity.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <h3>2.3.4 &nbsp;Strength of Masonry &mdash; Unit&ndash;Mortar Interaction
+      <span class="year-tag">2078 Bhadra, Q2b</span><span class="year-tag">2080 Bhadra, Q2a</span></h3>
+
+    <p>The compressive strength of masonry is <strong>not</strong> the strength of the brick, and it is <strong>not</strong>
+    the strength of the mortar. It is governed by the interaction between them:</p>
+    <div class="formula">
+      <b>The mechanism.</b> Under vertical compression the mortar is <em>softer and has a higher Poisson's ratio</em> than
+      the unit, so it tries to expand sideways more than the unit does. Friction and bond at the interface prevent it
+      from doing so freely. The result is that the <b>mortar is put into triaxial compression</b> (which strengthens it)
+      while the <b>unit is put into lateral tension</b> combined with vertical compression.<br><br>
+      Because masonry units are weak in tension, <b>failure starts as vertical splitting cracks through the units</b>,
+      not by crushing of the mortar. This is why:
+      <ul style="margin:8px 0 0 0">
+        <li>masonry strength is only about <b>25&ndash;50% of the unit strength</b>;</li>
+        <li>increasing the mortar strength gives a <b>less than proportionate</b> gain in masonry strength &mdash; doubling
+          mortar strength may raise masonry strength by only 15&ndash;25%;</li>
+        <li>a <b>thinner bed joint gives a stronger wall</b>, because less soft material means less lateral tension;</li>
+        <li><b>the mortar should be weaker than the unit</b> &mdash; a mortar stronger than necessary is wasteful, cracks
+          the units rather than the joints, and produces brittle, unrepairable failure.</li>
+      </ul>
+    </div>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 300" width="560" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arM" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-text-red)"/></marker>
+          <marker id="arB" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><polygon points="0 0, 9 3.5, 0 7" fill="var(--svg-hub)"/></marker>
+        </defs>
+        <!-- prism -->
+        <g>
+          <rect x="150" y="60" width="150" height="34" fill="var(--svg-orange)" stroke="var(--svg-orange-s)"/>
+          <rect x="150" y="94" width="150" height="12" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <rect x="150" y="106" width="150" height="34" fill="var(--svg-orange)" stroke="var(--svg-orange-s)"/>
+          <rect x="150" y="140" width="150" height="12" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <rect x="150" y="152" width="150" height="34" fill="var(--svg-orange)" stroke="var(--svg-orange-s)"/>
+          <rect x="150" y="186" width="150" height="12" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <rect x="150" y="198" width="150" height="34" fill="var(--svg-orange)" stroke="var(--svg-orange-s)"/>
+        </g>
+        <text x="322" y="82" font-size="12" fill="var(--svg-text-orange)">Unit (stiff, strong)</text>
+        <text x="322" y="104" font-size="12" fill="var(--svg-text-yellow)">Mortar (soft, weak)</text>
+        <!-- vertical load -->
+        <line x1="185" y1="20" x2="185" y2="54" stroke="var(--svg-hub)" stroke-width="2.4" marker-end="url(#arB)"/>
+        <line x1="225" y1="20" x2="225" y2="54" stroke="var(--svg-hub)" stroke-width="2.4" marker-end="url(#arB)"/>
+        <line x1="265" y1="20" x2="265" y2="54" stroke="var(--svg-hub)" stroke-width="2.4" marker-end="url(#arB)"/>
+        <text x="225" y="14" font-size="12.5" text-anchor="middle" fill="var(--svg-text-blue)">Vertical compression</text>
+        <!-- lateral tension in unit -->
+        <line x1="146" y1="120" x2="106" y2="120" stroke="var(--svg-text-red)" stroke-width="2.2" marker-end="url(#arM)"/>
+        <line x1="304" y1="120" x2="344" y2="120" stroke="var(--svg-text-red)" stroke-width="2.2" marker-end="url(#arM)"/>
+        <text x="60" y="140" font-size="11.5" fill="var(--svg-text-red)">Lateral TENSION</text>
+        <text x="60" y="154" font-size="11.5" fill="var(--svg-text-red)">in the unit</text>
+        <!-- mortar squeezed -->
+        <line x1="120" y1="192" x2="146" y2="192" stroke="var(--svg-text-yellow)" stroke-width="2.2" marker-end="url(#arM)"/>
+        <line x1="330" y1="192" x2="304" y2="192" stroke="var(--svg-text-yellow)" stroke-width="2.2" marker-end="url(#arM)"/>
+        <text x="330" y="212" font-size="11.5" fill="var(--svg-text-yellow)">Mortar restrained &rarr;</text>
+        <text x="330" y="226" font-size="11.5" fill="var(--svg-text-yellow)">triaxial compression</text>
+        <!-- splitting cracks -->
+        <g stroke="var(--svg-red-s)" stroke-width="2" fill="none">
+          <path d="M196 60 l4 12 l-4 10 l4 12"/>
+          <path d="M254 60 l-4 12 l4 10 l-4 12"/>
+          <path d="M196 106 l4 12 l-4 10 l4 12"/>
+          <path d="M254 106 l-4 12 l4 10 l-4 12"/>
+          <path d="M196 152 l4 12 l-4 10 l4 12"/>
+          <path d="M254 152 l-4 12 l4 10 l-4 12"/>
+          <path d="M196 198 l4 12 l-4 10 l4 12"/>
+          <path d="M254 198 l-4 12 l4 10 l-4 12"/>
+        </g>
+        <text x="225" y="258" font-size="12" text-anchor="middle" fill="var(--svg-text-red)">Vertical splitting cracks through the UNITS</text>
+        <text x="225" y="276" font-size="11.5" text-anchor="middle" fill="var(--svg-sub)">&mdash; the characteristic compression failure of a masonry prism &mdash;</text>
+      </svg>
+      <figcaption><b>Fig. 2.8</b> Why masonry is weaker than its bricks. The soft mortar tries to bulge sideways, is
+      restrained by the unit, and in reaction puts the unit into lateral tension &mdash; so the prism splits vertically.</figcaption>
+    </figure>
+
+    <h4>Empirical relations</h4>
+    <div class="formula">
+      A widely used form (Eurocode 6 / IS SP 20 type expression) is<br><br>
+      f<sub>k</sub> &nbsp;=&nbsp; K &middot; f<sub>b</sub><sup>&alpha;</sup> &middot; f<sub>m</sub><sup>&beta;</sup>
+      &nbsp;&nbsp; with typically &alpha; &asymp; 0.7 and &beta; &asymp; 0.3<br><br>
+      <span style="font-size:.95em">f<sub>k</sub> = characteristic compressive strength of masonry, f<sub>b</sub> =
+      strength of the unit, f<sub>m</sub> = strength of the mortar, K = constant for the unit/bond type.</span><br><br>
+      The exponents say it all: <b>unit strength matters more than twice as much as mortar strength.</b>
+    </div>
+
+    <h3>2.3.5 &nbsp;Factors Affecting the Compressive Strength of Brick Masonry
+      <span class="year-tag">2076 Chaitra, Q1a</span><span class="year-tag">2078 Bhadra</span><span class="year-tag">2080 Bhadra</span></h3>
+    <p>This is the most frequently asked theory question of the chapter. Organise the answer in four groups:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Group</th><th>Factor</th><th>Effect on masonry strength</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="4"><strong>A. The unit</strong></td><td>Strength of the masonry unit</td><td>The single most important factor. Masonry strength rises with unit strength, but only to about 25&ndash;50% of it.</td></tr>
+          <tr><td>Shape, size and height/width ratio of the unit (as laid)</td><td>A <em>taller</em> unit means fewer bed joints per metre of wall, so less soft material and less lateral tension &rarr; higher strength. Accounted for by the <strong>shape modification factor k<sub>p</sub></strong>.</td></tr>
+          <tr><td>Frogs, perforations and voids</td><td>Reduce the net bearing area and can cause stress concentration; hollow units are weaker per gross area.</td></tr>
+          <tr><td>Water absorption / suction rate</td><td>A very absorbent dry brick sucks the water out of the mortar before it can hydrate, destroying the bond. Bricks must be soaked before laying.</td></tr>
+
+          <tr><td rowspan="3"><strong>B. The mortar</strong></td><td>Strength and grade of mortar</td><td>Increases masonry strength, but far less than proportionately. Mortar should be as weak as is permissible &mdash; not stronger than the unit.</td></tr>
+          <tr><td>Mix proportion and workability</td><td>Rich mixes (&gt;1:3) shrink and crack; lean mixes (&lt;1:6) are harsh, segregate and leave voids. Good workability &rarr; full joints &rarr; higher strength.</td></tr>
+          <tr><td>Water retentivity, deformability</td><td>A mortar that is too stiff or too deformable both reduce strength; a more deformable mortar increases the lateral tension in the unit.</td></tr>
+
+          <tr><td rowspan="4"><strong>C. Geometry of the masonry</strong></td><td><strong>Thickness of the mortar joint</strong></td><td>Very significant. Strength <em>decreases as joint thickness increases</em> &mdash; a 10 mm joint is standard; a 20 mm joint can lose 20&ndash;30% of the strength.</td></tr>
+          <tr><td><strong>Slenderness ratio</strong></td><td>Higher SR &rarr; buckling governs instead of crushing &rarr; permissible stress reduced by k<sub>s</sub>.</td></tr>
+          <tr><td><strong>Eccentricity of loading</strong></td><td>Eccentric load adds bending, so the compressive stress on one face is much higher; permissible stress reduced by k<sub>s</sub>.</td></tr>
+          <tr><td><strong>Cross-sectional area</strong></td><td>Small sections have less redundancy and greater relative effect of a single defect &mdash; hence the <strong>area reduction factor k<sub>a</sub></strong> for areas below 0.2 m&sup2;.</td></tr>
+
+          <tr><td rowspan="5"><strong>D. Workmanship &amp; construction</strong></td><td>Bond pattern and corner interlocking</td><td>Continuous vertical joints (poor bond) split the wall into independent leaves and drastically reduce strength.</td></tr>
+          <tr><td>Filling of vertical (head) joints</td><td>Unfilled perpends are one of the commonest defects; they reduce shear and compressive strength.</td></tr>
+          <tr><td>Uniformity and fullness of bed joints; verticality (plumb)</td><td>Uneven joints create local stress concentrations; out-of-plumb walls introduce unintended eccentricity.</td></tr>
+          <tr><td>Curing and age</td><td>Cement mortar needs curing; masonry strength continues to develop for 28 days and beyond.</td></tr>
+          <tr><td>Rate of construction / height of lift per day</td><td>Building too fast overloads green mortar and squeezes the joints.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <b>Model answer skeleton for &ldquo;Factors affecting the compressive strength of brick masonry&rdquo; [8 marks]</b>
+      <ol>
+        <li>One line: masonry strength &asymp; 25&ndash;50% of unit strength &mdash; it is the joints that govern.</li>
+        <li>The unit&ndash;mortar interaction mechanism with <em>Fig. 2.8</em> (2&ndash;3 marks are here).</li>
+        <li>The four-group table above &mdash; give at least 8&ndash;10 factors with a one-line effect each.</li>
+        <li>Close with the design consequence: this is why IS 1905 multiplies the basic compressive stress by
+          k<sub>s</sub>, k<sub>a</sub> and k<sub>p</sub> (&sect;2.6).</li>
+      </ol>
+    </div>
+
+    <!-- ══════════════ 2.4 ══════════════ -->
+    <h2>2.4 &nbsp;Types of Masonry Structures and Types of Walls
+      <span class="year-tag">2076 Chaitra</span><span class="year-tag">2078 Bhadra</span><span class="year-tag">2079 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Explain load-bearing masonry walls, infill masonry, and confined masonry. [8] <em>(2079 Bhadra, Q2a)</em></li>
+        <li>Define masonry structure type based on materials with its advantages and disadvantages. [6] <em>(2078 Bhadra, Q2a)</em></li>
+        <li>Explain the following applied to masonry structures: (ii) Confined masonry. [4] <em>(2076 Chaitra, Q4b)</em></li>
+      </ol>
+    </div>
+
+    <h3>2.4.1 &nbsp;Classification by Material <span class="year-tag">2078 Bhadra, Q2a</span></h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Advantages</th><th>Disadvantages</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Brick masonry</strong><br>(burnt clay units)</td>
+            <td>Uniform shape and size &rarr; good bond and thin joints; good strength (3.5&ndash;35 N/mm&sup2;); easy to lay openings and bands; durable, fire and weather resistant; locally manufactured.</td>
+            <td>Needs good clay, fuel and kilns (energy and pollution); quality varies between kilns; heavy; weak in tension.</td>
+          </tr>
+          <tr>
+            <td><strong>Stone masonry</strong><br>(random rubble, coursed rubble, squared, ashlar)</td>
+            <td>Very high unit strength; extremely durable; locally available free of cost in hill areas; attractive; good thermal mass.</td>
+            <td>Irregular shapes give <strong>poor bond and very thick joints</strong>; walls are usually multi-leaf and <strong>delaminate</strong>; very heavy; needs skilled masons; the <strong>worst-performing type in Nepali earthquakes</strong>, especially random rubble in mud mortar.</td>
+          </tr>
+          <tr>
+            <td><strong>Concrete block masonry</strong></td>
+            <td>Accurate dimensions, fast construction (large units), fewer joints, uniform quality, can be reinforced through the hollow cores.</td>
+            <td>Needs cement and a plant; drying shrinkage cracking; heavier per unit if solid; higher initial cost.</td>
+          </tr>
+          <tr>
+            <td><strong>Adobe / earthen masonry</strong></td>
+            <td>Cheapest; zero-energy production; excellent thermal comfort; entirely local material and skills.</td>
+            <td>Very low strength, no tensile capacity, degrades on wetting, erodes; <strong>extremely vulnerable in earthquakes</strong> (see NBC 204).</td>
+          </tr>
+          <tr>
+            <td><strong>Composite / faced masonry</strong></td>
+            <td>Combines an economical backing (rubble, block) with a good-quality facing (brick, ashlar).</td>
+            <td>The two leaves have different stiffness and may separate if not properly bonded through with headers.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.4.2 &nbsp;Classification by Structural System <span class="year-tag">2079 Bhadra, Q2a</span></h3>
+    <p>This is the key classification for the exam. The distinguishing feature is <strong>the load path</strong> and
+    <strong>whether the wall is a structural element or not</strong>.</p>
+
+    <h4>(A) Load-bearing masonry</h4>
+    <ul>
+      <li>The masonry walls themselves are the main supporting elements &mdash; there is no separate frame.</li>
+      <li><strong>Load path:</strong> roof / floor slab &rarr; <strong>main (load-bearing) walls</strong> &rarr; plinth &rarr;
+        foundation &rarr; soil. Both gravity and lateral loads travel through the walls.</li>
+      <li>Walls parallel to the shaking act as <em>shear walls</em> (in-plane); walls perpendicular to it are loaded
+        <em>out-of-plane</em>.</li>
+      <li>Economical for low-rise buildings (up to 3&ndash;4 storeys); thickness increases rapidly with height.</li>
+      <li>Unreinforced load-bearing masonry is <strong>brittle</strong>; earthquake resistance must be supplied by
+        horizontal bands, vertical reinforcement, good corner bonding and box action.</li>
+    </ul>
+
+    <h4>(B) Confined masonry <span class="year-tag">2076 Chaitra, Q4b(ii)</span></h4>
+    <div class="formula">
+      <b>Confined masonry</b> consists of load-bearing masonry wall panels that are <b>confined on all four sides</b> by
+      lightly reinforced concrete <b>tie-columns (vertical ties)</b> and <b>tie-beams (horizontal ties)</b>.<br><br>
+      <b>The defining construction sequence:</b> the <b>masonry wall is built FIRST</b>, with toothed vertical edges, and
+      the tie-columns are then <b>cast against the completed wall</b>. In an RC frame with infill it is the exact opposite
+      &mdash; the frame is cast first and the wall is built into it afterwards. This is the single sentence that separates
+      the two systems in an exam answer.
+    </div>
+    <ul>
+      <li>Tie-columns (also called <em>practical columns</em>) resemble RC columns but are of much smaller
+        cross-section; tie-beams resemble RC beams. They are <strong>not</strong> a moment frame &mdash; the masonry, not
+        the ties, carries the load.</li>
+      <li><strong>Load path:</strong> roof / floor &rarr; masonry walls (confined by the ties) &rarr; plinth band &rarr;
+        foundation. Box integrity is provided by the confining elements.</li>
+      <li>The confining members are effective in:
+        <ol>
+          <li><strong>enhancing the stability and integrity</strong> of the wall for both in-plane and out-of-plane
+            earthquake loading &mdash; they contain the damaged masonry and stop it from disintegrating;</li>
+          <li><strong>enhancing the lateral strength</strong> of the wall; and</li>
+          <li><strong>reducing the brittleness</strong> of the wall, thereby improving its earthquake performance.</li>
+        </ol>
+      </li>
+      <li>It has emerged over the last 100 years as an economical alternative that lies between unreinforced masonry and
+        RC frame construction, and is now the recommended system for small buildings in much of Latin America and Asia.</li>
+    </ul>
+    <p><strong>Structural components of a confined masonry building:</strong>
+    <em>masonry walls</em> (carry gravity load down and act as bracing panels against horizontal force);
+    <em>confining elements</em> (restrain the walls, prevent complete disintegration and ensure vertical stability);
+    <em>floor and roof slabs</em> (transmit gravity and lateral load to the walls, acting as horizontal
+    <strong>diaphragms</strong>); <em>plinth band</em> (transmits wall loads to the foundation and protects ground-floor
+    walls from differential settlement in soft soil); and the <em>foundation</em>.</p>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/confined-masonry.png" alt="Isometric drawing of a two-storey confined masonry building labelled with slab, confining beams and columns, walls, plinth and foundation">
+        <figcaption><b>Fig. 2.9</b> A confined masonry building &mdash; walls confined by RC tie-beams and tie-columns,
+        on a plinth band and foundation.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/confined-single-storey.png" alt="Labelled isometric of a typical single storey confined masonry building identifying confining RC tie elements, door frame, confined masonry panel, wall anchors, foundation, tie beam and window frame">
+        <figcaption><b>Fig. 2.10</b> Typical single-storey confined masonry building &mdash; 1 confining RC tie elements,
+        2 door frame, 3 confined masonry panel, 4 wall anchors, 5 foundation, 6 tie beam, 7 window frame.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/confined-masonry-photo.jpg" alt="Photograph of a single storey confined brick masonry house in Aceh, Indonesia, showing the RC tie-columns at the wall ends">
+      <figcaption><b>Fig. 2.11</b> A single-storey confined brick masonry house (Aceh, Indonesia). The tie-columns are
+      visible at the wall ends and at every opening.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <h4>(C) Infill masonry</h4>
+    <ul>
+      <li><strong>Infill walls are masonry panels enclosed by RC or steel frame members on all four sides.</strong> The
+        frame &mdash; not the wall &mdash; is the designed structure.</li>
+      <li><strong>Load path:</strong> slab &rarr; beam &rarr; column &rarr; foundation. The infill is nominally
+        non-structural, and in routine design it is treated only as a load.</li>
+      <li>In reality the infill has a <strong>major effect</strong>:
+        <ul>
+          <li>It <strong>greatly increases the lateral stiffness</strong> of the frame, shortening the natural period and
+            attracting more force. This stiffness must be accounted for when distributing the applied loads.</li>
+          <li>Under lateral load the panel acts as a <strong>diagonal compression strut</strong>, so an infilled frame can
+            be analysed as a truss.</li>
+          <li>Infill should still be designed to resist the in-plane and out-of-plane loads acting on it, and any vertical
+            load transferred to it by the frame.</li>
+        </ul>
+      </li>
+      <li><strong>The dangers.</strong> A <em>sudden loss of stiffness</em> when the infill cracks can create a
+        <strong>soft-storey mechanism at any floor level</strong>. An <strong>irregular distribution of infill in
+        elevation</strong> (the classic open ground storey for shops or parking) concentrates all the drift in one
+        storey. Partial-height infill produces the <strong>short-column effect</strong>. Reported earthquake damage
+        studies consistently show a high level of damage in RC frames with masonry infill.</li>
+      <li>Conversely, <em>continuous</em> and well-distributed infill has been shown to <strong>reduce</strong> the
+        vulnerability of an RC structure &mdash; in a full-scale test of a three-storey flat-plate structure the addition
+        of infill walls prevented the punching-shear slab collapse seen in the bare-frame test and increased both the
+        stiffness and the strength of the structure (measured drift capacity 1.5%).</li>
+    </ul>
+
+    <h4>(D) Unreinforced vs reinforced masonry</h4>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Unreinforced masonry (URM)</th><th>Reinforced masonry</th></tr></thead>
+        <tbody>
+          <tr><td>Design assumption</td><td>Flexural tensile stresses <strong>are</strong> resisted by the masonry; any reinforcement present is <em>neglected</em> in design</td><td>Flexural tensile stresses <strong>cannot</strong> be resisted by the masonry and are resisted by <em>reinforcement only</em></td></tr>
+          <tr><td>Shear</td><td>Resisted by masonry alone</td><td>Resisted by masonry or reinforcement, singly or in combination</td></tr>
+          <tr><td>Method</td><td>Linear elastic range; working stress design</td><td>Allowable stress design or strength design</td></tr>
+          <tr><td>Seismic performance</td><td>Brittle; vulnerable to collapse; elements may &ldquo;peel&rdquo; off the building onto occupants and passers-by</td><td>Ductile; much better under cyclic load</td></tr>
+          <tr><td>Note</td><td colspan="2">&ldquo;Unreinforced masonry&rdquo; can in fact contain reinforcement placed for structural integrity or by prescription &mdash; the term refers to the <em>design assumption</em>, not to the absence of steel.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Reinforced brickwork has been used in India and Japan since after the First World War and in America since after
+    the Second. Bars are placed in the voids created by particular bonds and/or in the bed joints; bed-joint
+    reinforcement in particular enhances the capacity of walls to resist lateral loading. Post-tensioning is also used
+    for retaining walls, tanks and footbridges. Reinforced masonry is the subject of Chapter 5.</p>
+
+    <figure class="figure">
+      <img src="../photo/frame-load-path.jpg" alt="Cutaway illustration showing load transfer in a framed structure from distributed and concentrated loads on the slab, into beams, then columns, then spread footings and the ground">
+      <figcaption><b>Fig. 2.12</b> Load path in a framed structure &mdash; slab &rarr; beam &rarr; column &rarr; footing
+      &rarr; ground. In a load-bearing masonry building the beams and columns are replaced by the walls themselves.
+      <span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <h4>Comparison of the three systems</h4>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Load-bearing masonry</th><th>Confined masonry</th><th>Infill masonry (RC frame)</th></tr></thead>
+        <tbody>
+          <tr><td>Primary vertical load path</td><td>Walls</td><td>Walls (ties assist)</td><td>Beams and columns</td></tr>
+          <tr><td>Primary lateral resisting element</td><td>Walls acting in-plane</td><td>Confined wall panels</td><td>Frame + infill acting as a diagonal strut</td></tr>
+          <tr><td>Construction sequence</td><td>Walls only</td><td><strong>Wall first, then tie-columns cast against it</strong></td><td><strong>Frame first, wall built into it afterwards</strong></td></tr>
+          <tr><td>Is the wall a structural element?</td><td>Yes</td><td>Yes</td><td>Nominally no (but behaves as one)</td></tr>
+          <tr><td>Ductility / seismic performance</td><td>Poor unless banded and reinforced</td><td>Good &mdash; ties contain the damage</td><td>Depends on the frame; risk of soft storey and short column</td></tr>
+          <tr><td>Economy &amp; skill</td><td>Cheapest, least skill</td><td>Moderate cost, moderate skill</td><td>Most expensive, needs engineering</td></tr>
+          <tr><td>Suitable height</td><td>1&ndash;3 storeys</td><td>Up to about 3&ndash;4 storeys</td><td>Multi-storey</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.4.3 &nbsp;Types of Walls</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Classification</th><th>Type</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">By function</td><td><strong>Load-bearing wall</strong></td><td>Carries vertical load from the roof/floor in addition to its own weight.</td></tr>
+          <tr><td><strong>Non-load-bearing wall</strong></td><td>Carries only its own weight &mdash; partition, panel, curtain, parapet, free-standing and compound walls.</td></tr>
+
+          <tr><td rowspan="5">By construction</td><td><strong>Solid wall</strong></td><td>Single leaf of full thickness, e.g. half-brick (115 mm), one-brick (230 mm), one-and-a-half brick (350 mm).</td></tr>
+          <tr><td><strong>Cavity wall</strong></td><td>Two leaves separated by a continuous air cavity (50&ndash;100 mm) and tied by metal ties. Gives thermal insulation and prevents rain penetration. Its effective thickness for design is <em>two-thirds of the sum of the two leaf thicknesses, or the thickness of the thicker leaf, whichever is greater</em>.</td></tr>
+          <tr><td><strong>Collar-jointed wall</strong></td><td>Two leaves separated by a narrow vertical joint fully filled with mortar or grout.</td></tr>
+          <tr><td><strong>Faced wall</strong></td><td>Facing and backing of different materials <strong>bonded together</strong> so that they act as one unit under load.</td></tr>
+          <tr><td><strong>Veneered wall</strong></td><td>A facing attached to the backing but <strong>not</strong> bonded to it &mdash; the facing carries no load.</td></tr>
+
+          <tr><td rowspan="6">By structural role</td><td><strong>Shear wall</strong></td><td>A wall designed to resist lateral force acting <em>in its own plane</em>. The principal earthquake-resisting element of a masonry building.</td></tr>
+          <tr><td><strong>Cross wall</strong></td><td>A wall perpendicular to another that stiffens it and reduces its effective length.</td></tr>
+          <tr><td><strong>Panel wall</strong></td><td>An exterior non-load-bearing wall in a framed structure, wholly supported at each storey.</td></tr>
+          <tr><td><strong>Curtain wall</strong></td><td>A non-load-bearing wall spanning between columns/piers, subject only to its own weight and wind/seismic load on itself.</td></tr>
+          <tr><td><strong>Free-standing wall</strong></td><td>Not laterally supported &mdash; compound and parapet walls. Limiting slenderness ratio only 10.</td></tr>
+          <tr><td><strong>Retaining wall</strong></td><td>Resists lateral earth pressure.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════ 2.5 ══════════════ -->
+    <h2>2.5 &nbsp;Lateral Force Resisting Elements (Walls, Piers and Arches)</h2>
+
+    <h3>2.5.1 &nbsp;The Three Primary Elements of a URM Building</h3>
+    <p>Any masonry building resisting an earthquake can be reduced to three primary elements. Which role a wall plays
+    depends entirely on the <strong>direction of shaking</strong> at that instant &mdash; and because shaking reverses and
+    acts in both horizontal directions, every wall plays both roles in turn.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>In-plane wall (shear wall)</strong></td><td>Parallel to the shaking. Stiff and strong in this direction; carries the storey shear by in-plane shear and flexure. Fails by diagonal (X) cracking, sliding, toe crushing or rocking.</td></tr>
+          <tr><td><strong>Out-of-plane wall</strong></td><td>Perpendicular to the shaking. Behaves as a vertical slab spanning between the floor and the roof (and horizontally between cross walls). Very weak &mdash; overturns and collapses. This is the dominant collapse mechanism of URM.</td></tr>
+          <tr><td><strong>Diaphragm (floor / roof)</strong></td><td>Horizontal plate that collects the inertia force from the out-of-plane walls and distributes it to the in-plane walls. A <strong>rigid</strong> diaphragm (RC slab) distributes force in proportion to wall stiffness; a <strong>flexible</strong> diaphragm (timber joists, CGI sheet) distributes in proportion to tributary area and leaves the out-of-plane walls unsupported.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/urm-primary-elements.png" alt="Isometric drawing of a single storey brick building labelling the in-plane wall, out-of-plane wall, diaphragm, parapet, spandrel and pier, with the direction of earthquake motion indicated">
+      <figcaption><b>Fig. 2.13</b> The three primary elements of an unreinforced masonry building &mdash; in-plane wall,
+      out-of-plane wall and diaphragm &mdash; together with the parapet, spandrel and pier.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>2.5.2 &nbsp;Piers and Spandrels</h3>
+    <ul>
+      <li>A <span class="key-term">pier</span> is the length of wall <strong>between two openings</strong> in the same
+        storey. It is the vertical element that actually carries the in-plane shear, so a perforated wall behaves as a
+        set of piers coupled by spandrels rather than as a solid wall.</li>
+      <li>A <span class="key-term">spandrel</span> is the masonry <strong>above and below the openings</strong>, spanning
+        horizontally between piers. It couples the piers and transfers shear between them.</li>
+      <li>Whether the piers or the spandrels are the weaker element decides the failure mechanism:
+        <strong>weak-pier/strong-spandrel</strong> gives a soft-storey-like shear failure of the piers (dangerous), while
+        <strong>strong-pier/weak-spandrel</strong> gives cracking of the spandrels first (more ductile and preferable).</li>
+      <li>The number, size and <em>location</em> of openings therefore controls the seismic behaviour &mdash; openings
+        must be small, centrally placed, aligned vertically, and kept away from corners.</li>
+      <li>Piers also attract an <strong>increase in axial load due to overturning</strong>, which is checked in Chapter 4.</li>
+    </ul>
+
+    <h3>2.5.3 &nbsp;Arches</h3>
+    <ul>
+      <li>An <span class="key-term">arch</span> spans an opening by converting the vertical load into
+        <strong>compression along its curve</strong>, so it can be built from a material that has no tensile strength.</li>
+      <li>The price is a <strong>horizontal thrust at the springing</strong>, which must be resisted by heavy abutments,
+        buttresses or a tie rod. Under lateral shaking the thrust changes and the arch can spread and collapse &mdash; a
+        very common failure of historic monuments and pati/sattal.</li>
+      <li>Types by shape: <em>flat/jack, segmental, semicircular, pointed (Gothic), parabolic, corbelled</em>. The
+        traditional Nepali equivalent is the <em>corbelled</em> opening built by stepping successive courses inwards.</li>
+      <li>An arch is stable so long as the <strong>line of thrust stays within the middle third</strong> of the arch ring;
+        hinges form where it touches the edge, and four hinges turn the arch into a mechanism.</li>
+      <li>Lintels are the modern alternative; a <strong>reinforced brick or RC lintel</strong> avoids the thrust problem
+        and is preferred in seismic regions. <strong>Arching action</strong> in walls over openings (rigid and gapped
+        arching) is dealt with in Chapter 4.</li>
+    </ul>
+
+    <h3>2.5.4 &nbsp;Bands, Ties and Box Action</h3>
+    <p>Individually strong walls are not enough &mdash; they must be tied together so the building behaves as a single
+    closed box. The elements that provide this <strong>box integrity</strong> are:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Plinth band</strong></td><td>Transmits the wall load to the foundation and ties the walls at plinth level. Required wherever the soil is soft or uneven in its properties.</td></tr>
+          <tr><td><strong>Sill band</strong></td><td>At window sill level; limits the vertical cracking that starts at the corners of openings.</td></tr>
+          <tr><td><strong>Lintel band</strong></td><td>The most important band. It must be provided in <strong>all storeys and all walls</strong>, and shall incorporate all door and window lintels (the lintel reinforcement being extra to the band steel). It gives the walls horizontal bending strength for out-of-plane inertia and ties orthogonal walls together.</td></tr>
+          <tr><td><strong>Roof / eave band</strong></td><td>Provided at eave level of trussed roofs and at floors made of joists and covering elements, to integrate them at their ends and fix them into the walls.</td></tr>
+          <tr><td><strong>Gable band</strong></td><td>Encloses the triangular gable masonry; its horizontal part is continuous with the eave-level band on the longitudinal walls. Alternatively use a truss or open gable clad in light sheeting.</td></tr>
+          <tr><td><strong>Vertical (containment) reinforcement</strong></td><td>Bars at corners, wall junctions and the jambs of openings, anchored into the bands, that resist the tension caused by overturning and rocking.</td></tr>
+          <tr><td><strong>Wall anchors / roof-to-wall connection</strong></td><td>Prevents the roof from sliding off and lets the diaphragm actually deliver its force to the walls.</td></tr>
+          <tr><td><strong>Toothed or stepped vertical joint at wall junctions</strong></td><td>Full bond between perpendicular walls, achieved by building the corners first to a height of 600 mm and then filling in between, or by a toothed joint made in each wall alternately in lifts of about 450 mm.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><em>Note.</em> If the wall height up to eave level is 2.5 m or less, the lintel-level band may be omitted and the
+    lintel integrated with the eave-level band.</p>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/horizontal-bands.png" alt="Isometric drawing of a masonry building showing the RC roof band, RC lintel band, RC sill band and vertical containment reinforcement in the masonry wall">
+        <figcaption><b>Fig. 2.14</b> Masonry building with horizontal bands and vertical containment reinforcement.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/toothed-joint.png" alt="Detail drawing of alternating toothed joints at the corner and T-junction of masonry walls, with 450 mm lifts">
+        <figcaption><b>Fig. 2.15</b> Typical detail of toothed jointing at corners and T-junctions in 450 mm lifts
+        (NBC 109, 1994).<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <!-- ══════════════ 2.6 ══════════════ -->
+    <h2>2.6 &nbsp;Structural System of Historical Masonry Structures; Review on Design of Masonry Walls for Static Force
+      <span class="year-tag">2075 Chaitra</span><span class="year-tag">2076 Chaitra</span><span class="year-tag">2080 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Explain the following and state the influence of it on strength of the wall: (i) Slenderness ratio (ii) Shape modification factor. [12] <em>(2075 Chaitra, Q3)</em></li>
+        <li>Explain the following applied to masonry structures: (i) Stress reduction factor. [4] <em>(2076 Chaitra, Q4b)</em></li>
+        <li>Explain the design criteria of walls subjected to transverse loading. [8] <em>(2076 Chaitra, Q2a)</em></li>
+        <li>Calculate the effective height, effective length, effective thickness and slenderness ratio of walls A, C, G and P. [12] <em>(2080 Bhadra, Q2b)</em></li>
+        <li><em>Plus every wall / pier / column design numerical: 2075 Q4, 2078 Q3&ndash;Q6, 2079 Q3b &amp; Q4b, 2080 Q3a&ndash;b, 2081 Q3b.</em></li>
+      </ol>
+    </div>
+
+    <h3>2.6.1 &nbsp;Structural System of Historical Masonry Structures</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Description and structural consequence</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Thick multi-leaf (three-wythe) walls</strong></td><td>Good facing brick on both faces with a weak rubble-and-mud core. The three leaves are rarely tied by through-headers, so they <strong>delaminate</strong> and buckle outwards under shaking.</td></tr>
+          <tr><td><strong>Mud or weak lime mortar</strong></td><td>Almost no bond or tensile strength; loses strength completely when wet.</td></tr>
+          <tr><td><strong>Massive walls, tapering with height</strong></td><td>Stability by gravity and by the middle-third rule rather than by any tensile capacity.</td></tr>
+          <tr><td><strong>Flexible timber floors and roofs</strong></td><td>Timber joists simply rest on the walls without anchorage &mdash; there is <strong>no diaphragm action</strong>, so the out-of-plane walls are unsupported at the top and the walls act independently instead of as a box.</td></tr>
+          <tr><td><strong>Heavy roofs</strong></td><td>Heavy tiles or thick mud overlay high up in the building &rarr; large inertia force at the worst possible level.</td></tr>
+          <tr><td><strong>Large and irregular openings</strong></td><td>Elaborately carved windows and wide shop-front openings at ground level produce slender piers and a soft ground storey.</td></tr>
+          <tr><td><strong>Arches, corbels, domes and vaults</strong></td><td>Compression-only elements that develop horizontal thrust; they spread and hinge under lateral shaking.</td></tr>
+          <tr><td><strong>Absence of bands and vertical ties</strong></td><td>No horizontal reinforcement at all &mdash; the corners separate first.</td></tr>
+          <tr><td><strong>Beneficial traditional features</strong></td><td>Timber pegs and through-timbers acting as crude ties, timber bands in some Newari and hill construction, symmetric plans, and low height-to-width ratios. These are the features that survived the 1934 and 2015 earthquakes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.6.2 &nbsp;Basic Principle of Design in Compression</h3>
+    <div class="formula">
+      <b>DESIGN VERTICAL LOADING &nbsp;&le;&nbsp; DESIGN VERTICAL LOAD RESISTANCE</b><br><br>
+      The left-hand side comes from the known applied loading. The right-hand side is a function of the characteristic
+      compressive strength of the masonry f<sub>ck</sub>, the <b>slenderness ratio</b> and the <b>eccentricity of loading</b>.
+    </div>
+    <p>IS 1905:1987 uses the <strong>working stress method</strong> &mdash; the actual stress produced by the loads must
+    stay within a permissible limit:</p>
+    <div class="formula">
+      f<sub>c</sub> &nbsp;&le;&nbsp; f<sub>per</sub> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      where f<sub>c</sub> = actual stress generated, and f<sub>per</sub> = allowable stress, taken as the limiting strength
+      divided by the factor of safety.
+    </div>
+
+    <h4>What the permissible compressive stress depends on</h4>
+    <ol>
+      <li>Type and strength of the masonry units</li>
+      <li>Strength (grade) of the mortar</li>
+      <li><strong>Slenderness ratio</strong></li>
+      <li><strong>Eccentricity of loading</strong></li>
+      <li><strong>Shape and size of the units</strong></li>
+      <li><strong>Cross-sectional area</strong> of the masonry</li>
+    </ol>
+    <div class="formula">
+      <b>Permissible compressive stress:</b><br><br>
+      f<sub>per</sub> &nbsp;=&nbsp; f<sub>b</sub> &times; k<sub>s</sub> &times; k<sub>a</sub> &times; k<sub>p</sub><br><br>
+      <span style="font-size:.95em">
+      f<sub>b</sub> &nbsp;= basic compressive stress (IS 1905 <b>Table 8</b>), from the unit crushing strength and the mortar type<br>
+      k<sub>s</sub> = <b>stress reduction factor</b> (Table 9) &mdash; for slenderness ratio and eccentricity<br>
+      k<sub>a</sub> = <b>area reduction factor</b> &mdash; for a small cross-section<br>
+      k<sub>p</sub> = <b>shape modification factor</b> (Table 10) &mdash; for the height/width ratio of the unit
+      </span>
+    </div>
+
+    <h3>2.6.3 &nbsp;Behaviour under Axial and Eccentric Load</h3>
+    <ul>
+      <li>If a <em>pure axial</em> load could be applied, the mode of failure would depend on the slenderness ratio:
+        <strong>short stocky members fail by crushing</strong> of the material; <strong>long thin members fail by lateral
+        instability (buckling)</strong>.</li>
+      <li>The failure stress at zero slenderness ratio depends on the strength of the units and mortar, and varies
+        between about <strong>7.0 and 24 N/mm&sup2;</strong>.</li>
+      <li>In practice it is virtually impossible to apply a truly axial load &mdash; that would need a perfect member with
+        no fabrication error. The vertical load is generally eccentric to the centroidal axis and therefore produces a
+        bending moment. This can be allowed for in two ways:
+        <ol>
+          <li>add the stresses due to the equivalent axial load and the bending moment:
+            <span class="formula" style="display:inline-block;margin:6px 0;padding:6px 12px">
+              &sigma; = <span class="frac"><span class="fn">W</span><span class="fd">A</span></span> &plusmn;
+              <span class="frac"><span class="fn">M</span><span class="fd">Z</span></span>
+            </span>
+            where A and Z are the area and section modulus of the cross-section; or</li>
+          <li>reduce the axial load-carrying capacity of the wall or column by a suitable factor &mdash; which is what
+            IS 1905 does through k<sub>s</sub>.</li>
+        </ol>
+      </li>
+    </ul>
+
+    <figure class="figure">
+      <svg viewBox="0 0 560 300" width="560" height="300" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <!-- axes -->
+        <line x1="70" y1="250" x2="520" y2="250" stroke="var(--svg-text)" stroke-width="1.5"/>
+        <line x1="70" y1="250" x2="70" y2="36" stroke="var(--svg-text)" stroke-width="1.5"/>
+        <text x="300" y="282" font-size="13" text-anchor="middle" fill="var(--svg-text)">Slenderness ratio, SR = h<tspan baseline-shift="sub" font-size="9">eff</tspan> / t<tspan baseline-shift="sub" font-size="9">eff</tspan></text>
+        <text x="26" y="145" font-size="13" text-anchor="middle" fill="var(--svg-text)" transform="rotate(-90 26 145)">Failure stress</text>
+        <!-- curve -->
+        <path d="M70 66 L176 66 C260 66 330 140 400 196 C440 226 470 240 510 246"
+              fill="none" stroke="var(--svg-hub)" stroke-width="2.6"/>
+        <!-- SR=6 marker -->
+        <line x1="176" y1="66" x2="176" y2="250" stroke="var(--svg-line)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="176" y="266" font-size="11.5" text-anchor="middle" fill="var(--svg-sub)">SR = 6</text>
+        <!-- zones -->
+        <rect x="70" y="40" width="106" height="210" fill="var(--svg-green)" opacity=".35"/>
+        <rect x="176" y="40" width="344" height="210" fill="var(--svg-red)" opacity=".22"/>
+        <text x="122" y="112" font-size="12" text-anchor="middle" fill="var(--svg-text-green)">CRUSHING</text>
+        <text x="122" y="128" font-size="11" text-anchor="middle" fill="var(--svg-text-green)">of the material</text>
+        <text x="122" y="146" font-size="11" text-anchor="middle" fill="var(--svg-sub)">k&#8347; = 1.0</text>
+        <text x="360" y="96" font-size="12" text-anchor="middle" fill="var(--svg-text-red)">BUCKLING</text>
+        <text x="360" y="112" font-size="11" text-anchor="middle" fill="var(--svg-text-red)">lateral instability governs</text>
+        <text x="360" y="130" font-size="11" text-anchor="middle" fill="var(--svg-sub)">k&#8347; &lt; 1.0, falls with SR</text>
+        <!-- plateau label -->
+        <text x="96" y="58" font-size="11" fill="var(--svg-text-blue)">7&ndash;24 N/mm&sup2;</text>
+        <!-- limiting SR -->
+        <line x1="470" y1="40" x2="470" y2="250" stroke="var(--svg-orange-s)" stroke-width="1.6" stroke-dasharray="6 3"/>
+        <text x="470" y="34" font-size="11" text-anchor="middle" fill="var(--svg-text-orange)">limiting SR (e.g. 27)</text>
+      </svg>
+      <figcaption><b>Fig. 2.16</b> Failure stress against slenderness ratio. Up to SR = 6 the member crushes and the full
+      basic compressive stress may be used; beyond it buckling progressively takes over and the stress reduction factor
+      k<sub>s</sub> cuts the permissible stress down.</figcaption>
+    </figure>
+
+    <h3>2.6.4 &nbsp;Effective Height, Effective Length and Effective Thickness</h3>
+
+    <h4>(a) Effective height h<sub>eff</sub></h4>
+    <p>The effective height relates to the <strong>degree of restraint imposed by the floors and beams</strong> that frame
+    into the wall or column. If the ends of a strut were free, pinned or fully fixed the effective height could be
+    computed from Euler buckling theory; IS 1905 tabulates practical values instead. Typical values are:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Support condition</th><th>Effective height</th></tr></thead>
+        <tbody>
+          <tr><td>Wall laterally supported at top and bottom (RC slab bearing on the full thickness)</td><td><strong>0.75 H</strong></td></tr>
+          <tr><td>Wall with partial restraint at top and bottom (timber floor / slab on part thickness)</td><td><strong>H</strong></td></tr>
+          <tr><td>Wall laterally supported at bottom only (free at top &mdash; parapet, free-standing)</td><td><strong>1.5 H to 2 H</strong></td></tr>
+          <tr><td>Column, restrained in both directions</td><td>H, or 0.75 H if fully restrained &mdash; per Table 5 of IS 1905</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Openings in walls.</strong> When openings occur such that the masonry between them acts as a pier/column:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Restraint at top</th><th>Direction perpendicular to the plane of the wall</th><th>Direction parallel to the plane of the wall</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Full restraint</strong></td><td>h<sub>eff</sub> = <strong>0.75 H + 0.25 H<sub>1</sub></strong>, where H is the distance between supports and H<sub>1</sub> is the height of the <em>taller</em> opening</td><td>h<sub>eff</sub> = <strong>H</strong> (the distance between the supports)</td></tr>
+          <tr><td><strong>Partial restraint</strong></td><td>h<sub>eff</sub> = <strong>H</strong> when the height of neither opening exceeds 0.5 H; <strong>2 H</strong> when the height of any opening exceeds 0.5 H</td><td>h<sub>eff</sub> = <strong>2 H</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>(b) Effective length l<sub>eff</sub></h4>
+    <p>The effective length depends on the end conditions along the length of the wall. The four conditions that occur,
+    in various combinations, are:</p>
+    <ul>
+      <li><strong>Free end</strong></li>
+      <li><strong>Continuity of the wall</strong> (the wall carries on past the point considered)</li>
+      <li><strong>Support from a cross wall, pier or buttress</strong></li>
+      <li><strong>Openings</strong></li>
+    </ul>
+    <p>Various combinations of these determine the effective length; the coefficients are given in Table 4 of IS 1905
+    (typically 0.8 L for a wall continuous or supported at both ends, 1.0 L for one end supported, 1.5&ndash;2.0 L where
+    one end is free).</p>
+
+    <h4>(c) Effective thickness t<sub>eff</sub></h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Case</th><th>Effective thickness</th></tr></thead>
+        <tbody>
+          <tr><td>Single-leaf solid wall or column</td><td>The <strong>actual thickness</strong></td></tr>
+          <tr><td>Solid wall bonded into piers, buttresses or cross walls</td><td><strong>t<sub>eff</sub> = stiffening coefficient &times; t<sub>w</sub></strong> (Table 6 of IS 1905). Applies only when the slenderness ratio is based on the <em>effective height</em>; <strong>no modification is made</strong> when SR is based on the effective <em>length</em>.</td></tr>
+          <tr><td>Cavity wall</td><td>Two-thirds of the sum of the two leaf thicknesses, or the thickness of the thicker leaf, whichever is greater</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Table 6 &mdash; Stiffening coefficients for walls stiffened by piers, buttresses or cross walls</h4>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th rowspan="2">S<sub>p</sub> / W<sub>p</sub></th><th colspan="3">Stiffening coefficient for t<sub>p</sub> / t<sub>w</sub> =</th></tr>
+          <tr><th>1</th><th>2</th><th>3 or more</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>6</td><td>1.0</td><td>1.4</td><td>2.0</td></tr>
+          <tr><td>8</td><td>1.0</td><td>1.3</td><td>1.7</td></tr>
+          <tr><td>10</td><td>1.0</td><td>1.2</td><td>1.4</td></tr>
+          <tr><td>15</td><td>1.0</td><td>1.1</td><td>1.2</td></tr>
+          <tr><td>20 or more</td><td>1.0</td><td>1.0</td><td>1.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><em>where</em> S<sub>p</sub> = centre-to-centre spacing of the pier or cross wall; t<sub>p</sub> = thickness of the
+    pier; t<sub>w</sub> = actual thickness of the wall proper; W<sub>p</sub> = width of the pier in the direction of the
+    wall, or the actual thickness of the cross wall. <strong>Linear interpolation is permitted, extrapolation is not.</strong>
+    If the thickness of a cross wall acting as a pier is not given, take t<sub>p</sub> = 3 t<sub>w</sub>.
+    Strength is increased by providing piers, buttresses and cross walls, and this stiffening effect is what the
+    coefficient represents.</p>
+
+    <h3>2.6.5 &nbsp;Slenderness Ratio (SR) <span class="year-tag">2075 Chaitra, Q3(i)</span><span class="year-tag">2080 Bhadra, Q2b</span></h3>
+    <div class="formula">
+      <b>SR</b> &nbsp;=&nbsp; <span class="frac"><span class="fn">effective height h<sub>eff</sub></span><span class="fd">effective thickness t<sub>eff</sub></span></span>
+      &nbsp;&nbsp;or&nbsp;&nbsp;
+      <span class="frac"><span class="fn">effective length l<sub>eff</sub></span><span class="fd">effective thickness t<sub>eff</sub></span></span>
+      &nbsp;&nbsp;&mdash; <b>whichever is LESS</b>
+      <br><br>
+      (For a column, SR is based on the effective height and the corresponding effective thickness in each direction, and
+      the <em>larger</em> of the two governs.)
+    </div>
+
+    <h4>Influence of slenderness ratio on the strength of a wall</h4>
+    <ul>
+      <li>SR is a measure of the wall's tendency to <strong>buckle</strong>. As SR increases, the mode of failure changes
+        from <strong>crushing</strong> to <strong>lateral instability</strong>, and the failure stress falls (Fig. 2.16).</li>
+      <li><strong>For SR &le; 6</strong> the buckling effect is not appreciable and the <strong>basic compressive stress
+        is not reduced</strong> (k<sub>s</sub> = 1.0 when e = 0).</li>
+      <li><strong>For SR &gt; 6</strong> a reduction factor for slenderness (the stress reduction factor k<sub>s</sub>)
+        given in the code must be applied, and the permissible stress falls steadily &mdash; from 1.00 at SR 6 to about
+        0.43 at SR 27 for axial load.</li>
+      <li>The buckling effect may be <strong>ignored within one-eighth of the height of the member above or below the
+        position of lateral support</strong> &mdash; the allowable stress is not reduced there.</li>
+      <li>Practical consequences: a taller storey, a thinner wall, or the removal of a cross wall/pier all raise SR and
+        therefore <em>reduce</em> the permissible stress. Adding piers, buttresses or cross walls raises t<sub>eff</sub>
+        and <em>lowers</em> SR, increasing the capacity.</li>
+    </ul>
+
+    <h4>Limiting (maximum permissible) slenderness ratio</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type of wall</th><th>Number of storeys</th><th>Max. SR</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">Load-bearing walls in cement or cement&ndash;lime mortar of type H1, H2, M1 or M2</td><td>One or two storeys</td><td><strong>27</strong></td></tr>
+          <tr><td>Three or more storeys</td><td><strong>27</strong></td></tr>
+          <tr><td rowspan="2">Load-bearing walls in lime mortar of type M2 or L1</td><td>One or two storeys</td><td><strong>20</strong></td></tr>
+          <tr><td>Three or more storeys</td><td><strong>13</strong></td></tr>
+          <tr><td rowspan="2">Non-load-bearing walls</td><td>Panel and curtain walls</td><td><strong>30</strong></td></tr>
+          <tr><td>Free-standing walls and parapets</td><td><strong>10</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>2.6.6 &nbsp;Eccentricity of Loading</h3>
+    <div class="formula">
+      <b>Equivalent eccentricity.</b> When a wall or column carries both an axial load and an eccentric load, the two are
+      replaced by a single equivalent vertical force acting at a statically equivalent eccentricity:<br><br>
+      W = W<sub>1</sub> + W<sub>2</sub> &nbsp;&nbsp;&nbsp;&nbsp;
+      e&#772; = <span class="frac"><span class="fn">W<sub>2</sub> &middot; e</span><span class="fd">W<sub>1</sub> + W<sub>2</sub></span></span>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      eccentricity ratio = <span class="frac"><span class="fn">e&#772;</span><span class="fd">t<sub>w</sub></span></span><br><br>
+      <span style="font-size:.95em">W<sub>1</sub> = axial load, W<sub>2</sub> = eccentric load acting at a distance e from
+      the centre line, t<sub>w</sub> = thickness of the wall.</span>
+    </div>
+
+    <h4>Effect of eccentricity on the allowable stress (IS 1905, clause 5.4.1.4)</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Eccentricity</th><th>Treatment</th></tr></thead>
+        <tbody>
+          <tr><td>e &le; t/24</td><td><strong>Ignore</strong> the stress due to eccentricity &mdash; calculate and check the axial stress only.</td></tr>
+          <tr><td>t/24 &lt; e &le; t/6</td><td>The resulting combined axial and bending stress may be allowed to <strong>exceed the permissible stress by not more than 25%</strong>.</td></tr>
+          <tr><td>e &gt; t/6</td><td><strong>Tension occurs</strong> on the section. Ignore the part of the thickness in tension; the compressive stress on the extreme fibre is then
+            <span class="formula" style="display:inline-block;margin:6px 0;padding:6px 12px">
+              f<sub>c</sub> = <span class="frac"><span class="fn">2P</span><span class="fd">3 &middot; L &middot; (t/2 &minus; e)</span></span>
+            </span>
+            (P = vertical load). This stress may again exceed the code value by not more than 25%.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Note also that where the eccentricity ratio lies between 1/3 and 1/2 of the thickness, the stress reduction factor
+    varies linearly between unity and 0.20 for slenderness ratios of 6 and 20 respectively.</p>
+
+    <h3>2.6.7 &nbsp;The Three Modification Factors <span class="year-tag">2075 Chaitra</span><span class="year-tag">2076 Chaitra</span></h3>
+
+    <h4>(a) Basic compressive stress f<sub>b</sub> &mdash; IS 1905 Table 8</h4>
+    <p>The values in Table 8 take into account the crushing strength of the masonry unit and the grade of mortar. They
+    are valid for <strong>SR not exceeding 6, zero eccentricity, and a unit height-to-width ratio (as laid) of 0.75 or
+    less</strong>. Alternatively the basic compressive stress may be based on a <em>prism test</em> (Appendix B of the code)
+    on masonry made from the units and mortar actually to be used on the job.</p>
+
+    <figure class="figure">
+      <img src="../photo/is1905-table8.png" alt="IS 1905 Table 8 giving basic compressive stresses in N per square mm for masonry with different mortar types H1 to L2 and unit crushing strengths from 3.5 to 40 N per square mm">
+      <figcaption><b>Fig. 2.17</b> IS 1905:1987, <b>Table 8 &mdash; Basic compressive stresses</b> for masonry members.
+      Read down the mortar-type row and across to the column for the unit crushing strength.
+      <span class="fig-src">Source: IS 1905:1987. (Scan artefact: the first three values in the 3.5 N/mm&sup2; column print
+      as &ldquo;8&middot;35&rdquo; but are <b>0.35</b>.)</span></figcaption>
+    </figure>
+
+    <p>A compact extract of the most-used part of the table:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Mortar type</th><th>3.5</th><th>5.0</th><th>7.5</th><th>10</th><th>12.5</th><th>15</th><th>17.5</th><th>20</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>H1</strong></td><td>0.35</td><td>0.50</td><td>0.75</td><td>1.00</td><td>1.16</td><td>1.31</td><td>1.45</td><td>1.59</td></tr>
+          <tr><td><strong>H2</strong></td><td>0.35</td><td>0.50</td><td>0.74</td><td>0.96</td><td>1.09</td><td>1.19</td><td>1.30</td><td>1.41</td></tr>
+          <tr><td><strong>M1</strong></td><td>0.35</td><td>0.50</td><td>0.74</td><td>0.96</td><td>1.06</td><td>1.13</td><td>1.20</td><td>1.27</td></tr>
+          <tr><td><strong>M2</strong></td><td>0.35</td><td>0.44</td><td>0.59</td><td>0.81</td><td>0.94</td><td>1.03</td><td>1.10</td><td>1.17</td></tr>
+          <tr><td><strong>M3</strong></td><td>0.25</td><td>0.41</td><td>0.56</td><td>0.75</td><td>0.87</td><td>0.95</td><td>1.02</td><td>1.10</td></tr>
+          <tr><td><strong>L1</strong></td><td>0.25</td><td>0.36</td><td>0.53</td><td>0.67</td><td>0.76</td><td>0.83</td><td>0.90</td><td>0.97</td></tr>
+          <tr><td><strong>L2</strong></td><td>0.25</td><td>0.31</td><td>0.42</td><td>0.53</td><td>0.58</td><td>0.61</td><td>0.65</td><td>0.69</td></tr>
+        </tbody>
+      </table>
+      <p style="text-align:center;font-size:.9em;color:var(--muted);margin-top:6px">
+        Basic compressive stress f<sub>b</sub> (N/mm&sup2;) &mdash; column headings are the unit crushing strength in N/mm&sup2;.
+        Always confirm against the code in the exam hall; the full table runs to 40 N/mm&sup2;.</p>
+    </div>
+
+    <h4>(b) Stress reduction factor k<sub>s</sub> &mdash; IS 1905 Table 9 <span class="year-tag">2076 Chaitra, Q4b(i)</span></h4>
+    <div class="formula">
+      The <b>stress reduction factor k<sub>s</sub></b> takes into account <b>both the slenderness ratio of the element and
+      the eccentricity of loading</b>. It reduces the basic compressive stress to allow for the loss of capacity caused by
+      buckling and by the bending induced by eccentric load.<br><br>
+      k<sub>s</sub> = 1.00 for SR &le; 6 with e = 0, and falls to about <b>0.43 at SR = 27</b> for axial load, and much
+      lower still for large eccentricity.
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/is1905-table9.png" alt="IS 1905 Table 9 giving the stress reduction factor for slenderness ratios from 6 to 27 and eccentricity ratios of 0, 1/24, 1/12, 1/6, 1/4 and 1/3">
+      <figcaption><b>Fig. 2.18</b> IS 1905:1987, <b>Table 9 &mdash; Stress reduction factor k<sub>s</sub></b> for slenderness
+      ratio and eccentricity. Linear interpolation between values is permitted.
+      <span class="fig-src">Source: IS 1905:1987. (At SR = 8, e/t = 1/24 the printed value is a scan defect &mdash; read it
+      as <b>0.95</b>.)</span></figcaption>
+    </figure>
+
+    <h4>(c) Area reduction factor k<sub>a</sub> &mdash; IS 1905 clause 5.4.1.2</h4>
+    <div class="formula">
+      This factor takes into account the <b>smallness of the sectional area</b> of the element. It is applicable
+      <b>only when the sectional area is less than 0.2 m&sup2;</b>:<br><br>
+      <b>k<sub>a</sub> = 0.7 + 1.5 A</b> &nbsp;&nbsp;&nbsp;&nbsp;(A = area of section in m&sup2;)<br><br>
+      For A &ge; 0.2 m&sup2;, k<sub>a</sub> = 1.0 &mdash; check: 0.7 + 1.5&times;0.2 = 1.0. &check;
+    </div>
+    <p><em>Reason:</em> a small section has little redundancy, so a single weak brick or badly filled joint has a
+    proportionately larger effect on the capacity.</p>
+
+    <h4>(d) Shape modification factor k<sub>p</sub> &mdash; IS 1905 Table 10 <span class="year-tag">2075 Chaitra, Q3(ii)</span></h4>
+    <div class="formula">
+      The <b>shape modification factor k<sub>p</sub></b> takes into account the <b>shape of the unit &mdash; its height to
+      width ratio as laid</b>. It applies <b>only to units of crushing strength up to 15 N/mm&sup2;</b>.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th rowspan="2">Height to width ratio of the unit (as laid)</th><th colspan="4">k<sub>p</sub> for units of crushing strength (N/mm&sup2;)</th></tr>
+          <tr><th>5.0</th><th>7.5</th><th>10.0</th><th>15.0</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Up to 0.75</td><td>1.0</td><td>1.0</td><td>1.0</td><td>1.0</td></tr>
+          <tr><td>1.0</td><td>1.2</td><td>1.1</td><td>1.1</td><td>1.0</td></tr>
+          <tr><td>1.5</td><td>1.5</td><td>1.3</td><td>1.2</td><td>1.1</td></tr>
+          <tr><td>2.0 to 4.0</td><td>1.8</td><td>1.5</td><td>1.3</td><td>1.2</td></tr>
+        </tbody>
+      </table>
+      <p style="text-align:center;font-size:.9em;color:var(--muted);margin-top:6px">Linear interpolation between values is permissible.</p>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/is1905-table10.png" alt="IS 1905 Table 10 giving shape modification factors for masonry units other than common bricks, for height to width ratios up to 0.75, 1.0, 1.5 and 2.0 to 4.0">
+      <figcaption><b>Fig. 2.19</b> IS 1905:1987, <b>Table 10 &mdash; Shape modification factor k<sub>p</sub></b> for masonry
+      units other than common bricks.<span class="fig-src">Source: IS 1905:1987.</span></figcaption>
+    </figure>
+
+    <h4>Influence of the shape modification factor on the strength of a wall</h4>
+    <ul>
+      <li>A <strong>taller unit</strong> (larger height-to-width ratio as laid) means <strong>fewer bed joints</strong> per
+        metre of wall height, hence <strong>less soft mortar</strong>, hence less lateral tension induced in the unit
+        &mdash; so the masonry is stronger. This is the same mechanism as Fig. 2.8.</li>
+      <li>The gain can be substantial: k<sub>p</sub> = 1.8 for a unit of ratio 2.0&ndash;4.0 made of 5 N/mm&sup2; material
+        &mdash; an <strong>80% increase</strong> in permissible stress for exactly the same material.</li>
+      <li>The benefit <strong>diminishes as the unit gets stronger</strong> (only 1.2 at 15 N/mm&sup2;) because with a
+        strong unit the mortar joint is relatively less critical &mdash; and above 15 N/mm&sup2; the factor does not apply
+        at all.</li>
+      <li>A common brick laid flat has a ratio of about 57/115 &asymp; 0.5, i.e. k<sub>p</sub> = 1.0 &mdash; which is why
+        the factor is described as being for &ldquo;units other than common bricks&rdquo; (concrete blocks, stone blocks,
+        hollow blocks laid on edge, etc.).</li>
+    </ul>
+
+    <h3>2.6.8 &nbsp;Design Procedure for a Wall under Uniformly Distributed Axial Load</h3>
+    <div class="exam-box">
+      <b>Design steps (memorise this sequence &mdash; every wall numerical follows it)</b>
+      <ol>
+        <li><strong>Select a trial wall thickness</strong>, based on available unit dimensions, the masonry strength
+          required, self-weight considerations, and general requirements (security, temperature, humidity).</li>
+        <li><strong>Calculate the total load per unit length of wall</strong>. Load combinations to consider:
+          DL + LL; DL + appropriate LL + seismic load; DL + appropriate LL + wind load; DL + seismic load.</li>
+        <li><strong>Calculate the effective height h<sub>eff</sub> and effective length l<sub>eff</sub></strong>.</li>
+        <li><strong>Calculate the effective thickness t<sub>eff</sub></strong> (apply the stiffening coefficient if the
+          wall is stiffened by piers, buttresses or cross walls).</li>
+        <li><strong>Calculate the slenderness ratio SR</strong> = lesser of h<sub>eff</sub>/t<sub>eff</sub> and
+          l<sub>eff</sub>/t<sub>eff</sub>. Check it against the limiting SR.</li>
+        <li><strong>Calculate the actual compressive stress</strong>
+          &sigma;<sub>ac</sub> = P / A<sub>e</sub>, where A<sub>e</sub> is the effective area per unit length of wall.</li>
+        <li><strong>Compute the eccentricity</strong> e and the eccentricity ratio e/t.</li>
+        <li><strong>Read the stress reduction factor k<sub>s</sub></strong> from Table 9 using SR and e/t
+          (e = 0 for a purely axial case).</li>
+        <li><strong>Select the unit and mortar</strong> if not given, and read the <strong>basic compressive stress
+          f<sub>b</sub></strong> from Table 8.</li>
+        <li><strong>Compute the area reduction factor k<sub>a</sub></strong> and the <strong>shape modification factor
+          k<sub>p</sub></strong>.</li>
+        <li><strong>Compute the permissible stress</strong> f<sub>per</sub> = f<sub>b</sub> k<sub>s</sub> k<sub>a</sub> k<sub>p</sub>.</li>
+        <li><strong>Apply the design criterion:</strong> if &sigma;<sub>ac</sub> &le; f<sub>per</sub> the wall is
+          <strong>SAFE</strong>; otherwise increase the thickness, or the unit or mortar strength, and repeat.</li>
+      </ol>
+    </div>
+
+    <h3>2.6.9 &nbsp;Design Criteria for Walls Subjected to Transverse Loading <span class="year-tag">2076 Chaitra, Q2a</span></h3>
+    <p>A wall carrying wind or out-of-plane seismic pressure in addition to vertical load must satisfy the following:</p>
+    <ol>
+      <li><strong>Convert the transverse load into an equivalent eccentricity.</strong> The lateral pressure produces a
+        moment M; combined with the vertical load W this is expressed as W acting at e = M/W, and the wall is then
+        treated exactly as an eccentrically loaded wall (&sect;2.6.6).</li>
+      <li><strong>Establish the span direction.</strong> A wall supported top and bottom spans <em>vertically</em>; a wall
+        supported by cross walls at its ends spans <em>horizontally</em>; a wall supported on all four sides develops
+        <em>two-way</em> bending. The critical bending moment follows from the support condition.</li>
+      <li><strong>Check the flexural tensile stress</strong> against the very low permissible value. Since masonry has
+        almost no tensile strength, the usual criterion is that the resultant must remain within the middle third, i.e.
+        <strong>no tension develops</strong>: e &le; t/6.</li>
+      <li><strong>Take advantage of the precompression.</strong> The vertical dead load produces a compressive stress that
+        must first be overcome before tension can occur; this is why an upper-storey wall with little load on it is far
+        more vulnerable out-of-plane than a heavily loaded ground-floor wall.</li>
+      <li><strong>Check the combined stress:</strong> &sigma; = W/A &plusmn; M/Z must be within the permissible compressive
+        stress (with the 25% increase allowed for eccentric/lateral load where applicable), and the tensile side must not
+        exceed the permissible flexural tension.</li>
+      <li><strong>Check stability and the slenderness limit</strong> &mdash; free-standing walls and parapets have a
+        limiting SR of only 10.</li>
+      <li><strong>Provide positive anchorage</strong> to the roof/floor with metal anchors so the assumed support
+        condition actually exists, and provide bands and cross walls to reduce the span.</li>
+    </ol>
+
+    <!-- ══════════════ 2.7 ══════════════ -->
+    <h2>2.7 &nbsp;Emerging Materials and Technologies in Masonry Structures</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Material / technology</th><th>Description and benefit</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fly-ash bricks</strong></td><td>Fly ash + lime + gypsum, cured without firing. Uses an industrial waste, saves topsoil and fuel, gives accurate dimensions and higher strength than kiln brick.</td></tr>
+          <tr><td><strong>AAC blocks</strong> (autoclaved aerated concrete)</td><td>Very light (about one-third the density of brick masonry), good thermal insulation and fire rating; large units mean fast construction and, critically for seismic design, <strong>much lower mass and hence lower inertia force</strong>.</td></tr>
+          <tr><td><strong>Compressed stabilised earth blocks (CSEB)</strong> and <strong>interlocking blocks</strong></td><td>Soil stabilised with 5&ndash;8% cement and machine-pressed. Very low embodied energy; interlocking versions need little or no mortar, tolerate unskilled labour and allow vertical reinforcement through aligned holes. Increasingly used in post-2015 reconstruction in Nepal.</td></tr>
+          <tr><td><strong>Hollow concrete blocks with reinforced cores</strong></td><td>Vertical bars and grout in the cores turn the wall into genuine reinforced masonry with real ductility.</td></tr>
+          <tr><td><strong>Confined masonry systems</strong></td><td>Now codified worldwide as the recommended low-rise system for seismic regions (see &sect;2.4.2).</td></tr>
+          <tr><td><strong>Prestressed / post-tensioned masonry</strong></td><td>Vertical tendons add precompression, greatly increasing the out-of-plane and in-plane capacity and giving self-centring behaviour. Used for retaining walls, tanks and footbridges.</td></tr>
+          <tr><td><strong>Bed-joint reinforcement</strong> (ladder/truss mesh, polymer geogrid)</td><td>Enhances the capacity of walls to resist lateral loading and controls shrinkage cracking, with almost no change in construction method.</td></tr>
+          <tr><td><strong>Thin-joint / adhesive mortar systems</strong></td><td>2&ndash;3 mm polymer-modified joints with precision units; thinner joints give higher masonry strength (&sect;2.3.4) and faster laying.</td></tr>
+          <tr><td><strong>FRP, ferrocement and textile-reinforced mortar overlays</strong></td><td>Carbon/glass/basalt fabric bonded to the wall face, or a wire-mesh and cement overlay (jacketing) &mdash; the leading <em>retrofitting</em> technologies (Chapter 6).</td></tr>
+          <tr><td><strong>Rat-trap bond and cavity construction</strong></td><td>Uses 25&ndash;35% fewer bricks with better insulation &mdash; a low-technology but genuinely economical innovation.</td></tr>
+          <tr><td><strong>Geopolymer and low-carbon mortars, 3D-printed masonry, robotic bricklaying</strong></td><td>Emerging research directions aimed at cutting embodied carbon and improving quality control &mdash; the single biggest weakness of traditional masonry.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════ Quick revision ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Quick Revision &mdash; Facts and Formulae to Memorise</h2>
+      <ul>
+        <li><strong>Permissible stress:</strong> f<sub>per</sub> = f<sub>b</sub> &times; k<sub>s</sub> &times; k<sub>a</sub> &times; k<sub>p</sub>.</li>
+        <li><strong>SR</strong> = lesser of h<sub>eff</sub>/t<sub>eff</sub> and l<sub>eff</sub>/t<sub>eff</sub>. k<sub>s</sub> = 1.0 for SR &le; 6, e = 0.</li>
+        <li><strong>k<sub>a</sub> = 0.7 + 1.5 A</strong>, only when A &lt; 0.2 m&sup2;.</li>
+        <li><strong>k<sub>p</sub></strong> from height/width ratio as laid; only for units up to 15 N/mm&sup2;; max 1.8.</li>
+        <li><strong>h<sub>eff</sub></strong> = 0.75 H (full restraint), H (partial), 1.5&ndash;2 H (free at top).
+          Pier between openings, full restraint: 0.75 H + 0.25 H<sub>1</sub>.</li>
+        <li><strong>t<sub>eff</sub></strong> = stiffening coefficient &times; t<sub>w</sub> &mdash; but only when SR is based on
+          effective <em>height</em>, never on effective length. Cavity wall: 2/3 &Sigma;t or the thicker leaf, whichever is greater.</li>
+        <li><strong>Limiting SR:</strong> 27 (cement mortar load bearing), 20 / 13 (lime mortar, 1&ndash;2 / 3+ storeys),
+          30 (panel &amp; curtain), <strong>10 (free standing &amp; parapet)</strong>.</li>
+        <li><strong>Eccentricity:</strong> ignore if e &le; t/24; 25% overstress allowed for t/24 &lt; e &le; t/6;
+          tension develops for e &gt; t/6.</li>
+        <li><strong>Masonry strength &asymp; 25&ndash;50% of the unit strength.</strong> Mortar must be <em>weaker</em> than the unit.</li>
+        <li><strong>Nepal Standard brick:</strong> 240 &times; 115 &times; 57 mm with a 10 mm joint; water absorption &le; 15%.</li>
+        <li><strong>Mortar grades:</strong> H1 (1:0&ndash;0.25:3, 10 MPa) &rarr; L1 (1:0:8, 0.7 MPa). Cement mortar never richer than 1:3.</li>
+        <li><strong>Shear:</strong> f<sub>s</sub> = 0.1 + f<sub>d</sub>/6 &le; 0.5 N/mm&sup2;. <strong>E<sub>m</sub> &asymp; 550&ndash;1100 f<sub>m</sub></strong>.</li>
+        <li><strong>Hollow unit:</strong> net area &lt; 75% of gross; <strong>solid unit:</strong> &ge; 75%.</li>
+        <li><strong>Confined masonry = wall first, tie-columns cast after. RC frame + infill = frame first, wall after.</strong></li>
+      </ul>
+    </div>
+
+    <!-- ══════════════ Summary ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Chapter Summary</h2>
+      <p>Masonry is a composite of stiff, strong units bedded in a softer, weaker mortar. It has been used for at least
+      10,000 years, first entirely by empirical rules of thumb and only in the last few decades by structural
+      calculation. Its nature is composite, heterogeneous, anisotropic, brittle, heavy and extremely sensitive to
+      workmanship; it is strong in compression but almost useless in tension, so it is used for walls, columns, arches
+      and domes. Its advantages are strength in compression, durability, low-cost local materials, fire and thermal
+      performance and long life; its disadvantages are its negligible tensile strength, weight, brittleness and
+      vulnerability to frost, efflorescence and earthquakes.</p>
+      <p>The units may be burnt clay brick, stone, concrete block, adobe or compressed earth; the Nepal Standard brick
+      is 240&times;115&times;57 mm with water absorption not exceeding 15%. Mortars may be cement, lime, cement&ndash;lime or
+      mud, graded H1 to L2, and are matched to the unit strength. The strength of masonry is governed by the
+      unit&ndash;mortar interaction: the soft mortar tries to expand laterally, is restrained, and puts the unit into
+      lateral tension, so the prism splits vertically through the units at only 25&ndash;50% of the unit strength. The
+      strength therefore depends on unit strength and shape, mortar strength and workability, joint thickness,
+      slenderness, eccentricity, sectional area, bond and workmanship.</p>
+      <p>Structurally, masonry buildings are classified as load-bearing (walls carry everything), confined (walls built
+      first and then confined by RC tie-columns and tie-beams) or infill (masonry panels built into an already-cast RC
+      frame). Walls are classified by function, construction and structural role. Lateral load is resisted by in-plane
+      walls, carried to them by the floor and roof diaphragms, with the out-of-plane walls being the weak link; piers
+      and spandrels govern the behaviour of perforated walls, arches carry load in pure compression at the price of a
+      horizontal thrust, and bands, vertical reinforcement and toothed joints provide the box action that holds the
+      building together. Finally, IS 1905:1987 designs walls by working stress: the permissible compressive stress
+      f<sub>per</sub> = f<sub>b</sub>&thinsp;k<sub>s</sub>&thinsp;k<sub>a</sub>&thinsp;k<sub>p</sub>, where the slenderness
+      ratio and eccentricity enter through k<sub>s</sub>, the smallness of the section through k<sub>a</sub> = 0.7 + 1.5A,
+      and the height-to-width ratio of the unit through k<sub>p</sub>.</p>
+    </div>
+
+    <!-- ══════════════ All past questions ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>All Past Exam Questions from this Chapter</h2>
+      <div class="exam-note">
+        <h4>CHAPTER 2 &mdash; COMPLETE LIST (CE 72502 / ENCE 367)</h4>
+        <ol>
+          <li>What are the physical properties of bricks? [4] <em>(2081 Bhadra, Q3a)</em> &rarr; &sect;2.3.1</li>
+          <li>Describe the nature of the masonry structure. [4] <em>(2081 Bhadra, Q4a)</em> &rarr; &sect;2.2.2</li>
+          <li>Define properties and strength of brick masonry, affecting factors and relation of unit and mortar on strength of masonry. [8] <em>(2080 Bhadra, Q2a)</em> &rarr; &sect;2.3.1, &sect;2.3.4, &sect;2.3.5</li>
+          <li>Calculate the effective height, effective length, effective thickness and slenderness ratio of walls A, C, G and P. [12] <em>(2080 Bhadra, Q2b)</em> &rarr; &sect;2.6.4, &sect;2.6.5</li>
+          <li>Explain load-bearing masonry walls, infill masonry, and confined masonry. [8] <em>(2079 Bhadra, Q2a)</em> &rarr; &sect;2.4.2</li>
+          <li>Define masonry structure type based on materials with its advantages and disadvantages. [6] <em>(2078 Bhadra, Q2a)</em> &rarr; &sect;2.4.1, &sect;2.2.4</li>
+          <li>Describe affecting factors and relation between unit and mortar on strength of brick masonry. [6] <em>(2078 Bhadra, Q2b)</em> &rarr; &sect;2.3.4, &sect;2.3.5</li>
+          <li>State and explain briefly the factors affecting the compressive strength of brick masonry. [8] <em>(2076 Chaitra, Q1a)</em> &rarr; &sect;2.3.5</li>
+          <li>Explain the design criteria of walls subjected to transverse loading. [8] <em>(2076 Chaitra, Q2a)</em> &rarr; &sect;2.6.9</li>
+          <li>Explain the following applied to masonry structures: (i) Stress reduction factor (ii) Confined masonry. [4&times;2] <em>(2076 Chaitra, Q4b)</em> &rarr; &sect;2.6.7(b), &sect;2.4.2</li>
+          <li>Explain the following and state the influence of it on strength of the wall: (i) Slenderness ratio (ii) Shape modification factor. [12] <em>(2075 Chaitra, Q3)</em> &rarr; &sect;2.6.5, &sect;2.6.7(d)</li>
+        </ol>
+      </div>
+      <p class="importance-summary">In addition, <strong>every</strong> wall, pier and column design numerical in the
+      paper &mdash; 2075 Q4 and Q5, 2076 Q1b, Q2b, Q3b, 2078 Q3 to Q6, 2079 Q3b and Q4b, 2080 Q3a and Q3b, 2081 Q3b and
+      Q4b &mdash; is solved using the design procedure of &sect;2.6.8 and the four factors of &sect;2.6.7. Work through the
+      12-step sequence until it is automatic.</p>
+    </div>
+
+    <p class="footer-note">End of Chapter 2 &ndash; Masonry Structures</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

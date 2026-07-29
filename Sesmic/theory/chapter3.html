@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3 &ndash; Seismic Behavior of Masonry Structures</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- id="dark-mode-styles" stops common.js from flattening the dark palette; also holds page-local rules -->
+  <style id="dark-mode-styles">
+    .year-tag{display:inline-block;font-size:.62em;font-weight:700;letter-spacing:.03em;
+      color:var(--accent);background:var(--accent-light);border:1px solid var(--line);
+      border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+    .figure svg{max-width:100%;height:auto}
+    .figure img{max-width:100%;max-height:620px;height:auto;display:block;margin:0 auto;
+      background:#fff;padding:6px;border:1px solid var(--line);border-radius:6px}
+    [data-theme="dark"] .figure img{filter:brightness(.9) contrast(1.02)}
+    .figure-row{align-items:flex-start}
+    .figure-row .figure{flex:1 1 260px;max-width:420px}
+    .fig-src{display:block;font-style:normal;font-size:.86em;opacity:.8;margin-top:4px}
+    table.cmp td:first-child{font-weight:600}
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 3</div>
+    <h1>Seismic Behavior of Masonry Structures</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">10 Hours &middot; 14 Marks</span>
+      <span class="meta-badge exam">6 Past Questions &middot; 54 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ══════════════ Syllabus & Marks Distribution ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Syllabus &amp; Marks Distribution</h2>
+      <table class="marks-table">
+        <thead>
+          <tr><th>Detail</th><th>Information</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Course</td><td>Seismic Resistant Design of Masonry Structures &mdash; ENCE 367 (Elective I)</td></tr>
+          <tr><td>Chapter</td><td>3 &mdash; Seismic Behavior of Masonry Structures</td></tr>
+          <tr><td>Teaching Hours</td><td>10 hours</td></tr>
+          <tr class="highlight-row"><td>Marks Allocation</td><td>14 marks &mdash; the second largest chapter</td></tr>
+          <tr><td>Total Course Marks</td><td>60 marks (final exam) &middot; 45 teaching hours</td></tr>
+          <tr><td>Weight</td><td>23.3% of the final paper</td></tr>
+          <tr><td>Related codes</td><td>NBC 105, NBC 109, NBC 203, NBC 204, IS 1893, IS 4326, IS 13828</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Syllabus Topics</h3>
+      <ul class="syllabus-topics">
+        <li>3.1 &nbsp;Basic concept of seismic effect in masonry structure; failure mechanism</li>
+        <li>3.2 &nbsp;Historical buildings with seismic resisting features</li>
+        <li>3.3 &nbsp;Lateral force resisting systems</li>
+        <li>3.4 &nbsp;In-plane and out-of-plane behavior of walls</li>
+        <li>3.5 &nbsp;Box-integrity-action of masonry structures</li>
+        <li>3.6 &nbsp;Modes of failure of masonry structures</li>
+        <li>3.7 &nbsp;Typical damages to masonry buildings in earthquakes</li>
+        <li>3.8 &nbsp;Seismic performance due to various factors &mdash; geometrical and mass irregularities; opening size
+          and location; eccentrically acting gravity load; eccentric lateral force; rigid and flexible floor diaphragm;
+          slender wall; horizontal and vertical bands; material properties; construction quality</li>
+        <li>3.9 &nbsp;Seismic performance of masonry buildings during past earthquakes</li>
+      </ul>
+
+      <div class="callout">
+        <strong>This is the chapter the examiner loves.</strong> &ldquo;Failure mechanism of masonry buildings during
+        earthquakes&rdquo; has been asked in <em>every single one</em> of the last six papers, usually for 8&ndash;12 marks,
+        and almost always with the instruction &ldquo;<em>with neat sketches</em>&rdquo; and &ldquo;<em>suggest mitigation
+        measures</em>&rdquo;. Learn the sketches, not just the words.
+      </div>
+    </div>
+
+    <!-- ══════════════ Importance & Frequently Asked Topics ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>Importance &amp; Frequently Asked Topics <span class="importance-high">VERY HIGH</span></h2>
+
+      <p class="importance-summary">Asked in <strong>6 of the last 6 papers</strong> for a total of
+      <strong>54 marks</strong> &mdash; an average of <strong>9 marks per paper</strong>, and the highest-yield theory
+      chapter in the course. Together with Chapter 4 it carries <strong>32 of the 60 final marks</strong>.</p>
+
+      <h3>Marks Distribution by Each Exam</h3>
+      <div class="table-wrap">
+        <table class="marks-dist-table">
+          <thead>
+            <tr><th>Exam</th><th>Marks</th><th>Question asked</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2075 Chaitra</td><td>10</td><td>Q2 &mdash; modes of failure in brick masonry, sketches, for <em>both static and earthquake load</em></td></tr>
+            <tr><td>2076 Chaitra</td><td>10</td><td>Q3a &mdash; failure mechanism of masonry structures and remedial measures</td></tr>
+            <tr><td>2078 Bhadra</td><td>6</td><td>Q1b &mdash; major failure mechanism during the Gorkha earthquake, with sketch</td></tr>
+            <tr><td>2079 Bhadra</td><td>8</td><td>Q2b &mdash; in-plane vs out-of-plane behaviour + failure modes with neat sketch</td></tr>
+            <tr><td>2080 Bhadra</td><td>12</td><td>Q1b &mdash; failure mechanism during earthquake + mitigation measures, with sketches</td></tr>
+            <tr><td>2081 Bhadra</td><td>8</td><td>Q2a &mdash; failure mechanisms of stone-in-mud masonry in the 2080 Jajarkot earthquake</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Frequently Asked Topics</h3>
+      <div class="table-wrap">
+        <table class="freq-topics-table">
+          <thead>
+            <tr><th>Topic</th><th>Times Asked</th><th>Frequency</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Failure mechanism / modes of failure of masonry (with sketches)</td><td>6</td><td><div class="freq-bar" style="width:100%"></div></td></tr>
+            <tr><td>Mitigation / remedial measures to make masonry earthquake resistant</td><td>2</td><td><div class="freq-bar" style="width:34%"></div></td></tr>
+            <tr><td>In-plane vs out-of-plane behaviour</td><td>1</td><td><div class="freq-bar" style="width:17%"></div></td></tr>
+            <tr><td>Damage in a specific Nepali earthquake (Gorkha 2015, Jajarkot 2080)</td><td>2</td><td><div class="freq-bar" style="width:34%"></div></td></tr>
+            <tr><td>Failure under static vs earthquake load</td><td>1</td><td><div class="freq-bar" style="width:17%"></div></td></tr>
+            <tr><td>Box action, diaphragm rigidity, effect of openings</td><td class="dim-cell">indirect</td><td><div class="freq-bar" style="width:25%"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Topic-wise Importance &amp; Exam Tips</h3>
+      <div class="table-wrap">
+        <table class="importance-table">
+          <thead>
+            <tr><th>Topic</th><th>Importance</th><th>Key Points / Exam Tips</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Modes of failure &mdash; in-plane</td><td><span class="importance-badge importance-high">High</span></td><td>Four modes: <strong>rocking, sliding, diagonal shear (bed-joint sliding / diagonal tension), toe crushing</strong>. Sketch each. State the giveaway: <em>stair-stepped crack through the joints = weak mortar; straight X crack through the bricks = strong mortar</em>.</td></tr>
+            <tr><td>Modes of failure &mdash; out-of-plane</td><td><span class="importance-badge importance-high">High</span></td><td>Four mechanisms: <strong>simple overturning, composed overturning, vertical flexure, horizontal flexure</strong>. Mention that <em>h/t ratio</em> and <em>vertical precompression</em> are the governing variables.</td></tr>
+            <tr><td>Typical earthquake damage patterns</td><td><span class="importance-badge importance-high">High</span></td><td>The seven-item list: out-of-plane failure, in-plane shear/flexure, separation at junctions, failure of piers between openings, local failure, buckling/delamination, separation of roof from walls. Add corner separation and gable failure.</td></tr>
+            <tr><td>Mitigation / remedial measures</td><td><span class="importance-badge importance-high">High</span></td><td>Two papers demanded this explicitly. Answer with the <strong>bands + vertical bars + corner interlocking + diaphragm + opening rules</strong> checklist, keyed to the failure it prevents.</td></tr>
+            <tr><td>In-plane vs out-of-plane behaviour</td><td><span class="importance-badge importance-high">High</span></td><td>Answer as a <em>comparison table</em>, then a sketch showing the same wall in both roles. Emphasise that every wall plays both roles as the shaking direction reverses.</td></tr>
+            <tr><td>Box action / box integrity</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Use the four-wall (A1, A2, B1, B2) argument: the weak-direction wall <em>pulls and pushes</em> the strong-direction walls, so corner interlocking and bands are essential.</td></tr>
+            <tr><td>Effect of openings and irregularity</td><td><span class="importance-badge importance-medium">Medium</span></td><td>&ldquo;Small, central, aligned, away from corners&rdquo;. Quote the NBC/IS limits on opening size and the 600 mm corner distance.</td></tr>
+            <tr><td>Rigid vs flexible diaphragm</td><td><span class="importance-badge importance-medium">Medium</span></td><td>Rigid &rarr; distributes in proportion to <em>stiffness</em> and can transmit torsion; flexible &rarr; distributes in proportion to <em>tributary area</em> and cannot transmit torsion. This is directly re-used in Chapter 4.</td></tr>
+            <tr><td>Failure under static load</td><td><span class="importance-badge importance-medium">Medium</span></td><td>2075 asked for both. Static: vertical splitting under compression, crushing, buckling, settlement cracks, tensile/flexural cracks. Keep them separate from the seismic modes.</td></tr>
+            <tr><td>Historical buildings with seismic resisting features</td><td><span class="importance-badge importance-low">Low</span></td><td>Not yet asked but explicitly in the new syllabus. Timber lacing (<em>dhajji-dewari</em>, <em>taq</em>), through-stones, timber bands, symmetric plan, small openings.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════ 3.1 ══════════════ -->
+    <h2>3.1 &nbsp;Basic Concept of Seismic Effect in Masonry Structures; Failure Mechanism</h2>
+
+    <h3>3.1.1 &nbsp;How do masonry houses behave during earthquakes?</h3>
+    <p class="lead">Masonry buildings are <strong>brittle structures</strong> and are one of the most vulnerable of the
+    entire building stock under strong earthquake shaking. The very large number of human fatalities in such buildings
+    in past Nepali earthquakes is the direct consequence. Improving their seismic behaviour is therefore the central
+    purpose of this course.</p>
+    <ol>
+      <li>Ground vibration during an earthquake causes <strong>inertia forces at the locations of mass</strong> in the
+        building &mdash; principally at the roof and floor levels and in the walls themselves.</li>
+      <li>These forces travel <strong>through the roof and walls to the foundation</strong>. The whole emphasis of
+        earthquake-resistant design is to ensure that they reach the ground without causing major damage or collapse.</li>
+      <li>Of the three components of a masonry building &mdash; <strong>roof, wall and foundation</strong> &mdash; the
+        <strong>walls are the most vulnerable</strong> to the horizontal force.</li>
+      <li>A wall <strong>topples easily if pushed horizontally at the top in a direction perpendicular to its plane</strong>
+        (its <span class="key-term">weak direction</span>) but offers much greater resistance if pushed along its length
+        (its <span class="key-term">strong direction</span>).</li>
+      <li>The ground shakes simultaneously in the vertical (Z) and two horizontal (X, Y) directions, but the
+        <strong>horizontal vibrations are the most damaging</strong> to normal masonry buildings.</li>
+      <li>If all the walls are <strong>not tied together like a box</strong>, the walls loaded in their weak direction
+        simply topple. If they are, the weak-direction walls can take advantage of the good lateral resistance offered
+        by the walls loaded in their strong direction. The walls must also be tied to the roof and to the foundation to
+        preserve overall integrity.</li>
+    </ol>
+
+    <figure class="figure">
+      <img src="../photo/ch3-building-components.jpg" alt="Diagram of the basic components of a masonry building - roof, wall and foundation - and a wall being pushed in its weak direction perpendicular to its plane and in its strong direction along its length">
+      <figcaption><b>Fig. 3.1</b> The three components of a masonry building, and the difference between the
+      <em>weak</em> direction (perpendicular to the wall plane) and the <em>strong</em> direction (along the wall length).
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>3.1.2 &nbsp;Shear walls and cross walls</h3>
+    <div class="formula">
+      When the dominant ground motion is along one axis of the building:<br><br>
+      &bull; walls <b>parallel</b> to the direction of ground motion are called <b>shear walls</b> &mdash; they resist the
+      force <em>in-plane</em>;<br>
+      &bull; walls <b>orthogonal</b> to it are called <b>cross walls</b> &mdash; they are loaded <em>out-of-plane</em> and
+      also stiffen the shear walls at their ends.
+    </div>
+    <ul>
+      <li>Shear walls are predominantly subjected to <strong>in-plane shear stresses</strong> and
+        <strong>in-plane bending stresses</strong>. The in-plane bending stresses act normal to the bed joints.</li>
+      <li>The in-plane <em>shear</em> stresses are responsible for the typical <strong>X-type cracking</strong> in shear
+        walls; the in-plane <em>bending</em> stresses tend to cause <strong>separation of cross walls and shear walls at
+        their junction</strong>.</li>
+      <li>Although severe cracking may occur, a shear wall will not usually collapse outright unless a component of the
+        ground motion acts normal to it &mdash; which, of course, it does a moment later.</li>
+      <li><strong>Stress concentration near openings</strong> in shear walls adds substantially to the vulnerability.</li>
+    </ul>
+
+    <figure class="figure">
+      <img src="../photo/ch3-lateral-load-modes.png" alt="Three-part diagram of a simple masonry building showing the applied lateral load in isometric view, the out-of-plane response of the transverse walls and the in-plane response of the shear walls">
+      <figcaption><b>Fig. 3.2</b> A simple masonry building under lateral load: (a) the earthquake force applied to the
+      whole building; (b) walls perpendicular to the shaking bend <em>out-of-plane</em>; (c) walls parallel to the shaking
+      resist the force <em>in-plane</em> as shear walls.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>3.1.3 &nbsp;Concepts for earthquake resistant masonry</h3>
+    <p>The basic principles of design and detailing in the codes are intentionally simple and easy to adopt. They focus
+    on just two things:</p>
+    <div class="formula">
+      1. Achieving <b>strength and ductile behaviour</b><br>
+      2. Maintaining <b>structural integrity</b><br><br>
+      The primary requirement is therefore the <b>prevention of catastrophic collapse</b> of the building or its
+      components &mdash; and to achieve it in a relatively simple and cost-effective manner.
+    </div>
+
+    <h4>The concept of &ldquo;acceptable risk&rdquo;</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Level of shaking</th><th>Performance objective</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Minor</strong> earthquake</td><td>Resist <strong>without damage</strong>.</td></tr>
+          <tr><td><strong>Moderate</strong> earthquake</td><td>Resist <strong>without significant structural damage</strong>, but some non-structural damage is accepted.</td></tr>
+          <tr><td><strong>Major (severe)</strong> earthquake</td><td>Resist <strong>without major failure of the structural framework</strong> &mdash; to prevent loss of life and to allow safe escape for the occupants.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Certain critical structures &mdash; hospitals, power generating units, communication centres &mdash; must be designed
+    to <strong>remain operational during and after</strong> an earthquake.</p>
+    <p>Unreinforced masonry buildings are very common in rural and semi-urban Nepal, built from adobe, stone, burnt
+    brick, concrete block and stabilised mud block, with mud, lime, cement or composite mortar. Normally they are
+    designed &mdash; if at all &mdash; only for vertical loads, and because masonry has adequate compressive strength the
+    structure behaves well <em>as long as the loads remain vertical</em>. It is the horizontal load that destroys it.</p>
+
+    <h3>3.1.4 &nbsp;The three basic failure mechanisms of a masonry wall</h3>
+    <p>Magenes and Calvi (1997) reduced the in-plane seismic behaviour of a masonry wall to three principal mechanisms.
+    Every in-plane failure observed in the field is one of these, or a combination:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mechanism</th><th>What happens</th><th>Governed by</th></tr></thead>
+        <tbody>
+          <tr><td><strong>(a) Shear cracking</strong></td><td>A diagonal crack forms across the panel, either stepping through the joints or running straight through the units.</td><td>Mortar/unit strength, level of vertical precompression, aspect ratio</td></tr>
+          <tr><td><strong>(b) Sliding</strong></td><td>The wall slides horizontally along a bed joint, usually near the base or at sill level.</td><td>Cohesion and friction of the bed joint, low precompression</td></tr>
+          <tr><td><strong>(c) Rocking</strong></td><td>The wall or pier lifts off at one edge and rotates about its compressed toe as a rigid block, eventually crushing the toe.</td><td>Slender (tall, narrow) piers with low vertical load</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch3-magenes-calvi.png" alt="Three diagrams of a brick wall panel showing (a) a stepped diagonal crack, (b) horizontal sliding of the upper part on a bed joint and (c) rocking of the whole panel about its toe">
+      <figcaption><b>Fig. 3.3</b> Principal failure mechanisms of masonry walls under seismic action (Magenes &amp; Calvi,
+      1997): (a) shear/diagonal cracking, (b) sliding, (c) rocking failure.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <!-- ══════════════ 3.2 ══════════════ -->
+    <h2>3.2 &nbsp;Historical Buildings with Seismic Resisting Features</h2>
+    <p>Long before any code existed, builders in seismic regions arrived empirically at features that improve
+    performance. Recognising them matters because (a) they explain why some historic buildings survived 1934 and 2015,
+    and (b) they are the ancestors of the modern band-and-tie system.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Traditional feature</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Timber lacing / horizontal timber bands</strong> &mdash; <em>dhajji-dewari</em> and <em>taq</em> of Kashmir, timber bands in Newari and Bhutanese construction</td><td>Acts exactly as a modern lintel or roof band: ties the walls together, gives horizontal bending strength, and stops a crack from running through the full wall height. Timber's ductility absorbs energy.</td></tr>
+          <tr><td><strong>Timber-braced infill frames</strong> (<em>dhajji-dewari</em> = &ldquo;patchwork quilt wall&rdquo;)</td><td>Small masonry panels confined by a timber frame &mdash; the historic ancestor of <em>confined masonry</em>. Damage is contained within each small panel.</td></tr>
+          <tr><td><strong>Through stones / bond stones at regular spacing</strong></td><td>Ties the two leaves of a thick stone wall together and prevents <em>delamination</em> &mdash; the single most effective measure for random rubble masonry.</td></tr>
+          <tr><td><strong>Good corner interlocking and quoin stones</strong></td><td>Prevents corner separation, the first damage to appear.</td></tr>
+          <tr><td><strong>Symmetric, compact, rectangular plan; low height</strong></td><td>Avoids torsion and limits the inertia force; most surviving temples and <em>pati</em> are low and squat.</td></tr>
+          <tr><td><strong>Thick walls with a low height-to-thickness ratio; walls tapering with height</strong></td><td>High out-of-plane stability and a lower centre of mass.</td></tr>
+          <tr><td><strong>Small, few and centrally placed openings</strong></td><td>Keeps the shear walls solid and the piers wide.</td></tr>
+          <tr><td><strong>Light roofs on the upper storeys</strong></td><td>Reduces the inertia force where it does the most damage.</td></tr>
+          <tr><td><strong>Wide plinth / stepped foundation on firm ground</strong></td><td>Reduces differential settlement and rocking.</td></tr>
+          <tr><td><strong>Buttresses, pilasters and closely spaced cross walls</strong></td><td>Reduce the effective length and slenderness of long walls (Chapter 2, &sect;2.6.4).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>The Nepali paradox.</strong> Traditional Kathmandu Valley buildings combine <em>good</em> features
+      (symmetry, timber floors and bands, thick walls, quality <em>dachi appa</em> facing brick) with <em>fatal</em> ones
+      (three-leaf walls with a weak rubble-and-mud core, no through-bonding between the leaves, unanchored timber joists
+      giving no diaphragm action, heavy roofs, and very large ground-floor shop openings). Which set dominates decides
+      whether the building survives.
+    </div>
+
+    <!-- ══════════════ 3.3 ══════════════ -->
+    <h2>3.3 &nbsp;Lateral Force Resisting Systems</h2>
+
+    <h3>3.3.1 &nbsp;The load distribution system</h3>
+    <p>A building is subjected to two families of load:</p>
+    <ul>
+      <li><strong>Vertical loads</strong> &mdash; dead load of the materials of construction plus live load due to occupancy;</li>
+      <li><strong>Lateral loads</strong> &mdash; seismic forces and wind loads.</li>
+    </ul>
+    <p>All walls in general can carry vertical load, but the ability of a wall to carry <em>lateral</em> load depends
+    entirely on its disposition relative to the direction of that load. The chain is:</p>
+    <div class="formula">
+      Lateral load on the face (facade) wall &nbsp;&rarr;&nbsp; <b>floors and roof acting as horizontal beams
+      (diaphragms)</b> &nbsp;&rarr;&nbsp; <b>cross walls acting as shear walls</b> &nbsp;&rarr;&nbsp; foundation
+      &nbsp;&rarr;&nbsp; ground.
+    </div>
+    <p>The <strong>strength and stiffness of the floors as horizontal girders is vital</strong>; roofs and floors of
+    lightweight construction must therefore be used with care. A structure must have adequate stability in the direction
+    of <strong>both principal axes</strong> &mdash; so-called &ldquo;cross-wall&rdquo; construction may have very little
+    lateral resistance in the longitudinal direction. In multi-storey buildings a <strong>cellular or box-type</strong>
+    layout is desirable for both stability and economy.</p>
+    <p>The size, shape and location of openings in the external walls has considerable influence on stability and on the
+    magnitude of the stresses due to lateral load. If the openings in the longitudinal walls are placed so that portions
+    of those walls act as <strong>flanges to the cross walls</strong>, the strength of the cross walls is considerably
+    increased and the structure becomes much more stable &mdash; the flange-and-web action confirmed by shaking-table
+    tests, in which walls A act as flanges to wall B acting as the web.</p>
+    <p>Ordinarily a load-bearing masonry structure is designed for permissible compressive and shear stresses
+    (<strong>with no tension</strong>) as a <em>vertical cantilever</em>. No moment transfer is allowed for at the
+    floor-to-wall connections, and the lateral forces are assumed to be resisted by <strong>diaphragm action</strong> of
+    the floor/roof slabs, which, acting as horizontal beams, transmit the lateral force to the cross walls in proportion
+    to their relative stiffness (moment of inertia).</p>
+
+    <h3>3.3.2 &nbsp;Design loads and load combinations</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Provision</th></tr></thead>
+        <tbody>
+          <tr><td>Loads to be considered</td><td>Dead loads of walls, columns, floors and roofs; live loads of floors and roof; seismic forces; wind loads on walls and sloping roofs. Other loads such as vibration from railways or machinery are added by engineering judgement.</td></tr>
+          <tr><td>Dead loads</td><td>Calculated from unit weights taken in accordance with IS 875 (Part 1).</td></tr>
+          <tr><td>Design loads generally</td><td>In accordance with IS 875 (1987).</td></tr>
+          <tr><td>Seismic loads</td><td>Determined in accordance with IS 1893 (Part 1) &mdash; or NBC 105 in Nepal.</td></tr>
+          <tr><td>During construction</td><td>Suitable measures must ensure the partly-built masonry is not damaged by seismic/wind force, backfill behind walls or temporary construction loads.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="formula">
+      <b>Load combinations</b> (allowable stress design, IS 1905):<br>
+      &bull; DL + IL &nbsp;&nbsp;&bull; DL + IL + (WL or EL) &nbsp;&nbsp;&bull; DL + (WL or EL) &nbsp;&nbsp;&bull; 0.9 DL + (WL or EL)<br><br>
+      For wind and earthquake, the <b>reversal of forces</b> must be considered. The structure is designed for the
+      critical stresses resulting from these combinations.
+    </div>
+    <div class="formula">
+      <b>Permissible stresses.</b> Permissible stresses and loads may be <b>increased by one-third</b> for the
+      combinations that include wind or earthquake.<br><br>
+      Equivalently &mdash; and this is the form usually used in the exam &mdash; keep the full permissible stress and
+      apply a <b>25% reduced load</b>:<br>
+      &bull; 0.75 [DL + IL + (WL or EL)] &nbsp;&nbsp;&bull; 0.75 [DL + WL] &nbsp;&nbsp;&bull; 0.75 [0.9 DL + EL]
+    </div>
+
+    <h3>3.3.3 &nbsp;Lateral load distribution &mdash; rigid and flexible diaphragms</h3>
+    <p>Lateral loads from earthquake or wind are generally considered to act along the principal axes of the building.
+    How they are shared out among the walls depends on the rigidity of the horizontal diaphragm and of the walls
+    themselves.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>Rigid diaphragm</th><th>Flexible diaphragm</th></tr></thead>
+        <tbody>
+          <tr><td>Definition</td><td>Does not undergo significant in-plane deformation relative to the supporting walls</td><td>Changes shape when subjected to lateral load</td></tr>
+          <tr><td>Typical construction</td><td>RC slab, in-situ concrete floor</td><td>Timber joists with plank flooring, CGI sheet roof, unbraced trusses, jack-arch floor</td></tr>
+          <tr><td><strong>Distribution of storey shear</strong></td><td>In proportion to the <strong>relative stiffness (rigidity)</strong> of the wall elements</td><td>In proportion to the <strong>tributary area</strong> associated with each wall, exactly as for vertical load</td></tr>
+          <tr><td>Torsion</td><td><strong>Can</strong> transmit torsional moment; horizontal torsion arises from the eccentricity between the centre of mass and the centre of rigidity, and induces forces in walls both parallel and perpendicular to the load direction</td><td><strong>Cannot</strong> transmit torsional forces</td></tr>
+          <tr><td>Support to out-of-plane walls</td><td>Provides a firm horizontal support at the top of the wall</td><td>Gives little or no support &mdash; the out-of-plane wall spans the full storey height unaided</td></tr>
+          <tr><td>Analysis</td><td>In-plane rigidities include both shearing and flexural deformation; rigidity of walls perpendicular to the load is usually disregarded, except for the stiffening (flange) effect where the connection is adequate</td><td>Simple tributary-area statics</td></tr>
+          <tr><td>Seismic performance</td><td>Much better &mdash; true box action</td><td>Poor &mdash; walls act individually and out-of-plane collapse dominates</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch3-diaphragm-distribution.png" alt="Isometric and plan diagrams comparing how a flexible diaphragm distributes storey shear by tributary width and how a rigid diaphragm distributes it in proportion to wall area or stiffness">
+      <figcaption><b>Fig. 3.4</b> Distribution of lateral load in buildings with (a) flexible and (b) rigid diaphragms.
+      With a flexible diaphragm each wall takes the shear from its own tributary width (V/4, V/2, V/4); with a rigid
+      diaphragm each wall takes a share proportional to its own stiffness (A<sub>i</sub>/&Sigma;A).
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>3.3.4 &nbsp;Elements of the lateral load resisting system</h3>
+    <p>The elements that actually resist lateral load in a masonry building are:</p>
+    <ul>
+      <li><strong>Shear walls</strong> &mdash; the primary in-plane resisting element</li>
+      <li><strong>Floor and roof diaphragms</strong> &mdash; collect and distribute the force</li>
+      <li><strong>Anchorage between slabs and walls</strong>, and <strong>anchorage of the roof to the walls</strong></li>
+      <li><strong>Tie beams and tie columns</strong> (confined masonry)</li>
+      <li><strong>Plinth band, sill band, lintel band, roof band and gable band</strong></li>
+      <li><strong>Vertical containment reinforcement</strong> at corners, junctions and opening jambs</li>
+      <li><strong>Toothed or stepped vertical joints</strong> at wall intersections</li>
+    </ul>
+
+    <!-- ══════════════ 3.4 ══════════════ -->
+    <h2>3.4 &nbsp;In-plane and Out-of-plane Behaviour of Walls <span class="year-tag">2079 Bhadra, Q2b</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Differentiate between in-plane and out-of-plane behaviour of masonry structures. Explain the different failure modes of masonry structures with a neat sketch. [8] <em>(2079 Bhadra, Q2b)</em></li>
+      </ol>
+    </div>
+
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Basis</th><th>In-plane behaviour</th><th>Out-of-plane behaviour</th></tr></thead>
+        <tbody>
+          <tr><td>Direction of load</td><td>Force acts <strong>parallel to the plane</strong> of the wall (along its length)</td><td>Force acts <strong>perpendicular to the plane</strong> of the wall</td></tr>
+          <tr><td>Name of the wall</td><td><strong>Shear wall</strong> &mdash; the &ldquo;strong direction&rdquo;</td><td><strong>Cross wall / transverse wall</strong> &mdash; the &ldquo;weak direction&rdquo;</td></tr>
+          <tr><td>Structural action</td><td>Deep cantilever / coupled piers &mdash; carries the storey shear by in-plane shear and in-plane bending</td><td>Vertical slab or plate spanning between floor and roof, and horizontally between cross walls</td></tr>
+          <tr><td>Governing stress</td><td>Diagonal tension, bed-joint shear, toe compression</td><td>Flexural tension normal to the bed joints &mdash; the weakest property of masonry</td></tr>
+          <tr><td>Stiffness &amp; strength</td><td><strong>High</strong> &mdash; a wall is one or two orders of magnitude stiffer in-plane</td><td><strong>Very low</strong></td></tr>
+          <tr><td>Governing parameters</td><td>Aspect ratio L/h<sub>eff</sub>, level of vertical precompression, mortar and unit strength, size and position of openings</td><td><strong>Height-to-thickness (h/t) ratio</strong> and the <strong>vertical stress</strong> on the wall; also the span between cross walls</td></tr>
+          <tr><td>Typical failure modes</td><td>Rocking, sliding, diagonal shear (bed-joint sliding or diagonal tension), toe crushing &mdash; the X crack</td><td>Simple overturning, composed overturning, vertical flexure, horizontal flexure &mdash; the wall falls outward</td></tr>
+          <tr><td>Consequence of failure</td><td>Severe cracking, loss of stiffness, but the wall usually stays standing</td><td><strong>Collapse</strong> &mdash; the wall falls out, the floor/roof loses its support and pancakes. The dominant killer.</td></tr>
+          <tr><td>What controls it</td><td>Wall area (density of walls), pier proportions</td><td>Bands, cross walls, wall anchorage, diaphragm rigidity, wall slenderness</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>The key sentence for the exam:</strong> because the earthquake shakes the building in both horizontal
+      directions and reverses every fraction of a second, <em>every wall is an in-plane wall at one instant and an
+      out-of-plane wall the next</em>. A wall is only safe if it is adequate in <em>both</em> roles &mdash; and it is the
+      out-of-plane role that governs.
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch3-urm-wall-loads.png" alt="Three diagrams of an unreinforced masonry wall showing its deformation under vertical loads only, under horizontal loads only, and under combined vertical and horizontal loads">
+      <figcaption><b>Fig. 3.5</b> Behaviour of an unreinforced masonry wall under vertical load, under out-of-plane
+      horizontal load, and under the two combined. Vertical precompression is what keeps the wall stable; when it is low
+      (upper storeys, gables) the wall is far more vulnerable.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <!-- ══════════════ 3.5 ══════════════ -->
+    <h2>3.5 &nbsp;Box Integrity Action of Masonry Structures</h2>
+
+    <div class="formula">
+      <b>Box action</b> is the behaviour in which the roof, the walls and the foundation of a masonry building act
+      together as a <b>single closed box</b> rather than as a set of independent panels, so that the weak
+      (out-of-plane) walls are supported by the strong (in-plane) walls, and the whole building moves as one unit.
+    </div>
+
+    <h3>3.5.1 &nbsp;Why it is needed &mdash; the four-wall argument</h3>
+    <p>Consider the four-wall system of a single-storey masonry building, with walls A1, A2 (say the long walls) and
+    B1, B2 (the short walls). For shaking in the direction shown:</p>
+    <ol>
+      <li>Inertia forces act in the <strong>strong direction of some walls and the weak direction of others</strong>.</li>
+      <li>Walls shaken in their weak direction <strong>seek support from the other walls</strong> &mdash; B1 and B2 seek
+        support from A1 and A2.</li>
+      <li>More precisely, <strong>wall B1 pulls walls A1 and A2, while wall B2 pushes against them</strong>.</li>
+      <li>At the next instant the shaking direction reverses, and a moment later it acts along the perpendicular
+        horizontal axis &mdash; now <strong>A and B swap roles</strong>: B1 and B2 become the strong walls and A1 and A2
+        the weak ones.</li>
+      <li>Thus <strong>walls transfer load to each other at their junctions</strong>, and through the lintel bands and
+        the roof. Hence the masonry courses of the walls meeting at a corner <strong>must have good interlocking</strong>,
+        and <strong>openings near wall corners are detrimental</strong> to good seismic performance.</li>
+    </ol>
+
+    <figure class="figure">
+      <svg viewBox="0 0 620 350" width="620" height="350" xmlns="http://www.w3.org/2000/svg" font-family="'EB Garamond','Times New Roman',serif">
+        <defs>
+          <marker id="arPull" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--svg-text-red)"/></marker>
+          <marker id="arEQ" markerWidth="11" markerHeight="9" refX="10" refY="4.5" orient="auto"><polygon points="0 0, 11 4.5, 0 9" fill="var(--svg-hub)"/></marker>
+          <marker id="arFall" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0, 10 4, 0 8" fill="var(--svg-text-red)"/></marker>
+        </defs>
+
+        <!-- ══ LEFT: no box action ══ -->
+        <text x="150" y="24" font-size="13" font-weight="bold" text-anchor="middle" fill="var(--svg-text-red)">(a) NO box action &mdash; walls act alone</text>
+        <g>
+          <!-- ground -->
+          <polygon points="30,258 200,258 262,220 92,220" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <!-- back wall (standing, in-plane) -->
+          <polygon points="92,220 262,220 262,126 92,126" fill="var(--svg-bg)" stroke="var(--svg-text)" stroke-width="1.4"/>
+          <!-- right side wall (standing, in-plane) -->
+          <polygon points="200,258 262,220 262,126 200,164" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6"/>
+          <!-- left side wall stub -->
+          <polygon points="30,258 92,220 92,126 30,164" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.6" opacity=".55"/>
+          <!-- collapsed roof, tilted into the box -->
+          <polygon points="92,126 262,126 240,168 70,168" fill="var(--svg-red)" stroke="var(--svg-red-s)" stroke-width="1.4" opacity=".75"/>
+          <text x="166" y="150" font-size="11" text-anchor="middle" fill="var(--svg-text-red)">roof drops in</text>
+          <!-- FALLEN front wall lying flat on the ground -->
+          <polygon points="18,300 188,300 250,266 80,266" fill="var(--svg-red)" stroke="var(--svg-red-s)" stroke-width="1.6"/>
+          <line x1="52" y1="292" x2="86" y2="272" stroke="var(--svg-red-s)" stroke-width="1"/>
+          <line x1="86" y1="292" x2="120" y2="272" stroke="var(--svg-red-s)" stroke-width="1"/>
+          <line x1="120" y1="292" x2="154" y2="272" stroke="var(--svg-red-s)" stroke-width="1"/>
+          <line x1="154" y1="292" x2="188" y2="272" stroke="var(--svg-red-s)" stroke-width="1"/>
+          <!-- overturning arrow -->
+          <path d="M120 250 q30 14 44 34" fill="none" stroke="var(--svg-text-red)" stroke-width="2.2" marker-end="url(#arFall)"/>
+          <text x="150" y="322" font-size="11.5" text-anchor="middle" fill="var(--svg-text-red)">Weak-direction wall overturns and falls out</text>
+          <text x="150" y="338" font-size="11.5" text-anchor="middle" fill="var(--svg-sub)">Roof loses its support &rarr; collapse</text>
+        </g>
+
+        <!-- divider -->
+        <line x1="310" y1="34" x2="310" y2="330" stroke="var(--svg-line)" stroke-width="1" stroke-dasharray="5 4"/>
+
+        <!-- ══ RIGHT: box action ══ -->
+        <text x="470" y="24" font-size="13" font-weight="bold" text-anchor="middle" fill="var(--svg-text-green)">(b) BOX action &mdash; walls act as one</text>
+        <g transform="translate(330,0)">
+          <!-- ground -->
+          <polygon points="30,258 200,258 262,220 92,220" fill="var(--svg-yellow)" stroke="var(--svg-yellow-s)"/>
+          <!-- rigid diaphragm on top -->
+          <polygon points="30,164 200,164 262,126 92,126" fill="var(--svg-green)" stroke="var(--svg-green-s)" stroke-width="1.6"/>
+          <text x="146" y="150" font-size="11" text-anchor="middle" fill="var(--svg-text-green)">Rigid diaphragm</text>
+          <!-- front wall (weak direction) -->
+          <polygon points="30,258 200,258 200,164 30,164" fill="var(--svg-card)" stroke="var(--svg-text)" stroke-width="1.8"/>
+          <!-- right side wall (strong direction) -->
+          <polygon points="200,258 262,220 262,126 200,164" fill="var(--svg-bg)" stroke="var(--svg-text)" stroke-width="1.8"/>
+          <!-- lintel band -->
+          <polygon points="30,178 200,178 200,166 30,166" fill="var(--svg-blue)" stroke="var(--svg-blue-s)"/>
+          <text x="34" y="194" font-size="10.5" fill="var(--svg-text-blue)">Lintel band</text>
+          <!-- labels -->
+          <text x="115" y="232" font-size="12" text-anchor="middle" fill="var(--svg-text)">B1 (weak dir.)</text>
+          <text x="243" y="200" font-size="11" text-anchor="middle" fill="var(--svg-text)" transform="rotate(-31 243 200)">A (strong dir.)</text>
+          <!-- pull / push arrows at the corners -->
+          <line x1="56" y1="212" x2="26" y2="212" stroke="var(--svg-text-red)" stroke-width="2.4" marker-end="url(#arPull)"/>
+          <line x1="174" y1="212" x2="204" y2="212" stroke="var(--svg-text-red)" stroke-width="2.4" marker-end="url(#arPull)"/>
+          <!-- corner interlock marks -->
+          <circle cx="30" cy="164" r="5" fill="none" stroke="var(--svg-text-red)" stroke-width="1.6"/>
+          <circle cx="200" cy="164" r="5" fill="none" stroke="var(--svg-text-red)" stroke-width="1.6"/>
+          <text x="115" y="284" font-size="11" text-anchor="middle" fill="var(--svg-text-red)">B1 pulls / B2 pushes wall A at the interlocked corners</text>
+          <text x="115" y="308" font-size="11.5" text-anchor="middle" fill="var(--svg-text-green)">Weak wall supported by the strong walls</text>
+          <text x="115" y="324" font-size="11.5" text-anchor="middle" fill="var(--svg-sub)">Building oscillates as one rigid box</text>
+        </g>
+
+        <!-- EQ direction -->
+        <line x1="250" y1="46" x2="300" y2="46" stroke="var(--svg-hub)" stroke-width="2.4" marker-end="url(#arEQ)"/>
+        <text x="248" y="50" font-size="11.5" text-anchor="end" fill="var(--svg-text-blue)">Direction of shaking</text>
+      </svg>
+      <figcaption><b>Fig. 3.6</b> Box action. Without it (a) the wall loaded in its weak direction overturns and the roof
+      loses its support; with it (b) the corner interlocking, the bands and the rigid diaphragm let the weak wall hang on
+      to the strong walls and the whole building moves as one.</figcaption>
+    </figure>
+
+    <h3>3.5.2 &nbsp;Requirements for good box action</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Requirement</th><th>How it is achieved</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Wall-to-wall connection</strong></td><td>Toothed or stepped vertical joints at all corners and T-junctions (build corners first to 600 mm, or tooth in 450 mm lifts); vertical containment reinforcement at junctions.</td></tr>
+          <tr><td><strong>Wall-to-roof / floor connection</strong></td><td>Roof band at eave level and positive metal anchors so that the diaphragm can actually deliver force to the walls. <em>A loosely connected roof is a threat to good seismic behaviour.</em></td></tr>
+          <tr><td><strong>Wall-to-foundation connection</strong></td><td>Plinth band, especially where the soil is soft or uneven.</td></tr>
+          <tr><td><strong>A stiff diaphragm</strong></td><td>RC slab, or a timber floor stiffened with diagonal bracing/plywood sheathing.</td></tr>
+          <tr><td><strong>Horizontal bands at all levels</strong></td><td>Plinth, sill, lintel, roof and gable bands &mdash; a lintel band alone ties the walls together and makes them behave as a single unit.</td></tr>
+          <tr><td><strong>Walls not unduly slender</strong></td><td>Limit h/t; provide cross walls or buttresses to reduce the span of long walls. <em>Unduly slender walls are a threat to good seismic behaviour.</em></td></tr>
+          <tr><td><strong>Simple, symmetric configuration</strong></td><td>Compact rectangular plan, uniform mass and stiffness distribution.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3.5.3 &nbsp;Configuration rules that support box action</h3>
+    <ul>
+      <li><strong>Break up complex plans.</strong> A building with horizontal projections in plan &mdash; shapes such as
+        L, T, E and Y &mdash; should be <strong>separated into (almost) simple rectangular blocks</strong>, each of which
+        has simple and good earthquake behaviour.</li>
+      <li><strong>Provide a seismic gap.</strong> Separated blocks oscillate independently and will hammer each other if
+        they are too close; the codes give minimum seismic separations. Such separation may not be necessary if the
+        horizontal projections are small &mdash; say up to about <strong>15&ndash;20% of the length of the building</strong>
+        in that direction.</li>
+      <li><strong>Watch the staircase.</strong> An integrally connected inclined staircase slab <strong>acts like a
+        cross-brace</strong> between floors and transfers large horizontal forces at roof and lower levels &mdash; a
+        classic area of damage. The remedy is to <strong>separate the staircase completely</strong> and build it on its
+        own RC structure, with an adequate gap so the two do not pound.</li>
+      <li><strong>Keep the mass low and the plan compact.</strong> Large, tall, long and unsymmetrical buildings perform
+        poorly.</li>
+    </ul>
+
+    <!-- ══════════════ 3.6 ══════════════ -->
+    <h2>3.6 &nbsp;Modes of Failure of Masonry Structures
+      <span class="year-tag">2075 Chaitra</span><span class="year-tag">2076 Chaitra</span><span class="year-tag">2079 Bhadra</span><span class="year-tag">2080 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Explain different modes of failure in brick masonry structures with sketches <strong>for both static and earthquake load</strong>. [10] <em>(2075 Chaitra, Q2)</em></li>
+        <li>Discuss in brief failure mechanism of masonry structures and remedial measures. [10] <em>(2076 Chaitra, Q3a)</em></li>
+        <li>Differentiate between in-plane and out-of-plane behaviour... Explain the different failure modes of masonry structures with a neat sketch. [8] <em>(2079 Bhadra, Q2b)</em></li>
+        <li>Describe failure mechanism of masonry building during earthquake and suggest its mitigation measures to make earthquake resistant with sketches. [12] <em>(2080 Bhadra, Q1b)</em></li>
+      </ol>
+    </div>
+
+    <h3>3.6.1 &nbsp;The standard seven-fold classification</h3>
+    <p>The failure pattern of masonry structures during an earthquake is classified as:</p>
+    <ol>
+      <li><strong>Out-of-plane flexural and/or out-of-plane shear failure</strong></li>
+      <li><strong>In-plane shear and/or in-plane flexural failure</strong></li>
+      <li><strong>Separation of walls at junctions</strong> (corner separation)</li>
+      <li><strong>Failure of masonry piers between openings</strong></li>
+      <li><strong>Local failures</strong> (parapets, gables, chimneys, cornices, projections)</li>
+      <li><strong>Buckling / delamination of walls and piers</strong></li>
+      <li><strong>Separation of the roof from the walls</strong></li>
+    </ol>
+
+    <h3>3.6.2 &nbsp;Failure under static (gravity) load <span class="year-tag">2075 Chaitra, Q2</span></h3>
+    <p>The 2075 paper asked for failure modes under <em>both</em> static and earthquake load, so keep the two lists
+    distinct. Under pure vertical (static) load a masonry wall or pier can fail by:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Static failure mode</th><th>Description &amp; cause</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Compression failure by vertical splitting</strong></td><td>The characteristic mode. The soft mortar bulges laterally, is restrained by the units, and puts the units into <em>lateral tension</em>, so vertical cracks split through the bricks (Chapter 2, Fig. 2.8). Occurs in short, stocky walls with low slenderness.</td></tr>
+          <tr><td><strong>Local crushing / bearing failure</strong></td><td>Under a concentrated load from a beam or lintel bearing, where the stress exceeds the local capacity.</td></tr>
+          <tr><td><strong>Buckling (lateral instability)</strong></td><td>In slender walls and piers &mdash; high slenderness ratio; failure occurs at a stress far below the crushing strength (Chapter 2, Fig. 2.16).</td></tr>
+          <tr><td><strong>Flexural tension cracking due to eccentric load</strong></td><td>When the resultant falls outside the middle third (e &gt; t/6), tension develops on one face and a horizontal crack opens along a bed joint.</td></tr>
+          <tr><td><strong>Cracking due to differential settlement</strong></td><td>Diagonal tension cracks running towards the settling support &mdash; <em>doming</em> (heaving of expansive soil at the centre) gives cracks sloping one way and <em>dishing</em> (shrinkage at the centre) the other.</td></tr>
+          <tr><td><strong>Shrinkage / thermal / moisture movement cracks</strong></td><td>Vertical cracks in long unjointed walls; horizontal cracks under a concrete slab that shrinks.</td></tr>
+          <tr><td><strong>Sliding at a damp-proof course</strong></td><td>Where the DPC breaks the bond and lateral thrust exists.</td></tr>
+          <tr><td><strong>Arch thrust / spreading</strong></td><td>Horizontal thrust from an arch, vault or sloping roof pushes the supporting wall outward.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>3.6.3 &nbsp;In-plane failure modes under earthquake load</h3>
+    <p>Four modes, distinguished by the aspect ratio of the pier, the vertical precompression and the relative strength
+    of unit and mortar:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mode</th><th>Mechanism</th><th>When it occurs</th><th>Crack appearance</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Rocking (flexural)</strong></td>
+            <td>A horizontal flexural crack opens at the heel of the pier; the pier then rotates as a rigid block about its compressed toe.</td>
+            <td><strong>Slender piers</strong> (tall relative to their length) with <strong>low vertical load</strong>.</td>
+            <td>Horizontal cracks at top and bottom of the pier; crushing at the toes. Relatively <em>ductile</em> and not immediately dangerous.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Sliding (bed-joint shear)</strong></td>
+            <td>The wall slides horizontally along a bed joint when the shear exceeds the cohesion plus friction.</td>
+            <td><strong>Low vertical load</strong> and <strong>weak mortar</strong>; commonly at the base, at sill level or at a DPC.</td>
+            <td>A single horizontal crack with visible offset. Often <em>stair-stepped</em> where head joints open and close to allow movement on the bed joints.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Diagonal shear &mdash; bed-joint sliding (stepped crack)</strong></td>
+            <td>The diagonal crack follows the mortar joints, stepping from bed joint to head joint.</td>
+            <td><strong>Weak mortar, strong units</strong> &mdash; the joint is the weak link. The usual case in Nepali brick-in-mud and stone-in-mud masonry.</td>
+            <td>A <strong>stair-stepped diagonal crack through the joints</strong>, with the bricks intact.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Diagonal tension (X cracking) and toe crushing</strong></td>
+            <td>Principal tensile stress exceeds the tensile strength of the <em>masonry as a whole</em> and the crack runs straight through the units. Under reversed cycles two crossing cracks form.</td>
+            <td><strong>Strong mortar, weak units</strong> and <strong>high compressive stress</strong>; squat piers.</td>
+            <td>The classic straight <strong>&ldquo;X&rdquo; crack cutting through the bricks</strong>, followed by spalling and crushing of the toes.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>The one-line diagnostic that earns marks:</strong> a <em>stair-stepped</em> crack that runs around the
+      bricks means the <strong>mortar was weaker</strong> than the units; a <em>straight</em> diagonal crack that runs
+      through the bricks means the <strong>mortar was stronger</strong> than the units and the compressive stress was high.
+    </div>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/ch3-inplane-flexure-rocking.png" alt="Diagrams of a masonry pier failing in flexure with horizontal cracks at top and bottom and in rocking about its toe">
+        <figcaption><b>Fig. 3.7a</b> In-plane failure modes &mdash; <em>flexure</em> and <em>rocking</em>.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-inplane-sliding-shear.png" alt="Diagrams of a masonry pier failing by horizontal sliding on a bed joint and by diagonal shear cracking">
+        <figcaption><b>Fig. 3.7b</b> In-plane failure modes &mdash; <em>sliding</em> and <em>diagonal shear</em>.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/ch3-rocking-photo.jpg" alt="Photograph of a masonry pier showing horizontal cracks at the top and bottom characteristic of rocking failure">
+        <figcaption><b>Fig. 3.8a</b> Rocking of piers &mdash; horizontal cracks top and bottom.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-xcracking-photo.jpg" alt="Photograph of a masonry pier between windows with crossing diagonal X cracks">
+        <figcaption><b>Fig. 3.8b</b> X-cracking of piers &mdash; diagonal tension under load reversal.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-sliding-photo.jpg" alt="Photograph of a masonry wall that has slid horizontally along a bed joint at sill level">
+        <figcaption><b>Fig. 3.8c</b> Horizontal sliding along a bed joint.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/ch3-diagtension-strong.jpg" alt="Laboratory photograph of a brick masonry panel with strong mortar showing a straight diagonal crack passing through the bricks">
+        <figcaption><b>Fig. 3.9a</b> Diagonal tension with <strong>strong mortar</strong> &mdash; the crack cuts straight
+        through the units.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-diagtension-weak.jpg" alt="Laboratory photograph of a brick masonry panel with weak mortar showing a stair-stepped crack following the mortar joints">
+        <figcaption><b>Fig. 3.9b</b> Diagonal tension with <strong>weak mortar</strong> &mdash; the crack steps around the
+        units along the joints.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <h4>Progressive damage sequence of a squat pier (laboratory observation)</h4>
+    <p>For a relatively short wall with L/h<sub>eff</sub> of about 1.7, in which bed-joint sliding and toe-crushing
+    capacities are similar, the moderately ductile sequence is:</p>
+    <ol>
+      <li><strong>Flexural cracking at the heel</strong> of the wall.</li>
+      <li><strong>Diagonally oriented cracks at the toe</strong>, typically with spalling and crushing of the units.</li>
+      <li><strong>Sliding along a horizontal bed joint near the base</strong>, sometimes with stair-stepped bed-joint
+        sliding higher up.</li>
+      <li>With repeated cycles the diagonal cracks grow, and finally <strong>crushing of the toes or excessive sliding
+        causes failure</strong>.</li>
+    </ol>
+    <p>For stockier walls with L/h<sub>eff</sub> &gt; 1.25 the sequence is: flexural cracking at the base that does not
+    propagate all the way across (giving a series of horizontal cracks above the heel) &rarr; sliding on bed joints in
+    the central portion of the pier &rarr; diagonal cracks at the toe &rarr; large cracks at the upper corners.</p>
+
+    <figure class="figure">
+      <img src="../photo/ch3-crack-damage-grades.png" alt="Three sketches of a wall panel showing insignificant, moderate and heavy crack damage patterns">
+      <figcaption><b>Fig. 3.10</b> Progressive in-plane crack damage in a wall panel &mdash; insignificant, moderate and
+      heavy damage.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <h3>3.6.4 &nbsp;Out-of-plane failure modes (collapse mechanisms)</h3>
+    <p>Out-of-plane failure occurs because of the <strong>lack of adequate wall ties, bands or cross walls</strong>. One
+    common form is a <strong>rigid-body rocking motion occurring at three locations</strong> &mdash; at the top of the
+    wall, at the bottom, and at mid-height. The important variables are the <strong>vertical stress on the wall</strong>
+    and its <strong>height-to-thickness ratio</strong>; therefore <em>walls at the top of buildings and slender walls
+    are the most likely to suffer damage</em>. In long walls without cross walls the failure mode is out-of-plane
+    bending in the <em>horizontal</em> direction.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mechanism</th><th>Description</th><th>Cause</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Simple overturning</strong></td><td>The whole facade wall rotates outwards about its base as a single rigid block and falls away from the building.</td><td>No connection at all between the facade and the transverse walls or the floor; the most common and most lethal mechanism.</td></tr>
+          <tr><td><strong>Composed (compound) overturning</strong></td><td>The facade overturns dragging with it a wedge-shaped portion of the adjoining transverse walls.</td><td>Good interlocking at the corners but no floor/roof tie &mdash; the corner holds so the failure surface cuts diagonally into the return walls.</td></tr>
+          <tr><td><strong>Vertical flexure (vertical bending)</strong></td><td>The wall is restrained at floor and roof level but bulges and hinges at mid-height, breaking into an upper and a lower part.</td><td>Wall restrained top and bottom but too slender (high h/t); typical of upper storeys.</td></tr>
+          <tr><td><strong>Horizontal flexure (horizontal bending / arching)</strong></td><td>The wall spans horizontally between cross walls or buttresses and fails with a vertical crack at mid-span and cracks at the supports.</td><td>Long wall well tied at its ends but unsupported at the top &mdash; flexible diaphragm.</td></tr>
+          <tr><td><strong>Gable-end failure</strong></td><td>The triangular gable, which has little vertical load and no restraint at the top, topples and pulls the top of the end wall down with it.</td><td>Missing gable band; missing attachment to the attic or ceiling.</td></tr>
+          <tr><td><strong>Parapet / chimney failure</strong></td><td>A vertical cantilever with almost no precompression &mdash; falls into the street.</td><td>Limiting SR for a free-standing wall is only 10.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/ch3-simple-overturning.jpg" alt="Diagram and photographs of the simple overturning mechanism where a facade wall rotates outward about its base">
+        <figcaption><b>Fig. 3.11a</b> Simple overturning mechanism.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-composed-overturning.jpg" alt="Diagram and photographs of the composed overturning mechanism where the facade drags a wedge of the return walls with it">
+        <figcaption><b>Fig. 3.11b</b> Composed overturning mechanism.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/ch3-vertical-flexure.jpg" alt="Diagram and photographs of the vertical flexure mechanism where a wall restrained top and bottom hinges at mid-height">
+        <figcaption><b>Fig. 3.11c</b> Vertical flexure mechanism.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-horizontal-flexure.jpg" alt="Diagram and photographs of the horizontal flexure mechanism where a wall spanning between cross walls cracks vertically at mid-span">
+        <figcaption><b>Fig. 3.11d</b> Horizontal flexure mechanism.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch3-outofplane-diaphragm.png" alt="Two isometric diagrams comparing out-of-plane failure of a confined masonry wall with a rigid RC slab diaphragm and with a flexible diaphragm">
+      <figcaption><b>Fig. 3.12</b> Out-of-plane failure mechanisms of confined masonry walls: (a) with a
+      <em>rigid</em> diaphragm the wall spans in two directions and fails with a diagonal (yield-line) pattern;
+      (b) with a <em>flexible</em> diaphragm the wall spans only horizontally between transverse walls and is far more
+      vulnerable.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <!-- ══════════════ 3.7 ══════════════ -->
+    <h2>3.7 &nbsp;Typical Damages to Masonry Buildings in Earthquakes
+      <span class="year-tag">2078 Bhadra</span><span class="year-tag">2080 Bhadra</span><span class="year-tag">2081 Bhadra</span></h2>
+
+    <div class="exam-note">
+      <h4>PAST EXAM QUESTIONS ON THIS TOPIC:</h4>
+      <ol>
+        <li>Discuss the failure mechanisms of the stone masonry buildings with mud mortar during the 2080 Jajarkot earthquake. [8] <em>(2081 Bhadra, Q2a)</em></li>
+        <li>Describe failure mechanism of masonry building during earthquake and suggest its mitigation measures to make earthquake resistant with sketches. [12] <em>(2080 Bhadra, Q1b)</em></li>
+        <li>Describe in brief with sketch major failure mechanism of masonry building during Gorkha earthquake. [6] <em>(2078 Bhadra, Q1b)</em></li>
+      </ol>
+    </div>
+
+    <h3>3.7.1 &nbsp;Corner separation</h3>
+    <ul>
+      <li>Separation of orthogonal walls due to combined in-plane and out-of-plane stresses at the corners is
+        <strong>one of the most common damage patterns</strong> in masonry buildings &mdash; damage typically
+        <strong>starts at the corners</strong>.</li>
+      <li>Separation on <strong>both sides</strong> of a wall leaves it unsupported at its two ends and produces an
+        <strong>unstable condition leading to out-of-plane failure</strong>.</li>
+      <li>The cause is the <strong>lack of lateral support at the two ends of the wall</strong> during out-of-plane
+        loading, i.e. loss of box action.</li>
+      <li>If all the corners separate, the lateral load carrying system of the whole building is significantly reduced.</li>
+    </ul>
+    <figure class="figure">
+      <img src="../photo/ch3-corner-separation.jpg" alt="Two photographs of earthquake damaged masonry buildings showing vertical separation cracks at the junction of two orthogonal walls">
+      <figcaption><b>Fig. 3.13</b> Corner separation &mdash; vertical cracking and separation at the junction of two
+      orthogonal walls.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>3.7.2 &nbsp;Out-of-plane failure and gable collapse</h3>
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/ch3-out-of-plane.jpg" alt="Photograph of a masonry building whose facade wall has fallen outward leaving the floors exposed">
+        <figcaption><b>Fig. 3.14a</b> Out-of-plane collapse of a facade wall.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-gable-roof-pull.jpg" alt="Photograph of a stone masonry house where the gable end has toppled and pulled the top of the end wall and the roof down with it">
+        <figcaption><b>Fig. 3.14b</b> The gable pulls down the top of the end wall when the attachment to the attic or
+        ceiling is missing.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <h3>3.7.3 &nbsp;Delamination of multi-leaf walls</h3>
+    <p>Delamination &mdash; separation of the two (or three) <em>wythes</em> of a masonry wall through its thickness
+    &mdash; is another major damage type. The outer leaf buckles and peels away, leaving the wall with a fraction of its
+    original thickness and no capacity. It is <strong>the characteristic failure of random rubble stone walls with a
+    weak inner core and no through-stones</strong>, and was the dominant mechanism in the 2080 Jajarkot earthquake.</p>
+    <figure class="figure">
+      <img src="../photo/ch3-delamination.jpg" alt="Two photographs of stone masonry walls whose outer leaf has peeled away from the inner core, exposing the loose rubble fill">
+      <figcaption><b>Fig. 3.15</b> Delamination of the wythes of a stone masonry wall, exposing the weak rubble core.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>3.7.4 &nbsp;Roof failure and other damage</h3>
+    <figure class="figure">
+      <img src="../photo/ch3-roof-failure.jpg" alt="Photograph of a masonry building where the roof has slid off and collapsed after the supporting walls failed">
+      <figcaption><b>Fig. 3.16</b> Roof failure &mdash; an unanchored roof slides off the wall, or collapses when its
+      supporting wall fails out-of-plane.<span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <h3>3.7.5 &nbsp;Damage grade classification (EMS)</h3>
+    <p>Post-earthquake assessment uses the five damage grades of the European Macroseismic Scale. The basic steps of a
+    detailed evaluation are: survey the building from outside &rarr; identify the cracks &rarr; examine the site for
+    geotechnical hazard &rarr; inspect from inside &rarr; inspect at critical locations &rarr; interpret.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Grade</th><th>Extent of damage</th><th>Suggested post-earthquake action</th></tr></thead>
+        <tbody>
+          <tr><td><strong>G1</strong> Negligible to slight<br>(no structural, slight non-structural)</td><td>Thin cracks in plaster; falling of plaster bits in limited parts; in rare cases fall of loose stone from the upper part of the building.</td><td>Building need not be vacated; architectural repairs needed; seismic strengthening advised.</td></tr>
+          <tr><td><strong>G2</strong> Moderate<br>(slight structural, moderate non-structural)</td><td>Thin cracks in many walls; falling of plaster in large areas; damage to non-structural parts such as chimneys and projecting cornices. <strong>Load carrying capacity not reduced.</strong></td><td>Architectural repairs needed; seismic strengthening advised.</td></tr>
+          <tr><td><strong>G3</strong> Substantial to heavy<br>(moderate structural, heavy non-structural)</td><td>Large and extensive cracks in most walls; roof tiles detach; tilting or falling of chimneys; failure of individual non-structural elements such as partition or gable walls. <strong>Load carrying capacity partially reduced.</strong></td><td>Cracks in walls need grouting; architectural repairs required; seismic strengthening advised.</td></tr>
+          <tr><td><strong>G4</strong> Very heavy<br>(heavy structural, very heavy non-structural)</td><td>Gaps occur in walls; parts of walls collapse; partial structural failure of floors and roof; the building takes a permanent tilt.</td><td>Vacate the building; demolish and reconstruct, or carry out extensive restoration.</td></tr>
+          <tr><td><strong>G5</strong> Destruction<br>(very heavy structural damage)</td><td>Total or near-total collapse.</td><td>Vacate and demolish.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="figure">
+      <img src="../photo/ch3-ems-grades.png" alt="Line sketches of a masonry building showing progressively increasing damage from grade 3 through grade 4 to grade 5 destruction">
+      <figcaption><b>Fig. 3.17</b> EMS damage grade identification sketches.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <h3>3.7.6 &nbsp;Mitigation and Remedial Measures
+      <span class="year-tag">2076 Chaitra, Q3a</span><span class="year-tag">2080 Bhadra, Q1b</span></h3>
+    <p>Two papers asked for the mitigation measures explicitly. Present them <strong>keyed to the failure they
+    prevent</strong> &mdash; that structure alone earns marks:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Failure it prevents</th><th>Measure</th></tr></thead>
+        <tbody>
+          <tr><td>Corner separation</td><td>Toothed / stepped joints at corners and T-junctions (corners built first to 600 mm, or toothing in 450 mm lifts); <strong>vertical containment reinforcement</strong> at all corners and junctions, anchored into the bands.</td></tr>
+          <tr><td>Out-of-plane collapse</td><td><strong>Horizontal bands</strong> at plinth, sill, lintel, roof and gable level; cross walls or buttresses to reduce the wall span; limit the height-to-thickness ratio; anchor the wall to the diaphragm.</td></tr>
+          <tr><td>Roof / floor separation</td><td>Positive <strong>metal anchors</strong> tying the roof and floor to the walls; a roof band at eave level.</td></tr>
+          <tr><td>Loss of box action</td><td>Provide a <strong>rigid diaphragm</strong> (RC slab), or brace a timber floor with diagonals or plywood sheathing.</td></tr>
+          <tr><td>Delamination of stone walls</td><td><strong>Through-stones (bond stones)</strong> at regular spacing in both directions; or a substitute such as an S-shaped tie, a wooden dowel or a concrete bond block.</td></tr>
+          <tr><td>Diagonal shear cracking of piers</td><td>Use <strong>good-quality mortar</strong> (never mud) matched to the unit; keep piers wide; limit and align the openings; provide bands above and below the openings.</td></tr>
+          <tr><td>Failure of piers between openings</td><td>Openings <strong>small, few, centrally placed and vertically aligned</strong>, kept at least 600 mm (or half the wall height) from the corner; total opening length limited to about 50% of the wall length; provide vertical bars at the jambs.</td></tr>
+          <tr><td>Torsion</td><td><strong>Symmetric</strong> plan and uniform distribution of walls; separate irregular plans into simple rectangular blocks with a seismic gap.</td></tr>
+          <tr><td>Pounding</td><td>Adequate <strong>seismic separation gap</strong> between adjacent blocks and buildings; separate the staircase tower.</td></tr>
+          <tr><td>Excessive inertia force</td><td>Use a <strong>light roof</strong>; limit the number of storeys (NBC 202 limits load-bearing masonry to about 3 storeys); reduce the mass of the upper floors.</td></tr>
+          <tr><td>Local / non-structural failure</td><td>Avoid or reinforce parapets, gables, chimneys and heavy projections; provide a gable band or replace the gable with a light truss.</td></tr>
+          <tr><td>Poor materials / workmanship</td><td>Quality control &mdash; sound units, correct mortar grade, full and even joints, soaked bricks, proper curing, limited daily lift height, and supervision. <em>The strength of a brittle material is a minimum assured value.</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="figure">
+      <img src="../photo/ch3-containment-reinf.png" alt="Three diagrams of a wall section comparing an un-reinforced wall breaking into two blocks, a core-reinforced wall and a wall with containment reinforcement showing distributed cracking">
+      <figcaption><b>Fig. 3.18</b> Containment reinforcement as an earthquake-resistant feature: (a) un-reinforced &mdash;
+      a single hinge and collapse; (b) core-reinforced; (c) containment reinforcement &mdash; the damage is distributed
+      into many fine cracks and the wall holds together.
+      <span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <!-- ══════════════ 3.8 ══════════════ -->
+    <h2>3.8 &nbsp;Seismic Performance due to Various Factors</h2>
+    <p>The syllabus lists nine factors explicitly. Each is a potential 2&ndash;4 mark sub-question.</p>
+
+    <h3>(a) Geometrical and mass irregularities</h3>
+    <ul>
+      <li><strong>Plan irregularity</strong> &mdash; L, T, E, Y and U shapes have re-entrant corners where stress
+        concentrates and where the two wings vibrate out of phase. Remedy: separate into simple rectangular blocks with
+        a seismic gap, or tie the corner strongly. Projections up to ~15&ndash;20% of the plan dimension are tolerable.</li>
+      <li><strong>Vertical irregularity</strong> &mdash; setbacks, a storey much taller than the others, or walls
+        discontinued at a lower level (vertical discontinuity in the load path). Every vertical lateral-load-resisting
+        element must be <strong>continuous from the roof to the foundation</strong>.</li>
+      <li><strong>Mass irregularity</strong> &mdash; there should be <strong>no change in effective mass of more than
+        about 80%</strong> from one storey to the next. A heavy water tank, a mud overlay on the roof, or a heavily
+        loaded storage floor raise the inertia force locally.</li>
+      <li><strong>Soft / weak storey</strong> &mdash; the stiffness of any storey should not be less than 60% of that of
+        the adjacent storey nor less than 70% of the average of the three storeys above; the strength should not be less
+        than 70% of that of the adjacent storey. The open ground storey for shops is the classic offender.</li>
+      <li><strong>Slenderness of the building as a whole</strong> &mdash; tall, long and unsymmetric buildings perform
+        poorly.</li>
+    </ul>
+    <figure class="figure">
+      <img src="../photo/ch3-irregular-plan.jpg" alt="Photograph of an L-shaped masonry building damaged at the re-entrant corner after an earthquake">
+      <figcaption><b>Fig. 3.19</b> Damage concentrated at the re-entrant corner of an irregular (L-shaped) building.
+      <span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <h3>(b) Opening size and location</h3>
+    <ul>
+      <li>Openings are a functional necessity, but their <strong>size and location decide the performance</strong> of the
+        building.</li>
+      <li><strong>Openings too close to wall corners hamper the flow of forces from one wall to another</strong> &mdash;
+        precisely where the pull/push transfer of &sect;3.5.1 must happen.</li>
+      <li><strong>Large openings weaken the wall</strong> in carrying inertia force in its own plane: the wall becomes a
+        row of narrow piers coupled by spandrels, and the piers fail in shear.</li>
+      <li>Rule: keep all openings <strong>as small as possible and as far from the corners as possible</strong>; align
+        them vertically from storey to storey; provide lintel and sill bands and vertical bars at the jambs.</li>
+      <li>Codal guidance: distance from the inside corner &ge; 600 mm (or one-quarter of the storey height); total length
+        of openings not more than about 50% of the wall length for a single-storey building; pier width between openings
+        &ge; 600 mm.</li>
+    </ul>
+    <div class="figure-row">
+      <figure class="figure">
+        <img src="../photo/ch3-large-openings.jpg" alt="Photograph of a masonry building with very large shopfront openings that has collapsed at ground floor level">
+        <figcaption><b>Fig. 3.20a</b> Large openings &mdash; the ground storey becomes a row of slender piers.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch3-corner-openings.jpg" alt="Photograph of cracking radiating from a window placed close to the corner of a masonry wall">
+        <figcaption><b>Fig. 3.20b</b> Openings at corners break the force path between the two walls.
+        <span class="fig-src">Source: course lecture slides.</span></figcaption>
+      </figure>
+    </div>
+
+    <h3>(c) Eccentrically acting gravity load</h3>
+    <ul>
+      <li>A slab or beam bearing on only part of the wall thickness, a wall offset from the storey below, or a
+        cantilevered balcony all put the vertical load off the centroidal axis.</li>
+      <li>The resulting moment reduces the permissible stress through k<sub>s</sub> (Chapter 2, &sect;2.6.6) and, when
+        e &gt; t/6, causes <strong>flexural tension and horizontal cracking</strong> on one face.</li>
+      <li>Under earthquake this pre-existing eccentricity <em>adds</em> to the seismic bending, so the wall cracks and
+        loses its precompression much earlier.</li>
+    </ul>
+
+    <h3>(d) Eccentrically acting lateral force &mdash; torsion</h3>
+    <ul>
+      <li>Torsion arises from the <strong>eccentricity between the centre of mass (CM) and the centre of rigidity
+        (CR)</strong> in plan. The building not only translates but also <em>twists</em>, and the walls farthest from the
+        CR receive a large additional shear.</li>
+      <li>Codal limits: the distance between the storey centre of mass and the storey centre of stiffness should be
+        <strong>less than 30% of the building dimension</strong> at right angles to the direction of the force; a
+        <strong>minimum (accidental) eccentricity of at least 5%</strong> of that dimension must always be assumed.</li>
+      <li>Cause: unsymmetrical wall layout &mdash; e.g. a building with the ground floor open on one side, or a heavy
+        stair/lift core placed at one end.</li>
+      <li>Only a <strong>rigid diaphragm can transmit torsion</strong>; with a flexible diaphragm the torsional
+        distribution simply does not develop, but the walls are then unsupported out-of-plane instead.</li>
+      <li>The calculation of direct and torsional shear in shear walls is the subject of Chapter 4.</li>
+    </ul>
+
+    <h3>(e) Rigid and flexible floor diaphragm</h3>
+    <p>See &sect;3.3.3 and Fig. 3.4. In summary:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Rigid</th><th>Flexible</th></tr></thead>
+        <tbody>
+          <tr><td>Shear distribution</td><td>By relative stiffness</td><td>By tributary area</td></tr>
+          <tr><td>Torsion</td><td>Transmitted</td><td>Not transmitted</td></tr>
+          <tr><td>Support to out-of-plane walls</td><td>Effective</td><td>Poor &mdash; wall spans full height unaided</td></tr>
+          <tr><td>Overall</td><td>Enables genuine box action</td><td>Walls behave individually &rarr; out-of-plane collapse</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>(f) Slender walls</h3>
+    <ul>
+      <li>A <strong>high height-to-thickness ratio</strong> is the single most important variable in out-of-plane
+        vulnerability; walls at the <strong>top of a building</strong> (low precompression) and <strong>slender
+        walls</strong> are the most likely to be damaged.</li>
+      <li>Slender walls also buckle under vertical load, which is why IS 1905 imposes limiting slenderness ratios
+        (27 / 20 / 13 / 30 / 10 &mdash; Chapter 2, &sect;2.6.5).</li>
+      <li>In long walls without cross walls the failure mode becomes <strong>horizontal out-of-plane bending</strong>;
+        the remedy is cross walls, buttresses or pilasters at regular spacing.</li>
+    </ul>
+    <figure class="figure">
+      <img src="../photo/ch3-long-wall.jpg" alt="Photograph of a long masonry wall without any cross walls that has bulged and required external propping">
+      <figcaption><b>Fig. 3.21</b> A long wall with no cross walls bends horizontally out-of-plane and has to be propped.
+      <span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <h3>(g) Horizontal and vertical bands</h3>
+    <ul>
+      <li><strong>Horizontal bands</strong> (plinth, sill, lintel, roof, gable) give the walls horizontal bending
+        strength against out-of-plane inertia, tie orthogonal walls together, stop cracks propagating over the full
+        height, and turn the building into a box. The <strong>lintel band is the most important</strong> and must be
+        provided in all storeys and all walls.</li>
+      <li><strong>Vertical bars (containment reinforcement)</strong> at corners, wall junctions and opening jambs resist
+        the tension caused by overturning and rocking, and distribute the damage into many fine cracks instead of one
+        collapse hinge (Fig. 3.18).</li>
+      <li>Together they convert unreinforced masonry into something approaching confined masonry &mdash; the single most
+        cost-effective seismic improvement available.</li>
+    </ul>
+
+    <h3>(h) Material properties</h3>
+    <ul>
+      <li><strong>Mortar</strong>: mud mortar has almost no bond or tensile strength and loses what it has when wet
+        &mdash; the primary reason stone-in-mud houses collapse. Cement or cement&ndash;lime mortar of the correct grade
+        transforms the behaviour.</li>
+      <li><strong>Units</strong>: rounded river boulders and irregular rubble give poor bond and thick joints; regular
+        dressed stone or good burnt brick gives far better performance.</li>
+      <li><strong>Relative strength of unit and mortar</strong> decides whether the crack steps through the joints or
+        runs through the units (&sect;3.6.3).</li>
+      <li><strong>Wall density</strong> (total shear wall area per floor area) largely determines whether a building
+        survives at all.</li>
+      <li><strong>Ductility</strong>: masonry is brittle; reinforcement, bands and confinement are the only way to
+        introduce any.</li>
+    </ul>
+
+    <h3>(i) Construction quality</h3>
+    <ul>
+      <li>The strength of brittle materials such as masonry and concrete is a <strong>minimum assured value</strong> and
+        is highly sensitive to the <strong>quality of construction material, the workmanship, the supervision and the
+        construction methods</strong>.</li>
+      <li>Common defects: unfilled head (vertical) joints; uneven and excessively thick bed joints; no soaking of bricks;
+        no curing; poor corner interlocking; building too fast so green mortar is overloaded; bands not continuous or
+        not properly lapped; through-stones omitted.</li>
+      <li>A perfectly designed building constructed badly will still collapse &mdash; which is why the codes prescribe
+        detailing rules that a mason can follow without calculation.</li>
+    </ul>
+
+    <h3>(j) Pounding between adjacent buildings</h3>
+    <p>Adjacent buildings of different height, mass or period vibrate out of phase and hammer each other. The damage is
+    concentrated at floor level of the shorter building, where its slab strikes the taller building's column or wall
+    mid-height. The remedy is an adequate seismic separation gap.</p>
+    <figure class="figure">
+      <img src="../photo/ch3-pounding.jpg" alt="Photograph of two adjacent buildings of different heights damaged where they hammered against each other during an earthquake">
+      <figcaption><b>Fig. 3.22</b> Pounding between adjacent blocks of different height and period.
+      <span class="fig-src">Source: course lecture slides.</span></figcaption>
+    </figure>
+
+    <!-- ══════════════ 3.9 ══════════════ -->
+    <h2>3.9 &nbsp;Seismic Performance of Masonry Buildings during Past Earthquakes
+      <span class="year-tag">2078 Bhadra</span><span class="year-tag">2081 Bhadra</span></h2>
+
+    <h3>3.9.1 &nbsp;2015 Gorkha earthquake (M<sub>w</sub> 7.8) <span class="year-tag">2078 Bhadra, Q1b</span></h3>
+    <p>The major failure mechanisms observed in masonry buildings during the Gorkha earthquake were:</p>
+    <ol>
+      <li><strong>Out-of-plane collapse of walls</strong> &mdash; by far the dominant mechanism, caused by unanchored
+        flexible timber floors and roofs, the absence of bands and slender walls in the upper storeys.</li>
+      <li><strong>Corner separation and vertical cracking at wall junctions</strong>, from poor interlocking of the
+        courses at the corners.</li>
+      <li><strong>Delamination and collapse of multi-wythe walls</strong> &mdash; both burnt-brick-in-cement and
+        un-coursed random rubble walls with corrugated galvanised iron roofs, because of the missing through-stones.</li>
+      <li><strong>In-plane diagonal (X) shear cracking of piers</strong> between openings, and vertical cracking at the
+        corners of openings.</li>
+      <li><strong>Failure of gable walls</strong>, which pulled down the top of the end walls and the roof.</li>
+      <li><strong>Separation of the roof from the walls</strong>, followed by collapse of heavy tiled roofs on the
+        occupants.</li>
+      <li><strong>Failure of the soft/open ground storey</strong> in shop-front buildings and of the short columns
+        created by mezzanines.</li>
+      <li><strong>Total collapse of unreinforced stone-in-mud houses</strong> in the rural districts around the epicentre,
+        while buildings with even a single RC lintel band frequently survived with repairable damage &mdash; the clearest
+        field evidence available for the value of banding.</li>
+      <li>Widespread <strong>failure of temples, monuments and monasteries</strong>, several of which had already been
+        weakened by earlier earthquakes, plus lifeline failures such as the collapse of a penstock in Sindhupalchowk.</li>
+    </ol>
+
+    <h3>3.9.2 &nbsp;2080 BS (2023) Jajarkot earthquake (M 6.4) <span class="year-tag">2081 Bhadra, Q2a</span></h3>
+    <p>Although only a moderate M 6.4 event, it destroyed a very large number of houses because the building stock in
+    Jajarkot and Rukum West is almost entirely <strong>random rubble stone masonry in mud mortar</strong>. The failure
+    mechanisms specific to that construction are:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Mechanism</th><th>Why it happened in stone-in-mud construction</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Delamination of the wall through its thickness</strong></td><td>Thick two- or three-leaf walls with a loose rubble core and <strong>no through-stones</strong>; the leaves have no connection, so the outer leaf peels off and the wall loses most of its section.</td></tr>
+          <tr><td><strong>Out-of-plane overturning of walls</strong></td><td>Flexible timber/slate roofs simply resting on the walls, no anchorage, no bands, and heavy walls with a high h/t ratio.</td></tr>
+          <tr><td><strong>Corner separation and disintegration at junctions</strong></td><td>Rounded and irregular stones give <strong>no interlocking</strong> at corners; mud mortar has essentially <strong>zero tensile and bond strength</strong>, so the corner simply comes apart.</td></tr>
+          <tr><td><strong>Bulging and buckling of the wall</strong></td><td>Random rubble with thick mud joints and no bond; the wall behaves as loose stacked stone once shaking begins.</td></tr>
+          <tr><td><strong>Diagonal / stepped shear cracking of piers</strong></td><td>Weak mortar means the crack steps around the stones through the joints (&sect;3.6.3, mode 3).</td></tr>
+          <tr><td><strong>Collapse of the heavy mud-and-slate roof</strong></td><td>Very large mass high up, unanchored, so a large inertia force is applied to walls that cannot resist it; the roof then falls in.</td></tr>
+          <tr><td><strong>Gable and parapet collapse</strong></td><td>No gable band, no vertical load to stabilise them.</td></tr>
+          <tr><td><strong>Loss of strength of the mud mortar</strong></td><td>Rain before and after the event further weakened an already negligible bond.</td></tr>
+          <tr><td><strong>Total (pancake) collapse</strong></td><td>Once the walls disintegrated, the floors and roof lost all support &mdash; giving a very high fatality rate for a moderate earthquake.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout">
+      <strong>The strengthening prescription for these buildings</strong> (asked as 2081 Bhadra Q2b): through-stones or
+      substitutes at 1.2&ndash;1.5 m spacing in both directions; RC or timber bands at plinth, sill, lintel and eave
+      level; vertical bars at corners and opening jambs; splint-and-bandage or wire-mesh-and-cement jacketing of the
+      cracked walls; grouting of cracks; reduction and repositioning of openings; anchoring and lightening of the roof;
+      and replacement of the mud mortar in the outer face by cement pointing.
+    </div>
+
+    <h3>3.9.3 &nbsp;Other reference earthquakes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Event</th><th>Lesson for masonry</th></tr></thead>
+        <tbody>
+          <tr><td>1934 Nepal&ndash;Bihar, M 8.4</td><td>80,893 buildings destroyed and 126,355 damaged in the Valley; showed the vulnerability of tall, slender, unbanded brick towers (Dharahara) and of three-leaf walls.</td></tr>
+          <tr><td>1988 Udayapur, M 6.6</td><td>Extensive damage to brick-in-mud buildings in eastern Nepal and Bhaktapur, at a magnitude usually considered moderate.</td></tr>
+          <tr><td>2001 Bhuj (Gujarat), M<sub>w</sub> 7.7</td><td>Collapse of stone and brick buildings in Bachau and Kutch; also demonstrated the value of RC lintel bands &mdash; a two-storey slate-and-block house with bands in both storeys survived undamaged next to collapsed neighbours.</td></tr>
+          <tr><td>2005 Kashmir, M<sub>w</sub> 7.6</td><td>Massive delamination of rubble stone masonry; renewed international interest in traditional timber-laced <em>dhajji-dewari</em>, which performed markedly better.</td></tr>
+          <tr><td>1985 Mexico City, M 8.1</td><td>Resonance of mid-rise buildings with the soft lake-bed deposits &mdash; site effects can matter more than distance.</td></tr>
+          <tr><td>1989 Loma Prieta, USA</td><td>Failure of unreinforced masonry buildings with large shopfront openings in the Marina District.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <b>Model answer skeleton for &ldquo;Failure mechanism of masonry buildings + mitigation measures, with sketches&rdquo; [12 marks]</b>
+      <ol>
+        <li><strong>Two lines</strong> on why masonry is vulnerable: brittle, heavy, weak in tension, and the walls carry
+          everything.</li>
+        <li><strong>Classification</strong> &mdash; the seven-fold list of &sect;3.6.1. (2 marks)</li>
+        <li><strong>In-plane modes with sketches</strong> &mdash; rocking, sliding, bed-joint stepped crack, diagonal
+          tension X crack + toe crushing. Add the strong-mortar / weak-mortar diagnostic. (3 marks)</li>
+        <li><strong>Out-of-plane modes with sketches</strong> &mdash; simple overturning, composed overturning, vertical
+          flexure, horizontal flexure. State that h/t and precompression govern. (3 marks)</li>
+        <li><strong>Other damage</strong> &mdash; corner separation, delamination, gable and roof failure, pounding.
+          (1 mark)</li>
+        <li><strong>Mitigation table</strong> &mdash; the &sect;3.7.6 list, each measure tied to the failure it prevents.
+          (3 marks)</li>
+      </ol>
+    </div>
+
+    <!-- ══════════════ Quick revision ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Quick Revision &mdash; Points to Memorise</h2>
+      <ul>
+        <li><strong>Weak direction</strong> = perpendicular to the wall plane; <strong>strong direction</strong> = along
+          the wall length. Horizontal shaking is the most damaging.</li>
+        <li><strong>Shear wall</strong> = parallel to shaking (in-plane); <strong>cross wall</strong> = orthogonal
+          (out-of-plane).</li>
+        <li><strong>Magenes &amp; Calvi's three mechanisms:</strong> shear cracking, sliding, rocking.</li>
+        <li><strong>Four in-plane modes:</strong> rocking, sliding, bed-joint (stepped) diagonal shear, diagonal tension
+          (X) + toe crushing.</li>
+        <li><strong>Four out-of-plane mechanisms:</strong> simple overturning, composed overturning, vertical flexure,
+          horizontal flexure. Governed by <strong>h/t ratio and vertical stress</strong>.</li>
+        <li><strong>Stepped crack &rarr; weak mortar. Straight X crack through bricks &rarr; strong mortar + high
+          compression.</strong></li>
+        <li><strong>Seven-fold damage classification</strong> (&sect;3.6.1) &mdash; learn it as a list.</li>
+        <li><strong>Rigid diaphragm</strong> &rarr; distribute by stiffness, transmits torsion.
+          <strong>Flexible diaphragm</strong> &rarr; distribute by tributary area, no torsion.</li>
+        <li><strong>Load combinations:</strong> DL+IL; DL+IL+(WL or EL); DL+(WL or EL); 0.9DL+(WL or EL). Permissible
+          stress <strong>+1/3</strong>, or equivalently load <strong>&times;0.75</strong>.</li>
+        <li><strong>Torsion limits:</strong> CM&ndash;CR eccentricity &lt; 30% of the plan dimension; minimum accidental
+          eccentricity 5%.</li>
+        <li><strong>Soft storey:</strong> stiffness &ge; 60% of the adjacent storey and &ge; 70% of the average of the
+          three above. <strong>Weak storey:</strong> strength &ge; 70% of the adjacent storey.
+          <strong>Mass irregularity:</strong> change &le; 80%.</li>
+        <li><strong>Openings:</strong> small, few, central, vertically aligned, &ge; 600 mm from the corner, total
+          &le; ~50% of the wall length.</li>
+        <li><strong>Plan projections</strong> up to ~15&ndash;20% of the length need no seismic joint; beyond that,
+          separate the blocks.</li>
+        <li><strong>EMS damage grades G1&ndash;G5</strong>: G1/G2 repair, G3 grout + repair, G4/G5 vacate.</li>
+        <li><strong>Jajarkot 2080 keyword:</strong> random rubble stone in <em>mud mortar</em>, no through-stones &rarr;
+          delamination + out-of-plane collapse.</li>
+      </ul>
+    </div>
+
+    <!-- ══════════════ Summary ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Chapter Summary</h2>
+      <p>Masonry buildings are brittle and heavy, so ground shaking generates large inertia forces at the roof and floor
+      levels that must travel through the walls to the foundation. A wall is strong when pushed along its length
+      (in-plane, as a shear wall) and very weak when pushed perpendicular to its plane (out-of-plane, as a cross wall);
+      because the shaking reverses and acts along both horizontal axes, every wall plays both roles, and it is the
+      out-of-plane role that governs survival. Lateral load is collected by the floor and roof acting as horizontal
+      diaphragms and delivered to the shear walls, which behave as vertical cantilevers designed for compression and
+      shear with no tension. A rigid diaphragm distributes the storey shear in proportion to wall stiffness and can
+      transmit torsion; a flexible diaphragm distributes by tributary area, cannot transmit torsion, and leaves the
+      out-of-plane walls unsupported.</p>
+      <p>Survival depends on <em>box action</em> &mdash; the roof, walls and foundation acting as one closed box, achieved
+      by corner interlocking, horizontal bands at plinth, sill, lintel, roof and gable level, vertical containment
+      reinforcement, positive wall-to-roof anchorage and a stiff diaphragm. In-plane failure occurs by rocking, sliding,
+      bed-joint (stepped) diagonal cracking or diagonal tension with toe crushing, the choice depending on the pier
+      aspect ratio, the vertical precompression and whether the mortar is weaker or stronger than the units.
+      Out-of-plane failure occurs by simple overturning, composed overturning, vertical flexure or horizontal flexure,
+      governed by the height-to-thickness ratio and the vertical stress. Other characteristic damage includes corner
+      separation, delamination of multi-leaf walls, failure of piers between openings, gable and parapet collapse, roof
+      separation and pounding, all classified after the event on the five-grade EMS scale.</p>
+      <p>Performance is degraded by plan, vertical and mass irregularity, by large openings and openings near corners, by
+      eccentric gravity load, by torsional eccentricity between the centre of mass and the centre of rigidity, by
+      flexible diaphragms, by slender walls, by the absence of bands, by poor materials &mdash; above all mud mortar
+      &mdash; and by poor workmanship. Field evidence from 1934, 1988, 2015 Gorkha and 2080 Jajarkot confirms all of it:
+      unreinforced stone-in-mud houses delaminate and overturn, while otherwise identical buildings with simple RC bands
+      and through-stones survive with repairable damage.</p>
+    </div>
+
+    <!-- ══════════════ All past questions ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>All Past Exam Questions from this Chapter</h2>
+      <div class="exam-note">
+        <h4>CHAPTER 3 &mdash; COMPLETE LIST (CE 72502 / ENCE 367)</h4>
+        <ol>
+          <li>Discuss the failure mechanisms of the stone masonry buildings with mud mortar during the 2080 Jajarkot Earthquake. [8] <em>(2081 Bhadra, Q2a)</em> &rarr; &sect;3.9.2</li>
+          <li>Explain the strengthening procedure for the damaged masonry buildings. [8] <em>(2081 Bhadra, Q2b)</em> &rarr; &sect;3.7.6 and Chapter 6</li>
+          <li>Describe failure mechanism of masonry building during earthquake and suggest its mitigation measures to make earthquake resistant with sketches. [12] <em>(2080 Bhadra, Q1b)</em> &rarr; &sect;3.6, &sect;3.7.6</li>
+          <li>Differentiate between in-plane and out-of-plane behaviour of masonry structures. Explain the different failure modes of masonry structures with a neat sketch. [8] <em>(2079 Bhadra, Q2b)</em> &rarr; &sect;3.4, &sect;3.6</li>
+          <li>Describe in brief with sketch major failure mechanism of masonry building during Gorkha earthquake. [6] <em>(2078 Bhadra, Q1b)</em> &rarr; &sect;3.9.1</li>
+          <li>Discuss in brief failure mechanism of masonry structures and remedial measures. [10] <em>(2076 Chaitra, Q3a)</em> &rarr; &sect;3.6, &sect;3.7.6</li>
+          <li>Explain different modes of failure in brick masonry structures with sketches for both static and earthquake load. [10] <em>(2075 Chaitra, Q2)</em> &rarr; &sect;3.6.2 (static), &sect;3.6.3&ndash;3.6.4 (seismic)</li>
+        </ol>
+      </div>
+      <p class="importance-summary">Note that <strong>2081 Bhadra Q2b</strong> (&ldquo;strengthening procedure for damaged
+      masonry buildings&rdquo;) sits on the boundary between this chapter and Chapter 6. Answer it with the mitigation
+      table of &sect;3.7.6 plus the repair/retrofit techniques of Chapter 6 &mdash; grouting and stitching of cracks,
+      splint-and-bandage, wire-mesh jacketing, through-stones, addition of bands and vertical bars, and reduction of
+      openings.</p>
+    </div>
+
+    <p class="footer-note">End of Chapter 3 &ndash; Seismic Behavior of Masonry Structures</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>

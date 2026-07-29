@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 6 &ndash; Repair and Strengthening of Existing Masonry Buildings</title>
+  <link rel="stylesheet" href="../style.css">
+  <!-- id="dark-mode-styles" stops common.js from flattening the dark palette; also holds page-local rules -->
+  <style id="dark-mode-styles">
+    .year-tag{display:inline-block;font-size:.62em;font-weight:700;letter-spacing:.03em;
+      color:var(--accent);background:var(--accent-light);border:1px solid var(--line);
+      border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+    .figure svg{max-width:100%;height:auto}
+    .figure img{max-width:100%;max-height:620px;height:auto;display:block;margin:0 auto;
+      background:#fff;padding:6px;border:1px solid var(--line);border-radius:6px}
+    [data-theme="dark"] .figure img{filter:brightness(.9) contrast(1.02)}
+    .figure-row{align-items:flex-start}
+    .figure-row .figure{flex:1 1 260px;max-width:420px}
+    .fig-src{display:block;font-style:normal;font-size:.86em;opacity:.8;margin-top:4px}
+    table.cmp td:first-child{font-weight:600}
+    .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .22em;line-height:1.08}
+    .frac>.fn{padding:0 .45em;border-bottom:1.2px solid currentColor}
+    .frac>.fd{padding:0 .45em}
+    .steps{counter-reset:stp;list-style:none;padding-left:0}
+    .steps>li{counter-increment:stp;position:relative;padding-left:44px;margin:14px 0}
+    .steps>li::before{content:"STEP " counter(stp);position:absolute;left:0;top:2px;
+      font-size:.62em;font-weight:800;letter-spacing:.04em;color:var(--accent);
+      background:var(--accent-light);border:1px solid var(--line);border-radius:4px;padding:2px 5px;line-height:1.1}
+    .calc{font-family:"Consolas","Courier New",Courier,monospace;font-size:.86rem;line-height:1.6;
+      white-space:pre-wrap;overflow-x:auto;background:var(--bg,#fff);border:1px solid var(--line);
+      border-radius:6px;padding:12px 14px;margin:10px 0}
+    [data-theme="dark"] .calc{background:rgba(0,0,0,.28)}
+    @media(max-width:620px){.calc{font-size:.74rem}}
+  </style>
+</head>
+<body>
+
+<!-- UI Controls -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">&#8593;</button>
+
+<div class="page">
+  <header>
+    <a href="../index.html" class="back-link">&larr; Back to Index</a>
+    <div class="eyebrow">Chapter 6</div>
+    <h1>Repair and Strengthening Methods for Existing Masonry Buildings</h1>
+    <div class="chapter-meta">
+      <span class="meta-badge topic">4 Hours &middot; 6 Marks</span>
+      <span class="meta-badge exam">4 Past Questions &middot; 24 Marks</span>
+    </div>
+  </header>
+  <main>
+
+    <!-- ══════════════ Syllabus & Marks Distribution ══════════════ -->
+    <div class="chapter-info-section">
+      <h2>Syllabus &amp; Marks Distribution</h2>
+      <table class="marks-table">
+        <thead>
+          <tr><th>Detail</th><th>Information</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Course</td><td>Seismic Resistant Design of Masonry Structures &mdash; ENCE 367 (Elective I)</td></tr>
+          <tr><td>Chapter</td><td>6 &mdash; Repair and Strengthening Methods for Existing Masonry Buildings</td></tr>
+          <tr><td>Teaching Hours</td><td>4 hours &mdash; the shortest chapter</td></tr>
+          <tr class="highlight-row"><td>Marks Allocation</td><td>6 marks in the 60-mark final</td></tr>
+          <tr><td>Total Course Marks</td><td>60 marks (final exam) &middot; 45 teaching hours</td></tr>
+          <tr><td>Weight</td><td>10% of the final paper</td></tr>
+          <tr><td>Codes &amp; references</td><td>IS 4326&ndash;1993, IS 13935, NBC 105: 2020, NBC 202, FEMA 154 / 306 / 356, ATC-20/45, UN-HABITAT toolkit, DUDBC retrofitting guidelines</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Syllabus Topics</h3>
+      <ul class="syllabus-topics">
+        <li>6.1 &nbsp;Basic concept of repair, rehabilitation and retrofitting</li>
+        <li>6.2 &nbsp;Vulnerability assessment and methods</li>
+        <li>6.3 &nbsp;Retrofitting materials</li>
+        <li>6.4 &nbsp;Retrofitting techniques and various methods/approaches for masonry structures based on failure mechanism</li>
+        <li>6.5 &nbsp;Existing retrofitting practice of masonry structures in Nepal</li>
+        <li>6.6 &nbsp;Existing retrofitting practice in Nepal</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Why this chapter exists.</strong> Nepal's earthquake problem is overwhelmingly a problem of buildings
+        that <em>already stand</em>. About <strong>500,000 houses were damaged in the 2015 Gorkha earthquake</strong>,
+        and <strong>85&ndash;90% of them were masonry</strong>. Chapters 1&ndash;5 teach you to design a safe new
+        building; this chapter is about the far larger stock that was built without any of that.
+      </div>
+    </div>
+
+    <!-- ══════════════ Importance & Frequently Asked Topics ══════════════ -->
+    <div class="chapter-info-section chapter-importance-section">
+      <h2>Importance &amp; Frequently Asked Topics <span class="importance-medium">MEDIUM&ndash;HIGH</span></h2>
+
+      <p class="importance-summary">A small chapter that <strong>reliably yields one short theory question every
+      year</strong>. It is the cheapest chapter in the syllabus per mark: four hours of teaching, no numericals, and the
+      questions are almost always the same three &mdash; <em>define repair / restoration / retrofitting</em>,
+      <em>explain the retrofitting strategy or steps</em>, and <em>describe the strengthening procedure for damaged
+      masonry buildings</em>. Learn &sect;6.1 and &sect;6.4 thoroughly and you have the chapter.</p>
+
+      <h3>Marks Distribution by Each Exam</h3>
+      <div class="table-wrap">
+        <table class="marks-dist-table">
+          <thead>
+            <tr><th>Exam</th><th>Marks</th><th>Questions asked</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="dim-cell">2075 Chaitra</td><td class="dim-cell">&mdash;</td><td class="dim-cell">Not asked directly</td></tr>
+            <tr><td>2076 Chaitra</td><td>10</td><td>Q3a &mdash; failure mechanism of masonry structures and <strong>remedial measures</strong> (shared with Ch 3)</td></tr>
+            <tr><td class="dim-cell">2078 Bhadra</td><td class="dim-cell">&mdash;</td><td class="dim-cell">Not asked directly</td></tr>
+            <tr><td>2079 Bhadra</td><td>8</td><td>Q3a &mdash; define repair, restoration and retrofitting [4]; Q4a &mdash; steps involved in retrofitting strategies [4]</td></tr>
+            <tr class="highlight-row"><td>2080 Bhadra</td><td>12</td><td>Q1b &mdash; failure mechanism and <strong>mitigation measures</strong> with sketches</td></tr>
+            <tr><td>2081 Bhadra</td><td>8</td><td>Q2b &mdash; explain the <strong>strengthening procedure</strong> for damaged masonry buildings</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Most Frequently Asked Topics</h3>
+      <div class="table-wrap">
+        <table class="freq-topics-table">
+          <thead>
+            <tr><th>Topic</th><th>Times asked</th><th>Frequency</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Strengthening / retrofitting procedure for damaged masonry</strong> (&sect;6.4)</td>
+              <td>3</td>
+              <td><span class="freq-bar" style="width:100%"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Repair vs restoration vs retrofitting &mdash; definitions</strong> (&sect;6.1)</td>
+              <td>2</td>
+              <td><span class="freq-bar" style="width:67%"></span></td>
+            </tr>
+            <tr>
+              <td><strong>Steps in the retrofitting strategy</strong> (&sect;6.1.4)</td>
+              <td>2</td>
+              <td><span class="freq-bar" style="width:67%"></span></td>
+            </tr>
+            <tr>
+              <td>Remedial / mitigation measures keyed to the failure mechanism (&sect;6.4.5)</td>
+              <td>2</td>
+              <td><span class="freq-bar" style="width:67%"></span></td>
+            </tr>
+            <tr>
+              <td>Vulnerability assessment methods (&sect;6.2)</td>
+              <td>1</td>
+              <td><span class="freq-bar" style="width:33%"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Topic-wise Importance</h3>
+      <div class="table-wrap">
+        <table class="importance-table">
+          <thead>
+            <tr><th>Section</th><th>Topic</th><th>Importance</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>6.1</td><td>Repair, rehabilitation and retrofitting &mdash; definitions and the retrofit process</td><td><span class="importance-badge importance-high">Very High</span></td></tr>
+            <tr><td>6.2</td><td>Vulnerability assessment &mdash; phases, tools, NDT</td><td><span class="importance-badge importance-medium">Medium</span></td></tr>
+            <tr><td>6.3</td><td>Retrofitting materials</td><td><span class="importance-badge importance-medium">Medium</span></td></tr>
+            <tr><td>6.4</td><td>Retrofitting techniques keyed to the failure mechanism</td><td><span class="importance-badge importance-high">Very High</span></td></tr>
+            <tr><td>6.5&ndash;6.6</td><td>Existing retrofitting practice in Nepal</td><td><span class="importance-badge importance-medium">Medium</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="exam-note">
+        <strong>Exam strategy.</strong> The single highest-value thing you can memorise in this chapter is the
+        <strong>repair / restoration / retrofitting distinction with the H&ndash;&Delta; curve of Fig. 6.1</strong>
+        &mdash; draw that curve and you have answered a 4-mark question in thirty seconds. After that, learn the
+        <strong>mitigation table of &sect;6.4.5</strong>, which pairs each failure mechanism with the technique that
+        prevents it; that table answers the 8&ndash;12 mark questions in 2076, 2080 and 2081.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════ 6.1 ══════════════════════════ -->
+    <h2>6.1 &nbsp;Basic Concept of Repair, Rehabilitation and Retrofitting</h2>
+
+    <div class="exam-note">
+      <strong>Past exam questions on this topic</strong>
+      <ol>
+        <li>Define repair, restoration, and retrofitting. <span class="year-tag">2079 Bhadra &middot; Q3a</span> <span class="year-tag">[4 marks]</span></li>
+        <li>What are the steps involved in retrofitting strategies? <span class="year-tag">2079 Bhadra &middot; Q4a</span> <span class="year-tag">[4 marks]</span></li>
+      </ol>
+    </div>
+
+    <h3>6.1.1 &nbsp;The three terms</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Definition</th><th>Aim &amp; typical work</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Repair</strong><br><em>(cosmetic repair)</em></td>
+            <td>Cosmetic and functional works carried out on a damaged building to bring it back to a <em>usable</em>
+              condition, <strong>without altering its structural strength</strong>.</td>
+            <td><em>Aim:</em> restore serviceability and appearance only.<br>
+              <em>Work:</em> patching and re-plastering, filling fine cracks, repairing doors, windows, wiring and
+              plumbing, whitewashing, rebuilding non-structural partitions, re-fixing roof tiles.<br>
+              <strong>It improves only the visual appearance and adds no strength.</strong> It may also restore the
+              non-structural properties (weather-tightness, fire rating).</td>
+          </tr>
+          <tr>
+            <td><strong>Restoration</strong><br><em>(rehabilitation, structural repair)</em></td>
+            <td>Structural works that bring the damaged building back to <strong>its original strength</strong> &mdash;
+              the condition it was in <em>before</em> the earthquake.</td>
+            <td><em>Aim:</em> recover the lost strength and stiffness.<br>
+              <em>Work:</em> grouting and injection of cracks, stitching of wide cracks with dowels, re-pointing eroded
+              joints, dismantling and rebuilding shattered portions, replacing damaged lintels.<br>
+              <strong>No more than the original capacity is provided.</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Retrofitting</strong><br><em>(seismic strengthening, structural enhancement)</em></td>
+            <td>Structural works that <strong>upgrade the building beyond its original strength</strong>, so that it can
+              resist a future earthquake better than it resisted the last one.</td>
+            <td><em>Aim:</em> increase strength, stiffness, ductility and integrity to meet current code requirements.<br>
+              <em>Work:</em> adding horizontal bands and vertical bars, splint-and-bandage, wire-mesh / ferrocement or
+              FRP jacketing, through-stones, corner stitching, stiffening the diaphragm, reducing openings, lightening
+              the roof, adding buttresses or shear walls.<br>
+              <strong>Applied to undamaged buildings too.</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="figure">
+      <img src="../photo/ch6-repair-vs-retrofit.png" alt="Graph of lateral force H against displacement delta showing four curves: Original, Damaged which is lower, Repair which returns close to the damaged curve, and Strengthen which rises well above the original curve in both strength and ductility">
+      <figcaption><b>Fig. 6.1</b> The single most useful figure in this chapter. Plot lateral force H against
+      displacement &Delta;: the <strong>Damaged</strong> building has lost both strength and stiffness;
+      <strong>Repair</strong> barely recovers it; <strong>Restoration</strong> returns it to the
+      <strong>Original</strong> curve; and <strong>Strengthening (retrofitting)</strong> lifts it clearly
+      <em>above</em> the original in both strength and ductility.<span class="fig-src">Source: course lecture slides,
+      IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="formula">
+      <b>The one-line distinction to write in the exam:</b><br><br>
+      Repair &rarr; it <em>looks</em> better. &nbsp;&nbsp;
+      Restoration &rarr; it is <em>as strong as it was</em>. &nbsp;&nbsp;
+      Retrofitting &rarr; it is <em>stronger than it ever was</em>.
+    </div>
+
+    <h3>6.1.2 &nbsp;Principles of seismic safety of masonry buildings</h3>
+    <p>Every retrofitting intervention is aimed at restoring one of these five things &mdash; state them before you list
+    any technique:</p>
+    <ol>
+      <li><strong>Integral box action</strong> &mdash; the whole building must respond as one closed box, not as a set of
+        independent walls.</li>
+      <li><strong>Integrity of the various components</strong>.</li>
+      <li><strong>Roof-to-wall</strong> connection.</li>
+      <li><strong>Wall-to-wall</strong> connection at the corners and junctions.</li>
+      <li><strong>Wall-to-foundation</strong> connection.</li>
+      <li><strong>Limit on openings</strong> &mdash; size, number and position.</li>
+    </ol>
+
+    <h3>6.1.3 &nbsp;Why retrofitting is needed</h3>
+    <p>A building may require retrofitting for any of the following reasons:</p>
+    <ol>
+      <li><strong>Codal requirement</strong> &mdash; to meet the prescribed requirements of NBC 105 and other relevant
+        codes, which have been revised since the building was built.</li>
+      <li><strong>Change in use</strong> &mdash; for example converting a residential building into a school, which raises
+        the importance factor I.</li>
+      <li><strong>Functional change</strong> &mdash; a large conference room is wanted, or additional floors are to be
+        added that were not in the original design.</li>
+      <li><strong>Upgrading the performance</strong> of the building generally.</li>
+      <li><strong>After damage</strong> &mdash; the building has been shaken and must be made safe against the next event.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>The hardest thing about retrofitting.</strong> There is <strong>no standardised procedure and no code</strong>
+      that covers it the way IS 456 covers new concrete. <em>Retrofitting requires a unique solution for each individual
+      building</em>, and generalisation &mdash; which works for new construction &mdash; has practical limitations here.
+      Say this explicitly in an answer; it is the point examiners look for.
+    </div>
+
+    <h3>6.1.4 &nbsp;Steps in the retrofitting strategy</h3>
+
+    <ol class="steps">
+      <li><strong>Realisation of the retrofit requirement.</strong> Establish <em>why</em> the building is to be
+        retrofitted (the five reasons in &sect;6.1.3). This governs everything that follows.</li>
+      <li><strong>Selection of the engineer / architect.</strong> Retrofitting needs competence beyond ordinary
+        structural practice, so a competitive selection process should be followed; otherwise consult the municipality.</li>
+      <li><strong>Notification to the municipality or concerned authority.</strong> The owner gives preliminary notice
+        stating the purpose and obtains a go-ahead.</li>
+      <li><strong>Establish the performance objectives.</strong> In consultation with the owner and the relevant code,
+        fix the target &mdash; typically: no damage under a minor (frequent) earthquake, no significant structural damage
+        under the design basis earthquake (DBE), and <strong>no collapse under the maximum considered earthquake
+        (MCE)</strong>.</li>
+      <li><strong>Review the existing condition of the building.</strong> Age, design code (if any), present condition,
+        change of use, neighbouring buildings and facilities, availability of drawings, geotechnical report, and the
+        intended future use.</li>
+      <li><strong>Carry out the vulnerability evaluation</strong> &mdash; from preliminary visual screening through to
+        detailed evaluation and material testing (&sect;6.2). This identifies the <em>deficiencies</em>.</li>
+      <li><strong>Preliminary design with cost estimate, and a feasibility decision.</strong> Decide whether to retrofit
+        at all, or to demolish and rebuild. <em>Economics alone is not the only criterion</em> &mdash; a heritage building
+        may be retrofitted even when the economics do not justify it.</li>
+      <li><strong>Detailed design</strong> according to the retrofitting guideline appropriate to that building type.</li>
+      <li><strong>Prepare construction documents and a quality assurance plan</strong>, including the
+        <strong>construction sequence</strong>. These form the basis for selecting the contractor.</li>
+      <li><strong>Submit to the authority</strong> for approval; the authority may send the design for
+        <strong>peer review</strong>.</li>
+      <li><strong>Monitor construction and implement quality control.</strong> Any change dictated by ground conditions
+        must be made by the engineer and approved by the authority before proceeding.</li>
+      <li><strong>Post-retrofit evaluation</strong> to confirm the adequacy and effectiveness of the intervention.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>A warning worth one line and one mark.</strong> The <strong>construction sequence is part of the design</strong>.
+      A documented case shows an existing building being retrofitted in which the workers dismantled all the supporting
+      elements at once; the structure <strong>collapsed completely during the retrofitting works</strong> and had to be
+      rebuilt. Always shore first, then intervene element by element.
+    </div>
+
+    <h3>6.1.5 &nbsp;Three generic categories of intervention</h3>
+    <p>For earthquake-damaged concrete and masonry wall buildings the whole field reduces to three categories:</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Category</th><th>What it does</th><th>Strength after</th></tr></thead>
+        <tbody>
+          <tr><td>Cosmetic repairs</td><td>Appearance and non-structural properties only</td><td>Unchanged (still damaged)</td></tr>
+          <tr><td>Structural repairs or restoration</td><td>Recovers the lost capacity</td><td>= original</td></tr>
+          <tr class="highlight-row"><td>Structural enhancement / retrofitting</td><td>Upgrades the capacity</td><td><strong>&gt; original</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════ 6.2 ══════════════════════════ -->
+    <h2>6.2 &nbsp;Vulnerability Assessment and Methods</h2>
+
+    <p class="lead">Assessment is done <strong>twice</strong>: <em>before</em> the retrofitting, to identify the
+    deficiency; and <em>after</em> the retrofitting, to estimate the adequacy and effectiveness of what was done.</p>
+
+    <h3>6.2.1 &nbsp;What a seismic evaluation considers</h3>
+    <ul>
+      <li>Earthquake intensity expected at the site</li>
+      <li>Structural configuration and components</li>
+      <li>Structural condition (existing cracks, decay, past interventions)</li>
+      <li>Geological condition</li>
+      <li>Foundation capability</li>
+      <li>Non-structural components</li>
+    </ul>
+
+    <h3>6.2.2 &nbsp;The three phases of seismic evaluation</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Phase</th><th>What is done</th><th>Effort</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1. Screening phase</strong></td>
+            <td>Rapid visual screening &mdash; a &ldquo;<strong>sidewalk survey</strong>&rdquo; from outside the building,
+              filling a standard data-collection form. Used to sort a large stock of buildings quickly.</td>
+            <td>Minutes per building</td></tr>
+          <tr><td><strong>2. Evaluation phase</strong></td>
+            <td>Qualitative building assessment: walk-through, simple measurements, checking compliance with the code's
+              earthquake-resistant features, a preliminary structural check.</td>
+            <td>Hours per building</td></tr>
+          <tr class="highlight-row"><td><strong>3. Detailed evaluation phase</strong></td>
+            <td>Full structural analysis with material testing (NDT and partially destructive), soil investigation and
+              measured drawings. Only carried out on buildings that fail the earlier phases.</td>
+            <td>Weeks per building</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6.2.3 &nbsp;Common earthquake vulnerability assessment tools</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tool</th><th>Aim</th><th>Method &amp; output</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>1. UN-HABITAT toolkit</strong></td>
+            <td>(a) <strong>Multi-hazard</strong> vulnerability assessment &mdash; earthquake, wind, flood and fire;
+              (b) <strong>condition (maintenance need)</strong> assessment</td>
+            <td>Visual inspection, simple measurements and a checklist covering the planning, architectural and
+              structural aspects of the building for each hazard. Output is a
+              <strong>Compliance Index</strong>; the critical value is <strong>0.75</strong> &mdash;
+              <em>if the Compliance Index is below 0.75, a detailed assessment of the building is required</em>.</td>
+          </tr>
+          <tr>
+            <td><strong>2. G.N.D.T. vulnerability sheet</strong><br><em>(Italian National Group for Defence against Earthquakes)</em></td>
+            <td>To evaluate the <strong>damage grade</strong> of the building</td>
+            <td>Based on <strong>11 parameters</strong>, each scored into class <strong>A, B, C or D</strong> with a
+              weight. The scores combine into an <strong>absolute vulnerability index I<sub>v</sub></strong>, which is
+              then mapped to a damage grade.</td>
+          </tr>
+          <tr>
+            <td><strong>3. FEMA 154</strong><br><em>(Rapid Visual Screening)</em></td>
+            <td>To identify: (1) older buildings designed and built <strong>before adequate seismic requirements were
+              adopted</strong>; (2) buildings on <strong>soft or poor soils</strong>; (3) buildings whose
+              <strong>performance characteristics negatively influence their seismic response</strong></td>
+            <td>A &ldquo;sidewalk survey&rdquo; plus a data-collection form. A <strong>basic structural hazard
+              score</strong> is modified by score modifiers (height, irregularity, code era, soil type) to give a
+              <strong>final score S</strong>; a low S means detailed evaluation is required.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>The 11 GNDT parameters &mdash; worth listing in full</h4>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr><td>1. Type and organisation of the structural system</td><td>7. Elevation layout</td></tr>
+          <tr><td>2. Quality of the structural system</td><td>8. Maximum distance between walls</td></tr>
+          <tr><td>3. Notional strength</td><td>9. Roof</td></tr>
+          <tr><td>4. Building location and foundation</td><td>10. Non-structural elements</td></tr>
+          <tr><td>5. Floors</td><td>11. Physical condition</td></tr>
+          <tr><td>6. Plan layout</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <strong>Post-earthquake damage assessment</strong> is a separate exercise using <strong>ATC-20 / ATC-45</strong>
+      procedures, in which each building is tagged with a placard:
+      <strong>GREEN</strong> = inspected, safe to occupy;
+      <strong>YELLOW</strong> = restricted use;
+      <strong>RED</strong> = unsafe, do not enter. Damage grades themselves are described on the
+      <strong>EMS scale, G1 to G5</strong> (see Chapter 3 &sect;3.7).
+    </div>
+
+    <h3>6.2.4 &nbsp;Detailed investigation &mdash; NDT and partially destructive testing</h3>
+    <p>Once weak zones have been identified, the in-situ quality of the material must be measured.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Test</th><th>Principle / what it gives</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3"><strong>Non-destructive<br>(NDT)</strong></td>
+            <td><strong>Rebound hammer</strong> (Schmidt hammer)</td>
+            <td>A spring-driven mass strikes the surface; the rebound number correlates with surface hardness and hence
+              compressive strength. Take <strong>15 readings on a face; discard the highest and lowest</strong> and
+              average the rest.</td></tr>
+          <tr><td><strong>Ultrasonic pulse velocity (UPV)</strong></td>
+            <td>Measures the velocity of an ultrasonic pulse through the member, giving the <strong>dynamic modulus of
+              elasticity</strong> and revealing internal voids, honeycombing and cracks.</td></tr>
+          <tr><td><strong>Rebar locator / profometer</strong></td>
+            <td>Electromagnetic detection of the <strong>position, diameter and cover</strong> of the reinforcement
+              without breaking the member.</td></tr>
+          <tr><td rowspan="4"><strong>Partially<br>destructive</strong></td>
+            <td><strong>Core test</strong></td>
+            <td>A cylindrical core is cut out, allowing <strong>visual inspection of the interior</strong> and a
+              <strong>direct measurement of compressive strength</strong>. The most reliable test.</td></tr>
+          <tr><td><strong>Penetration resistance</strong> (Windsor probe)</td>
+            <td>A standardised bolt is fired into the material by an explosive charge; the depth of penetration
+              correlates with strength.</td></tr>
+          <tr><td><strong>Pull-off / pull-out test</strong></td>
+            <td>Measures the <strong>in-situ tensile strength</strong>, from which compressive strength is inferred.</td></tr>
+          <tr><td><strong>Steel and soil sampling</strong></td>
+            <td>Bar samples for tensile strength and other properties; chemical analysis for
+              <strong>carbonation and chloride content</strong> to assess corrosion; soil profiles classified as rocky,
+              very dense soil and soft rock, stiff, or soft.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════ 6.3 ══════════════════════════ -->
+    <h2>6.3 &nbsp;Retrofitting Materials</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Material</th><th>Where used</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cement grout</strong> (1:1 cement&ndash;water, or polymeric mortar)</td>
+            <td>Injection into cracks and into the voids of multi-leaf walls</td>
+            <td>Injected at <strong>low pressure, 0.1&ndash;0.25 MPa</strong>. The pressure can be obtained simply by
+              gravity flow from a super-elevated tank.</td></tr>
+          <tr><td><strong>Cement mortar / micro-concrete</strong></td>
+            <td>The 20&ndash;40 mm rendering over wire mesh in jacketing</td>
+            <td>Applied in two layers over the mesh.</td></tr>
+          <tr><td><strong>Welded wire mesh</strong> (galvanised)</td>
+            <td>Splint-and-bandage, seismic belts, ferrocement jacketing</td>
+            <td>Typical elementary mesh <strong>50 &times; 50 mm</strong>; must be <strong>galvanised</strong> and
+              provided continuously, with a minimum <strong>300 mm overlap</strong> at splices.</td></tr>
+          <tr><td><strong>Reinforcing bars</strong> (MS / HYSD)</td>
+            <td>Vertical containment reinforcement, crack stitching, sewing of walls, RC bands, jacketing</td>
+            <td>Typically 8&ndash;12 mm; 10 mm bars in 20 mm diameter drilled holes filled with cement grout for wall
+              sewing.</td></tr>
+          <tr><td><strong>Reinforced concrete</strong> (M15 and above)</td>
+            <td>Bands, jacketing, new shear walls, buttresses, foundation strengthening</td>
+            <td>The workhorse material of Nepali retrofitting practice.</td></tr>
+          <tr><td><strong>Steel sections, flats, ties and turnbuckles</strong></td>
+            <td>Prestressing rods, floor&ndash;wall connections, bracing, anchor plates</td>
+            <td>Steel rods on the two faces of a wall tensioned by <strong>turnbuckles</strong> is the easiest way to
+              apply pre-compression.</td></tr>
+          <tr><td><strong>Through-stones / bonding elements</strong></td>
+            <td>Multi-leaf stone walls</td>
+            <td>Where original through-stones are absent, S-shaped or hooked steel ties are substituted.</td></tr>
+          <tr class="highlight-row"><td><strong>Fibre-reinforced polymer (FRP)</strong> &mdash; advanced composites</td>
+            <td>Surface bonding to walls, beams, columns and joints</td>
+            <td>See the box below &mdash; the modern option.</td></tr>
+          <tr><td><strong>Epoxy resins and polymer mortars</strong></td>
+            <td>Crack injection, bonding new to old concrete, FRP saturation</td>
+            <td>High bond strength; needed to saturate the FRP fabric.</td></tr>
+          <tr><td><strong>Timber</strong></td>
+            <td>Diaphragm stiffening, temporary shoring, traditional buildings</td>
+            <td>Light, and compatible with historic construction.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula">
+      <b>Advanced composite systems &mdash; fibre reinforced polymer (FRP)</b><br><br>
+      The latest technique in structural rehabilitation. An ACS comprises a <b>uni-directional or bi-directional woven
+      reinforcing fabric saturated with a specially formulated epoxy matrix</b>. Its advantages:<br><br>
+      &bull; Quick and easy application &rarr; saves time and cost<br>
+      &bull; Flexible application &mdash; suits a member of <b>any shape or profile</b><br>
+      &bull; <b>Causes no destruction or disturbance</b> to the existing concrete or masonry<br>
+      &bull; Can be used in <b>space-constrained</b> areas; no heavy machinery or equipment needed<br>
+      &bull; <b>Light weight</b> &mdash; no distress to the member being strengthened<br>
+      &bull; Increases <b>strength and ductility</b>; enhances axial, shear, flexural and tensile capacity<br>
+      &bull; <b>No appreciable increase in member size or dead load</b><br>
+      &bull; <b>Does not corrode</b>, and inhibits further corrosion
+    </div>
+
+    <!-- ══════════════════════════ 6.4 ══════════════════════════ -->
+    <h2>6.4 &nbsp;Retrofitting Techniques Based on Failure Mechanism</h2>
+
+    <div class="exam-note">
+      <strong>Past exam questions on this topic</strong>
+      <ol>
+        <li>Explain the strengthening procedure for the damaged masonry buildings.
+          <span class="year-tag">2081 Bhadra &middot; Q2b</span> <span class="year-tag">[8 marks]</span></li>
+        <li>Describe the failure mechanism of masonry building during earthquake and suggest its mitigation measures to
+          make it earthquake resistant, with sketches. <span class="year-tag">2080 Bhadra &middot; Q1b</span> <span class="year-tag">[12 marks]</span></li>
+        <li>Discuss in brief the failure mechanism of masonry structures and remedial measures.
+          <span class="year-tag">2076 Chaitra &middot; Q3a</span> <span class="year-tag">[10 marks]</span></li>
+      </ol>
+    </div>
+
+    <h3>6.4.1 &nbsp;The two strategies</h3>
+
+    <figure class="figure">
+      <img src="../photo/ch6-capacity-vs-demand.png" alt="Two column table headed Increasing Capacity and Reducing Demand. Increasing capacity lists stiffen existing structure, strengthen existing structure, enhance ductility. Reducing demand lists use supplemental damping, reduce masses, isolate existing structure, reduce irregularity">
+      <figcaption><b>Fig. 6.2</b> Every retrofitting method belongs to one of two strategies. Either you push the
+      <strong>capacity</strong> of the building up, or you pull the <strong>demand</strong> on it down.<span class="fig-src">Source:
+      course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>Strategy 1 &mdash; INCREASING THE CAPACITY</th><th>Strategy 2 &mdash; REDUCING THE DEMAND</th></tr></thead>
+        <tbody>
+          <tr><td>Stiffen the existing structure</td><td>Use supplemental damping</td></tr>
+          <tr><td>Strengthen the existing structure</td><td>Reduce masses (lighten the roof, remove a storey)</td></tr>
+          <tr><td>Enhance ductility</td><td>Isolate the existing structure (base isolation)</td></tr>
+          <tr><td>Add braced frames, shear walls, buttresses or similar elements &mdash; this increases both stiffness
+            <em>and</em> strength</td><td>Reduce irregularity (plan and elevation)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>There is also a third, <strong>managerial</strong>, layer of strategies that is not structural at all but is often
+    the right answer: <strong>occupancy change</strong>, <strong>demolition</strong>, <strong>temporary retrofit</strong>,
+    <strong>phased retrofit</strong>, <strong>retrofit during occupancy</strong> vs <strong>retrofit of a vacant
+    building</strong>, and <strong>interior</strong> vs <strong>exterior</strong> retrofit.</p>
+
+    <h3>6.4.2 &nbsp;Classification of retrofitting techniques</h3>
+
+    <figure class="figure">
+      <img src="../photo/ch6-classification.png" alt="Tree diagram classifying retrofitting techniques into Global methods - adding shear wall, adding infill wall, adding bracing, adding wing wall, wall thickening, mass reduction, base isolation, mass dampers - and Local methods - jacketing of beams, jacketing of columns, jacketing of beam-column joints, strengthening of individual footings">
+      <figcaption><b>Fig. 6.3</b> Retrofitting techniques divide into <strong>GLOBAL</strong> methods, which change the
+      behaviour of the whole building, and <strong>LOCAL</strong> methods, which fix one deficient
+      element.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>GLOBAL methods</th><th>LOCAL methods</th></tr></thead>
+        <tbody>
+          <tr><td>Adding shear wall &middot; Adding infill wall &middot; Adding bracing &middot; Adding wing wall &middot;
+            Wall thickening &middot; Mass reduction &middot; Base isolation &middot; Mass dampers</td>
+            <td>Jacketing of beams &middot; Jacketing of columns &middot; Jacketing of beam&ndash;column joints &middot;
+              Strengthening of individual footings</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6.4.3 &nbsp;Strengthening existing walls</h3>
+
+    <p>The lateral strength of a building can be improved by increasing the strength and stiffness of the individual
+    walls, <strong>whether they are cracked or uncracked</strong>. There are four methods:</p>
+
+    <h4>(A) Grouting</h4>
+    <ol>
+      <li>A number of holes are drilled in the wall &mdash; roughly <strong>one hole per 2 to 4 m&sup2;</strong>.</li>
+      <li><strong>Water is injected first</strong>, to wash the inside of the wall and improve the cohesion between the
+        grout and the wall elements.</li>
+      <li>A <strong>cement&ndash;water mixture (1:1)</strong> is then grouted at <strong>low pressure (0.1&ndash;0.25
+        MPa)</strong>, <strong>starting from the lowest holes and working upwards</strong>. Polymeric mortars may be used
+        instead.</li>
+    </ol>
+    <p>The increase in <strong>shear strength</strong> achieved this way is considerable. <strong>However, grouting
+    cannot be relied on to improve the connection between orthogonal walls</strong> &mdash; that needs a different
+    technique. The pressure can be obtained by gravity flow from a super-elevated tank.</p>
+
+    <h4>(B) Wire-mesh jacketing (ferrocement / RC covering on both faces)</h4>
+
+    <figure class="figure">
+      <img src="../photo/ch6-wiremesh-jacket.png" alt="Isometric of a masonry building with wire mesh jacketing at a corner, plus section A-A showing welded wire mesh, mortar or micro-concrete rendering, concrete roof band, cross ties at 500 to 750 mm apart, and 8 mm corner bar reinforcement">
+      <figcaption><b>Fig. 6.4</b> Wire-mesh jacketing. <strong>1</strong> welded wire mesh 50 &times; 50 mm;
+      <strong>2</strong> mortar or micro-concrete rendering; <strong>3</strong> concrete roof band;
+      <strong>4</strong> cross ties at 500&ndash;750 mm apart; <strong>5</strong> corner bar 8 mm
+      diameter.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+    </figure>
+
+    <div class="formula">
+      Two steel meshes (welded wire fabric with an elementary mesh of about <b>50 &times; 50 mm</b>) are placed on the
+      <b>two sides of the wall</b>. They are connected by steel ties passing through the wall, spaced
+      <b>500 to 750 mm apart</b>. A <b>20 to 40 mm thick cement mortar or micro-concrete layer</b> is then applied over
+      both networks, giving rise to <b>two interconnected vertical plates</b>.<br><br>
+      <b>This system can also be used to improve the connection of orthogonal walls</b> &mdash; which grouting cannot do.
+    </div>
+
+    <h4>(C) Connection between existing stone walls &mdash; &ldquo;sewing&rdquo;</h4>
+
+    <figure class="figure">
+      <img src="../photo/ch6-sewing-walls.png" alt="Detail of sewing transverse walls with inclined bars: holes drilled at about 45 degrees through the junction of the transverse and longitudinal wall, with 10 mm diameter bars in 20 mm diameter holes filled with cement grout">
+      <figcaption><b>Fig. 6.5</b> Sewing transverse walls with inclined bars. <strong>1</strong> transverse wall;
+      <strong>2</strong> longitudinal wall; <strong>3</strong> 10 mm diameter bars in 20 mm diameter holes filled with
+      cement grout, at about 45&deg;.<span class="fig-src">Source: course lecture slides, IOE Pulchowk
+      Campus.</span></figcaption>
+    </figure>
+
+    <p>In stone buildings of historic importance, consisting of fully dressed stone masonry in good mortar,
+    <strong>effective sewing of perpendicular walls</strong> can be done by <strong>drilling inclined holes through
+    them, inserting steel rods and injecting cement grout</strong>. This restores the wall-to-wall connection without
+    disturbing the appearance &mdash; important for heritage structures.</p>
+
+    <h4>(D) Pre-stressing the walls</h4>
+    <ul>
+      <li>A <strong>horizontal compression state induced by horizontal tendons</strong> increases the
+        <strong>shear strength</strong> of the walls (recall &tau;<sub>per</sub> = 0.1 + f<sub>d</sub>/6 &mdash;
+        precompression directly buys shear capacity).</li>
+      <li>It also <strong>considerably improves the connection of orthogonal walls</strong>.</li>
+      <li>The easiest way is to place <strong>two steel rods on the two sides of the wall and tension them with
+        turnbuckles</strong>, against anchor plates.</li>
+      <li><strong>Only a slight pre-stress is needed &mdash; about 0.1 MPa</strong> on the vertical section of the wall
+        gives good effects.</li>
+      <li>Pre-stressing is also useful to strengthen the <strong>spandrel between two rows of openings</strong> where no
+        rigid slab exists.</li>
+    </ul>
+
+    <h3>6.4.4 &nbsp;Restoring integral box action</h3>
+
+    <h4>Splint and bandage &mdash; the Nepali standard</h4>
+
+    <figure class="figure">
+      <img src="../photo/ch6-splint-bandage.png" alt="Isometric of a brick building retrofitted by splint and bandage: vertical wire mesh splints at the corners and around openings and horizontal bandages at lintel and roof level, with plaster removed, mesh overlapping at junctions and fixed with nails">
+      <figcaption><b>Fig. 6.6</b> <strong>Integral box action through splint and bandage.</strong> Vertical
+      &ldquo;splints&rdquo; at corners and openings plus horizontal &ldquo;bandages&rdquo; at lintel and eave level,
+      formed of wire mesh nailed to the wall after the plaster is removed, and
+      <strong>overlapped at the junctions</strong>.<span class="fig-src">Source: course lecture slides, IOE Pulchowk
+      Campus.</span></figcaption>
+    </figure>
+
+    <p>This is the single most widely used masonry retrofitting technique in Nepal. The wall is stripped of plaster, wire
+    mesh strips are nailed on in the pattern of vertical splints and horizontal bandages, they are overlapped and tied at
+    every junction, and the whole is rendered in cement mortar. It reproduces, on an existing building, exactly the
+    bands and vertical bars that IS 4326 requires in a new one.</p>
+
+    <h4>Horizontal and vertical seismic belts</h4>
+
+    <div class="figure-row" style="max-width:none">
+      <figure class="figure">
+        <img src="../photo/ch6-seismic-belt.png" alt="Isometric of a two storey building showing the overall arrangement of seismic belts labelled A to E, with details of belts around a window opening and at a wall junction">
+        <figcaption><b>Fig. 6.7</b> Overall arrangement of seismic belts.
+          <strong>A</strong> above the lintels of door and window openings;
+          <strong>B</strong> just below the roof; <strong>C</strong> vertical belt at wall junctions (L and T);
+          <strong>D</strong> around doors and windows; <strong>E</strong> around the gable wall.<span class="fig-src">Source:
+          course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch6-vertical-band.png" alt="Detail of a vertical seismic band at a corner and junction showing the masonry wall, first plaster layer, steel mesh in the belt, wide head nails 150 mm long, overlap of steel mesh 200 mm each side of the corner, and spikes for fixing the mesh">
+        <figcaption><b>Fig. 6.8</b> Vertical seismic band at a corner and junction: mesh fixed with
+          <strong>wide-head nails 150 mm long</strong>, <strong>overlapped 200 mm each side of the corner</strong>, and
+          continued across the horizontal belt.<span class="fig-src">Source: course lecture slides, IOE Pulchowk
+          Campus.</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th colspan="2">Seismic belt locations &mdash; the rules</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Belts are provided on <strong>all walls, on both faces</strong>, <strong>just above the
+            lintels</strong> of door and window openings and <strong>below the floor or roof</strong>.
+            <em>On small wall lengths in a room (less than 4 m) a belt on the outside face alone will suffice.</em></td></tr>
+          <tr><td>2</td><td>The <strong>roof belt may be omitted if the roof or floor is an RCC slab</strong> &mdash; the
+            slab already does the job.</td></tr>
+          <tr><td>3</td><td>A belt is <strong>not necessary at plinth level unless the plinth height exceeds 900
+            mm</strong>.</td></tr>
+          <tr><td>4</td><td>Install a similar belt at the <strong>eave level of a sloping roof</strong> and
+            <strong>near the top of the gable wall</strong>, below the roof.
+            <em>If the height of the eave level above the top of the door is less than 900 mm, only the eave-level belt
+            need be provided and the lintel-level belt may be omitted.</em></td></tr>
+          <tr class="highlight-row"><td>5</td><td>Use <strong>galvanised welded steel wire mesh</strong> as
+            reinforcement everywhere. The mesh must be <strong>continuous</strong>; where splicing is unavoidable there
+            must be a <strong>minimum overlap of 300 mm</strong>.</td></tr>
+          <tr><td>6</td><td>Example sizing (seismic zone IV, room length 6 m): <strong>MW 21 weld mesh</strong> &mdash;
+            5 longitudinal wires of 4.5 mm diameter at 75 mm spacing, cross wires of 3.15 mm diameter at 300 mm spacing
+            &mdash; with the <strong>belt height kept at 375 mm</strong>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Containment reinforcement</h4>
+    <div class="formula">
+      <b>Containment reinforcement</b> is <b>vertical reinforcement provided on both faces of the wall in a parallel
+      manner</b>. It may be either on the surface, or hidden in <b>30 mm deep grooves</b> cut beneath the surface.
+      It is generally provided <b>every 1.0 m horizontally</b> and <b>next to door and window jambs</b>.<br><br>
+      <b>It should always be accompanied by horizontal RC bands</b> &mdash; vertical steel alone does not make a box.
+    </div>
+
+    <h4>Connection of floor with wall, and crack stitching</h4>
+    <div class="figure-row" style="max-width:none">
+      <figure class="figure">
+        <img src="../photo/ch6-floor-wall-conn.png" alt="Plan and section showing the connection of an existing timber floor to an existing stone wall using a wood beam, nails, new slab stiffening and connecting steel flats set into the wall at 30 degrees">
+        <figcaption><b>Fig. 6.9</b> Connection of floor with wall. <strong>1</strong> existing wall;
+          <strong>2</strong> existing floor; <strong>3</strong> wood beam; <strong>4</strong> nails;
+          <strong>5</strong> new slab stiffening; <strong>6</strong> connecting steel flats.<span class="fig-src">Source:
+          course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="../photo/ch6-crack-stitching.png" alt="Photograph of a diagonal crack in a brick wall repaired by stitching, with steel rods set across the crack at right angles to it and grouted into drilled holes">
+        <figcaption><b>Fig. 6.10</b> <strong>Stitching of cracks</strong> &mdash; steel rods are set across the crack,
+          perpendicular to it, in grouted holes, so that the two sides are sewn back
+          together.<span class="fig-src">Source: course lecture slides, IOE Pulchowk Campus.</span></figcaption>
+      </figure>
+    </div>
+
+    <h4>Buttresses, jacketing and foundation strengthening</h4>
+    <figure class="figure">
+      <img src="../photo/ch6-buttress.png" alt="Elevation of a masonry building with added buttresses at the ends of the walls, and a detail of the buttress masonry bonded into the existing wall">
+      <figcaption><b>Fig. 6.11</b> <strong>Addition of buttresses</strong> to a masonry structure &mdash; a global
+      capacity-increasing method that shortens the effective length of the wall, reduces its slenderness ratio and
+      resists out-of-plane overturning.<span class="fig-src">Source: course lecture slides, IOE Pulchowk
+      Campus.</span></figcaption>
+    </figure>
+
+    <p>Other techniques covered in the course: <strong>jacketing of brick masonry posts and columns</strong> (an added
+    RC section with new longitudinal bars and new tie bars around the existing section);
+    <strong>RC jacketing of beams and beam&ndash;column joints</strong> with added stirrups, added reinforcement and
+    welded connecting bars; <strong>strengthening of foundations</strong>; and <strong>vertical bars at inside
+    corners</strong>.</p>
+
+    <h3>6.4.5 &nbsp;Technique keyed to the failure mechanism &mdash; the table that answers the exam</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Failure mechanism</th><th>Cause</th><th>Retrofitting technique that prevents it</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Out-of-plane overturning</strong> of walls (the dominant killer)</td>
+            <td>No connection to the floor/roof; no bands; slender wall; flexible diaphragm</td>
+            <td><strong>Horizontal seismic belts / bands</strong> at lintel and eave level; <strong>anchor the roof and
+              floor to the walls</strong>; add cross walls or <strong>buttresses</strong> to reduce the span; stiffen the
+              diaphragm</td></tr>
+          <tr><td><strong>Corner separation</strong> and vertical cracking at wall junctions</td>
+            <td>Poor interlocking of courses; walls built at different times</td>
+            <td><strong>Vertical seismic belts at L and T junctions</strong>; <strong>splint and bandage</strong>;
+              <strong>sewing with inclined bars</strong>; containment reinforcement at every corner</td></tr>
+          <tr><td><strong>Delamination</strong> of multi-leaf stone or rubble walls</td>
+            <td>Two independent leaves with a rubble core; no cross ties</td>
+            <td><strong>Grout injection</strong>; <strong>through-stones</strong> or S-shaped ties; <strong>wire-mesh
+              jacketing on both faces with cross ties at 500&ndash;750 mm</strong></td></tr>
+          <tr class="highlight-row"><td><strong>In-plane diagonal (X) shear cracking</strong> of piers</td>
+            <td>Storey shear exceeds the diagonal tensile strength; weak mortar; low precompression</td>
+            <td><strong>Grouting</strong> (raises shear strength considerably); <strong>ferrocement / wire-mesh
+              jacketing</strong>; <strong>pre-stressing</strong> (0.1 MPa); reduce openings; add shear walls</td></tr>
+          <tr><td><strong>Cracking at openings</strong></td>
+            <td>Openings too large, too close to a corner, or unbanded</td>
+            <td><strong>Belts around doors and windows (type D)</strong>; vertical containment reinforcement next to the
+              jambs; infill oversized openings</td></tr>
+          <tr><td><strong>Gable and parapet collapse</strong></td>
+            <td>Free-standing cantilever with no top restraint</td>
+            <td><strong>Belt around the gable wall (type E)</strong> tied to the eave-level belt; reduce the parapet
+              height</td></tr>
+          <tr><td><strong>Roof / floor separation</strong></td>
+            <td>Joists simply resting on the wall; heavy roof</td>
+            <td><strong>Connection of floor with wall</strong> using wood beams, nails and connecting steel flats
+              (Fig. 6.9); brace the roof; <strong>replace a heavy roof with a light CGI roof</strong> (this
+              <em>reduces the demand</em>)</td></tr>
+          <tr><td><strong>Existing wide cracks</strong></td>
+            <td>Previous earthquake damage</td>
+            <td><strong>Stitching</strong> with steel rods across the crack; <strong>grout injection</strong> for fine
+              cracks; dismantle and rebuild where shattered</td></tr>
+          <tr><td><strong>Sliding at the DPC / base</strong></td>
+            <td>Smooth slip plane, low friction</td>
+            <td>Dowels across the joint; pre-stressing to add clamping force</td></tr>
+          <tr><td><strong>Soft storey / torsion / irregularity</strong></td>
+            <td>Open ground storey; asymmetric plan</td>
+            <td>Add <strong>shear walls, infill walls, wing walls or bracing</strong> (global methods);
+              <strong>reduce irregularity</strong>; this is demand reduction as much as capacity increase</td></tr>
+          <tr><td><strong>Foundation failure / settlement</strong></td>
+            <td>Weak soil, inadequate footing</td>
+            <td><strong>Strengthening of individual footings</strong>; underpinning; continuous plinth band</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="exam-box">
+      <strong>Model answer skeleton &mdash; &ldquo;Explain the strengthening procedure for damaged masonry
+      buildings&rdquo; [8 marks]</strong>
+      <ol>
+        <li><strong>State the objective</strong> &mdash; restore integral box action, and the integrity of the roof-to-wall,
+          wall-to-wall and wall-to-foundation connections.</li>
+        <li><strong>Assess first</strong> &mdash; identify the deficiency by vulnerability evaluation (&sect;6.2) before
+          choosing any technique.</li>
+        <li><strong>Distinguish repair / restoration / retrofitting</strong> and say which you are doing; draw
+          Fig. 6.1.</li>
+        <li><strong>Give the two strategies</strong> &mdash; increase capacity, reduce demand &mdash; and the global vs
+          local classification.</li>
+        <li><strong>Then list the techniques with a sketch each:</strong> grouting; wire-mesh jacketing; sewing of
+          orthogonal walls; pre-stressing; splint and bandage; horizontal and vertical seismic belts; containment
+          reinforcement; crack stitching; floor-to-wall connection; buttresses; jacketing; foundation strengthening.</li>
+        <li><strong>Close with the sequence and quality control</strong> &mdash; shore first, work element by element,
+          never dismantle all supports at once, and re-evaluate afterwards.</li>
+      </ol>
+    </div>
+
+    <!-- ══════════════════════════ 6.5 / 6.6 ══════════════════════════ -->
+    <h2>6.5&ndash;6.6 &nbsp;Existing Retrofitting Practice in Nepal</h2>
+
+    <h3>6.5.1 &nbsp;The scale of the problem</h3>
+    <ul>
+      <li><strong>About 500,000 houses were damaged</strong> in the 2015 Gorkha earthquake.</li>
+      <li><strong>85&ndash;90% of them were masonry houses</strong> &mdash; stone masonry, block masonry and brick
+        masonry.</li>
+      <li>Masonry houses are <strong>very vulnerable</strong> to earthquakes, and the great majority of Nepal's building
+        stock is non-engineered masonry built without any code.</li>
+      <li>The practical question is therefore &ldquo;<strong>where do we start?</strong>&rdquo; &mdash; and the honest
+        answer is that <strong>there is no standardised procedure and no single code</strong>; the treatment
+        <strong>differs from structure to structure</strong>.</li>
+    </ul>
+
+    <h3>6.5.2 &nbsp;What is actually done in Nepal</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Practice</th><th>Where it is applied</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td><strong>Splint and bandage with galvanised wire mesh and cement plaster</strong></td>
+            <td>The default technique for load-bearing brick and stone masonry houses, and for school retrofitting
+              programmes. Cheap, uses local labour, and needs no heavy plant.</td></tr>
+          <tr><td><strong>Horizontal and vertical seismic belts</strong></td>
+            <td>Applied to residential and public buildings following the belt-location rules of &sect;6.4.4.</td></tr>
+          <tr><td><strong>Containment reinforcement</strong> with horizontal RC bands</td>
+            <td>Where a more permanent, hidden solution is wanted; bars set in 30 mm grooves at 1 m spacing.</td></tr>
+          <tr><td><strong>Through-stones and grout injection</strong></td>
+            <td>Stone-in-mud houses in the hill districts &mdash; the most vulnerable class of all.</td></tr>
+          <tr><td><strong>RC jacketing and added shear walls</strong></td>
+            <td>Engineered RC buildings, hospitals and larger public buildings.</td></tr>
+          <tr><td><strong>Corner stitching and crack grouting</strong></td>
+            <td>Post-Gorkha restoration of damaged but repairable buildings.</td></tr>
+          <tr><td><strong>Timber/steel diaphragm stiffening and roof anchoring</strong></td>
+            <td>Traditional Newari buildings and heritage structures in the Kathmandu Valley.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6.5.3 &nbsp;The institutional framework</h3>
+    <ol>
+      <li><strong>NBC 105: 2020</strong> (seismic design), <strong>NBC 202</strong> (mandatory rules of thumb for
+        load-bearing masonry) and <strong>NBC 203</strong> (low-strength masonry) set the target that a retrofitted
+        building must reach.</li>
+      <li><strong>IS 4326&ndash;1993</strong> (earthquake-resistant design and construction) and
+        <strong>IS 13935</strong> (repair and seismic strengthening of buildings) supply the detailing.</li>
+      <li>The <strong>DUDBC</strong> retrofitting design guidelines and catalogues, prepared after 2015, give
+        building-type-specific solutions.</li>
+      <li><strong>NSET</strong> and UN-HABITAT programmes have driven the school-retrofitting and public-awareness
+        efforts, and produced the vulnerability assessment toolkits used in practice.</li>
+      <li>Retrofitting design must be <strong>submitted to the municipality</strong>, which may require a
+        <strong>peer review</strong> before approval &mdash; the same route as a new building permit.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>The one lesson Nepal learned in 2015.</strong> Buildings with even one RC lintel band frequently survived
+      with repairable damage while identical unbanded neighbours collapsed. Nepali retrofitting practice is, in essence,
+      the business of <strong>adding to existing buildings the bands and vertical bars that IS 4326 and NBC 202 would
+      have required had they been built today</strong>.
+    </div>
+
+    <!-- ══════════════════════════ Quick Revision ══════════════════════════ -->
+    <h2>Quick Revision</h2>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Value / rule</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td><strong>Repair / Restoration / Retrofitting</strong></td>
+            <td>Looks better / as strong as it was / <strong>stronger than it ever was</strong></td></tr>
+          <tr><td>Three generic categories</td><td>Cosmetic repair &middot; structural repair or restoration &middot; structural enhancement (retrofitting)</td></tr>
+          <tr><td>Principles of seismic safety</td><td>Integral box action; integrity of components; roof-to-wall; wall-to-wall; wall-to-foundation; limit on openings</td></tr>
+          <tr><td>Two strategies</td><td><strong>Increase capacity</strong> (stiffen, strengthen, enhance ductility) &middot; <strong>reduce demand</strong> (damping, reduce mass, base isolation, reduce irregularity)</td></tr>
+          <tr><td>Classification</td><td><strong>Global</strong> (shear wall, infill, bracing, wing wall, wall thickening, mass reduction, base isolation, dampers) &middot; <strong>Local</strong> (jacketing of beams / columns / joints, footing strengthening)</td></tr>
+          <tr><td>Evaluation phases</td><td>Screening &rarr; Evaluation &rarr; Detailed evaluation</td></tr>
+          <tr><td>Assessment tools</td><td><strong>UN-HABITAT</strong> toolkit &middot; <strong>GNDT</strong> vulnerability sheet &middot; <strong>FEMA 154</strong> rapid visual screening</td></tr>
+          <tr class="highlight-row"><td>UN-HABITAT Compliance Index</td><td>Critical value <strong>0.75</strong> &mdash; below it, detailed assessment is required</td></tr>
+          <tr><td>GNDT</td><td><strong>11 parameters</strong>, classes A/B/C/D, gives vulnerability index I<sub>v</sub> &rarr; damage grade</td></tr>
+          <tr><td>Post-earthquake tagging</td><td>ATC-20/45 placards: <strong>green</strong> safe &middot; <strong>yellow</strong> restricted &middot; <strong>red</strong> unsafe</td></tr>
+          <tr><td>NDT tests</td><td>Rebound (Schmidt) hammer &middot; UPV &middot; profometer / rebar locator</td></tr>
+          <tr><td>Rebound hammer procedure</td><td><strong>15 readings</strong>; discard the highest and lowest; average the rest</td></tr>
+          <tr><td>Partially destructive tests</td><td>Core test &middot; penetration resistance &middot; pull-off &middot; steel and soil sampling</td></tr>
+          <tr class="highlight-row"><td>Grouting</td><td>1 hole per <strong>2&ndash;4 m&sup2;</strong>; <strong>water first</strong>; <strong>1:1 cement&ndash;water</strong> at <strong>0.1&ndash;0.25 MPa</strong>, <strong>bottom upwards</strong>. Cannot fix orthogonal wall connections.</td></tr>
+          <tr><td>Wire-mesh jacketing</td><td>Mesh <strong>50 &times; 50 mm</strong> both faces; ties at <strong>500&ndash;750 mm</strong>; render <strong>20&ndash;40 mm</strong>. <em>Can</em> fix orthogonal connections.</td></tr>
+          <tr><td>Sewing walls</td><td>Inclined (~45&deg;) <strong>10 mm bars in 20 mm holes</strong>, cement grouted</td></tr>
+          <tr><td>Pre-stressing</td><td>Steel rods both faces + <strong>turnbuckles</strong>; only about <strong>0.1 MPa</strong> needed</td></tr>
+          <tr><td>Seismic belt &mdash; mesh</td><td><strong>Galvanised</strong> welded mesh, continuous, splice overlap <strong>&ge; 300 mm</strong></td></tr>
+          <tr><td>Seismic belt &mdash; omissions</td><td>Roof belt may be omitted if the roof is an RCC slab; plinth belt only if plinth &gt; <strong>900 mm</strong>; lintel belt may be omitted if eave is &lt; 900 mm above the door</td></tr>
+          <tr><td>Belt on one face only</td><td>Permitted on wall lengths <strong>less than 4 m</strong></td></tr>
+          <tr><td>Containment reinforcement</td><td>Vertical bars <strong>both faces</strong>, surface or in <strong>30 mm grooves</strong>, every <strong>1.0 m</strong> and beside jambs; <strong>always with horizontal RC bands</strong></td></tr>
+          <tr><td>Vertical belt at corners</td><td>Nails <strong>150 mm</strong> wide-head; mesh overlap <strong>200 mm each side</strong> of the corner</td></tr>
+          <tr><td>FRP</td><td>Woven fabric + epoxy; no size or dead-load increase; does not corrode; raises strength <em>and</em> ductility</td></tr>
+          <tr><td>Nepal 2015</td><td><strong>500,000</strong> houses damaged; <strong>85&ndash;90% masonry</strong></td></tr>
+          <tr><td>Nepal default technique</td><td><strong>Splint and bandage</strong> with galvanised wire mesh</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══════════════════════════ Chapter Summary ══════════════════════════ -->
+    <h2>Chapter Summary</h2>
+
+    <ol>
+      <li><strong>&sect;6.1 &mdash; The three terms.</strong> <em>Repair</em> restores appearance and serviceability but
+        adds no strength; <em>restoration</em> recovers the original strength; <em>retrofitting</em> upgrades the
+        building beyond its original strength and is applied to undamaged buildings too. Draw the H&ndash;&Delta; curve
+        (Fig. 6.1). Retrofitting aims at restoring <strong>integral box action</strong> and the roof-to-wall,
+        wall-to-wall and wall-to-foundation connections. It follows a twelve-step process from realising the requirement,
+        through vulnerability evaluation, feasibility, detailed design and municipal approval, to monitored construction
+        and post-retrofit evaluation. There is <strong>no standard procedure</strong> &mdash; each building needs a
+        unique solution.</li>
+
+      <li><strong>&sect;6.2 &mdash; Vulnerability assessment.</strong> Done before retrofitting to find the deficiency
+        and after it to confirm effectiveness. Three phases: screening, evaluation, detailed evaluation. Three standard
+        tools: the <strong>UN-HABITAT toolkit</strong> (multi-hazard, Compliance Index &lt; 0.75 triggers detailed
+        assessment), the <strong>GNDT sheet</strong> (11 parameters, classes A&ndash;D, vulnerability index to damage
+        grade) and <strong>FEMA 154</strong> (rapid visual sidewalk survey). Detailed investigation uses NDT (rebound
+        hammer, UPV, profometer) and partially destructive tests (core, penetration, pull-off, sampling).</li>
+
+      <li><strong>&sect;6.3 &mdash; Materials.</strong> Cement grout, cement mortar and micro-concrete, galvanised welded
+        wire mesh, reinforcing bars, reinforced concrete, steel sections and turnbuckles, through-stones, epoxy resins,
+        timber, and <strong>FRP composites</strong> &mdash; light, non-corroding, applicable to any profile, adding
+        strength and ductility with no increase in member size or dead load.</li>
+
+      <li><strong>&sect;6.4 &mdash; Techniques.</strong> Two strategies: <strong>increase capacity</strong> or
+        <strong>reduce demand</strong>; two classes: <strong>global</strong> or <strong>local</strong>. Walls are
+        strengthened by <strong>grouting</strong> (1:1 at 0.1&ndash;0.25 MPa, bottom upwards, but no help for orthogonal
+        connections), <strong>wire-mesh jacketing</strong> (50 &times; 50 mm mesh both faces, ties at 500&ndash;750 mm,
+        20&ndash;40 mm render &mdash; which <em>does</em> fix orthogonal connections), <strong>sewing</strong> with
+        inclined grouted bars, and <strong>pre-stressing</strong> to about 0.1 MPa. Box action is restored by
+        <strong>splint and bandage</strong>, <strong>horizontal and vertical seismic belts</strong> and
+        <strong>containment reinforcement</strong>. Each failure mechanism has its own matching technique &mdash; learn
+        the table in &sect;6.4.5.</li>
+
+      <li><strong>&sect;6.5&ndash;6.6 &mdash; Nepal.</strong> About 500,000 houses damaged in 2015, 85&ndash;90% of them
+        masonry. The default practice is <strong>splint and bandage with galvanised wire mesh and cement plaster</strong>,
+        supported by seismic belts, containment reinforcement, through-stones and grouting for stone-in-mud houses, and
+        RC jacketing for engineered buildings. The framework is NBC 105 / 202 / 203, IS 4326 and IS 13935, DUDBC
+        guidelines and NSET programmes, with municipal approval and peer review.</li>
+    </ol>
+
+    <div class="callout">
+      <strong>How this chapter closes the course.</strong> Chapter 3 told you <em>how masonry fails</em>; Chapters 2, 4
+      and 5 told you how to design a new building so that it does not. Chapter 6 takes the same knowledge and points it
+      backwards, at the millions of buildings that already exist &mdash; which is where the actual earthquake risk in
+      Nepal lies.
+    </div>
+
+    <!-- ══════════════════════════ Past Questions ══════════════════════════ -->
+    <h2>All Past Questions on This Chapter</h2>
+
+    <div class="exam-note">
+      <ol>
+        <li>Explain the strengthening procedure for the damaged masonry buildings.
+          <span class="year-tag">2081 Bhadra &middot; Q2b</span> <span class="year-tag">[8]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2081-bhadra.html">solved</a></li>
+        <li>Describe the failure mechanism of masonry building during earthquake and suggest its mitigation measures to
+          make it earthquake resistant, with sketches.
+          <span class="year-tag">2080 Bhadra &middot; Q1b</span> <span class="year-tag">[12]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2080-bhadra.html">solved</a></li>
+        <li>Define repair, restoration, and retrofitting.
+          <span class="year-tag">2079 Bhadra &middot; Q3a</span> <span class="year-tag">[4]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2079-bhadra.html">solved</a></li>
+        <li>What are the steps involved in retrofitting strategies?
+          <span class="year-tag">2079 Bhadra &middot; Q4a</span> <span class="year-tag">[4]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2079-bhadra.html">solved</a></li>
+        <li>Discuss in brief the failure mechanism of masonry structures and remedial measures.
+          <span class="year-tag">2076 Chaitra &middot; Q3a</span> <span class="year-tag">[10]</span>
+          &nbsp;&rarr;&nbsp; <a href="../solutions/2076-chaitra.html">solved</a></li>
+      </ol>
+    </div>
+
+    <p class="footer-note">Chapter 6 &mdash; Repair and Strengthening Methods for Existing Masonry Buildings &middot;
+    4 hours &middot; 6 marks &middot; ENCE 367 Seismic Resistant Design of Masonry Structures</p>
+  </main>
+</div>
+<script src="../../common.js"></script>
+</body>
+</html>
