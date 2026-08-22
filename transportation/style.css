@@ -1481,6 +1481,94 @@ h2 ~ h2 {
 [data-theme="dark"] .exam-note details.sol { background: var(--soft); }
 [data-theme="dark"] .exam-note .sol-body { color: var(--ink); }
 
+/* --- Worked-numerical formatting inside .sol-body --- */
+.sol-body .given {
+  margin: 10px 0 12px;
+  padding: 9px 13px 9px 15px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--soft);
+}
+.sol-body .given::before {
+  content: "GIVEN";
+  display: block;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin-bottom: 3px;
+}
+.sol-body .step {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin: 16px 0 6px;
+  font-weight: 700;
+  color: var(--ink);
+  border-bottom: 1px dashed var(--line);
+  padding-bottom: 4px;
+}
+.sol-body .step::before {
+  content: "STEP " attr(data-s);
+  flex-shrink: 0;
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 10px;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+.sol-body .calc {
+  margin: 8px 0;
+  padding: 9px 14px;
+  background: var(--paper-edge, var(--soft));
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: .93em;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+.sol-body .calc .ans { color: var(--accent); }
+.sol-body .final {
+  margin: 14px 0 6px;
+  padding: 10px 14px 10px 16px;
+  border: 1px solid var(--accent);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  background: var(--accent-light);
+  font-weight: 600;
+  color: var(--ink);
+}
+.sol-body .final::before {
+  content: "ANSWER";
+  display: block;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin-bottom: 3px;
+}
+.sol-body .note {
+  margin: 8px 0;
+  padding-left: 12px;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+  font-size: .95em;
+}
+[data-theme="dark"] .sol-body .given,
+[data-theme="dark"] .sol-body .calc { background: rgba(255,255,255,.04); }
+[data-theme="dark"] .sol-body .final { background: rgba(255,255,255,.06); }
+[data-theme="dark"] .sol-body .step::before { color: #10141b; }
+@media (max-width: 600px) {
+  .sol-body .step { flex-direction: column; gap: 4px; }
+  .sol-body .step::before { align-self: flex-start; }
+}
+
 /* Data tables embedded in past questions */
 .exam-note .qtbl {
   border-collapse: collapse;
