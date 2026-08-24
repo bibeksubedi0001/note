@@ -1854,3 +1854,66 @@ pre code {
 @media print {
   .mnemonic-block { display: none; }
 }
+
+/* ============================================================
+   Detailed measurement sheets (.msheet)
+   Number x L x B x H tables in the building / road estimate chapters.
+   ============================================================ */
+.msheet {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 18px;
+  font-family: "Consolas", "Menlo", "Monaco", monospace;
+  font-size: .8rem;
+  line-height: 1.45;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.msheet th,
+.msheet td {
+  border: 1px solid var(--line);
+  padding: 4px 9px;
+  text-align: left;
+  vertical-align: top;
+}
+.msheet th {
+  background: var(--soft);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: .74rem;
+  letter-spacing: .02em;
+  text-align: center;
+  position: sticky;
+  top: 0;
+}
+.msheet td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.msheet td.expr { text-align: left; font-style: italic; color: var(--muted); }
+.msheet td.rmk {
+  font-family: 'Times New Roman', Times, serif;
+  font-style: italic;
+  color: var(--muted);
+  white-space: normal;
+  min-width: 9rem;
+}
+.msheet tr.grp td { background: var(--accent-light); color: var(--ink); }
+.msheet tr.sub td { background: var(--soft); }
+.msheet tr.tot td {
+  background: var(--accent-light);
+  border-top: 2px solid var(--accent);
+  color: var(--ink);
+}
+.msheet tbody tr:hover td { background: var(--soft); }
+[data-theme="dark"] .msheet th,
+[data-theme="dark"] .msheet tr.grp td,
+[data-theme="dark"] .msheet tr.tot td { background: var(--soft); color: var(--ink); }
+
+/* the same table used for a priced abstract sits inside a solution too */
+.sol-body .msheet { font-size: .76rem; }
+
+@media (max-width: 640px) {
+  .msheet { font-size: .7rem; }
+  .msheet th, .msheet td { padding: 3px 6px; }
+  .msheet td.rmk { display: none; }
+  .msheet thead th:last-child { display: none; }
+}
