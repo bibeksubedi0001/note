@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estimating and Costing (ENCE 351) &mdash; Notes</title>
+<link rel="stylesheet" href="style.css">
+<style id="dark-mode-styles">
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f8f9fb;--surface:#fff;--surface-2:#f1f3f6;--ink:#1a1a2e;--muted:#6b7280;
+      --border:#e5e7eb;--accent:#4f46e5;--accent-light:#eef2ff;--accent-text:#4338ca;
+      --radius:12px;--radius-sm:8px;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.04);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.1);
+      --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',sans-serif;
+      --exam-accent:#f59e0b;--exam-light:#fffbeb;
+      --soon-accent:#9ca3af;
+    }
+    [data-theme="dark"]{
+      --bg:#0f1117;--surface:#1a1b26;--surface-2:#21222e;--ink:#e5e7eb;--muted:#9ca3af;
+      --border:#2d2f3d;--accent:#818cf8;--accent-light:#1e1b4b;--accent-text:#a5b4fc;
+      --exam-accent:#fbbf24;--exam-light:#1a1708;--soon-accent:#6b7280;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow:0 1px 3px rgba(0,0,0,.3),0 4px 12px rgba(0,0,0,.15);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.3);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh}
+    .container{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500;padding:6px 12px;border-radius:var(--radius-sm);transition:all .2s;border:1px solid transparent}
+    .back-link:hover{color:var(--accent);background:var(--accent-light);border-color:var(--border)}
+    .back-link svg{width:16px;height:16px}
+    .page-header{text-align:center;padding:40px 0 32px}
+    .page-header h1{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+    .page-header .subtitle{color:var(--muted);font-size:.95rem;max-width:560px;margin:0 auto 20px}
+    .stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+    .stats div{text-align:center}
+    .stats span{display:block;font-size:1.4rem;font-weight:800;color:var(--accent)}
+    .stats small{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+    .theme-toggle{position:fixed;top:16px;right:16px;z-index:100;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow-sm)}
+    .theme-toggle:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .search-wrap{margin:0 auto 32px;max-width:480px}
+    .search-input{width:100%;padding:10px 16px 10px 40px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--ink);font-size:.9rem;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+    .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+    .section-label{display:flex;align-items:center;gap:10px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:36px 0 14px;padding:0 4px}
+    .section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+    .section-label .section-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+    .section-label .icon-theory{background:var(--accent-light);color:var(--accent)}
+    .section-label .icon-exam{background:var(--exam-light);color:var(--exam-accent)}
+    .chapter-list{list-style:none;display:flex;flex-direction:column;gap:0}
+    .chapter-list li{border-bottom:1px solid var(--border)}
+    .chapter-list li:first-child{border-top:1px solid var(--border)}
+    .chapter-item{display:flex;align-items:center;gap:14px;padding:14px 8px;text-decoration:none;color:var(--ink);transition:all .15s}
+    .chapter-item:hover{padding-left:14px;background:var(--accent-light)}
+    .chapter-item.soon{opacity:.72}
+    .ch-num{font-size:.82rem;font-weight:800;color:var(--accent-text);width:28px;text-align:center;flex-shrink:0}
+    .ch-title{flex:1;font-weight:600;font-size:.92rem;line-height:1.35}
+    .ch-info{display:flex;flex-direction:column;flex:1}
+    .ch-desc{font-size:.78rem;color:var(--muted);line-height:1.4;margin-top:2px}
+    .ch-badge{font-size:.72rem;font-weight:700;color:var(--muted);flex-shrink:0}
+    .badge-theory{color:var(--accent-text)}
+    .badge-exam{color:var(--exam-accent)}
+    .badge-soon{color:var(--soon-accent);border:1px solid var(--border);border-radius:12px;padding:2px 8px}
+    .page-footer{text-align:center;margin-top:48px;padding:20px 0;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem}
+    @media(max-width:600px){
+      .container{padding:16px 14px 40px}
+      .page-header h1{font-size:1.5rem}
+      .stats{gap:16px}
+      .chapter-item{padding:10px 6px;gap:10px}
+    }
+  </style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">&#9790;</button>
+<div class="container">
+  <a href="../index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    All Subjects
+  </a>
+  <header class="page-header">
+    <h1>Estimating and Costing</h1>
+    <p class="subtitle">ENCE 351 &middot; Year III, Part II &mdash; Quantity estimation, rate analysis, valuation and specification writing. Chapter-wise notes with every collected past question placed under the syllabus point it belongs to.</p>
+    <div class="stats">
+      <div><span>8</span><small>Chapters</small></div>
+      <div><span>45</span><small>Lecture Hours</small></div>
+      <div><span>60</span><small>Total Marks</small></div>
+      <div><span>133</span><small>Past Questions</small></div>
+    </div>
+  </header>
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="globalSearch" placeholder="Search chapters..." autocomplete="off">
+  </div>
+
+  <div class="section-label"><span class="section-icon icon-theory">&#9670;</span> Theory Chapters</div>
+  <ul class="chapter-list" id="theoryList">
+    <li><a href="theory/chapter1.html" class="chapter-item" data-search="introduction definitions purpose principle units measurement payment data required is-1200 rules definition importance estimation civil engineering works method earthwork plaster work brick concrete reinforcement wood">
+      <span class="ch-num">01</span>
+      <div class="ch-info"><span class="ch-title">Introduction</span><span class="ch-desc">Definitions, purpose, principle of units, units of measurement and payment, data required, and the IS-1200 rules of measurement.</span></div>
+      <span class="ch-badge badge-theory">4 marks</span>
+    </a></li>
+    <li><a href="theory/chapter2.html" class="chapter-item" data-search="methods quantity estimate long wall short centre line crossing bay taking out quantities method">
+      <span class="ch-num">02</span>
+      <div class="ch-info"><span class="ch-title">Quantity Estimate Methods</span><span class="ch-desc">Long wall&ndash;short wall, centre line, crossing and bay methods of taking out quantities.</span></div>
+      <span class="ch-badge badge-theory">6 marks</span>
+    </a></li>
+    <li><a href="theory/chapter3.html" class="chapter-item" data-search="types estimate approximate detailed revised supplementary complete estimates sub-heads standard formats purpose methods splitting cost building road water supply sanitary works into detail estimation summary quantity analysis rate abstract bill quantities">
+      <span class="ch-num">03</span>
+      <div class="ch-info"><span class="ch-title">Types of Estimate</span><span class="ch-desc">Approximate, detailed, revised, supplementary and complete estimates; sub-heads and the standard estimate formats.</span></div>
+      <span class="ch-badge badge-theory">6 marks</span>
+    </a></li>
+    <li><a href="theory/chapter4.html" class="chapter-item" data-search="detail quantity estimate building works load-bearing framed buildings reinforcement calculation septic tank soak pit underground water two room load bearing single-storey verandah four frame structured calculations">
+      <span class="ch-num">04</span>
+      <div class="ch-info"><span class="ch-title">Building Works Estimate</span><span class="ch-desc">Load-bearing and framed buildings, reinforcement calculation, septic tank with soak pit and underground water tank.</span></div>
+      <span class="ch-badge badge-theory">12 marks</span>
+    </a></li>
+    <li><a href="theory/chapter5.html" class="chapter-item" data-search="detail quantity estimate road bridge irrigation works culverts t-beam well foundation earthwork plain hilly ground pavement canal pipe slab box superstructure abutment pier construction areas estimation work retaining roads lining canals">
+      <span class="ch-num">05</span>
+      <div class="ch-info"><span class="ch-title">Road, Bridge &amp; Irrigation</span><span class="ch-desc">Culverts, T-beam bridge, well foundation, road earthwork in plain and hilly ground, pavement and canal works.</span></div>
+      <span class="ch-badge badge-theory">10 marks</span>
+    </a></li>
+    <li><a href="theory/chapter6.html" class="chapter-item" data-search="analysis rates purpose data factors nepal norms district worked rate building road sanitary items importance required affecting prevailing water supply works">
+      <span class="ch-num">06</span>
+      <div class="ch-info"><span class="ch-title">Analysis of Rates</span><span class="ch-desc">Purpose, data and factors; Nepal norms and district rates; worked rate analysis for building, road and sanitary items.</span></div>
+      <span class="ch-badge badge-theory">8 marks</span>
+    </a></li>
+    <li><a href="theory/chapter7.html" class="chapter-item" data-search="valuation cost versus value factors affecting methods depreciation sinking fund report purpose importance principle concept property properties components">
+      <span class="ch-num">07</span>
+      <div class="ch-info"><span class="ch-title">Valuation</span><span class="ch-desc">Cost versus value, factors affecting value, methods of valuation, depreciation and sinking fund, valuation report.</span></div>
+      <span class="ch-badge badge-theory">6 marks</span>
+    </a></li>
+    <li><a href="theory/chapter8.html" class="chapter-item" data-search="specification purpose types importance specifications write them detailed common items methods writing detail site works structural finishing">
+      <span class="ch-num">08</span>
+      <div class="ch-info"><span class="ch-title">Specification</span><span class="ch-desc">Purpose, types and importance of specifications, how to write them, and detailed specifications for common items.</span></div>
+      <span class="ch-badge badge-theory">8 marks</span>
+    </a></li>
+  </ul>
+
+  <div class="section-label"><span class="section-icon icon-exam">&#9998;</span> Exam Practice</div>
+  <ul class="chapter-list" id="examList">
+    <li><a href="past-questions.html" class="chapter-item" data-search="past questions exam papers collected year wise 2082 bhadra chapterwise">
+      <span class="ch-num" style="color:var(--exam-accent)">&#9998;</span>
+      <div class="ch-info"><span class="ch-title">All Past Questions</span><span class="ch-desc">Every collected question, grouped by chapter and syllabus point, each linking to its notes</span></div>
+      <span class="ch-badge badge-exam">133 questions</span>
+    </a></li>
+  </ul>
+
+  <footer class="page-footer">
+    <p>Estimating and Costing (ENCE 351) &mdash; Final Year 2026</p>
+  </footer>
+</div>
+<script>
+(function(){
+  var t=document.getElementById('themeToggle'),root=document.documentElement;
+  var saved=localStorage.getItem('theme');
+  if(saved)root.setAttribute('data-theme',saved);
+  else if(matchMedia('(prefers-color-scheme:dark)').matches)root.setAttribute('data-theme','dark');
+  t.textContent=root.getAttribute('data-theme')==='dark'?'\u2600':'\u263E';
+  t.addEventListener('click',function(){
+    var d=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',d);localStorage.setItem('theme',d);
+    t.textContent=d==='dark'?'\u2600':'\u263E';
+  });
+})();
+var search=document.getElementById('globalSearch');
+search.addEventListener('input',function(){
+  var q=search.value.toLowerCase();
+  document.querySelectorAll('.chapter-item').forEach(function(el){
+    var text=((el.dataset.search||'')+' '+el.textContent).toLowerCase();
+    var li=el.closest('li')||el;
+    li.style.display=text.indexOf(q)!==-1?'':'none';
+  });
+});
+</script>
+<script src="../common.js"></script>
+</body>
+</html>
