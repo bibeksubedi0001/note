@@ -1403,3 +1403,157 @@ pre code {
 @media print {
   .mnemonic-block { display: none; }
 }
+
+main, main p, main li, main h2, main h3 {
+  overflow-wrap: anywhere;
+}
+main h1, main h2, main h3, main h4, main th, main .ref, nav.toc {
+  letter-spacing: 0;
+}
+main .qa {
+  margin: 28px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+main .qa .q {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+main > p.q {
+  margin: 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 700;
+  line-height: 1.65;
+}
+main > p.q .ref {
+  display: block;
+  margin-top: 6px;
+  font-weight: 400;
+  color: var(--muted);
+}
+main .qa .given, main .qa .ans {
+  border: 0;
+  border-left: 3px solid var(--green);
+  border-radius: 0;
+}
+main .qa .ref {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+main .table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+main .table-wrap:focus-visible, nav a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+main .table-wrap table {
+  min-width: 520px;
+}
+main .question-figure {
+  padding: 12px 0;
+  border: 0;
+}
+main .question-figure img {
+  max-width: 100%;
+  height: auto;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+main .question-figure figcaption {
+  margin-top: 8px;
+  color: var(--muted);
+}
+main .formula {
+  padding: 14px 18px;
+  text-align: left;
+  overflow-wrap: anywhere;
+  border-radius: 0;
+}
+main .formula::before {
+  display: none;
+}
+main .frac {
+  max-width: 100%;
+}
+main .frac .fn, main .frac .fd {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+#chapter-contents {
+  background: transparent;
+  border: 0;
+  border-block: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 18px 0;
+}
+#chapter-contents li, #chapter-contents a {
+  text-align: left;
+}
+body:has(.cm-dm-toggle) > .theme-toggle {
+  display: none;
+}
+#chapter-navigation {
+  gap: 12px;
+  flex-wrap: wrap;
+}
+[id] {
+  scroll-margin-top: 24px;
+}
+@media (max-width: 760px) {
+  .page {
+    width: calc(100% - 8px);
+  }
+  main .figure {
+    padding: 12px 0;
+  }
+  main .formula {
+    padding: 12px;
+  }
+  main .qa .given, main .qa .ans {
+    padding: 10px 12px;
+  }
+  main p, main li {
+    text-align: left;
+  }
+}
+@media print {
+  :root, [data-theme="dark"] {
+    --paper: #fff;
+    --paper-edge: #fff;
+    --ink: #111;
+    --muted: #444;
+    --line: #bbb;
+    --soft: #f3f3f3;
+    --accent: #173954;
+    --svg-text: #111;
+    --svg-sub: #444;
+  }
+  #chapter-contents, #chapter-navigation {
+    display: none;
+  }
+  main .table-wrap {
+    overflow: visible;
+  }
+  main .table-wrap table {
+    min-width: 0;
+    font-size: 10pt;
+  }
+  main .table-wrap th, main .table-wrap td {
+    padding: 5px;
+  }
+  main .exam-note, main .qa {
+    break-inside: auto;
+  }
+  main .cm-reveal, main .figure {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

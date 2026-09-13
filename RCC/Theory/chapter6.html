@@ -25,40 +25,106 @@
     <h1>Serviceability: Deflection &amp; Cracking</h1>
     <div class="chapter-meta">
       <span class="meta-badge topic">4 Hours</span>
-      <span class="meta-badge exam">5 Past Questions</span>
+      <span class="meta-badge exam">6 Question Entries</span>
     </div>
   </header>
   <main>
+<nav class="toc" id="chapter-contents" aria-label="Chapter contents"><h2>Chapter Contents</h2><ol><li><a href="#elastic-sections">6.1 Elastic Theory: Uncracked, Cracked and Partially Cracked Sections</a></li>
+<li><a href="#time-effects">6.2 Short-Term and Long-Term Deflection</a></li>
+<li><a href="#section-6-3">6.3 Control of Deflection in Design</a></li>
+<li><a href="#section-6-4">6.4 Control of Cracking in Design</a></li></ol></nav>
+
+
+    <p>Serviceability is the ability of a structure to remain suitable for normal use under working loads. A beam can have adequate ultimate strength and still deflect enough to crack a partition, damage a finish or cause ponding. Flexural cracking is expected in ordinary RCC; the design objective is to control its extent and width, not to assume that the concrete remains uncracked.</p>
+
+    <h2 id="elastic-sections">6.1 Elastic Theory: Uncracked, Cracked and Partially Cracked Sections</h2>
+    <h3>Uncracked section</h3>
+    <p>At low moment, both the compression and tension zones of concrete participate. The strain varies linearly through the depth, and the neutral axis lies near the centroid of the transformed section. For a rectangular gross concrete section, I<sub>g</sub> = bD&sup3;/12. If reinforcement is explicitly transformed, use the short-term modular ratio &alpha;<sub>e</sub> = E<sub>s</sub>/E<sub>c</sub>, adding (&alpha;<sub>e</sub> &minus; 1)A<sub>s</sub> to the concrete area already included at the bar level.</p>
+    <p>The estimated cracking moment is <strong>M<sub>cr</sub> = f<sub>cr</sub>I<sub>g</sub>/y<sub>t</sub></strong>, where y<sub>t</sub> is the distance to the extreme tensile face and f<sub>cr</sub> = 0.7&radic;f<sub>ck</sub> N/mm&sup2; is the IS 456 estimate of flexural tensile strength. This is a cracking estimate, not a permitted tensile design stress for ultimate flexure.</p>
+    <h3>Cracked section</h3>
+    <p>Once tensile cracking occurs, concrete at the crack is neglected in tension. For a singly reinforced rectangular section under pure bending, force equilibrium and strain compatibility give:</p>
+    <p class="formula">bx&sup2;/2 = &alpha;<sub>e</sub>A<sub>st</sub>(d &minus; x)<br>I<sub>cr</sub> = bx&sup3;/3 + &alpha;<sub>e</sub>A<sub>st</sub>(d &minus; x)&sup2;<br>f<sub>c</sub> = Mx/I<sub>cr</sub>; &nbsp; f<sub>s</sub> = &alpha;<sub>e</sub>M(d &minus; x)/I<sub>cr</sub></p>
+    <p>The first equation locates the neutral axis; the second is the second moment of area about that neutral axis. The reduction from I<sub>g</sub> to I<sub>cr</sub> increases curvature M/(E<sub>c</sub>I). Do not use the WSM code modular ratio 280/(3&sigma;<sub>cbc</sub>) interchangeably with E<sub>s</sub>/E<sub>c</sub> in a short-term deflection calculation: they serve different idealizations.</p>
+    <h3>Partially cracked member and tension stiffening</h3>
+    <p>The moment changes along a beam, so one region may be cracked while another is uncracked. Between cracks, bond transfers some tension back to the concrete. This contribution is called <strong>tension stiffening</strong>. Consequently, an effective flexural rigidity usually lies between the gross-section and fully cracked values. An analysis using I<sub>g</sub> throughout can underestimate deflection; one using I<sub>cr</sub> everywhere can overestimate it. IS 456 Annex C provides the applicable effective-stiffness procedure; the selected method must account for reinforcement, cracking, loading and support conditions.</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Chapter 6 table 1"><table>
+      <thead><tr><th>Stage</th><th>Tension concrete</th><th>Stiffness and consequence</th></tr></thead>
+      <tbody>
+        <tr><td>Before cracking</td><td>Participates approximately elastically</td><td>High rigidity; small curvature for a given moment.</td></tr>
+        <tr><td>At a flexural crack</td><td>Neglected across the crack</td><td>Steel transfers tensile force; neutral axis moves toward compression.</td></tr>
+        <tr><td>Between cracks</td><td>Carries some tension through bond</td><td>Effective rigidity exceeds that of an entirely cracked idealization.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="time-effects">6.2 Short-Term and Long-Term Deflection</h2>
+    <p><strong>Short-term deflection</strong> is the immediate response to load. It depends on the load arrangement, span, boundary conditions and the member's effective rigidity. For a simply supported prismatic beam with uniform rigidity and a uniformly distributed service load, &delta; = 5wL&sup4;/(384EI); for a central point load, &delta; = PL&sup3;/(48EI). For a cantilever under a full-length UDL, &delta; = wL&sup4;/(8EI). These expressions are not interchangeable between support conditions.</p>
+    <p><strong>Long-term deflection</strong> develops with time under sustained loading and imposed strains. Its main components are:</p>
+    <ol>
+      <li><strong>Creep:</strong> concrete strain increases under sustained stress. The creep coefficient is the ratio of creep strain to initial elastic strain. In a simplified sustained-load calculation, an effective modulus E<sub>c,eff</sub> = E<sub>c</sub>/(1 + &phi;) represents the reduction of stiffness. It must not be applied indiscriminately to transient live load.</li>
+      <li><strong>Shrinkage curvature:</strong> concrete shortens without external loading. Unequal restraint from top and bottom reinforcement produces curvature as well as axial shortening.</li>
+      <li><strong>Further cracking and construction history:</strong> early removal of formwork, temporary stacking loads, the age at loading and the sequence of adding finishes affect the eventual deflection.</li>
+    </ol>
+    <p>Separate the immediate deflection from additional creep and shrinkage effects. Keep track of the date when brittle finishes or partitions are installed: it is the <em>additional deflection after that date</em> that is compared with the finish-damage limit. Compression reinforcement helps by restraining creep and shrinkage deformation, but its effect depends on its area and position.</p>
+    <div class="table-wrap" tabindex="0" role="region" aria-label="Chapter 6 table 2"><table>
+      <thead><tr><th>Short-Term</th><th>Long-Term</th></tr></thead>
+      <tbody>
+        <tr><td>Develops when a load is applied.</td><td>Accumulates under sustained loading and shrinkage.</td></tr>
+        <tr><td>Uses the relevant instantaneous concrete modulus and cracked-section stiffness.</td><td>Requires creep/shrinkage assumptions, sustained load and age at loading.</td></tr>
+        <tr><td>Changes promptly when a transient load is removed.</td><td>Contains time-dependent and partly irreversible deformation.</td></tr>
+      </tbody>
+    </table></div>
 
     <!-- ═══ 6.3 ═══ -->
-    <h2>6.3 Control of Deflection in Design <span class="year-tag">2065</span></h2>
+    <h2 id="section-6-3">6.3 Control of Deflection in Design <span class="year-tag">2065</span></h2>
 
     <div class="exam-note">
       <h4>PAST EXAM QUESTIONS:</h4>
       <ol>
-        <li>How can deflection be controlled in a beam? Explain briefly. [4] <em>(2065 Shrawan, Q2a)</em></li>
-        <li>Principle of the sufficient-stiffness method to control deflection; how the deflection of a RC flexure member is controlled. [6] <em>(2065 Kartik, Q3a)</em></li>
-      </ol>
+<li id="question-s6-3-1">How can deflection be controlled in a beam? Explain in brief. [4] <em>(2065 Shrawan, Q2a)</em></li>
+<li id="question-s6-3-2">What is the principle of the sufficient-stiffness method to control deflection? How is the deflection of a RC flexure member controlled by this method? [6] <em>(2065 Kartik, Q3a)</em></li>
+<li id="question-s6-3-3">Define the limit state of serviceability. Differentiate between short-term and long-term deflection. [4] <em>(2082 Baishakh, Q5a)</em></li>
+</ol>
       <p style="margin:8px 0 0;font-size:.9em"><em>Deflection checks are also embedded in every beam &amp; slab design &mdash; see Ch 4 (2079, 2072) and Ch 7.</em></p>
     </div>
 
-    <p>IS 456 limits deflection to keep a member serviceable: the <strong>total deflection</strong> &le; <span class="frac"><span class="fn">span</span><span class="fd">250</span></span>, and the deflection occurring <em>after</em> construction (which could damage finishes/partitions) &le; <span class="frac"><span class="fn">span</span><span class="fd">350</span></span> or 20 mm, whichever is less.</p>
-    <p>The practical <strong>sufficient-stiffness (span/depth) method</strong> avoids an explicit deflection calculation: deflection is kept within limits by controlling the <strong>span-to-effective-depth ratio</strong>. The basic ratios are <strong>7</strong> (cantilever), <strong>20</strong> (simply supported) and <strong>26</strong> (continuous), each multiplied by modification factors k<sub>t</sub> (tension steel), k<sub>c</sub> (compression steel) and k<sub>f</sub> (flanged section). Keeping the actual <span class="frac"><span class="fn">span</span><span class="fd">d</span></span> below the allowable value guarantees adequate stiffness.</p>
-    <p><strong>Other ways to reduce deflection:</strong> increase the depth (most effective, EI &prop; D&sup3;), add <strong>compression steel</strong> (reduces long-term creep deflection), use a higher concrete grade, reduce the span, or provide a camber / prestress.</p>
+    <p>IS 456 limits final deflection due to all loads, including temperature, creep and shrinkage, to normally <strong>L/250</strong>. Deflection occurring <em>after the erection of partitions and application of finishes</em> is normally limited to <strong>the smaller of L/350 and 20 mm</strong>. The second limit does not mean the complete deflection from the initially unloaded position.</p>
+    <p>The <strong>sufficient-stiffness method</strong> is a deemed-to-satisfy check within the scope of the code provisions. It limits span divided by <em>effective depth</em>, not overall depth. Basic ratios for spans up to 10 m are <strong>7 for cantilevers, 20 for simply supported members and 26 for continuous members</strong>. Modify the ratio for tension reinforcement, compression reinforcement and flanged sections as applicable. For spans over 10 m, the code's span correction applies; cantilevers require a calculated deflection check.</p>
+    <h3>Step-by-step span/depth check</h3>
+    <ol>
+      <li>Determine the effective span and actual effective depth from the selected bars and cover.</li>
+      <li>Use the basic ratio matching the real support condition. Support on four sides or corner restraint does not, by itself, prove continuity.</li>
+      <li>Calculate the tension steel percentage p<sub>t</sub> = 100A<sub>st,provided</sub>/(bd).</li>
+      <li>Estimate service steel stress using the code expression f<sub>s</sub> = 0.58f<sub>y</sub>A<sub>st,required</sub>/A<sub>st,provided</sub>, where applicable.</li>
+      <li>Read the tension modification factor from the relevant IS 456 chart using both p<sub>t</sub> and f<sub>s</sub>. Read any applicable compression/flange factor separately.</li>
+      <li>Compare L/d with the modified permitted ratio. Record the factors actually used; do not claim a pass merely because L/d looks reasonable.</li>
+      <li>If the check fails, increase depth or revise the reinforcement/support arrangement and repeat the strength, self-weight and serviceability calculations. Alternatively, carry out an explicit deflection calculation.</li>
+    </ol>
+    <h3>Worked check: what can be concluded before reading the chart?</h3>
+    <p class="q" data-question-kind="practice"><strong>Practice question.</strong> A simply supported slab strip is 1 m wide, has an effective span of 4.0 m and an effective depth of 160 mm, and uses Fe415 steel. The required tension reinforcement is 400 mm&sup2;/m, while the provided tension reinforcement is 500 mm&sup2;/m. There is no compression reinforcement. Calculate the span-to-effective-depth ratio, the percentage of tension reinforcement and the estimated service stress in the steel. Determine the minimum tension-reinforcement modification factor needed to satisfy the deflection criterion, and state the limits on final deflection and deflection after the construction of partitions and finishes. Explain what must be checked in the code chart before declaring the slab satisfactory.</p>
+    <p class="formula">L/d = 4000/160 = 25<br>p<sub>t</sub> = 100 &times; 500/(1000 &times; 160) = 0.3125%<br>f<sub>s</sub> = 0.58 &times; 415 &times; 400/500 = 192.56 N/mm&sup2;<br>Required tension modification factor = 25/20 = 1.25</p>
+    <p><strong>Conclusion:</strong> read the actual factor at p<sub>t</sub> = 0.3125% and f<sub>s</sub> = 192.56 N/mm&sup2;. The deemed-to-satisfy check passes only if that factor is at least 1.25. This calculation deliberately does not invent a chart ordinate. For L = 4.0 m, the final-deflection limit is 16.0 mm, and the post-finish limit is 11.43 mm.</p>
+    <h3>Practical control measures and their mechanisms</h3>
+    <ul>
+      <li><strong>Increase depth:</strong> this increases the section's second moment of area strongly and reduces curvature; include the resulting extra dead load.</li>
+      <li><strong>Improve the support system or reduce span:</strong> continuity and shorter spans can reduce deflection, provided the corresponding negative moments are reinforced.</li>
+      <li><strong>Provide suitable reinforcement:</strong> additional tension steel reduces service steel stress; compression steel helps control long-term deformation.</li>
+      <li><strong>Control construction loading and curing:</strong> avoid loading immature concrete and prevent unnecessary early cracking.</li>
+      <li><strong>Use camber carefully:</strong> camber can compensate for an expected displacement but does not increase stiffness, remove creep or prove a deflection check.</li>
+    </ul>
 
     <!-- ═══ 6.4 ═══ -->
-    <h2>6.4 Control of Cracking in Design <span class="year-tag">2076</span><span class="year-tag">2073</span></h2>
+    <h2 id="section-6-4">6.4 Control of Cracking in Design <span class="year-tag">2076</span><span class="year-tag">2073</span></h2>
 
     <div class="exam-note">
       <h4>PAST EXAM QUESTIONS:</h4>
       <ol>
-        <li>Describe the method of controlling deflection and cracking in RCC structures. [2+4] <em>(2076 Chaitra, Q2a)</em></li>
-        <li>Methods of controlling deflection and crack width; empirical formula for the design surface crack width. [3+2] <em>(2076 Ashwin, Q5c)</em></li>
-        <li>Discuss the methods of crack control as per IS 456:2000. [5] <em>(2073 Shrawan, Q3b)</em></li>
-      </ol>
+<li id="question-s6-4-1">Describe the method of controlling deflection and cracking in RCC structures. [2+4] <em>(2076 Chaitra, Q2a)</em></li>
+<li id="question-s6-4-2">Describe the methods of controlling deflection and crack width in RCC structures. Describe the empirical formula for calculating the design surface crack width. [3+2] <em>(2076 Ashwin, Q5c)</em></li>
+<li id="question-s6-4-3">Discuss the methods of crack control as per IS 456:2000 in RC structures. [5] <em>(2073 Shrawan, Q3b)</em></li>
+</ol>
     </div>
 
-    <p>Cracking is unavoidable in RC (concrete is weak in tension) but must be kept fine so it does not spoil appearance or admit moisture that corrodes the steel. The permissible <strong>surface crack width</strong> is <strong>0.3 mm</strong> for mild exposure (0.2 mm / 0.1 mm for more severe exposure).</p>
+    <p>Cracks may arise from flexure, shear, torsion, restraint of shrinkage/temperature movement, settlement or corrosion. A flexural crack calculation is not an assessment of every possible crack mechanism. Under IS 456, surface crack width is generally limited to <strong>0.3 mm</strong> where cracking is not harmful; <strong>0.2 mm</strong> is suggested where tensile-zone exposure makes cracking harmful, and <strong>0.1 mm</strong> for particularly aggressive environments. These are not a universal one-to-one table of exposure classes, and water-retaining structures require their own provisions.</p>
     <p><strong>Methods of crack control (IS 456):</strong></p>
     <ul>
       <li>Use <strong>several small-diameter bars</strong> well distributed rather than a few large bars &mdash; more bars = closer, finer cracks.</li>
@@ -70,7 +136,25 @@
     <p style="text-align:center">W<sub>cr</sub> = <span class="frac"><span class="fn">3&thinsp;a<sub>cr</sub>&thinsp;&epsilon;<sub>m</sub></span><span class="fd">1 + 2(a<sub>cr</sub> &minus; c<sub>min</sub>)/(D &minus; x)</span></span></p>
     <p>where a<sub>cr</sub> = distance from the point to the nearest bar surface, c<sub>min</sub> = minimum cover, &epsilon;<sub>m</sub> = average strain at the level considered (net of a tension-stiffening allowance), D = overall depth and x = neutral-axis depth.</p>
 
-  </main>
+    <h3>Applying the crack-width expression</h3>
+    <ol>
+      <li>Analyse the cracked section at the appropriate <strong>service moment</strong>, not at 1.5 times that moment.</li>
+      <li>Find the neutral-axis depth and steel stress. With linear strain compatibility, the strain at a level a&prime; from the compression face is &epsilon;<sub>1</sub> = (f<sub>s</sub>/E<sub>s</sub>)(a&prime; &minus; x)/(d &minus; x).</li>
+      <li>Determine the mean strain &epsilon;<sub>m</sub> including the tension-stiffening allowance in Annex F. The local cracked-section strain and mean strain are not automatically equal.</li>
+      <li>Locate the point at which the crack is assessed. Find a<sub>cr</sub> geometrically to the nearest <em>bar surface</em>; it is not simply the vertical cover when the point lies between widely spaced bars.</li>
+      <li>Calculate W<sub>cr</sub>, compare with the limit appropriate to the structure and environment, and revise spacing, diameter, steel stress or member depth if necessary.</li>
+    </ol>
+    <h3>Worked substitution for a surface crack</h3>
+    <p class="q" data-question-kind="practice"><strong>Practice question.</strong> A service-load analysis of a reinforced-concrete member gives an overall depth D = 450 mm, neutral-axis depth x = 150 mm and mean strain &epsilon;<sub>m</sub> = 0.00075 at the surface being assessed. The distance from that surface point to the nearest reinforcement surface is a<sub>cr</sub> = 50 mm, and the minimum cover is c<sub>min</sub> = 30 mm. Calculate the design surface crack width using the IS 456 empirical expression, and compare the result with crack-width limits of 0.3 mm, 0.2 mm and 0.1 mm.</p>
+    <p class="formula">W<sub>cr</sub> = (3 &times; 50 &times; 0.00075) / [1 + 2(50 &minus; 30)/(450 &minus; 150)]<br>= 0.1125/1.13333 = <strong>0.0993 mm</strong></p>
+    <p>The calculated value is below 0.2 mm and 0.3 mm. It is very close to 0.1 mm, so rounded input values should not be used to claim a robust margin for an aggressive environment. This example demonstrates the substitution; the mean strain was supplied, not independently derived for a particular beam.</p>
+    <h3>Additional construction and detailing measures</h3>
+    <p>Good curing reduces early drying shrinkage; appropriate construction and movement joints reduce restraint; consistent cover and bar supports prevent accidental loss of effective depth. Closely spaced, well-anchored reinforcement distributes cracking. Never reduce cover below durability or fire requirements simply to reduce the calculated surface crack width. Deep beams need the required side-face steel, and shear/torsion cracks require the corresponding transverse reinforcement, not just extra bottom flexural bars.</p>
+    <h3>Answer structure for the repeated examination questions</h3>
+    <p>For the combined deflection-and-cracking question, first state the two deflection limits and explain the modified L/d method. Then explain why RCC cracks, give the relevant crack-width limits, list the reinforcement and construction controls, and define every symbol in the empirical formula if asked. For the 2082 short-term/long-term question, distinguish immediate elastic response from sustained-load creep and shrinkage, rather than merely saying that one happens earlier.</p>
+
+  <nav class="chapter-nav" id="chapter-navigation" aria-label="Chapter navigation"><a href="chapter5.html">&larr; Chapter 5</a><a href="../index.html">RCC Index</a><a href="chapter7.html">Chapter 7 &rarr;</a></nav>
+</main>
 </div>
 
 <script src="../../common.js"></script>

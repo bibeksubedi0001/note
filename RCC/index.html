@@ -33,7 +33,7 @@
     .back-link:hover{color:var(--accent);background:var(--accent-light);border-color:var(--border)}
     .back-link svg{width:16px;height:16px}
     .page-header{text-align:center;padding:40px 0 32px}
-    .page-header h1{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+    .page-header h1{font-size:2rem;font-weight:800;letter-spacing:0;margin-bottom:6px}
     .page-header .subtitle{color:var(--muted);font-size:.95rem;max-width:520px;margin:0 auto 20px}
     .stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
     .stats div{text-align:center}
@@ -41,6 +41,7 @@
     .stats small{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
     .theme-toggle{position:fixed;top:16px;right:16px;z-index:100;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:var(--shadow-sm)}
     .theme-toggle:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+    body:has(.cm-dm-toggle)>.theme-toggle{display:none}
     .search-wrap{margin:0 auto 32px;max-width:480px}
     .search-input{width:100%;padding:10px 16px 10px 40px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--ink);font-size:.9rem;font-family:var(--font);outline:none;transition:border-color .2s,box-shadow .2s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
     .search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
@@ -100,16 +101,15 @@
     <p class="subtitle">ENCE 352 &mdash; Limit State Design of reinforced concrete beams, slabs, columns, footings and seismic detailing</p>
     <div class="stats">
       <div><span>11</span><small>Chapters</small></div>
-      <div><span>176</span><small>Past Questions</small></div>
-      <div><span>18</span><small>Exam Papers</small></div>
+      <div><span>211</span><small>Question Entries</small></div>
+      <div><span>19</span><small>Recent Papers</small></div>
     </div>
   </header>
   <div class="search-wrap">
-    <input type="text" class="search-input" id="globalSearch" placeholder="Search chapters, solutions, past questions..." autocomplete="off">
+    <input type="search" class="search-input" id="globalSearch" aria-label="Search RCC chapters and question banks" placeholder="Search RCC topics..." autocomplete="off">
   </div>
 
-  <div class="section-label"><span class="section-icon icon-theory">&#9670;</span> Chapters &mdash; Notes + Past Questions</div>
-  <div style="font-size:.85rem;color:var(--muted);padding:0 4px 10px">Every exam topic shows its past-board questions first, then the notes that answer them.</div>
+  <div class="section-label"><span class="section-icon icon-theory">&#9670;</span> Detailed Notes &amp; Full Questions</div>
   <ul class="chapter-list" id="theoryList">
     <li><a href="Theory/chapter1.html" class="chapter-item" data-search="rc structures design methods wsm lsm working stress limit state characteristic strength load steel reinforcement earthquake">
       <span class="ch-num">01</span>
@@ -138,7 +138,7 @@
     </a></li>
     <li><a href="Theory/chapter6.html" class="chapter-item" data-search="serviceability deflection cracking span depth crack width control">
       <span class="ch-num">06</span>
-      <div class="ch-info"><span class="ch-title">Serviceability: Deflection &amp; Cracking</span><span class="ch-desc">Control of deflection and cracking</span></div>
+      <div class="ch-info"><span class="ch-title">Serviceability: Deflection &amp; Cracking</span><span class="ch-desc">Cracked stiffness, creep, shrinkage, deflection and crack-width checks</span></div>
       <span class="ch-badge badge-theory">4 Hrs</span>
     </a></li>
     <li><a href="Theory/chapter7.html" class="chapter-item" data-search="slab one-way two-way staircase waist torsion corner restrained panel">
@@ -151,14 +151,14 @@
       <div class="ch-info"><span class="ch-title">Columns (Compression Members)</span><span class="ch-desc">Interaction diagrams, short &amp; slender, uniaxial/biaxial</span></div>
       <span class="ch-badge badge-theory">8 Hrs</span>
     </a></li>
-    <li><a href="Theory/chapter9.html" class="chapter-item" data-search="footing isolated combined mat raft punching shear bearing spread">
+    <li><a href="Theory/chapter9.html" class="chapter-item" data-search="footing isolated combined mat raft pile caps punching shear bearing spread">
       <span class="ch-num">09</span>
-      <div class="ch-info"><span class="ch-title">Design of Footings</span><span class="ch-desc">Spread, isolated, combined &amp; mat footings, punching shear</span></div>
+      <div class="ch-info"><span class="ch-title">Design of Footings</span><span class="ch-desc">Spread, isolated, combined and mat foundations; pile caps and punching shear</span></div>
       <span class="ch-badge badge-theory">6 Hrs</span>
     </a></li>
     <li><a href="Theory/chapter10.html" class="chapter-item" data-search="detailing curtailment splicing bar bending schedule lap weld coupler">
       <span class="ch-num">10</span>
-      <div class="ch-info"><span class="ch-title">Reinforcement Detailing</span><span class="ch-desc">Good detailing, curtailment, splicing, bar bending schedule</span></div>
+      <div class="ch-info"><span class="ch-title">Reinforcement Detailing</span><span class="ch-desc">Cover, curtailment, laps, anchorage, mechanical splices and worked BBS</span></div>
       <span class="ch-badge badge-theory">4 Hrs</span>
     </a></li>
     <li><a href="Theory/chapter11.html" class="chapter-item" data-search="earthquake ductile detailing is13920 ductility confining beam column joint">
@@ -172,13 +172,13 @@
   <ul class="chapter-list" id="examList">
     <li><a href="past_questions.html" class="chapter-item" data-search="past questions chapterwise exam papers 2069 2082 bs board old questions">
       <span class="ch-num" style="color:var(--exam-accent)">PQ</span>
-      <div class="ch-info"><span class="ch-title">Chapterwise Past Exam Questions</span><span class="ch-desc">Every board question (2069&ndash;2082 BS) organised chapterwise</span></div>
-      <span class="ch-badge badge-exam">18 Papers</span>
+      <div class="ch-info"><span class="ch-title">Chapterwise Past Exam Questions</span><span class="ch-desc">Full statements, source figures and corrected data, including 2082 Baishakh</span></div>
+      <span class="ch-badge badge-exam">211 Entries</span>
     </a></li>
     <li><a href="solved_past_questions.html" class="chapter-item" data-search="solved past questions answer key worked theory numerical answers">
       <span class="ch-num" style="color:var(--exam-accent)">A</span>
-      <div class="ch-info"><span class="ch-title">Solved Past Questions (Answer Key)</span><span class="ch-desc">Worked answers to theory &amp; numerical questions</span></div>
-      <span class="ch-badge badge-exam">Worked</span>
+      <div class="ch-info"><span class="ch-title">Earlier Concise Answer Key</span><span class="ch-desc">Archived summary; expanded chapters contain the corrected design data</span></div>
+      <span class="ch-badge badge-exam">Archive</span>
     </a></li>
   </ul>
 
@@ -186,6 +186,7 @@
   <div class="info-card">
     <p><strong>Course:</strong> Design of RCC Structures (ENCE 352) &nbsp;&bull;&nbsp; <strong>Year / Part:</strong> III / II</p>
     <p><strong>Credits:</strong> Lecture 4 &nbsp;&bull;&nbsp; Tutorial 2 &nbsp;&bull;&nbsp; Practical 2 &nbsp;&bull;&nbsp; 11 Chapters &bull; 60 Hours &bull; 60 Marks</p>
+    <p><strong>Question coverage:</strong> 211 chapter entries include cross-listed and legacy questions; they are not 211 unique examination questions. Nineteen recent sittings from 2069&ndash;2082 are supplemented by older papers. Historical CE 702 papers use an 80-mark format, while the supplied ENCE 352 syllabus allocates 60 marks.</p>
     <p><strong>Objective:</strong> To equip students to design building elements using reinforced concrete by the limit state method &mdash; using structural analysis results, applying relevant code provisions, detailing reinforcement, and covering seismic-code requirements for ductile detailing.</p>
     <p style="margin-bottom:0"><strong>Codes &amp; References:</strong> IS 456:2000, IS 13920, IS 875, IS 1893, SP 16; Jain (Limit State Design), Pillai &amp; Menon, Dayaratnam, Agrawal &amp; Shrikhande.</p>
   </div>

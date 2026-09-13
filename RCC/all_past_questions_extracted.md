@@ -1,376 +1,555 @@
-# Design of RCC Structures (ENCE 352) — Chapterwise Past Exam Questions
+# Design of RCC Structures: Detailed Chapterwise Question Bank
 
-**IOE, Year III / Part II · 2069–2082 BS**
+Question wording is expanded for readability from the supplied exam collections. Source-confirmed corrections and the previously omitted 2082 Baishakh paper are included. Older CE 702 papers are arranged against the current ENCE 352 syllabus. Entries may be cross-listed; an entry count is not a count of unique exam questions.
 
-Compiled from `Past Questions.pdf` and `past Questuons 2.pdf`, merged and de-duplicated, then
-arranged by chapter and subchapter. Numerical questions are kept with full data. Questions that
-span multiple topics are cross-listed (`→ also x.y`). Marks in `[...]`, exam sitting in `(Year Session, Qno)`.
+Detailed notes: [RCC index](index.html). Source figures and remaining source limitations are included with their questions.
 
-**Papers covered (current syllabus):** 2082 Bhadra, 2081 Bhadra, 2081 Baishakh, 2080 Bhadra,
-2080 Baishakh, 2079 Bhadra, 2078 Bhadra, 2076 Chaitra, 2076 Ashwin, 2075 Chaitra, 2075 Ashwin,
-2074 Chaitra, 2074 Ashwin, 2073 Shrawan, 2072 Chaitra, 2072 Kartik, 2071 Chaitra, 2069 Chaitra.
-**Legacy (older syllabus, partly out of scope):** 2068 Baishakh, 2067 Ashadh, 2065 Shrawan, 2065 Kartik, 2056 Bhadra.
+## Chapter 1: RC Structures & Design Methods 3 Hours
 
----
+### 1.1 Concept of RCC: Materials, Advantages & Limitations
 
-# CHAPTER 1 — RC Structures & Design Methods [3 Hrs · 3 Marks]
+1. Describe the requirement of steel as reinforcement in RCC structures. Explain the moment of resistance of a doubly reinforced section. Derive the formula. [2+2+4] (2076 Chaitra, Q1a) → also 4.2
 
-## 1.1 Concept of RCC: materials, advantages, limitations
-
-1. Describe the requirement of steel as reinforcement in RCC structures. [Part] (2076 Chaitra, Q1a)
 2. Write the characteristics of steel reinforcing bars used in reinforced concrete structures. [5] (2065 Kartik, Q1a)
 
-## 1.2 Design methods of RCC structures
+### 1.2 Design Methods of RCC Structures
 
 1. Explain different types of design methods used in reinforced concrete structure design. [6] (2069 Chaitra, Q1a)
-2. Explain how the limit state method of design differs from the working stress method. [4] (2081 Bhadra, Q1a)
+
+2. Explain how the limit state method of design differs from the working stress method of design. [4] (2081 Bhadra, Q1a)
+
 3. Describe the difference between working stress and limit state design. Explain characteristic strength and load. [2+2] (2079 Bhadra, Q1a)
+
 4. Differentiate between working stress and limit state methods. [5] (2074 Chaitra, Q3a)
+
 5. Why is the limit state method better than the working stress method? Explain in brief. [5] (2072 Chaitra, Q2b)
-6. Discuss in detail WSM vs LSM with advantages/disadvantages. Compare balanced, under- and over-reinforced sections in LSM and WSM. [8] (2071 Chaitra, Q4a)
-7. Compare the factor of safety (WSM) and partial safety factor (LSM) for concrete and steel. [4] (2069 Chaitra, Q5a)
 
-## 1.3 Characteristic strengths and loads
+6. Discuss in detail the working stress method versus the limit state method of design with their respective advantages and disadvantages. Compare balanced, under-reinforced and over-reinforced sections in limit state and working stress design methods. [8] (2071 Chaitra, Q4a)
 
-1. Define characteristic loads and characteristic strength. Discuss the stress-strain relation for steel and concrete in LSM and WSM. [1+1+2+2] (2078 Bhadra, Q1a)
-2. Explain characteristic strength and load. [2+2] (2079 Bhadra, Q1a)
-3. How do you consider earthquake loads while designing RCC structures? Explain briefly. [4] (2072 Kartik, Q2a) → also 11.2
+7. Compare the factor of safety used in the Working Stress Method and the partial safety factor used in the Limit State Method for concrete and steel. [4] (2067 Ashadh, Q5a)
 
-## 1.4 Design process and basis for design
+### 1.3 Characteristic Strengths and Loads
 
-1. A RC column (400×600 mm, effective height 3.6 m) carries DL 250 kN, LL 100 kN and wind-induced horizontal load 5 kN/m. Calculate all loading combinations as per IS 456. [12] (2067 Ashadh, Q1a)
+1. Define characteristic loads and characteristic strength. Discuss the stress-strain relation for steel and concrete in the Limit State Method (LSM) and Working Stress Method (WSM). [1+1+2+2] (2078 Bhadra, Q1a)
 
-## 1.5 Overview of relevant codes
+2. Describe the difference between working stress and limit state design. Explain characteristic strength and load. [2+2] (2079 Bhadra, Q1a)
 
-- IS 456, IS 1893, IS 13920, IS 875, SP 16 recur as the design basis; no standalone question.
+3. How do you consider earthquake loads while designing RCC structures? Explain briefly. [4] (2072 Kartik, Q2a)
 
----
+4. Explain characteristic strengths and loads. [3] (2082 Baishakh, Q1a)
 
-# CHAPTER 2 — Working Stress Method [4 Hrs · 3 Marks]
+### 1.4 Design Process and Basis for Design
 
-## 2.2 Working load and permissible stresses
+1. A reinforced-concrete column of a moment-resisting frame has cross-section 400 mm × 600 mm and effective height 3.6 m. It carries dead load 250 kN, live load 100 kN and an induced horizontal wind load of 5 kN/m. Calculate loading values for all possible loading combinations as per IS 456. [8] (2067 Ashadh, Q1a)
 
-1. Using WSM, design a rectangular section 300×450 mm carrying 30 kN/m over an effective span of 3.6 m. Mild steel, M20. [4] (2071 Chaitra, Q1a)
+### 1.5 Overview of Relevant Codes
 
-## 2.4 Types of RC beam and RC sections
+1. Codes IS 456, IS 1893, IS 13920, IS 875 and SP 16 recur across papers as the design basis, but no standalone question is set on this subtopic.
+
+## Chapter 2: Working Stress Method 4 Hours
+
+### 2.2 Working Load and Permissible Stresses
+
+1. Using the working stress method, design a rectangular section 300 mm wide and 450 mm deep carrying 30 kN/m load over an effective span of 3.6 m. Use mild steel and M20 concrete. [4] (2071 Chaitra, Q1a)
+
+### 2.4 Types of Reinforced Concrete Beam and RC Sections
 
 1. What are the different types of RCC section of a rectangular beam? Explain with neat sketches. [4] (2082 Bhadra, Q1a)
-2. Discuss different types of flexural sections by amount of tension reinforcement. Describe failure modes. [8] (2080 Bhadra, Q1a)
 
-## 2.5 Design / moment of resistance of singly-reinforced rectangular beam (WSM)
+2. Discuss different types of flexural sections according to the amount of reinforcement in the tension zone. Describe the different failure modes in the above-mentioned sections. [8] (2080 Bhadra, Q1a)
 
-1. RC beam 230 wide, 400 deep (eff 380), Ast 580 mm², permissible 5 & 140 N/mm². Find MOR and actual stresses. [6] (2080 Baishakh, Q1b)
-2. Beam 350 wide, 650 eff depth, five 25 mm tension bars; service moment 150 kNm. Check safety and stresses at failure (WSM). M25/Fe415. [8] (2082 Bhadra, Q1b)
-3. Beam 300 wide, 550 eff depth, 4-12 mm bars. Determine MOR (WSM). M20/Fe415. [8] (2081 Bhadra, Q2a)
-4. Beam 300×550 eff depth, 4-16 mm tension. Stress in top concrete fibre and tension steel for moment 50 kN-m; permissible 5 & 140 MPa. M20/Fe415. [9] (2081 Baishakh, Q1b)
-5. Determine Ast and MOR for RC beam 250×450. M15 concrete, mild steel (WSM). [8] (2080 Bhadra, Q1b)
-6. RCC beam 25 cm wide, 60 cm deep, 4-20 mm tension (5 cm above bottom). Determine UDL over span 6.10 m; permissible 7 & 230 MPa; use modular ratio. [10] (2078 Bhadra, Q1b)
-7. Calculate tensile reinforcement for RC beam 230×425 overall to carry 64 kNm at service. M20/Fe500 (WSM). [8] (2076 Chaitra, Q1b)
-8. Beam 300×500, 4-25 mm tension at 50 cover, span 5 m. Total UDL incl self-wt (WSM). M20/Fe415 TOR. [8] (2076 Ashwin, Q1a)
-9. Beam 250×450, 4-16 mm tension at 40 cover. MOR (WSM). M20/Fe415. [8] (2075 Chaitra, Q1c)
-10. Beam 230×350 overall, 4-16 mm tension. MOR if permissible 7.0 & 140 MPa; cover 25, m=13.33. [7] (2075 Ashwin, Q1a)
-11. Find MOR of RCC beam 250 wide, 500 eff depth, 3-16 mm. Permissible 7 & 230 MPa; m=13.33. [6] (2073 Shrawan, Q1a)
+### 2.5 Design / Moment of Resistance of Singly-Reinforced Rectangular Beam (WSM)
 
----
+1. An RC beam 230 mm wide and 400 mm deep (effective depth 380 mm) with area of steel 580 mm² has permissible stresses in concrete and steel of 5 N/mm² and 140 N/mm² respectively. Find the moment of resistance of the section and the actual stresses in concrete and steel. [8] (2080 Baishakh, Q1b)
 
-# CHAPTER 3 — Limit State Method [5 Hrs · 4 Marks]
+2. A rectangular beam is 350 mm wide and has an effective depth of 650 mm. It is reinforced with five tension bars of 25 mm diameter. Due to an accidental loading condition, the beam has to resist a service-load bending moment of 150 kN·m. Determine whether the beam is safe. Considering the safety of the beam, also determine the stresses developed in the concrete and steel at the state of failure according to the working stress method. Use M25 concrete and Fe415 steel. [8] (2082 Bhadra, Q1b)
 
-## 3.1 Safety & serviceability requirements and limit states
+3. A rectangular beam 300 mm wide and 550 mm effective depth is reinforced with 4 bars of 12 mm diameter. Determine the moment of resistance using the working stress method. Use M20 concrete and Fe415 steel. [8] (2081 Bhadra, Q1c)
 
-1. State all safety and serviceability requirements of limit state; define limit state of strength and serviceability. [6] (2072 Kartik, Q1a)
-2. Explain the different categories of limit state design. [6] (2075 Ashwin, Q4a)
-3. What are the serviceability requirements in LSM? Explain briefly. [4] (2075 Chaitra, Q1b)
-4. Explain the limit state of serviceability and its requirements. List types of splicing. [1+4] (2074 Ashwin, Q3a) → also 10.5
+4. A rectangular beam is 300 mm wide and has an effective depth of 550 mm. It is reinforced with 4 tension bars of 16 mm diameter. Determine the stresses induced in the top compression fibre of the concrete and in the tension steel when the beam is subjected to a bending moment of 50 kN·m. Use M20 concrete and Fe415 steel, with permissible stresses in concrete and steel not exceeding 5 MPa and 140 MPa, respectively. [9] (2081 Baishakh, Q1b)
 
-## 3.2 Design strength of materials and design loads
+5. Determine the area of steel required and the moment of resistance for a RC beam 250 mm × 450 mm. Consider M15 concrete and mild steel. Use the working stress method. [8] (2080 Bhadra, Q1b)
 
-1. Define design strength and design load for LSM. [4] (2081 Baishakh, Q1c)
+6. An RCC beam 25 cm wide and 60 cm deep has 4 bars of 20 mm diameter as tension reinforcement, the centre of bars being 5 cm above the bottom. Determine the uniformly distributed load the beam can carry over a simply supported effective span of 6.10 m. Permissible stresses in concrete and steel are 7 MPa and 230 MPa respectively; use the modular ratio. [10] (2078 Bhadra, Q1b)
 
-## 3.3 Idealized stress-strain diagram of concrete and steel
+7. Calculate the tensile reinforcement required for a rectangular RC beam of size 230 mm × 425 mm (overall) if it has to carry a moment of 64 kNm at service condition. Use M20 concrete and Fe500 steel in the working stress method. [8] (2076 Chaitra, Q1b)
 
-1. Idealized stress-strain diagram of concrete and steel bar. Draw diagrams. Define characteristic strength. [2+2+2] (2073 Shrawan, Q4b)
-2. Define characteristic loads and strength. Stress-strain relation for steel and concrete in LSM and WSM. [1+1+2+2] (2078 Bhadra, Q1a)
-3. Draw idealized stress-strain curve for steel and concrete; discuss design values of stresses. [5] (2067 Ashadh, Q3a)
+8. A rectangular reinforced-concrete beam has overall dimensions of 300 mm × 500 mm and is reinforced with 4 tension bars of 25 mm diameter at an effective cover of 50 mm. The beam is simply supported over an effective span of 5 m. Using the working stress method, calculate the total uniformly distributed load that the beam can carry, including its self-weight. Adopt M20 concrete and Fe415 (TOR) steel. [8] (2076 Ashwin, Q1a)
 
-## 3.6 Balanced, under-reinforced and over-reinforced sections
+9. A rectangular reinforced-concrete beam has overall dimensions of 250 mm × 450 mm. It is reinforced with 4 tension bars of 16 mm diameter at an effective cover of 40 mm. Calculate the moment of resistance of the beam using the working stress method. Adopt M20 concrete and Fe415 steel. [8] (2075 Chaitra, Q1c)
 
-1. What are balanced, under- and over-reinforced sections? Sketch stress distributions and MOR expressions. [6] (2080 Baishakh, Q1a)
-2. Describe failure modes in under-reinforced, balanced and over-reinforced sections. [4] (2081 Bhadra, Q1b)
-3. Describe under-, over- and balanced reinforced sections. [7] (2081 Baishakh, Q1a)
-4. Discuss flexural sections by amount of reinforcement; failure modes. [8] (2080 Bhadra, Q1a)
-5. Explain under-, balanced and over-reinforced sections in LSM. [6] (2074 Ashwin, Q1a)
-6. Explain, with sketches, under-, over- and balanced sections. [4] (2075 Chaitra, Q1a)
-7. Define balanced, under- and over-reinforced sections. [3] (2076 Chaitra, Q4a)
-8. Differentiate balanced/under/over-reinforced sections (LSM) with strain diagram. [8] (2069 Chaitra, Q5b)
+10. A rectangular reinforced-concrete beam has overall dimensions of 230 mm × 350 mm and is reinforced with 4 bars of 16 mm diameter in its bottom tension zone. Determine the moment of resistance of the beam if the permissible stresses in concrete and steel must not exceed 7.0 MPa and 140 MPa, respectively. Take a nominal cover of 25 mm and a modular ratio of 13.33. [7] (2075 Ashwin, Q1a)
 
----
+11. Find the moment of resistance of a reinforced-concrete beam that is 250 mm wide, has an effective depth of 500 mm and is reinforced with 3 bars of 16 mm diameter. The permissible stresses in concrete and steel are 7 MPa and 230 MPa, respectively. Take the modular ratio as 13.33. [6] (2073 Shrawan, Q1a)
 
-# CHAPTER 4 — Design for Flexure [8 Hrs · 10 Marks]
+12. A reinforced concrete beam of size 300 mm × 640 mm overall is reinforced with 4 bars of 20 mm diameter at the bottom. The beam carries a superimposed load of 50 kN/m, excluding its self-weight, over a span of 4 m. Find the actual stresses developed in steel and concrete. Take effective cover of 40 mm and modular ratio of 13.33. Also calculate the compressive stress in concrete at 50 mm from the top of the beam. [10] (2082 Baishakh, Q1c)
 
-## 4.2 Design of rectangular beams (singly & doubly reinforced, LSM)
+13. A simply supported rectangular RC beam of effective span 4.2 m and overall dimensions 230 mm × 450 mm is reinforced with four 20 mm diameter bars in tension. Determine the moment of resistance. Take permissible stresses for M20 concrete and Fe415 steel. [6] (2074 Ashwin, Q1b)
 
-1. SS RCC beam eff span 4 m, 250×475 overall, superimposed 45 kN/m + point 75 kN at midspan. Design for LS collapse in flexure; check deflection. Cover 45, M25, TMT. [10] (2079 Bhadra, Q1c) → also 6.3
-2. Beam 300 wide, 500 to centre of tensile steel, DL 45 kN/m excl self-wt, span 7 m. Find midspan steel. Comp cover 40. M20/Fe415 (LSM). [15] (2074 Chaitra, Q1b)
-3. SS RCC beam eff span 5.5 m, 230×550 overall, superimposed 30 kN/m excl self-wt. Design for LS collapse in flexure; check deflection. Mild exposure, Fe415, cover 50. [14] (2072 Chaitra, Q1b) → also 6.3
-4. Beam 250×300 SS on 300 mm masonry walls 4 m apart; LL 8 kN/m + DL 10 kN/m (incl self-wt). Design in flexure. M20/Fe415. [8] (2081 Bhadra, Q2a)
-5. Design reinforcement for simple rectangular beam eff span 6 m carrying 8 kN/m from 120 mm slab, 250 wide, 450 deep. LL 5, FF 3, partition 10 kN/m. M20/Fe415. [12] (2067 Ashadh, Q4a)
+14. The moment of resistance of a rectangular reinforced-concrete beam of width b and effective depth d is 0.85bd², using N and mm. The extreme concrete and steel stresses must not exceed 7 N/mm² and 140 N/mm², respectively, and the modular ratio is 18.33. Determine the ratio of neutral-axis depth from the compression face to effective depth. The beam is reinforced on the tension side only. [12] (2067 Ashadh, Q1b)
 
-### Moment of resistance of doubly-reinforced sections
+## Chapter 3: Limit State Method 5 Hours
 
-1. Explain MOR of a doubly reinforced section; derive the formula. [2+2+4] (2076 Chaitra, Q1a)
-2. Derive BM capacity of doubly-reinforced rectangular section (WSM assumptions, IS 456:2000). [6] (2079 Bhadra, Q1b)
-3. Explain design steps of a doubly reinforced section with sketches. [6] (2080 Baishakh, Q1c)
-4. Beam 300×500, 5-25 mm tension + 5-12 mm compression at 25 cover, span 4.30 m. MOR at ultimate. M25/Fe415. [12] (2071 Chaitra, Q4b)
-5. Find ultimate MOR of beam shown (250×450 eff, 4-25 mm). M20/Fe415. [14] (2073 Shrawan, Q1b)
+### 3.1 Safety & Serviceability Requirements and Limit States
 
-## 4.3 Design of flanged beam sections (T-beams and L-beams)
+1. State all the possible safety and serviceability requirements of limit state, and define the limit state of strength and serviceability. [4] (2072 Kartik, Q1a)
 
-1. Concept behind typical flange width in T- and L-beams? Explain with sketches. [2+2] (2082 Bhadra, Q2a)
-2. Describe the design steps of flanged beam sections. [4] (2081 Baishakh, Q2a)
-3. Explain the design steps of flanged beams. [5] (2078 Bhadra, Q3c)
-4. Explain how you would design shear reinforcement for flanged beam sections. [5] (2074 Chaitra, Q1a) → also 5.1
-5. Determine limiting MOR and limiting Ast for T-beam (flange 1500, eff depth 590, flange 150, web 240). M20/Fe415. [6] (2081 Baishakh, Q2a)
-6. T-beam flange 1600, flange depth 110, web 300, overall 460, 4-20 mm tension at 40 cover. MOR (LSM). M20/Fe415. [8] (2076 Ashwin, Q1b)
-7. L-beam flange 925, eff depth 450, flange 100, rib 250, 4-20 mm tension + 3-16 mm compression. Ultimate MOR (LS collapse). M20/Fe415. [10] (2074 Chaitra, Q4b)
-8. L-beam flange 900×100, web 250×500. Reinforcement for factored BM 615 kN-m and SF 50 kN. M20/Fe500. [14] (2072 Kartik, Q4b)
-9. Beam SS on 250 mm walls, clear span 6 m, supports 150 mm slab, LL 3 kN/m². Design a T-beam spaced 4 m c/c. M20/Fe415 (shear not required). [13] (2065 Shrawan, Q2b)
+2. Explain the different categories of limit state design with necessary details. [6] (2075 Ashwin, Q3b)
 
----
+3. What are the serviceability requirements in the limit state design of RC structures? Explain them briefly. [4] (2075 Chaitra, Q1b)
 
-# CHAPTER 5 — Shear, Torsion & Bond [6 Hrs · (5&10 combined) 8 Marks]
+4. Explain the limit state of serviceability and its requirements in RCC structures. Also list the different types of splicing of reinforcement. [4+1] (2074 Ashwin, Q3a)
 
-## 5.1 & 5.2 Shear stress and behaviour of concrete under shear
+5. Define the limit state of serviceability. Differentiate between short-term and long-term deflection. [4] (2082 Baishakh, Q5a)
 
-1. Explain behaviour of concrete under shear with sketches; different conditions. [4] (2078 Bhadra, Q2a)
-2. How do bent-up bars contribute to shear strength of a beam? [4] (2065 Shrawan, Q3a)
-3. Explain how a RC member under bending, shear and torsion is designed by IS code method. [5] (2076 Ashwin, Q5a; 2072 Chaitra, Q4a; 2065 Kartik, Q4b)
-4. Step-by-step design of a RC beam under shear, moment and torsion. [6] (2075 Ashwin, Q3a)
-5. Steps of design of a beam subjected to BM, SF and torsion. [4] (2071 Chaitra, Q2b)
+### 3.2 Design Strength of Materials and Design Loads
 
-### Shear reinforcement design (stirrups & bent-up bars)
+1. Define design strength and design load for the limit state design method. [4] (2081 Baishakh, Q1c)
 
-1. Beam eff depth 550, breadth 400, 5-25 mm (2 bent up 45°), factored UDL 100 kN/m over 6 m. Shear resistance of bent-up bars + additional stirrups. M20/Fe415. [8] (2080 Baishakh, Q1d)
-2. Beam eff depth 550, breadth 300, 4-20 mm (2 bent up 45°), factored SF 425 kN at support, span 6 m. Bent-up bar resistance + stirrups. M20/Fe415 TOR. [10] (2076 Chaitra, Q3b)
-3. Beam eff depth 600, breadth 400, 5-25 mm (2 bent up 45°), factored SF 250 kN at support, 0 at midspan, span 6 m. Bent-up resistance + stirrups. M20/Fe415. [14] (2075 Ashwin, Q2b)
-4. Beam 500×300 overall, 5-25 mm tension + 3-16 mm compression. Shear reinforcement for factored SF 370 kN. M20/Fe415 TOR. [8] (2075 Chaitra, Q2a)
-5. Find shear reinforcement for beam (span 7200 mm), SF 250 kN. M25/Fe500. [6] (2072 Chaitra, Q1a)
-6. SS normal T-beam 6 m clear span, service load 40 kN/m, 4-20 mm at support (300×600 overall). Shear reinforcement near support with contribution of 2-20 mm bars. M20/Fe415. [8] (2078 Bhadra, Q4b)
-7. Shear resisting capacity of rectangular beam 300×500 at bent-up bar section (45°). M20/Fe415. [10] (2069 Chaitra, Q2b)
+### 3.3 Idealized Stress-Strain Diagram of Concrete and Steel
 
-## 5.3 Behaviour and design strength in torsion
+1. What do you understand by the idealized stress-strain diagram of concrete and steel bar? Draw the idealized stress-strain diagrams. Define the characteristic strength of concrete and steel. [2+2+2] (2073 Shrawan, Q4b)
 
-1. Section 400×750, ultimate twisting 150 kNm + hogging BM 400 kNm + shear 110 kN. Reinforcement. M25/Fe500 TMT, mild exposure. [8] (2082 Bhadra, Q2b)
-2. Beam 250×500 eff, factored SF 110 kN + torsion 20 kNm, 3-20 mm tension. Shear reinforcement. M20/Fe500. [8] (2081 Bhadra, Q3a)
-3. Beam 425×550, factored BM 100 + twisting 28 + shear 100 kN, mild exposure. M20/Fe415. [10] (2081 Baishakh, Q2a)
-4. Beam 200×400, design BM 100 + shear 80 + torsion 15. M25/Fe415. [10] (2080 Bhadra, Q2b)
-5. SS beam 300×400 eff, 4-20 mm, SF 130 kN + torsion 45 kN-m at service. Shear reinforcement. M25/TOR. [10] (2079 Bhadra, Q2b)
-6. Beam 650×300 overall, factored BM 85 + SF 110 + twisting 25. Longitudinal & transverse reinforcement. M25/Fe415. [8] (2075 Chaitra, Q3a)
+2. Define characteristic loads and characteristic strength. Discuss the stress-strain relation for steel and concrete in the limit state method and the working stress method. [1+1+2+2] (2078 Bhadra, Q1a)
 
-## 5.4 Development length
+3. Draw the idealized stress-strain curve for both steel and concrete and discuss the design values of stresses. [5] (2067 Ashadh, Q2c)
 
-1. Derive formula for development length (Ld). Explain use in RCC construction. [3+4] (2082 Bhadra, Q3a)
+4. Explain the actual and idealized stress-strain diagram of concrete and deformed bars. [3] (2082 Baishakh, Q1b)
+
+### 3.6 Balanced, Under-Reinforced and Over-Reinforced Sections
+
+1. What are balanced, under-reinforced and over-reinforced sections? Explain with neat sketches of the stress distributions and expressions for the moment of resistance of each section. [6] (2080 Baishakh, Q1a)
+
+2. Describe the failure modes in under-reinforced, balanced and over-reinforced sections. [4] (2081 Bhadra, Q1b)
+
+3. Describe under-reinforced, over-reinforced and balanced reinforced concrete sections. [7] (2081 Baishakh, Q1a)
+
+4. Discuss different types of flexural sections according to the amount of reinforcement in the tension zone. Describe the different failure modes in the above-mentioned sections. [8] (2080 Bhadra, Q1a)
+
+5. Explain under-reinforced, balanced and over-reinforced sections in limit state design. [6] (2074 Ashwin, Q1a)
+
+6. Explain, with the help of sketches, under-reinforced, over-reinforced and balanced sections. [4] (2075 Chaitra, Q1a)
+
+7. Define balanced, under-reinforced and over-reinforced sections. [3] (2076 Chaitra, Q4a)
+
+8. Differentiate among the balanced, under-reinforced and over-reinforced sections in a rectangular RC section in the limit state method, with the corresponding strain diagram. [8] (2067 Ashadh, Q5b; first alternative)
+
+## Chapter 4: Design for Flexure 8 Hours
+
+### 4.2 Design of Rectangular Beams (Singly & Doubly Reinforced, LSM)
+
+1. A simply supported reinforced-concrete beam has an effective span of 4 m and overall dimensions of 250 mm × 475 mm. It is subjected to a superimposed uniformly distributed load of 45 kN/m, excluding its self-weight, together with a point load of 75 kN at midspan. Design the beam for the limit state of collapse in flexure. Also check whether the beam is safe in deflection. Consider an effective cover of 45 mm, and use M25 concrete and TMT reinforcement. All the given loads are at service level. [10] (2079 Bhadra, Q1c) → also 6.3
+
+2. A beam of size 250 mm × 300 mm is simply supported on masonry walls 300 mm thick, 4 m apart, to support a live load of 8 kN/m and dead load of 10 kN/m (including self-weight). Design the beam in flexure. Use M20 concrete and Fe415 steel. [8] (2081 Bhadra, Q2a)
+
+3. A beam has a rectangular section 300 mm wide and 500 mm deep to the centre of its tensile reinforcement. It has to carry a dead load of 45 kN/m, excluding its self-weight, over a span of 7 m. Find the steel reinforcement required at the midspan section using the limit state method. Take the effective cover to the compression reinforcement as 40 mm. Use M20 concrete and Fe415 steel. [15] (2074 Chaitra, Q1b)
+
+4. A simply supported rectangular RCC beam of effective span 5.5 m and overall dimensions 230 mm × 550 mm is subjected to a superimposed load of 50 kN/m, excluding its self-weight. Design the beam for the limit state of collapse in flexure. Also check whether the beam is safe in deflection. Adopt mild exposure, use Fe415 steel and take effective cover to the bars as 50 mm. [14] (2072 Chaitra, Q1b) → also 6.3
+
+5. Design the reinforcement required for a simply supported rectangular beam with an effective span of 6 m. The beam carries a load of 8 kN/m from a slab 120 mm thick. Take the beam width as 250 mm and its overall depth as 450 mm. For the loading calculation, consider a live load of 5 kN/m, a floor-finish load of 3 kN/m and a partition-wall load of 10 kN/m. Use M20 concrete and Fe415 steel. [12] (2067 Ashadh, Q3b)
+
+6. A simply supported RCC beam of effective span 4.5 m is subjected to a superimposed load of 45 kN/m, excluding its self-weight, with a point load of 75 kN at midspan. Design the beam for the limit state of collapse in flexure. Also check whether the beam is safe in deflection. Consider an effective cover of 45 mm. Take M25 concrete and Fe415 steel bars. All the given loads are at service level. [8] (2082 Baishakh, Q2a)
+
+### 4.2 Moment of Resistance of Doubly-Reinforced Sections
+
+1. Describe the requirement of steel as reinforcement in RCC structures. Explain the moment of resistance of a doubly reinforced section. Derive the formula. [2+2+4] (2076 Chaitra, Q1a) → also 1.1
+
+2. Derive equations for the bending moment carrying capacity of a doubly-reinforced rectangular section using the assumptions for the working stress method given by IS 456:2000. [6] (2079 Bhadra, Q1b)
+
+3. Explain the design steps of a doubly reinforced section with neat sketches. [6] (2080 Baishakh, Q1c)
+
+4. A reinforced-concrete beam of size 300 mm × 500 mm is reinforced with 5 bars of 25 mm diameter in tension and 5 bars of 12 mm diameter in compression. Both groups of reinforcement have a clear cover of 25 mm. The effective span of the beam is 4.30 m. Find its moment of resistance at the ultimate state. Use M25 concrete and Fe415 steel. [12] (2071 Chaitra, Q4b)
+
+5. Find the ultimate moment resisting capacity of the beam shown in the figure. Use M20 concrete and Fe415 steel. The supplied T-section has flange width 2250 mm, flange thickness 150 mm, web width 250 mm, effective depth 450 mm and four 25 mm tension bars. [14] (2073 Shrawan, Q1b; flanged-beam question)
+
+![Original T-beam question figure: flange 2250 by 150 mm, web 250 mm, effective depth 450 mm, four 25 mm bars](photo/question-2073-t-beam.png)
+
+### 4.3 Design of Flanged Beam Sections (T-beams and L-beams)
+
+1. Determine the moment of resistance of the section shown in the figure. Take permissible concrete stress 7 N/mm² and steel stress 140 N/mm². The T-section has flange width 2000 mm, web width 250 mm, effective depth 300 mm, effective bottom cover 50 mm and three 20 mm tension bars. [8] (2067 Ashadh, Q5b; OR alternative) Source limitation: flange thickness is not dimensioned in the supplied figure.
+
+![Original alternative WSM T-beam figure with 2000 mm flange, 250 mm web, effective depth 300 mm, effective bottom cover 50 mm and three 20 mm bars; flange thickness not dimensioned](photo/question-2067-t-beam.png)
+
+2. What is the concept behind the typical flange width in T- and L-beams? Explain with necessary sketches. [2+2] (2082 Bhadra, Q2a)
+
+3. Describe the design steps of flanged beam sections. [4] (2081 Baishakh, Q2b)
+
+4. Explain the design steps of flanged beams. [5] (2078 Bhadra, Q3c)
+
+5. Explain how you would design shear reinforcement for flanged beam sections. [5] (2074 Chaitra, Q1a) → also 5.1
+
+6. Determine the limiting moment of resistance and limiting area of steel for a RC T-beam of effective flange width 1500 mm, effective depth 590 mm, flange depth 150 mm and web width 240 mm. Use M20 concrete and Fe415 steel. [6] (2081 Baishakh, Q2c)
+
+7. A T-beam has an effective flange width of 1600 mm, flange thickness of 110 mm, web breadth of 300 mm and overall depth of 460 mm. It is reinforced with 4 tension bars of 20 mm diameter at an effective cover of 40 mm. Determine the moment of resistance of the section using the limit state method. Use M20 concrete and Fe415 steel. [8] (2076 Ashwin, Q1b)
+
+8. An L-beam has an effective flange width of 925 mm, an effective depth of 450 mm, a flange thickness of 100 mm and a rib breadth of 250 mm. It is reinforced with 4 bars of 20 mm diameter in tension and 3 bars of 16 mm diameter in compression. Find the ultimate moment of resistance of the section at the limit state of collapse. Use M20 concrete and Fe415 steel. [10] (2074 Chaitra, Q4b)
+
+9. An L-beam has a flange of effective width 900 mm and depth 100 mm; the web below is 250 mm × 500 mm. Determine the reinforcement required if it has to carry a factored bending moment of 615 kN-m and a shear force of 50 kN. Adopt M20 concrete and Fe500 steel. [14] (2072 Kartik, Q4b)
+
+10. A beam is simply supported on two walls, each 250 mm thick, with a clear span of 6 m. It has to support a slab 150 mm thick and a live load of 3 kN/m². The beams are spaced at 4 m centre to centre. Design one of the T-beams using M20 concrete and Fe415 steel. Design for shear is not required. [13] (2065 Shrawan, Q2b)
+
+11. A floor consists of a 125 mm thick RC slab integrally connected with the beams as shown in the figure. Design an intermediate beam for bending moment and deflection if the floor is subjected to live load 4 kN/m² and floor finish 0.7 kN/m². The supplied layout shows four 4 m bays, beams spanning the 5 m direction and one-brick-thick perimeter walls. [10] (2069 Chaitra, Q2a)
+
+![Original floor layout showing four 4 metre bays and 5 metre beam spans supported by one-brick-thick walls](photo/question-2069-beam-plan.png)
+
+## Chapter 5: Shear, Torsion & Bond 6 Hours
+
+### 5.1 & 5.2 Shear Stress and Behaviour of Concrete under Shear
+
+1. Explain the behaviour of concrete under shear with sketches. Explain the different conditions. [4] (2078 Bhadra, Q2a)
+
+2. How do bent-up bars contribute to the shear strength of a beam? Explain. [4] (2065 Shrawan, Q3a)
+
+3. Explain how an RC structural member subjected to bending, shear and torsion is designed by the IS code method. [5] (2076 Ashwin, Q5a)
+
+4. Explain how an RC structural member subjected to torsion, shear force and bending moment is designed. [6] (2072 Chaitra, Q4a)
+
+5. Explain how an RC structural member subjected to bending, shear and torsion is designed by the IS code method. [5] (2065 Kartik, Q4b)
+
+6. Describe the step-by-step procedure used for the design of an RC beam subjected to shear, moment and torsion. [6] (2075 Ashwin, Q2b)
+
+7. Write down the steps of design of a beam subjected to bending moment, shear force and torsion. [4] (2071 Chaitra, Q2a)
+
+### Shear Reinforcement Design (Stirrups & Bent-up Bars)
+
+1. A reinforced-concrete beam has an effective depth of 550 mm and a breadth of 400 mm. It contains 5 bars of 25 mm diameter, of which two are to be bent up at 45° near the support. The beam carries a uniformly distributed factored load of 100 kN/m over a clear span of 6 m. Calculate the shear resistance of the bent-up bars and design the additional stirrups, if required. Use M20 concrete and Fe415 steel. [10] (2080 Baishakh, Q2a)
+
+2. A reinforced-concrete beam has an effective depth of 550 mm and a breadth of 300 mm. It contains 4 bars of 20 mm diameter, of which two are to be bent up at 45° near the support. Calculate the shear resistance of the bent-up bars and design the additional stirrups needed when the factored shear force due to a uniformly distributed load is 425 kN at the support. The beam has a span of 6 m. Use M20 concrete and Fe415 (TOR) steel. [10] (2076 Chaitra, Q3b)
+
+3. An RC beam of effective depth 600 mm and breadth 400 mm contains five 25 mm bars, of which two are bent up at 45° near the support. Calculate the shear resistance of the bent-up bars and additional stirrups needed if the factored shear force is 250 kN at the support and zero at midspan of a 6 m span. Use M20 concrete and Fe415 steel. [14] (2075 Ashwin, Q2a)
+
+4. A rectangular reinforced-concrete beam has an overall depth of 500 mm and a breadth of 300 mm. It contains 5 bars of 25 mm diameter in tension and 3 bars of 16 mm diameter in compression. Calculate the shear reinforcement required to resist a factored shear force of 370 kN. Use M20 concrete and Fe415 (TOR) steel. [8] (2075 Chaitra, Q2a)
+
+5. Find the shear reinforcement required for the beam shown in the figure, subjected to a design shear force of 250 kN. Use M25 concrete and Fe500 steel. The supplied T-section has flange width 1200 mm, flange thickness 125 mm, web width 250 mm, effective depth 500 mm and four 20 mm tension bars. [6] (2072 Chaitra, Q1a)
+
+![Original shear question figure: T-beam with 1200 mm flange, 125 mm flange thickness, 250 mm web, 500 mm effective depth and four 20 mm bars](photo/question-2072-shear.png)
+
+6. A simply supported T-beam has a clear span of 6 m and carries a service load of 40 kN/m. It is reinforced with 4 bars of 20 mm diameter at the support, and its overall beam cross-section is 300 mm × 600 mm. Design the shear reinforcement near the support, considering the shear contribution of 2 bars of 20 mm diameter near the support. Use M20 concrete and Fe415 steel. [8] (2078 Bhadra, Q4b)
+
+7. Find the shear resisting capacity of a rectangular beam 300 mm × 500 mm at the section of bent-up bars inclined at 45°. Use M20 concrete and Fe415 steel. The supplied figure shows four 25 mm main bars, of which two are bent up, and two-legged 8 mm vertical stirrups at 150 mm centres. [10] (2069 Chaitra, Q2b)
+
+![Original beam reinforcement figure with two 25 mm bent-up bars, four 25 mm midspan bars and two-legged 8 mm stirrups at 150 mm centres](photo/question-2069-shear.png)
+
+8. Design the shear reinforcement for a simply supported beam of span 5.0 m having an effective size of 230 mm × 450 mm. It carries a central point load of 30 kN. It is reinforced with 4 bars of 16 mm diameter, of which one bar is bent, using Fe415 steel. Use two-legged vertical stirrups of 8 mm diameter. Take M20 grade concrete. [8] (2082 Baishakh, Q2b)
+
+9. A rectangular RC beam of size 250 mm × 500 mm effective depth is subjected to a factored shear force of 110 kN. It is reinforced with three 22 mm diameter bars in tension. Design the shear reinforcement. Use M20 concrete and Fe500 steel. [8] (2074 Ashwin, Q1c)
+
+### 5.3 Behaviour and Design Strength in Torsion
+
+1. Design the reinforcement required for a rectangular section 400 mm wide and 750 mm deep. The section is subjected to an ultimate twisting moment of 150 kN·m, combined with an ultimate hogging bending moment of 400 kN·m and an ultimate shear force of 110 kN. Assume M25 concrete, Fe500 TMT steel and mild exposure conditions. Checks for deflection and bond are not required. [8] (2082 Bhadra, Q2b)
+
+2. A rectangular reinforced-concrete beam is 250 mm wide and has an effective depth of 500 mm. It is subjected to a factored shear force of 110 kN and a torsional moment of 20 kN·m. The beam is reinforced with 3 tension bars of 20 mm diameter. Design the shear reinforcement using M20 concrete and Fe500 steel. [8] (2081 Bhadra, Q2b)
+
+3. Design a beam 425 mm × 550 mm subjected to a factored bending moment of 100 kN-m, twisting moment of 28 kN-m and shear force at critical section of 100 kN, under mild exposure. Use M20 concrete and Fe415 steel. [10] (2081 Baishakh, Q2a)
+
+4. Design a rectangular RC beam of cross-section 200 mm × 400 mm subjected to a design bending moment of 100 kN-m, design shear force of 80 kN (at critical section) and design torsional moment of 15 kN-m. Consider M25 concrete and Fe415 steel. [10] (2080 Bhadra, Q2b)
+
+5. A simply supported reinforced-concrete beam is 300 mm wide and has an effective depth of 400 mm. It is reinforced with 4 bars of 20 mm diameter. Design the shear reinforcement when the beam is subjected to a shear force of 130 kN and a torsional moment of 45 kN·m at service state. Use M25 concrete and TOR steel. [10] (2079 Bhadra, Q2a)
+
+6. A rectangular RC beam of overall dimensions 650 mm × 300 mm is subjected to a factored bending moment of 85 kN-m, factored shear force of 110 kN and factored twisting moment of 25 kN-m. Design the beam for longitudinal and transverse reinforcement. Use M25 concrete and Fe415 steel. [8] (2075 Chaitra, Q2b)
+
+### 5.4 Development Length
+
+1. Derive the formula for development length (L d ) for a rebar in a RCC member. Explain the use of development length in RCC construction works. [3+4] (2082 Bhadra, Q3a)
+
 2. Derive an expression for development length. [3] (2081 Bhadra, Q3a)
-3. Define development length and lap splice. Derive Ld ≤ 1.3 M/Vu + Lo at SS end. [2+4] (2079 Bhadra, Q3a) → also 10.5
-4. Derive Ld ≤ 1.3 M/Vu + Lo. [6] (2076 Ashwin, Q2a; 2072 Kartik, Q3a)
-5. Define development length. Why are splices required? [4] (2076 Ashwin, Q4b) → also 10.5
-6. Define development length and ductility; ductility requirements in different joints. [1+1+4] (2076 Chaitra, Q3a) → also 11.5
 
-## 5.5 & 5.6 Anchorage bond and flexural bond
+3. Define development length and lap splice. Derive the expression L d ≤ 1.3 M/V u + L o at a simply supported end, where symbols have their usual meaning. [2+4] (2079 Bhadra, Q3a) → also 10.5
 
-1. Describe anchorage and flexural bond stress. Derive equation for development length and bond stress. [8] (2080 Bhadra, Q2a)
-2. Define anchorage and flexural bond stress. Prove flexural bond stress is a function of V; Ld ≤ 1.3 M/Vu + Lo. [7] (2075 Ashwin, Q1b)
+4. Derive the formula L d ≤ 1.3 M/V u + L o , where the symbols have their usual meanings. [6] (2076 Ashwin, Q2a)
+
+5. Derive the formula L d ≤ 1.3 M 1 /V + L o , where the symbols have their usual meanings. [4] (2072 Kartik, Q3a)
+
+6. Define development length. Why are splices required in RCC structures? [4] (2076 Ashwin, Q4b) → also 10.5
+
+7. Define development length and ductility. Describe the ductility requirements in different joints of RCC structures. [1+1+4] (2076 Chaitra, Q3a) → also 11.5
+
+8. Derive the expression L d ≤ 1.3 M 1 /V + L o , where the symbols have their usual meaning. [4] (2082 Baishakh, Q4a)
+
+9. Define development length and lap splice. [2] (2075 Chaitra, Q3b)
+
+### 5.5 & 5.6 Anchorage Bond and Flexural Bond
+
+1. Describe anchorage and flexural bond stress. Derive the equation for development length and bond stress. [8] (2080 Bhadra, Q2a)
+
+2. Define anchorage bond and flexural bond stress. Prove that flexural bond stress is a function of the shear force (V) and that L d ≤ 1.3 M/V u + L o at a simply supported end. [7] (2075 Ashwin, Q1b)
+
 3. Explain bond and development length with formula derivation. [5] (2078 Bhadra, Q3b)
-4. What is anchorage bond? Derive Ld ≤ 1.3 M/Vu + Lo. [7] (2074 Ashwin, Q2b)
 
----
+4. What is anchorage bond? Derive the expression L d ≤ 1.3 M 1 /V + L o with the usual notations. [1+4] (2074 Ashwin, Q2b)
 
-# CHAPTER 6 — Serviceability: Deflection & Cracking [4 Hrs · 4 Marks]
+## Chapter 6: Serviceability — Deflection & Cracking 4 Hours
 
-## 6.3 Control of deflection in design
+### 6.3 Control of Deflection in Design
 
-1. How can deflection be controlled in a beam? Explain briefly. [4] (2065 Shrawan, Q2a)
-2. Principle of the sufficient-stiffness method to control deflection; how deflection of RC flexure member is controlled. [6] (2065 Kartik, Q3a)
-3. (Cross-listed) Deflection checks embedded in beam/slab design — see 4.2 (2079 Bhadra, 2072 Chaitra) and 7.1 (2079/2081/2082 Bhadra, 2072 Chaitra).
+1. How can deflection be controlled in a beam? Explain in brief. [4] (2065 Shrawan, Q2a)
 
-## 6.4 Control of cracking in design
+2. What is the principle of the sufficient-stiffness method to control deflection? How is the deflection of a RC flexure member controlled by this method? [6] (2065 Kartik, Q3a)
+
+3. Define the limit state of serviceability. Differentiate between short-term and long-term deflection. [4] (2082 Baishakh, Q5a)
+
+### 6.4 Control of Cracking in Design
 
 1. Describe the method of controlling deflection and cracking in RCC structures. [2+4] (2076 Chaitra, Q2a)
-2. Methods of controlling deflection and crack width; empirical formula for design surface crack width. [3+2] (2076 Ashwin, Q5c)
-3. Discuss methods of crack control as per IS 456:2000. [5] (2073 Shrawan, Q3b)
 
----
+2. Describe the methods of controlling deflection and crack width in RCC structures. Describe the empirical formula for calculating the design surface crack width. [3+2] (2076 Ashwin, Q5c)
 
-# CHAPTER 7 — Slabs & Staircase [8 Hrs · 10 Marks]
+3. Discuss the methods of crack control as per IS 456:2000 in RC structures. [5] (2073 Shrawan, Q3b)
 
-## 7.1 Design of one-way and two-way slabs
+## Chapter 7: Slabs & Staircase 8 Hours
 
-1. Slab panel clear 5.0×4.0 m, continuous 3 edges / discontinuous 1 long edge, on 230 mm beam; imposed 4 + FF 1.3 + partition 1.5 kN/m². Design; check shear, deflection, development length. Fe500 TMT, mild exposure. [12] (2082 Bhadra, Q3b) → also 6.3
-2. Slab panel 5×4 m clear, continuous 3 edges / discontinuous 1 short edge, on 230 mm beam; LL 5 + FF 1.2. Design; check deflection; sketch support & midspan. M20/Fe415. [13] (2081 Bhadra, Q3b) → also 6.3
-3. RC slab interior panel on RCC beams all sides, clear 4×5 m; superimposed LL 3 + FF 2. M20/Fe415. Checks + drawings. [15] (2081 Baishakh, Q3a)
-4. Two-way slab simply supported all four edges, room 6×4 m clear, on 230 mm walls; superimposed 4, corners not held down. M25/Fe415. [14] (2080 Bhadra, Q4b)
-5. RC rectangular slab 4.0×5.0 m, imposed 4 + FF 1, two adjacent edges discontinuous, on 275 mm beam. Check shear & deflection. M20/Fe415 (no torsional reinf). [12] (2080 Baishakh, Q3a) → also 6.3
-6. Slab panel 5×4 m clear, continuous 3 edges / discontinuous 1 short edge, on 250 mm beam; LL 4 + FF 1.5. Design; check deflection; sketch with torsional bars. [10] (2079 Bhadra, Q3a) → also 6.3
-7. Two-adjacent-sides-discontinuous slab, clear 4×4.5 m, on 250 mm beam; 25 mm FF, LL 4 + partition 1. M20/Fe415. Checks; plan & section (short span). [15] (2078 Bhadra, Q2b)
-8. Slab 5×4 m, LL 4 + FF 1.2, on 250 mm masonry walls, two adjacent edges discontinuous. M20/Fe415. All checks; detailing + torsional. [16] (2076 Ashwin, Q3)
-9. Slab over room 5×6 m on masonry walls all round with restraint, corners held down; LL 3 + FF 1.5, wall 230 mm. M20/Fe415. Detailing; check deflection & dev length. [14] (2076 Chaitra, Q5b)
-10. RCC slab clear 6×4 m, one short edge discontinuous, corners restrained; LL 4 + superimposed 1.20. M20/Fe415. Checks; section short span + torsional. [16] (2075 Chaitra, Q4)
-11. Slab panel 5×4 m clear, continuous 3 edges / discontinuous 1 short edge, FF 1.20 + LL 4.0, on 225 mm beam. Design; detail top & bottom. [14] (2075 Ashwin, Q3b)
-12. Restrained floor slab 4×5 m, LL 5 kN/m², two adjacent sides discontinuous. M20/Fe415. Sketch. [15] (2074 Chaitra, Q3b)
-13. Interior panel slab on RCC beams all sides, clear 4.5×6.5 m; superimposed LL 4 + FF 2.5. M20/Fe415. [15] (2073 Shrawan, Q2a)
-14. Slab panel 5.5×4.0 m clear, continuous 3 edges / discontinuous 1 short edge, on 250 mm beam; LL 5 + FF 1.0. Design; sketch support & midspan with torsional bars; check deflection. [15] (2072 Chaitra, Q2a) → also 6.3
-15. Slab 3.6×4.2 m prevented uplift by walls (230 mm), intermediate storey; LL 3 + FF 1. M20/Fe415. All checks; sketch. [16] (2072 Kartik, Q2b)
-16. Slab 6.5×4 m, LL 4.5 + FF 1, rigidly fixed with 230 mm beam. M20/TMT. Detailing + checks. [16] (2071 Chaitra, Q2b)
-17. RC slab floor, LL 3 + FF 1. Design slab panel for BM and SF; sketch top & bottom. [14] (2069 Chaitra, Q3b)
+### 7.1 Design of One-Way and Two-Way Slabs
 
-## 7.3 Design and detailing of longitudinally loaded stairs
+1. A rectangular slab panel has clear dimensions of 5.0 m × 4.0 m. It is continuous over three edges and discontinuous over one long edge, and it rests on beams 230 mm wide. The slab is subjected to an imposed load of 4 kN/m², a floor-finish load of 1.3 kN/m² and a probable partition-wall load of 1.5 kN/m². Include the self-weight of the slab. Design the slab, check shear, deflection and development length, and detail the reinforcement. Use Fe500 TMT steel and assume mild exposure conditions. [12] (2082 Bhadra, Q3b) → also 6.3
 
-1. Concept of design of a staircase. Detailing of a straight flight in plan and section. [5] (2056 Bhadra, Q3a)
-2. Design and detailing of a RCC staircase. Define the effective span for a staircase. [5+1] (2074 Ashwin, Q4b)
+2. A rectangular slab panel 5 m × 4 m (clear span) is continuous over three edges and discontinuous over one short edge, resting on a 230 mm wide beam, subjected to live load 5 kN/m² and floor finish 1.2 kN/m². Design the slab and check whether it satisfies the deflection criteria. Sketch the reinforcement at the support and midspan. Use M20 concrete and Fe415 steel. [13] (2081 Bhadra, Q3b) → also 6.3
+
+3. Design a RC slab (interior panel) resting on RCC beams on all sides for a room of clear dimensions 4 m × 5 m, subjected to a superimposed live load of 3 kN/m² and floor finish 2 kN/m². Use M20 concrete and Fe415 steel. Perform necessary checks and provide structural drawings. [15] (2081 Baishakh, Q3a)
+
+4. Design a two-way slab for a room with clear dimensions of 6 m × 4 m. The slab is simply supported on all four edges by walls 230 mm thick and carries a superimposed working load of 4 kN/m². The corners of the slab are not held down. Use M25 concrete and Fe415 steel. [14] (2080 Bhadra, Q4b)
+
+5. Design a reinforced concrete rectangular slab of size 4.0 m × 5.0 m to support an imposed load of 4 kN/m² and floor finish 1 kN/m². Two adjacent edges are discontinuous; slab rests on a 275 mm wide beam. Check the safety against shear and deflection. Use M20 concrete and Fe415 steel (torsional reinforcement not required). [12] (2080 Baishakh, Q3a) → also 6.3
+
+6. A rectangular slab panel 5 m × 4 m (clear span) is continuous over three edges and discontinuous over one short edge, resting on a 250 mm wide beam, subjected to live load 4 kN/m² and floor finish 1.5 kN/m². Design the slab and check deflection. Sketch the reinforcement at support and midspan with torsional bars. [10] (2079 Bhadra, Q2b) → also 6.3
+
+7. Design a two-adjacent-sides-discontinuous RC slab for a room of clear dimensions 4 m × 4.5 m, resting on a 250 mm wide beam, with 25 mm thick PCC floor finish, live load 4.0 kN/m² and partition wall load 1.0 kN/m². Use M20 concrete and Fe415 steel. Check the slab for shear and deflection and show the reinforcement in plan and section along the short span. Design of torsional reinforcement in the slab is not required. [15] (2078 Bhadra, Q2b)
+
+8. Design a slab for a room of size 5 m × 4 m for a live load of 4 kN/m² and floor finish 1.2 kN/m². The slab is supported on 250 mm thick brick masonry walls with two adjacent edges discontinuous. Use M20 concrete and Fe415 bars. Carry out all checks, sketch the detailing plan and section, and the torsional reinforcement if required. [16] (2076 Ashwin, Q3)
+
+9. Design a reinforced-concrete slab over a room of dimensions 5 m × 6 m. The slab is supported on masonry walls all around with adequate restraint, and its corners are held down. The live load is 3 kN/m², the floor-finish load is 1.5 kN/m² and the supporting walls are 230 mm thick. Use M20 concrete and Fe415 steel. Draw the top and bottom reinforcement arrangements in plan and section. Check the slab for deflection and development length. [14] (2076 Chaitra, Q5b)
+
+10. Design a RCC slab for a room of clear dimensions 6 m × 4 m whose one short edge is discontinuous and corners are restrained, for a live load of 4 kN/m² and superimposed load 1.20 kN/m². Adopt M20 concrete and Fe415 steel. Check for deflection and development length. Give detailed sketches, section along short span, with torsional reinforcement. [16] (2075 Chaitra, Q4)
+
+11. A rectangular slab panel 5 m × 4 m clear is continuous over three edges and discontinuous over one short edge. It carries floor finish 1.20 kN/m² and live load 4.0 kN/m² and rests on 225 mm wide beams. Design the slab panel and clearly sketch the top and bottom reinforcement. Use M20 concrete and Fe415 steel. [14] (2075 Ashwin, Q3a)
+
+12. Design a restrained floor slab for a room 4 m × 5 m to support a live load of 5 kN/m², with two adjacent sides discontinuous. Use M20 concrete and Fe415 steel. Sketch the reinforcement details. [15] (2074 Chaitra, Q3b)
+
+13. Design and detail an interior panel of a slab resting on RCC beams on all sides for a room of clear dimensions 4.5 m × 6.5 m, subjected to a superimposed live load of 4 kN/m² and floor finish 2.5 kN/m². Take M20 concrete and Fe415 steel. [15] (2073 Shrawan, Q2a)
+
+14. A rectangular slab panel 5.5 m × 4.0 m (clear span) is continuous over three edges and discontinuous over one short edge, resting on a 250 mm wide beam, subjected to live load 5 kN/m² and floor finish 1.0 kN/m². Design the slab, sketch the reinforcement at support and midspan separately with torsional bars, and check the deflection criteria. Checks for shear and development length are not necessary. [15] (2072 Chaitra, Q2a) → also 6.3
+
+15. Design a slab for a room of size 3.6 m × 4.2 m at an intermediate storey of a residential building. The slab is prevented from lifting at its corners by supporting walls 230 mm thick. Take the live load as 3 kN/m² and the floor-finish load as 1 kN/m². Use M20 concrete and Fe415 steel. Carry out all necessary slab-design checks and sketch the reinforcement arrangement. [16] (2072 Kartik, Q2b)
+
+16. Design a slab for a room of size 6.5 m × 4 m for a live load of 4.5 kN/m² and floor finish 1 kN/m², slab rigidly fixed with a 230 mm wide beam. Use M20 concrete and TMT bars. Draw top and bottom reinforcement detailing with sections and carry out all checks. [16] (2071 Chaitra, Q2b)
+
+17. The RC slab floor of a residential building is subjected to live load 3 kN/m² and floor finish 1 kN/m². Design panel 2 in the supplied floor plan for bending moment and shear force, and draw neat sketches showing top and bottom reinforcement. The plan consists of two 5 m bays horizontally and two 3 m bays vertically, enclosed by one-brick-thick walls; panel 2 is the upper-right panel. [14] (2069 Chaitra, Q3b)
+
+![Original four-panel slab floor plan, two 5 metre bays by two 3 metre bays, with panel 2 in the upper right](photo/question-2069-slab-plan.png)
+
+18. Design a corner slab, with two adjacent edges discontinuous, of clear dimensions 5 m × 4 m to carry a live load of 3 kN/m² and floor finish of 1 kN/m². Use M20 concrete and Fe415 steel. Carry out all necessary checks and draw a neat sketch of the plan and section of the slab. [13] (2082 Baishakh, Q3b)
+
+19. Design a slab panel with one short edge discontinuous for a room of size 4 m × 5 m. The slab edges are supported on 250 mm wide walls. It carries a live load of 4 kN/m² and floor finish of 0.75 kN/m². Use M20 concrete and Fe415 steel. Sketch reinforcement detailing in plan and sections, and check deflection and development length. [15] (2074 Ashwin, Q2a)
+
+### 7.3 Design and Detailing of Longitudinally Loaded Stairs
+
+1. Explain the concept of design of a staircase. Show the detailing of reinforcement of a straight flight in plan and section. [5] (2056 Bhadra, Q3a)
+
+2. Draw the typical reinforcement drawing for a flight and a landing of an RCC staircase. Also define the effective span for a staircase. [5+1] (2074 Ashwin, Q4b)
+
 3. Explain the detailing of reinforcement in staircases. [5] (2068 Baishakh, Q3a)
 
----
+## Chapter 8: Design of Compression Members — Columns 8 Hours
 
-# CHAPTER 8 — Design of Compression Members: Columns [8 Hrs · 8 Marks]
+### 8.2 Interaction Diagrams for Columns
 
-## 8.2 Interaction diagrams for columns
+1. Define the interaction diagram with its features and neat sketches. Discuss the modes of failure for compression members in eccentric compression within the interaction diagram. [6] (2080 Bhadra, Q3a)
 
-1. Define the interaction diagram with features and sketches. Discuss failure modes in eccentric compression within the interaction diagram. [6] (2080 Bhadra, Q3a)
+### 8.3 Design of Short Columns (Uniaxial & Biaxial)
 
-## 8.3 Design of short columns (uniaxial & biaxial)
+1. Design a reinforced-concrete column of cross-section 400 mm × 500 mm with an unsupported length of 4.0 m. Both ends are effectively held in position, and one end is restrained against rotation. The column is subjected to a factored axial load of 1600 kN and factored bending moments of 150 kN·m and 50 kN·m. Use M25 concrete and Fe500 steel. [10] (2080 Baishakh, Q2b)
 
-1. Column 400×500, unsupported 4.0 m, both ends held & restrained against rotation at one end; factored axial 1600 kN, moments 150 & 50 kN-m. M25/Fe500. [10] (2080 Baishakh, Q2b)
-2. Column 350×550, factored axial 900 kN + moment 200 kN-m (major); unsupported 3 m, eff 3.6 m. M25/Fe415. [10] (2081 Baishakh, Q3b)
-3. Column 350×350, factored axial 1440 kN, Mux 195, Muy 180; unsupported 3.50 m. M20/Fe500 TMT + ductile detailing of transverse. [12] (2076 Chaitra, Q2b) → also 11.5
-4. Short column 300×400, factored axial 1400 kN, Mux 200, Muy 110; unsupported 3 m. M20/Fe500 TMT + ductile detailing. [10] (2076 Ashwin, Q4a) → also 11.5
-5. Biaxially loaded short square column 400×400, ultimate axial 800 kN incl LL at eccentricity 80 mm (both directions). M20/Fe415. [8] (2078 Bhadra, Q3a)
-6. Short column 350×500, unsupported 3.30 m, factored axial 1500 kN, moments 130 & 80. M30/Fe500. Sketch. [14] (2075 Chaitra, Q3b)
-7. Biaxially loaded column 500×600, unsupported 3.10 m, Mux 125, Pu 1300, Muy 200. M25/Fe500, four sides. Sketch. [15] (2075 Ashwin, Q4a)
-8. Short column 300×450, unsupported 3.0 m, factored 1550 kN, Mux 130, Muy 90. Ductile detailing of transverse. [14] (2074 Chaitra, Q2b) → also 11.5
-9. Column, factored axial 1500 kN, Mux 120, Muy 88; ends held in position but not restrained against rotation. Longitudinal & transverse; sketch. M25/Fe415. [15] (2074 Ashwin, Q3b)
-10. Short column 400×500, Pu 1600, Mux 20.0, Muy 150. Longitudinal reinforcement. M25/Fe415. [5] (2073 Shrawan, Q2a)
-11. Short column 55×45 cm, factored axial 1800 kN, Mux 175 (two sides); unsupported 3.1 m. M25/Fe500. [15] (2072 Chaitra, Q3a)
-12. Short rectangular column 300×500, factored axial 2000 kN, Mux 190, Muy 95; unsupported 3 m. M30/Fe500. [16] (2072 Kartik, Q3a)
-13. Short column 450×300, unsupported 3 m, ultimate axial 1500 kN, moments 150 & 80. M30/Fe500. Sketch. [14] (2071 Chaitra, Q2a)
-14. Column 4 m, both ends fixed & held, design axial 1000 kN + factored BM 100 kN-m. Longitudinal & transverse. [14] (2069 Chaitra, Q1b)
-15. Square RC column, ultimate factored 800 kN incl LL at eccentricity 80 mm (both X & Y). M20/Fe415. [8] (2069 Chaitra, Q4c)
+2. Design the longitudinal and transverse reinforcement in a rectangular reinforced-concrete column of size 350 mm × 550 mm. The column is subjected to a factored axial load of 900 kN and a factored bending moment of 200 kN·m about its major axis. Its unsupported length is 3 m and its effective length is 3.6 m. Use M25 concrete and Fe415 steel. [10] (2081 Baishakh, Q4a)
 
-## 8.4 Design of long / slender columns
+3. Determine the longitudinal and transverse reinforcement of a reinforced-concrete column subjected to a factored axial load of 1440 kN and factored bending moments M ux = 195 kN·m about the major axis and M uy = 180 kN·m about the minor axis. The column has a cross-section of 350 mm × 350 mm and an unsupported length of 3.50 m. Adopt M20 concrete and Fe500 TMT steel. Also provide the ductile detailing of the transverse reinforcement. [12] (2076 Chaitra, Q2b) → also 11.5
 
-1. Column 650×450, factored axial 1600 kN; moments 90 & 55 (top), 35 & 30 (bottom), major/minor; eff lengths 7 & 6.5 m; double curvature. M30/Fe500 TMT. Construction drawings. [12] (2082 Bhadra, Q4a)
-2. Slender column 400×500, Lex 7.0 m, Ley 6.0 m; factored axial 1600 kN; top Mux 180, Muy 110; bottom Mux 100, Muy 50; single curvature. M20/Fe415. [12] (2081 Bhadra, Q4b)
-3. Braced column 450×350, clear height 4.0 m, axial 700 kN, BM 100 (major) & 80 (minor); held both ends & restrained against rotation at one end. M25/Fe415. [12] (2080 Bhadra, Q3b)
-4. Unbraced column 400×350, clear height 6.0 m, axial 600 kN, BM 100 (major) & 50 (minor). M20/Fe415. [14] (2079 Bhadra, Q3b)
-5. Design steps for a RC long column of an unbraced frame. [10] (2065 Kartik, Q5b)
+4. Determine the longitudinal and transverse reinforcement in a short reinforced-concrete column subjected to a factored axial load of 1400 kN and factored bending moments M ux = 200 kN·m and M uy = 110 kN·m. The column has a cross-section of 300 mm × 400 mm and an unsupported length of 3 m. Adopt M20 concrete and Fe500 TMT steel. Also provide the ductile detailing of the transverse reinforcement. [10] (2076 Ashwin, Q4a) → also 11.5
 
-## 8.5 Reinforcement detailing / column capacity check
+5. Determine the longitudinal and transverse reinforcement in a biaxially loaded short square column 400 mm × 400 mm, ultimate factored axial load 800 kN inclusive of live load at an eccentricity of 80 mm in both X and Y directions. Use M20 concrete and Fe415 steel. [10] (2078 Bhadra, Q3a)
 
-1. Column 600×400 with 8-28 mm, Mux 350, Muy 50, Pu 2000. Check safety. M20/Fe415, cover 60. [10] (2065 Kartik, Q1b)
+6. Design a short rectangular column of size 350 mm × 500 mm and unsupported length 3.30 m subjected to a factored axial load of 1500 kN and factored moments 130 kN-m and 80 kN-m about major and minor axes. Adopt M30 concrete and Fe500 steel. Sketch the reinforcement details. [14] (2075 Chaitra, Q3a)
 
----
+7. Determine the longitudinal and transverse reinforcement in a biaxially loaded column with a cross-section of 500 mm × 600 mm and an unsupported length of 3.10 m. The column carries a factored axial load P u = 1300 kN and factored bending moments M ux = 125 kN·m and M uy = 200 kN·m. Use M25 concrete and Fe500 steel, with the longitudinal reinforcement distributed on all four sides. Sketch the reinforcement details. [15] (2075 Ashwin, Q4a)
 
-# CHAPTER 9 — Design of Footings [6 Hrs · 6 Marks]
+8. Design a short reinforced-concrete column of size 300 mm × 450 mm with an unsupported length of 3.0 m. The column is subjected to a factored axial load of 1550 kN and factored bending moments M ux = 130 kN·m and M uy = 90 kN·m. Provide ductile detailing for the transverse reinforcement. [14] (2074 Chaitra, Q2b) → also 11.5
 
-## 9.1 Design of spread footing
+9. An RC column of size 35 cm × 40 cm and unsupported length 3.10 m is subjected to a factored axial load of 1500 kN and factored biaxial moments M ux = 125 kN·m and M uy = 88 kN·m. Its ends are effectively held in position but not restrained against rotation. Design longitudinal and transverse reinforcement and sketch the details. Use M25 concrete and Fe500 steel. [15] (2074 Ashwin, Q3b)
 
-1. RC spread footing for RC wall 4 m length, 300 mm width; total load 1000 kN at service. M20/Fe415, SBC 150. [14] (2065 Kartik, Q4a)
-2. Steps for design of a rectangular RC footing. Why is shear reinforcement not provided in footings? [4] (2065 Shrawan, Q4a)
+10. Design the longitudinal reinforcement for a short column 400 mm × 500 mm subjected to P u = 1600 kN, M ux = 20.0 kN-m and M uy = 150 kN-m. Use M25 concrete and Fe415 steel. [15] (2073 Shrawan, Q3a) Scan annotation: an added handwritten note gives unsupported length 3 m; distinguish this from the printed statement.
 
-## 9.2 Design of isolated footings
+11. Design the longitudinal and transverse reinforcement for a short column of size 35 cm × 45 cm subjected to a factored axial load of 1800 kN, M ux = 175 kN·m and M uy = 105 kN·m. Reinforcement is distributed equally on two sides. Use M25 concrete and Fe500 steel; unsupported length is 3.1 m. [15] (2072 Chaitra, Q3a)
 
-1. Isolated footing, column 500×500, service axial 1600 kN. SBC 125 at depth 1.25 m. Fe500 TMT + M25. Construction drawings. [14] (2082 Bhadra, Q5a)
-2. Isolated footing, column 400×400 with 8-25 mm, service axial 1200 kN + moment 120 kNm. SBC 150. M20/Fe415. [12] (2081 Bhadra, Q5b)
-3. Footing, square column 400×400, service load 1500 kN. SBC 150. M20/Fe415. [10] (2081 Baishakh, Q4b)
-4. Isolated footing, column 400×400 with 8-20 mm, axial service 1000 kN. Base 1 m below GL; SBC 100. M15/Fe415. Check load transfer. [14] (2080 Bhadra, Q5b)
-5. Isolated footing, column 450×500 with 6-20 mm, factored axial 1100 kN + uniaxial moment 120 kN-m. Depth 1.5 m; SBC 100. M20/Fe500. [12] (2080 Baishakh, Q4b)
-6. Footing, column 30×35 cm with 8-20 mm, factored axial 1000 kN + moment 80. SBC 140 at depth 1.6 m. M25/TMT both. Sketch. [14] (2079 Bhadra, Q4b)
-7. Isolated square footing, column 400×400, axial 650 kN at service. SBC 170. M20/Fe500. Plan & section. [10] (2078 Bhadra, Q4a)
-8. Isolated footing, axial factored 1600 kN, column 400×400 with 20 mm bars. SBC 180. M20/Fe415 HSD. Check shear. [10] (2076 Ashwin, Q2b)
-9. RCC footing, column load 1250 kN from 400×400 with 20 mm bars. SBC 140; depth 1.8 m; unit wt 18. M20/Fe415. Sketch. [13] (2076 Chaitra, Q4b)
-10. RCC isolated footing, axial 1500 kN, column 350×350 with 8-20 mm. SBC 175. M20/Fe415. [10] (2075 Chaitra, Q5a)
-11. Isolated footing, square column 450×450 with 8-20 mm, service 1600 kN. SBC 250; depth 1.5 m. M20/Fe500. Check dev length & bearing stress. [14] (2073 Shrawan, Q4a)
-12. Isolated footing, square column 400×400, service 1200 kN. SBC 150; unit wt 18. M20/Fe415. [10] (2074 Chaitra, Q4a)
-13. Footing, square column 350×350 with 8-16 mm, factored axial 1100 kN + moment 60. SBC 150 at depth 1.5 m. M30/Fe500 (column), M20 (footing). Sketch. [14] (2074 Ashwin, Q4a)
-14. Isolated footing, column load 1300 kN + BM 100 (both axes), column 500×500 with 25 mm bars. SBC 220; depth 1.70 m; unit wt 18.5. M25/Fe415. [14] (2071 Chaitra, Q3c)
-15. Isolated footing, column 350×500, design axial 2000 kN + BM 80 kN-m. SBC 175. [14] (2069 Chaitra, Q4a)
+12. Determine the longitudinal and transverse reinforcement in a short rectangular column subjected to a factored axial load of 2000 kN and factored bending moments M ux = 190 kN·m about the major axis and M uy = 95 kN·m about the minor axis. The column has a cross-section of 300 mm × 500 mm and an unsupported length of 3 m. Adopt M30 concrete and Fe500 steel. [16] (2072 Kartik, Q3b)
 
-## 9.3 Design of combined / rectangular footings with moment
+13. Design a short rectangular column of size 450 mm × 300 mm and unsupported length 3 m subjected to an ultimate axial load of 1500 kN and ultimate moments 150 kNm and 80 kNm about major and minor axes. Adopt M30 concrete and Fe500 steel. Sketch the final design. [14] (2071 Chaitra, Q1c)
 
-1. Rectangular footing, column load 1150 kN + BM 250 kN-m from 600×600 with 20 mm bars. SBC 200; depth 1.5 m; unit wt 17. M20/Fe415. [16] (2072 Kartik, Q1b)
+14. A column of 4 m length with both ends fixed and effectively held is subjected to a design axial load of 1000 kN and factored bending moment of 100 kN-m. Design the rectangular column with its longitudinal and transverse reinforcement. [14] (2069 Chaitra, Q1b)
 
-## 9.4 Design of mat foundation
+15. Design a square RC column that has to carry an ultimate factored load of 800 kN inclusive of live load at an eccentricity of 80 mm in both X and Y directions. Use M20 concrete and Fe415 steel. [8] (2067 Ashadh, Q5c)
 
-1. Describe the design procedure for a mat foundation. [4] (2081 Bhadra, Q5a; 2075 Ashwin, Q4b)
-2. Explain all design steps of RCC mat foundation design. [6] (2069 Chaitra, Q3a)
+16. Design a column member to transfer a factored load P u = 1350 kN, M ux = 150 kN·m and M uy = 100 kN·m, with an unsupported length of 3.4 m. Use M25 concrete and Fe500 steel. Distribute reinforcement equally on all four sides and assume that the column is fully restrained at both supports against displacement and rotation. [12] (2082 Baishakh, Q4b)
 
-## 9.5 Punching shear in footings
+### 8.4 Design of Long / Slender Columns
 
-1. Procedure for design of shear reinforcement. How are isolated footings designed under punching shear? [8] (2067 Ashadh, Q3b)
+1. Design a column of size 650 mm × 450 mm subjected to a factored axial load of 1600 kN. At the top end, the factored bending moments are 90 kN·m about the major axis and 55 kN·m about the minor axis. At the bottom end, the corresponding moments are 35 kN·m and 30 kN·m, respectively. The effective lengths about the major and minor axes are 7 m and 6.5 m, respectively, and the column bends in double curvature. Use M30 concrete and Fe500 TMT steel. Prepare the construction drawings. [12+2] (2082 Bhadra, Q4a)
 
----
+2. Design a slender reinforced-concrete column of cross-section 400 mm × 500 mm. Its effective lengths are L ex = 7.0 m and L ey = 6.0 m, and it carries a factored axial load of 1600 kN. The factored bending moments at the top are M ux = 180 kN·m and M uy = 110 kN·m. At the bottom, the moments are M ux = 100 kN·m and M uy = 50 kN·m. The column bends in single curvature. Use M20 concrete and Fe415 steel. [12] (2081 Bhadra, Q4b)
 
-# CHAPTER 10 — Reinforcement Detailing: Codal Provisions [4 Hrs · (5&10 combined) 8 Marks]
+3. Design a braced rectangular RC column of clear height 4.0 m, cross-section 450 mm × 350 mm, subjected to a design axial load of 700 kN and design bending moments of 100 kN-m (major) and 80 kN-m (minor). The column is held effectively at both ends and restrained against rotation at one end. Use M25 concrete and Fe415 steel. [12] (2080 Bhadra, Q3b)
 
-## 10.1 Requirements for good detailing
+4. Design an unbraced rectangular RC column of clear height 6.0 m, cross-section 400 mm × 350 mm, subjected to a design axial load of 600 kN and design bending moments of 100 kNm (major) and 50 kNm (minor). Consider M20 concrete and Fe415 steel. [14] (2079 Bhadra, Q3b)
 
-1. Discuss requirements for good detailing. Describe the bar bending schedule. [3+3] (2079 Bhadra, Q4a) → also 10.7
-2. Explain, with sketches, the detailing of RC beams. [6] (2075 Chaitra, Q5b)
+5. Write down the design steps for the design of a RC long column of an unbraced frame. [10] (2065 Kartik, Q5b)
 
-## 10.3 Curtailment of flexural reinforcement
+### 8.5 Reinforcement Detailing / Column Capacity Check
 
-1. What is curtailment of tension steel in simple beams? Illustrate with a neat sketch. [8] (2069 Chaitra, Q5c)
+1. A reinforced-concrete column of cross-section 600 mm × 400 mm is reinforced with 8 longitudinal bars of 28 mm diameter. It is subjected to an axial load P u = 2000 kN and bending moments M ux = 350 kN·m and M uy = 50 kN·m. Check whether the column is safe for this combination of actions. Use M20 concrete and Fe415 steel, and take the effective cover as 60 mm. [10] (2065 Kartik, Q1b)
 
-## 10.5 Splicing of reinforcement
+## Chapter 9: Design of Footings 6 Hours
+
+### 9.1 Design of Spread Footing
+
+1. Design a reinforced-concrete spread footing for a reinforced-concrete wall 4 m long and 300 mm wide. The wall carries a total service load of 1000 kN. The safe bearing capacity of the soil is 150 kN/m². Use M20 concrete and Fe415 steel. [14] (2065 Kartik, Q4a)
+
+2. Describe the steps for the design of a rectangular RC footing. Why is shear reinforcement not provided in footings? [4] (2065 Shrawan, Q4a)
+
+### 9.2 Design of Isolated Footings
+
+1. Design an isolated footing for a column of size 500 mm × 500 mm carrying a service axial load of 1600 kN. The allowable bearing capacity of the soil is 125 kN/m² at a depth of 1.25 m below ground level. Use Fe500 TMT steel in both the column and footing. Use M25 concrete in both the footing and the column. Prepare construction drawings in plan and elevation. [10+2+2] (2082 Bhadra, Q5a)
+
+2. Design an isolated footing for a column of size 400 mm × 400 mm reinforced with 8 longitudinal bars of 25 mm diameter. The column carries a service axial load of 1200 kN and a service bending moment of 120 kN·m. Take the safe bearing capacity of the soil as 150 kN/m². Use M20 concrete and Fe415 steel. [12] (2081 Bhadra, Q5b)
+
+3. Design a footing supporting a square column of size 400 mm × 400 mm. The column carries a service load of 1500 kN, and the safe bearing capacity of the soil is 150 kN/m². Use M20 concrete and Fe415 steel. [10] (2081 Baishakh, Q4b)
+
+4. Design an isolated footing supporting a square column of size 400 mm × 400 mm, reinforced with 8 longitudinal bars of 20 mm diameter and carrying an axial service load of 1000 kN. The footing base is to be 1 m below ground level, where the allowable bearing capacity of the soil is 100 kN/m². Use M15 concrete and Fe415 steel. Also check the transfer of load from the column to the footing. [14] (2080 Bhadra, Q5b)
+
+5. Design an isolated footing for a column of size 450 mm × 500 mm reinforced with 6 longitudinal bars of 20 mm diameter. The column carries a factored axial load of 1100 kN and a factored uniaxial bending moment of 120 kN·m at its base. Take the foundation depth as 1.5 m and the safe bearing capacity of the soil as 100 kN/m². Use M20 concrete and Fe500 steel. [12] (2080 Baishakh, Q4a)
+
+6. Design a footing for a rectangular column of size 30 cm × 35 cm reinforced with 8 bars of 20 mm diameter. The column is subjected to a factored axial load of 1000 kN and a factored bending moment of 80 kN·m. The allowable bearing capacity of the soil is 140 kN/m² at a depth of 1.6 m. Use M25 concrete and TMT reinforcement for both the column and footing. Sketch all the required reinforcement. [14] (2079 Bhadra, Q4b)
+
+7. Design an isolated square footing of uniform thickness for a column of size 400 mm × 400 mm subjected to an axial service load of 650 kN. Take the safe bearing capacity of the soil as 170 kN/m². Use M20 concrete and Fe500 steel. Show the reinforcement arrangement in plan and section. [12] (2078 Bhadra, Q4a)
+
+8. Design an isolated footing to carry a factored axial load of 1600 kN from a column of size 400 mm × 400 mm. The column has longitudinal bars of 20 mm diameter. Take the bearing capacity of the soil as 180 kN/m². For the footing, adopt M20 concrete and Fe415 high-strength deformed bars. Check the footing for shear. [10] (2076 Ashwin, Q2b)
+
+9. Design a reinforced-concrete footing to carry a column load of 1250 kN from a square column of size 400 mm × 400 mm with longitudinal bars of 20 mm diameter. The bearing capacity of the soil is 140 kN/m². Take the foundation depth as 1.8 m and the unit weight of earth as 18 kN/m³. Use M20 concrete and Fe415 steel. Sketch the reinforcement arrangement in plan and section. [13] (2076 Chaitra, Q4b)
+
+10. Design an isolated reinforced-concrete footing to carry an axial load of 1500 kN. The supported column has a cross-section of 350 mm × 350 mm and contains 8 longitudinal bars of 20 mm diameter. Take the bearing capacity of the soil as 175 kN/m². Use M20 concrete and Fe415 steel. [10] (2075 Chaitra, Q5a)
+
+11. Design an isolated footing for a square column of size 450 mm × 450 mm, reinforced with 8 bars of 20 mm diameter and carrying a service load of 1600 kN. Take the bearing capacity of the soil as 250 kN/m² and the foundation depth as 1.5 m. Adopt M20 concrete and Fe500 steel. Also check the development length of the reinforcement and the bearing stress in the concrete. [14] (2073 Shrawan, Q4a)
+
+12. Design an isolated footing supporting a square column of size 400 mm × 400 mm that carries a service load of 1200 kN. The allowable soil pressure is 150 kN/m², and the unit weight of the soil above the footing base is 18 kN/m³. Use M20 concrete and Fe415 steel. [10] (2074 Chaitra, Q4a)
+
+13. Design a footing for a square column of size 350 mm × 350 mm reinforced with eight 16 mm bars, subjected to a factored axial load of 1100 kN and moment of 60 kN·m. Allowable bearing capacity is 150 kN/m² at a depth of 1.5 m. Use M20 concrete and Fe500 steel for the footing, and M30 concrete and Fe500 steel for the column. Assume the moment is reversible and sketch the reinforcement in plan and sections. [14] (2074 Ashwin, Q4a)
+
+14. Design an isolated footing to carry a column load of 1300 kN and a bending moment of 100 kN·m about each of the column's two axes. The column has a cross-section of 500 mm × 500 mm and longitudinal bars of 25 mm diameter. The bearing capacity of the soil is 220 kN/m². Take the foundation depth as 1.70 m and the unit weight of the soil as 18.5 kN/m³. Use M25 concrete and Fe415 steel. [14] (2071 Chaitra, Q3b)
+
+15. Design the isolated footing for a column of size 350 mm × 500 mm subjected to a design axial load of 2000 kN and a design bending moment of 80 kN·m. Take the allowable bearing capacity of the soil as 175 kN/m². [14] (2069 Chaitra, Q4a)
+
+16. Design an isolated footing for a column of size 450 mm × 450 mm with 8 bars of 20 mm diameter as longitudinal reinforcement, carrying a service axial load of 1000 kN and a service moment of 110 kN·m. Take the safe bearing capacity of soil as 140 kN/m². Use M20 concrete and Fe415 steel. [12] (2082 Baishakh, Q5b)
+
+17. Design an isolated rectangular footing for a column of size 300 mm × 400 mm reinforced with eight 20 mm bars and made of M25 concrete. The column carries a factored axial load of 1200 kN and a factored moment of 120 kN·m. Sketch the footing reinforcement in plan and sections and check concrete bearing stress and development length. Use M20 concrete for the footing and Fe415 steel. Assume soil bearing capacity 200 kN/m² at 1.25 m below ground level. [14] (2072 Chaitra, Q4b)
+
+18. Design an isolated square footing of uniform thickness for a 400 mm × 400 mm column subjected to axial load 600 kN and moment 50 kN·m at service state. Take allowable soil bearing pressure 150 kN/m², M20 concrete and Fe415 steel. [10] (2067 Ashadh, Q2b)
+
+### 9.3 Design of Combined / Rectangular Footings with Moment
+
+1. Design a rectangular footing to carry an axial column load of 1150 kN and a bending moment of 250 kN·m from a square column of size 600 mm × 600 mm. The column has longitudinal reinforcement of 20 mm diameter. The bearing capacity of the soil is 200 kN/m². Take the foundation depth as 1.5 m and the unit weight of earth as 17 kN/m³. Use M20 concrete and Fe415 steel. [16] (2072 Kartik, Q1b)
+
+### 9.4 Design of Mat Foundation
+
+1. Describe the design procedure for a mat foundation. [4] (2081 Bhadra, Q5a)
+
+2. Describe the design procedure for a mat foundation. [5] (2075 Ashwin, Q4b)
+
+3. Explain in detail all the design steps of RCC mat foundation design. [6] (2069 Chaitra, Q3a)
+
+### Punching Shear in Footings: Additional Exam Topic
+
+1. Write down the procedure for the design of shear reinforcement. Also explain how isolated footings are designed under punching shear. [8] (2067 Ashadh, Q3a)
+
+## Chapter 10: Reinforcement Detailing — Codal Provisions 4 Hours
+
+### 10.1 Requirements for Good Detailing
+
+1. Discuss the requirements for good detailing. Also describe the bar bending schedule. [3+3] (2079 Bhadra, Q4a) → also 10.7
+
+2. Explain, with the help of sketches, the ductile detailing of RC beams. [6] (2075 Chaitra, Q5b)
+
+### 10.3 Curtailment of Flexural Reinforcement
+
+1. What do you understand by curtailment of tension steel in simple beams? Show by illustrating a neat sketch. [8] (2067 Ashadh, Q4b)
+
+### 10.5 Splicing of Reinforcement
 
 1. What is splicing and why is it required in RCC structures? [2] (2076 Chaitra, Q5a)
-2. Enlist and sketch three kinds of mechanical splices. [2] (2071 Chaitra, Q1b)
-3. Define development length. Why are splices required? [4] (2076 Ashwin, Q4b) → also 5.4
-4. What is splicing of bars? Primary conditions for its application. [5] (2068 Baishakh, Q4a)
-5. Limit state of serviceability and its requirements; types of splicing. [1+4] (2074 Ashwin, Q3a) → also 3.1
 
-## 10.7 Bar bending schedule
+2. Enlist and make a sketch of three kinds of mechanical splices. [2] (2071 Chaitra, Q1b)
 
-1. Describe the bar bending schedule (with requirements for good detailing). [3+3] (2079 Bhadra, Q4a) → also 10.1
+3. Define development length. Why are splices required in RCC structures? [4] (2076 Ashwin, Q4b) → also 5.4
 
----
+4. What do you understand by splicing of bars? Write down the primary conditions for the application of splicing in reinforced concrete structures. [5] (2068 Baishakh, Q4a)
 
-# CHAPTER 11 — Earthquake Resistant Design & Ductile Detailing [4 Hrs · 4 Marks]
+5. Explain the limit state of serviceability and its requirements in RCC structures. Also list the different types of splicing of reinforcement. [4+1] (2074 Ashwin, Q3a) → also 3.1
 
-## 11.1 & 11.2 Damage in earthquake and philosophy of design
+6. Define development length and lap splice. [2] (2075 Chaitra, Q3b)
 
-1. Philosophy of design of structures in an earthquake-prone region. Design for strength and ductility. [4+4] (2080 Baishakh, Q4a) → also 11.3
-2. How do you consider earthquake loads while designing RCC structures? Briefly. [4] (2072 Kartik, Q2a) → also 1.3
+### 10.7 Bar Bending Schedule
 
-## 11.3 Design for strength and ductility
+1. Discuss the requirements for good detailing. Also describe the bar bending schedule. [3+3] (2079 Bhadra, Q4a) → also 10.1
 
-1. What is ductility? Significances of ductility in RC structures. [2+3] (2073 Shrawan, Q2b)
-2. Define ductility in RC design. Sketch a beam-column joint with ductile details. [1+4] (2072 Chaitra, Q3b)
-3. What is ductile behaviour of a structure and how is it induced? [3+3] (2082 Bhadra, Q5b)
-4. Factors affecting ductility. Ductility requirements of a RCC beam as per IS 13920. [4] (2078 Bhadra, Q1c)
+## Chapter 11: Earthquake Resistant Design & Ductile Detailing 4 Hours
 
-## 11.4 & 11.5 Ductility provisions & requirements for beam, column and joints
+### 11.1 & 11.2 Damage in Earthquake and Philosophy of Design
 
-1. Ductile design/detailing of flexural reinforcement in beam and axial + biaxial bending in columns per IS 13920. Drawings. [2+2+2] (2082 Bhadra, Q4b)
-2. Sketch a beam-column joint including ductile details. [4] (2081 Bhadra, Q4a)
-3. Importance of ductile detailing in RC structures; sketches for beams and columns. [5] (2081 Baishakh, Q3c)
-4. Ductility requirement for a RC beam with a neat sketch. [2] (2080 Bhadra, Q4a)
-5. Special confining reinforcement for ductile detailing of a column. [2] (2080 Bhadra, Q5a)
-6. Ductile detailing in beams and columns. Why is it needed in joints? [4+4] (2080 Baishakh, Q5b)
-7. Confining reinforcement in RC columns for earthquake-resistant design (with sketch). [6] (2075 Ashwin, Q1c)
-8. Reinforcement detailing in beams to ensure sufficient ductility (sketches). [6] (2072 Kartik, Q4a)
-9. Ductile detailing requirements for beam and column (sketches). [6] (2074 Chaitra, Q2a)
-10. Provisions of ductile detailing for columns with sketches. [6] (2076 Ashwin, Q5b; 2071 Chaitra, Q3b)
-11. Ductility requirements in different joints of RCC structures. [1+1+4] (2076 Chaitra, Q3a) → also 5.4
-12. Ductility requirements for beam, column and joints of RCC structures. [6] (2069 Chaitra, Q4b)
+1. What is the philosophy of design of structures in an earthquake-prone region? Explain design for strength and ductility. [4+4] (2080 Baishakh, Q3b) → also 11.3
 
----
+2. How do you consider earthquake loads while designing RCC structures? Explain briefly. [4] (2072 Kartik, Q2a) → also 1.3
 
-# LEGACY / OUT-OF-SYLLABUS (older papers, 2056–2068 BS)
+### 11.3 Design for Strength and Ductility
 
-The oldest papers follow an earlier syllabus and include **prestressed concrete** numericals not part of
-ENCE 352. Their RCC questions are already merged above; the prestressed items below are for completeness only.
+1. What is ductility? What are the significances of ductility in RC structures? [2+3] (2073 Shrawan, Q2b)
 
-1. Prestressed beam 180×400, cable eccentricity 75 above (supports) / 50 below (midspan); initial prestress 900 N/mm², area 500 mm². Prestressing force at other end, span 10 m; μ=0.50, K=0.0016/m. [15] (2068 Baishakh, Q5b) — _prestressed_
-2. Prestressed beam 20 m span, 200×500, cable 250 mm², parabolic (100 above at ends, 100 below at midspan); tensioned one end. % friction loss. [12] (2067 Ashadh, Q4b) — _prestressed_
-3. Prestressed beam 200×375, span 9 m, triangular cable (0 at ends, 75 at midspan), effective force 800 kN. Max concentrated load at midspan. [10] (2065 Kartik, Q5a) — _prestressed_
-4. Net initial/final concrete stresses at midspan of beam 15×30 cm, span 8 m, DL 8 + LL 6 kN/m, prestress 700 kN at e=7.5 cm, loss 15%. [16] (2065 Shrawan, Q5b) — _prestressed_
-5. Differences between load-balancing approach and homogeneous-beam concept. [7] (2065 Shrawan, Q5a) — _prestressed_
+2. Define the term ductility in RC design. Draw a neat sketch of a beam-column joint including ductile details. [1+4] (2072 Chaitra, Q3b)
+
+3. What do you mean by ductile behaviour of a structure and how do you induce ductile behaviour in a structure? [3+3] (2082 Bhadra, Q5b)
+
+4. What are the factors affecting ductility? Explain the ductility requirements of a RCC beam as per IS 13920. [4] (2078 Bhadra, Q1c)
+
+### 11.4 & 11.5 Ductility Provisions & Requirements for Beam, Column and Joints
+
+1. Perform the ductile design and detailing requirements of flexural reinforcement in a beam and for axial load as well as biaxial bending moments in columns as per IS 13920. Explain with necessary drawings. [2+2+2] (2082 Bhadra, Q4b)
+
+2. Draw a neat sketch of a beam-column joint including ductile details. [4] (2081 Bhadra, Q4a)
+
+3. Describe the importance of ductile detailing in RC structures with neat sketches of ductile detailing for beams and columns. [5] (2081 Baishakh, Q3b)
+
+4. Explain the ductility requirement for a reinforced concrete beam with a neat sketch. [2] (2080 Bhadra, Q4a)
+
+5. Discuss special confining reinforcement for ductile detailing of a column with neat sketches. [2] (2080 Bhadra, Q5a)
+
+6. Explain about ductile detailing in beams and columns. Why is ductile detailing needed in joints? [4+4] (2080 Baishakh, Q4b)
+
+7. With the help of a neat sketch, describe the requirement for confining reinforcement in RC columns for earthquake-resistant design. [6] (2075 Ashwin, Q1c)
+
+8. Explain, with the help of sketches, the requirements on reinforcement detailing in beams to ensure sufficient ductility. [6] (2072 Kartik, Q4a)
+
+9. Explain briefly the ductile detailing requirements for beam and column with neat sketches. [6] (2074 Chaitra, Q2a)
+
+10. Write down the provisions of ductile detailing for columns with neat sketches. [6] (2076 Ashwin, Q5b; also 2071 Chaitra, Q3a)
+
+11. Define development length and ductility. Describe the ductility requirements in different joints of RCC structures. [1+1+4] (2076 Chaitra, Q3a) → also 5.4
+
+12. What are the ductility requirements for beam, column and joints of RCC structures? [6] (2069 Chaitra, Q4b)
+
+13. Explain the ductility requirement for the RC beam with a neat sketch. [3] (2082 Baishakh, Q3a)
+
+## Legacy / Out-of-Syllabus (Older Papers) 2056–2068 BS
+
+1. A rectangular beam 180 mm × 400 mm is prestressed by a cable with eccentricity 75 mm above the centroid at the supports and 50 mm below at midspan. Initial prestress 900 N/mm², cable area 500 mm². Calculate the prestressing force at the other end if span is 10 m; assume μ = 0.50, K = 0.0016/m. [15] (2068 Baishakh, Q5b) — prestressed (out of syllabus)
+
+2. A concrete beam of 20 m span, 200 mm × 500 mm, is prestressed using a cable of area 250 mm² with a parabolic profile (eccentricity 100 mm above centroid at ends, 100 mm below at midspan). If tensioned from one end only, estimate the percentage loss of prestress due to friction. [12] (2067 Ashadh, Q4b) — prestressed (out of syllabus)
+
+3. A rectangular beam 200 mm × 375 mm, effective span 9 m, has a prestressing cable of triangular profile (zero eccentricity at ends, 75 mm at midspan). Effective prestress force 800 kN after all losses. Determine the maximum concentrated load the beam can support at midspan. [10] (2065 Kartik, Q5a) — prestressed (out of syllabus)
+
+4. Compute the net initial and final concrete stresses in the extreme top and bottom fibres at midspan of a beam 15 cm × 30 cm on a span of 8 m, supporting dead load 8 kN/m and live load 6 kN/m, prestressed with a final force of 700 kN at eccentricity 7.5 cm. Loss 15%. [16] (2065 Shrawan, Q5b) — prestressed (out of syllabus)
+
+5. What are the differences between the load-balancing approach and the homogeneous-beam concept? Explain. [7] (2065 Shrawan, Q5a) — prestressed (out of syllabus)
